@@ -1,11 +1,10 @@
 # Dataset Audit Report
 
 - Audit schema: `1.1.0`
-- Generated at: `2026-07-10T14:42:05+00:00`
 - Tool version: `0.1.0`
-- Git commit: `dde9596589d1abea51737d1dac0b098c2e4e3c01`
 
 Status fields are separated: payload verification (technical readability/counts), mapping verification (project taxonomy mapping), and licence status (evidence only).
+Volatile run metadata (`generated_at`, `git_commit`) is recorded only in `outputs/metrics/dataset_audit.json`.
 
 ## Summary
 

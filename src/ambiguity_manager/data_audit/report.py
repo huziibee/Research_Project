@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-import json
 from typing import Any
 
 
@@ -27,12 +26,12 @@ def generate_audit_markdown(audit: dict[str, Any]) -> str:
         "# Dataset Audit Report",
         "",
         f"- Audit schema: `{audit.get('audit_schema_version')}`",
-        f"- Generated at: `{audit.get('generated_at')}`",
         f"- Tool version: `{audit.get('audit_tool_version')}`",
-        f"- Git commit: `{audit.get('git_commit')}`",
         "",
         "Status fields are separated: payload verification (technical readability/counts), "
         "mapping verification (project taxonomy mapping), and licence status (evidence only).",
+        "Volatile run metadata (`generated_at`, `git_commit`) is recorded only in "
+        "`outputs/metrics/dataset_audit.json`.",
         "",
         "## Summary",
         "",

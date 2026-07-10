@@ -451,6 +451,58 @@ class RunnerTests(AuditTestBase):
         self.assertTrue(any(i["code"] == "missing_file" for i in result["issues"]))
 
 
+class ReportTests(unittest.TestCase):
+    def test_audit_markdown_ignores_volatile_run_metadata(self) -> None:
+        from ambiguity_manager.data_audit.report import generate_audit_markdown
+
+        base_payload = {
+            "audit_schema_version": "1.1.0",
+            "audit_tool_version": "0.1.0",
+            "summary": {
+                "datasets_registered": 1,
+                "verified": 1,
+                "partially_verified": 0,
+                "metadata_only": 0,
+                "blocked": 0,
+                "excluded": 0,
+                "missing_not_blocking": 0,
+            },
+            "datasets": [
+                {
+                    "display_name": "Fixture",
+                    "dataset_id": "fixture_ds",
+                    "payload_verification_status": "verified",
+                    "mapping_verification_status": "verified",
+                    "licence_status": "unresolved",
+                    "inclusion_decision": "include",
+                    "intended_role": "core",
+                    "total_authoritative_record_count": 2,
+                    "authoritative_component_counts": {"primary": 2},
+                    "filesystem_present": True,
+                    "code_only": False,
+                    "provenance": {"submodule_commit": None},
+                    "authoritative_files": [],
+                    "warnings": [],
+                    "issues": [],
+                    "mapping_risks": [],
+                }
+            ],
+            "missing_datasets": [],
+            "excluded_artifacts": [],
+        }
+        first = {
+            **base_payload,
+            "generated_at": "2026-07-10T10:00:00+00:00",
+            "git_commit": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        }
+        second = {
+            **base_payload,
+            "generated_at": "2026-07-10T11:00:00+00:00",
+            "git_commit": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+        }
+        self.assertEqual(generate_audit_markdown(first), generate_audit_markdown(second))
+
+
 class PyarrowCapabilityTests(unittest.TestCase):
     def test_arrow_blocked_when_pyarrow_missing(self) -> None:
         from ambiguity_manager.data_audit.readers import read_arrow_stream_audit
