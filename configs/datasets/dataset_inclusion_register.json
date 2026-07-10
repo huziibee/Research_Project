@@ -1,0 +1,228 @@
+{
+  "register_schema_version": "1.0.0",
+  "updated_at": "2026-07-10T00:00:00Z",
+  "entries": [
+    {
+      "dataset_id": "ambik",
+      "display_name": "AmbiK",
+      "decision": "include",
+      "role": "core",
+      "reason": "Approved core dataset for embodied ambiguity, clarification, and ambiguity labels",
+      "expected_converter_ticket": "T03",
+      "authoritative_paths": ["data/raw/AmbiK/AmbiK_data.csv"],
+      "auxiliary_paths": [
+        "data/raw/AmbiK/ambik_dataset/ambik_test_900.csv",
+        "data/raw/AmbiK/ambik_dataset/ambik_test_400.csv",
+        "data/raw/AmbiK/ambik_dataset/ambik_calib_100.csv",
+        "data/raw/AmbiK/ambik_knowno_data/knowno_data.csv"
+      ],
+      "split_eligibility": {
+        "train": true,
+        "dev": true,
+        "test": false,
+        "gold": false,
+        "challenge": false
+      },
+      "conditions": [],
+      "mapping_confidence": "TODO_VERIFY",
+      "supported_labels": ["ambiguity_type", "clarification"],
+      "unsupported_labels": ["route", "risk_level"],
+      "blocked_reason": null
+    },
+    {
+      "dataset_id": "indirect_requests",
+      "display_name": "IndirectRequests",
+      "decision": "include",
+      "role": "core",
+      "reason": "Approved core dataset for pragmatic and indirect intent recovery",
+      "expected_converter_ticket": "T04",
+      "authoritative_paths": [
+        "data/raw/IndirectRequests/train/data-00000-of-00001.arrow",
+        "data/raw/IndirectRequests/validation/data-00000-of-00001.arrow",
+        "data/raw/IndirectRequests/test/data-00000-of-00001.arrow"
+      ],
+      "auxiliary_paths": [],
+      "split_eligibility": {
+        "train": true,
+        "dev": true,
+        "test": true,
+        "gold": false,
+        "challenge": false
+      },
+      "conditions": [],
+      "mapping_confidence": "TODO_VERIFY",
+      "supported_labels": ["intent", "slot_value"],
+      "unsupported_labels": ["route"],
+      "blocked_reason": null
+    },
+    {
+      "dataset_id": "clara",
+      "display_name": "CLARA / SaGC",
+      "decision": "conditional",
+      "role": "conditional_core",
+      "reason": "Conditional core pending verified label-to-route mapping (T07)",
+      "expected_converter_ticket": "T07",
+      "authoritative_paths": ["data/raw/CLARA-Dataset/data/agument.json"],
+      "auxiliary_paths": ["data/raw/CLARA-Dataset/data/sample.json"],
+      "split_eligibility": {
+        "train": true,
+        "dev": true,
+        "test": false,
+        "gold": false,
+        "challenge": false
+      },
+      "conditions": ["label_meanings_verified"],
+      "mapping_confidence": "TODO_VERIFY",
+      "supported_labels": ["label"],
+      "unsupported_labels": ["ambiguity_labels"],
+      "blocked_reason": null
+    },
+    {
+      "dataset_id": "codraw_icr_v2",
+      "display_name": "CoDraw-iCR v2",
+      "decision": "conditional",
+      "role": "conditional_core",
+      "reason": "Conditional core for dialogue and scene-grounded clarification",
+      "expected_converter_ticket": "T05",
+      "authoritative_paths": ["data/raw/codraw-icr-v2/codraw-icr-v2.tsv"],
+      "auxiliary_paths": [
+        "data/raw/codraw-icr-v2/codraw-icr-v2_raw.tsv",
+        "data/raw/codraw-icr-v2/clipmap.json"
+      ],
+      "split_eligibility": {
+        "train": true,
+        "dev": false,
+        "test": false,
+        "gold": false,
+        "challenge": false
+      },
+      "conditions": ["schema_verified"],
+      "mapping_confidence": "TODO_VERIFY",
+      "supported_labels": ["clarification"],
+      "unsupported_labels": ["route"],
+      "blocked_reason": null
+    },
+    {
+      "dataset_id": "vague",
+      "display_name": "VAGUE",
+      "decision": "conditional",
+      "role": "conditional_core",
+      "reason": "Conditional core for context-dependent disambiguation (text/caption path)",
+      "expected_converter_ticket": "T06",
+      "authoritative_paths": ["data/raw/vague_bench/data/train-00000-of-00001.parquet"],
+      "auxiliary_paths": [],
+      "split_eligibility": {
+        "train": true,
+        "dev": false,
+        "test": false,
+        "gold": false,
+        "challenge": false
+      },
+      "conditions": ["schema_verified"],
+      "mapping_confidence": "TODO_VERIFY",
+      "supported_labels": ["intent"],
+      "unsupported_labels": ["route"],
+      "blocked_reason": null
+    },
+    {
+      "dataset_id": "clariq",
+      "display_name": "ClariQ",
+      "decision": "auxiliary",
+      "role": "auxiliary",
+      "reason": "Auxiliary clarification-style data; never robot gold without explicit decision",
+      "expected_converter_ticket": "T08",
+      "authoritative_paths": ["data/raw/ClariQ/data/train.tsv"],
+      "auxiliary_paths": [
+        "data/raw/ClariQ/data/dev.tsv",
+        "data/raw/ClariQ/data/test.tsv",
+        "data/raw/ClariQ/data/test_with_labels.tsv",
+        "data/raw/ClariQ/data/question_bank.tsv",
+        "data/raw/ClariQ/data/multi_turn_human_generated_data.tsv"
+      ],
+      "split_eligibility": {
+        "train": true,
+        "dev": true,
+        "test": false,
+        "gold": false,
+        "challenge": false
+      },
+      "conditions": [],
+      "mapping_confidence": "TODO_VERIFY",
+      "supported_labels": ["clarification"],
+      "unsupported_labels": ["route", "risk_level"],
+      "blocked_reason": null
+    },
+    {
+      "dataset_id": "safe_agent_bench",
+      "display_name": "SafeAgentBench",
+      "decision": "challenge_only",
+      "role": "challenge",
+      "reason": "Optional safety/rejection stress test; separate challenge results only",
+      "expected_converter_ticket": "T09",
+      "authoritative_paths": [
+        "data/raw/SafeAgentBench/abstract/train.arrow/data-00000-of-00001.arrow"
+      ],
+      "auxiliary_paths": [
+        "data/raw/SafeAgentBench/unsafe_detailed/train.arrow/data-00000-of-00001.arrow",
+        "data/raw/SafeAgentBench/safe_detailed/train.arrow/data-00000-of-00001.arrow",
+        "data/raw/SafeAgentBench/long_horizon/train.arrow/data-00000-of-00001.arrow"
+      ],
+      "split_eligibility": {
+        "train": false,
+        "dev": false,
+        "test": false,
+        "gold": false,
+        "challenge": true
+      },
+      "conditions": ["documented_mapping"],
+      "mapping_confidence": "TODO_VERIFY",
+      "supported_labels": ["risk_category"],
+      "unsupported_labels": ["ambiguity_labels"],
+      "blocked_reason": null
+    },
+    {
+      "dataset_id": "teach",
+      "display_name": "TEACh",
+      "decision": "exclude",
+      "role": "excluded",
+      "reason": "Excluded from core benchmark per approved plan unless later decision changes",
+      "expected_converter_ticket": null,
+      "authoritative_paths": [],
+      "auxiliary_paths": [],
+      "split_eligibility": {
+        "train": false,
+        "dev": false,
+        "test": false,
+        "gold": false,
+        "challenge": false
+      },
+      "conditions": [],
+      "mapping_confidence": "not_applicable",
+      "supported_labels": [],
+      "unsupported_labels": [],
+      "blocked_reason": null
+    },
+    {
+      "dataset_id": "teach_tatc",
+      "display_name": "teach_tatc",
+      "decision": "exclude",
+      "role": "excluded",
+      "reason": "Code-only fork without local episode data; excluded from core",
+      "expected_converter_ticket": null,
+      "authoritative_paths": [],
+      "auxiliary_paths": [],
+      "split_eligibility": {
+        "train": false,
+        "dev": false,
+        "test": false,
+        "gold": false,
+        "challenge": false
+      },
+      "conditions": [],
+      "mapping_confidence": "not_applicable",
+      "supported_labels": [],
+      "unsupported_labels": [],
+      "blocked_reason": null
+    }
+  ]
+}
