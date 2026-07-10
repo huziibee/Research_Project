@@ -109,3 +109,22 @@ class ProjectPaths:
         """
         for directory in self.writable_dirs():
             directory.mkdir(parents=True, exist_ok=True)
+
+
+def repo_relative_path(path: str | Path, start: Path | None = None) -> str:
+    """Return a repository-relative path with forward slashes when possible.
+
+    If ``path`` resolves inside the repository root (located via
+    :func:`repo_root`), the returned string is relative to that root and uses
+    ``/`` separators. Paths outside the repository are returned as resolved
+    POSIX paths (absolute), which is useful for ephemeral test directories.
+    """
+    candidate = Path(path)
+    if not candidate.is_absolute():
+        candidate = (Path.cwd() / candidate)
+    candidate = candidate.resolve()
+    root = repo_root(start).resolve()
+    try:
+        return candidate.relative_to(root).as_posix()
+    except ValueError:
+        return candidate.as_posix()

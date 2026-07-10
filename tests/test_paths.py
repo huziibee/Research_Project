@@ -11,7 +11,7 @@ import unittest
 from pathlib import Path
 from unittest import mock
 
-from ambiguity_manager.paths import ProjectPaths, repo_root
+from ambiguity_manager.paths import ProjectPaths, repo_relative_path, repo_root
 
 
 class RepoRootTests(unittest.TestCase):
@@ -72,6 +72,21 @@ class ProjectPathsTests(unittest.TestCase):
                 paths.ensure_project_dirs()
                 self.assertTrue(paths.outputs.is_dir())
                 self.assertTrue(paths.data_interim.is_dir())
+
+
+class RepoRelativePathTests(unittest.TestCase):
+    def test_repo_relative_path_under_root(self) -> None:
+        paths = ProjectPaths.from_repo_root()
+        relative = repo_relative_path(paths.data_interim / "ambik" / "ambik_canonical.jsonl")
+        self.assertEqual(relative, "data/interim/ambik/ambik_canonical.jsonl")
+        self.assertNotIn("\\", relative)
+
+    def test_repo_relative_path_outside_root_returns_absolute_posix(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            outside = Path(tmp) / "outside.json"
+            result = repo_relative_path(outside)
+            self.assertTrue(Path(result).is_absolute())
+            self.assertNotIn("\\", result)
 
 
 if __name__ == "__main__":
