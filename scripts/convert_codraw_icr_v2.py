@@ -53,7 +53,7 @@ def main() -> int:
     print(f"rows_skipped     : {summary['rows_skipped']}")
     print(f"output           : {summary['output_path']}")
     print(f"quarantine       : {summary['quarantine_path']}")
-    print(f"summary          : {summary_path}")
+    print(f"summary          : {summary['summary_path']}")
     return 0
 
 

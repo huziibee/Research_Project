@@ -8,6 +8,7 @@ from pathlib import Path
 from ambiguity_manager.converters.codraw_icr_v2 import (
     EXPECTED_HEADER,
     MAPPING_VERSION,
+    CodrawIcrV2ConversionError,
     CodrawIcrV2HeaderError,
     convert_file,
     normalize_mood,
@@ -36,6 +37,10 @@ class CodrawIcrV2ConverterTests(unittest.TestCase):
         self.dup_id = FIXTURES / "dup_id_codraw.tsv"
         self.non_icr = FIXTURES / "non_icr_codraw.tsv"
         self.unknown_mood = FIXTURES / "unknown_mood_codraw.tsv"
+        self.invalid_id_nonnumeric = FIXTURES / "invalid_id_nonnumeric.tsv"
+        self.invalid_id_negative = FIXTURES / "invalid_id_negative.tsv"
+        self.dup_after_quarantine = FIXTURES / "dup_after_quarantine.tsv"
+        self.sparse_order = FIXTURES / "sparse_order_codraw.tsv"
 
     def _records_by_id(self, result) -> dict[str, object]:
         return {record.id: record for record in result.records}
@@ -113,10 +118,29 @@ class CodrawIcrV2ConverterTests(unittest.TestCase):
         self.assertEqual(reasons.get("missing_clarification_utterance"), 1)
         self.assertEqual(reasons.get("missing_command"), 1)
 
-    def test_duplicate_source_id_quarantine(self) -> None:
-        result = convert_file(self.dup_id)
-        self.assertEqual(result.summary["rows_converted"], 1)
-        self.assertEqual(result.summary["quarantine_reasons"].get("duplicate_source_id"), 1)
+    def test_duplicate_source_id_raises(self) -> None:
+        with self.assertRaises(CodrawIcrV2ConversionError):
+            convert_file(self.dup_id)
+
+    def test_nonnumeric_source_id_quarantine(self) -> None:
+        result = convert_file(self.invalid_id_nonnumeric)
+        self.assertEqual(result.summary["rows_converted"], 0)
+        self.assertEqual(result.summary["quarantine_reasons"].get("invalid_source_id"), 1)
+
+    def test_negative_source_id_quarantine(self) -> None:
+        result = convert_file(self.invalid_id_negative)
+        self.assertEqual(result.summary["rows_converted"], 0)
+        self.assertEqual(result.summary["quarantine_reasons"].get("invalid_source_id"), 1)
+
+    def test_duplicate_after_quarantined_row_raises(self) -> None:
+        with self.assertRaises(CodrawIcrV2ConversionError):
+            convert_file(self.dup_after_quarantine)
+
+    def test_sparse_numeric_ids_sorted_numerically(self) -> None:
+        result = convert_file(self.sparse_order)
+        self.assertEqual(result.summary["rows_converted"], 3)
+        self.assertEqual([rec.source_id for rec in result.records], ["5", "50", "100"])
+        self.assertEqual([rec.id for rec in result.records], ["codraw_icr_v2:5", "codraw_icr_v2:50", "codraw_icr_v2:100"])
 
     def test_unexpected_non_icr_row_quarantine(self) -> None:
         result = convert_file(self.non_icr)

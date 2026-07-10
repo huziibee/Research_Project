@@ -89,6 +89,10 @@ class CodrawIcrV2HeaderError(RuntimeError):
     """Raised when the source TSV header does not match the expected schema."""
 
 
+class CodrawIcrV2ConversionError(RuntimeError):
+    """Raised on non-recoverable conversion faults (e.g. duplicate source IDs)."""
+
+
 @dataclass
 class ConversionResult:
     records: list[CanonicalRecord] = field(default_factory=list)
@@ -98,6 +102,26 @@ class ConversionResult:
 
 def _clean(value: Any) -> str:
     return value if isinstance(value, str) else ("" if value is None else str(value))
+
+
+def _parse_source_id(raw: str) -> tuple[str | None, str | None]:
+    """Validate the unnamed leading TSV index column.
+
+    Returns ``(source_id, quarantine_reason)``. When ``quarantine_reason`` is
+    set, ``source_id`` is ``None``.
+    """
+    source_id = _clean(raw).strip()
+    if not source_id:
+        return None, "missing_source_id"
+    if not source_id.isdigit():
+        return None, "invalid_source_id"
+    return source_id, None
+
+
+def _register_source_id(source_id: str, seen_source_ids: set[str]) -> None:
+    if source_id in seen_source_ids:
+        raise CodrawIcrV2ConversionError(f"duplicate source_id {source_id!r}")
+    seen_source_ids.add(source_id)
 
 
 def normalize_mood(mood: str) -> str | None:
@@ -264,21 +288,26 @@ def convert_file(source_path: str | Path) -> ConversionResult:
             skip_reasons["blank_row"] = skip_reasons.get("blank_row", 0) + 1
             continue
 
+        parsed_source_id, id_quarantine_reason = _parse_source_id(source_id)
+        if id_quarantine_reason is not None:
+            quarantine.append(
+                _quarantine_entry(
+                    source_id,
+                    row,
+                    id_quarantine_reason,
+                    f"raw_source_id={source_id!r}",
+                )
+            )
+            quarantine_reasons[id_quarantine_reason] = quarantine_reasons.get(id_quarantine_reason, 0) + 1
+            continue
+
+        assert parsed_source_id is not None
+        source_id = parsed_source_id
+        _register_source_id(source_id, seen_source_ids)
+
         if width != len(EXPECTED_HEADER):
             quarantine.append(_quarantine_entry(source_id, row, "malformed_row", f"field_count={width}"))
             quarantine_reasons["malformed_row"] = quarantine_reasons.get("malformed_row", 0) + 1
-            continue
-
-        if not source_id:
-            quarantine.append(_quarantine_entry(source_id, row, "missing_source_id", "empty source index"))
-            quarantine_reasons["missing_source_id"] = quarantine_reasons.get("missing_source_id", 0) + 1
-            continue
-
-        if source_id in seen_source_ids:
-            quarantine.append(
-                _quarantine_entry(source_id, row, "duplicate_source_id", f"duplicate source_id={source_id!r}")
-            )
-            quarantine_reasons["duplicate_source_id"] = quarantine_reasons.get("duplicate_source_id", 0) + 1
             continue
 
         if _clean(row.get("is_CR_annotator_2")).strip() != "1":
@@ -351,7 +380,6 @@ def convert_file(source_path: str | Path) -> ConversionResult:
             )
             continue
 
-        seen_source_ids.add(source_id)
         records.append(record)
         original_split, _ = split
         converted_by_split[original_split] = converted_by_split.get(original_split, 0) + 1
@@ -361,7 +389,7 @@ def convert_file(source_path: str | Path) -> ConversionResult:
         subtype = record.clarification_subtype or "<empty>"
         clarification_subtype_counts[subtype] = clarification_subtype_counts.get(subtype, 0) + 1
 
-    records.sort(key=lambda item: int(item.source_id) if (item.source_id or "").isdigit() else 0)
+    records.sort(key=lambda item: int(item.source_id))  # validated non-negative integer ids
 
     output_ids = [record.id for record in records]
     if len(output_ids) != len(set(output_ids)):
