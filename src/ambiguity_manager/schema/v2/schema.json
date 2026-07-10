@@ -1,0 +1,2741 @@
+{
+  "$id": "https://ambiguity-manager.local/schema/v2/canonical_record.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "definitions": {
+    "ambiguity_type": {
+      "enum": [
+        "capability",
+        "commonsense",
+        "contextual",
+        "pragmatic",
+        "preference",
+        "quantitative",
+        "referential",
+        "safety_precondition",
+        "spatial",
+        "temporal"
+      ],
+      "type": "string"
+    },
+    "capability_status": {
+      "enum": [
+        "capable",
+        "conditional",
+        "incapable",
+        "unknown"
+      ],
+      "type": "string"
+    },
+    "cpc_slot_status": {
+      "enum": [
+        "filled",
+        "missing",
+        "not_applicable",
+        "unknown"
+      ],
+      "type": "string"
+    },
+    "record_class": {
+      "enum": [
+        "adjudicated_gold",
+        "prediction",
+        "source_converted"
+      ],
+      "type": "string"
+    },
+    "risk_level": {
+      "enum": [
+        "high",
+        "low",
+        "medium",
+        "none",
+        "unknown"
+      ],
+      "type": "string"
+    },
+    "route_label": {
+      "enum": [
+        "clarify",
+        "execute",
+        "face_preserving_rejection",
+        "multi_step",
+        "silently_resolve"
+      ],
+      "type": "string"
+    }
+  },
+  "description": "Export derived from ambiguity_manager.schema.v2 Python definitions. Not an independent source of truth; regenerate via json_schema.py.",
+  "oneOf": [
+    {
+      "additionalProperties": false,
+      "description": "Gold or source-converted record. risk_level, capability_status, and other labels may be null when genuinely unavailable and metric-ineligible.",
+      "properties": {
+        "ambiguity_present": {
+          "type": [
+            "boolean",
+            "null"
+          ]
+        },
+        "ambiguity_types": {
+          "items": {
+            "enum": [
+              "capability",
+              "commonsense",
+              "contextual",
+              "pragmatic",
+              "preference",
+              "quantitative",
+              "referential",
+              "safety_precondition",
+              "spatial",
+              "temporal"
+            ],
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "annotation_status": {
+          "enum": [
+            "adjudicated",
+            "manually_annotated",
+            "source_native",
+            "weak_mapped"
+          ],
+          "type": "string"
+        },
+        "candidate_interpretations": {
+          "items": {
+            "additionalProperties": false,
+            "properties": {
+              "confidence": {
+                "type": [
+                  "number",
+                  "null"
+                ]
+              },
+              "cpc": {
+                "additionalProperties": false,
+                "properties": {
+                  "action": {
+                    "additionalProperties": false,
+                    "properties": {
+                      "status": {
+                        "enum": [
+                          "filled",
+                          "missing",
+                          "not_applicable",
+                          "unknown"
+                        ],
+                        "type": "string"
+                      },
+                      "value": {
+                        "type": [
+                          "string",
+                          "null"
+                        ]
+                      }
+                    },
+                    "required": [
+                      "value",
+                      "status"
+                    ],
+                    "type": "object"
+                  },
+                  "actor": {
+                    "additionalProperties": false,
+                    "properties": {
+                      "status": {
+                        "enum": [
+                          "filled",
+                          "missing",
+                          "not_applicable",
+                          "unknown"
+                        ],
+                        "type": "string"
+                      },
+                      "value": {
+                        "type": [
+                          "string",
+                          "null"
+                        ]
+                      }
+                    },
+                    "required": [
+                      "value",
+                      "status"
+                    ],
+                    "type": "object"
+                  },
+                  "conditions": {
+                    "additionalProperties": false,
+                    "properties": {
+                      "status": {
+                        "enum": [
+                          "filled",
+                          "missing",
+                          "not_applicable",
+                          "unknown"
+                        ],
+                        "type": "string"
+                      },
+                      "value": {
+                        "type": [
+                          "string",
+                          "null"
+                        ]
+                      }
+                    },
+                    "required": [
+                      "value",
+                      "status"
+                    ],
+                    "type": "object"
+                  },
+                  "constraints": {
+                    "additionalProperties": false,
+                    "properties": {
+                      "status": {
+                        "enum": [
+                          "filled",
+                          "missing",
+                          "not_applicable",
+                          "unknown"
+                        ],
+                        "type": "string"
+                      },
+                      "value": {
+                        "type": [
+                          "string",
+                          "null"
+                        ]
+                      }
+                    },
+                    "required": [
+                      "value",
+                      "status"
+                    ],
+                    "type": "object"
+                  },
+                  "destination": {
+                    "additionalProperties": false,
+                    "properties": {
+                      "status": {
+                        "enum": [
+                          "filled",
+                          "missing",
+                          "not_applicable",
+                          "unknown"
+                        ],
+                        "type": "string"
+                      },
+                      "value": {
+                        "type": [
+                          "string",
+                          "null"
+                        ]
+                      }
+                    },
+                    "required": [
+                      "value",
+                      "status"
+                    ],
+                    "type": "object"
+                  },
+                  "negation": {
+                    "additionalProperties": false,
+                    "properties": {
+                      "status": {
+                        "enum": [
+                          "filled",
+                          "missing",
+                          "not_applicable",
+                          "unknown"
+                        ],
+                        "type": "string"
+                      },
+                      "value": {
+                        "type": [
+                          "string",
+                          "null"
+                        ]
+                      }
+                    },
+                    "required": [
+                      "value",
+                      "status"
+                    ],
+                    "type": "object"
+                  },
+                  "object": {
+                    "additionalProperties": false,
+                    "properties": {
+                      "status": {
+                        "enum": [
+                          "filled",
+                          "missing",
+                          "not_applicable",
+                          "unknown"
+                        ],
+                        "type": "string"
+                      },
+                      "value": {
+                        "type": [
+                          "string",
+                          "null"
+                        ]
+                      }
+                    },
+                    "required": [
+                      "value",
+                      "status"
+                    ],
+                    "type": "object"
+                  },
+                  "object_attributes": {
+                    "additionalProperties": false,
+                    "properties": {
+                      "status": {
+                        "enum": [
+                          "filled",
+                          "missing",
+                          "not_applicable",
+                          "unknown"
+                        ],
+                        "type": "string"
+                      },
+                      "value": {
+                        "type": [
+                          "string",
+                          "null"
+                        ]
+                      }
+                    },
+                    "required": [
+                      "value",
+                      "status"
+                    ],
+                    "type": "object"
+                  },
+                  "quantity": {
+                    "additionalProperties": false,
+                    "properties": {
+                      "status": {
+                        "enum": [
+                          "filled",
+                          "missing",
+                          "not_applicable",
+                          "unknown"
+                        ],
+                        "type": "string"
+                      },
+                      "value": {
+                        "type": [
+                          "string",
+                          "null"
+                        ]
+                      }
+                    },
+                    "required": [
+                      "value",
+                      "status"
+                    ],
+                    "type": "object"
+                  },
+                  "recipient": {
+                    "additionalProperties": false,
+                    "properties": {
+                      "status": {
+                        "enum": [
+                          "filled",
+                          "missing",
+                          "not_applicable",
+                          "unknown"
+                        ],
+                        "type": "string"
+                      },
+                      "value": {
+                        "type": [
+                          "string",
+                          "null"
+                        ]
+                      }
+                    },
+                    "required": [
+                      "value",
+                      "status"
+                    ],
+                    "type": "object"
+                  },
+                  "spatial_relation": {
+                    "additionalProperties": false,
+                    "properties": {
+                      "status": {
+                        "enum": [
+                          "filled",
+                          "missing",
+                          "not_applicable",
+                          "unknown"
+                        ],
+                        "type": "string"
+                      },
+                      "value": {
+                        "type": [
+                          "string",
+                          "null"
+                        ]
+                      }
+                    },
+                    "required": [
+                      "value",
+                      "status"
+                    ],
+                    "type": "object"
+                  },
+                  "time": {
+                    "additionalProperties": false,
+                    "properties": {
+                      "status": {
+                        "enum": [
+                          "filled",
+                          "missing",
+                          "not_applicable",
+                          "unknown"
+                        ],
+                        "type": "string"
+                      },
+                      "value": {
+                        "type": [
+                          "string",
+                          "null"
+                        ]
+                      }
+                    },
+                    "required": [
+                      "value",
+                      "status"
+                    ],
+                    "type": "object"
+                  },
+                  "tool": {
+                    "additionalProperties": false,
+                    "properties": {
+                      "status": {
+                        "enum": [
+                          "filled",
+                          "missing",
+                          "not_applicable",
+                          "unknown"
+                        ],
+                        "type": "string"
+                      },
+                      "value": {
+                        "type": [
+                          "string",
+                          "null"
+                        ]
+                      }
+                    },
+                    "required": [
+                      "value",
+                      "status"
+                    ],
+                    "type": "object"
+                  }
+                },
+                "required": [
+                  "action",
+                  "actor",
+                  "object",
+                  "object_attributes",
+                  "destination",
+                  "spatial_relation",
+                  "quantity",
+                  "time",
+                  "recipient",
+                  "tool",
+                  "conditions",
+                  "constraints",
+                  "negation"
+                ],
+                "type": "object"
+              },
+              "frame_id": {
+                "minLength": 1,
+                "type": "string"
+              },
+              "safety_status": {
+                "oneOf": [
+                  {
+                    "type": "null"
+                  },
+                  {
+                    "enum": [
+                      "safe",
+                      "unknown",
+                      "unsafe"
+                    ],
+                    "type": "string"
+                  }
+                ]
+              },
+              "text": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              }
+            },
+            "required": [
+              "frame_id",
+              "cpc"
+            ],
+            "type": "object"
+          },
+          "type": "array"
+        },
+        "capability_context": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "capability_status": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "enum": [
+                "capable",
+                "conditional",
+                "incapable",
+                "unknown"
+              ],
+              "type": "string"
+            }
+          ]
+        },
+        "clarification_question": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "clarification_subtype": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "clarification_targets": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "command": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "compound_ambiguity": {
+          "type": "boolean"
+        },
+        "compound_ambiguity_count": {
+          "type": "integer"
+        },
+        "context_sampling_uncertainty": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "additionalProperties": false,
+              "properties": {
+                "agreement": {
+                  "type": [
+                    "number",
+                    "null"
+                  ]
+                },
+                "score": {
+                  "type": [
+                    "number",
+                    "null"
+                  ]
+                },
+                "variant_count": {
+                  "type": [
+                    "integer",
+                    "null"
+                  ]
+                }
+              },
+              "type": "object"
+            }
+          ]
+        },
+        "cpc": {
+          "additionalProperties": false,
+          "properties": {
+            "action": {
+              "additionalProperties": false,
+              "properties": {
+                "status": {
+                  "enum": [
+                    "filled",
+                    "missing",
+                    "not_applicable",
+                    "unknown"
+                  ],
+                  "type": "string"
+                },
+                "value": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                }
+              },
+              "required": [
+                "value",
+                "status"
+              ],
+              "type": "object"
+            },
+            "actor": {
+              "additionalProperties": false,
+              "properties": {
+                "status": {
+                  "enum": [
+                    "filled",
+                    "missing",
+                    "not_applicable",
+                    "unknown"
+                  ],
+                  "type": "string"
+                },
+                "value": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                }
+              },
+              "required": [
+                "value",
+                "status"
+              ],
+              "type": "object"
+            },
+            "conditions": {
+              "additionalProperties": false,
+              "properties": {
+                "status": {
+                  "enum": [
+                    "filled",
+                    "missing",
+                    "not_applicable",
+                    "unknown"
+                  ],
+                  "type": "string"
+                },
+                "value": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                }
+              },
+              "required": [
+                "value",
+                "status"
+              ],
+              "type": "object"
+            },
+            "constraints": {
+              "additionalProperties": false,
+              "properties": {
+                "status": {
+                  "enum": [
+                    "filled",
+                    "missing",
+                    "not_applicable",
+                    "unknown"
+                  ],
+                  "type": "string"
+                },
+                "value": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                }
+              },
+              "required": [
+                "value",
+                "status"
+              ],
+              "type": "object"
+            },
+            "destination": {
+              "additionalProperties": false,
+              "properties": {
+                "status": {
+                  "enum": [
+                    "filled",
+                    "missing",
+                    "not_applicable",
+                    "unknown"
+                  ],
+                  "type": "string"
+                },
+                "value": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                }
+              },
+              "required": [
+                "value",
+                "status"
+              ],
+              "type": "object"
+            },
+            "negation": {
+              "additionalProperties": false,
+              "properties": {
+                "status": {
+                  "enum": [
+                    "filled",
+                    "missing",
+                    "not_applicable",
+                    "unknown"
+                  ],
+                  "type": "string"
+                },
+                "value": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                }
+              },
+              "required": [
+                "value",
+                "status"
+              ],
+              "type": "object"
+            },
+            "object": {
+              "additionalProperties": false,
+              "properties": {
+                "status": {
+                  "enum": [
+                    "filled",
+                    "missing",
+                    "not_applicable",
+                    "unknown"
+                  ],
+                  "type": "string"
+                },
+                "value": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                }
+              },
+              "required": [
+                "value",
+                "status"
+              ],
+              "type": "object"
+            },
+            "object_attributes": {
+              "additionalProperties": false,
+              "properties": {
+                "status": {
+                  "enum": [
+                    "filled",
+                    "missing",
+                    "not_applicable",
+                    "unknown"
+                  ],
+                  "type": "string"
+                },
+                "value": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                }
+              },
+              "required": [
+                "value",
+                "status"
+              ],
+              "type": "object"
+            },
+            "quantity": {
+              "additionalProperties": false,
+              "properties": {
+                "status": {
+                  "enum": [
+                    "filled",
+                    "missing",
+                    "not_applicable",
+                    "unknown"
+                  ],
+                  "type": "string"
+                },
+                "value": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                }
+              },
+              "required": [
+                "value",
+                "status"
+              ],
+              "type": "object"
+            },
+            "recipient": {
+              "additionalProperties": false,
+              "properties": {
+                "status": {
+                  "enum": [
+                    "filled",
+                    "missing",
+                    "not_applicable",
+                    "unknown"
+                  ],
+                  "type": "string"
+                },
+                "value": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                }
+              },
+              "required": [
+                "value",
+                "status"
+              ],
+              "type": "object"
+            },
+            "spatial_relation": {
+              "additionalProperties": false,
+              "properties": {
+                "status": {
+                  "enum": [
+                    "filled",
+                    "missing",
+                    "not_applicable",
+                    "unknown"
+                  ],
+                  "type": "string"
+                },
+                "value": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                }
+              },
+              "required": [
+                "value",
+                "status"
+              ],
+              "type": "object"
+            },
+            "time": {
+              "additionalProperties": false,
+              "properties": {
+                "status": {
+                  "enum": [
+                    "filled",
+                    "missing",
+                    "not_applicable",
+                    "unknown"
+                  ],
+                  "type": "string"
+                },
+                "value": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                }
+              },
+              "required": [
+                "value",
+                "status"
+              ],
+              "type": "object"
+            },
+            "tool": {
+              "additionalProperties": false,
+              "properties": {
+                "status": {
+                  "enum": [
+                    "filled",
+                    "missing",
+                    "not_applicable",
+                    "unknown"
+                  ],
+                  "type": "string"
+                },
+                "value": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                }
+              },
+              "required": [
+                "value",
+                "status"
+              ],
+              "type": "object"
+            }
+          },
+          "required": [
+            "action",
+            "actor",
+            "object",
+            "object_attributes",
+            "destination",
+            "spatial_relation",
+            "quantity",
+            "time",
+            "recipient",
+            "tool",
+            "conditions",
+            "constraints",
+            "negation"
+          ],
+          "type": "object"
+        },
+        "dialogue_history": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "group_id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "id": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "intent_summary": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "label_confidence": {
+          "enum": [
+            "TODO_VERIFY",
+            "gold_from_source",
+            "manual_gold",
+            "weak_derived"
+          ],
+          "type": "string"
+        },
+        "label_eligibility": {
+          "additionalProperties": false,
+          "properties": {
+            "ambiguity": {
+              "type": "boolean"
+            },
+            "capability": {
+              "type": "boolean"
+            },
+            "clarification_decision": {
+              "type": "boolean"
+            },
+            "clarification_target": {
+              "type": "boolean"
+            },
+            "compound_sequence": {
+              "type": "boolean"
+            },
+            "context_benefit": {
+              "type": "boolean"
+            },
+            "intent_slots": {
+              "type": "boolean"
+            },
+            "rejection": {
+              "type": "boolean"
+            },
+            "risk": {
+              "type": "boolean"
+            },
+            "routing": {
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "routing",
+            "ambiguity",
+            "risk",
+            "capability",
+            "clarification_decision",
+            "clarification_target",
+            "intent_slots",
+            "rejection",
+            "compound_sequence",
+            "context_benefit"
+          ],
+          "type": "object"
+        },
+        "mapping_notes": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "mapping_version": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "migrated_from_schema_version": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "migration_version": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "original_split": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "prediction_metadata": {
+          "type": "null"
+        },
+        "primary_ambiguity_type": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "enum": [
+                "capability",
+                "commonsense",
+                "contextual",
+                "pragmatic",
+                "preference",
+                "quantitative",
+                "referential",
+                "safety_precondition",
+                "spatial",
+                "temporal"
+              ],
+              "type": "string"
+            }
+          ]
+        },
+        "recommended_strategy": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "enum": [
+                "clarify",
+                "execute",
+                "face_preserving_rejection",
+                "multi_step",
+                "silently_resolve"
+              ],
+              "type": "string"
+            }
+          ]
+        },
+        "record_class": {
+          "enum": [
+            "source_converted",
+            "adjudicated_gold"
+          ],
+          "type": "string"
+        },
+        "rejection_reason": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "resolution_evidence": {
+          "items": {
+            "additionalProperties": false,
+            "properties": {
+              "note": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "source": {
+                "minLength": 1,
+                "type": "string"
+              },
+              "span": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              }
+            },
+            "required": [
+              "source"
+            ],
+            "type": "object"
+          },
+          "type": "array"
+        },
+        "resolution_method": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "resolved_slots": {
+          "items": {
+            "additionalProperties": false,
+            "properties": {
+              "slot_name": {
+                "minLength": 1,
+                "type": "string"
+              },
+              "value": {
+                "minLength": 1,
+                "type": "string"
+              }
+            },
+            "required": [
+              "slot_name",
+              "value"
+            ],
+            "type": "object"
+          },
+          "type": "array"
+        },
+        "risk_level": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "enum": [
+                "high",
+                "low",
+                "medium",
+                "none",
+                "unknown"
+              ],
+              "type": "string"
+            }
+          ]
+        },
+        "risk_relevant": {
+          "type": "boolean"
+        },
+        "scene_context": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "schema_version": {
+          "const": "2.0.0",
+          "type": "string"
+        },
+        "selected_interpretation": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "additionalProperties": false,
+              "properties": {
+                "frame_id": {
+                  "minLength": 1,
+                  "type": "string"
+                },
+                "supporting_evidence": {
+                  "items": {
+                    "additionalProperties": false,
+                    "properties": {
+                      "note": {
+                        "type": [
+                          "string",
+                          "null"
+                        ]
+                      },
+                      "source": {
+                        "minLength": 1,
+                        "type": "string"
+                      },
+                      "span": {
+                        "type": [
+                          "string",
+                          "null"
+                        ]
+                      }
+                    },
+                    "required": [
+                      "source"
+                    ],
+                    "type": "object"
+                  },
+                  "minItems": 1,
+                  "type": "array"
+                }
+              },
+              "required": [
+                "frame_id",
+                "supporting_evidence"
+              ],
+              "type": "object"
+            }
+          ]
+        },
+        "source_dataset": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "source_id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "source_license": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "source_metadata": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "object"
+            }
+          ]
+        },
+        "speech_act": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "split_status": {
+          "enum": [
+            "challenge",
+            "dev",
+            "excluded",
+            "gold_manual",
+            "test",
+            "train",
+            "unsplit"
+          ],
+          "type": "string"
+        },
+        "strategy_sequence": {
+          "items": {
+            "enum": [
+              "clarify",
+              "execute",
+              "face_preserving_rejection",
+              "multi_step",
+              "silently_resolve"
+            ],
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "supporting_evidence": {
+          "items": {
+            "additionalProperties": false,
+            "properties": {
+              "note": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "source": {
+                "minLength": 1,
+                "type": "string"
+              },
+              "span": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              }
+            },
+            "required": [
+              "source"
+            ],
+            "type": "object"
+          },
+          "type": "array"
+        },
+        "unresolved_slots": {
+          "items": {
+            "oneOf": [
+              {
+                "minLength": 1,
+                "type": "string"
+              },
+              {
+                "additionalProperties": false,
+                "properties": {
+                  "reason": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
+                  "slot_name": {
+                    "minLength": 1,
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "slot_name"
+                ],
+                "type": "object"
+              }
+            ]
+          },
+          "type": "array"
+        },
+        "v1_legacy": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "additionalProperties": false,
+              "properties": {
+                "gold_clarification_question": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                },
+                "intent": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                },
+                "missing_slots": {
+                  "items": {
+                    "type": "string"
+                  },
+                  "type": "array"
+                },
+                "resolved_interpretation": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                },
+                "slots": {
+                  "type": "object"
+                }
+              },
+              "type": "object"
+            }
+          ]
+        }
+      },
+      "required": [
+        "schema_version",
+        "id",
+        "record_class",
+        "source_dataset",
+        "command",
+        "annotation_status",
+        "label_confidence",
+        "label_eligibility",
+        "cpc"
+      ],
+      "type": "object"
+    },
+    {
+      "additionalProperties": false,
+      "description": "Model prediction record. When label_eligibility enables a metric, the corresponding field must be non-null (enforced by Python validators). silently_resolve requires resolved_slots, resolution_method, and resolution_evidence; clarify requires clarification_targets and clarification_question; face_preserving_rejection requires rejection_reason.",
+      "properties": {
+        "ambiguity_present": {
+          "type": [
+            "boolean",
+            "null"
+          ]
+        },
+        "ambiguity_types": {
+          "items": {
+            "enum": [
+              "capability",
+              "commonsense",
+              "contextual",
+              "pragmatic",
+              "preference",
+              "quantitative",
+              "referential",
+              "safety_precondition",
+              "spatial",
+              "temporal"
+            ],
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "annotation_status": {
+          "enum": [
+            "adjudicated",
+            "manually_annotated",
+            "source_native",
+            "weak_mapped"
+          ],
+          "type": "string"
+        },
+        "candidate_interpretations": {
+          "items": {
+            "additionalProperties": false,
+            "properties": {
+              "confidence": {
+                "type": [
+                  "number",
+                  "null"
+                ]
+              },
+              "cpc": {
+                "additionalProperties": false,
+                "properties": {
+                  "action": {
+                    "additionalProperties": false,
+                    "properties": {
+                      "status": {
+                        "enum": [
+                          "filled",
+                          "missing",
+                          "not_applicable",
+                          "unknown"
+                        ],
+                        "type": "string"
+                      },
+                      "value": {
+                        "type": [
+                          "string",
+                          "null"
+                        ]
+                      }
+                    },
+                    "required": [
+                      "value",
+                      "status"
+                    ],
+                    "type": "object"
+                  },
+                  "actor": {
+                    "additionalProperties": false,
+                    "properties": {
+                      "status": {
+                        "enum": [
+                          "filled",
+                          "missing",
+                          "not_applicable",
+                          "unknown"
+                        ],
+                        "type": "string"
+                      },
+                      "value": {
+                        "type": [
+                          "string",
+                          "null"
+                        ]
+                      }
+                    },
+                    "required": [
+                      "value",
+                      "status"
+                    ],
+                    "type": "object"
+                  },
+                  "conditions": {
+                    "additionalProperties": false,
+                    "properties": {
+                      "status": {
+                        "enum": [
+                          "filled",
+                          "missing",
+                          "not_applicable",
+                          "unknown"
+                        ],
+                        "type": "string"
+                      },
+                      "value": {
+                        "type": [
+                          "string",
+                          "null"
+                        ]
+                      }
+                    },
+                    "required": [
+                      "value",
+                      "status"
+                    ],
+                    "type": "object"
+                  },
+                  "constraints": {
+                    "additionalProperties": false,
+                    "properties": {
+                      "status": {
+                        "enum": [
+                          "filled",
+                          "missing",
+                          "not_applicable",
+                          "unknown"
+                        ],
+                        "type": "string"
+                      },
+                      "value": {
+                        "type": [
+                          "string",
+                          "null"
+                        ]
+                      }
+                    },
+                    "required": [
+                      "value",
+                      "status"
+                    ],
+                    "type": "object"
+                  },
+                  "destination": {
+                    "additionalProperties": false,
+                    "properties": {
+                      "status": {
+                        "enum": [
+                          "filled",
+                          "missing",
+                          "not_applicable",
+                          "unknown"
+                        ],
+                        "type": "string"
+                      },
+                      "value": {
+                        "type": [
+                          "string",
+                          "null"
+                        ]
+                      }
+                    },
+                    "required": [
+                      "value",
+                      "status"
+                    ],
+                    "type": "object"
+                  },
+                  "negation": {
+                    "additionalProperties": false,
+                    "properties": {
+                      "status": {
+                        "enum": [
+                          "filled",
+                          "missing",
+                          "not_applicable",
+                          "unknown"
+                        ],
+                        "type": "string"
+                      },
+                      "value": {
+                        "type": [
+                          "string",
+                          "null"
+                        ]
+                      }
+                    },
+                    "required": [
+                      "value",
+                      "status"
+                    ],
+                    "type": "object"
+                  },
+                  "object": {
+                    "additionalProperties": false,
+                    "properties": {
+                      "status": {
+                        "enum": [
+                          "filled",
+                          "missing",
+                          "not_applicable",
+                          "unknown"
+                        ],
+                        "type": "string"
+                      },
+                      "value": {
+                        "type": [
+                          "string",
+                          "null"
+                        ]
+                      }
+                    },
+                    "required": [
+                      "value",
+                      "status"
+                    ],
+                    "type": "object"
+                  },
+                  "object_attributes": {
+                    "additionalProperties": false,
+                    "properties": {
+                      "status": {
+                        "enum": [
+                          "filled",
+                          "missing",
+                          "not_applicable",
+                          "unknown"
+                        ],
+                        "type": "string"
+                      },
+                      "value": {
+                        "type": [
+                          "string",
+                          "null"
+                        ]
+                      }
+                    },
+                    "required": [
+                      "value",
+                      "status"
+                    ],
+                    "type": "object"
+                  },
+                  "quantity": {
+                    "additionalProperties": false,
+                    "properties": {
+                      "status": {
+                        "enum": [
+                          "filled",
+                          "missing",
+                          "not_applicable",
+                          "unknown"
+                        ],
+                        "type": "string"
+                      },
+                      "value": {
+                        "type": [
+                          "string",
+                          "null"
+                        ]
+                      }
+                    },
+                    "required": [
+                      "value",
+                      "status"
+                    ],
+                    "type": "object"
+                  },
+                  "recipient": {
+                    "additionalProperties": false,
+                    "properties": {
+                      "status": {
+                        "enum": [
+                          "filled",
+                          "missing",
+                          "not_applicable",
+                          "unknown"
+                        ],
+                        "type": "string"
+                      },
+                      "value": {
+                        "type": [
+                          "string",
+                          "null"
+                        ]
+                      }
+                    },
+                    "required": [
+                      "value",
+                      "status"
+                    ],
+                    "type": "object"
+                  },
+                  "spatial_relation": {
+                    "additionalProperties": false,
+                    "properties": {
+                      "status": {
+                        "enum": [
+                          "filled",
+                          "missing",
+                          "not_applicable",
+                          "unknown"
+                        ],
+                        "type": "string"
+                      },
+                      "value": {
+                        "type": [
+                          "string",
+                          "null"
+                        ]
+                      }
+                    },
+                    "required": [
+                      "value",
+                      "status"
+                    ],
+                    "type": "object"
+                  },
+                  "time": {
+                    "additionalProperties": false,
+                    "properties": {
+                      "status": {
+                        "enum": [
+                          "filled",
+                          "missing",
+                          "not_applicable",
+                          "unknown"
+                        ],
+                        "type": "string"
+                      },
+                      "value": {
+                        "type": [
+                          "string",
+                          "null"
+                        ]
+                      }
+                    },
+                    "required": [
+                      "value",
+                      "status"
+                    ],
+                    "type": "object"
+                  },
+                  "tool": {
+                    "additionalProperties": false,
+                    "properties": {
+                      "status": {
+                        "enum": [
+                          "filled",
+                          "missing",
+                          "not_applicable",
+                          "unknown"
+                        ],
+                        "type": "string"
+                      },
+                      "value": {
+                        "type": [
+                          "string",
+                          "null"
+                        ]
+                      }
+                    },
+                    "required": [
+                      "value",
+                      "status"
+                    ],
+                    "type": "object"
+                  }
+                },
+                "required": [
+                  "action",
+                  "actor",
+                  "object",
+                  "object_attributes",
+                  "destination",
+                  "spatial_relation",
+                  "quantity",
+                  "time",
+                  "recipient",
+                  "tool",
+                  "conditions",
+                  "constraints",
+                  "negation"
+                ],
+                "type": "object"
+              },
+              "frame_id": {
+                "minLength": 1,
+                "type": "string"
+              },
+              "safety_status": {
+                "oneOf": [
+                  {
+                    "type": "null"
+                  },
+                  {
+                    "enum": [
+                      "safe",
+                      "unknown",
+                      "unsafe"
+                    ],
+                    "type": "string"
+                  }
+                ]
+              },
+              "text": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              }
+            },
+            "required": [
+              "frame_id",
+              "cpc"
+            ],
+            "type": "object"
+          },
+          "type": "array"
+        },
+        "capability_context": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "capability_status": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "enum": [
+                "capable",
+                "conditional",
+                "incapable",
+                "unknown"
+              ],
+              "type": "string"
+            }
+          ]
+        },
+        "clarification_question": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "clarification_subtype": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "clarification_targets": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "command": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "compound_ambiguity": {
+          "type": "boolean"
+        },
+        "compound_ambiguity_count": {
+          "type": "integer"
+        },
+        "context_sampling_uncertainty": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "additionalProperties": false,
+              "properties": {
+                "agreement": {
+                  "type": [
+                    "number",
+                    "null"
+                  ]
+                },
+                "score": {
+                  "type": [
+                    "number",
+                    "null"
+                  ]
+                },
+                "variant_count": {
+                  "type": [
+                    "integer",
+                    "null"
+                  ]
+                }
+              },
+              "type": "object"
+            }
+          ]
+        },
+        "cpc": {
+          "additionalProperties": false,
+          "properties": {
+            "action": {
+              "additionalProperties": false,
+              "properties": {
+                "status": {
+                  "enum": [
+                    "filled",
+                    "missing",
+                    "not_applicable",
+                    "unknown"
+                  ],
+                  "type": "string"
+                },
+                "value": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                }
+              },
+              "required": [
+                "value",
+                "status"
+              ],
+              "type": "object"
+            },
+            "actor": {
+              "additionalProperties": false,
+              "properties": {
+                "status": {
+                  "enum": [
+                    "filled",
+                    "missing",
+                    "not_applicable",
+                    "unknown"
+                  ],
+                  "type": "string"
+                },
+                "value": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                }
+              },
+              "required": [
+                "value",
+                "status"
+              ],
+              "type": "object"
+            },
+            "conditions": {
+              "additionalProperties": false,
+              "properties": {
+                "status": {
+                  "enum": [
+                    "filled",
+                    "missing",
+                    "not_applicable",
+                    "unknown"
+                  ],
+                  "type": "string"
+                },
+                "value": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                }
+              },
+              "required": [
+                "value",
+                "status"
+              ],
+              "type": "object"
+            },
+            "constraints": {
+              "additionalProperties": false,
+              "properties": {
+                "status": {
+                  "enum": [
+                    "filled",
+                    "missing",
+                    "not_applicable",
+                    "unknown"
+                  ],
+                  "type": "string"
+                },
+                "value": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                }
+              },
+              "required": [
+                "value",
+                "status"
+              ],
+              "type": "object"
+            },
+            "destination": {
+              "additionalProperties": false,
+              "properties": {
+                "status": {
+                  "enum": [
+                    "filled",
+                    "missing",
+                    "not_applicable",
+                    "unknown"
+                  ],
+                  "type": "string"
+                },
+                "value": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                }
+              },
+              "required": [
+                "value",
+                "status"
+              ],
+              "type": "object"
+            },
+            "negation": {
+              "additionalProperties": false,
+              "properties": {
+                "status": {
+                  "enum": [
+                    "filled",
+                    "missing",
+                    "not_applicable",
+                    "unknown"
+                  ],
+                  "type": "string"
+                },
+                "value": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                }
+              },
+              "required": [
+                "value",
+                "status"
+              ],
+              "type": "object"
+            },
+            "object": {
+              "additionalProperties": false,
+              "properties": {
+                "status": {
+                  "enum": [
+                    "filled",
+                    "missing",
+                    "not_applicable",
+                    "unknown"
+                  ],
+                  "type": "string"
+                },
+                "value": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                }
+              },
+              "required": [
+                "value",
+                "status"
+              ],
+              "type": "object"
+            },
+            "object_attributes": {
+              "additionalProperties": false,
+              "properties": {
+                "status": {
+                  "enum": [
+                    "filled",
+                    "missing",
+                    "not_applicable",
+                    "unknown"
+                  ],
+                  "type": "string"
+                },
+                "value": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                }
+              },
+              "required": [
+                "value",
+                "status"
+              ],
+              "type": "object"
+            },
+            "quantity": {
+              "additionalProperties": false,
+              "properties": {
+                "status": {
+                  "enum": [
+                    "filled",
+                    "missing",
+                    "not_applicable",
+                    "unknown"
+                  ],
+                  "type": "string"
+                },
+                "value": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                }
+              },
+              "required": [
+                "value",
+                "status"
+              ],
+              "type": "object"
+            },
+            "recipient": {
+              "additionalProperties": false,
+              "properties": {
+                "status": {
+                  "enum": [
+                    "filled",
+                    "missing",
+                    "not_applicable",
+                    "unknown"
+                  ],
+                  "type": "string"
+                },
+                "value": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                }
+              },
+              "required": [
+                "value",
+                "status"
+              ],
+              "type": "object"
+            },
+            "spatial_relation": {
+              "additionalProperties": false,
+              "properties": {
+                "status": {
+                  "enum": [
+                    "filled",
+                    "missing",
+                    "not_applicable",
+                    "unknown"
+                  ],
+                  "type": "string"
+                },
+                "value": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                }
+              },
+              "required": [
+                "value",
+                "status"
+              ],
+              "type": "object"
+            },
+            "time": {
+              "additionalProperties": false,
+              "properties": {
+                "status": {
+                  "enum": [
+                    "filled",
+                    "missing",
+                    "not_applicable",
+                    "unknown"
+                  ],
+                  "type": "string"
+                },
+                "value": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                }
+              },
+              "required": [
+                "value",
+                "status"
+              ],
+              "type": "object"
+            },
+            "tool": {
+              "additionalProperties": false,
+              "properties": {
+                "status": {
+                  "enum": [
+                    "filled",
+                    "missing",
+                    "not_applicable",
+                    "unknown"
+                  ],
+                  "type": "string"
+                },
+                "value": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                }
+              },
+              "required": [
+                "value",
+                "status"
+              ],
+              "type": "object"
+            }
+          },
+          "required": [
+            "action",
+            "actor",
+            "object",
+            "object_attributes",
+            "destination",
+            "spatial_relation",
+            "quantity",
+            "time",
+            "recipient",
+            "tool",
+            "conditions",
+            "constraints",
+            "negation"
+          ],
+          "type": "object"
+        },
+        "dialogue_history": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "group_id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "id": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "intent_summary": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "label_confidence": {
+          "enum": [
+            "TODO_VERIFY",
+            "gold_from_source",
+            "manual_gold",
+            "weak_derived"
+          ],
+          "type": "string"
+        },
+        "label_eligibility": {
+          "additionalProperties": false,
+          "properties": {
+            "ambiguity": {
+              "type": "boolean"
+            },
+            "capability": {
+              "type": "boolean"
+            },
+            "clarification_decision": {
+              "type": "boolean"
+            },
+            "clarification_target": {
+              "type": "boolean"
+            },
+            "compound_sequence": {
+              "type": "boolean"
+            },
+            "context_benefit": {
+              "type": "boolean"
+            },
+            "intent_slots": {
+              "type": "boolean"
+            },
+            "rejection": {
+              "type": "boolean"
+            },
+            "risk": {
+              "type": "boolean"
+            },
+            "routing": {
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "routing",
+            "ambiguity",
+            "risk",
+            "capability",
+            "clarification_decision",
+            "clarification_target",
+            "intent_slots",
+            "rejection",
+            "compound_sequence",
+            "context_benefit"
+          ],
+          "type": "object"
+        },
+        "mapping_notes": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "mapping_version": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "migrated_from_schema_version": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "migration_version": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "original_split": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "prediction_metadata": {
+          "additionalProperties": false,
+          "properties": {
+            "generation_seed": {
+              "type": [
+                "integer",
+                "null"
+              ]
+            },
+            "model_id": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "prompt_hash": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "raw_model_output": {
+              "type": [
+                "string",
+                "null"
+              ]
+            }
+          },
+          "type": "object"
+        },
+        "primary_ambiguity_type": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "enum": [
+                "capability",
+                "commonsense",
+                "contextual",
+                "pragmatic",
+                "preference",
+                "quantitative",
+                "referential",
+                "safety_precondition",
+                "spatial",
+                "temporal"
+              ],
+              "type": "string"
+            }
+          ]
+        },
+        "recommended_strategy": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "enum": [
+                "clarify",
+                "execute",
+                "face_preserving_rejection",
+                "multi_step",
+                "silently_resolve"
+              ],
+              "type": "string"
+            }
+          ]
+        },
+        "record_class": {
+          "const": "prediction",
+          "type": "string"
+        },
+        "rejection_reason": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "resolution_evidence": {
+          "items": {
+            "additionalProperties": false,
+            "properties": {
+              "note": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "source": {
+                "minLength": 1,
+                "type": "string"
+              },
+              "span": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              }
+            },
+            "required": [
+              "source"
+            ],
+            "type": "object"
+          },
+          "type": "array"
+        },
+        "resolution_method": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "resolved_slots": {
+          "items": {
+            "additionalProperties": false,
+            "properties": {
+              "slot_name": {
+                "minLength": 1,
+                "type": "string"
+              },
+              "value": {
+                "minLength": 1,
+                "type": "string"
+              }
+            },
+            "required": [
+              "slot_name",
+              "value"
+            ],
+            "type": "object"
+          },
+          "type": "array"
+        },
+        "risk_level": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "enum": [
+                "high",
+                "low",
+                "medium",
+                "none",
+                "unknown"
+              ],
+              "type": "string"
+            }
+          ]
+        },
+        "risk_relevant": {
+          "type": "boolean"
+        },
+        "scene_context": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "schema_version": {
+          "const": "2.0.0",
+          "type": "string"
+        },
+        "selected_interpretation": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "additionalProperties": false,
+              "properties": {
+                "frame_id": {
+                  "minLength": 1,
+                  "type": "string"
+                },
+                "supporting_evidence": {
+                  "items": {
+                    "additionalProperties": false,
+                    "properties": {
+                      "note": {
+                        "type": [
+                          "string",
+                          "null"
+                        ]
+                      },
+                      "source": {
+                        "minLength": 1,
+                        "type": "string"
+                      },
+                      "span": {
+                        "type": [
+                          "string",
+                          "null"
+                        ]
+                      }
+                    },
+                    "required": [
+                      "source"
+                    ],
+                    "type": "object"
+                  },
+                  "minItems": 1,
+                  "type": "array"
+                }
+              },
+              "required": [
+                "frame_id",
+                "supporting_evidence"
+              ],
+              "type": "object"
+            }
+          ]
+        },
+        "source_dataset": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "source_id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "source_license": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "source_metadata": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "object"
+            }
+          ]
+        },
+        "speech_act": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "split_status": {
+          "enum": [
+            "challenge",
+            "dev",
+            "excluded",
+            "gold_manual",
+            "test",
+            "train",
+            "unsplit"
+          ],
+          "type": "string"
+        },
+        "strategy_sequence": {
+          "items": {
+            "enum": [
+              "clarify",
+              "execute",
+              "face_preserving_rejection",
+              "multi_step",
+              "silently_resolve"
+            ],
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "supporting_evidence": {
+          "items": {
+            "additionalProperties": false,
+            "properties": {
+              "note": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "source": {
+                "minLength": 1,
+                "type": "string"
+              },
+              "span": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              }
+            },
+            "required": [
+              "source"
+            ],
+            "type": "object"
+          },
+          "type": "array"
+        },
+        "unresolved_slots": {
+          "items": {
+            "oneOf": [
+              {
+                "minLength": 1,
+                "type": "string"
+              },
+              {
+                "additionalProperties": false,
+                "properties": {
+                  "reason": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
+                  "slot_name": {
+                    "minLength": 1,
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "slot_name"
+                ],
+                "type": "object"
+              }
+            ]
+          },
+          "type": "array"
+        },
+        "v1_legacy": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "additionalProperties": false,
+              "properties": {
+                "gold_clarification_question": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                },
+                "intent": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                },
+                "missing_slots": {
+                  "items": {
+                    "type": "string"
+                  },
+                  "type": "array"
+                },
+                "resolved_interpretation": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                },
+                "slots": {
+                  "type": "object"
+                }
+              },
+              "type": "object"
+            }
+          ]
+        }
+      },
+      "required": [
+        "schema_version",
+        "id",
+        "record_class",
+        "source_dataset",
+        "command",
+        "annotation_status",
+        "label_confidence",
+        "label_eligibility",
+        "cpc",
+        "prediction_metadata"
+      ],
+      "type": "object"
+    }
+  ],
+  "schema_version": "2.0.0",
+  "title": "CanonicalRecordV2"
+}

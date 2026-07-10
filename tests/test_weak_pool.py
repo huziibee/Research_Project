@@ -27,6 +27,7 @@ FIXTURES = Path(__file__).parent / "fixtures" / "weak_pool"
 class WeakPoolTestCase(unittest.TestCase):
     def setUp(self) -> None:
         self._tmp = tempfile.TemporaryDirectory()
+        self.addCleanup(self._tmp.cleanup)
         self.root = Path(self._tmp.name).resolve()
         (self.root / "pyproject.toml").write_text("[project]\nname='tmp'\n", encoding="utf-8")
         self.pool_dir = self.root / "data" / "processed" / "weak_pool"
