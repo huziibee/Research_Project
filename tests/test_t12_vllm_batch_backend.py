@@ -3,15 +3,20 @@
 from __future__ import annotations
 
 import importlib
+import json
 import sys
 import unittest
 from dataclasses import dataclass, field
+from pathlib import Path
 from typing import Any
 
 from ambiguity_manager.model.errors import ModelBackendUnavailableError
 from ambiguity_manager.model.protocol import GenerateJsonRequest, ModelRuntimeSpec
 from ambiguity_manager.model.cluster.identities import _EXPECTED
 from ambiguity_manager.schema.v2.json_schema import build_prediction_json_schema
+
+REPO_ROOT = Path(__file__).resolve().parents[1]
+STAGE_D_RUNTIME_REL = "configs/cluster/t12_stage_d_vllm_runtime.json"
 
 
 def _runtime_config_dict(**overrides: object) -> dict[str, Any]:
@@ -62,10 +67,12 @@ class FakeEngine:
     def __init__(self, **_kwargs: Any) -> None:
         self.generate_calls = 0
         self.closed = False
+        self.last_sampling_params: Any | None = None
         FakeEngine.instances.append(self)
 
     def generate(self, prompts: list[str], sampling_params: Any) -> list[FakeRequestOutput]:
         self.generate_calls += 1
+        self.last_sampling_params = sampling_params
         results: list[FakeRequestOutput] = []
         for index, prompt in enumerate(prompts):
             results.append(
@@ -77,9 +84,43 @@ class FakeEngine:
         return results
 
 
+class FakeStructuredOutputs:
+    instances: list["FakeStructuredOutputs"] = []
+
+    def __init__(self, *, json: dict[str, Any], **kwargs: Any) -> None:
+        self.kwargs = {"json": json, **kwargs}
+        FakeStructuredOutputs.instances.append(self)
+
+
+class FakeStructuredSamplingParams:
+    instances: list["FakeStructuredSamplingParams"] = []
+
+    def __init__(
+        self,
+        *,
+        temperature: float,
+        top_p: float,
+        max_tokens: int,
+        n: int,
+        structured_outputs: Any,
+        **kwargs: Any,
+    ) -> None:
+        self.kwargs = {
+            "temperature": temperature,
+            "top_p": top_p,
+            "max_tokens": max_tokens,
+            "n": n,
+            "structured_outputs": structured_outputs,
+            **kwargs,
+        }
+        FakeStructuredSamplingParams.instances.append(self)
+
+
 class T12VllmBatchBackendTests(unittest.TestCase):
     def setUp(self) -> None:
         FakeEngine.instances.clear()
+        FakeStructuredOutputs.instances.clear()
+        FakeStructuredSamplingParams.instances.clear()
         from ambiguity_manager.model.backends import vllm_batch
 
         self.vllm_batch = importlib.reload(vllm_batch)
@@ -459,6 +500,204 @@ class T12VllmBatchBackendTests(unittest.TestCase):
         self.assertEqual(result.raw_output, "raw:cluster prompt")
         self.assertEqual(result.backend, "vllm_batch_direct")
         self.assertEqual(result.model_id, _EXPECTED["model_repository"])
+
+
+class T12VllmBatchStructuredDecodeIntegrationTests(unittest.TestCase):
+    def setUp(self) -> None:
+        FakeEngine.instances.clear()
+        FakeStructuredOutputs.instances.clear()
+        FakeStructuredSamplingParams.instances.clear()
+        from ambiguity_manager.model.backends import vllm_batch
+
+        self.vllm_batch = importlib.reload(vllm_batch)
+        self.stage_d_config = self.vllm_batch.VllmBatchBackendConfig.from_dict(
+            json.loads((REPO_ROOT / STAGE_D_RUNTIME_REL).read_text(encoding="utf-8"))
+        )
+
+    def _structured_backend(self, **kwargs: Any):
+        return self.vllm_batch.VllmBatchBackend(
+            self.stage_d_config,
+            repo_root=REPO_ROOT,
+            engine_factory=kwargs.pop("engine_factory", lambda **_k: FakeEngine()),
+            sampling_params_factory=kwargs.pop("sampling_params_factory", None),
+            **kwargs,
+        )
+
+    def _patch_structured_adapter(self) -> None:
+        structured_decode = importlib.import_module("ambiguity_manager.model.structured_decode")
+
+        def _fake_build(generation_config, contract, **kwargs: Any):
+            schema = structured_decode.load_verified_semantic_schema(
+                contract,
+                repo_root=kwargs.get("repo_root", REPO_ROOT),
+            )
+            structured_outputs = FakeStructuredOutputs(json=schema)
+            sampling_params = FakeStructuredSamplingParams(
+                temperature=float(generation_config["temperature"]),
+                top_p=float(generation_config["top_p"]),
+                max_tokens=int(generation_config["max_tokens"]),
+                n=1,
+                structured_outputs=structured_outputs,
+            )
+            metadata = structured_decode.StructuredDecodeMetadata(
+                contract_hash=structured_decode.structured_decode_contract_hash(contract),
+                schema_hash=contract.semantic_schema_sha256,
+                sampling_params_module=contract.sampling_params_module,
+                sampling_params_class=contract.sampling_params_class,
+                structured_outputs_module=contract.structured_outputs_module,
+                structured_outputs_class=contract.structured_outputs_class,
+                structured_output_field_name=contract.structured_output_field_name,
+                schema_parameter_name=contract.schema_parameter_name,
+                required_vllm_version=contract.required_vllm_version,
+                detected_vllm_version=contract.required_vllm_version,
+                completions_per_request=1,
+                construction_status="constructed",
+                response_mode_status=contract.response_mode_status,
+                engine_time_schema_compilation_status=contract.engine_time_schema_compilation_status,
+            )
+            return structured_decode.StructuredDecodeBuildResult(
+                sampling_params=sampling_params,
+                metadata=metadata,
+            )
+
+        self._fake_build = _fake_build
+        self._structured_decode_module = structured_decode
+        self._original_build = structured_decode.build_structured_sampling_params
+        structured_decode.build_structured_sampling_params = _fake_build
+
+    def tearDown(self) -> None:
+        if hasattr(self, "_structured_decode_module"):
+            self._structured_decode_module.build_structured_sampling_params = self._original_build
+
+    def test_stage_c_configuration_still_builds_ordinary_sampling_params(self) -> None:
+        captured: dict[str, Any] = {}
+
+        def factory(generation: dict[str, Any]) -> object:
+            captured["generation"] = generation
+            return object()
+
+        backend = self.vllm_batch.VllmBatchBackend(
+            self.vllm_batch.VllmBatchBackendConfig.from_dict(_runtime_config_dict()),
+            engine_factory=lambda **_k: FakeEngine(),
+            sampling_params_factory=factory,
+        )
+        backend.start()
+        backend.generate_batch(
+            [
+                self.vllm_batch.BatchRequest(
+                    request_id="req-1",
+                    prompt="hello",
+                    ordinal=0,
+                    synthetic=True,
+                )
+            ]
+        )
+        self.assertIn("temperature", captured["generation"])
+        self.assertNotIn("structured_decode", captured)
+
+    def test_stage_d_configuration_invokes_adapter(self) -> None:
+        self._patch_structured_adapter()
+        backend = self._structured_backend()
+        backend.start()
+        backend.generate_batch(
+            [
+                self.vllm_batch.BatchRequest(
+                    request_id="req-1",
+                    prompt="structured",
+                    ordinal=0,
+                    synthetic=True,
+                )
+            ]
+        )
+        self.assertEqual(len(FakeStructuredSamplingParams.instances), 1)
+        self.assertEqual(len(FakeStructuredOutputs.instances), 1)
+        self.assertIn("structured_outputs", FakeStructuredSamplingParams.instances[0].kwargs)
+        metadata = backend.last_structured_decode_metadata
+        self.assertIsNotNone(metadata)
+        self.assertEqual(metadata["construction_status"], "constructed")
+        self.assertEqual(metadata["completions_per_request"], 1)
+
+    def test_adapter_failure_prevents_engine_generation(self) -> None:
+        self._patch_structured_adapter()
+
+        def failing_build(*_args: Any, **_kwargs: Any):
+            raise self._structured_decode_module.SchemaIdentityMismatchError("schema mismatch")
+
+        self._structured_decode_module.build_structured_sampling_params = failing_build
+        backend = self._structured_backend()
+        backend.start()
+        with self.assertRaises(self.vllm_batch.VllmBatchBackendError) as ctx:
+            backend.generate_batch(
+                [
+                    self.vllm_batch.BatchRequest(
+                        request_id="req-1",
+                        prompt="structured",
+                        ordinal=0,
+                        synthetic=True,
+                    )
+                ]
+            )
+        self.assertIn("structured_decode_schema_identity_mismatch", str(ctx.exception))
+        self.assertEqual(FakeEngine.instances[0].generate_calls, 0)
+
+    def test_structured_output_construction_once_per_batch_invocation(self) -> None:
+        self._patch_structured_adapter()
+        build_calls: list[dict[str, Any]] = []
+
+        def counting_build(generation_config, contract, **kwargs: Any):
+            build_calls.append(dict(generation_config))
+            return self._fake_build(generation_config, contract, **kwargs)
+
+        self._structured_decode_module.build_structured_sampling_params = counting_build
+        backend = self._structured_backend()
+        backend.start()
+        backend.generate_batch(
+            [
+                self.vllm_batch.BatchRequest(request_id="a", prompt="one", ordinal=0, synthetic=True),
+                self.vllm_batch.BatchRequest(request_id="b", prompt="two", ordinal=1, synthetic=True),
+                self.vllm_batch.BatchRequest(request_id="c", prompt="three", ordinal=2, synthetic=True),
+            ]
+        )
+        self.assertEqual(len(build_calls), 1)
+        self.assertEqual(FakeEngine.instances[0].generate_calls, 1)
+
+    def test_exactly_one_completion_remains_enforced(self) -> None:
+        self._patch_structured_adapter()
+        backend = self._structured_backend()
+        backend.start()
+        backend.generate_batch(
+            [
+                self.vllm_batch.BatchRequest(
+                    request_id="req-1",
+                    prompt="structured",
+                    ordinal=0,
+                    synthetic=True,
+                )
+            ]
+        )
+        self.assertEqual(FakeStructuredSamplingParams.instances[0].kwargs["n"], 1)
+
+    def test_injected_sampling_factory_still_supported_with_stage_d_config(self) -> None:
+        captured: list[dict[str, Any]] = []
+
+        def factory(generation: dict[str, Any]) -> object:
+            captured.append(dict(generation))
+            return object()
+
+        backend = self._structured_backend(sampling_params_factory=factory)
+        backend.start()
+        backend.generate_batch(
+            [
+                self.vllm_batch.BatchRequest(
+                    request_id="req-1",
+                    prompt="factory",
+                    ordinal=0,
+                    synthetic=True,
+                )
+            ]
+        )
+        self.assertEqual(len(captured), 1)
+        self.assertEqual(len(FakeStructuredSamplingParams.instances), 0)
 
 
 if __name__ == "__main__":

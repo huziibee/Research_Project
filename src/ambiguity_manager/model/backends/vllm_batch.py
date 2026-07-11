@@ -32,6 +32,20 @@ class VllmBatchBackendError(ModelClientError):
 
 
 @dataclass(frozen=True)
+class StructuredDecodeRuntimeConfig:
+    enabled: bool
+    contract_relpath: str
+    semantic_schema_relpath: str
+
+    def to_dict(self) -> dict[str, Any]:
+        return {
+            "enabled": self.enabled,
+            "contract_relpath": self.contract_relpath,
+            "semantic_schema_relpath": self.semantic_schema_relpath,
+        }
+
+
+@dataclass(frozen=True)
 class VllmBatchBackendConfig:
     schema_version: str
     backend_identifier: str
@@ -42,13 +56,14 @@ class VllmBatchBackendConfig:
     engine: dict[str, Any]
     offline_only: bool
     network_fallback_permitted: bool
+    structured_decode: StructuredDecodeRuntimeConfig | None = None
 
     @property
     def config_hash(self) -> str:
         return sha256_hex(canonical_json_bytes(self.to_dict()))
 
     def to_dict(self) -> dict[str, Any]:
-        return {
+        payload: dict[str, Any] = {
             "schema_version": self.schema_version,
             "backend_identifier": self.backend_identifier,
             "references": {
@@ -61,6 +76,9 @@ class VllmBatchBackendConfig:
             "offline_only": self.offline_only,
             "network_fallback_permitted": self.network_fallback_permitted,
         }
+        if self.structured_decode is not None:
+            payload["structured_decode"] = self.structured_decode.to_dict()
+        return payload
 
     @classmethod
     def from_dict(cls, data: dict[str, Any]) -> VllmBatchBackendConfig:
@@ -68,6 +86,14 @@ class VllmBatchBackendConfig:
         if errors:
             raise VllmBatchBackendError("; ".join(errors))
         refs = data.get("references", {})
+        structured_decode = None
+        structured_payload = data.get("structured_decode")
+        if structured_payload is not None:
+            structured_decode = StructuredDecodeRuntimeConfig(
+                enabled=bool(structured_payload["enabled"]),
+                contract_relpath=str(structured_payload["contract_relpath"]),
+                semantic_schema_relpath=str(structured_payload["semantic_schema_relpath"]),
+            )
         return cls(
             schema_version=str(data["schema_version"]),
             backend_identifier=str(data["backend_identifier"]),
@@ -78,6 +104,7 @@ class VllmBatchBackendConfig:
             engine=dict(data["engine"]),
             offline_only=bool(data["offline_only"]),
             network_fallback_permitted=bool(data["network_fallback_permitted"]),
+            structured_decode=structured_decode,
         )
 
 
@@ -159,6 +186,15 @@ def validate_runtime_config(data: dict[str, Any]) -> list[str]:
         errors.append("runtime_config.offline_only must be true")
     if data.get("network_fallback_permitted") is True:
         errors.append("runtime_config.network_fallback_permitted must be false")
+    structured_decode = data.get("structured_decode")
+    if structured_decode is not None:
+        if not isinstance(structured_decode, dict):
+            errors.append("runtime_config.structured_decode must be an object")
+        else:
+            if structured_decode.get("enabled") is True:
+                for key in ("contract_relpath", "semantic_schema_relpath"):
+                    if not structured_decode.get(key):
+                        errors.append(f"runtime_config.structured_decode.{key} is required when enabled")
     return errors
 
 
@@ -340,6 +376,7 @@ class VllmBatchBackend:
         self._lifecycle_state = LIFECYCLE_CREATED
         self._startup_error: str | None = None
         self._environment = load_json_config(config.inference_environment_rel, root=self._repo_root)
+        self._last_structured_decode_metadata: dict[str, Any] | None = None
 
     @property
     def lifecycle_state(self) -> str:
@@ -531,10 +568,17 @@ class VllmBatchBackend:
             engine_kwargs["gpu_memory_utilization"] = float(self._config.engine["gpu_memory_utilization"])
         return llm_cls(**engine_kwargs)
 
+    @property
+    def last_structured_decode_metadata(self) -> dict[str, Any] | None:
+        return self._last_structured_decode_metadata
+
     def _build_sampling_params(self) -> Any:
         generation = self._config.generation
         if self._sampling_params_factory is not None:
             return self._sampling_params_factory(generation)
+        structured_decode = self._config.structured_decode
+        if structured_decode is not None and structured_decode.enabled:
+            return self._build_structured_sampling_params(generation, structured_decode)
         vllm = _import_vllm_module()
         sampling_cls = getattr(vllm, "SamplingParams")
         return sampling_cls(
@@ -542,6 +586,33 @@ class VllmBatchBackend:
             top_p=float(generation.get("top_p", 1.0)),
             max_tokens=int(generation.get("max_tokens", 2048)),
         )
+
+    def _build_structured_sampling_params(
+        self,
+        generation: dict[str, Any],
+        structured_decode: StructuredDecodeRuntimeConfig,
+    ) -> Any:
+        from ambiguity_manager.model.structured_decode import (
+            StructuredDecodeError,
+            build_structured_sampling_params,
+            load_structured_decode_contract,
+            structured_decode_error_to_backend_message,
+        )
+
+        contract_path = self._repo_root / structured_decode.contract_relpath
+        try:
+            contract = load_structured_decode_contract(contract_path)
+            result = build_structured_sampling_params(
+                generation,
+                contract,
+                repo_root=self._repo_root,
+            )
+        except StructuredDecodeError as exc:
+            raise VllmBatchBackendError(
+                structured_decode_error_to_backend_message(exc)
+            ) from exc
+        self._last_structured_decode_metadata = result.metadata.to_dict()
+        return result.sampling_params
 
 
 def create_vllm_batch_backend(
