@@ -1,0 +1,149 @@
+{
+  "schema_version": "1.0.0",
+  "stage": "D1B1",
+  "evidence_version": "1.0.0",
+  "evidence_status": "verified_pinned_runtime_inspection",
+  "measurement_timestamp": "2026-07-11T20:21:11Z",
+  "measurement_date": "2026-07-11",
+  "report_relpath": "docs/reports/ticket_T12_stage_D1B1_pinned_runtime_inspection.md",
+  "governance_state": {
+    "t11_status": "BLOCKED",
+    "deviation_authority": "DEV-20260711-001",
+    "protected_data_used": false,
+    "research_pool_data_used": false,
+    "selected_model": null,
+    "stage_d1b_adapter_implemented": false,
+    "network_fallback_used": false,
+    "offline": true
+  },
+  "source_transfer": {
+    "method": "git_archive",
+    "local_commit_sha": "885ae878120a2fd5db3950056ea39f4a4f847704",
+    "archive_sha256": "16faf0e99eba96ea441b39c56f2be54272bab44eed39fb8338194c7c8e51f8d2",
+    "remote_extraction_path_template": "${T12_CLUSTER_ROOT}/runs/stage-d1b1/stage-d1b1-20260711T202100Z-885ae87/source/t12-src",
+    "working_tree_transferred": false
+  },
+  "run_identity": {
+    "run_id": "stage-d1b1-20260711T202100Z-885ae87",
+    "remote_run_path_template": "${T12_CLUSTER_ROOT}/runs/stage-d1b1/stage-d1b1-20260711T202100Z-885ae87",
+    "slurm_partition": "biggpu",
+    "slurm_job_id_measurement_only": "1849",
+    "allocated_node_measurement_only": "mscluster110",
+    "operator_nodelist_pin_measurement_only": "mscluster110",
+    "node_is_permanent_policy": false,
+    "superseded_probe_run_id": "stage-d1b1-20260711T201450Z-885ae87",
+    "superseded_probe_reason": "legacy_gpu_mscluster106_quadro_rtx_8000"
+  },
+  "container_integrity": {
+    "filename": "vllm-openai-v0.20.1.sif",
+    "path_template": "${T12_CONTAINER_SIF}",
+    "expected_sha256": "d404bdf414e1b8f2d5af1568d0565d4e2da8435f26325b281fb28b9597c548d1",
+    "observed_sha256": "d404bdf414e1b8f2d5af1568d0565d4e2da8435f26325b281fb28b9597c548d1",
+    "match": true,
+    "hash_method": "full_sha256",
+    "elapsed_seconds": 3.079,
+    "elapsed_seconds_cold_read_reference": 81.408,
+    "size_bytes": 7657443328
+  },
+  "runtime_versions": {
+    "python_version": "3.12.13",
+    "vllm_version": "0.20.1",
+    "transformers_version": "5.7.0"
+  },
+  "hardware_observation": {
+    "gpu_name": "NVIDIA RTX PRO 6000 Blackwell Workstation Edition",
+    "cuda_available": true,
+    "gpu_memory_allocated_bytes": 0,
+    "gpu_memory_reserved_bytes": 0
+  },
+  "vllm_structured_output": {
+    "sampling_params_module": "vllm.sampling_params.SamplingParams",
+    "structured_output_field_name": "structured_outputs",
+    "guided_decoding_field_present": false,
+    "guided_decoding_params_importable": false,
+    "structured_output_class": "StructuredOutputsParams",
+    "structured_output_module": "vllm.sampling_params.StructuredOutputsParams",
+    "schema_parameter_name": "json",
+    "schema_parameter_accepted_types": [
+      "dict",
+      "str"
+    ],
+    "schema_parameter_rejected_names": [
+      "json_schema"
+    ],
+    "sampling_params_verified_construction": {
+      "temperature": 0.0,
+      "max_tokens": 16,
+      "n": 1,
+      "structured_outputs": "StructuredOutputsParams(json=<D1A semantic schema dict>)"
+    },
+    "construction_classification": "supported_as_is",
+    "lossy_schema_adaptation_required": false,
+    "draft202012_meta_validation": "pass"
+  },
+  "semantic_schema": {
+    "path_relpath": "configs/model/schema/t12_model_semantic_output.schema.json",
+    "derivation_version": "t12-d1a-1.1.0",
+    "canonical_export_sha256": "232235fec53ee38eafcd714fd53664b250e848a6b0f75fca1ff7ec903b08cfb4",
+    "expected_canonical_sha256": "232235fec53ee38eafcd714fd53664b250e848a6b0f75fca1ff7ec903b08cfb4",
+    "canonical_hash_match": true
+  },
+  "model_identity": {
+    "model_repository": "Qwen/Qwen3-8B",
+    "model_revision": "b968826d9c46dd6066d109eabc6255188de91218",
+    "snapshot_path_template": "${T12_HF_CACHE}/hub/models--Qwen--Qwen3-8B/snapshots/b968826d9c46dd6066d109eabc6255188de91218",
+    "offline_only": true
+  },
+  "tokenizer_inspection": {
+    "tokenizer_class": "Qwen2Tokenizer",
+    "tokenizer_loading_method": "transformers.AutoTokenizer.from_pretrained(local_files_only=True)",
+    "artefact_hashes": {
+      "tokenizer_config.json": "d5d09f07b48c3086c508b30d1c9114bd1189145b74e982a265350c923acd8101",
+      "tokenizer.json": "aeb13307a71acd8fe81861d94ad54ab689df773318809eed3cbe794b4492dae4",
+      "vocab.json": "ca10d7e9fb3ed18575dd1e277a2579c16d108e32f27439684afa0e10b1440910",
+      "merges.txt": "8831e4f1a044471340f7c0a83d7bd71306a5b867e95fd870f74d0c5308a904d5"
+    },
+    "chat_template_sha256": "a55ee1b1660128b7098723e0abcd92caa0788061051c62d51cbe87d9cf1974d8",
+    "thinking_control_variable": "enable_thinking",
+    "non_thinking_control_method": "apply_chat_template(enable_thinking=False)",
+    "default_rendered_prompt_sha256": "2a14310d1afbe366e55474178286348d5de3a75fd5004824e8129e0f4ccb06e8",
+    "non_thinking_rendered_prompt_sha256": "d1f350dd89bf84f269653c1c572f0c67c7477134dfeb5346204f645be35bdc4e",
+    "renderings_differ": true,
+    "default_contains_think_marker": false,
+    "enable_thinking_false_injects_empty_think_block": true,
+    "generation_prompt_included": true,
+    "output_cleaning_likely_required": true,
+    "template_control_classification": "template_inspection_inconclusive"
+  },
+  "response_mode": {
+    "template_control_status": "template_inspection_inconclusive",
+    "generation_output_verification_status": "pending_stage_d2_live_schema_smoke",
+    "response_mode_py_modified": false
+  },
+  "no_model_load_proof": {
+    "engine_instantiated": false,
+    "generation_called": false,
+    "model_weights_loaded": false,
+    "safetensors_opened_count": 0,
+    "vllm_llm_guard_triggered": false
+  },
+  "remote_retention": {
+    "run_directory_retained": true,
+    "superseded_probe_run_retained": true,
+    "inspection_script_retained": true,
+    "source_archive_retained": true,
+    "job_log_relpath_template": "${T12_CLUSTER_ROOT}/runs/stage-d1b1/stage-d1b1-20260711T202100Z-885ae87/job.log",
+    "remote_evidence_relpath_template": "${T12_CLUSTER_ROOT}/runs/stage-d1b1/stage-d1b1-20260711T202100Z-885ae87/d1b1_inspection_evidence.json"
+  },
+  "non_claims": [
+    "no_vllm_engine_start",
+    "no_model_weight_load",
+    "no_generation_call",
+    "no_stage_d1b_adapter",
+    "no_stage_d1c_implementation",
+    "no_stage_d2_live_schema_smoke",
+    "no_stage_e_bake_off",
+    "no_live_reasoning_leakage_verification",
+    "t11_remains_blocked"
+  ]
+}
