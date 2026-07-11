@@ -17,7 +17,10 @@ Select and prove a licensed local base model that supports both schema-constrain
 
 ## Preconditions
 
-- T10 and T11 passed.
+- T10 passed.
+- T11 governance infrastructure is implemented and committed; **T11 stage gate remains BLOCKED** on the pending supervisor/institutional ethics determination (`determination_status: "pending"`, `collection_permitted: false`). T11 must not be recorded as PASS.
+- **Execution-order deviation `DEV-20260711-001`** authorises T12 while the T11 annotation-specific ethics gate remains pending. See `docs/decisions/DEV-20260711-001_pre_t12_execution_order_deviation.md` and `docs/governance/logs/deviation_log.jsonl`.
+- T12 completion does **not** satisfy or erase the T11 ethics blocker. Before T13 human-review activities or T14 annotation collection, governance must be reassessed against the documented determination.
 - The human can run commands on the RTX 3070 machine.
 
 ## Required tasks

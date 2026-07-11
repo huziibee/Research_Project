@@ -17,3 +17,17 @@ def is_absolute_machine_path(value: str) -> bool:
     if len(normalized) >= 2 and normalized[1] == ":":
         return True
     return normalized.startswith("/home/") or normalized.startswith("/Users/")
+
+
+def is_repository_relative_path(value: str) -> bool:
+    if not isinstance(value, str) or not value.strip():
+        return False
+    if is_absolute_machine_path(value):
+        return False
+    normalized = value.replace("\\", "/")
+    if normalized.startswith("/"):
+        return False
+    parts = normalized.split("/")
+    if any(part == ".." for part in parts):
+        return False
+    return True

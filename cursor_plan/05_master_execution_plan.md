@@ -24,6 +24,8 @@ Freeze the non-dataset proposal alignment, seven mandatory systems, mandatory fi
 
 Measure hardware, install local inference/training stacks, test candidate base models, and choose one base model that can support both inference and mandatory QLoRA/LoRA.
 
+**Dependency note:** T12 normally follows T11 PASS. **DEV-20260711-001** authorises narrow pre-T12 local work while T11's annotation ethics gate remains pending; T11 verdict stays **BLOCKED** and T12 completion does not satisfy T11.
+
 **Gate:** a licensed local base model and reproducible `ModelClient` exist.
 
 ## Phase 3 — Human-gold benchmark

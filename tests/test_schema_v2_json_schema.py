@@ -3,14 +3,14 @@
 from __future__ import annotations
 
 import json
+import tempfile
 import unittest
 from pathlib import Path
 
-from ambiguity_manager.data_audit.readers import streaming_sha256
 from ambiguity_manager.schema.v2.json_schema import (
   SCHEMA_JSON_FILENAME,
   build_canonical_record_v2_json_schema,
-  canonical_record_v2_json_schema_text,
+  canonical_record_v2_json_schema_bytes,
   schema_json_path,
   write_schema_json,
 )
@@ -38,14 +38,12 @@ class SchemaV2JsonSchemaTests(unittest.TestCase):
     self.assertTrue(SCHEMA_PATH.is_file(), f"missing committed {SCHEMA_JSON_FILENAME}")
 
   def test_deterministic_schema_bytes(self) -> None:
-    generated = canonical_record_v2_json_schema_text()
-    on_disk = SCHEMA_PATH.read_text(encoding="utf-8")
-    self.assertEqual(generated, on_disk)
-    self.assertEqual(
-      streaming_sha256(SCHEMA_PATH),
-      streaming_sha256(Path(write_schema_json(SCHEMA_PATH.parent / ".regen_schema.json"))),
-    )
-    (SCHEMA_PATH.parent / ".regen_schema.json").unlink(missing_ok=True)
+    canonical = canonical_record_v2_json_schema_bytes()
+    self.assertEqual(SCHEMA_PATH.read_bytes(), canonical)
+    with tempfile.TemporaryDirectory() as tmp:
+      out = Path(tmp) / "schema.json"
+      write_schema_json(out)
+      self.assertEqual(out.read_bytes(), canonical)
 
   def test_schema_version_const(self) -> None:
     schema = build_canonical_record_v2_json_schema()

@@ -131,3 +131,7 @@
 **Infrastructure complete:** research contract, AI-use log, licence registers, core/stretch policy, decision/deviation templates, protected-data policy, validators, and tests.
 
 **Unblock path:** Record supervisor/institutional determination with evidence (`approved`, `exempt_confirmed`, or `approval_required` with evidence reference) and confirm pending human-governance fields.
+
+## Related execution-order deviation
+
+**DEV-20260711-001** separately authorises T12 local hardware/model-stack work while this ticket remains **BLOCKED** on the pending ethics determination. T12 authorisation does not change the T11 stage gate (`BLOCKED`), lift annotation-collection blocks, or satisfy the T11 ethics precondition for T13/T14.

@@ -333,8 +333,13 @@ def build_canonical_record_v2_json_schema() -> dict[str, Any]:
 
 
 def canonical_record_v2_json_schema_text() -> str:
-  """Return deterministic JSON Schema bytes as a string."""
+  """Return deterministic JSON Schema text with canonical LF newlines."""
   return json.dumps(build_canonical_record_v2_json_schema(), ensure_ascii=False, sort_keys=True, indent=2) + "\n"
+
+
+def canonical_record_v2_json_schema_bytes() -> bytes:
+  """Return deterministic JSON Schema bytes (UTF-8, LF newlines)."""
+  return canonical_record_v2_json_schema_text().encode("utf-8")
 
 
 def schema_json_path() -> Path:
@@ -343,5 +348,5 @@ def schema_json_path() -> Path:
 
 def write_schema_json(path: Path | None = None) -> Path:
   target = path or schema_json_path()
-  target.write_text(canonical_record_v2_json_schema_text(), encoding="utf-8")
+  target.write_bytes(canonical_record_v2_json_schema_bytes())
   return target

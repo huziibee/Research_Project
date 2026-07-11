@@ -14,6 +14,12 @@ from ambiguity_manager.governance.ai_use import (
 )
 from ambiguity_manager.governance.core_stretch import validate_core_stretch_policy
 from ambiguity_manager.governance.dataset_licence import validate_dataset_licence_register
+from ambiguity_manager.governance.deviations import (
+    DEVIATION_RECORD_SCHEMA_VERSION,
+    load_deviation_log,
+    validate_deviation_log,
+    validate_deviation_log_path,
+)
 from ambiguity_manager.governance.ethics import (
     derive_ticket_verdict,
     validate_ethics_determination,
@@ -59,6 +65,17 @@ def validate_repository_governance(repo_root: Path) -> list[str]:
     ai_use_entries = load_ai_use_log(repo_root / ai_use_rel)
     errors.extend(validate_ai_use_log(ai_use_entries))
 
+    deviation_rel = "docs/governance/logs/deviation_log.jsonl"
+    errors.extend(validate_deviation_log_path(deviation_rel))
+    deviation_entries, deviation_parse_errors = load_deviation_log(repo_root / deviation_rel)
+    errors.extend(
+        validate_deviation_log(
+            deviation_entries,
+            repo_root=repo_root,
+            parse_errors=deviation_parse_errors,
+        )
+    )
+
     for rel_path in (
         "configs/governance/core_stretch_policy.json",
         "configs/licences/dataset_licence_register.json",
@@ -94,5 +111,11 @@ def validate_repository_governance(repo_root: Path) -> list[str]:
         schema = _load_json(schema_path)
         if schema.get("schema_version") != AI_USE_LOG_SCHEMA_VERSION:
             errors.append("ai_use_log_schema.json version mismatch")
+
+    deviation_schema_path = repo_root / "configs" / "governance" / "deviation_record_schema.json"
+    if deviation_schema_path.is_file():
+        deviation_schema = _load_json(deviation_schema_path)
+        if deviation_schema.get("schema_version") != DEVIATION_RECORD_SCHEMA_VERSION:
+            errors.append("deviation_record_schema.json version mismatch")
 
     return errors
