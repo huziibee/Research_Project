@@ -1,9 +1,9 @@
 # T12 Stage C2B — Live persistent vLLM backend smoke (committed correlation fix)
 
-**Ticket:** T12  
-**Stage:** C2B (controlled live cluster backend smoke, resume, conflict)  
-**Measurement timestamp:** 2026-07-11T19:27:33Z  
-**Authority:** DEV-20260711-001  
+**Ticket:** T12
+**Stage:** C2B (controlled live cluster backend smoke, resume, conflict)
+**Measurement timestamp:** 2026-07-11T19:27:33Z
+**Authority:** DEV-20260711-001
 **Status:** Stage C2B ready for review — Stage C **not** complete
 
 ## 1. Scope
