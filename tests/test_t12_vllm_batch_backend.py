@@ -659,7 +659,8 @@ class T12VllmBatchStructuredDecodeIntegrationTests(unittest.TestCase):
             ]
         )
         self.assertEqual(len(build_calls), 1)
-        self.assertEqual(FakeEngine.instances[0].generate_calls, 1)
+        expected_engine_calls = -(-3 // self.stage_d_config.batch_size)
+        self.assertEqual(FakeEngine.instances[0].generate_calls, expected_engine_calls)
 
     def test_exactly_one_completion_remains_enforced(self) -> None:
         self._patch_structured_adapter()

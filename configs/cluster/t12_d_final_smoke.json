@@ -1,0 +1,53 @@
+{
+  "schema_version": "1.0.0",
+  "stage": "D-Final",
+  "config_version": "1.0.0",
+  "source_identity_mode": "runtime_source_manifest_required",
+  "model_repository": "Qwen/Qwen3-8B",
+  "model_revision": "b968826d9c46dd6066d109eabc6255188de91218",
+  "container_sha256": "d404bdf414e1b8f2d5af1568d0565d4e2da8435f26325b281fb28b9597c548d1",
+  "semantic_schema_hash": "232235fec53ee38eafcd714fd53664b250e848a6b0f75fca1ff7ec903b08cfb4",
+  "structured_decode_contract_hash": "0c0aae4cff8e80c87a57833d476d7b41310a49c3256cf48b71593aca544bc5b9",
+  "pipeline_contract_hash": "94eb2d777fb6e9bbebc90b7c8d727cec2e2bebfcf0acbcd276144f2c71d34b64",
+  "references": {
+    "immutable_selection": "configs/model/immutable_selection.json",
+    "inference_environment": "configs/environments/t12_cluster_inference.json",
+    "runtime_config": "configs/cluster/t12_stage_d_vllm_runtime.json",
+    "response_mode_probe_policy": "configs/model/t12_response_mode_probe_policy.json",
+    "structured_decode_contract": "configs/model/t12_structured_decode_contract.json",
+    "pipeline_contract": "configs/model/t12_generation_pipeline_contract.json",
+    "d1b1_evidence": "configs/model/evidence/t12_stage_d1b1_pinned_runtime.json"
+  },
+  "tokenizer_snapshot": {
+    "repository": "Qwen/Qwen3-8B",
+    "revision": "b968826d9c46dd6066d109eabc6255188de91218",
+    "artefact_hashes": {
+      "tokenizer_config.json": "d5d09f07b48c3086c508b30d1c9114bd1189145b74e982a265350c923acd8101",
+      "tokenizer.json": "aeb13307a71acd8fe81861d94ad54ab689df773318809eed3cbe794b4492dae4",
+      "vocab.json": "ca10d7e9fb3ed18575dd1e277a2579c16d108e32f27439684afa0e10b1440910",
+      "merges.txt": "8831e4f1a044471340f7c0a83d7bd71306a5b867e95fd870f74d0c5308a904d5"
+    }
+  },
+  "response_mode_candidate_order": ["default", "enable_thinking_false"],
+  "synthetic_inputs": {
+    "relpath": "tests/fixtures/schema_v2/t12_d_final_smoke_inputs.jsonl",
+    "required_record_count": 4,
+    "record_ids": ["dfinal-001", "dfinal-002", "dfinal-003", "dfinal-004"],
+    "input_hash": "c20b0659793e4b1c6bf9fb7ce44a5ddd8b9e5c6214a36de1e7b5d589997102af"
+  },
+  "batch_size": 1,
+  "generation": {
+    "temperature": 0.0,
+    "top_p": 1.0,
+    "max_tokens": 2048
+  },
+  "engine": {
+    "tensor_parallel_size": 1,
+    "gpu_memory_utilization": 0.9
+  },
+  "offline_only": true,
+  "network_fallback_permitted": false,
+  "synthetic_only": true,
+  "persistent_engine_required": true,
+  "semantic_correctness_status": "not_evaluated"
+}
