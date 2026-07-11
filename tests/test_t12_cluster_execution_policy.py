@@ -36,11 +36,20 @@ class T12ClusterExecutionPolicyTests(unittest.TestCase):
             "/var/tmp/${USER}-apptainer-${SLURM_JOB_ID}",
         )
 
-    def test_reject_permanent_single_node_allowlist(self) -> None:
-        bad = dict(self.policy)
-        bad["node_allowlist"] = ["mscluster112"]
-        errors = validate_cluster_execution_policy(bad)
-        self.assertTrue(any("exact node" in e for e in errors))
+    def test_singleton_allowlist_is_schema_valid(self) -> None:
+        policy = dict(self.policy)
+        policy["node_allowlist"] = ["mscluster110"]
+        errors = validate_cluster_execution_policy(policy)
+        self.assertEqual(errors, [], msg="\n".join(errors))
+
+    def test_active_policy_has_empty_allowlist(self) -> None:
+        self.assertEqual(self.policy["node_allowlist"], [])
+
+    def test_multi_node_allowlist_is_schema_valid(self) -> None:
+        policy = dict(self.policy)
+        policy["node_allowlist"] = ["mscluster110", "mscluster111"]
+        errors = validate_cluster_execution_policy(policy)
+        self.assertEqual(errors, [], msg="\n".join(errors))
 
 
 if __name__ == "__main__":

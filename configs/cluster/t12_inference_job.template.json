@@ -1,0 +1,42 @@
+{
+  "schema_version": "1.0.0",
+  "ticket": "T12",
+  "stage": "C1",
+  "description": "Generic Slurm inference job template placeholders. Persistent vLLM engine backend is Stage C2.",
+  "slurm": {
+    "partition": "biggpu",
+    "exclusive": true,
+    "nodes": 1,
+    "ntasks": 1,
+    "cpus_per_task_env": "T12_SLURM_CPUS",
+    "mem_env": "T12_SLURM_MEM",
+    "walltime_env": "T12_SLURM_WALLTIME"
+  },
+  "paths": {
+    "cluster_root": "${T12_CLUSTER_ROOT}",
+    "hf_cache": "${T12_HF_CACHE}",
+    "hf_hub_cache": "${T12_HF_CACHE}/hub",
+    "container_sif": "${T12_CONTAINER_SIF}",
+    "node_local_temp": "/var/tmp/${USER}-apptainer-${SLURM_JOB_ID}"
+  },
+  "environment": {
+    "hf_home": "${T12_HF_CACHE}",
+    "hf_hub_cache": "${T12_HF_CACHE}/hub",
+    "offline_flags": [
+      "HF_HUB_OFFLINE=1",
+      "TRANSFORMERS_OFFLINE=1"
+    ],
+    "network_fallback_permitted": false
+  },
+  "placeholders": {
+    "run_id": "${T12_RUN_ID}",
+    "shard_id": "${T12_SHARD_ID}",
+    "config_path": "${T12_CONFIG_PATH}",
+    "runtime_facts_path": "${T12_RUNTIME_FACTS_PATH}"
+  },
+  "execution_notes": {
+    "persistent_vllm_engine": "implemented_in_stage_c2",
+    "preflight_required_before_inference": true,
+    "cleanup_trap_limited_to_node_local_temp": true
+  }
+}

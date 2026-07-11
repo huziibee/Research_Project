@@ -145,6 +145,38 @@ def _validate_container_integrity(section: Any, path: str, errors: list[str]) ->
         errors.append(f"{path} must not claim live_hash_verified")
 
 
+def _validate_node_entry(entry: Any, path: str, errors: list[str]) -> str | None:
+    if not isinstance(entry, str):
+        errors.append(f"{path} must be a non-empty string")
+        return None
+    if not entry:
+        errors.append(f"{path} must not be blank")
+        return None
+    if entry != entry.strip():
+        errors.append(f"{path} must not contain leading or trailing whitespace")
+        return None
+    return entry
+
+
+def _validate_node_list(value: Any, path: str, errors: list[str]) -> list[str]:
+    if not isinstance(value, list):
+        errors.append(f"{path} must be a list")
+        return []
+    seen: set[str] = set()
+    normalized: list[str] = []
+    for index, entry in enumerate(value):
+        entry_path = f"{path}[{index}]"
+        node = _validate_node_entry(entry, entry_path, errors)
+        if node is None:
+            continue
+        if node in seen:
+            errors.append(f"{path} contains duplicate entry: {node}")
+            continue
+        seen.add(node)
+        normalized.append(node)
+    return normalized
+
+
 def validate_cluster_execution_policy(data: dict[str, Any]) -> list[str]:
     errors: list[str] = []
     if data.get("schema_version") != "1.0.0":
@@ -155,14 +187,12 @@ def validate_cluster_execution_policy(data: dict[str, Any]) -> list[str]:
         errors.append("require_exclusive_node must be true")
     if not isinstance(data.get("allowed_gpu_classes"), list) or not data["allowed_gpu_classes"]:
         errors.append("allowed_gpu_classes must be a non-empty list")
-    allowlist = data.get("node_allowlist")
-    denylist = data.get("node_denylist")
-    if not isinstance(allowlist, list):
-        errors.append("node_allowlist must be a list")
-    if not isinstance(denylist, list):
-        errors.append("node_denylist must be a list")
-    if isinstance(allowlist, list) and len(allowlist) == 1 and allowlist[0] == "mscluster112":
-        errors.append("node_allowlist must not permanently require one exact node")
+    allowlist = _validate_node_list(data.get("node_allowlist"), "node_allowlist", errors)
+    denylist = _validate_node_list(data.get("node_denylist"), "node_denylist", errors)
+    overlap = set(allowlist) & set(denylist)
+    if overlap:
+        joined = ", ".join(sorted(overlap))
+        errors.append(f"node_allowlist and node_denylist must not overlap: {joined}")
     template = data.get("node_local_temp_template")
     if template != "/var/tmp/${USER}-apptainer-${SLURM_JOB_ID}":
         errors.append("node_local_temp_template must use approved /var/tmp template")
