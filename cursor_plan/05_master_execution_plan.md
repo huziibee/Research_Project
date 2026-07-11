@@ -1,96 +1,127 @@
-# 05 — Master Execution Plan for Cursor
+# 05 — Master Execution Plan
 
-This plan is stage-gated, token-efficient, and experiment-complete. Use one ticket per fresh Cursor context.
+## Status boundary
 
-## Core operating rules
+T00–T09 are complete and must not be rerun. The corrected unfinished sequence is T10–T38.
 
-- Always attach `01_global_cursor_contract.md`, `02_context_refresh_protocol.md`, and the current ticket.
-- Cursor must inspect actual repository artifacts, propose a short plan, implement only the ticket, run ticket-level validation, create the completion report, and stop.
-- TDD is mandatory for deterministic behavior named in the global contract.
-- Human approval is required between tickets.
+No calendar schedule constrains this plan. Progress is controlled by evidence-based stage gates.
 
-## Phases and gates
+## Phase 1 — Reconcile the completed foundation
 
-### Phase 0 — Foundation
+### T10 — Canonical schema v2 and migration
 
-`T00–T02`
+Resolve the completed T01 schema conflicts without rerunning T00–T09. Define schema v2, CPC mapping, resolved-slot fields, canonical enums, and migrations for all completed outputs.
 
-Gate: scaffold, schema direction, actual data inventory, licence/inclusion register.
+### T11 — Research contract and governance
 
-### Phase 1 — Dataset conversion and weak pool
+Freeze the non-dataset proposal alignment, seven mandatory systems, mandatory fine-tuning, text-only scope, AI-use log, ethics determination, and licence registers before new human/model work.
 
-`T03–T09`
+**Gate:** schema v2 and the research/governance contract pass.
 
-Gate: validated converters, complete row accounting, provenance, weak/gold separation.
+## Phase 2 — Local model foundation
 
-### Phase 2 — Manual gold data, agreement, and splits
+### T12 — RTX 3070 local text-model setup
 
-`T10–T12`
+Measure hardware, install local inference/training stacks, test candidate base models, and choose one base model that can support both inference and mandatory QLoRA/LoRA.
 
-Gate: manual compound dataset and guidelines, double annotation and agreement, adjudication, group-aware frozen splits, leakage checks.
+**Gate:** a licensed local base model and reproducible `ModelClient` exist.
 
-### Phase 3 — Systems and required baselines
+## Phase 3 — Human-gold benchmark
 
-`T13–T19`
+### T13–T15
 
-Gate: structured direct LLM, candidate generator, full manager, context/safety/clarification behavior, always-execute/clarify/resolve, degree-based routing, context-blind ablation.
+- T13: annotation handbook, CPC/interpretation schema, design cells, LLM-assisted scenario authoring.
+- T14: blind double annotation, agreement, adjudication, gold build, and human semantic-comparison subset.
+- T15: group-safe splits, leakage checks, protected data, and machine-enforced eligibility.
 
-### Phase 4 — Metrics, runner, and local-model option
+**Gate:** trusted gold, agreement evidence, protected splits, and eligibility manifest exist.
 
-`T20–T24`
+## Phase 4 — Manager components and seven systems
 
-Gate: complete metric suite, immutable run manifests, local inference if used, optional fine-tuning condition clearly separated from the guaranteed prompted manager.
+### T16–T23
 
-### Phase 5 — Freeze and execute the complete experiment
+- T16: direct base-LLM structured baseline.
+- T17: candidate interpretation generator.
+- T18: context-sampling uncertainty.
+- T19: ambiguity/risk/capability classifier and deterministic router.
+- T20: context resolver and actual silent-resolution values.
+- T21: external safety-interface loop without replacing internal risk/capability prediction.
+- T22: targeted clarification and face-preserving rejection generation.
+- T23: integrate and smoke-test all seven mandatory systems, including the exact degree-based baseline.
 
-`T27` then `T21/T24` as applicable, followed by `T28–T32`
+**Gate:** every system emits canonical schema-v2 predictions on non-test fixtures.
 
-Gate: frozen protocol before protected test access; cost-sensitive evaluation; statistical uncertainty; ablations; robustness; repeated-run stability.
+## Phase 5 — Evaluation infrastructure
 
-### Phase 6 — Analysis and evidence package
+### T24–T26
 
-`T25`, `T26`, `T33`
+- T24: official deterministic evaluator for intent, CPC, candidates, ambiguity, risk, capability, resolution, routes, clarification, rejection, safety, and efficiency.
+- T25: **stretch/nonblocking** human-calibrated semantic verifier.
+- T26: immutable experiment runner and provenance plumbing; no protected final runs.
 
-Gate: failure analysis, all final tables/artifacts, reproducibility documents, and a final readiness PASS.
+**Gate:** hand-calculated fixtures pass, eligibility is enforced, and run manifests are complete.
 
-## Recommended exact order
+## Phase 6 — Mandatory supervised adaptation
 
-```text
-T00 T01 T02
-T03 T04 T05 T06 T07 T08 T09
-T10 T11 T12
-T13 T14 T15 T16 T17 T18 T19 T20
-T22
-T23 and T24 only if approved
-T27
-T21 final frozen runs
-T28 T29 T30 T31 T32
-T25 T26 T33
-```
+### T27–T28
 
-`T21` may be implemented earlier, but final protected-test runs occur only after `T27` passes.
+- T27: mandatory local QLoRA/LoRA smoke training.
+- T28: mandatory full train/dev-only fine-tuning and checkpoint selection.
 
-## Do not continue when
+**Gate:** the proposed manager adapter exists and is loadable on the exact base model.
 
-- any stage gate fails;
-- a required label mapping or licence is unverified;
-- the test set has been accessed before protocol freeze;
-- exact or near-duplicate leakage remains;
-- required degree-based routing is absent;
-- metrics do not cover risk, capability, rejection, and compound routing;
-- outputs lack manifests/hashes;
-- Cursor weakened tests or guessed labels;
-- the human has not approved the completion report.
+## Phase 7 — Freeze and protected execution
 
-## Human review checklist
+### T29–T30
 
-```text
-[ ] Scope stayed inside the ticket.
-[ ] TDD was used where required and the initial failure is recorded.
-[ ] No fake fields, labels, rows, citations, or results.
-[ ] Validation commands actually ran.
-[ ] Outputs are versioned and traceable.
-[ ] Protected-test rules were respected.
-[ ] TODO/BLOCKED items are resolved or intentionally deferred.
-[ ] Completion report exists and stage gate is honest.
-```
+- T29: freeze the existing research contract, all seven systems, adapter, prompts, context-sampling method, degree thresholds, route policy, eligibility, metrics, costs, statistics, and hashes.
+- T30: run all seven mandatory systems on every eligible protected split and calculate official deterministic results.
+
+**Gate:** complete immutable protected run matrix.
+
+## Phase 8 — Confirmatory analysis
+
+### T31–T33
+
+- T31: cost-sensitive evaluation.
+- T32: confidence intervals, paired tests, effect sizes, and correction.
+- T33: component and 2x2 architecture/adaptation ablations.
+
+## Phase 9 — Stretch robustness
+
+### T34–T35
+
+- T34: **stretch/nonblocking** robustness challenge suite.
+- T35: **stretch/nonblocking** repeated-run stability.
+
+These tickets may end `NOT_APPLICABLE` or `BLOCKED_NONCRITICAL` without preventing a core research PASS, but their status must be reported.
+
+## Phase 10 — Evidence and audit
+
+### T36–T38
+
+- T36: layered failure analysis.
+- T37: report tables, diagrams, reproducibility package, and AI-use disclosure support.
+- T38: final integrity audit.
+
+## Build versus run distinction
+
+- T16–T23 build and smoke-test systems.
+- T24–T26 build scoring and execution infrastructure.
+- T27–T28 train the proposed model.
+- T30 actually performs protected execution and gathers final results.
+
+## Immediate stop conditions
+
+Stop and report `FAIL` or `BLOCKED` when:
+
+- T00–T09 artifacts are recreated rather than migrated;
+- schema v2 is not authoritative;
+- mandatory fine-tuning is skipped;
+- context-sampling uncertainty is referenced but not implemented;
+- silent resolution selects a route without producing/scoring resolved values;
+- any of the seven mandatory systems is omitted;
+- protected data is accessed before T29;
+- metric eligibility is not enforced;
+- an LLM judge replaces deterministic official scoring;
+- provenance, hashes, or access logs are missing.

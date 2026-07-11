@@ -1,5 +1,7 @@
 # T09 — Weak labelled pool builder
 
+**Status:** COMPLETED — do not rerun unless a later audit identifies a concrete defect.**
+
 ## Shared context for this ticket
 
 Project: Risk-Aware Ambiguity Manager. The system converts a command plus optional scene context, dialogue history, and capability context into either a non-ambiguous interpretation or a route: `execute`, `clarify`, `silently_resolve`, `face_preserving_rejection`, or `multi_step`.

@@ -1,51 +1,73 @@
-# Cursor Optimal Execution Plan — Risk-Aware Ambiguity Manager
+# Cursor Execution Plan — Risk-Aware Ambiguity Manager
 
-This pack is a **standalone, stage-gated Cursor execution system** for completing the actual experiment before report writing. It uses fresh context per ticket, evidence-based stopping criteria, and TDD for deterministic components.
+This archive is the corrected stage-gated plan for completing the research implementation and experiment.
 
-## Approved data strategy
+## Current status
 
-- Keep AmbiK and IndirectRequests.
-- Use CLARA only after label verification.
-- Use CoDraw-iCR and VAGUE if acquired and verified.
-- Use ClariQ only as auxiliary clarification data.
-- TEACh is not core unless a later recorded decision adds it.
-- SafeAgentBench is optional and remains a separate safety/challenge integration.
-- Build and adjudicate the required manual compound-ambiguity extension.
+- **T00–T09 are completed and preserved.**
+- **The next ticket is T10.**
+- T10 migrates completed outputs into authoritative schema v2; it does not rerun completed tickets.
 
-## How to use
+## Key final decisions
 
-For each ticket:
+- Text-only local LLM study; no LVLM/raw-image condition.
+- Proposed manager uses mandatory local supervised fine-tuning.
+- Context-sampling output variance is an implemented uncertainty feature.
+- Interpretation/CPC correctness and route correctness are scored separately.
+- Silent resolution must output and score actual resolved values.
+- All seven comparison systems are mandatory.
+- Official scores use human/source gold and deterministic code, not an LLM judge.
+- Dataset/metric restrictions are machine-enforced.
+- No calendar schedule constrains execution; stage gates do.
 
-1. Start a fresh Cursor context.
-2. Attach `01_global_cursor_contract.md`, `02_context_refresh_protocol.md`, and the current ticket.
-3. Require repository inspection and a short plan before edits.
-4. Require Red–Green–Refactor where the ticket is TDD-required.
-5. Require the completion report and human approval.
-6. Stop; do not let Cursor continue to the next ticket.
+## Seven mandatory systems
 
-## Ticket groups
+1. always execute;
+2. always clarify;
+3. always silently resolve;
+4. direct base LLM;
+5. degree-based router;
+6. context-blind manager;
+7. full fine-tuned type/risk-aware manager.
 
-| Phase | Tickets | Outcome |
-|---|---|---|
-| Foundation | T00–T02 | scaffold, schema, data/licence audit |
-| Conversion | T03–T09 | validated source converters and weak pool |
-| Gold benchmark | T10–T12 | manual data, agreement, frozen leakage-safe splits |
-| Systems | T13–T19 | proposed manager and all required baselines |
-| Evaluation infrastructure | T20–T24 | metrics, runner, local model, optional fine-tuning |
-| Protocol and complete experiment | T27–T32 | freeze, cost, statistics, ablations, robustness, stability |
-| Analysis and final gate | T25, T26, T33 | failure analysis, evidence package, readiness audit |
+## Exact order
 
-## Mandatory comparisons
+```text
+COMPLETED: T00 T01 T02 T03 T04 T05 T06 T07 T08 T09
 
-- always execute;
-- always clarify;
-- always silently resolve;
-- direct structured LLM;
-- degree-based routing;
-- context-blind ablation;
-- full type-and-risk-aware manager;
-- optional fine-tuned condition if actually run.
+NEXT:
+T10 T11
+T12
+T13 T14 T15
+T16 T17 T18 T19 T20 T21 T22 T23
+T24 T25 T26
+T27 T28
+T29
+T30
+T31 T32 T33
+T34 T35
+T36 T37 T38
+```
+
+## Core versus stretch
+
+Mandatory core: T10–T24, T26–T33, T36–T38.
+
+Stretch/nonblocking: T25, T34, T35. Their status must still be reported.
+
+## Required reference documents
+
+- `01_global_cursor_contract.md`
+- `02_context_refresh_protocol.md`
+- `03_dataset_roles_metrics.md`
+- `04_hardware_model_strategy.md`
+- `05_master_execution_plan.md`
+- `06_copy_paste_prompt_template.md`
+- `08_manual_gold_dataset_program.md`
+- `10_interpretation_evaluation_framework.md`
+- `11_proposal_alignment_contract.md`
+- `12_core_stretch_policy.md`
 
 ## Completion definition
 
-The experiment is complete only when `T33_final_experiment_readiness_audit.md` issues a global PASS or the human records an explicit, justified deviation. Report writing must not be used to conceal missing experiments.
+The project is complete only when T38 issues a core global `PASS`. A working build is insufficient: trusted gold, mandatory fine-tuning, all seven systems, protected predictions, interpretation/CPC metrics, routing metrics, eligibility denominators, statistics, ablations, traceability, governance, and audit evidence must exist.
