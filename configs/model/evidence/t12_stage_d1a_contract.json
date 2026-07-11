@@ -1,0 +1,62 @@
+{
+  "stage": "D1A",
+  "schema_version": "1.1.0",
+  "starting_sha": "59e766f7309800780f7d41dd09848127f0da8f64",
+  "branch": "feature/t12-cluster-redesign",
+  "derivation_version": "t12-d1a-1.1.0",
+  "authoritative_schema_source": "src/ambiguity_manager/schema/v2/json_schema.py (build_prediction_json_schema)",
+  "canonical_prediction_schema_hash": "7e33492eda7edce7623ff4590f8544ad9464613b558cb8f3fd72950a26ba43e0",
+  "model_semantic_output_schema_hash": "232235fec53ee38eafcd714fd53664b250e848a6b0f75fca1ff7ec903b08cfb4",
+  "response_mode_status": "unverified_until_pinned_runtime_inspection",
+  "label_eligibility_ownership": "runner_owned",
+  "label_eligibility_source": "PredictionRequestContext.label_eligibility (explicit runner supply; never inferred from model output)",
+  "prediction_provenance_policy_version": "t12-d1a-synthetic-placeholder-1.0.0",
+  "prediction_provenance_note": "annotation_status=weak_mapped and label_confidence=weak_derived are schema-compatible synthetic-prediction placeholders applied via PredictionProvenancePolicy; not human annotation provenance",
+  "schema_validation_method": "jsonschema Draft202012Validator against generated model-facing schema, plus documented post-schema Python rules",
+  "post_schema_validation_rules": [
+    "selected_interpretation.frame_id must reference candidate_interpretations",
+    "primary_ambiguity_type must appear in ambiguity_types when set",
+    "compound_ambiguity requires at least two ambiguity_types",
+    "compound_ambiguity requires compound_ambiguity_count >= 2",
+    "compound_ambiguity_count must equal len(ambiguity_types) when ambiguity_present is true"
+  ],
+  "red_probe_results_before_hardening": {
+    "empty_label_eligibility_and_empty_cpc": "ACCEPTED (silent dataclass defaults)",
+    "empty_cpc_only": "ACCEPTED",
+    "missing_cpc_slot": "ACCEPTED",
+    "missing_cpc_slot_value": "ACCEPTED",
+    "missing_cpc_slot_status": "ACCEPTED",
+    "extra_cpc_slot": "ACCEPTED",
+    "extra_cpc_slot_property": "ACCEPTED",
+    "missing_evidence_source": "ACCEPTED",
+    "extra_evidence_property": "ACCEPTED",
+    "partial_label_eligibility": "ACCEPTED",
+    "unknown_eligibility_flag": "ACCEPTED",
+    "assemble_empty_cpc": "ACCEPTED"
+  },
+  "engine_request_id_decision": {
+    "caller_request_id_canonical": true,
+    "engine_request_id_diagnostic_only": true,
+    "engine_request_id_in_final_prediction_record": false,
+    "engine_request_id_persistence_stage": "D1C"
+  },
+  "generation_policy": {
+    "total_model_attempts": 3,
+    "initial_generation_attempts": 1,
+    "bounded_regeneration_attempts": 2,
+    "deterministic_local_json_repair_rounds": 2,
+    "unconstrained_fallback_permitted": false,
+    "retain_all_raw_attempts": true,
+    "full_t19_routing_deferred": true
+  },
+  "acceptance_rule_ids": [
+    "canonical_schema_validation",
+    "schema_route_conditional_checks",
+    "unsupported_silent_commitment_checks",
+    "invalid_enum_rejection",
+    "malformed_nested_structure_rejection"
+  ],
+  "no_model_no_cluster": true,
+  "structured_decoding_implemented": false,
+  "t19_routing_implemented": false
+}
