@@ -151,13 +151,31 @@ def validate_environment_manifest(
                     f"packages.{field} must be set for partially_verified environments"
                 )
 
-    if data.get("checkpoint_load_verified") is not False:
-        errors.append("checkpoint_load_verified must be false in Slice 2")
-
-    if data.get("model_id") is not None:
-        errors.append("model_id must remain null in Slice 2")
-    if data.get("model_revision") is not None:
-        errors.append("model_revision must remain null in Slice 2")
+    if slice_number == 2:
+        if data.get("checkpoint_load_verified") is not False:
+            errors.append("checkpoint_load_verified must be false in Slice 2")
+        if data.get("model_id") is not None:
+            errors.append("model_id must remain null in Slice 2")
+        if data.get("model_revision") is not None:
+            errors.append("model_revision must remain null in Slice 2")
+    elif slice_number == 3:
+        verified = data.get("checkpoint_load_verified")
+        if verified is True:
+            for field in (
+                "candidate_entry_id",
+                "immutable_revision_sha",
+                "tokenizer_revision_sha",
+                "four_bit_load_status",
+                "checkpoint_load_evidence_relpath",
+            ):
+                if not data.get(field):
+                    errors.append(f"{field} required when checkpoint_load_verified is true")
+            if data.get("four_bit_load_status") != "passed":
+                errors.append("four_bit_load_status must be passed when checkpoint_load_verified is true")
+        elif verified is not False:
+            errors.append("checkpoint_load_verified must be boolean")
+        if data.get("selected_model") is not None:
+            errors.append("selected_model must remain null in Slice 3")
 
     _scan_forbidden_identifiers(data, "manifest", errors)
     return errors

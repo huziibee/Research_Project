@@ -369,10 +369,9 @@ class T12CheckpointDownloadPolicyTests(unittest.TestCase):
     def test_no_torch_import_required_in_core_module(self) -> None:
         self.assertIsNone(importlib.util.find_spec("torch"))
 
-    def test_checkpoint_load_verified_remains_false(self) -> None:
-        for rel in (INFERENCE_ENV_REL, TRAINING_ENV_REL):
-            manifest = _load_json(ROOT / rel)
-            self.assertFalse(manifest["checkpoint_load_verified"])
+    def test_checkpoint_load_verified_remains_false_in_download_evidence(self) -> None:
+        manifest = _load_json(EVIDENCE_PATH)
+        self.assertFalse(manifest["checkpoint_load_verified"])
         env_evidence = _load_json(ROOT / ENV_EVIDENCE_REL)
         self.assertFalse(env_evidence["checkpoint_load_verified"])
 

@@ -41,14 +41,22 @@ class T12EnvironmentManifestTests(unittest.TestCase):
         self.assertEqual(self.training["environment_id"], "t12-training-wsl2")
 
     def test_validation_passes_for_current_slice(self) -> None:
-        slice_number = 2 if self.inference["environment_status"] != "planned_unverified" else 1
         for manifest in (self.inference, self.training):
+            if manifest.get("checkpoint_load_verified"):
+                slice_number = 3
+            elif manifest["environment_status"] != "planned_unverified":
+                slice_number = 2
+            else:
+                slice_number = 1
             errors = validate_environment_manifest(manifest, slice_number=slice_number)
             self.assertEqual(errors, [], msg="\n".join(errors))
 
-    def test_checkpoint_load_not_verified(self) -> None:
-        self.assertFalse(self.inference["checkpoint_load_verified"])
-        self.assertFalse(self.training["checkpoint_load_verified"])
+    def test_checkpoint_load_verified_after_slice3c(self) -> None:
+        self.assertTrue(self.inference["checkpoint_load_verified"])
+        self.assertTrue(self.training["checkpoint_load_verified"])
+        for manifest in (self.inference, self.training):
+            self.assertEqual(manifest["candidate_entry_id"], "t12-cand-001")
+            self.assertEqual(manifest["four_bit_load_status"], "passed")
 
     def test_no_model_identity(self) -> None:
         for manifest in (self.inference, self.training):

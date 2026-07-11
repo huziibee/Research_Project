@@ -333,12 +333,14 @@ class T12ModelCandidateVerificationTests(unittest.TestCase):
         self.assertEqual(errors, [])
         self.assertEqual(derive_ticket_verdict(ethics), "BLOCKED")
 
-    def test_checkpoint_load_verified_remains_false(self) -> None:
-        for rel in (INFERENCE_ENV_REL, TRAINING_ENV_REL):
-            manifest = _load_json(ROOT / rel)
-            self.assertFalse(manifest["checkpoint_load_verified"])
+    def test_slice2_compatibility_evidence_checkpoint_load_not_verified(self) -> None:
         env_evidence = _load_json(ROOT / ENV_EVIDENCE_REL)
         self.assertFalse(env_evidence["checkpoint_load_verified"])
+
+    def test_slice3_environment_manifests_checkpoint_load_verified(self) -> None:
+        for rel in (INFERENCE_ENV_REL, TRAINING_ENV_REL):
+            manifest = _load_json(ROOT / rel)
+            self.assertTrue(manifest["checkpoint_load_verified"])
 
     def test_t13_t14_artefacts_do_not_exist(self) -> None:
         for rel in (

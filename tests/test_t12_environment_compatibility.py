@@ -187,12 +187,14 @@ class T12EnvironmentCompatibilityTests(unittest.TestCase):
         errors = validate_environment_evidence(bad, repo_root=ROOT)
         self.assertTrue(any("imports" in e for e in errors))
 
-    def test_checkpoint_load_verified_remains_false_slice2(self) -> None:
-        self.assertFalse(self.inference_manifest["checkpoint_load_verified"])
-        self.assertFalse(self.training_manifest["checkpoint_load_verified"])
+    def test_slice2_compatibility_evidence_checkpoint_load_not_verified(self) -> None:
         if self.evidence:
             for env_id in ("t12-inference-wsl2", "t12-training-wsl2"):
                 self.assertFalse(self.evidence["environments"][env_id]["checkpoint_load_verified"])
+
+    def test_slice3_environment_manifests_checkpoint_load_verified(self) -> None:
+        self.assertTrue(self.inference_manifest["checkpoint_load_verified"])
+        self.assertTrue(self.training_manifest["checkpoint_load_verified"])
 
     def test_no_model_identity_populated(self) -> None:
         for manifest in (self.inference_manifest, self.training_manifest):
@@ -252,9 +254,9 @@ class T12EnvironmentCompatibilityTests(unittest.TestCase):
         errors = validate_environment_evidence(self.evidence, repo_root=ROOT)
         self.assertEqual(errors, [], msg="\n".join(errors))
 
-    def test_manifest_validation_slice2_when_verified(self) -> None:
-        slice_number = 2
+    def test_manifest_validation_slice3_when_checkpoint_load_verified(self) -> None:
         for manifest in (self.inference_manifest, self.training_manifest):
+            slice_number = 3 if manifest.get("checkpoint_load_verified") else 2
             errors = validate_environment_manifest(manifest, slice_number=slice_number)
             self.assertEqual(errors, [], msg="\n".join(errors))
 

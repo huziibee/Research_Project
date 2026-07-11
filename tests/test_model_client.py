@@ -5,6 +5,7 @@ from __future__ import annotations
 import importlib
 import sys
 import unittest
+import unittest.mock
 from dataclasses import FrozenInstanceError
 
 from ambiguity_manager.model.context_budget import (
@@ -12,7 +13,7 @@ from ambiguity_manager.model.context_budget import (
     ContextBudgetError,
     compute_effective_max_new_tokens,
 )
-from ambiguity_manager.model.errors import ModelClientError
+from ambiguity_manager.model.errors import ModelBackendUnavailableError, ModelClientError
 from ambiguity_manager.model.factory import create_model_client
 from ambiguity_manager.model.protocol import (
     GenerateJsonRequest,
@@ -125,10 +126,19 @@ class ModelClientTests(unittest.TestCase):
         loaded = {k for k in sys.modules if k.startswith(("torch", "transformers", "peft", "trl", "bitsandbytes", "datasets"))}
         self.assertEqual(loaded, set())
 
-    def test_hf_backend_stub_raises_without_importing_torch(self) -> None:
-        sys.modules.pop("torch", None)
-        with self.assertRaises(ModelClientError):
-            create_model_client(_runtime_spec(backend="hf_transformers_local"))
+    def test_hf_backend_unavailable_without_torch(self) -> None:
+        import builtins
+
+        real_import = builtins.__import__
+
+        def fake_import(name: str, *args: object, **kwargs: object):  # noqa: ANN001
+            if name == "torch":
+                raise ImportError("no torch")
+            return real_import(name, *args, **kwargs)
+
+        with unittest.mock.patch("builtins.__import__", side_effect=fake_import):
+            with self.assertRaises(ModelBackendUnavailableError):
+                create_model_client(_runtime_spec(backend="hf_transformers_local"))
 
 
 if __name__ == "__main__":
