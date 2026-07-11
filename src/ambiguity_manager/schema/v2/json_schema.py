@@ -306,6 +306,40 @@ def _prediction_record_schema() -> dict[str, Any]:
   }
 
 
+def build_prediction_json_schema() -> dict[str, Any]:
+  """Export only the schema-v2 prediction record branch."""
+  prediction = _prediction_record_schema()
+  return {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$id": "https://ambiguity-manager.local/schema/v2/prediction_record.json",
+    "title": "CanonicalRecordV2Prediction",
+    "schema_version": SCHEMA_VERSION,
+    "description": (
+      "Prediction-only export derived from ambiguity_manager.schema.v2 Python "
+      "definitions. Gold/source branches are excluded."
+    ),
+    **prediction,
+    "definitions": {
+      "risk_level": _string_enum(RiskLevel),
+      "capability_status": _string_enum(CapabilityStatus),
+      "route_label": _string_enum(RouteLabel),
+      "ambiguity_type": _string_enum(AmbiguityType),
+      "cpc_slot_status": _string_enum(CPCSlotStatus),
+      "record_class": {"type": "string", "const": RecordClass.PREDICTION.value},
+    },
+  }
+
+
+def prediction_json_schema_text() -> str:
+  """Return deterministic prediction-only JSON Schema text."""
+  return json.dumps(build_prediction_json_schema(), ensure_ascii=False, sort_keys=True, indent=2) + "\n"
+
+
+def prediction_json_schema_bytes() -> bytes:
+  """Return deterministic prediction-only JSON Schema bytes."""
+  return prediction_json_schema_text().encode("utf-8")
+
+
 def build_canonical_record_v2_json_schema() -> dict[str, Any]:
   """Build the JSON Schema document from authoritative Python definitions."""
   return {

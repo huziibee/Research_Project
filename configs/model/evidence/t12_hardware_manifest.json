@@ -1,0 +1,158 @@
+{
+  "manifest_schema_version": "1.0.0",
+  "ticket": "T12",
+  "collection_events": [
+    {
+      "event": "windows_host_collection",
+      "timestamp": "2026-07-11T08:30:00Z"
+    },
+    {
+      "event": "wsl2_ubuntu_collection",
+      "timestamp": "2026-07-11T08:45:00Z"
+    }
+  ],
+  "planned_environment": {
+    "inference_platform": "wsl2_ubuntu",
+    "training_platform": "wsl2_ubuntu",
+    "environment_manager": "uv",
+    "project_python_target": "3.11",
+    "system_python_excluded": "3.14.4",
+    "model_cache_policy": "single_canonical_cache_wsl_linux_filesystem",
+    "duplicate_windows_wsl_caches": false,
+    "minimum_free_disk_gb_before_download": 50,
+    "cumulative_download_cap_gb": 30,
+    "gated_models_permitted": false,
+    "offline_recovery_test_permitted": true,
+    "reboot_required": false,
+    "standalone_cuda_toolkit_required": false
+  },
+  "windows_host": {
+    "os_caption": "Microsoft Windows 11 Home",
+    "os_version": "10.0.26200",
+    "os_architecture": "64-bit",
+    "cpu_name": "AMD Ryzen 7 5800H",
+    "cpu_cores": 8,
+    "cpu_logical_processors": 16,
+    "system_ram_total": {
+      "raw_value": 14528596,
+      "raw_unit": "KiB",
+      "normalised_mib": 14188,
+      "collection_source": "Win32_OperatingSystem.TotalVisibleMemorySize"
+    },
+    "system_ram_free": {
+      "raw_value": 2281636,
+      "raw_unit": "KiB",
+      "normalised_mib": 2228,
+      "collection_source": "Win32_OperatingSystem.FreePhysicalMemory"
+    },
+    "physical_memory_total": {
+      "raw_value": 14877282304,
+      "raw_unit": "bytes",
+      "normalised_mib": 14188,
+      "collection_source": "Win32_ComputerSystem.TotalPhysicalMemory"
+    },
+    "disk_c_free": {
+      "raw_value": 133592612864,
+      "raw_unit": "bytes",
+      "normalised_mib": 127392,
+      "collection_source": "Get-Volume DriveLetter C"
+    },
+    "python_reported_version": "3.11.15",
+    "python_path_warning": "first PATH entry belongs to unrelated Hermes environment; not T12 interpreter",
+    "uv_version": "0.11.19",
+    "git_version": "2.54.0.windows.1",
+    "cuda_toolkit_nvcc_detected": false,
+    "driver_reported_cuda_version": "12.3",
+    "pytorch_cuda_build": null,
+    "pytorch_cuda_available": null,
+    "wsl_installed": true,
+    "wsl_distributions": ["Ubuntu", "Kali"],
+    "gpu": {
+      "name": "NVIDIA GeForce RTX 3070 Laptop GPU",
+      "driver_version": "546.30",
+      "compute_capability": "8.6",
+      "vram_total": {
+        "raw_value": 8192,
+        "raw_unit": "MiB",
+        "normalised_mib": 8192,
+        "collection_source": "nvidia-smi --query-gpu=memory.total"
+      },
+      "vram_free": {
+        "raw_value": 7923,
+        "raw_unit": "MiB",
+        "normalised_mib": 7923,
+        "collection_source": "nvidia-smi --query-gpu=memory.free"
+      },
+      "vram_used": {
+        "raw_value": 109,
+        "raw_unit": "MiB",
+        "normalised_mib": 109,
+        "collection_source": "nvidia-smi --query-gpu=memory.used"
+      }
+    }
+  },
+  "wsl2_ubuntu": {
+    "distribution": "Ubuntu",
+    "distribution_version": "26.04 LTS",
+    "kernel_version": "6.18.33.2-microsoft-standard-WSL2",
+    "system_python_version": "3.14.4",
+    "project_python_target": "3.11",
+    "memory_total": {
+      "raw_value": 6857,
+      "raw_unit": "MiB",
+      "normalised_mib": 6857,
+      "collection_source": "wsl /proc/meminfo MemTotal"
+    },
+    "memory_available": {
+      "raw_value": 6121,
+      "raw_unit": "MiB",
+      "normalised_mib": 6121,
+      "collection_source": "wsl /proc/meminfo MemAvailable"
+    },
+    "swap_total": {
+      "raw_value": 2048,
+      "raw_unit": "MiB",
+      "normalised_mib": 2048,
+      "collection_source": "wsl /proc/meminfo SwapTotal"
+    },
+    "root_filesystem_available": {
+      "raw_value": 977272832000,
+      "raw_unit": "bytes",
+      "normalised_mib": 932000,
+      "collection_source": "wsl df /"
+    },
+    "windows_c_mount_available": {
+      "raw_value": 134217728000,
+      "raw_unit": "bytes",
+      "normalised_mib": 128000,
+      "collection_source": "wsl df /mnt/c"
+    },
+    "cuda_toolkit_nvcc_detected": false,
+    "driver_reported_cuda_version": "12.3",
+    "pytorch_cuda_build": null,
+    "pytorch_cuda_available": null,
+    "gpu": {
+      "name": "NVIDIA GeForce RTX 3070 Laptop GPU",
+      "driver_version": "546.30",
+      "compute_capability": "8.6",
+      "vram_total": {
+        "raw_value": 8192,
+        "raw_unit": "MiB",
+        "normalised_mib": 8192,
+        "collection_source": "wsl nvidia-smi --query-gpu=memory.total"
+      },
+      "vram_free": {
+        "raw_value": 7917,
+        "raw_unit": "MiB",
+        "normalised_mib": 7917,
+        "collection_source": "wsl nvidia-smi --query-gpu=memory.free"
+      },
+      "vram_used": {
+        "raw_value": 115,
+        "raw_unit": "MiB",
+        "normalised_mib": 115,
+        "collection_source": "wsl nvidia-smi --query-gpu=memory.used"
+      }
+    }
+  }
+}
