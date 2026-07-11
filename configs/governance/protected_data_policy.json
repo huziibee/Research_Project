@@ -1,0 +1,29 @@
+{
+  "policy_schema_version": "1.0.0",
+  "lifecycle": {
+    "before_t15": "No protected benchmark exists.",
+    "t15_construction_access_permitted": true,
+    "t15_permitted_actions": [
+      "split_creation",
+      "leakage_checks",
+      "hashing",
+      "sealing"
+    ],
+    "post_t15_seal_prohibited_uses": [
+      "prompts",
+      "debugging",
+      "tuning",
+      "threshold_selection",
+      "model_selection",
+      "tests",
+      "screenshots",
+      "external_ai_tools"
+    ],
+    "t29": "protocol_verification_and_protected_execution_approval",
+    "t30": "controlled_protected_execution_via_frozen_runner"
+  },
+  "external_ai_tools_prohibited_on_protected_data": true,
+  "local_model_protected_access_ticket": "T30",
+  "access_log_path": "docs/governance/logs/protected_access_log.jsonl",
+  "contamination_response": "Record incident, create deviation, invalidate affected protocol conditions."
+}

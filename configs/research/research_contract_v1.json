@@ -1,0 +1,109 @@
+{
+  "contract_schema_version": "1.0.0",
+  "contract_version": "1.0.0",
+  "project_title": "A Risk-Aware Ambiguity Manager for Compound Ambiguous Robot Commands",
+  "frozen_at_ticket": "T11",
+  "schema_authority": {
+    "canonical_schema_version": "2.0.0",
+    "adr": "docs/decisions/ADR_schema_v2_canonical_record.md"
+  },
+  "licence_authority": {
+    "historical_evidence": "configs/datasets/licence_provenance_manifest.json",
+    "authoritative_register": "configs/licences/dataset_licence_register.json"
+  },
+  "supersession": {
+    "proposal_dataset_section": "superseded",
+    "proposal_calendar_schedule": "superseded",
+    "remaining_methodology": "binding_unless_deviation"
+  },
+  "research_question": "Does a risk-aware ambiguity manager improve routing decisions for compound ambiguous robot commands compared with direct LLM interpretation and uniform/degree-based ambiguity-handling policies when evaluated using interpretation, ambiguity, clarification, routing, and risk-sensitive correctness?",
+  "hypothesis": "Explicit ambiguity-type, task-risk, capability, context, and uncertainty coordination will improve routing correctness—especially clarification, face-preserving rejection, silent-resolution, and multi-step decisions—over direct interpretation and fixed/degree-only policies.",
+  "primary_outcome": "routing_correctness",
+  "supporting_outcomes": [
+    "intent_cpc_correctness",
+    "ambiguity_labels",
+    "clarification_appropriateness",
+    "risk_capability_correctness",
+    "safe_rejection",
+    "unsafe_silent_resolution",
+    "resolved_parameter_correctness",
+    "failure_decomposition"
+  ],
+  "scope": {
+    "text_only": true,
+    "raw_image_lvlm": false,
+    "perception": false,
+    "motion_planning": false,
+    "navigation": false,
+    "grasping": false,
+    "physical_execution": false,
+    "complete_safety_classifier": false
+  },
+  "inputs": [
+    "command",
+    "scene_context",
+    "dialogue_history",
+    "capability_context"
+  ],
+  "canonical_routes": [
+    "execute",
+    "clarify",
+    "silently_resolve",
+    "face_preserving_rejection",
+    "multi_step"
+  ],
+  "canonical_ambiguity_labels": [
+    "referential",
+    "spatial",
+    "pragmatic",
+    "temporal",
+    "quantitative",
+    "preference",
+    "commonsense",
+    "safety_precondition",
+    "capability",
+    "contextual"
+  ],
+  "mandatory_systems": [
+    {"id": "always_execute", "optional": false},
+    {"id": "always_clarify", "optional": false},
+    {"id": "always_silently_resolve", "optional": false},
+    {"id": "direct_base_llm", "optional": false},
+    {"id": "degree_based_router", "optional": false},
+    {"id": "context_blind_manager", "optional": false},
+    {"id": "full_finetuned_type_risk_manager", "optional": false}
+  ],
+  "model_policy": {
+    "local_open_source_text_llm": true,
+    "mandatory_supervised_finetuning": true,
+    "finetuning_blocked_substitution": "BLOCKED",
+    "same_base_model_and_revision": true,
+    "proposed_manager_adapter_ticket": "T28",
+    "direct_baseline_shares_base": true
+  },
+  "uncertainty_policy": {
+    "context_sampling_required": true
+  },
+  "evaluation_policy": {
+    "interpretation_routing_separated": true,
+    "silent_resolution_value_required": true,
+    "deterministic_evaluator_primary": true,
+    "generative_llm_not_primary_judge": true
+  },
+  "protected_test_policy": {
+    "no_access_before_ticket": "T29",
+    "first_execution_ticket": "T30",
+    "post_test_change_requires_protocol_version": true
+  },
+  "claim_boundaries": {
+    "may_claim": [
+      "nlu_layer_interpretation_routing_under_benchmark"
+    ],
+    "may_not_claim": [
+      "safe_physical_robot_execution",
+      "general_visual_grounding",
+      "complete_real_world_safety_assurance"
+    ]
+  },
+  "core_stretch_policy_ref": "configs/governance/core_stretch_policy.json"
+}
