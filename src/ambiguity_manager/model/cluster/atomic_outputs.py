@@ -18,6 +18,61 @@ class AtomicOutputError(ValueError):
 
 
 @dataclass(frozen=True)
+class AttemptRecord:
+    attempt_number: int
+    status: str
+    start_timestamp: str
+    end_timestamp: str
+    failure_reasons: tuple[str, ...]
+    output_record_count: int
+    output_sha256: str
+    prior_manifest_sha256: str
+    backend_config_hash: str
+    backend_identifier: str
+    model_repository: str
+    model_revision: str
+    container_sha256: str
+    parsed_output_path: str
+
+    def to_dict(self) -> dict[str, Any]:
+        return {
+            "attempt_number": self.attempt_number,
+            "status": self.status,
+            "start_timestamp": self.start_timestamp,
+            "end_timestamp": self.end_timestamp,
+            "failure_reasons": list(self.failure_reasons),
+            "output_record_count": self.output_record_count,
+            "output_sha256": self.output_sha256,
+            "prior_manifest_sha256": self.prior_manifest_sha256,
+            "backend_config_hash": self.backend_config_hash,
+            "backend_identifier": self.backend_identifier,
+            "model_repository": self.model_repository,
+            "model_revision": self.model_revision,
+            "container_sha256": self.container_sha256,
+            "parsed_output_path": self.parsed_output_path,
+        }
+
+    @classmethod
+    def from_dict(cls, payload: dict[str, Any]) -> AttemptRecord:
+        return cls(
+            attempt_number=int(payload["attempt_number"]),
+            status=str(payload["status"]),
+            start_timestamp=str(payload["start_timestamp"]),
+            end_timestamp=str(payload["end_timestamp"]),
+            failure_reasons=tuple(str(item) for item in payload.get("failure_reasons", [])),
+            output_record_count=int(payload["output_record_count"]),
+            output_sha256=str(payload["output_sha256"]),
+            prior_manifest_sha256=str(payload.get("prior_manifest_sha256", "")),
+            backend_config_hash=str(payload["backend_config_hash"]),
+            backend_identifier=str(payload["backend_identifier"]),
+            model_repository=str(payload["model_repository"]),
+            model_revision=str(payload["model_revision"]),
+            container_sha256=str(payload["container_sha256"]),
+            parsed_output_path=str(payload["parsed_output_path"]),
+        )
+
+
+@dataclass(frozen=True)
 class ShardManifest:
     run_id: str
     shard_id: str
@@ -35,9 +90,13 @@ class ShardManifest:
     start_timestamp: str
     end_timestamp: str
     backend_identifier: str
+    backend_config_hash: str
+    model_repository: str
     model_revision: str
     container_sha256: str
     retry_count: int
+    failure_reasons: tuple[str, ...]
+    attempt_history: tuple[AttemptRecord, ...]
 
     def to_dict(self) -> dict[str, Any]:
         return {
@@ -57,13 +116,18 @@ class ShardManifest:
             "start_timestamp": self.start_timestamp,
             "end_timestamp": self.end_timestamp,
             "backend_identifier": self.backend_identifier,
+            "backend_config_hash": self.backend_config_hash,
+            "model_repository": self.model_repository,
             "model_revision": self.model_revision,
             "container_sha256": self.container_sha256,
             "retry_count": self.retry_count,
+            "failure_reasons": list(self.failure_reasons),
+            "attempt_history": [item.to_dict() for item in self.attempt_history],
         }
 
     @classmethod
     def from_dict(cls, payload: dict[str, Any]) -> ShardManifest:
+        history_payload = payload.get("attempt_history", [])
         return cls(
             run_id=str(payload["run_id"]),
             shard_id=str(payload["shard_id"]),
@@ -80,10 +144,14 @@ class ShardManifest:
             status=str(payload["status"]),
             start_timestamp=str(payload["start_timestamp"]),
             end_timestamp=str(payload["end_timestamp"]),
-            backend_identifier=str(payload["backend_identifier"]),
+            backend_identifier=str(payload.get("backend_identifier", "")),
+            backend_config_hash=str(payload.get("backend_config_hash", "")),
+            model_repository=str(payload.get("model_repository", "")),
             model_revision=str(payload["model_revision"]),
             container_sha256=str(payload["container_sha256"]),
             retry_count=int(payload.get("retry_count", 0)),
+            failure_reasons=tuple(str(item) for item in payload.get("failure_reasons", [])),
+            attempt_history=tuple(AttemptRecord.from_dict(item) for item in history_payload),
         )
 
 
@@ -165,6 +233,47 @@ def validate_jsonl_output(path: Path, *, expected_ids: tuple[str, ...] | None = 
         raise AtomicOutputError("output_ids_mismatch")
 
 
+def _failure_reasons_for_manifest(
+    manifest: ShardManifest,
+    *,
+    failure_reasons: tuple[str, ...],
+) -> tuple[str, ...]:
+    if failure_reasons:
+        return failure_reasons
+    if manifest.failure_reasons:
+        return manifest.failure_reasons
+    if manifest.failed_ids:
+        return tuple(f"failed_id:{item}" for item in manifest.failed_ids)
+    if manifest.status != "completed":
+        return (f"status:{manifest.status}",)
+    return ()
+
+
+def _attempt_record_from_manifest(
+    manifest: ShardManifest,
+    *,
+    attempt_number: int,
+    prior_manifest_sha256: str,
+    failure_reasons: tuple[str, ...] = (),
+) -> AttemptRecord:
+    return AttemptRecord(
+        attempt_number=attempt_number,
+        status=manifest.status,
+        start_timestamp=manifest.start_timestamp,
+        end_timestamp=manifest.end_timestamp,
+        failure_reasons=_failure_reasons_for_manifest(manifest, failure_reasons=failure_reasons),
+        output_record_count=manifest.output_record_count,
+        output_sha256=manifest.output_sha256,
+        prior_manifest_sha256=prior_manifest_sha256,
+        backend_config_hash=manifest.backend_config_hash,
+        backend_identifier=manifest.backend_identifier,
+        model_repository=manifest.model_repository,
+        model_revision=manifest.model_revision,
+        container_sha256=manifest.container_sha256,
+        parsed_output_path=manifest.parsed_output_path,
+    )
+
+
 def write_shard_outputs(
     *,
     output_dir: Path,
@@ -178,23 +287,36 @@ def write_shard_outputs(
     start_timestamp: str,
     end_timestamp: str,
     backend_identifier: str,
+    backend_config_hash: str,
+    model_repository: str,
     model_revision: str,
     container_sha256: str,
-    retry_count: int = 0,
     failed_ids: tuple[str, ...] = (),
     duplicate_ids: tuple[str, ...] = (),
+    failure_reasons: tuple[str, ...] = (),
     allow_overwrite: bool = False,
 ) -> ShardManifest:
     output_dir.mkdir(parents=True, exist_ok=True)
     raw_path = output_dir / f"{shard_id}.raw.jsonl"
     parsed_path = output_dir / f"{shard_id}.parsed.jsonl"
     manifest_path = output_dir / f"{shard_id}.manifest.json"
+    attempt_history: tuple[AttemptRecord, ...] = ()
 
-    if manifest_path.exists() and not allow_overwrite:
-        existing = ShardManifest.from_dict(json.loads(manifest_path.read_text(encoding="utf-8")))
+    if manifest_path.exists():
+        prior_text = manifest_path.read_text(encoding="utf-8")
+        existing = ShardManifest.from_dict(json.loads(prior_text))
         if existing.status == "completed":
             raise AtomicOutputError("completed_shard_exists")
-        if existing.run_id != run_id or existing.input_plan_hash != input_plan_hash:
+        if allow_overwrite:
+            prior_manifest_sha256 = sha256_text(prior_text)
+            prior_entry = _attempt_record_from_manifest(
+                existing,
+                attempt_number=len(existing.attempt_history) + 1,
+                prior_manifest_sha256=prior_manifest_sha256,
+                failure_reasons=_failure_reasons_for_manifest(existing, failure_reasons=()),
+            )
+            attempt_history = existing.attempt_history + (prior_entry,)
+        elif existing.run_id != run_id or existing.input_plan_hash != input_plan_hash:
             raise AtomicOutputError("conflicting_run_or_plan")
 
     lines = []
@@ -207,7 +329,7 @@ def write_shard_outputs(
     output_sha = sha256_text(output_text)
 
     def _validate_output(path: Path) -> None:
-        validate_jsonl_output(path, expected_ids=tuple(item for item in expected_ids if item not in failed_ids))
+        validate_jsonl_output(path, expected_ids=expected_ids)
 
     atomic_write_text(parsed_path, output_text, validator=_validate_output, allow_overwrite=allow_overwrite)
     atomic_write_text(raw_path, output_text, validator=_validate_output, allow_overwrite=allow_overwrite)
@@ -229,9 +351,13 @@ def write_shard_outputs(
         start_timestamp=start_timestamp,
         end_timestamp=end_timestamp,
         backend_identifier=backend_identifier,
+        backend_config_hash=backend_config_hash,
+        model_repository=model_repository,
         model_revision=model_revision,
         container_sha256=container_sha256,
-        retry_count=retry_count,
+        retry_count=len(attempt_history),
+        failure_reasons=failure_reasons if status != "completed" else (),
+        attempt_history=attempt_history,
     )
 
     manifest_payload = deterministic_json_dumps(manifest.to_dict()) + "\n"

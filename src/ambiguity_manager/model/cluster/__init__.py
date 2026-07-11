@@ -23,11 +23,12 @@ from ambiguity_manager.model.cluster.path_policy import (
     scan_forbidden_paths,
     validate_path_template,
 )
+from ambiguity_manager.model.cluster.batch_runner import run_shard_batch
 from ambiguity_manager.model.cluster.preflight import run_preflight
 from ambiguity_manager.model.cluster.snapshot_verify import verify_snapshot
 from ambiguity_manager.model.cluster.sharding import plan_shards_from_jsonl
 from ambiguity_manager.model.cluster.atomic_outputs import write_shard_outputs
-from ambiguity_manager.model.cluster.run_state import evaluate_resume, merge_completed_shards
+from ambiguity_manager.model.cluster.run_state import ShardRunDecision, evaluate_resume, merge_completed_shards
 
 __all__ = [
     "IMMUTABLE_SELECTION_REL",
@@ -46,9 +47,11 @@ __all__ = [
     "scan_forbidden_paths",
     "validate_path_template",
     "run_preflight",
+    "run_shard_batch",
     "verify_snapshot",
     "plan_shards_from_jsonl",
     "write_shard_outputs",
     "evaluate_resume",
     "merge_completed_shards",
+    "ShardRunDecision",
 ]

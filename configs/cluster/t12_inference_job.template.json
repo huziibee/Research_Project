@@ -1,8 +1,8 @@
 {
   "schema_version": "1.0.0",
   "ticket": "T12",
-  "stage": "C1",
-  "description": "Generic Slurm inference job template placeholders. Persistent vLLM engine backend is Stage C2.",
+  "stage": "C2A",
+  "description": "Generic Slurm inference job template placeholders. Persistent vLLM batch backend wiring is Stage C2A.",
   "slurm": {
     "partition": "biggpu",
     "exclusive": true,
@@ -26,17 +26,27 @@
       "HF_HUB_OFFLINE=1",
       "TRANSFORMERS_OFFLINE=1"
     ],
-    "network_fallback_permitted": false
+    "network_fallback_permitted": false,
+    "vllm_worker_multiprocess_method": "spawn"
   },
   "placeholders": {
     "run_id": "${T12_RUN_ID}",
     "shard_id": "${T12_SHARD_ID}",
     "config_path": "${T12_CONFIG_PATH}",
-    "runtime_facts_path": "${T12_RUNTIME_FACTS_PATH}"
+    "runtime_facts_path": "${T12_RUNTIME_FACTS_PATH}",
+    "preflight_result_path": "${T12_PREFLIGHT_RESULT_PATH}",
+    "shard_plan_path": "${T12_SHARD_PLAN_PATH}",
+    "run_dir": "${T12_RUN_DIR}",
+    "runtime_config_path": "${T12_VLLM_RUNTIME_CONFIG}",
+    "input_jsonl_path": "${T12_INPUT_JSONL_PATH}",
+    "synthetic_declaration_path": "${T12_SYNTHETIC_DECLARATION_PATH}",
+    "start_timestamp": "${T12_START_TIMESTAMP}",
+    "end_timestamp": "${T12_END_TIMESTAMP}"
   },
   "execution_notes": {
-    "persistent_vllm_engine": "implemented_in_stage_c2",
+    "persistent_vllm_engine": "implemented_in_stage_c2a",
     "preflight_required_before_inference": true,
-    "cleanup_trap_limited_to_node_local_temp": true
+    "cleanup_trap_limited_to_node_local_temp": true,
+    "batch_runner_script": "scripts/t12_cluster_run_batch.py"
   }
 }

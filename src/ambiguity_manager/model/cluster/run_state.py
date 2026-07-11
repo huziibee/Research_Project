@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import json
 from dataclasses import dataclass
+from enum import StrEnum
 from pathlib import Path
 from typing import Any
 
@@ -25,6 +26,66 @@ class MergeValidationError(ValueError):
     """Raised when shard merge validation fails."""
 
 
+class ShardRunDecision(StrEnum):
+    SKIP_EXACT_COMPLETED = "skip_exact_completed"
+    RUN_NEW = "run_new"
+    RETRY_FAILED = "retry_failed"
+    RETRY_INCOMPLETE = "retry_incomplete"
+    BLOCK_COMPLETED_CONFLICT = "block_completed_conflict"
+    BLOCK_CORRUPTED_COMPLETION = "block_corrupted_completion"
+    BLOCK_IDENTITY_MISMATCH = "block_identity_mismatch"
+
+
+_BACKEND_START_DECISIONS = frozenset(
+    {
+        ShardRunDecision.RUN_NEW,
+        ShardRunDecision.RETRY_FAILED,
+        ShardRunDecision.RETRY_INCOMPLETE,
+    }
+)
+
+_OVERWRITE_DECISIONS = frozenset(
+    {
+        ShardRunDecision.RETRY_FAILED,
+        ShardRunDecision.RETRY_INCOMPLETE,
+    }
+)
+
+_COMPLETED_IDENTITY_FIELDS = (
+    "run_id",
+    "shard_id",
+    "input_plan_hash",
+    "input_shard_hash",
+    "expected_record_ids",
+    "output_record_count",
+    "output_sha256",
+    "backend_identifier",
+    "backend_config_hash",
+    "model_repository",
+    "model_revision",
+    "container_sha256",
+)
+
+_RETRY_IDENTITY_FIELDS = (
+    "run_id",
+    "shard_id",
+    "input_plan_hash",
+    "input_shard_hash",
+    "expected_record_ids",
+    "backend_identifier",
+    "backend_config_hash",
+    "model_repository",
+    "model_revision",
+    "container_sha256",
+)
+
+_REQUIRED_MANIFEST_IDENTITY_FIELDS = (
+    "backend_identifier",
+    "backend_config_hash",
+    "model_repository",
+)
+
+
 @dataclass(frozen=True)
 class ResumeIdentity:
     run_id: str
@@ -34,19 +95,145 @@ class ResumeIdentity:
     expected_record_ids: tuple[str, ...]
     output_record_count: int
     output_sha256: str
+    backend_identifier: str
+    backend_config_hash: str
     model_repository: str
     model_revision: str
     container_sha256: str
-    backend_config_hash: str
 
 
 @dataclass(frozen=True)
 class ResumeDecision:
-    skip: bool
+    decision: ShardRunDecision
     reason: str
 
+    @property
+    def skip(self) -> bool:
+        return self.decision == ShardRunDecision.SKIP_EXACT_COMPLETED
+
+    @property
+    def starts_backend(self) -> bool:
+        return self.decision in _BACKEND_START_DECISIONS
+
+    @property
+    def allow_overwrite(self) -> bool:
+        return self.decision in _OVERWRITE_DECISIONS
+
     def to_dict(self) -> dict[str, Any]:
-        return {"skip": self.skip, "reason": self.reason}
+        return {
+            "decision": self.decision.value,
+            "skip": self.skip,
+            "reason": self.reason,
+        }
+
+
+def _manifest_identity_value(manifest: ShardManifest, field: str) -> Any:
+    if field == "expected_record_ids":
+        return manifest.expected_ids
+    return getattr(manifest, field)
+
+
+def _missing_manifest_identity(
+    manifest: ShardManifest,
+    *,
+    for_completed: bool,
+) -> ResumeDecision | None:
+    for field in _REQUIRED_MANIFEST_IDENTITY_FIELDS:
+        value = getattr(manifest, field, "")
+        if not value:
+            return ResumeDecision(
+                decision=ShardRunDecision.BLOCK_CORRUPTED_COMPLETION
+                if for_completed
+                else ShardRunDecision.BLOCK_IDENTITY_MISMATCH,
+                reason=(
+                    f"corrupted_completion:missing_{field}"
+                    if for_completed
+                    else f"identity_mismatch:missing_{field}"
+                ),
+            )
+    return None
+
+
+def _identity_mismatch(
+    manifest: ShardManifest,
+    *,
+    identity: ResumeIdentity,
+    fields: tuple[str, ...],
+    prefix: str,
+) -> ResumeDecision | None:
+    for field in fields:
+        observed = _manifest_identity_value(manifest, field)
+        expected = getattr(identity, field)
+        if observed != expected:
+            return ResumeDecision(
+                decision=ShardRunDecision.BLOCK_COMPLETED_CONFLICT
+                if prefix == "completed_conflict"
+                else ShardRunDecision.BLOCK_IDENTITY_MISMATCH,
+                reason=f"{prefix}:{field}",
+            )
+    return None
+
+
+def evaluate_resume(
+    manifest: ShardManifest,
+    *,
+    identity: ResumeIdentity,
+    parsed_output_path: Path,
+) -> ResumeDecision:
+    if manifest.status == "completed":
+        missing = _missing_manifest_identity(manifest, for_completed=True)
+        if missing is not None:
+            return missing
+
+        conflict = _identity_mismatch(
+            manifest,
+            identity=identity,
+            fields=_COMPLETED_IDENTITY_FIELDS,
+            prefix="completed_conflict",
+        )
+        if conflict is not None:
+            return conflict
+
+        if not parsed_output_path.is_file():
+            return ResumeDecision(
+                decision=ShardRunDecision.BLOCK_CORRUPTED_COMPLETION,
+                reason="corrupted_completion:parsed_output_missing",
+            )
+
+        observed_hash = sha256_file(parsed_output_path)
+        if observed_hash != manifest.output_sha256:
+            return ResumeDecision(
+                decision=ShardRunDecision.BLOCK_CORRUPTED_COMPLETION,
+                reason="corrupted_completion:output_file_sha256",
+            )
+        if observed_hash != identity.output_sha256:
+            return ResumeDecision(
+                decision=ShardRunDecision.BLOCK_CORRUPTED_COMPLETION,
+                reason="corrupted_completion:output_sha256",
+            )
+
+        return ResumeDecision(
+            decision=ShardRunDecision.SKIP_EXACT_COMPLETED,
+            reason="exact_completed_shard",
+        )
+
+    missing = _missing_manifest_identity(manifest, for_completed=False)
+    if missing is not None:
+        return missing
+
+    mismatch = _identity_mismatch(
+        manifest,
+        identity=identity,
+        fields=_RETRY_IDENTITY_FIELDS,
+        prefix="identity_mismatch",
+    )
+    if mismatch is not None:
+        return mismatch
+
+    if manifest.status == "failed":
+        return ResumeDecision(decision=ShardRunDecision.RETRY_FAILED, reason="retry_failed_shard")
+
+    return ResumeDecision(decision=ShardRunDecision.RETRY_INCOMPLETE, reason="retry_incomplete_shard")
 
 
 @dataclass(frozen=True)
@@ -67,40 +254,6 @@ class MergeResult:
             "output_path": self.output_path,
             "rejection_reasons": list(self.rejection_reasons),
         }
-
-
-def evaluate_resume(
-    manifest: ShardManifest,
-    *,
-    identity: ResumeIdentity,
-    parsed_output_path: Path,
-) -> ResumeDecision:
-    if manifest.status != "completed":
-        return ResumeDecision(skip=False, reason="shard_not_completed")
-
-    checks = (
-        ("run_id", manifest.run_id, identity.run_id),
-        ("shard_id", manifest.shard_id, identity.shard_id),
-        ("input_plan_hash", manifest.input_plan_hash, identity.input_plan_hash),
-        ("input_shard_hash", manifest.input_shard_hash, identity.input_shard_hash),
-        ("expected_record_ids", manifest.expected_ids, identity.expected_record_ids),
-        ("output_record_count", manifest.output_record_count, identity.output_record_count),
-        ("output_sha256", manifest.output_sha256, identity.output_sha256),
-        ("model_revision", manifest.model_revision, identity.model_revision),
-        ("container_sha256", manifest.container_sha256, identity.container_sha256),
-    )
-    for field, observed, expected in checks:
-        if observed != expected:
-            return ResumeDecision(skip=False, reason=f"mismatch:{field}")
-
-    if not parsed_output_path.is_file():
-        return ResumeDecision(skip=False, reason="parsed_output_missing")
-
-    observed_hash = sha256_file(parsed_output_path)
-    if observed_hash != identity.output_sha256:
-        return ResumeDecision(skip=False, reason="mismatch:output_file_sha256")
-
-    return ResumeDecision(skip=True, reason="exact_completed_shard")
 
 
 def load_manifest(path: Path) -> ShardManifest:

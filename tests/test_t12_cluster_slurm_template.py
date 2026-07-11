@@ -76,8 +76,16 @@ class T12ClusterSlurmTemplateTests(unittest.TestCase):
 
     def test_preflight_before_model_execution(self) -> None:
         preflight_index = self.sbatch.index("t12_cluster_preflight.py")
-        self.assertIn("Stage C2", self.sbatch)
-        self.assertGreater(preflight_index, 0)
+        runner_index = self.sbatch.index("t12_cluster_run_batch.py")
+        self.assertIn("Stage C2A", self.sbatch)
+        self.assertGreater(runner_index, preflight_index)
+
+    def test_spawn_method_exported(self) -> None:
+        self.assertIn("VLLM_WORKER_MULTIPROC_METHOD=spawn", self.sbatch)
+        self.assertEqual(
+            self.template["environment"]["vllm_worker_multiprocess_method"],
+            "spawn",
+        )
 
     def test_placeholders_present(self) -> None:
         for key in ("run_id", "shard_id", "config_path"):
