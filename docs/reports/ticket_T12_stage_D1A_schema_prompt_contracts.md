@@ -1,9 +1,9 @@
 # T12 Stage D1A — Schema-v2 Prompt and Ownership Contracts (Hardened)
 
-**Stage:** D1A (contracts only; no structured decoding)  
-**Branch:** `feature/t12-cluster-redesign`  
-**Starting SHA:** `59e766f7309800780f7d41dd09848127f0da8f64`  
-**Date:** 2026-07-11  
+**Stage:** D1A (contracts only; no structured decoding)
+**Branch:** `feature/t12-cluster-redesign`
+**Starting SHA:** `59e766f7309800780f7d41dd09848127f0da8f64`
+**Date:** 2026-07-11
 **Governance:** DEV-20260711-001 (synthetic-only preparatory work; T11 remains BLOCKED)
 
 ## Scope
