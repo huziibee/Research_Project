@@ -22,6 +22,31 @@ No live cluster execution, model weights, or tokenizer snapshot loading occurs i
 
 This pass corrected live-run integration defects identified during D-Final archive review.
 
+### Cross-platform pipeline-contract identity (2026-07-11 live-smoke red evidence)
+
+The first D-Final live run blocked on `config.pipeline_contract_hash mismatch` even though the parsed pipeline contract JSON was identical between Windows packaging and Linux extraction. Red evidence from the committed contract file:
+
+| Identity | SHA-256 |
+|---|---|
+| LF raw file bytes | `94eb2d777fb6e9bbebc90b7c8d727cec2e2bebfcf0acbcd276144f2c71d34b64` |
+| CRLF raw file bytes | `1c4543e29121ce1e390ea60d91c51530cb180f8624d1e7932c4d9524a186599b` |
+| Canonical JSON (`canonical_json_sha256_v1`) | `786cf6e7213fa3519ba7797464c25495f790cdf4ebc0c139c433168bd703b758` |
+
+LF and CRLF raw-byte digests represented the same parsed JSON object. Line endings and indentation are not contract semantics.
+
+The authoritative identity is now `generation_pipeline_contract_hash()` beside `load_pipeline_contract()`, hashing `canonical_json_bytes(parsed_object)`. D-Final config records:
+
+```json
+"pipeline_contract_hash_method": "canonical_json_sha256_v1",
+"pipeline_contract_hash": "786cf6e7213fa3519ba7797464c25495f790cdf4ebc0c139c433168bd703b758"
+```
+
+`run_manifest.json` retains both the canonical hash (acceptance) and optional `pipeline_contract_file_sha256` (diagnostic raw bytes).
+
+### Config-load BLOCKED-evidence boundary
+
+`scripts/t12_run_d_final_smoke.py` no longer calls `load_d_final_config()` before the runner. The runner creates the unique run directory first, then loads config. Config or contract-identity failures after directory creation write an honest BLOCKED package with empty JSONL files, zero engine-start count, and no fabricated response-mode verification file.
+
 ### Self-referential source-SHA defect
 
 The prior draft committed `source_commit_sha` inside `t12_d_final_smoke.json`, creating a value that could never equal the commit containing the config. The committed config now uses:

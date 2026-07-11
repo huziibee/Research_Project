@@ -80,20 +80,16 @@ def build_parser() -> argparse.ArgumentParser:
 
 
 def main(argv: list[str] | None = None) -> int:
-    from ambiguity_manager.model.cluster.generation_pipeline_runner import (
-        load_d_final_config,
-        run_d_final_smoke,
-    )
+    from ambiguity_manager.model.cluster.generation_pipeline_runner import run_d_final_smoke
 
     parser = build_parser()
     args = parser.parse_args(argv)
     root = args.repo_root or repo_root()
-    config = load_d_final_config(args.config, root=root)
     preflight = json.loads(args.preflight_result.read_text(encoding="utf-8"))
     result = run_d_final_smoke(
         run_dir=args.run_dir,
         preflight_result=preflight,
-        config=config,
+        config_path=args.config,
         root=root,
         source_identity_manifest_path=args.source_identity_manifest,
         source_archive=args.source_archive,

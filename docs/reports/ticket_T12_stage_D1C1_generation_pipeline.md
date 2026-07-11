@@ -180,7 +180,21 @@ No SSH, Slurm, Apptainer, vLLM engine, model weights, or tokenizer accessed.
 
 **Path:** `configs/model/t12_generation_pipeline_contract.json`
 **Contract version:** `1.1.0`
-**SHA-256:** `94eb2d777fb6e9bbebc90b7c8d727cec2e2bebfcf0acbcd276144f2c71d34b64`
+
+**Authoritative identity (portable):**
+
+| Method | SHA-256 |
+|---|---|
+| `canonical_json_sha256_v1` | `786cf6e7213fa3519ba7797464c25495f790cdf4ebc0c139c433168bd703b758` |
+
+**Historical raw-byte digests (diagnostic only; not cross-platform authoritative):**
+
+| Form | SHA-256 |
+|---|---|
+| LF raw bytes | `94eb2d777fb6e9bbebc90b7c8d727cec2e2bebfcf0acbcd276144f2c71d34b64` |
+| CRLF raw bytes | `1c4543e29121ce1e390ea60d91c51530cb180f8624d1e7932c4d9524a186599b` |
+
+Contract semantics were unchanged across these representations; only file-byte encoding differed.
 
 Records mandatory integrity context, unconditional integrity check, non-retryable unknown generator failures, and `semantic_correctness_status_not_evaluated: not_evaluated`.
 

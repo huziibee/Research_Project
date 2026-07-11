@@ -11,6 +11,10 @@ from pathlib import Path
 from typing import Any
 
 from ambiguity_manager.governance.hashing import sha256_hex
+from ambiguity_manager.model.repair_prompt import (
+    PIPELINE_CONTRACT_HASH_METHOD,
+    generation_pipeline_contract_hash,
+)
 from ambiguity_manager.model.cluster.generation_pipeline_runner import (
     load_d_final_config,
     load_source_identity_manifest,
@@ -36,6 +40,8 @@ CONFIG_PATH = REPO_ROOT / "configs/cluster/t12_d_final_smoke.json"
 INPUT_PATH = REPO_ROOT / "tests/fixtures/schema_v2/t12_d_final_smoke_inputs.jsonl"
 SOURCE_SHA = "ef4e7b0124baac31a77696bb4365535b02c55067"
 CONTAINER_SHA = "d404bdf414e1b8f2d5af1568d0565d4e2da8435f26325b281fb28b9597c548d1"
+CANONICAL_PIPELINE_HASH = "786cf6e7213fa3519ba7797464c25495f790cdf4ebc0c139c433168bd703b758"
+PIPELINE_CONTRACT_PATH = REPO_ROOT / "configs/model/t12_generation_pipeline_contract.json"
 
 
 def _preflight(**overrides: object) -> dict[str, Any]:
@@ -274,6 +280,77 @@ class T12ClusterGenerationPipelineRunnerTests(unittest.TestCase):
         payload = json.loads(CONFIG_PATH.read_text(encoding="utf-8"))
         self.assertNotIn("source_commit_sha", payload)
         self.assertEqual(payload["source_identity_mode"], "runtime_source_manifest_required")
+        self.assertEqual(payload["pipeline_contract_hash_method"], PIPELINE_CONTRACT_HASH_METHOD)
+        self.assertEqual(payload["pipeline_contract_hash"], CANONICAL_PIPELINE_HASH)
+
+    def test_crlf_pipeline_contract_file_does_not_reject_config(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            tmp_path = Path(tmp)
+            crlf_contract = tmp_path / "pipeline.json"
+            payload = json.loads(PIPELINE_CONTRACT_PATH.read_text(encoding="utf-8"))
+            crlf_contract.write_bytes(
+                (json.dumps(payload, indent=2, sort_keys=True) + "\n")
+                .encode("utf-8")
+                .replace(b"\n", b"\r\n")
+            )
+            self.assertEqual(generation_pipeline_contract_hash(crlf_contract), CANONICAL_PIPELINE_HASH)
+
+    def test_semantic_pipeline_contract_mutation_rejects_config(self) -> None:
+        payload = json.loads(PIPELINE_CONTRACT_PATH.read_text(encoding="utf-8"))
+        payload["contract_version"] = "9.9.9"
+        self.assertNotEqual(generation_pipeline_contract_hash(payload), CANONICAL_PIPELINE_HASH)
+        config_payload = json.loads(CONFIG_PATH.read_text(encoding="utf-8"))
+        errors = validate_d_final_config(config_payload, root=REPO_ROOT)
+        self.assertEqual(errors, [])
+        config_payload["pipeline_contract_hash"] = "0" * 64
+        errors = validate_d_final_config(config_payload, root=REPO_ROOT)
+        self.assertIn("config.pipeline_contract_hash mismatch", errors)
+
+    def test_invalid_config_after_directory_creation_writes_blocked_evidence(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            tmp_path = Path(tmp)
+            run_dir = tmp_path / "run-blocked-config"
+            bad_config = tmp_path / "bad_config.json"
+            payload = json.loads(CONFIG_PATH.read_text(encoding="utf-8"))
+            payload["pipeline_contract_hash"] = "0" * 64
+            bad_config.write_text(json.dumps(payload, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+            manifest_path, archive = _source_identity_bundle(tmp_path)
+            result = run_d_final_smoke(
+                run_dir=run_dir,
+                preflight_result=_preflight(),
+                config_path=bad_config,
+                root=REPO_ROOT,
+                source_identity_manifest_path=manifest_path,
+                source_archive=archive,
+                slurm_log_path="/cluster/logs/t12-d-final-smoke.log",
+                measurement_timestamp="2026-07-11T22:00:00Z",
+            )
+            self.assertEqual(result.status, "BLOCKED")
+            self.assertTrue(run_dir.is_dir())
+            self.assertTrue((run_dir / "summary.json").is_file())
+            summary = json.loads((run_dir / "summary.json").read_text(encoding="utf-8"))
+            self.assertEqual(summary["status"], "BLOCKED")
+            self.assertEqual(summary["generation_call_count"], 0)
+            self.assertFalse((run_dir / "response_mode_verification.json").exists())
+            for filename in (
+                "raw_attempts.jsonl",
+                "attempt_ledgers.jsonl",
+                "accepted_predictions.jsonl",
+                "record_results.jsonl",
+            ):
+                self.assertEqual((run_dir / filename).read_text(encoding="utf-8"), "")
+
+    def test_existing_run_directory_is_not_overwritten(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            tmp_path = Path(tmp)
+            run_dir = tmp_path / "run-test"
+            run_dir.mkdir()
+            sentinel = run_dir / "sentinel.txt"
+            sentinel.write_text("keep", encoding="utf-8")
+            result = self._run(tmp_path)
+            self.assertEqual(result.status, "BLOCKED")
+            self.assertEqual(sentinel.read_text(encoding="utf-8"), "keep")
+            self.assertFalse((run_dir / "run_manifest.json").exists())
 
     def test_extracted_source_without_git_passes_source_verification(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:

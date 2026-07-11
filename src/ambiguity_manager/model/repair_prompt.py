@@ -12,6 +12,7 @@ from ambiguity_manager.model.prediction_contract import model_semantic_output_sc
 from ambiguity_manager.model.prompt_builder import PromptBuildRequest
 
 DEFAULT_PIPELINE_CONTRACT_REL = Path("configs") / "model" / "t12_generation_pipeline_contract.json"
+PIPELINE_CONTRACT_HASH_METHOD = "canonical_json_sha256_v1"
 
 
 @dataclass(frozen=True)
@@ -35,7 +36,26 @@ def load_pipeline_contract(path: Path | None = None) -> dict[str, object]:
     from ambiguity_manager.paths import repo_root
 
     target = path or (repo_root() / DEFAULT_PIPELINE_CONTRACT_REL)
-    return json.loads(target.read_text(encoding="utf-8"))
+    payload = json.loads(target.read_text(encoding="utf-8"))
+    if not isinstance(payload, dict):
+        raise ValueError("pipeline contract must be a JSON object")
+    return payload
+
+
+def generation_pipeline_contract_hash(
+    contract_or_path: Path | dict[str, object] | None = None,
+) -> str:
+    if contract_or_path is None:
+        contract = load_pipeline_contract()
+    elif isinstance(contract_or_path, Path):
+        contract = load_pipeline_contract(contract_or_path)
+    elif isinstance(contract_or_path, dict):
+        contract = contract_or_path
+    else:
+        raise TypeError("contract_or_path must be a Path, dict, or None")
+    if not isinstance(contract, dict):
+        raise ValueError("pipeline contract must be a JSON object")
+    return sha256_hex(canonical_json_bytes(contract))
 
 
 def build_repair_prompt(

@@ -49,8 +49,8 @@ class T12DFinalSmokeCliTests(unittest.TestCase):
     def test_invalid_config_fails_before_heavy_imports(self) -> None:
         module = _load_cli_module()
         with patch(
-            "ambiguity_manager.model.cluster.generation_pipeline_runner.load_d_final_config",
-            side_effect=RuntimeError("invalid config"),
+            "ambiguity_manager.model.cluster.generation_pipeline_runner.run_d_final_smoke",
+            side_effect=RuntimeError("runner blocked"),
         ):
             with self.assertRaises(RuntimeError):
                 module.main(
@@ -71,6 +71,9 @@ class T12DFinalSmokeCliTests(unittest.TestCase):
                         "2026-07-11T22:00:00Z",
                     ]
                 )
+
+    def test_cli_does_not_load_config_before_runner(self) -> None:
+        self.assertNotIn("load_d_final_config(", self.cli_source)
 
     def test_no_cluster_execution_in_tests(self) -> None:
         self.assertNotIn("ssh", self.cli_source.lower())

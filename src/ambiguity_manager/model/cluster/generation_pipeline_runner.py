@@ -31,7 +31,11 @@ from ambiguity_manager.model.prediction_contract import (
 )
 from ambiguity_manager.model.prompt_builder import PromptBuildRequest, build_prompt_messages
 from ambiguity_manager.model.qwen3_renderer import Qwen3ChatTemplateRenderer, RunScopedVerifiedRenderer
-from ambiguity_manager.model.repair_prompt import load_pipeline_contract
+from ambiguity_manager.model.repair_prompt import (
+    PIPELINE_CONTRACT_HASH_METHOD,
+    generation_pipeline_contract_hash,
+    load_pipeline_contract,
+)
 from ambiguity_manager.model.response_mode_probe import (
     ProbeCandidateResult,
     ResponseModeProbePolicy,
@@ -113,6 +117,7 @@ class DFinalSmokeConfig:
     semantic_schema_hash: str
     structured_decode_contract_hash: str
     pipeline_contract_hash: str
+    pipeline_contract_hash_method: str
     references: dict[str, str]
     tokenizer_snapshot: dict[str, Any]
     response_mode_candidate_order: tuple[str, ...]
@@ -137,6 +142,7 @@ class DFinalSmokeConfig:
             "semantic_schema_hash": self.semantic_schema_hash,
             "structured_decode_contract_hash": self.structured_decode_contract_hash,
             "pipeline_contract_hash": self.pipeline_contract_hash,
+            "pipeline_contract_hash_method": self.pipeline_contract_hash_method,
             "references": dict(self.references),
             "tokenizer_snapshot": dict(self.tokenizer_snapshot),
             "response_mode_candidate_order": list(self.response_mode_candidate_order),
@@ -305,7 +311,10 @@ def validate_d_final_config(payload: dict[str, Any], *, root: Path) -> list[str]
         errors.append("config.structured_decode_contract_hash mismatch")
 
     pipeline_path = root / payload["references"]["pipeline_contract"]
-    if payload.get("pipeline_contract_hash") != sha256_hex(pipeline_path.read_bytes()):
+    if payload.get("pipeline_contract_hash_method") != PIPELINE_CONTRACT_HASH_METHOD:
+        errors.append("config.pipeline_contract_hash_method mismatch")
+    observed_pipeline_hash = generation_pipeline_contract_hash(pipeline_path)
+    if payload.get("pipeline_contract_hash") != observed_pipeline_hash:
         errors.append("config.pipeline_contract_hash mismatch")
 
     if payload.get("response_mode_candidate_order") != ["default", "enable_thinking_false"]:
@@ -341,6 +350,7 @@ def load_d_final_config(path: Path | str | None = None, *, root: Path | None = N
         semantic_schema_hash=str(payload["semantic_schema_hash"]),
         structured_decode_contract_hash=str(payload["structured_decode_contract_hash"]),
         pipeline_contract_hash=str(payload["pipeline_contract_hash"]),
+        pipeline_contract_hash_method=str(payload["pipeline_contract_hash_method"]),
         references={key: str(value) for key, value in payload["references"].items()},
         tokenizer_snapshot=dict(payload["tokenizer_snapshot"]),
         response_mode_candidate_order=tuple(str(item) for item in payload["response_mode_candidate_order"]),
@@ -672,19 +682,20 @@ def _write_evidence_package(
     run_id: str,
     rejection_reasons: tuple[str, ...],
     measurement_timestamp: str,
-    config: DFinalSmokeConfig,
+    manifest_base: dict[str, Any],
+    config: DFinalSmokeConfig | None = None,
     probe_results: list[ProbeCandidateResult] | None = None,
     verification: RunScopedResponseModeVerification | None = None,
     raw_attempt_rows: list[dict[str, Any]] | None = None,
     ledger_rows: list[dict[str, Any]] | None = None,
     accepted_rows: list[dict[str, Any]] | None = None,
     record_result_rows: list[dict[str, Any]] | None = None,
-    manifest_base: dict[str, Any],
     selected_mode: str | None = None,
     accepted_count: int = 0,
     rejected_after_attempts_count: int = 0,
     rejected_non_retryable_count: int = 0,
 ) -> None:
+    _ = config
     probe_payload = {
         "candidates": [item.to_dict() for item in (probe_results or [])],
         "selected_mode": selected_mode,
@@ -706,6 +717,7 @@ def _write_evidence_package(
         "response_mode": selected_mode,
         "rejection_reasons": list(rejection_reasons),
         "measurement_timestamp": measurement_timestamp,
+        "generation_call_count": int(manifest_base.get("generation_call_count", 0)),
     }
     _atomic_write_json(run_dir / "summary.json", summary)
     manifest = _finalize_manifest(run_dir, manifest_base=manifest_base)
@@ -758,7 +770,6 @@ def run_d_final_smoke(
     snapshot_path: Path | str | None = None,
 ) -> DFinalRunResult:
     base = root or repo_root()
-    active_config = config or load_d_final_config(config_path, root=base)
     run_id = run_dir.name
 
     if run_dir.exists():
@@ -794,19 +805,60 @@ def run_d_final_smoke(
     preflight_hash = sha256_hex(canonical_json_bytes(preflight_result))
     manifest_base: dict[str, Any] = {
         "run_id": run_id,
-        "config_hash": sha256_hex(canonical_json_bytes(active_config.to_dict())),
         "preflight_hash": preflight_hash,
-        "model_repository": active_config.model_repository,
-        "model_revision": active_config.model_revision,
-        "container_sha256": active_config.container_sha256,
-        "semantic_schema_hash": active_config.semantic_schema_hash,
-        "structured_decode_contract_hash": active_config.structured_decode_contract_hash,
-        "pipeline_contract_hash": active_config.pipeline_contract_hash,
-        "input_hash": active_config.synthetic_inputs["input_hash"],
         "engine_start_count": 0,
+        "generation_call_count": 0,
         "semantic_correctness_status": SEMANTIC_CORRECTNESS_NOT_EVALUATED,
         "slurm_log_path": slurm_log_path,
     }
+
+    try:
+        active_config = config or load_d_final_config(config_path, root=base)
+    except DFinalRunnerError as exc:
+        rejection_reasons = tuple(str(exc).split("; "))
+        pipeline_path = base / "configs/model/t12_generation_pipeline_contract.json"
+        if pipeline_path.is_file():
+            manifest_base["pipeline_contract_file_sha256"] = sha256_hex(pipeline_path.read_bytes())
+        _write_evidence_package(
+            run_dir,
+            status="BLOCKED",
+            run_id=run_id,
+            rejection_reasons=rejection_reasons,
+            measurement_timestamp=measurement_timestamp,
+            manifest_base={
+                **manifest_base,
+                "status": "BLOCKED",
+                "rejection_reasons": list(rejection_reasons),
+            },
+        )
+        return DFinalRunResult(
+            status="BLOCKED",
+            run_id=run_id,
+            rejection_reasons=rejection_reasons,
+            run_dir=str(run_dir),
+            engine_started=False,
+            response_mode=None,
+            accepted_count=0,
+            rejected_after_attempts_count=0,
+            rejected_non_retryable_count=0,
+            semantic_correctness_status=SEMANTIC_CORRECTNESS_NOT_EVALUATED,
+        )
+
+    pipeline_path = base / active_config.references["pipeline_contract"]
+    manifest_base.update(
+        {
+            "config_hash": sha256_hex(canonical_json_bytes(active_config.to_dict())),
+            "model_repository": active_config.model_repository,
+            "model_revision": active_config.model_revision,
+            "container_sha256": active_config.container_sha256,
+            "semantic_schema_hash": active_config.semantic_schema_hash,
+            "structured_decode_contract_hash": active_config.structured_decode_contract_hash,
+            "pipeline_contract_hash": active_config.pipeline_contract_hash,
+            "pipeline_contract_hash_method": active_config.pipeline_contract_hash_method,
+            "pipeline_contract_file_sha256": sha256_hex(pipeline_path.read_bytes()),
+            "input_hash": active_config.synthetic_inputs["input_hash"],
+        }
+    )
 
     rejections = _validate_preflight(preflight_result, config=active_config)
 
