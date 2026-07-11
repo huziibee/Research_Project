@@ -331,15 +331,19 @@ class T12EnvironmentCompatibilityTests(unittest.TestCase):
             )
         )
         self.assertIsNone(register["selected_model"])
-        self.assertEqual(register["entries"], [])
 
-    def test_licence_register_entries_empty(self) -> None:
+    def test_licence_register_has_no_selected_entry(self) -> None:
         register = json.loads(
             (ROOT / "configs" / "licences" / "model_licence_register.json").read_text(
                 encoding="utf-8"
             )
         )
-        self.assertEqual(register["entries"], [])
+        selected_entries = [
+            entry
+            for entry in register["entries"]
+            if entry.get("verification_status") == "selected"
+        ]
+        self.assertEqual(selected_entries, [])
 
     def test_manifest_not_planned_unverified_after_slice2(self) -> None:
         self.assertNotEqual(self.inference_manifest["environment_status"], "planned_unverified")

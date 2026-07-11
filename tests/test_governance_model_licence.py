@@ -48,8 +48,15 @@ def _candidate_entry(
         "gated_access_evidence": None,
         "inference_checkpoint_ref": _checkpoint_ref(),
         "training_checkpoint_ref": _checkpoint_ref(),
+        "estimated_download_bytes": 1000000,
+        "parameter_count": 1000000000,
+        "architecture": "LlamaForCausalLM",
+        "context_limit": 4096,
+        "redistribution_restrictions": "none documented",
+        "adapter_release_restrictions": "none documented",
+        "acceptable_use_restrictions": "none documented",
         "rejection_reason": None,
-        "verified_at": "2026-07-11",
+        "verification_date": "2026-07-11",
         "verifier": "AUTHOR-01",
     }
 
