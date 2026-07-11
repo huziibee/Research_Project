@@ -8,6 +8,7 @@ import json
 import os
 import re
 import shutil
+import stat
 from dataclasses import dataclass
 from datetime import datetime, timezone
 from pathlib import Path
@@ -125,6 +126,36 @@ class DryRunResult:
 class PreflightResult:
     checks: dict[str, bool]
     errors: list[str]
+
+
+@dataclass(frozen=True)
+class CheckpointDownloadPaths:
+    repo_root: Path
+    manifest_path: Path
+    raw_log_dir: Path
+    register_path: Path
+    hub_cache_dir: Path
+
+    def manifest_relpath(self) -> str:
+        return self.manifest_path.relative_to(self.repo_root).as_posix()
+
+
+def resolve_download_paths(
+    repo_root: Path,
+    *,
+    manifest_path: Path | None = None,
+    raw_log_dir: Path | None = None,
+    register_path: Path | None = None,
+    hub_cache_dir: Path | None = None,
+) -> CheckpointDownloadPaths:
+    resolved_root = repo_root.resolve()
+    return CheckpointDownloadPaths(
+        repo_root=resolved_root,
+        manifest_path=(manifest_path or (resolved_root / EVIDENCE_REL)).resolve(),
+        raw_log_dir=(raw_log_dir or (resolved_root / RAW_LOG_DIR_REL)).resolve(),
+        register_path=(register_path or (resolved_root / REGISTER_REL)).resolve(),
+        hub_cache_dir=(hub_cache_dir or resolve_hub_cache_dir()).resolve(),
+    )
 
 
 def utc_now_iso() -> str:
@@ -247,7 +278,80 @@ def free_disk_bytes(path: Path) -> int:
     return int(usage.free)
 
 
+@dataclass(frozen=True)
+class CacheAccounting:
+    logical_snapshot_bytes: int
+    downloaded_payload_bytes: int
+    physical_cache_bytes: int
+    physical_cache_growth_bytes: int
+    pre_existing_physical_cache_bytes: int
+    remaining_cap_headroom_bytes: int
+
+
+def physical_cache_bytes(cache_dir: Path) -> int:
+    """Sum regular-file storage once; ignore symlinks; dedupe by device/inode."""
+    if not cache_dir.exists():
+        return 0
+    seen: set[tuple[int, int]] = set()
+    total = 0
+    for path in cache_dir.rglob("*"):
+        try:
+            info = path.lstat()
+        except OSError:
+            continue
+        if not stat.S_ISREG(info.st_mode):
+            continue
+        key = (info.st_dev, info.st_ino)
+        if key in seen:
+            continue
+        seen.add(key)
+        total += info.st_size
+    return total
+
+
+def logical_snapshot_bytes(snapshot_dir: Path) -> int:
+    """Sum logical file sizes represented in a snapshot (symlink targets counted once)."""
+    if not snapshot_dir.is_dir():
+        return 0
+    total = 0
+    for path in snapshot_dir.rglob("*"):
+        if path.is_file():
+            total += path.stat().st_size
+    return total
+
+
+def build_cache_accounting(
+    *,
+    snapshot_dir: Path,
+    dry_run_inventory: list[dict[str, Any]],
+    cache_dir: Path,
+    pre_existing_physical_cache_bytes: int | None = None,
+) -> CacheAccounting:
+    pre_existing = (
+        pre_existing_physical_cache_bytes
+        if pre_existing_physical_cache_bytes is not None
+        else physical_cache_bytes(cache_dir)
+    )
+    physical_after = physical_cache_bytes(cache_dir)
+    logical = sum(int(item["size_bytes"]) for item in dry_run_inventory)
+    measured_logical = logical_snapshot_bytes(snapshot_dir)
+    if measured_logical != logical:
+        raise ValueError(
+            f"logical snapshot bytes mismatch expected={logical} measured={measured_logical}"
+        )
+    downloaded_payload = logical
+    return CacheAccounting(
+        logical_snapshot_bytes=logical,
+        downloaded_payload_bytes=downloaded_payload,
+        physical_cache_bytes=physical_after,
+        physical_cache_growth_bytes=max(physical_after - pre_existing, 0),
+        pre_existing_physical_cache_bytes=pre_existing,
+        remaining_cap_headroom_bytes=MAXIMUM_CUMULATIVE_DOWNLOAD_BYTES - physical_after,
+    )
+
+
 def directory_size_bytes(path: Path) -> int:
+    """Legacy recursive size helper; do not use for Hub cache cap accounting."""
     if not path.exists():
         return 0
     total = 0
@@ -276,8 +380,8 @@ def repo_contains_checkpoint_weights(repo_root: Path) -> list[str]:
     return violations
 
 
-def load_register(repo_root: Path) -> dict[str, Any]:
-    return json.loads((repo_root / REGISTER_REL).read_text(encoding="utf-8"))
+def load_register(register_path: Path) -> dict[str, Any]:
+    return json.loads(register_path.read_text(encoding="utf-8"))
 
 
 def find_register_entry(register: dict[str, Any], entry_id: str) -> dict[str, Any] | None:
@@ -418,7 +522,7 @@ def perform_dry_run(
 
     pre_existing = cumulative_cache_bytes
     if pre_existing is None:
-        pre_existing = directory_size_bytes(cache_dir)
+        pre_existing = physical_cache_bytes(cache_dir)
 
     errors.extend(validate_size_tolerance(required_bytes=total_required))
     errors.extend(validate_cumulative_cap(cumulative_bytes=pre_existing, additional_bytes=total_required))
@@ -448,6 +552,7 @@ def perform_preflight(
     repo_id: str,
     revision: str,
     cache_dir: Path,
+    register_path: Path | None = None,
     token: str | None = None,
     hub: HubClient | None = None,
     free_bytes: int | None = None,
@@ -456,7 +561,7 @@ def perform_preflight(
     checks: dict[str, bool] = {}
     errors: list[str] = []
 
-    register = load_register(repo_root)
+    register = load_register(register_path or (repo_root / REGISTER_REL))
     entry = find_register_entry(register, AUTHORIZED_CANDIDATE_ENTRY_ID)
     candidate_errors = validate_candidate_eligibility(entry)
     checks["candidate_entry_eligible"] = not candidate_errors
@@ -495,7 +600,7 @@ def perform_preflight(
 
     measured_cache = cumulative_cache_bytes
     if measured_cache is None:
-        measured_cache = directory_size_bytes(cache_dir)
+        measured_cache = physical_cache_bytes(cache_dir)
     cap_errors = validate_cumulative_cap(
         cumulative_bytes=measured_cache,
         additional_bytes=EXPECTED_DOWNLOAD_BYTES,
@@ -544,11 +649,17 @@ def build_scaffold_manifest() -> dict[str, Any]:
         "retrieval_timestamp": None,
         "cache_policy_identifier": CACHE_POLICY_ID,
         "dry_run_status": "not_executed",
+        "download_status": "not_executed",
+        "verification_status": "pending",
+        "verification_errors": [],
+        "verification_events": [],
         "dry_run_file_inventory": [],
         "expected_bytes": EXPECTED_DOWNLOAD_BYTES,
-        "actual_downloaded_bytes": 0,
-        "pre_existing_cached_bytes": 0,
-        "cumulative_cache_bytes": 0,
+        "downloaded_payload_bytes": 0,
+        "logical_snapshot_bytes": 0,
+        "physical_cache_bytes": 0,
+        "physical_cache_growth_bytes": 0,
+        "pre_existing_physical_cache_bytes": 0,
         "remaining_cap_headroom_bytes": MAXIMUM_CUMULATIVE_DOWNLOAD_BYTES,
         "free_disk_before_bytes": None,
         "free_disk_after_bytes": None,
@@ -580,8 +691,8 @@ def manifest_from_dry_run(
             "retrieval_timestamp": retrieval_timestamp or utc_now_iso(),
             "dry_run_status": "completed",
             "dry_run_file_inventory": _inventory_to_manifest_files(dry_run.inventory),
-            "pre_existing_cached_bytes": dry_run.pre_existing_cached_bytes,
-            "cumulative_cache_bytes": dry_run.cumulative_cache_bytes,
+            "pre_existing_physical_cache_bytes": dry_run.pre_existing_cached_bytes,
+            "physical_cache_bytes": dry_run.cumulative_cache_bytes,
             "remaining_cap_headroom_bytes": MAXIMUM_CUMULATIVE_DOWNLOAD_BYTES
             - dry_run.cumulative_cache_bytes,
             "free_disk_before_bytes": free_disk_before_bytes,
@@ -605,7 +716,9 @@ def verify_downloaded_snapshot(
     if snapshot_dir.name != revision:
         raise ValueError("snapshot directory revision mismatch")
 
-    inventory_paths = {item["relpath"] for item in dry_run_inventory}
+    expected_sizes = {item["relpath"]: int(item["size_bytes"]) for item in dry_run_inventory}
+    inventory_paths = set(expected_sizes)
+
     observed_files: list[str] = []
     for path in snapshot_dir.rglob("*"):
         if path.is_file():
@@ -634,8 +747,9 @@ def verify_downloaded_snapshot(
         optional_checks[optional] = optional in observed_set
 
     file_records: list[dict[str, Any]] = []
-    total_bytes = 0
+    logical_total = 0
     hash_targets = (
+        "README.md",
         "config.json",
         "generation_config.json",
         "tokenizer.json",
@@ -648,7 +762,12 @@ def verify_downloaded_snapshot(
     for relpath in sorted(observed_files):
         path = snapshot_dir / relpath
         size = path.stat().st_size
-        total_bytes += size
+        expected_size = expected_sizes[relpath]
+        if size != expected_size:
+            raise ValueError(
+                f"size mismatch for {relpath}: expected={expected_size} actual={size}"
+            )
+        logical_total += size
         sha256 = None
         should_hash = (
             relpath.endswith(".safetensors")
@@ -665,7 +784,7 @@ def verify_downloaded_snapshot(
         "optional_file_checks": optional_checks,
         "excluded_file_checks": {"excluded_present": False, "violations": []},
         "files": file_records,
-        "snapshot_total_bytes": total_bytes,
+        "logical_snapshot_bytes": logical_total,
     }
 
 
@@ -719,7 +838,13 @@ def validate_checkpoint_download_evidence(
         errors.append("selected_model must remain null")
 
     overall = data.get("overall_status")
-    valid_statuses = {"pending", "dry_run_complete", "download_complete", "verified"}
+    valid_statuses = {
+        "pending",
+        "dry_run_complete",
+        "download_complete_unverified",
+        "verification_complete",
+        "verification_failed",
+    }
     if overall not in valid_statuses:
         errors.append("overall_status invalid")
 
@@ -727,7 +852,19 @@ def validate_checkpoint_download_evidence(
     if dry_run_status not in {"not_executed", "completed"}:
         errors.append("dry_run_status invalid")
 
-    if overall in {"dry_run_complete", "download_complete", "verified"}:
+    download_status = data.get("download_status")
+    if download_status not in {"not_executed", "completed"}:
+        errors.append("download_status invalid")
+
+    verification_status = data.get("verification_status")
+    if verification_status not in {"pending", "completed", "failed"}:
+        errors.append("verification_status invalid")
+
+    verification_errors = data.get("verification_errors")
+    if not isinstance(verification_errors, list):
+        errors.append("verification_errors must be a list")
+
+    if overall in {"dry_run_complete", "download_complete_unverified", "verification_complete", "verification_failed"}:
         if dry_run_status != "completed":
             errors.append("dry_run_status must be completed once dry-run evidence exists")
         inventory = data.get("dry_run_file_inventory")
@@ -740,15 +877,64 @@ def validate_checkpoint_download_evidence(
         if data.get("no_token_used") is not True:
             errors.append("no_token_used must be true")
 
+    if overall in {"download_complete_unverified", "verification_complete", "verification_failed"}:
+        if download_status != "completed":
+            errors.append("download_status must be completed after download")
+        for field in (
+            "downloaded_payload_bytes",
+            "logical_snapshot_bytes",
+            "physical_cache_bytes",
+            "physical_cache_growth_bytes",
+            "pre_existing_physical_cache_bytes",
+        ):
+            if not isinstance(data.get(field), int):
+                errors.append(f"{field} must be recorded after download")
+
+    if overall == "verification_complete":
+        if verification_status != "completed":
+            errors.append("verification_status must be completed when overall_status is verification_complete")
+        if not isinstance(data.get("files"), list) or not data["files"]:
+            errors.append("files with sha256 evidence required after verification")
+        for field in ("logical_snapshot_bytes", "physical_cache_bytes", "remaining_cap_headroom_bytes"):
+            if not isinstance(data.get(field), int):
+                errors.append(f"{field} must be recorded after verification")
+
+    if overall == "verification_failed":
+        if verification_status != "failed":
+            errors.append("verification_status must be failed when overall_status is verification_failed")
+        if not verification_errors:
+            errors.append("verification_errors required when verification failed")
+
+    physical_cache = data.get("physical_cache_bytes")
+    if isinstance(physical_cache, int) and physical_cache > MAXIMUM_CUMULATIVE_DOWNLOAD_BYTES:
+        errors.append("physical_cache_bytes exceeds 30 GiB cap")
+
+    logical_snapshot = data.get("logical_snapshot_bytes")
+    physical_growth = data.get("physical_cache_growth_bytes")
+    downloaded_payload = data.get("downloaded_payload_bytes")
+    if (
+        isinstance(logical_snapshot, int)
+        and isinstance(physical_growth, int)
+        and isinstance(downloaded_payload, int)
+        and overall == "verification_complete"
+        and logical_snapshot != downloaded_payload
+    ):
+        errors.append("logical_snapshot_bytes must equal downloaded_payload_bytes for full snapshot")
+
+    headroom = data.get("remaining_cap_headroom_bytes")
+    if (
+        isinstance(physical_cache, int)
+        and isinstance(headroom, int)
+        and physical_cache > 0
+        and headroom != MAXIMUM_CUMULATIVE_DOWNLOAD_BYTES - physical_cache
+    ):
+        errors.append("remaining_cap_headroom_bytes must equal cap minus physical_cache_bytes")
+
     if register is not None:
         if register.get("selected_model") is not None:
             errors.append("licence register selected_model must remain null")
         entry = find_register_entry(register, AUTHORIZED_CANDIDATE_ENTRY_ID)
         errors.extend(validate_candidate_eligibility(entry))
-
-    cumulative = data.get("cumulative_cache_bytes")
-    if isinstance(cumulative, int) and cumulative > MAXIMUM_CUMULATIVE_DOWNLOAD_BYTES:
-        errors.append("cumulative_cache_bytes exceeds 30 GiB cap")
 
     _scan_forbidden_identifiers(data, "evidence", errors)
     return errors

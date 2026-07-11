@@ -2,9 +2,15 @@
 
 from __future__ import annotations
 
+import argparse
 import ast
+import hashlib
 import importlib.util
 import json
+import os
+import shutil
+import subprocess
+import sys
 import tempfile
 import unittest
 from pathlib import Path
@@ -12,6 +18,7 @@ from types import SimpleNamespace
 from unittest import mock
 
 from ambiguity_manager.governance.ethics import derive_ticket_verdict, validate_ethics_determination
+from ambiguity_manager.governance.hashing import sha256_hex
 from ambiguity_manager.model.candidate_evidence import REGISTER_REL
 from ambiguity_manager.model.checkpoint_download import (
     AUTHORIZED_REPOSITORY_ID,
@@ -21,16 +28,22 @@ from ambiguity_manager.model.checkpoint_download import (
     INCLUDE_PATTERNS,
     MAXIMUM_CUMULATIVE_DOWNLOAD_BYTES,
     MINIMUM_FREE_DISK_BYTES,
+    CheckpointDownloadPaths,
+    build_cache_accounting,
     build_scaffold_manifest,
     build_file_inventory,
     cache_dir_is_wsl_native,
+    directory_size_bytes,
     filter_allowed_repo_files,
+    logical_snapshot_bytes,
     manifest_from_dry_run,
     matches_exclude_pattern,
     matches_include_pattern,
     perform_dry_run,
     perform_preflight,
+    physical_cache_bytes,
     repo_contains_checkpoint_weights,
+    resolve_download_paths,
     streaming_sha256_hex,
     validate_checkpoint_download_evidence,
     validate_commit_sha,
@@ -56,6 +69,98 @@ SCRIPT_PATH = ROOT / "scripts" / "t12_download_checkpoint.py"
 
 def _load_json(path: Path) -> dict:
     return json.loads(path.read_text(encoding="utf-8"))
+
+
+def _manifest_sha256(path: Path) -> str:
+    return sha256_hex(path.read_bytes())
+
+
+def _load_script_module():
+    spec = importlib.util.spec_from_file_location("t12_download_checkpoint", SCRIPT_PATH)
+    module = importlib.util.module_from_spec(spec)
+    assert spec.loader is not None
+    spec.loader.exec_module(module)
+    return module
+
+
+def _build_fake_hub_cache(base: Path, *, files: dict[str, bytes]) -> tuple[Path, Path]:
+    cache_dir = base / "hub"
+    repo_root = cache_dir / "models--Qwen--Qwen2.5-1.5B-Instruct"
+    snapshot_dir = repo_root / "snapshots" / AUTHORIZED_REVISION_SHA
+    snapshot_dir.mkdir(parents=True)
+    if os.name == "posix":
+        blobs_dir = repo_root / "blobs"
+        blobs_dir.mkdir(parents=True)
+        for index, (name, payload) in enumerate(files.items()):
+            blob = blobs_dir / f"blob-{index}"
+            blob.write_bytes(payload)
+            link = snapshot_dir / name
+            if link.exists():
+                link.unlink()
+            link.symlink_to(blob)
+    else:
+        for name, payload in files.items():
+            (snapshot_dir / name).write_bytes(payload)
+    return cache_dir, snapshot_dir
+
+
+def _build_isolated_runtime(
+    tmp: Path,
+    *,
+    manifest: dict | None = None,
+    overall_status: str = "download_complete_unverified",
+) -> tuple[CheckpointDownloadPaths, Path, Path]:
+    repo_root = tmp / "repo"
+    repo_root.mkdir()
+    (repo_root / "pyproject.toml").write_text("[project]\nname='x'\n", encoding="utf-8")
+    manifest_path = repo_root / EVIDENCE_REL
+    manifest_path.parent.mkdir(parents=True, exist_ok=True)
+    raw_log_dir = repo_root / "outputs" / "model_downloads" / "raw"
+    register_path = repo_root / REGISTER_REL
+    register_path.parent.mkdir(parents=True, exist_ok=True)
+    shutil.copy2(REGISTER_PATH, register_path)
+    cache_dir, snapshot_dir = _build_fake_hub_cache(
+        tmp,
+        files={item["relpath"]: b"x" * item["size_bytes"] for item in DRY_RUN_INVENTORY},
+    )
+    payload = build_scaffold_manifest()
+    payload.update(
+        {
+            "dry_run_status": "completed",
+            "download_status": "completed",
+            "dry_run_file_inventory": DRY_RUN_INVENTORY,
+            "resolved_commit_sha": AUTHORIZED_REVISION_SHA,
+            "download_required_bytes": sum(item["size_bytes"] for item in DRY_RUN_INVENTORY),
+            "downloaded_payload_bytes": sum(item["size_bytes"] for item in DRY_RUN_INVENTORY),
+            "pre_existing_physical_cache_bytes": 0,
+            "overall_status": overall_status,
+            "verification_status": "pending",
+        }
+    )
+    if manifest is not None:
+        payload.update(manifest)
+    manifest_path.write_text(json.dumps(payload, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+    paths = CheckpointDownloadPaths(
+        repo_root=repo_root,
+        manifest_path=manifest_path,
+        raw_log_dir=raw_log_dir,
+        register_path=register_path,
+        hub_cache_dir=cache_dir,
+    )
+    return paths, snapshot_dir, manifest_path
+
+
+DRY_RUN_INVENTORY = [
+    {"relpath": "LICENSE", "size_bytes": 7, "sha256": None},
+    {"relpath": "README.md", "size_bytes": 7, "sha256": None},
+    {"relpath": "config.json", "size_bytes": 7, "sha256": None},
+    {"relpath": "generation_config.json", "size_bytes": 7, "sha256": None},
+    {"relpath": "merges.txt", "size_bytes": 7, "sha256": None},
+    {"relpath": "model.safetensors", "size_bytes": 7, "sha256": None},
+    {"relpath": "tokenizer.json", "size_bytes": 7, "sha256": None},
+    {"relpath": "tokenizer_config.json", "size_bytes": 7, "sha256": None},
+    {"relpath": "vocab.json", "size_bytes": 7, "sha256": None},
+]
 
 
 class _FakeHub:
@@ -129,6 +234,7 @@ class T12CheckpointDownloadPolicyTests(unittest.TestCase):
                 repo_id=AUTHORIZED_REPOSITORY_ID,
                 revision=AUTHORIZED_REVISION_SHA,
                 cache_dir=Path("/tmp/hf-cache"),
+                register_path=REGISTER_PATH,
                 free_bytes=MINIMUM_FREE_DISK_BYTES,
                 cumulative_cache_bytes=0,
             )
@@ -233,7 +339,8 @@ class T12CheckpointDownloadPolicyTests(unittest.TestCase):
             snapshot = Path(tmp) / AUTHORIZED_REVISION_SHA
             snapshot.mkdir()
             for name in ("config.json", "model.safetensors", "tokenizer.json", "tokenizer_config.json"):
-                (snapshot / name).write_text("x", encoding="utf-8")
+                content = b"x"
+                (snapshot / name).write_bytes(content)
             inventory = [
                 {"relpath": "config.json", "size_bytes": 1, "sha256": None},
                 {"relpath": "model.safetensors", "size_bytes": 1, "sha256": None},
@@ -241,7 +348,7 @@ class T12CheckpointDownloadPolicyTests(unittest.TestCase):
                 {"relpath": "tokenizer_config.json", "size_bytes": 1, "sha256": None},
             ]
             result = verify_downloaded_snapshot(snapshot, dry_run_inventory=inventory)
-            self.assertTrue(all(result["required_file_checks"].values()))
+            self.assertEqual(result["logical_snapshot_bytes"], 4)
 
             with self.assertRaises(ValueError):
                 verify_downloaded_snapshot(
@@ -287,23 +394,13 @@ class T12CheckpointDownloadPolicyTests(unittest.TestCase):
         ):
             self.assertFalse((ROOT / rel).exists())
 
-    def test_scaffold_manifest_validation_passes(self) -> None:
+    def test_tracked_checkpoint_manifest_validates_read_only(self) -> None:
         manifest = _load_json(EVIDENCE_PATH)
         register = _load_json(REGISTER_PATH)
         errors = validate_checkpoint_download_evidence(manifest, register=register)
         self.assertEqual(errors, [], msg="\n".join(errors))
 
     def test_candidate_entry_must_exist_and_be_eligible(self) -> None:
-        register = _load_json(REGISTER_PATH)
-        result = perform_preflight(
-            ROOT,
-            repo_id=AUTHORIZED_REPOSITORY_ID,
-            revision=AUTHORIZED_REVISION_SHA,
-            cache_dir=Path("/tmp/hf-cache"),
-            hub=_FakeHub(),
-            free_bytes=MINIMUM_FREE_DISK_BYTES,
-            cumulative_cache_bytes=0,
-        )
         with mock.patch(
             "ambiguity_manager.model.checkpoint_download.is_wsl_linux_runtime",
             return_value=True,
@@ -313,6 +410,7 @@ class T12CheckpointDownloadPolicyTests(unittest.TestCase):
                 repo_id=AUTHORIZED_REPOSITORY_ID,
                 revision=AUTHORIZED_REVISION_SHA,
                 cache_dir=Path("/tmp/hf-cache"),
+                register_path=REGISTER_PATH,
                 hub=_FakeHub(),
                 free_bytes=MINIMUM_FREE_DISK_BYTES,
                 cumulative_cache_bytes=0,
@@ -379,6 +477,151 @@ class T12CheckpointDownloadMockedHubTests(unittest.TestCase):
         self.assertIn("gated", str(ctx.exception))
 
 
+class T12CheckpointDownloadCacheAccountingTests(unittest.TestCase):
+    def test_physical_cache_counts_regular_files_once(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            cache_dir, snapshot_dir = _build_fake_hub_cache(
+                Path(tmp),
+                files={item["relpath"]: b"x" * item["size_bytes"] for item in DRY_RUN_INVENTORY},
+            )
+            physical = physical_cache_bytes(cache_dir)
+            logical = logical_snapshot_bytes(snapshot_dir)
+            self.assertEqual(logical, 9 * 7)
+            if os.name == "posix":
+                naive = directory_size_bytes(cache_dir)
+                self.assertEqual(physical, 9 * 7)
+                self.assertGreater(naive, physical)
+            else:
+                self.assertEqual(physical, 9 * 7)
+
+    def test_snapshot_symlinks_do_not_double_count_blob_files(self) -> None:
+        if os.name != "posix":
+            self.skipTest("HF symlink cache layout requires POSIX")
+        with tempfile.TemporaryDirectory() as tmp:
+            cache_dir = Path(tmp) / "hub"
+            repo_root = cache_dir / "models--Qwen--Qwen2.5-1.5B-Instruct"
+            blob = repo_root / "blobs" / "shared"
+            blob.parent.mkdir(parents=True)
+            blob.write_bytes(b"a" * 1000)
+            snapshot = repo_root / "snapshots" / AUTHORIZED_REVISION_SHA
+            snapshot.mkdir(parents=True)
+            for name in ("config.json", "model.safetensors"):
+                (snapshot / name).symlink_to(blob)
+            self.assertEqual(physical_cache_bytes(cache_dir), 1000)
+            self.assertGreater(directory_size_bytes(cache_dir), 1000)
+
+    def test_logical_snapshot_bytes_equal_inventory_sum(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            cache_dir, snapshot_dir = _build_fake_hub_cache(
+                Path(tmp),
+                files={item["relpath"]: b"x" * item["size_bytes"] for item in DRY_RUN_INVENTORY},
+            )
+            result = verify_downloaded_snapshot(snapshot_dir, dry_run_inventory=DRY_RUN_INVENTORY)
+            self.assertEqual(result["logical_snapshot_bytes"], sum(item["size_bytes"] for item in DRY_RUN_INVENTORY))
+            accounting = build_cache_accounting(
+                snapshot_dir=snapshot_dir,
+                dry_run_inventory=DRY_RUN_INVENTORY,
+                cache_dir=cache_dir,
+                pre_existing_physical_cache_bytes=0,
+            )
+            self.assertEqual(accounting.logical_snapshot_bytes, accounting.downloaded_payload_bytes)
+            self.assertEqual(accounting.physical_cache_bytes, 63)
+            self.assertEqual(
+                accounting.remaining_cap_headroom_bytes,
+                MAXIMUM_CUMULATIVE_DOWNLOAD_BYTES - accounting.physical_cache_bytes,
+            )
+
+    def test_cap_enforcement_uses_physical_cache_bytes(self) -> None:
+        from ambiguity_manager.model.checkpoint_download import validate_cumulative_cap
+
+        self.assertEqual(validate_cumulative_cap(cumulative_bytes=1000, additional_bytes=0), [])
+        self.assertTrue(
+            validate_cumulative_cap(
+                cumulative_bytes=MAXIMUM_CUMULATIVE_DOWNLOAD_BYTES,
+                additional_bytes=1,
+            )
+        )
+
+    def test_verification_failure_state_is_explicit(self) -> None:
+        manifest = build_scaffold_manifest()
+        manifest.update(
+            {
+                "dry_run_status": "completed",
+                "download_status": "completed",
+                "dry_run_file_inventory": DRY_RUN_INVENTORY,
+                "resolved_commit_sha": AUTHORIZED_REVISION_SHA,
+                "downloaded_payload_bytes": 63,
+                "logical_snapshot_bytes": 0,
+                "physical_cache_bytes": 63,
+                "physical_cache_growth_bytes": 63,
+                "pre_existing_physical_cache_bytes": 0,
+                "remaining_cap_headroom_bytes": MAXIMUM_CUMULATIVE_DOWNLOAD_BYTES - 63,
+                "verification_status": "failed",
+                "verification_errors": ["size mismatch"],
+                "overall_status": "verification_failed",
+            }
+        )
+        errors = validate_checkpoint_download_evidence(manifest)
+        self.assertEqual(errors, [], msg="\n".join(errors))
+
+    def test_download_complete_unverified_is_not_fully_verified(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            paths, _, manifest_path = _build_isolated_runtime(Path(tmp))
+            manifest = _load_json(manifest_path)
+            self.assertEqual(manifest["overall_status"], "download_complete_unverified")
+            self.assertEqual(manifest["verification_status"], "pending")
+            self.assertNotEqual(manifest["overall_status"], "verification_complete")
+            self.assertNotEqual(paths.manifest_path.resolve(), EVIDENCE_PATH.resolve())
+
+    def test_successful_retry_transitions_to_verification_complete(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            cache_dir, snapshot_dir = _build_fake_hub_cache(
+                Path(tmp),
+                files={item["relpath"]: b"x" * item["size_bytes"] for item in DRY_RUN_INVENTORY},
+            )
+            verification = verify_downloaded_snapshot(snapshot_dir, dry_run_inventory=DRY_RUN_INVENTORY)
+            accounting = build_cache_accounting(
+                snapshot_dir=snapshot_dir,
+                dry_run_inventory=DRY_RUN_INVENTORY,
+                cache_dir=cache_dir,
+                pre_existing_physical_cache_bytes=0,
+            )
+            manifest = build_scaffold_manifest()
+            manifest.update(
+                {
+                    "dry_run_status": "completed",
+                    "download_status": "completed",
+                    "dry_run_file_inventory": DRY_RUN_INVENTORY,
+                    "resolved_commit_sha": AUTHORIZED_REVISION_SHA,
+                    **verification,
+                    "downloaded_payload_bytes": accounting.downloaded_payload_bytes,
+                    "logical_snapshot_bytes": accounting.logical_snapshot_bytes,
+                    "physical_cache_bytes": accounting.physical_cache_bytes,
+                    "physical_cache_growth_bytes": accounting.physical_cache_growth_bytes,
+                    "pre_existing_physical_cache_bytes": accounting.pre_existing_physical_cache_bytes,
+                    "remaining_cap_headroom_bytes": accounting.remaining_cap_headroom_bytes,
+                    "verification_status": "completed",
+                    "verification_errors": [],
+                    "overall_status": "verification_complete",
+                }
+            )
+            register = _load_json(REGISTER_PATH)
+            errors = validate_checkpoint_download_evidence(manifest, register=register)
+            self.assertEqual(errors, [], msg="\n".join(errors))
+            self.assertTrue(all(record["sha256"] for record in manifest["files"]))
+
+    def test_streaming_hashes_for_every_downloaded_file(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            _, snapshot_dir = _build_fake_hub_cache(
+                Path(tmp),
+                files={item["relpath"]: b"x" * item["size_bytes"] for item in DRY_RUN_INVENTORY},
+            )
+            result = verify_downloaded_snapshot(snapshot_dir, dry_run_inventory=DRY_RUN_INVENTORY)
+            self.assertEqual(len(result["files"]), len(DRY_RUN_INVENTORY))
+            for record in result["files"]:
+                self.assertRegex(record["sha256"], r"^[0-9a-f]{64}$")
+
+
 class T12CheckpointDownloadScriptImportTests(unittest.TestCase):
     def test_no_model_load_in_script_imports(self) -> None:
         source = SCRIPT_PATH.read_text(encoding="utf-8")
@@ -405,27 +648,168 @@ class T12CheckpointDownloadScriptImportTests(unittest.TestCase):
 
 
 class T12CheckpointDownloadIntegrationTests(unittest.TestCase):
-    @mock.patch("scripts.t12_download_checkpoint._build_hub_client")
-    @mock.patch("scripts.t12_download_checkpoint.perform_preflight")
-    def test_download_command_rejects_without_approval(
-        self,
-        mock_preflight: mock.Mock,
-        mock_hub: mock.Mock,
-    ) -> None:
-        spec = importlib.util.spec_from_file_location("t12_download_checkpoint", SCRIPT_PATH)
-        module = importlib.util.module_from_spec(spec)
-        assert spec.loader is not None
-        spec.loader.exec_module(module)
-        parser = module.build_parser()
-        args = parser.parse_args(["download"])
-        exit_code = module.cmd_download(args)
-        self.assertEqual(exit_code, 1)
-        mock_preflight.assert_not_called()
+    def test_verify_handler_resolves_cap_constant_without_name_error(self) -> None:
+        module = _load_script_module()
+        tracked_sha_before = _manifest_sha256(EVIDENCE_PATH)
+        with tempfile.TemporaryDirectory() as tmp:
+            paths, _, manifest_path = _build_isolated_runtime(Path(tmp))
+            exit_code = module.cmd_verify(argparse.Namespace(), paths=paths)
+            updated = _load_json(manifest_path)
+
+            self.assertEqual(exit_code, 0)
+            self.assertEqual(updated["overall_status"], "verification_complete")
+            self.assertEqual(updated["verification_status"], "completed")
+            self.assertEqual(updated["physical_cache_bytes"], 63)
+            self.assertNotEqual(manifest_path.resolve(), EVIDENCE_PATH.resolve())
+
+        self.assertEqual(_manifest_sha256(EVIDENCE_PATH), tracked_sha_before)
+
+    def test_download_command_rejects_without_approval(self) -> None:
+        module = _load_script_module()
+        tracked_sha_before = _manifest_sha256(EVIDENCE_PATH)
+        with tempfile.TemporaryDirectory() as tmp:
+            paths, _, _ = _build_isolated_runtime(Path(tmp))
+            parser = module.build_parser()
+            args = parser.parse_args(["download"])
+            with mock.patch.object(module, "perform_preflight") as mock_preflight:
+                exit_code = module.cmd_download(args, paths=paths)
+            self.assertEqual(exit_code, 1)
+            mock_preflight.assert_not_called()
+        self.assertEqual(_manifest_sha256(EVIDENCE_PATH), tracked_sha_before)
 
     def test_normal_package_import_remains_ml_free(self) -> None:
         import ambiguity_manager  # noqa: F401
 
         self.assertIsNone(importlib.util.find_spec("torch"))
+
+
+class T12CheckpointDownloadIsolationRegressionTests(unittest.TestCase):
+    def test_verify_handler_writes_only_temporary_manifest(self) -> None:
+        module = _load_script_module()
+        tracked_sha_before = _manifest_sha256(EVIDENCE_PATH)
+        with tempfile.TemporaryDirectory() as tmp:
+            paths, _, manifest_path = _build_isolated_runtime(Path(tmp))
+            exit_code = module.cmd_verify(argparse.Namespace(), paths=paths)
+            self.assertEqual(exit_code, 0)
+            self.assertTrue(manifest_path.is_file())
+            updated = _load_json(manifest_path)
+            self.assertEqual(updated["overall_status"], "verification_complete")
+        self.assertEqual(_manifest_sha256(EVIDENCE_PATH), tracked_sha_before)
+
+    def test_raw_logs_written_only_to_temporary_directory(self) -> None:
+        module = _load_script_module()
+        tracked_raw_dir = ROOT / "outputs" / "model_downloads" / "raw"
+        before_logs = set(tracked_raw_dir.glob("*.json")) if tracked_raw_dir.is_dir() else set()
+        with tempfile.TemporaryDirectory() as tmp:
+            paths, _, _ = _build_isolated_runtime(Path(tmp))
+            module.cmd_verify(argparse.Namespace(), paths=paths)
+            temp_logs = list(paths.raw_log_dir.glob("*.json"))
+            self.assertTrue(temp_logs)
+            self.assertFalse(any(log.resolve().is_relative_to(tracked_raw_dir.resolve()) for log in temp_logs))
+        after_logs = set(tracked_raw_dir.glob("*.json")) if tracked_raw_dir.is_dir() else set()
+        self.assertEqual(before_logs, after_logs)
+
+    def test_temporary_unverified_manifest_unchanged_until_verify(self) -> None:
+        module = _load_script_module()
+        with tempfile.TemporaryDirectory() as tmp:
+            paths, _, manifest_path = _build_isolated_runtime(Path(tmp))
+            before = _load_json(manifest_path)
+            self.assertEqual(before["overall_status"], "download_complete_unverified")
+            module.cmd_verify(argparse.Namespace(), paths=paths)
+            after = _load_json(manifest_path)
+            self.assertEqual(after["overall_status"], "verification_complete")
+
+    def test_isolated_manifest_reaches_verification_complete(self) -> None:
+        module = _load_script_module()
+        with tempfile.TemporaryDirectory() as tmp:
+            paths, _, manifest_path = _build_isolated_runtime(Path(tmp))
+            module.cmd_verify(argparse.Namespace(), paths=paths)
+            manifest = _load_json(manifest_path)
+            self.assertEqual(manifest["overall_status"], "verification_complete")
+            self.assertEqual(manifest["logical_snapshot_bytes"], 63)
+
+    def test_handler_paths_cannot_escape_test_sandbox(self) -> None:
+        module = _load_script_module()
+        with tempfile.TemporaryDirectory() as tmp:
+            paths, _, manifest_path = _build_isolated_runtime(Path(tmp))
+            self.assertTrue(str(manifest_path).startswith(str(Path(tmp).resolve())))
+            self.assertTrue(str(paths.hub_cache_dir).startswith(str(Path(tmp).resolve())))
+            self.assertNotEqual(manifest_path.resolve(), EVIDENCE_PATH.resolve())
+
+    def test_no_real_hub_cache_access_in_verify_handler(self) -> None:
+        module = _load_script_module()
+        with tempfile.TemporaryDirectory() as tmp:
+            paths, _, _ = _build_isolated_runtime(Path(tmp))
+            with mock.patch.object(module, "resolve_hub_cache_dir") as resolve_cache:
+                module.cmd_verify(argparse.Namespace(), paths=paths)
+                resolve_cache.assert_not_called()
+
+    def test_no_network_in_verify_handler(self) -> None:
+        module = _load_script_module()
+        with tempfile.TemporaryDirectory() as tmp:
+            paths, _, _ = _build_isolated_runtime(Path(tmp))
+            with mock.patch.object(module, "_build_hub_client") as build_hub:
+                module.cmd_verify(argparse.Namespace(), paths=paths)
+                build_hub.assert_not_called()
+
+    def test_order_independent_isolated_verify_runs(self) -> None:
+        module = _load_script_module()
+        tracked_sha_before = _manifest_sha256(EVIDENCE_PATH)
+        for _ in range(2):
+            with tempfile.TemporaryDirectory() as tmp:
+                paths, _, manifest_path = _build_isolated_runtime(Path(tmp))
+                exit_code = module.cmd_verify(argparse.Namespace(), paths=paths)
+                self.assertEqual(exit_code, 0)
+                self.assertEqual(_load_json(manifest_path)["overall_status"], "verification_complete")
+        self.assertEqual(_manifest_sha256(EVIDENCE_PATH), tracked_sha_before)
+
+    def test_tracked_manifest_unmodified_by_checkpoint_download_test_module(self) -> None:
+        if os.environ.get("T12_CHECKPOINT_RECURSIVE_ISOLATION") == "1":
+            self.skipTest("recursive isolation subprocess")
+        if not EVIDENCE_PATH.is_file():
+            self.skipTest("tracked checkpoint manifest absent")
+        before = _manifest_sha256(EVIDENCE_PATH)
+        completed = subprocess.run(
+            [
+                sys.executable,
+                "-W",
+                "error::ResourceWarning",
+                "-m",
+                "unittest",
+                "tests.test_t12_checkpoint_download",
+            ],
+            cwd=ROOT,
+            env={
+                **os.environ,
+                "PYTHONPATH": str(ROOT / "src"),
+                "T12_CHECKPOINT_RECURSIVE_ISOLATION": "1",
+            },
+            capture_output=True,
+            text=True,
+            check=False,
+        )
+        self.assertEqual(
+            completed.returncode,
+            0,
+            msg=completed.stdout + completed.stderr,
+        )
+        after = _manifest_sha256(EVIDENCE_PATH)
+        self.assertEqual(before, after)
+
+    def test_tracked_manifest_write_raises_when_guarded(self) -> None:
+        protected = EVIDENCE_PATH.resolve()
+        original_write_text = Path.write_text
+
+        def guarded_write_text(self_path: Path, *args: object, **kwargs: object) -> str:
+            if self_path.resolve() == protected:
+                raise AssertionError("test attempted to write tracked checkpoint manifest")
+            return original_write_text(self_path, *args, **kwargs)
+
+        module = _load_script_module()
+        with tempfile.TemporaryDirectory() as tmp:
+            paths, _, _ = _build_isolated_runtime(Path(tmp))
+            with mock.patch.object(Path, "write_text", guarded_write_text):
+                module.cmd_verify(argparse.Namespace(), paths=paths)
 
 
 if __name__ == "__main__":
