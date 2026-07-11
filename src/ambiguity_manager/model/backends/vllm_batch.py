@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import importlib
 import time
-from dataclasses import dataclass, field
+from dataclasses import dataclass, field, replace
 from pathlib import Path
 from typing import Any, Callable
 
@@ -107,10 +107,28 @@ class BatchGenerationResult:
     error_message: str | None
     metadata: dict[str, Any]
     config_hash: str
+    engine_request_id: str | int | None = None
 
 
 EngineFactory = Callable[..., Any]
 SamplingParamsFactory = Callable[[dict[str, Any]], Any]
+
+
+def _extract_engine_request_id(engine_output: Any) -> str | int | None:
+    if isinstance(engine_output, dict):
+        engine_id = engine_output.get("request_id")
+    else:
+        engine_id = getattr(engine_output, "request_id", None)
+    return engine_id
+
+
+def _attach_engine_request_id(
+    result: BatchGenerationResult,
+    engine_request_id: str | int | None,
+) -> BatchGenerationResult:
+    if engine_request_id is None:
+        return result
+    return replace(result, engine_request_id=engine_request_id)
 
 
 def validate_runtime_config(data: dict[str, Any]) -> list[str]:
@@ -277,6 +295,7 @@ def _failure_result(
     error_message: str,
     latency_ms: float | None,
     raw_text: str = "",
+    engine_request_id: str | int | None = None,
 ) -> BatchGenerationResult:
     return BatchGenerationResult(
         request_id=request.request_id,
@@ -294,6 +313,7 @@ def _failure_result(
         error_message=error_message,
         metadata=dict(request.metadata),
         config_hash=config_hash,
+        engine_request_id=engine_request_id,
     )
 
 
@@ -375,7 +395,19 @@ class VllmBatchBackend:
             elapsed_ms = (time.perf_counter() - started) * 1000.0
             per_request_latency = elapsed_ms / len(chunk) if chunk else None
             mapped: dict[str, BatchGenerationResult] = {}
-            if len(engine_outputs) != len(chunk):
+            if not isinstance(engine_outputs, (list, tuple)):
+                for request in chunk:
+                    mapped[request.request_id] = _failure_result(
+                        request=request,
+                        backend_identifier=self._config.backend_identifier,
+                        model_repository=self._immutable.model_repository,
+                        model_revision=self._immutable.model_revision,
+                        config_hash=self._config.config_hash,
+                        error_type="malformed_engine_output",
+                        error_message="engine output is not a sequence",
+                        latency_ms=per_request_latency,
+                    )
+            elif len(engine_outputs) < len(chunk):
                 for request in chunk:
                     mapped[request.request_id] = _failure_result(
                         request=request,
@@ -387,29 +419,53 @@ class VllmBatchBackend:
                         error_message="engine returned fewer outputs than prompts",
                         latency_ms=per_request_latency,
                     )
-            else:
-                for index, request in enumerate(chunk):
-                    mapped[request.request_id] = normalize_engine_output(
+            elif len(engine_outputs) > len(chunk):
+                for request in chunk:
+                    mapped[request.request_id] = _failure_result(
                         request=request,
-                        engine_output=engine_outputs[index],
                         backend_identifier=self._config.backend_identifier,
                         model_repository=self._immutable.model_repository,
                         model_revision=self._immutable.model_revision,
                         config_hash=self._config.config_hash,
+                        error_type="excess_engine_output",
+                        error_message="engine returned more outputs than prompts",
                         latency_ms=per_request_latency,
                     )
-                    output_id = getattr(engine_outputs[index], "request_id", None)
-                    if output_id is not None and str(output_id) not in {str(index), request.request_id}:
+            else:
+                caller_ids = {request.request_id for request in chunk}
+                for index, request in enumerate(chunk):
+                    engine_output = engine_outputs[index]
+                    engine_request_id = _extract_engine_request_id(engine_output)
+                    if (
+                        engine_request_id is not None
+                        and str(engine_request_id) in caller_ids
+                        and str(engine_request_id) != request.request_id
+                    ):
                         mapped[request.request_id] = _failure_result(
                             request=request,
                             backend_identifier=self._config.backend_identifier,
                             model_repository=self._immutable.model_repository,
                             model_revision=self._immutable.model_revision,
                             config_hash=self._config.config_hash,
-                            error_type="unknown_output_id",
-                            error_message=f"unexpected engine output id: {output_id}",
+                            error_type="engine_output_order_mismatch",
+                            error_message=(
+                                f"engine output id {engine_request_id!r} matches another caller request "
+                                f"at position {index}"
+                            ),
                             latency_ms=per_request_latency,
+                            engine_request_id=engine_request_id,
                         )
+                        continue
+                    result = normalize_engine_output(
+                        request=request,
+                        engine_output=engine_output,
+                        backend_identifier=self._config.backend_identifier,
+                        model_repository=self._immutable.model_repository,
+                        model_revision=self._immutable.model_revision,
+                        config_hash=self._config.config_hash,
+                        latency_ms=per_request_latency,
+                    )
+                    mapped[request.request_id] = _attach_engine_request_id(result, engine_request_id)
             for request in chunk:
                 results.append(mapped[request.request_id])
         return sorted(results, key=lambda item: item.ordinal)

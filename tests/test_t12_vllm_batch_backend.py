@@ -51,7 +51,7 @@ class FakeCompletion:
 
 @dataclass
 class FakeRequestOutput:
-    request_id: str
+    request_id: str | int | None
     outputs: list[FakeCompletion] = field(default_factory=list)
     prompt_token_ids: list[int] = field(default_factory=list)
 
@@ -202,17 +202,190 @@ class T12VllmBatchBackendTests(unittest.TestCase):
         self.assertEqual(results[0].generation_status, "failure")
         self.assertIn("missing_engine_output", results[0].error_type or "")
 
-    def test_unknown_output_id_fails(self) -> None:
-        class BadIdEngine(FakeEngine):
+    def test_string_numeric_engine_ids_map_positionally(self) -> None:
+        backend = self._backend()
+        backend.start()
+        results = backend.generate_batch(
+            [
+                self._request(request_id="request-A", ordinal=0, prompt="first"),
+                self._request(request_id="request-B", ordinal=1, prompt="second"),
+            ]
+        )
+        self.assertEqual([item.request_id for item in results], ["request-A", "request-B"])
+        self.assertEqual([item.ordinal for item in results], [0, 1])
+        self.assertEqual(results[0].raw_text, "raw:first")
+        self.assertEqual(results[1].raw_text, "raw:second")
+        self.assertEqual(results[0].engine_request_id, "0")
+        self.assertEqual(results[1].engine_request_id, "1")
+
+    def test_integer_engine_ids_map_positionally(self) -> None:
+        class IntegerIdEngine(FakeEngine):
             def generate(self, prompts, sampling_params):  # type: ignore[no-untyped-def]
                 self.generate_calls += 1
-                return [FakeRequestOutput(request_id="unexpected", outputs=[FakeCompletion(text="x")])]
+                return [
+                    FakeRequestOutput(request_id=index, outputs=[FakeCompletion(text=f"raw:{prompt}")])
+                    for index, prompt in enumerate(prompts)
+                ]
 
-        backend = self._backend(engine_factory=lambda **_k: BadIdEngine())
+        backend = self._backend(engine_factory=lambda **_k: IntegerIdEngine())
         backend.start()
-        results = backend.generate_batch([self._request(request_id="expected")])
+        results = backend.generate_batch(
+            [
+                self._request(request_id="request-A", ordinal=0, prompt="first"),
+                self._request(request_id="request-B", ordinal=1, prompt="second"),
+            ]
+        )
+        self.assertEqual([item.request_id for item in results], ["request-A", "request-B"])
+        self.assertEqual(results[0].generation_status, "success")
+        self.assertEqual(results[1].generation_status, "success")
+        self.assertEqual(results[0].engine_request_id, 0)
+        self.assertEqual(results[1].engine_request_id, 1)
+
+    def test_opaque_engine_ids_map_positionally(self) -> None:
+        class OpaqueIdEngine(FakeEngine):
+            def generate(self, prompts, sampling_params):  # type: ignore[no-untyped-def]
+                self.generate_calls += 1
+                return [
+                    FakeRequestOutput(
+                        request_id=f"engine-{index}-{prompt[:3]}",
+                        outputs=[FakeCompletion(text=f"raw:{prompt}")],
+                    )
+                    for index, prompt in enumerate(prompts)
+                ]
+
+        backend = self._backend(engine_factory=lambda **_k: OpaqueIdEngine())
+        backend.start()
+        results = backend.generate_batch(
+            [
+                self._request(request_id="request-A", ordinal=0, prompt="alpha"),
+                self._request(request_id="request-B", ordinal=1, prompt="beta"),
+            ]
+        )
+        self.assertEqual([item.request_id for item in results], ["request-A", "request-B"])
+        self.assertEqual(results[0].generation_status, "success")
+        self.assertEqual(results[1].generation_status, "success")
+        self.assertEqual(results[0].engine_request_id, "engine-0-alp")
+        self.assertEqual(results[1].engine_request_id, "engine-1-bet")
+
+    def test_absent_engine_ids_map_positionally_and_remain_null(self) -> None:
+        class AbsentIdEngine(FakeEngine):
+            def generate(self, prompts, sampling_params):  # type: ignore[no-untyped-def]
+                self.generate_calls += 1
+                return [
+                    FakeRequestOutput(request_id=None, outputs=[FakeCompletion(text=f"raw:{prompt}")])
+                    for prompt in prompts
+                ]
+
+        backend = self._backend(engine_factory=lambda **_k: AbsentIdEngine())
+        backend.start()
+        results = backend.generate_batch(
+            [
+                self._request(request_id="request-A", ordinal=0, prompt="first"),
+                self._request(request_id="request-B", ordinal=1, prompt="second"),
+            ]
+        )
+        self.assertEqual([item.request_id for item in results], ["request-A", "request-B"])
+        self.assertIsNone(results[0].engine_request_id)
+        self.assertIsNone(results[1].engine_request_id)
+
+    def test_numeric_engine_ids_do_not_produce_unknown_output_id(self) -> None:
+        class GlobalCounterEngine(FakeEngine):
+            counter = 0
+
+            def generate(self, prompts, sampling_params):  # type: ignore[no-untyped-def]
+                self.generate_calls += 1
+                outputs: list[FakeRequestOutput] = []
+                for prompt in prompts:
+                    outputs.append(
+                        FakeRequestOutput(
+                            request_id=GlobalCounterEngine.counter,
+                            outputs=[FakeCompletion(text=f"raw:{prompt}")],
+                        )
+                    )
+                    GlobalCounterEngine.counter += 1
+                return outputs
+
+        GlobalCounterEngine.counter = 7
+        backend = self._backend(engine_factory=lambda **_k: GlobalCounterEngine())
+        backend.start()
+        results = backend.generate_batch(
+            [
+                self._request(request_id="request-A", ordinal=0, prompt="first"),
+                self._request(request_id="request-B", ordinal=1, prompt="second"),
+            ]
+        )
+        self.assertEqual(results[0].generation_status, "success")
+        self.assertEqual(results[1].generation_status, "success")
+        self.assertNotEqual(results[0].error_type, "unknown_output_id")
+        self.assertNotEqual(results[1].error_type, "unknown_output_id")
+
+    def test_four_requests_in_two_backend_calls_correlate_correctly(self) -> None:
+        class GlobalCounterEngine(FakeEngine):
+            counter = 0
+
+            def generate(self, prompts, sampling_params):  # type: ignore[no-untyped-def]
+                self.generate_calls += 1
+                outputs: list[FakeRequestOutput] = []
+                for prompt in prompts:
+                    outputs.append(
+                        FakeRequestOutput(
+                            request_id=GlobalCounterEngine.counter,
+                            outputs=[FakeCompletion(text=f"raw:{prompt}")],
+                        )
+                    )
+                    GlobalCounterEngine.counter += 1
+                return outputs
+
+        GlobalCounterEngine.counter = 100
+        backend = self._backend(engine_factory=lambda **_k: GlobalCounterEngine())
+        backend.start()
+        results = backend.generate_batch(
+            [
+                self._request(request_id="req-0", ordinal=0, prompt="p0"),
+                self._request(request_id="req-1", ordinal=1, prompt="p1"),
+                self._request(request_id="req-2", ordinal=2, prompt="p2"),
+                self._request(request_id="req-3", ordinal=3, prompt="p3"),
+            ]
+        )
+        self.assertEqual(len(results), 4)
+        self.assertEqual([item.request_id for item in results], ["req-0", "req-1", "req-2", "req-3"])
+        self.assertTrue(all(item.generation_status == "success" for item in results))
+        self.assertEqual(FakeEngine.instances[0].generate_calls, 2)
+
+    def test_more_outputs_than_inputs_fail_explicitly(self) -> None:
+        class ExtraOutputEngine(FakeEngine):
+            def generate(self, prompts, sampling_params):  # type: ignore[no-untyped-def]
+                self.generate_calls += 1
+                return [
+                    FakeRequestOutput(request_id="0", outputs=[FakeCompletion(text="a")]),
+                    FakeRequestOutput(request_id="1", outputs=[FakeCompletion(text="b")]),
+                ]
+
+        backend = self._backend(engine_factory=lambda **_k: ExtraOutputEngine())
+        backend.start()
+        results = backend.generate_batch([self._request()])
         self.assertEqual(results[0].generation_status, "failure")
-        self.assertIn("unknown_output_id", results[0].error_type or "")
+        self.assertIn("excess_engine_output", results[0].error_type or "")
+
+    def test_engine_output_order_mismatch_when_caller_id_at_wrong_position(self) -> None:
+        class WrongOrderEngine(FakeEngine):
+            def generate(self, prompts, sampling_params):  # type: ignore[no-untyped-def]
+                self.generate_calls += 1
+                return [
+                    FakeRequestOutput(request_id="request-B", outputs=[FakeCompletion(text="raw:first")]),
+                    FakeRequestOutput(request_id="request-A", outputs=[FakeCompletion(text="raw:second")]),
+                ]
+
+        backend = self._backend(engine_factory=lambda **_k: WrongOrderEngine())
+        backend.start()
+        results = backend.generate_batch(
+            [
+                self._request(request_id="request-A", ordinal=0, prompt="first"),
+                self._request(request_id="request-B", ordinal=1, prompt="second"),
+            ]
+        )
+        self.assertEqual(results[0].generation_status, "failure")
+        self.assertIn("engine_output_order_mismatch", results[0].error_type or "")
 
     def test_malformed_output_becomes_explicit_failure(self) -> None:
         class MalformedEngine(FakeEngine):

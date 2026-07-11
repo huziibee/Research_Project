@@ -46,7 +46,36 @@ Stage C2B will perform controlled live cluster integration.
 - Model candidate status remains `provisionally_selected_for_cluster_validation`.
 - No model was loaded. No SSH or Slurm actions occurred.
 
-## 4. Initial failing tests (manifest-identity correction red phase)
+## 5. Initial failing tests (output-correlation correction red phase)
+
+Before positional output-correlation correction, new tests failed because the backend
+required vLLM engine `request_id` values to match batch indices or caller IDs:
+
+```text
+test_opaque_engine_ids_map_positionally
+  AssertionError: 'failure' != 'success'
+
+test_numeric_engine_ids_do_not_produce_unknown_output_id
+  AssertionError: 'failure' != 'success'
+
+test_four_requests_in_two_backend_calls_correlate_correctly
+  AssertionError: False is not true
+
+test_more_outputs_than_inputs_fail_explicitly
+  AssertionError: 'excess_engine_output' not found in 'missing_engine_output'
+
+test_engine_output_order_mismatch_when_caller_id_at_wrong_position
+  AssertionError: 'engine_output_order_mismatch' not found in 'unknown_output_id'
+
+test_string_numeric_engine_ids_map_positionally
+  AttributeError: 'BatchGenerationResult' object has no attribute 'engine_request_id'
+```
+
+Root cause: after positional mapping, `generate_batch()` compared each engine
+`request_id` against `{str(index), request.request_id}` and overwrote successful
+results with `unknown_output_id` when vLLM returned opaque or globally numbered IDs.
+
+## 5. Initial failing tests (manifest-identity correction red phase)
 
 Before manifest-identity correction, new tests failed because required fields were not persisted or compared:
 
@@ -151,13 +180,16 @@ Validation before engine invocation:
 Each `BatchGenerationResult` records:
 
 - request ID, ordinal, raw text (preserved exactly);
+- optional `engine_request_id` diagnostic (vLLM internal ID; not canonical);
 - backend identifier, model repository/revision, config hash;
 - generation status, finish reason;
 - prompt/completion token counts when available (`null` otherwise);
 - latency when supplied;
 - error type/message on failure.
 
-Output ordering follows input ordinal. Missing, unknown, malformed, or multi-completion engine outputs become explicit failure records.
+Output ordering follows input ordinal. Missing, excess, malformed, or multi-completion
+engine outputs become explicit failure records. Positional correlation uses documented
+vLLM output order; engine request IDs are diagnostic only.
 
 ## 10. Engine output normalisation
 
@@ -168,6 +200,53 @@ Output ordering follows input ordinal. Missing, unknown, malformed, or multi-com
 - completions with `.text` / `"text"`, optional token counts and finish reason.
 
 Policy: exactly **one** completion per request. Multiple completions → `multiple_completions` failure.
+
+### 10.1 Output correlation contract (C2A correction)
+
+For the direct Python `LLM.generate()` path, vLLM returns an ordered sequence of
+`RequestOutput` objects corresponding to the submitted prompt order. Project request
+correlation therefore uses **output position**, not vLLM's internal `request_id`:
+
+- caller `request_id` values remain canonical in every `BatchGenerationResult`;
+- caller ordinals are preserved unchanged;
+- raw generated text is preserved exactly;
+- vLLM's `RequestOutput.request_id` is retained only as optional diagnostic metadata
+  (`engine_request_id` on `BatchGenerationResult`; `null` when absent);
+- numeric, numeric-string, and opaque engine IDs must not produce `unknown_output_id`;
+- the backend must not require engine IDs to equal caller IDs or batch indices.
+
+Positional correlation is permitted only when:
+
+- the engine returned a sequence;
+- output count exactly equals input count;
+- each output element is structurally valid;
+- every output contains exactly one completion;
+- each completion contains usable generated text or an explicit failure record;
+- input request IDs were unique before invocation.
+
+Fail closed when:
+
+- output count is lower than input count → `missing_engine_output`;
+- output count is higher than input count → `excess_engine_output`;
+- output is not a sequence → `malformed_engine_output`;
+- an output element is malformed → `malformed_engine_output`;
+- an output contains zero completions → `malformed_engine_output`;
+- an output contains multiple completions → `multiple_completions`.
+
+Optional consistency protection: if an engine `request_id` exactly equals one of the
+caller request IDs but appears at the wrong position, the backend fails with
+`engine_output_order_mismatch`. Ordinary numeric/internal engine IDs do not trigger
+this failure.
+
+### 10.2 Live C2B observation motivating the correction
+
+Stage C2B live smoke (2026-07-11) on vLLM 0.20.1 inside the pinned SIF observed that
+engine outputs may carry numeric/internal `request_id` values that do not match batch
+indices. The pre-correction C2A backend rejected those as `unknown_output_id` when
+`batch_size > 1`. C2B used a cluster-side instrumented driver workaround (not
+committed) to map outputs positionally for bounded smoke only. That workaround is
+superseded by this committed correction. **C2B must be rerun from a new committed
+source SHA before Stage C2B acceptance.**
 
 ## 11. ModelClient compatibility
 
