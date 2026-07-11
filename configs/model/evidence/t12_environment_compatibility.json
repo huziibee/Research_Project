@@ -1,0 +1,246 @@
+{
+  "manifest_schema_version": "1.0.0",
+  "ticket": "T12",
+  "slice": 2,
+  "slice_status": "PASS",
+  "no_model_download": true,
+  "no_absolute_paths": true,
+  "absolute_environment_path_tracked": false,
+  "storage_class": "wsl_linux_filesystem",
+  "repository_mount": "windows_ntfs_via_wsl",
+  "model_cache_policy": "single_wsl_cache",
+  "driver_version": "546.30",
+  "driver_reported_cuda_version": "12.3",
+  "pytorch_cuda_build_selected": "cu118",
+  "pytorch_cuda_build_reason": "Driver 546.30 supports CUDA up to 12.3; PyTorch cu126/cu128 wheels require a newer driver. cu118 wheels bundle CUDA 11.8 runtime libraries compatible with this driver via NVIDIA backward compatibility.",
+  "checkpoint_load_verified": false,
+  "model_selected": false,
+  "qlora_training_performed": false,
+  "four_bit_checkpoint_loading_tested": false,
+  "bitsandbytes_slice2_note": "bitsandbytes 0.49.2 Adam8bit CUDA operation verified without model weights. Model-level 4-bit checkpoint loading and QLoRA training remain unverified for later slices.",
+  "os_compiler_dependencies": {
+    "tracked_in_python_lockfiles": false,
+    "required_for": "bitsandbytes/Triton JIT cuda_utils compilation",
+    "packages": [
+      {"name": "build-essential", "version": "12.12ubuntu2.26.04.1"},
+      {"name": "gcc", "version": "15.2.0"},
+      {"name": "g++", "version": "15.2.0"},
+      {"name": "make", "version": "4.4.1"}
+    ],
+    "cc": "/usr/bin/gcc",
+    "cxx": "/usr/bin/g++"
+  },
+  "non_blocking_observations": [
+    "_POSIX_C_SOURCE redefinition warning during Triton compilation",
+    "WSL ldconfig warning: /usr/lib/wsl/lib/libcuda.so.1 is not a symbolic link"
+  ],
+  "compatibility_matrix": [
+    {
+      "package": "torch",
+      "selected_exact_version": "2.7.0+cu118",
+      "python_311_support": true,
+      "linux_x86_64_support": true,
+      "cuda_pytorch_coupling": "cu118 wheel from download.pytorch.org/whl/cu118",
+      "reason_for_selection": "Latest stable PyTorch with CUDA 11.8 runtime compatible with driver 546.30 (CUDA 12.3 max)",
+      "authoritative_evidence": "https://pytorch.org/get-started/locally/ ; https://pytorch.org/get-started/previous-versions/",
+      "known_limitations": "cu126/cu128 builds excluded because driver 546.30 does not support CUDA 12.6+"
+    },
+    {
+      "package": "torchvision",
+      "selected_exact_version": "0.22.0+cu118",
+      "python_311_support": true,
+      "linux_x86_64_support": true,
+      "cuda_pytorch_coupling": "Matched to torch 2.7.0 cu118",
+      "reason_for_selection": "Official paired release for torch 2.7.0",
+      "authoritative_evidence": "https://pytorch.org/get-started/previous-versions/",
+      "known_limitations": null
+    },
+    {
+      "package": "torchaudio",
+      "selected_exact_version": "2.7.0+cu118",
+      "python_311_support": true,
+      "linux_x86_64_support": true,
+      "cuda_pytorch_coupling": "Matched to torch 2.7.0 cu118",
+      "reason_for_selection": "Official paired release for torch 2.7.0",
+      "authoritative_evidence": "https://pytorch.org/get-started/previous-versions/",
+      "known_limitations": null
+    },
+    {
+      "package": "transformers",
+      "selected_exact_version": "5.13.0",
+      "python_311_support": true,
+      "linux_x86_64_support": true,
+      "cuda_pytorch_coupling": "requires torch>=2.4",
+      "reason_for_selection": "Latest stable; Python >=3.10; supports schema-v2 inference workflows",
+      "authoritative_evidence": "https://pypi.org/pypi/transformers/5.13.0/json",
+      "known_limitations": "Declares tokenizers<=0.23.0 but 0.23.0 stable is unavailable on PyPI; resolved to tokenizers 0.22.2"
+    },
+    {
+      "package": "tokenizers",
+      "selected_exact_version": "0.22.2",
+      "python_311_support": true,
+      "linux_x86_64_support": true,
+      "cuda_pytorch_coupling": "none",
+      "reason_for_selection": "Latest stable satisfying transformers 5.13.0 tokenizers<=0.23.0,>=0.22.0",
+      "authoritative_evidence": "https://pypi.org/pypi/tokenizers/json ; transformers 5.13.0 requires_dist",
+      "known_limitations": "0.23.0 stable release absent on PyPI"
+    },
+    {
+      "package": "safetensors",
+      "selected_exact_version": "0.8.0",
+      "python_311_support": true,
+      "linux_x86_64_support": true,
+      "cuda_pytorch_coupling": "none",
+      "reason_for_selection": "Latest stable; transformers 5.13.0 requires >=0.8.0",
+      "authoritative_evidence": "https://pypi.org/pypi/safetensors/json",
+      "known_limitations": null
+    },
+    {
+      "package": "accelerate",
+      "selected_exact_version": "1.14.0",
+      "python_311_support": true,
+      "linux_x86_64_support": true,
+      "cuda_pytorch_coupling": "optional torch integration",
+      "reason_for_selection": "Latest stable training/inference utility layer",
+      "authoritative_evidence": "https://pypi.org/pypi/accelerate/json",
+      "known_limitations": null
+    },
+    {
+      "package": "bitsandbytes",
+      "selected_exact_version": "0.49.2",
+      "python_311_support": true,
+      "linux_x86_64_support": true,
+      "cuda_pytorch_coupling": "requires torch>=2.4; CC 6.0+ (RTX 3070 is 8.6); host gcc for Triton JIT",
+      "reason_for_selection": "Latest stable; Linux x86-64 wheels built for CUDA 11.8-12.6",
+      "authoritative_evidence": "https://github.com/bitsandbytes-foundation/bitsandbytes#installation",
+      "known_limitations": "CUDA operation verified via Adam8bit probe; 4-bit checkpoint loading not tested in Slice 2"
+    },
+    {
+      "package": "peft",
+      "selected_exact_version": "0.19.1",
+      "python_311_support": true,
+      "linux_x86_64_support": true,
+      "cuda_pytorch_coupling": "training-only; depends on torch/transformers",
+      "reason_for_selection": "Latest stable LoRA/adapter training library",
+      "authoritative_evidence": "https://pypi.org/pypi/peft/json",
+      "known_limitations": "training environment only; no adapter created in Slice 2"
+    },
+    {
+      "package": "trl",
+      "selected_exact_version": "1.8.0",
+      "python_311_support": true,
+      "linux_x86_64_support": true,
+      "cuda_pytorch_coupling": "training-only; depends on torch/transformers",
+      "reason_for_selection": "Latest stable RLHF/SFT training helpers",
+      "authoritative_evidence": "https://pypi.org/pypi/trl/json",
+      "known_limitations": "training environment only; no training performed in Slice 2"
+    },
+    {
+      "package": "datasets",
+      "selected_exact_version": "5.0.0",
+      "python_311_support": true,
+      "linux_x86_64_support": true,
+      "cuda_pytorch_coupling": "none",
+      "reason_for_selection": "Package dependency for later local workflows; no dataset download in Slice 2",
+      "authoritative_evidence": "https://pypi.org/pypi/datasets/json",
+      "known_limitations": "training environment only; no research data accessed in Slice 2"
+    }
+  ],
+  "resource_measurements": {
+    "wsl_memory_available_mib_before": 6151,
+    "wsl_memory_available_mib_after": 6210,
+    "wsl_swap_total_mib": 2048,
+    "wsl_root_free_gib": 948,
+    "gpu_vram_free_mib_before": 7913,
+    "gpu_vram_free_mib_after_probe": 7131
+  },
+  "environments": {
+    "t12-inference-wsl2": {
+      "environment_id": "t12-inference-wsl2",
+      "role": "inference",
+      "overall_status": "verified_compatible",
+      "lockfile_relpath": "requirements/locks/t12-inference-wsl2.lock",
+      "lockfile_sha256": "ef7f9e0dd68901b6292ea8ebc89a653f5ef527bed5c2d14b1d1d2aa4bbe769b3",
+      "requirements_input_relpath": "requirements/t12-inference.in",
+      "requirements_input_sha256": "f79266858f8bc9c6960cc3c30ded8fab455f896928118812076444ad344fc0a9",
+      "cuda_compatibility": "passed",
+      "gpu_computation": "passed",
+      "bf16_supported": true,
+      "bitsandbytes_status": "cuda_operation_verified",
+      "checkpoint_load_verified": false,
+      "packages": {
+        "pytorch_version": "2.7.0+cu118",
+        "transformers_version": "5.13.0",
+        "tokenizers_version": "0.22.2",
+        "accelerate_version": "1.14.0",
+        "safetensors_version": "0.8.0",
+        "bitsandbytes_version": "0.49.2",
+        "peft_version": null,
+        "trl_version": null,
+        "datasets_version": null
+      },
+      "imports": {
+        "torch": {"status": "ok"},
+        "transformers": {"status": "ok"},
+        "tokenizers": {"status": "ok"},
+        "safetensors": {"status": "ok"},
+        "accelerate": {"status": "ok"},
+        "bitsandbytes": {"status": "ok"}
+      },
+      "import_failures": [],
+      "cuda_computation_details": {
+        "status": "passed",
+        "max_abs_diff": 0.0,
+        "tolerance": 0.0001,
+        "peak_allocated_mib": 8.137,
+        "peak_reserved_mib": 22.0
+      },
+      "probe_timestamp_utc": "2026-07-11T09:27:09+00:00"
+    },
+    "t12-training-wsl2": {
+      "environment_id": "t12-training-wsl2",
+      "role": "training",
+      "overall_status": "verified_compatible",
+      "lockfile_relpath": "requirements/locks/t12-training-wsl2.lock",
+      "lockfile_sha256": "6a124016d3627cbb35d98b93bf309112e5bb655b35285fb8bbf1aaea99b795ea",
+      "requirements_input_relpath": "requirements/t12-training.in",
+      "requirements_input_sha256": "50641e8310b2fb5dc7e02ca7433357b975534520f548b9abaf343a07594aaac5",
+      "cuda_compatibility": "passed",
+      "gpu_computation": "passed",
+      "bf16_supported": true,
+      "bitsandbytes_status": "cuda_operation_verified",
+      "checkpoint_load_verified": false,
+      "packages": {
+        "pytorch_version": "2.7.0+cu118",
+        "transformers_version": "5.13.0",
+        "tokenizers_version": "0.22.2",
+        "accelerate_version": "1.14.0",
+        "safetensors_version": "0.8.0",
+        "bitsandbytes_version": "0.49.2",
+        "peft_version": "0.19.1",
+        "trl_version": "1.8.0",
+        "datasets_version": "5.0.0"
+      },
+      "imports": {
+        "torch": {"status": "ok"},
+        "transformers": {"status": "ok"},
+        "tokenizers": {"status": "ok"},
+        "safetensors": {"status": "ok"},
+        "accelerate": {"status": "ok"},
+        "bitsandbytes": {"status": "ok"},
+        "peft": {"status": "ok"},
+        "trl": {"status": "ok"},
+        "datasets": {"status": "ok"}
+      },
+      "import_failures": [],
+      "cuda_computation_details": {
+        "status": "passed",
+        "max_abs_diff": 0.0,
+        "tolerance": 0.0001,
+        "peak_allocated_mib": 8.137,
+        "peak_reserved_mib": 22.0
+      },
+      "probe_timestamp_utc": "2026-07-11T09:27:19+00:00"
+    }
+  }
+}
