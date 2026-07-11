@@ -1,10 +1,23 @@
 {
   "manifest_schema_version": "1.0.0",
   "ticket": "T12",
-  "stage": "B1",
-  "evidence_status": "template_pending_live_verification",
-  "measurement_timestamp": "2026-07-11T00:00:00Z",
-  "evidence_source": "offline_repository_metadata",
+  "stage": "B3",
+  "evidence_stages_measured": ["B2", "B2R"],
+  "evidence_status": "verified_offline",
+  "measurement_date": "2026-07-11",
+  "measurement_time_precision": "date_only",
+  "ingestion_stage": "B3",
+  "evidence_method": "live_read_only_cluster_verification",
+  "observation_kind": "live_inventory_and_offline_resolution",
+  "governance_state": {
+    "t11_status": "BLOCKED",
+    "deviation_authority": "DEV-20260711-001",
+    "protected_data_used": false,
+    "research_pool_used": false,
+    "model_weights_loaded": false,
+    "network_fallback_used": false,
+    "remote_files_modified": false
+  },
   "model_repository": {
     "value_kind": "immutable_expected",
     "value": "Qwen/Qwen3-8B",
@@ -26,13 +39,78 @@
     "private": false,
     "repository_files": 15,
     "total_size_bytes": 16397461266,
-    "weight_shards": 5
+    "weight_shards": 5,
+    "broken_symlinks": 0
+  },
+  "snapshot_path_template": "${T12_HF_CACHE}/hub/models--Qwen--Qwen3-8B/snapshots/b968826d9c46dd6066d109eabc6255188de91218",
+  "required_files_observed": [
+    "config.json",
+    "generation_config.json",
+    "model.safetensors.index.json",
+    "tokenizer.json",
+    "tokenizer_config.json",
+    "vocab.json",
+    "merges.txt"
+  ],
+  "configuration_inspection": {
+    "model_type": "qwen3",
+    "architectures": ["Qwen3ForCausalLM"]
+  },
+  "tokenizer_inspection": {
+    "tokenizer_class": "Qwen2Tokenizer",
+    "vocabulary_size": 151669,
+    "note": "Tokenizer class name reflects Hugging Face naming; model identity remains Qwen3-8B."
+  },
+  "offline_resolution": {
+    "status": "passed",
+    "root_cause_classification": "INCORRECT_CACHE_DIR",
+    "incorrect_prior_usage": "cache_dir=${T12_HF_CACHE}",
+    "correct_explicit_hub_cache": "cache_dir=${T12_HF_CACHE}/hub",
+    "correct_hf_home_usage": "HF_HOME=${T12_HF_CACHE} with derived HF_HUB_CACHE=${T12_HF_CACHE}/hub",
+    "refs_directory_causal": false,
+    "offline_flags_required": {
+      "HF_HUB_OFFLINE": "1",
+      "TRANSFORMERS_OFFLINE": "1"
+    },
+    "network_fallback_used": false,
+    "probes": {
+      "probe_a": {
+        "description": "Explicit cache_dir pointed to Hub cache with exact revision pinned",
+        "cache_dir": "${T12_HF_CACHE}/hub",
+        "revision_pinned": true,
+        "snapshot_path_matched": true,
+        "status": "PASS",
+        "evidence_stage": "B2R"
+      },
+      "probe_b": {
+        "description": "HF_HOME set to cache root; Hub cache derived; no incorrect explicit cache_dir",
+        "hf_home": "${T12_HF_CACHE}",
+        "effective_hf_hub_cache": "${T12_HF_CACHE}/hub",
+        "revision_pinned": true,
+        "snapshot_path_matched": true,
+        "status": "PASS",
+        "evidence_stage": "B2R"
+      },
+      "probe_c": {
+        "description": "Direct snapshot-path config and tokenizer load; model weights not loaded",
+        "model_weights_loaded": false,
+        "status": "PASS",
+        "evidence_stage": "B2R"
+      }
+    },
+    "initial_b2_failure": {
+      "description": "Initial offline resolution failed when cache_dir pointed to HF home root instead of Hub cache",
+      "incorrect_cache_dir": "${T12_HF_CACHE}",
+      "evidence_stage": "B2"
+    }
   },
   "snapshot_verification": {
     "offline_metadata_verified": true,
-    "cluster_shared_cache_path_resolved": false,
-    "cluster_weight_integrity_verified": false,
-    "status": "pending_live_cluster_verification"
+    "cluster_shared_cache_path_resolved": true,
+    "cluster_weight_integrity_verified": true,
+    "cluster_weight_integrity_note": "File inventory and symlink integrity verified; model weights were not loaded during B2R.",
+    "direct_snapshot_config_tokenizer_probe_passed": true,
+    "status": "verified_offline"
   },
   "historical_local_model_must_not_be_used": "Qwen/Qwen2.5-1.5B-Instruct"
 }

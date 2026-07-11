@@ -10,11 +10,13 @@ from ambiguity_manager.model.cluster.manifest_schemas import (
     CLUSTER_HARDWARE_EVIDENCE_REL,
     CLUSTER_INFERENCE_ENV_REL,
     CLUSTER_INFERENCE_EVIDENCE_REL,
+    CLUSTER_LIVE_VERIFICATION_REL,
     CLUSTER_TRAINING_ENV_REL,
     validate_cluster_checkpoint_snapshot,
     validate_cluster_environment_manifest,
     validate_cluster_hardware_evidence,
     validate_cluster_inference_evidence,
+    validate_cluster_live_verification,
 )
 from ambiguity_manager.paths import ProjectPaths
 
@@ -60,6 +62,18 @@ class T12ClusterManifestSchemasTests(unittest.TestCase):
         data = _load(CLUSTER_CHECKPOINT_SNAPSHOT_REL)
         errors = validate_cluster_checkpoint_snapshot(data)
         self.assertEqual(errors, [], msg="\n".join(errors))
+
+    def test_live_verification_validates(self) -> None:
+        data = _load(CLUSTER_LIVE_VERIFICATION_REL)
+        errors = validate_cluster_live_verification(data)
+        self.assertEqual(errors, [], msg="\n".join(errors))
+
+    def test_inference_environment_status_verified_live(self) -> None:
+        data = _load(CLUSTER_INFERENCE_ENV_REL)
+        self.assertEqual(
+            data["environment_status"],
+            "verified_live_cluster_with_integrity_caveat",
+        )
 
     def test_malformed_snapshot_sha_rejected(self) -> None:
         data = _load(CLUSTER_CHECKPOINT_SNAPSHOT_REL)

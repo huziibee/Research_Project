@@ -1,63 +1,180 @@
 {
   "manifest_schema_version": "1.0.0",
   "ticket": "T12",
-  "stage": "B1",
-  "evidence_status": "template_pending_live_verification",
-  "measurement_timestamp": "2026-07-11T00:00:00Z",
-  "evidence_source": "offline_cluster_smoke_observation",
+  "stage": "B3",
+  "evidence_stages_measured": ["B2", "B2R"],
+  "evidence_status": "verified_live_cluster",
+  "measurement_date": "2026-07-11",
+  "measurement_time_precision": "date_only",
+  "ingestion_stage": "B3",
+  "evidence_method": "live_read_only_cluster_verification",
+  "observation_kind": "live",
+  "governance_state": {
+    "t11_status": "BLOCKED",
+    "deviation_authority": "DEV-20260711-001",
+    "protected_data_used": false,
+    "research_pool_used": false,
+    "model_weights_loaded": false,
+    "network_fallback_used": false,
+    "remote_files_modified": false
+  },
+  "storage": {
+    "cluster_root_template": "${T12_CLUSTER_ROOT}",
+    "ownership_scope": "current_cluster_user",
+    "permissions": "drwx------",
+    "readable": true,
+    "writable": true,
+    "filesystem": {
+      "type": "NFS",
+      "source": "/home-mscluster",
+      "total_bytes": 80007730823168,
+      "available_bytes": 61766580043776,
+      "used_percent": 23
+    },
+    "subdirectory_sizes_bytes": {
+      "containers": 7657443461,
+      "hf-cache": 16404839440,
+      "logs": 25320,
+      "models": 1916,
+      "scripts": 13122,
+      "apptainer-cache": 0
+    }
+  },
   "gpu": {
     "name": {
       "value_kind": "measured",
       "value": "NVIDIA RTX PRO 6000 Blackwell Workstation Edition",
-      "status": "verified_offline"
+      "status": "verified_live_cluster"
     },
     "nvidia_smi_vram_mib": {
       "value_kind": "measured",
       "value": 97887,
-      "status": "verified_offline"
+      "status": "verified_live_cluster"
     },
-    "pytorch_vram_gib": {
+    "pytorch_total_vram_bytes": {
       "value_kind": "measured",
-      "value": 94.97,
-      "status": "verified_offline"
+      "value": 101973491712,
+      "status": "verified_live_cluster"
     },
     "compute_capability": {
       "value_kind": "measured",
       "value": "12.0",
-      "status": "verified_offline"
+      "status": "verified_live_cluster"
     },
     "driver_version": {
       "value_kind": "measured",
       "value": "595.71.05",
-      "status": "verified_offline"
+      "status": "verified_live_cluster"
+    },
+    "cuda_available": {
+      "value_kind": "measured",
+      "value": true,
+      "status": "verified_live_cluster"
+    },
+    "device_count": {
+      "value_kind": "measured",
+      "value": 1,
+      "status": "verified_live_cluster"
     }
+  },
+  "gpu_tensor_probe": {
+    "probe_node": "mscluster110",
+    "probe_node_is_permanent_requirement": false,
+    "input_tensor": [1.0, 2.0, 3.0],
+    "result_tensor": [2.0, 4.0, 6.0],
+    "status": "PASS",
+    "model_loaded": false,
+    "vllm_engine_started": false,
+    "evidence_stage": "B2"
   },
   "scheduling_observation": {
     "partition": {
       "value_kind": "measured",
       "value": "biggpu",
-      "status": "verified_offline"
+      "status": "verified_live_cluster"
+    },
+    "partition_state": {
+      "value_kind": "measured",
+      "value": "UP",
+      "status": "verified_live_cluster",
+      "dynamic": true
     },
     "exclusive_node_required": {
       "value_kind": "immutable_expected",
       "value": true,
-      "status": "verified_offline"
+      "status": "verified_live_cluster"
     },
     "gpu_gres_mode": {
       "value_kind": "measured",
       "value": "not_configured_at_measurement_time",
-      "status": "verified_offline"
+      "status": "verified_live_cluster"
     },
+    "slurm_gres_types": null,
+    "slurm_select_type": "select/linear",
+    "slurm_select_type_parameters": "NONE",
+    "explicit_node_used_during_b2_gpu_probe": {
+      "value_kind": "measured",
+      "value": "mscluster110",
+      "status": "measurement_identifier_only",
+      "note": "Node used for B2 GPU tensor probe only; not a permanent node requirement."
+    },
+    "observed_nodes": [
+      "mscluster106",
+      "mscluster107",
+      "mscluster108",
+      "mscluster109",
+      "mscluster110",
+      "mscluster111",
+      "mscluster112"
+    ],
+    "observed_node_states_at_measurement": {
+      "mscluster106": "idle",
+      "mscluster107": "down",
+      "mscluster108": "down",
+      "mscluster109": "down",
+      "mscluster110": "idle",
+      "mscluster111": "idle",
+      "mscluster112": "idle",
+      "dynamic": true,
+      "note": "Node states are dynamic scheduler observations, not permanent policy."
+    },
+    "verified_gpu_class_nodes": ["mscluster110", "mscluster111", "mscluster112"],
+    "verified_node_resources": {
+      "mscluster110": {
+        "configured_cpus": 12,
+        "configured_memory_mib": 122000,
+        "gres": null,
+        "partition": "biggpu"
+      },
+      "mscluster111": {
+        "configured_cpus": 12,
+        "configured_memory_mib": 122000,
+        "gres": null,
+        "partition": "biggpu"
+      },
+      "mscluster112": {
+        "configured_cpus": 12,
+        "configured_memory_mib": 122000,
+        "gres": null,
+        "partition": "biggpu"
+      }
+    },
+    "partition_limits": {
+      "MaxNodes": 3,
+      "MaxTime": "3-00:00:00",
+      "TotalCPUs": 260,
+      "TotalNodes": 7
+    },
+    "qos_name": "mss_biggpu",
+    "qos_evidence_status": "partial",
+    "permanent_job_limit_claim": false
+  },
+  "historical_smoke_observation": {
     "explicit_node_used_during_smoke": {
       "value_kind": "measured",
       "value": "mscluster112",
       "status": "historical_measurement_only",
       "note": "Historical smoke observation only; not a permanent node requirement."
     }
-  },
-  "fields_requiring_live_cluster_verification": [
-    "gpu.current_allocation",
-    "scheduling.current_queue_state",
-    "shared_storage_mount_availability"
-  ]
+  }
 }

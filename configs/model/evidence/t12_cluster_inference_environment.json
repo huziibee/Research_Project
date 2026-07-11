@@ -1,13 +1,28 @@
 {
   "manifest_schema_version": "1.0.0",
   "ticket": "T12",
-  "stage": "B1",
-  "evidence_status": "template_pending_live_verification",
+  "stage": "B3",
+  "evidence_stages_measured": ["B2", "B2R"],
+  "evidence_status": "verified_live_cluster_with_integrity_caveat",
   "environment_id": "t12-cluster-inference",
   "active_environment_relpath": "configs/environments/t12_cluster_inference.json",
   "immutable_selection_relpath": "configs/model/immutable_selection.json",
-  "measurement_timestamp": "2026-07-11T00:00:00Z",
-  "evidence_source": "offline_manifest_template",
+  "execution_policy_relpath": "configs/model/cluster_execution_policy.json",
+  "measurement_date": "2026-07-11",
+  "measurement_time_precision": "date_only",
+  "ingestion_stage": "B3",
+  "evidence_method": "live_read_only_cluster_verification",
+  "observation_kind": "live",
+  "governance_state": {
+    "t11_status": "BLOCKED",
+    "deviation_authority": "DEV-20260711-001",
+    "protected_data_used": false,
+    "research_pool_used": false,
+    "model_weights_loaded": false,
+    "network_fallback_used": false,
+    "remote_files_modified": false
+  },
+  "apptainer_version": "1.4.5",
   "verified_offline": {
     "container_filename": "vllm-openai-v0.20.1.sif",
     "container_sha256": "d404bdf414e1b8f2d5af1568d0565d4e2da8435f26325b281fb28b9597c548d1",
@@ -15,13 +30,46 @@
     "python_version": "3.12.13",
     "pytorch_version": "2.11.0+cu130",
     "pytorch_cuda_build": "13.0",
-    "vllm_version": "0.20.1"
+    "vllm_version": "0.20.1",
+    "transformers_version": "5.7.0",
+    "huggingface_hub_version": "1.13.0",
+    "safetensors_version": "0.7.0"
   },
-  "pending_live_cluster_verification": [
-    "apptainer_runtime_on_compute_node",
-    "vllm_engine_startup",
-    "model_weight_resolution_from_shared_cache",
-    "exclusive_node_allocation_on_biggpu"
-  ],
+  "verified_live_cluster": {
+    "container_execution_verified": true,
+    "container_package_identity_verified": true,
+    "apptainer_runtime_on_compute_node": true,
+    "exclusive_node_allocation_on_biggpu": true,
+    "model_weight_resolution_from_shared_cache": true,
+    "vllm_engine_startup": false,
+    "vllm_engine_startup_note": "No vLLM engine was started during B2/B2R by design."
+  },
+  "container_integrity": {
+    "expected_immutable_sha256": "d404bdf414e1b8f2d5af1568d0565d4e2da8435f26325b281fb28b9597c548d1",
+    "observed_sidecar_sha256": "d404bdf414e1b8f2d5af1568d0565d4e2da8435f26325b281fb28b9597c548d1",
+    "exact_size_bytes": 7657443328,
+    "sidecar_sha256_match": true,
+    "sidecar_timestamp": "2026-07-11T14:59:19Z",
+    "live_sha256_recomputed_during_b2": false,
+    "live_sha256_status": "deferred",
+    "identity_status": "size_and_sidecar_match",
+    "container_execution_verified": true,
+    "container_package_identity_verified": true,
+    "integrity_caveat": "Fresh live SIF SHA-256 recomputation was deferred; sidecar hash and size identity passed; execution does not substitute for content hash verification. A future live hash recomputation may upgrade integrity status without changing immutable selection."
+  },
+  "hf_cache_semantics": {
+    "hf_home_env": "T12_HF_CACHE",
+    "hf_home_template": "${T12_HF_CACHE}",
+    "hf_hub_cache_derived_template": "${T12_HF_CACHE}/hub",
+    "explicit_snapshot_download_cache_dir_must_be": "${T12_HF_CACHE}/hub",
+    "incorrect_prior_cache_dir": "${T12_HF_CACHE}",
+    "offline_resolution_root_cause": "INCORRECT_CACHE_DIR",
+    "refs_directory_required": false,
+    "offline_flags_required": [
+      "HF_HUB_OFFLINE=1",
+      "TRANSFORMERS_OFFLINE=1"
+    ],
+    "network_fallback_used": false
+  },
   "must_not_reference_historical_model": "Qwen/Qwen2.5-1.5B-Instruct"
 }

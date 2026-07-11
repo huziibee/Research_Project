@@ -1,0 +1,116 @@
+{
+  "manifest_schema_version": "1.0.0",
+  "ticket": "T12",
+  "stage": "B3",
+  "evidence_stages_measured": ["B2", "B2R"],
+  "evidence_status": "verified_live_cluster_with_integrity_caveat",
+  "measurement_date": "2026-07-11",
+  "measurement_time_precision": "date_only",
+  "ingestion_stage": "B3",
+  "evidence_method": "live_read_only_cluster_verification_ingested",
+  "observation_kind": "live_and_derived",
+  "report_relpath": "docs/reports/ticket_T12_stage_b2_live_verification.md",
+  "governance_state": {
+    "t11_status": "BLOCKED",
+    "deviation_authority": "docs/decisions/DEV-20260711-001_pre_t12_execution_order_deviation.md",
+    "protected_data_used": false,
+    "research_pool_used": false,
+    "model_weights_loaded": false,
+    "network_fallback_used": false,
+    "remote_files_modified": false,
+    "collection_permitted": false,
+    "selected_model_register_must_remain_null": true
+  },
+  "cross_references": {
+    "immutable_selection": "configs/model/immutable_selection.json",
+    "execution_policy": "configs/model/cluster_execution_policy.json",
+    "hardware_manifest": "configs/model/evidence/t12_cluster_hardware_manifest.json",
+    "inference_environment": "configs/model/evidence/t12_cluster_inference_environment.json",
+    "checkpoint_snapshot": "configs/model/evidence/t12_cluster_checkpoint_snapshot.json",
+    "active_inference_environment": "configs/environments/t12_cluster_inference.json",
+    "adr": "docs/decisions/ADR_T12_cluster_inference_architecture.md",
+    "deviation_record": "docs/decisions/DEV-20260711-001_pre_t12_execution_order_deviation.md",
+    "licence_register": "configs/licences/model_licence_register.json"
+  },
+  "status_summary": {
+    "hardware_manifest": "verified_live_cluster",
+    "checkpoint_snapshot": "verified_offline",
+    "offline_resolution": "passed",
+    "inference_environment": "verified_live_cluster_with_integrity_caveat",
+    "container_identity": "size_and_sidecar_match",
+    "fresh_sif_live_hash": "deferred",
+    "training_environment": "planned_unverified",
+    "model_candidate": "provisionally_selected_for_cluster_validation",
+    "t11": "BLOCKED",
+    "stage_c_complete": false,
+    "t12_complete": false
+  },
+  "storage_summary": {
+    "cluster_root_template": "${T12_CLUSTER_ROOT}",
+    "ownership_scope": "current_cluster_user",
+    "filesystem_type": "NFS",
+    "used_percent": 23
+  },
+  "container_summary": {
+    "filename": "vllm-openai-v0.20.1.sif",
+    "path_template": "${T12_CONTAINER_SIF}",
+    "expected_immutable_sha256": "d404bdf414e1b8f2d5af1568d0565d4e2da8435f26325b281fb28b9597c548d1",
+    "observed_sidecar_sha256": "d404bdf414e1b8f2d5af1568d0565d4e2da8435f26325b281fb28b9597c548d1",
+    "size_bytes": 7657443328,
+    "sidecar_sha256_match": true,
+    "live_sha256_recomputed_during_b2": false,
+    "live_sha256_status": "deferred",
+    "container_execution_verified": true,
+    "apptainer_version": "1.4.5"
+  },
+  "snapshot_summary": {
+    "model_repository": "Qwen/Qwen3-8B",
+    "model_revision": "b968826d9c46dd6066d109eabc6255188de91218",
+    "snapshot_path_template": "${T12_HF_CACHE}/hub/models--Qwen--Qwen3-8B/snapshots/b968826d9c46dd6066d109eabc6255188de91218",
+    "resolved_file_count": 15,
+    "resolved_total_size_bytes": 16397461266,
+    "safetensors_shard_count": 5,
+    "broken_symlinks": 0,
+    "offline_resolution_status": "passed",
+    "offline_resolution_root_cause": "INCORRECT_CACHE_DIR"
+  },
+  "gpu_probe_summary": {
+    "probe_node": "mscluster110",
+    "probe_node_is_permanent_requirement": false,
+    "gpu_name": "NVIDIA RTX PRO 6000 Blackwell Workstation Edition",
+    "nvidia_smi_total_vram_mib": 97887,
+    "pytorch_total_vram_bytes": 101973491712,
+    "compute_capability": "12.0",
+    "tensor_input": [1.0, 2.0, 3.0],
+    "tensor_result": [2.0, 4.0, 6.0],
+    "status": "PASS"
+  },
+  "scheduler_summary": {
+    "partition": "biggpu",
+    "require_exclusive_node": true,
+    "gpu_gres_mode": "not_configured_at_measurement_time",
+    "qos_evidence_status": "partial",
+    "node_states_dynamic": true,
+    "permanent_job_limit_claim": false
+  },
+  "hf_cache_semantics": {
+    "hf_home_template": "${T12_HF_CACHE}",
+    "hf_hub_cache_derived_template": "${T12_HF_CACHE}/hub",
+    "explicit_snapshot_download_cache_dir_must_be": "${T12_HF_CACHE}/hub",
+    "offline_resolution_root_cause": "INCORRECT_CACHE_DIR",
+    "refs_directory_required": false,
+    "offline_flags_required": [
+      "HF_HUB_OFFLINE=1",
+      "TRANSFORMERS_OFFLINE=1"
+    ]
+  },
+  "non_claims": [
+    "no_full_schema_v2_inference",
+    "no_stage_e_bake_off",
+    "no_lora_feasibility",
+    "no_benchmark_or_recovery",
+    "no_final_model_selection",
+    "t11_remains_blocked"
+  ],
+  "raw_terminal_transcripts_committed": false
+}

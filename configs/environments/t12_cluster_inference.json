@@ -4,21 +4,37 @@
   "ticket": "T12",
   "role": "inference",
   "platform": "wits_slurm_cluster",
-  "environment_status": "planned_unverified",
+  "environment_status": "verified_live_cluster_with_integrity_caveat",
   "authoritative_runtime": "wits_slurm_cluster",
   "immutable_selection_relpath": "configs/model/immutable_selection.json",
   "execution_policy_relpath": "configs/model/cluster_execution_policy.json",
+  "live_verification_relpath": "configs/model/evidence/t12_cluster_live_verification.json",
   "paths": {
     "cluster_root": "${T12_CLUSTER_ROOT}",
     "hf_cache": "${T12_HF_CACHE}",
+    "hf_hub_cache": "${T12_HF_CACHE}/hub",
     "container_sif": "${T12_CONTAINER_SIF}",
     "home": "${HOME}"
+  },
+  "hf_cache_semantics": {
+    "hf_home_env": "T12_HF_CACHE",
+    "hf_home_template": "${T12_HF_CACHE}",
+    "hf_hub_cache_derived_template": "${T12_HF_CACHE}/hub",
+    "explicit_snapshot_download_cache_dir_must_be": "${T12_HF_CACHE}/hub",
+    "incorrect_prior_cache_dir": "${T12_HF_CACHE}",
+    "offline_resolution_root_cause": "INCORRECT_CACHE_DIR",
+    "refs_directory_required": false,
+    "offline_flags_required": [
+      "HF_HUB_OFFLINE=1",
+      "TRANSFORMERS_OFFLINE=1"
+    ],
+    "network_fallback_permitted": false
   },
   "container": {
     "filename": {
       "value_kind": "immutable_expected",
       "value": "vllm-openai-v0.20.1.sif",
-      "status": "verified_offline"
+      "status": "verified_live_cluster"
     },
     "sha256": {
       "value_kind": "immutable_expected",
@@ -26,39 +42,82 @@
       "status": "verified_offline"
     },
     "size_bytes": {
-      "value_kind": "immutable_expected",
+      "value_kind": "measured",
       "value": 7657443328,
-      "status": "verified_offline"
+      "status": "size_and_sidecar_match",
+      "measurement_date": "2026-07-11",
+      "measurement_time_precision": "date_only",
+      "evidence_source": "live_cluster_verification_b2"
+    },
+    "integrity": {
+      "expected_immutable_sha256": "d404bdf414e1b8f2d5af1568d0565d4e2da8435f26325b281fb28b9597c548d1",
+      "observed_sidecar_sha256": "d404bdf414e1b8f2d5af1568d0565d4e2da8435f26325b281fb28b9597c548d1",
+      "exact_size_bytes": 7657443328,
+      "sidecar_sha256_match": true,
+      "sidecar_timestamp": "2026-07-11T14:59:19Z",
+      "live_sha256_recomputed_during_b2": false,
+      "live_sha256_status": "deferred",
+      "container_execution_verified": true,
+      "container_package_identity_verified": true,
+      "identity_status": "size_and_sidecar_match"
     }
   },
   "container_software": {
     "python_version": {
       "value_kind": "measured",
       "value": "3.12.13",
-      "status": "verified_offline",
-      "measurement_timestamp": "2026-07-11T00:00:00Z",
-      "evidence_source": "container_inspection_offline"
+      "status": "verified_live_cluster",
+      "measurement_date": "2026-07-11",
+      "measurement_time_precision": "date_only",
+      "evidence_source": "container_inspection_live_b2"
     },
     "pytorch_version": {
       "value_kind": "measured",
       "value": "2.11.0+cu130",
-      "status": "verified_offline",
-      "measurement_timestamp": "2026-07-11T00:00:00Z",
-      "evidence_source": "container_inspection_offline"
+      "status": "verified_live_cluster",
+      "measurement_date": "2026-07-11",
+      "measurement_time_precision": "date_only",
+      "evidence_source": "container_inspection_live_b2"
     },
     "pytorch_cuda_build": {
       "value_kind": "measured",
       "value": "13.0",
-      "status": "verified_offline",
-      "measurement_timestamp": "2026-07-11T00:00:00Z",
-      "evidence_source": "container_inspection_offline"
+      "status": "verified_live_cluster",
+      "measurement_date": "2026-07-11",
+      "measurement_time_precision": "date_only",
+      "evidence_source": "container_inspection_live_b2"
     },
     "vllm_version": {
       "value_kind": "measured",
       "value": "0.20.1",
-      "status": "verified_offline",
-      "measurement_timestamp": "2026-07-11T00:00:00Z",
-      "evidence_source": "container_inspection_offline"
+      "status": "verified_live_cluster",
+      "measurement_date": "2026-07-11",
+      "measurement_time_precision": "date_only",
+      "evidence_source": "container_inspection_live_b2"
+    },
+    "transformers_version": {
+      "value_kind": "measured",
+      "value": "5.7.0",
+      "status": "verified_live_cluster",
+      "measurement_date": "2026-07-11",
+      "measurement_time_precision": "date_only",
+      "evidence_source": "container_inspection_live_b2"
+    },
+    "huggingface_hub_version": {
+      "value_kind": "measured",
+      "value": "1.13.0",
+      "status": "verified_live_cluster",
+      "measurement_date": "2026-07-11",
+      "measurement_time_precision": "date_only",
+      "evidence_source": "container_inspection_live_b2"
+    },
+    "safetensors_version": {
+      "value_kind": "measured",
+      "value": "0.7.0",
+      "status": "verified_live_cluster",
+      "measurement_date": "2026-07-11",
+      "measurement_time_precision": "date_only",
+      "evidence_source": "container_inspection_live_b2"
     }
   },
   "model_identity": {
@@ -101,51 +160,71 @@
       "value_kind": "measured",
       "value": 15,
       "status": "verified_offline",
-      "measurement_timestamp": "2026-07-11T00:00:00Z",
-      "evidence_source": "repository_metadata_offline"
+      "measurement_date": "2026-07-11",
+      "measurement_time_precision": "date_only",
+      "evidence_source": "cluster_snapshot_inventory_b2r"
     },
     "total_size_bytes": {
       "value_kind": "measured",
       "value": 16397461266,
       "status": "verified_offline",
-      "measurement_timestamp": "2026-07-11T00:00:00Z",
-      "evidence_source": "repository_metadata_offline"
+      "measurement_date": "2026-07-11",
+      "measurement_time_precision": "date_only",
+      "evidence_source": "cluster_snapshot_inventory_b2r"
     },
     "weight_shards": {
       "value_kind": "measured",
       "value": 5,
       "status": "verified_offline",
-      "measurement_timestamp": "2026-07-11T00:00:00Z",
-      "evidence_source": "repository_metadata_offline"
+      "measurement_date": "2026-07-11",
+      "measurement_time_precision": "date_only",
+      "evidence_source": "cluster_snapshot_inventory_b2r"
+    },
+    "snapshot_path_template": {
+      "value_kind": "immutable_expected",
+      "value": "${T12_HF_CACHE}/hub/models--Qwen--Qwen3-8B/snapshots/b968826d9c46dd6066d109eabc6255188de91218",
+      "status": "verified_offline"
     },
     "cluster_snapshot_verified": {
-      "value_kind": "pending_live_verification",
-      "value": false,
-      "status": "pending_live_cluster_verification",
-      "measurement_timestamp": null,
-      "evidence_source": null
+      "value_kind": "measured",
+      "value": true,
+      "status": "verified_offline",
+      "measurement_date": "2026-07-11",
+      "measurement_time_precision": "date_only",
+      "evidence_source": "offline_resolution_b2r"
     }
   },
   "scheduling": {
     "required_partition": {
       "value_kind": "immutable_expected",
       "value": "biggpu",
-      "status": "verified_offline"
+      "status": "verified_live_cluster"
     },
     "require_exclusive_node": {
       "value_kind": "immutable_expected",
       "value": true,
-      "status": "verified_offline"
+      "status": "verified_live_cluster"
     },
     "gpu_gres_mode": {
       "value_kind": "measured",
       "value": "not_configured_at_measurement_time",
-      "status": "verified_offline",
-      "measurement_timestamp": "2026-07-11T00:00:00Z",
-      "evidence_source": "cluster_policy_observation"
+      "status": "verified_live_cluster",
+      "measurement_date": "2026-07-11",
+      "measurement_time_precision": "date_only",
+      "evidence_source": "slurm_configuration_observation_b2"
+    },
+    "apptainer_version": {
+      "value_kind": "measured",
+      "value": "1.4.5",
+      "status": "verified_live_cluster",
+      "measurement_date": "2026-07-11",
+      "measurement_time_precision": "date_only",
+      "evidence_source": "live_cluster_verification_b2"
     }
   },
   "checkpoint_load_verified": false,
   "adapter_load_verified": false,
-  "inference_smoke_verified": false
+  "inference_smoke_verified": false,
+  "vllm_engine_started_during_b2": false,
+  "model_weights_loaded_during_b2": false
 }

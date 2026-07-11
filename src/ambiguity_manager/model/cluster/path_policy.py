@@ -20,9 +20,11 @@ _ALLOWED_LITERALS = frozenset(
         "${HOME}",
         "${T12_CLUSTER_ROOT}",
         "${T12_HF_CACHE}",
+        "${T12_HF_CACHE}/hub",
         "${T12_CONTAINER_SIF}",
     }
 )
+_SAFE_SUFFIX = re.compile(r"^(/[A-Za-z0-9_.${}-]+)*$")
 
 
 def validate_path_template(value: str) -> list[str]:
@@ -30,6 +32,12 @@ def validate_path_template(value: str) -> list[str]:
         return []
     if _ENV_VAR.fullmatch(value):
         return []
+
+    for prefix in ("${T12_HF_CACHE}", "${T12_CLUSTER_ROOT}", "${T12_CONTAINER_SIF}"):
+        if value.startswith(prefix):
+            suffix = value[len(prefix) :]
+            if suffix == "" or _SAFE_SUFFIX.fullmatch(suffix):
+                return []
 
     errors: list[str] = []
     if _WINDOWS_PATH.search(value):

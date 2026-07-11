@@ -19,6 +19,14 @@ class T12ClusterPathPolicyTests(unittest.TestCase):
     def test_env_template_allowed(self) -> None:
         self.assertEqual(validate_path_template("${T12_CLUSTER_ROOT}"), [])
 
+    def test_hf_hub_cache_template_allowed(self) -> None:
+        self.assertEqual(validate_path_template("${T12_HF_CACHE}/hub"), [])
+        snapshot = (
+            "${T12_HF_CACHE}/hub/models--Qwen--Qwen3-8B/snapshots/"
+            "b968826d9c46dd6066d109eabc6255188de91218"
+        )
+        self.assertEqual(validate_path_template(snapshot), [])
+
     def test_var_tmp_template_allowed(self) -> None:
         self.assertEqual(
             validate_path_template("/var/tmp/${USER}-apptainer-${SLURM_JOB_ID}"),
