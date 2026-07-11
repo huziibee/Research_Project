@@ -1,0 +1,201 @@
+{
+  "schema_version": "1.0.0",
+  "ticket": "T12",
+  "stage": "C2B",
+  "evidence_status": "verified_live_cluster_backend_smoke",
+  "measurement_timestamp": "2026-07-11T19:27:33Z",
+  "measurement_date": "2026-07-11",
+  "report_relpath": "docs/reports/ticket_T12_stage_C2B_live_backend_smoke.md",
+  "governance_state": {
+    "t11_status": "BLOCKED",
+    "deviation_authority": "DEV-20260711-001",
+    "protected_data_used": false,
+    "research_pool_used": false,
+    "collection_permitted": false,
+    "selected_model": null,
+    "stage_d_performed": false,
+    "network_fallback_used": false
+  },
+  "historical_context": {
+    "preliminary_run_id": "stage-c2b-20260711T181903Z-ab00ef5",
+    "preliminary_run_retained": true,
+    "preliminary_found_request_id_defect": true,
+    "preliminary_workaround_accepted": false,
+    "preliminary_backend_run_hashes_reused": false
+  },
+  "source_transfer": {
+    "method": "git_archive",
+    "local_commit_sha": "b7dfba94ceae2f430e9eec7a64c4c6cd24b5a7a2",
+    "archive_sha256": "ff0e99718443075167c0d995ff4d518c3151838fba11f645d123bc228f2d96b4",
+    "backend_file_sha256": "816e9996eab58cea3075558517dde47698ea9ef0ec553704c2f79c782a61dc29",
+    "cli_file_sha256": "243ca291811c8b764b6aaba51735a5b07459e6f7b65f3351c89701e966d56cfc",
+    "remote_extraction_path_template": "${T12_CLUSTER_ROOT}/runs/stage-c2b/stage-c2b-rerun-20260711T192157Z-b7dfba9/source/t12-src",
+    "working_tree_transferred": false
+  },
+  "execution_method": {
+    "method": "committed_backend_unchanged",
+    "committed_cli": "scripts/t12_cluster_run_batch.py",
+    "committed_backend": "ambiguity_manager.model.backends.vllm_batch.VllmBatchBackend",
+    "cluster_side_workaround": false,
+    "instrumented_driver_used": false,
+    "monkey_patch_used": false,
+    "backend_source_modified_on_cluster": false
+  },
+  "run_identity": {
+    "run_id": "stage-c2b-rerun-20260711T192157Z-b7dfba9",
+    "remote_run_path_template": "${T12_CLUSTER_ROOT}/runs/stage-c2b/stage-c2b-rerun-20260711T192157Z-b7dfba9",
+    "shard_id": "shard-000",
+    "slurm_partition": "biggpu",
+    "slurm_job_id_measurement_only": "1844",
+    "allocated_node_measurement_only": "mscluster110",
+    "node_is_permanent_policy": false
+  },
+  "container_integrity": {
+    "method": "full_sha256",
+    "expected_sha256": "d404bdf414e1b8f2d5af1568d0565d4e2da8435f26325b281fb28b9597c548d1",
+    "observed_sha256": "d404bdf414e1b8f2d5af1568d0565d4e2da8435f26325b281fb28b9597c548d1",
+    "match": true,
+    "elapsed_seconds": 13.597,
+    "container_path_template": "${T12_CONTAINER_SIF}"
+  },
+  "preflight": {
+    "status": "pass",
+    "result_relpath_template": "${T12_CLUSTER_ROOT}/runs/stage-c2b/stage-c2b-rerun-20260711T192157Z-b7dfba9/preflight_result.json",
+    "exclusive_allocation_confirmed": true,
+    "offline_resolution_passed": true,
+    "network_fallback": false,
+    "effective_hf_home_template": "${T12_HF_CACHE}",
+    "effective_hub_cache_template": "${T12_HF_CACHE}/hub"
+  },
+  "hardware_observation": {
+    "gpu_name": "NVIDIA RTX PRO 6000 Blackwell Workstation Edition",
+    "vram_mib": 97887,
+    "compute_capability": "12.0",
+    "driver_version": "595.71.05",
+    "cuda_available": true
+  },
+  "model_identity": {
+    "model_repository": "Qwen/Qwen3-8B",
+    "model_revision": "b968826d9c46dd6066d109eabc6255188de91218",
+    "snapshot_path_template": "${T12_HF_CACHE}/hub/models--Qwen--Qwen3-8B/snapshots/b968826d9c46dd6066d109eabc6255188de91218",
+    "offline_only": true,
+    "snapshot_inventory_status": "pass",
+    "resolved_file_count": 15,
+    "resolved_total_bytes": 16397461266
+  },
+  "synthetic_input": {
+    "synthetic": true,
+    "record_ids": [
+      "c2b-smoke-0001",
+      "c2b-smoke-0002",
+      "c2b-smoke-0003",
+      "c2b-smoke-0004"
+    ],
+    "input_sha256": "3a0b771d759bcdf7070f6c4099efaa6aa561e5a6614d9ac3c78ed284f4643e8a",
+    "input_relpath_template": "${T12_CLUSTER_ROOT}/runs/stage-c2b/stage-c2b-rerun-20260711T192157Z-b7dfba9/inputs/c2b_synthetic_input.jsonl",
+    "shard_count": 1
+  },
+  "runtime_configuration": {
+    "backend_identifier": "vllm_batch_direct",
+    "execution_mode": "direct_python_vllm",
+    "tensor_parallel_size": 1,
+    "batch_size": 2,
+    "max_tokens": 64,
+    "temperature": 0.0,
+    "gpu_memory_utilization": 0.5,
+    "offline_flags": [
+      "HF_HUB_OFFLINE=1",
+      "TRANSFORMERS_OFFLINE=1"
+    ],
+    "vllm_worker_multiprocess_method": "spawn",
+    "verification_status": "c2b_smoke_configuration",
+    "backend_config_hash": "317305de0ae09b49650814b3288529fa6d7113679b5708492f700df15637468a",
+    "runtime_config_relpath_template": "${T12_CLUSTER_ROOT}/runs/stage-c2b/stage-c2b-rerun-20260711T192157Z-b7dfba9/runtime/t12_vllm_batch_runtime_c2b.json"
+  },
+  "request_correlation": {
+    "caller_request_ids": [
+      "c2b-smoke-0001",
+      "c2b-smoke-0002",
+      "c2b-smoke-0003",
+      "c2b-smoke-0004"
+    ],
+    "canonical_result_ids": [
+      "c2b-smoke-0001",
+      "c2b-smoke-0002",
+      "c2b-smoke-0003",
+      "c2b-smoke-0004"
+    ],
+    "caller_ids_equal_canonical_ids": true,
+    "engine_request_ids_diagnostic_only": true,
+    "engine_request_ids_became_canonical_ids": false,
+    "unknown_output_id_count": 0,
+    "engine_output_order_mismatch_count": 0,
+    "silent_output_loss": false,
+    "engine_request_id_persistence_in_shard_outputs": false,
+    "engine_request_id_note": "Committed batch_runner serialization omits engine_request_id; live acceptance is four successes at batch_size=2 with zero unknown_output_id."
+  },
+  "first_run": {
+    "engine_start_count": 1,
+    "generation_batch_call_count": 2,
+    "generation_call_derivation": "ceil(request_count / batch_size)=2; cross-checked by paired per-request latency_ms values (two shared latencies for the two batches)",
+    "request_count": 4,
+    "success_count": 4,
+    "failure_count": 0,
+    "accounted_count": 4,
+    "startup_duration_seconds": 37.0,
+    "status": "completed"
+  },
+  "outputs": {
+    "raw_output_relpath_template": "${T12_CLUSTER_ROOT}/runs/stage-c2b/stage-c2b-rerun-20260711T192157Z-b7dfba9/stage-c2b-rerun-20260711T192157Z-b7dfba9/shard-000.raw.jsonl",
+    "parsed_output_relpath_template": "${T12_CLUSTER_ROOT}/runs/stage-c2b/stage-c2b-rerun-20260711T192157Z-b7dfba9/stage-c2b-rerun-20260711T192157Z-b7dfba9/shard-000.parsed.jsonl",
+    "manifest_relpath_template": "${T12_CLUSTER_ROOT}/runs/stage-c2b/stage-c2b-rerun-20260711T192157Z-b7dfba9/stage-c2b-rerun-20260711T192157Z-b7dfba9/shard-000.manifest.json",
+    "output_sha256": "f8cd3cca726c6fbffc44364c155549e99a440f7d3852507abc55556574f89bf9",
+    "manifest_sha256": "cabec10be3da448ad9b293af382d3db2146c5f9663206f6b530947096089eafd",
+    "output_manifest_hash_match": true
+  },
+  "exact_resume_probe": {
+    "expected_decision": "skip_exact_completed",
+    "observed_decision": "skip_exact_completed",
+    "engine_started": false,
+    "engine_start_count": 0,
+    "exit_success": true,
+    "output_sha256_unchanged": true,
+    "manifest_sha256_unchanged": true,
+    "output_sha256": "f8cd3cca726c6fbffc44364c155549e99a440f7d3852507abc55556574f89bf9",
+    "manifest_sha256": "cabec10be3da448ad9b293af382d3db2146c5f9663206f6b530947096089eafd"
+  },
+  "completed_conflict_probe": {
+    "expected_decision": "block_completed_conflict",
+    "observed_decision": "block_completed_conflict",
+    "expected_reason_contains": "completed_conflict:backend_config_hash",
+    "observed_reason": "completed_conflict:backend_config_hash",
+    "engine_started": false,
+    "engine_start_count": 0,
+    "exit_nonzero": true,
+    "output_sha256_unchanged": true,
+    "manifest_sha256_unchanged": true,
+    "conflict_backend_config_hash": "688fbb263cf3f364b93b8125b59e12369387139e8f2856be576671948d946477",
+    "canonical_output_sha256": "f8cd3cca726c6fbffc44364c155549e99a440f7d3852507abc55556574f89bf9",
+    "canonical_manifest_sha256": "cabec10be3da448ad9b293af382d3db2146c5f9663206f6b530947096089eafd",
+    "isolated_copy_used": true
+  },
+  "remote_retention": {
+    "run_directory_retained": true,
+    "preliminary_run_retained": true,
+    "sif_retained": true,
+    "model_snapshot_retained": true,
+    "shared_cache_retained": true,
+    "source_archive_retained": true,
+    "job_log_relpath_template": "${T12_CLUSTER_ROOT}/runs/stage-c2b/stage-c2b-rerun-20260711T192157Z-b7dfba9/job.log",
+    "sif_hash_evidence_relpath_template": "${T12_CLUSTER_ROOT}/runs/stage-c2b/stage-c2b-rerun-20260711T192157Z-b7dfba9/sif_hash_evidence.json"
+  },
+  "non_claims": [
+    "no_full_schema_v2_generation",
+    "no_structured_json_decoding",
+    "no_stage_d_prompt_contract",
+    "no_stage_e_bake_off",
+    "no_benchmark_throughput_claim",
+    "no_final_model_selection",
+    "t11_remains_blocked"
+  ]
+}
