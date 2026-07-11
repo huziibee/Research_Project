@@ -18,15 +18,43 @@ Freeze the non-dataset proposal alignment, seven mandatory systems, mandatory fi
 
 **Gate:** schema v2 and the research/governance contract pass.
 
-## Phase 2 — Local model foundation
+## Phase 2 — Cluster model foundation
 
-### T12 — RTX 3070 local text-model setup
+### T12 — Cluster-native text-model stack (Stages A–I)
 
-Measure hardware, install local inference/training stacks, test candidate base models, and choose one base model that can support both inference and mandatory QLoRA/LoRA.
+Forward-migrate T12 from `b4865b3` to a cluster-native architecture on branch `feature/t12-cluster-redesign`. Historical local WSL/RTX 3070 work is preserved on `archive/t12-local-wsl-slice4`.
 
-**Dependency note:** T12 normally follows T11 PASS. **DEV-20260711-001** authorises narrow pre-T12 local work while T11's annotation ethics gate remains pending; T11 verdict stays **BLOCKED** and T12 completion does not satisfy T11.
+**Active contract:** `cursor_plan/tickets/T12_cluster_model_stack_setup.md`
+**ADR:** `docs/decisions/ADR_T12_cluster_inference_architecture.md`
+**Superseded local ticket:** `cursor_plan/tickets/T12_local_text_model_and_training_stack_setup.md`
 
-**Gate:** a licensed local base model and reproducible `ModelClient` exist.
+**Cluster-validation model (provisional, Stages A–H):**
+
+- `Qwen/Qwen3-8B` @ `b968826d9c46dd6066d109eabc6255188de91218`
+- Apptainer `vllm-openai-v0.20.1.sif` (SHA-256 pinned in ADR)
+- `model_licence_register.selected_model` remains `null` until Stage I
+
+**Stage summary:**
+
+| Stage | Scope |
+|---|---|
+| A | Preservation ADR, supersede local ticket, planning contracts, CPU tests |
+| B | Cluster manifests, immutable identities, historical evidence relocation |
+| C | vLLM batch backend, Slurm preflight, shards and resume |
+| D | Full schema-v2 prompt, Qwen3 thinking disablement, structured JSON decoding |
+| E | 10/10 fixture synthetic correctness bake-off |
+| F | Separate training environment; LoRA feasibility (zero optimiser steps) |
+| G | 100–500 record synthetic benchmark, interruption and recovery |
+| H | Result publication, archival, email/GitHub notification |
+| I | Final acceptance, runbook, local cleanup gate (no automatic deletion) |
+
+**Dependency note:** T12 normally follows T11 PASS. **DEV-20260711-001** authorises narrow pre-T12 preparatory work while T11's annotation ethics gate remains pending; T11 verdict stays **BLOCKED** and T12 completion does not satisfy T11.
+
+**Governance boundary (Stages A–H):** synthetic fixtures and synthetic corpora only; no full research-pool execution; no T13/T14 progression; no protected data.
+
+**Local cleanup:** Qwen2.5 local weights and T12-specific environments become eligible for deletion only after Stage I acceptance, via a separate gated cleanup task. Code, tests, manifests, and Git history are preserved.
+
+**Gate:** cluster-validated base model with reproducible batch inference, structured decoding evidence, LoRA feasibility, benchmark recovery, and publication pipeline; `selected_model` set in Stage I only.
 
 ## Phase 3 — Human-gold benchmark
 

@@ -1,6 +1,18 @@
 # T12 — Local RTX 3070 text-model and training-stack setup
 
-**Status:** READY
+> **Status: SUPERSEDED**
+>
+> This ticket is no longer the active T12 execution contract.
+>
+> - **Replacement ticket:** `cursor_plan/tickets/T12_cluster_model_stack_setup.md`
+> - **Architecture ADR:** `docs/decisions/ADR_T12_cluster_inference_architecture.md`
+> - **Archive branch:** `archive/t12-local-wsl-slice4`
+> - **Reason:** T12 forward-migrated to cluster-native vLLM / Qwen3-8B validation; local WSL stack is historical evidence only.
+> - **Historical evidence:** Local hardware, environment, and synthetic evaluation results remain valid as historical evidence preserved on the archive branch and (from Stage B) under `configs/model/evidence/historical/`.
+> - **Local model code:** Preserved on `archive/t12-local-wsl-slice4`; not deleted by supersession.
+> - **Local weights and environments:** Scheduled for gated removal only after Stage I cleanup gate acceptance; not removed by this supersession notice.
+
+**Status:** SUPERSEDED
 
 ## Shared context
 
