@@ -64,6 +64,12 @@ def _validate_entry(entry: Any, index: int) -> list[str]:
     if status not in {"candidate_evaluated", "selected", "rejected"}:
         errors.append(f"{prefix}.verification_status invalid")
 
+    candidate_status = entry.get("candidate_status")
+    if candidate_status is not None and candidate_status not in {
+        "provisionally_selected_for_cluster_validation",
+    }:
+        errors.append(f"{prefix}.candidate_status invalid")
+
     third_party_quant = entry.get("third_party_quantised_repository") is True
     allow_null_sha = status == "rejected" and third_party_quant
 

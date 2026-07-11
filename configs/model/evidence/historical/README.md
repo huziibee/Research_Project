@@ -28,10 +28,14 @@ Actual file movement from active paths to `configs/model/evidence/historical/` o
 
 Expected relocated artefacts (Stage B):
 
-- WSL hardware manifest copies;
-- local environment manifest copies;
-- local synthetic evaluation evidence;
-- local checkpoint-load probe evidence.
+- `configs/environments/historical/t12_inference_environment.json`
+- `configs/environments/historical/t12_training_environment.json`
+- `configs/model/evidence/historical/t12_hardware_manifest.json`
+- `configs/model/evidence/historical/t12_environment_compatibility.json`
+- `configs/model/evidence/historical/t12_model_candidates.json`
+- `configs/model/evidence/historical/t12_checkpoint_download.json`
+- `requirements/historical/t12-wsl2/*`
+- `scripts/historical/t12-wsl2/*`
 
 ## Model weights
 

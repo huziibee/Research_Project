@@ -5,8 +5,10 @@ from __future__ import annotations
 import re
 from typing import Any
 
-INFERENCE_ENV_REL = "configs/environments/t12_inference_environment.json"
-TRAINING_ENV_REL = "configs/environments/t12_training_environment.json"
+INFERENCE_ENV_REL = "configs/environments/historical/t12_inference_environment.json"
+TRAINING_ENV_REL = "configs/environments/historical/t12_training_environment.json"
+CLUSTER_INFERENCE_ENV_REL = "configs/environments/t12_cluster_inference.json"
+CLUSTER_TRAINING_ENV_REL = "configs/environments/t12_cluster_training.json"
 
 _VALID_STATUSES_SLICE1 = frozenset({"planned_unverified"})
 _VALID_STATUSES_SLICE2 = frozenset(

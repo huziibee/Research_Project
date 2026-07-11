@@ -136,6 +136,23 @@ class ModelLicenceRegisterTests(unittest.TestCase):
         errors = validate_model_licence_register(data)
         self.assertTrue(any("tokenizer" in e or "revision" in e for e in errors))
 
+    def test_qwen3_candidate_preserved_distinct_from_qwen25(self) -> None:
+        data = json.loads(REGISTER_PATH.read_text(encoding="utf-8"))
+        entry_ids = [entry["entry_id"] for entry in data["entries"]]
+        self.assertIn("t12-cand-001", entry_ids)
+        self.assertIn("t12-cand-qwen3-8b", entry_ids)
+        qwen3 = next(entry for entry in data["entries"] if entry["entry_id"] == "t12-cand-qwen3-8b")
+        qwen25 = next(entry for entry in data["entries"] if entry["entry_id"] == "t12-cand-001")
+        self.assertNotEqual(qwen3["model_id"], qwen25["model_id"])
+        self.assertEqual(
+            qwen3["candidate_status"],
+            "provisionally_selected_for_cluster_validation",
+        )
+
+    def test_register_still_has_null_selected_model(self) -> None:
+        data = json.loads(REGISTER_PATH.read_text(encoding="utf-8"))
+        self.assertIsNone(data["selected_model"])
+
 
 if __name__ == "__main__":
     unittest.main()

@@ -34,12 +34,12 @@ main() {
   check_build_tools
   mkdir -p "${REPO}/outputs/environment_probes"
   CC="${CC:-/usr/bin/gcc}" CXX="${CXX:-/usr/bin/g++}" \
-    "${INFERENCE_ENV}/bin/python" "${REPO}/scripts/t12_probe_environment.py" \
+    "${INFERENCE_ENV}/bin/python" "${REPO}/scripts/historical/t12-wsl2/t12_probe_environment.py" \
     --environment-id t12-inference-wsl2 \
     --role inference \
     --output-dir "${REPO}/outputs/environment_probes"
   CC="${CC:-/usr/bin/gcc}" CXX="${CXX:-/usr/bin/g++}" \
-    "${TRAINING_ENV}/bin/python" "${REPO}/scripts/t12_probe_environment.py" \
+    "${TRAINING_ENV}/bin/python" "${REPO}/scripts/historical/t12-wsl2/t12_probe_environment.py" \
     --environment-id t12-training-wsl2 \
     --role training \
     --output-dir "${REPO}/outputs/environment_probes"

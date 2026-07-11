@@ -5,7 +5,7 @@ from __future__ import annotations
 import re
 from typing import Any
 
-EVIDENCE_REL = "configs/model/evidence/t12_model_candidates.json"
+EVIDENCE_REL = "configs/model/evidence/historical/t12_model_candidates.json"
 REGISTER_REL = "configs/licences/model_licence_register.json"
 
 CUMULATIVE_DOWNLOAD_CAP_BYTES = 30 * 1024 * 1024 * 1024
@@ -283,8 +283,8 @@ def validate_candidate_evidence(
             for candidate in candidates
             if isinstance(candidate, dict) and candidate.get("register_entry_id")
         }
-        if register is not None and evidence_ids != register_entry_ids:
-            errors.append("every evaluated candidate must have exactly one licence-register entry")
+        if register is not None and not evidence_ids.issubset(register_entry_ids):
+            errors.append("every evaluated candidate must have a licence-register entry")
 
     primary = data.get("recommended_first_probe_candidate")
     fallback = data.get("recommended_fallback_candidate")

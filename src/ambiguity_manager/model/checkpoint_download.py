@@ -20,7 +20,7 @@ from ambiguity_manager.model.candidate_evidence import (
     SHA_PATTERN,
 )
 
-EVIDENCE_REL = "configs/model/evidence/t12_checkpoint_download.json"
+EVIDENCE_REL = "configs/model/evidence/historical/t12_checkpoint_download.json"
 CANDIDATES_EVIDENCE_REL = "configs/model/evidence/t12_model_candidates.json"
 RAW_LOG_DIR_REL = "outputs/model_downloads/raw"
 

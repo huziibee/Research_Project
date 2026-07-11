@@ -80,7 +80,7 @@ setup_env() {
     --extra-index-url "${PYTORCH_INDEX}" \
     --index-strategy "${INDEX_STRATEGY}"
   CC="${CC:-/usr/bin/gcc}" CXX="${CXX:-/usr/bin/g++}" \
-    "${venv_path}/bin/python" "${REPO}/scripts/t12_probe_environment.py" \
+    "${venv_path}/bin/python" "${REPO}/scripts/historical/t12-wsl2/t12_probe_environment.py" \
     --environment-id "${env_id}" \
     --role "${role}" \
     --output-dir "${REPO}/outputs/environment_probes"
@@ -100,14 +100,14 @@ main() {
   setup_env \
     "t12-inference-wsl2" \
     "inference" \
-    "requirements/t12-inference.in" \
+    "requirements/historical/t12-wsl2/t12-inference.in" \
     "requirements/locks/t12-inference-wsl2.lock" \
     "${INFERENCE_ENV}"
 
   setup_env \
     "t12-training-wsl2" \
     "training" \
-    "requirements/t12-training.in" \
+    "requirements/historical/t12-wsl2/t12-training.in" \
     "requirements/locks/t12-training-wsl2.lock" \
     "${TRAINING_ENV}"
 

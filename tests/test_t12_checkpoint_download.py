@@ -64,7 +64,7 @@ ROOT = ProjectPaths.from_repo_root().root
 REGISTER_PATH = ROOT / REGISTER_REL
 EVIDENCE_PATH = ROOT / EVIDENCE_REL
 ETHICS_PATH = ROOT / "configs" / "governance" / "human_annotation_governance.json"
-SCRIPT_PATH = ROOT / "scripts" / "t12_download_checkpoint.py"
+SCRIPT_PATH = ROOT / "scripts" / "historical" / "t12-wsl2" / "t12_download_checkpoint.py"
 
 
 def _load_json(path: Path) -> dict:

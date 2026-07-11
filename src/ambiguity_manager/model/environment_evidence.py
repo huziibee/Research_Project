@@ -8,11 +8,11 @@ from typing import Any
 
 from ambiguity_manager.governance.hashing import sha256_hex
 
-EVIDENCE_REL = "configs/model/evidence/t12_environment_compatibility.json"
-INFERENCE_REQ_REL = "requirements/t12-inference.in"
-TRAINING_REQ_REL = "requirements/t12-training.in"
-INFERENCE_LOCK_REL = "requirements/locks/t12-inference-wsl2.lock"
-TRAINING_LOCK_REL = "requirements/locks/t12-training-wsl2.lock"
+EVIDENCE_REL = "configs/model/evidence/historical/t12_environment_compatibility.json"
+INFERENCE_REQ_REL = "requirements/historical/t12-wsl2/t12-inference.in"
+TRAINING_REQ_REL = "requirements/historical/t12-wsl2/t12-training.in"
+INFERENCE_LOCK_REL = "requirements/historical/t12-wsl2/t12-inference-wsl2.lock"
+TRAINING_LOCK_REL = "requirements/historical/t12-wsl2/t12-training-wsl2.lock"
 
 _ENVIRONMENT_IDS = frozenset({"t12-inference-wsl2", "t12-training-wsl2"})
 _VALID_OVERALL_STATUSES = frozenset(

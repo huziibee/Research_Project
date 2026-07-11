@@ -5,7 +5,7 @@ from __future__ import annotations
 import re
 from typing import Any
 
-HARDWARE_MANIFEST_REL = "configs/model/evidence/t12_hardware_manifest.json"
+HARDWARE_MANIFEST_REL = "configs/model/evidence/historical/t12_hardware_manifest.json"
 
 _MEMORY_UNITS = frozenset({"KiB", "bytes", "MiB"})
 _ABSOLUTE_PATH_PATTERN = re.compile(r"^[A-Za-z]:[\\/]|^/home/|^/Users/|^\\\\")

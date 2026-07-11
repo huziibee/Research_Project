@@ -1,21 +1,24 @@
-"""Tests for T12 environment manifest templates."""
+"""Tests for T12 cluster environment manifest templates."""
 
 from __future__ import annotations
 
 import json
 import unittest
-from pathlib import Path
 
+from ambiguity_manager.model.cluster.manifest_schemas import (
+    CLUSTER_INFERENCE_ENV_REL,
+    CLUSTER_TRAINING_ENV_REL,
+    validate_cluster_environment_manifest,
+)
 from ambiguity_manager.model.environment import (
-    INFERENCE_ENV_REL,
-    TRAINING_ENV_REL,
-    validate_environment_manifest,
+    CLUSTER_INFERENCE_ENV_REL as ENV_INFERENCE_REL,
+    CLUSTER_TRAINING_ENV_REL as ENV_TRAINING_REL,
 )
 from ambiguity_manager.paths import ProjectPaths
 
 ROOT = ProjectPaths.from_repo_root().root
-INFERENCE_PATH = ROOT / INFERENCE_ENV_REL
-TRAINING_PATH = ROOT / TRAINING_ENV_REL
+INFERENCE_PATH = ROOT / CLUSTER_INFERENCE_ENV_REL
+TRAINING_PATH = ROOT / CLUSTER_TRAINING_ENV_REL
 
 
 class T12EnvironmentManifestTests(unittest.TestCase):
@@ -28,32 +31,25 @@ class T12EnvironmentManifestTests(unittest.TestCase):
         self.assertTrue(INFERENCE_PATH.is_file())
         self.assertTrue(TRAINING_PATH.is_file())
 
-    def test_wsl2_platform(self) -> None:
-        self.assertEqual(self.inference["platform"], "wsl2_ubuntu")
-        self.assertEqual(self.training["platform"], "wsl2_ubuntu")
-
-    def test_python_target_311(self) -> None:
-        self.assertEqual(self.inference["python_target"], "3.11")
-        self.assertEqual(self.training["python_target"], "3.11")
+    def test_cluster_platform(self) -> None:
+        self.assertEqual(self.inference["platform"], "wits_slurm_cluster")
+        self.assertEqual(self.training["platform"], "wits_slurm_cluster")
 
     def test_environment_identifiers(self) -> None:
-        self.assertEqual(self.inference["environment_id"], "t12-inference-wsl2")
-        self.assertEqual(self.training["environment_id"], "t12-training-wsl2")
+        self.assertEqual(self.inference["environment_id"], "t12-cluster-inference")
+        self.assertEqual(self.training["environment_id"], "t12-cluster-training")
 
-    def test_validation_passes_for_current_slice(self) -> None:
-        slice_number = 2 if self.inference["environment_status"] != "planned_unverified" else 1
+    def test_validation_passes_for_cluster_templates(self) -> None:
         for manifest in (self.inference, self.training):
-            errors = validate_environment_manifest(manifest, slice_number=slice_number)
+            errors = validate_cluster_environment_manifest(manifest)
             self.assertEqual(errors, [], msg="\n".join(errors))
 
-    def test_checkpoint_load_not_verified(self) -> None:
-        self.assertFalse(self.inference["checkpoint_load_verified"])
-        self.assertFalse(self.training["checkpoint_load_verified"])
+    def test_training_status_planned_unverified(self) -> None:
+        self.assertEqual(self.training["environment_status"], "planned_unverified")
 
-    def test_no_model_identity(self) -> None:
-        for manifest in (self.inference, self.training):
-            self.assertIsNone(manifest.get("model_id"))
-            self.assertIsNone(manifest.get("model_revision"))
+    def test_module_constants_match_active_cluster_paths(self) -> None:
+        self.assertEqual(ENV_INFERENCE_REL, CLUSTER_INFERENCE_ENV_REL)
+        self.assertEqual(ENV_TRAINING_REL, CLUSTER_TRAINING_ENV_REL)
 
 
 if __name__ == "__main__":
