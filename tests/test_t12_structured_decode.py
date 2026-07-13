@@ -39,6 +39,12 @@ class FakeStructuredOutputs:
     instances: list["FakeStructuredOutputs"] = []
 
     def __init__(self, *, json: dict[str, Any], **kwargs: Any) -> None:
+        self.json = json
+        self.regex = None
+        self.choice = None
+        self.grammar = None
+        self.json_object = None
+        self.structural_tag = None
         self.kwargs = {"json": json, **kwargs}
         FakeStructuredOutputs.instances.append(self)
 
@@ -56,6 +62,11 @@ class FakeSamplingParams:
         structured_outputs: Any,
         **kwargs: Any,
     ) -> None:
+        self.temperature = temperature
+        self.top_p = top_p
+        self.max_tokens = max_tokens
+        self.n = n
+        self.structured_outputs = structured_outputs
         self.kwargs = {
             "temperature": temperature,
             "top_p": top_p,
@@ -78,6 +89,49 @@ class SamplingParamsWithoutStructuredOutputs:
 class StructuredOutputsWithoutJson:
     def __init__(self, *, schema: dict[str, Any]) -> None:
         self.schema = schema
+
+
+@dataclass
+class GeneratedDataclassStructuredOutputs:
+    json: dict[str, Any] | None = None
+    regex: str | None = None
+    choice: list[str] | None = None
+    grammar: str | None = None
+    json_object: bool | None = None
+    structural_tag: str | None = None
+
+
+def _generic_generated_init(self: GeneratedDataclassStructuredOutputs, *args: object, **kwargs: object) -> None:
+    self.json = kwargs.get("json")  # type: ignore[assignment]
+    self.regex = None
+    self.choice = None
+    self.grammar = None
+    self.json_object = None
+    self.structural_tag = None
+
+
+GeneratedDataclassStructuredOutputs.__init__ = _generic_generated_init  # type: ignore[method-assign]
+
+
+class AnnotatedStructuredOutputs:
+    json: dict[str, Any]
+
+    def __init__(self, **kwargs: object) -> None:
+        self.json = kwargs["json"]  # type: ignore[assignment]
+
+
+class KwargsOnlyStructuredOutputs:
+    def __init__(self, *args: object, **kwargs: object) -> None:
+        self.json = kwargs.get("json")
+
+
+class DictReplacementStructuredOutputs:
+    def __init__(self, *, json: dict[str, Any]) -> None:
+        self.payload = json
+
+    @property
+    def json(self) -> dict[str, Any]:
+        return self.payload
 
 
 class T12StructuredDecodeTests(unittest.TestCase):
@@ -356,6 +410,123 @@ class T12StructuredDecodeTests(unittest.TestCase):
         self.assertEqual(first.metadata.construction_status, "constructed")
         self.assertEqual(first.metadata.schema_hash, EXPECTED_SCHEMA_HASH)
         self.assertEqual(first.metadata.completions_per_request, 1)
+
+    def test_dataclass_json_accepted_when_generated_init_hides_field(self) -> None:
+        import inspect
+
+        generation = _generation_config()
+        signature = inspect.signature(GeneratedDataclassStructuredOutputs.__init__)
+        self.assertNotIn("json", signature.parameters)
+        discovery = self.structured_decode._discover_constructor_field(
+            GeneratedDataclassStructuredOutputs,
+            "json",
+        )
+        self.assertTrue(discovery.present)
+        self.assertEqual(discovery.method, "dataclass_fields")
+        result = self.structured_decode.build_structured_sampling_params(
+            generation,
+            self.contract,
+            repo_root=REPO_ROOT,
+            sampling_params_class=FakeSamplingParams,
+            structured_outputs_class=GeneratedDataclassStructuredOutputs,
+            detected_vllm_version=REQUIRED_VLLM_VERSION,
+        )
+        expected_schema = self.structured_decode.load_verified_semantic_schema(
+            self.contract,
+            repo_root=REPO_ROOT,
+        )
+        structured = result.sampling_params.kwargs["structured_outputs"]
+        self.assertEqual(structured.json, expected_schema)
+        self.assertEqual(result.metadata.construction_status, "constructed")
+
+    def test_dataclass_field_discovery_reports_dataclass_fields(self) -> None:
+        discovery = self.structured_decode._discover_constructor_field(
+            GeneratedDataclassStructuredOutputs,
+            "json",
+        )
+        self.assertEqual(discovery.method, "dataclass_fields")
+
+    def test_class_annotation_discovery_works(self) -> None:
+        discovery = self.structured_decode._discover_constructor_field(
+            AnnotatedStructuredOutputs,
+            "json",
+        )
+        self.assertTrue(discovery.present)
+        self.assertEqual(discovery.method, "class_annotations")
+
+    def test_class_signature_discovery_works_for_normal_class(self) -> None:
+        discovery = self.structured_decode._discover_constructor_field(
+            FakeStructuredOutputs,
+            "json",
+        )
+        self.assertTrue(discovery.present)
+        self.assertEqual(discovery.method, "class_signature")
+
+    def test_kwargs_only_class_without_declared_field_is_rejected(self) -> None:
+        discovery = self.structured_decode._discover_constructor_field(
+            KwargsOnlyStructuredOutputs,
+            "json",
+        )
+        self.assertFalse(discovery.present)
+        generation = _generation_config()
+        with self.assertRaises(self.structured_decode.MissingApiFieldError):
+            self.structured_decode.build_structured_sampling_params(
+                generation,
+                self.contract,
+                repo_root=REPO_ROOT,
+                sampling_params_class=FakeSamplingParams,
+                structured_outputs_class=KwargsOnlyStructuredOutputs,
+                detected_vllm_version=REQUIRED_VLLM_VERSION,
+            )
+
+    def test_competing_constraint_fields_must_remain_null(self) -> None:
+        generation = _generation_config()
+        result = self.structured_decode.build_structured_sampling_params(
+            generation,
+            self.contract,
+            repo_root=REPO_ROOT,
+            sampling_params_class=FakeSamplingParams,
+            structured_outputs_class=GeneratedDataclassStructuredOutputs,
+            detected_vllm_version=REQUIRED_VLLM_VERSION,
+        )
+        structured = result.sampling_params.kwargs["structured_outputs"]
+        for field_name in (
+            "regex",
+            "choice",
+            "grammar",
+            "json_object",
+            "structural_tag",
+        ):
+            self.assertIsNone(getattr(structured, field_name))
+
+    def test_no_plain_dictionary_structured_output_replacement_path(self) -> None:
+        generation = _generation_config()
+
+        class DictSubstitutingSamplingParams:
+            def __init__(
+                self,
+                *,
+                temperature: float,
+                top_p: float,
+                max_tokens: int,
+                n: int,
+                structured_outputs: Any,
+            ) -> None:
+                self.temperature = temperature
+                self.top_p = top_p
+                self.max_tokens = max_tokens
+                self.n = n
+                self.structured_outputs = {"json": structured_outputs}
+
+        with self.assertRaises(self.structured_decode.ParameterConstructionError):
+            self.structured_decode.build_structured_sampling_params(
+                generation,
+                self.contract,
+                repo_root=REPO_ROOT,
+                sampling_params_class=DictSubstitutingSamplingParams,
+                structured_outputs_class=FakeStructuredOutputs,
+                detected_vllm_version=REQUIRED_VLLM_VERSION,
+            )
 
 
 if __name__ == "__main__":

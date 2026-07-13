@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import dataclasses
 import importlib
 import inspect
 import json
@@ -312,13 +313,114 @@ def _resolve_class(
     return resolved
 
 
-def _require_constructor_field(cls: type[Any], field_name: str, *, error_label: str) -> None:
+@dataclass(frozen=True)
+class ConstructorFieldDiscovery:
+    present: bool
+    method: str | None
+
+
+_COMPETING_STRUCTURED_OUTPUT_FIELDS = (
+    "regex",
+    "choice",
+    "grammar",
+    "json_object",
+    "structural_tag",
+)
+_FORBIDDEN_GUIDED_FIELDS = ("guided_json", "guided_regex", "guided_choice", "guided_grammar")
+
+
+def _discover_constructor_field(cls: type[Any], field_name: str) -> ConstructorFieldDiscovery:
+    dataclass_fields = getattr(cls, "__dataclass_fields__", None)
+    if isinstance(dataclass_fields, dict) and field_name in dataclass_fields:
+        return ConstructorFieldDiscovery(True, "dataclass_fields")
+
+    annotations = getattr(cls, "__annotations__", None)
+    if isinstance(annotations, dict) and field_name in annotations:
+        return ConstructorFieldDiscovery(True, "class_annotations")
+
     try:
-        signature = inspect.signature(cls.__init__)
-    except (TypeError, ValueError) as exc:
-        raise MissingApiFieldError(f"{error_label} constructor is not inspectable") from exc
-    if field_name not in signature.parameters:
+        class_signature = inspect.signature(cls)
+        if field_name in class_signature.parameters:
+            return ConstructorFieldDiscovery(True, "class_signature")
+    except (TypeError, ValueError):
+        pass
+
+    try:
+        init_signature = inspect.signature(cls.__init__)
+        if field_name in init_signature.parameters:
+            return ConstructorFieldDiscovery(True, "init_signature")
+        non_self = [
+            parameter
+            for name, parameter in init_signature.parameters.items()
+            if name != "self"
+        ]
+        if non_self and all(
+            parameter.kind in (inspect.Parameter.VAR_POSITIONAL, inspect.Parameter.VAR_KEYWORD)
+            for parameter in non_self
+        ):
+            return ConstructorFieldDiscovery(False, None)
+    except (TypeError, ValueError):
+        pass
+
+    return ConstructorFieldDiscovery(False, None)
+
+
+def _require_constructor_field(cls: type[Any], field_name: str, *, error_label: str) -> ConstructorFieldDiscovery:
+    discovery = _discover_constructor_field(cls, field_name)
+    if not discovery.present:
         raise MissingApiFieldError(f"{error_label} is missing required field {field_name!r}")
+    return discovery
+
+
+def _verify_structured_outputs_instance(
+    structured_outputs: Any,
+    *,
+    schema_dict: dict[str, Any],
+    schema_parameter_name: str,
+    error_label: str,
+) -> None:
+    if not hasattr(structured_outputs, schema_parameter_name):
+        raise ParameterConstructionError(
+            f"{error_label} construction did not expose {schema_parameter_name!r}"
+        )
+    observed_schema = getattr(structured_outputs, schema_parameter_name)
+    if observed_schema != schema_dict:
+        raise ParameterConstructionError(
+            f"{error_label}.{schema_parameter_name} does not match the verified semantic schema"
+        )
+    for field_name in _COMPETING_STRUCTURED_OUTPUT_FIELDS:
+        if hasattr(structured_outputs, field_name) and getattr(structured_outputs, field_name) is not None:
+            raise ParameterConstructionError(
+                f"{error_label}.{field_name} must remain null for pinned structured JSON decoding"
+            )
+
+
+def _verify_sampling_params_instance(
+    sampling_params: Any,
+    *,
+    structured_outputs: Any,
+    structured_output_field_name: str,
+    completions_per_request: int,
+    error_label: str,
+) -> None:
+    if not hasattr(sampling_params, structured_output_field_name):
+        raise ParameterConstructionError(
+            f"{error_label} construction did not expose {structured_output_field_name!r}"
+        )
+    attached = getattr(sampling_params, structured_output_field_name)
+    if attached is not structured_outputs:
+        raise ParameterConstructionError(
+            f"{error_label}.{structured_output_field_name} is not the constructed structured-output object"
+        )
+    if getattr(sampling_params, "n", None) != completions_per_request:
+        raise ParameterConstructionError(
+            f"{error_label}.n must equal {completions_per_request}"
+        )
+    for field_name in _FORBIDDEN_GUIDED_FIELDS:
+        if hasattr(sampling_params, field_name) and getattr(sampling_params, field_name) is not None:
+            raise ParameterConstructionError(
+                f"{error_label}.{field_name} is not permitted for pinned structured decoding"
+            )
 
 
 def build_structured_sampling_params(
@@ -396,12 +498,25 @@ def build_structured_sampling_params(
 
     try:
         structured_outputs = structured_cls(**{contract.schema_parameter_name: schema_dict})
+        _verify_structured_outputs_instance(
+            structured_outputs,
+            schema_dict=schema_dict,
+            schema_parameter_name=contract.schema_parameter_name,
+            error_label=contract.structured_outputs_class,
+        )
         sampling_params = sampling_cls(
             temperature=temperature,
             top_p=top_p,
             max_tokens=max_tokens,
             n=contract.completions_per_request,
             **{contract.structured_output_field_name: structured_outputs},
+        )
+        _verify_sampling_params_instance(
+            sampling_params,
+            structured_outputs=structured_outputs,
+            structured_output_field_name=contract.structured_output_field_name,
+            completions_per_request=contract.completions_per_request,
+            error_label=contract.sampling_params_class,
         )
     except StructuredDecodeError:
         raise

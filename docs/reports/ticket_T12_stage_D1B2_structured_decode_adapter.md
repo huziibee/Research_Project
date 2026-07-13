@@ -53,6 +53,37 @@ From D1B1 measured runtime (`configs/model/evidence/t12_stage_d1b1_pinned_runtim
 
 Not implemented: `guided_decoding`, `GuidedDecodingParams`, `json_schema=`, compatibility fallback, lossy schema transformation, unconstrained fallback.
 
+## Generated-dataclass field discovery correction (2026-07-13)
+
+D-Final live job **2019** (commit `0ba87ad`) reached structured-output construction after nested preflight validation passed. It blocked before engine startup with:
+
+```text
+StructuredOutputsParams is missing required field 'json'
+```
+
+Cluster read-only SIF probe job **2023** on `mscluster111` confirmed:
+
+- `vllm.__version__` is `0.20.1`;
+- `StructuredOutputsParams` is a generated Pydantic dataclass;
+- `__dataclass_fields__` includes `json`;
+- `inspect.signature(StructuredOutputsParams.__init__)` is generic `(*args, **kwargs)`;
+- direct `StructuredOutputsParams(json=schema)` succeeds;
+- direct `SamplingParams(structured_outputs=structured, n=1)` succeeds;
+- no model, tokenizer, or engine was started in the probe.
+
+The API contract did not change. The defect was reflection-only: `_require_constructor_field()` used `inspect.signature(cls.__init__)`, which false-negated declared dataclass fields.
+
+Correction order:
+
+1. `__dataclass_fields__`;
+2. `__annotations__`;
+3. `inspect.signature(cls)`;
+4. `inspect.signature(cls.__init__)` only as a final fallback, rejecting generic `*args, **kwargs` shells with no declared field.
+
+Post-construction verification now requires the exact schema dict on `structured_outputs.json`, null competing constraint fields, object-identity attachment on `SamplingParams.structured_outputs`, and `n == 1`.
+
+No model generation occurred in job 2019.
+
 ## Frozen structured-decode contract
 
 **Path:** `configs/model/t12_structured_decode_contract.json`

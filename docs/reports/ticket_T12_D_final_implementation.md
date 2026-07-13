@@ -71,6 +71,12 @@ Job **1862** (commit `c53906b`) proved the canonical portability fix and BLOCKED
 
 Correction: `_validate_preflight()` now validates the nested structure strictly (Boolean `true`/`false`, not strings), rejects obsolete flat-only input, and verifies snapshot identity/count fields when emitted. No engine or model generation occurred in job 1862.
 
+### Structured-output field discovery (2026-07-13 live-smoke red evidence)
+
+Jobs **2017** and **2019** advanced beyond earlier attempts: nested preflight validation passed on job 2019. Job 2019 blocked before engine startup at structured-output construction because `_require_constructor_field()` inspected `StructuredOutputsParams.__init__`, which is a generated Pydantic dataclass signature `(*args, **kwargs)` even though `__dataclass_fields__` declares `json`.
+
+SIF probe job **2023** confirmed direct `StructuredOutputsParams(json=schema_dict)` and `SamplingParams(structured_outputs=...)` succeed on vLLM 0.20.1 without loading a model. Field discovery now uses declared dataclass metadata first; post-construction invariants verify schema identity, null competing fields, and `n == 1`. No model generation occurred in job 2019.
+
 ### Config-load BLOCKED-evidence boundary
 
 `scripts/t12_run_d_final_smoke.py` no longer calls `load_d_final_config()` before the runner. The runner creates the unique run directory first, then loads config. Config or contract-identity failures after directory creation write an honest BLOCKED package with empty JSONL files, zero engine-start count, and no fabricated response-mode verification file.
