@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+import os
 import tempfile
 import unittest
 import unittest.mock as mock
@@ -900,6 +901,104 @@ class T12NestedPreflightValidationTests(unittest.TestCase):
                 manifest["preflight_hash"],
                 sha256_hex(canonical_json_bytes(preflight)),
             )
+
+
+class T12DFinalRepoRootAnchoringTests(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls) -> None:
+        cls.config = load_d_final_config(CONFIG_PATH, root=REPO_ROOT)
+
+    def test_foreign_cwd_does_not_affect_d_final_execution(self) -> None:
+        """Regression: probe/records must not resolve immutable selection from Path.cwd()."""
+        with tempfile.TemporaryDirectory() as tmp:
+            tmp_path = Path(tmp)
+            foreign_cwd = tmp_path / "foreign-cwd"
+            foreign_cwd.mkdir()
+            manifest_path, archive = _source_identity_bundle(tmp_path)
+            (tmp_path / "extracted").mkdir()
+
+            calls: list[Path | None] = []
+
+            def _checked_load_immutable(repo_root: Path | None = None):
+                calls.append(repo_root)
+                # If any code path falls back to CWD (repo_root None), fail closed.
+                if repo_root is None:
+                    raise RuntimeError("immutable selection loaded without explicit repo_root")
+                from ambiguity_manager.model.cluster.identities import load_immutable_selection as _load
+
+                return _load(repo_root)
+
+            old_cwd = Path.cwd()
+            try:
+                os.chdir(foreign_cwd)
+                with mock.patch(
+                    "ambiguity_manager.model.cluster.generation_pipeline_runner.load_immutable_selection",
+                    side_effect=_checked_load_immutable,
+                ):
+                    result = run_d_final_smoke(
+                        run_dir=tmp_path / "run-test",
+                        preflight_result=_preflight(),
+                        config=self.config,
+                        root=REPO_ROOT,
+                        source_identity_manifest_path=manifest_path,
+                        source_archive=archive,
+                        extracted_source_root=tmp_path / "extracted",
+                        slurm_log_path="/cluster/logs/t12-d-final-smoke.log",
+                        backend_factory=lambda *_a, **_k: FakeBackend(),
+                        tokenizer_factory=lambda **_k: FakeTokenizer(),
+                        probe_generator=lambda **_k: _semantic(),
+                        record_generator=lambda record_id, **_k: _record_output(record_id),
+                        structured_decode_readiness_override=_readiness(),
+                        measurement_timestamp="2026-07-13T08:45:00Z",
+                        snapshot_path=tmp_path / "tokenizer",
+                    )
+            finally:
+                os.chdir(old_cwd)
+
+            if result.status != "PASS":
+                raise AssertionError(f"unexpected status={result.status} rejections={result.rejection_reasons}")
+            self.assertTrue(any(item is not None for item in calls))
+
+    def test_unexpected_probe_evaluator_exception_writes_blocked_evidence_and_retains_raw_probe(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            tmp_path = Path(tmp)
+            manifest_path, archive = _source_identity_bundle(tmp_path)
+            (tmp_path / "extracted").mkdir()
+
+            def _raise(*_args: object, **_kwargs: object):
+                raise RuntimeError("boom")
+
+            with mock.patch(
+                "ambiguity_manager.model.cluster.generation_pipeline_runner.evaluate_probe_candidate",
+                side_effect=_raise,
+            ):
+                result = run_d_final_smoke(
+                    run_dir=tmp_path / "run-blocked-probe",
+                    preflight_result=_preflight(),
+                    config=self.config,
+                    root=REPO_ROOT,
+                    source_identity_manifest_path=manifest_path,
+                    source_archive=archive,
+                    extracted_source_root=tmp_path / "extracted",
+                    slurm_log_path="/cluster/logs/t12-d-final-smoke.log",
+                    backend_factory=lambda *_a, **_k: FakeBackend(),
+                    tokenizer_factory=lambda **_k: FakeTokenizer(),
+                    probe_generator=lambda **_k: _semantic(),
+                    record_generator=lambda record_id, **_k: _record_output(record_id),
+                    structured_decode_readiness_override=_readiness(),
+                    measurement_timestamp="2026-07-13T08:46:00Z",
+                    snapshot_path=tmp_path / "tokenizer",
+                )
+
+            self.assertEqual(result.status, "BLOCKED")
+            run_dir = tmp_path / "run-blocked-probe"
+            self.assertTrue((run_dir / "summary.json").is_file())
+            self.assertTrue((run_dir / "run_manifest.json").is_file())
+            probe_payload = json.loads((run_dir / "response_mode_probe.json").read_text(encoding="utf-8"))
+            self.assertTrue(probe_payload["candidates"])
+            self.assertIn("raw_output", probe_payload["candidates"][0])
+            self.assertEqual(probe_payload.get("selected_mode"), None)
+            self.assertFalse((run_dir / "response_mode_verification.json").exists())
 
 
 if __name__ == "__main__":

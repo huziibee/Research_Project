@@ -217,6 +217,9 @@ class T12ResponseModeProbePolicyTests(unittest.TestCase):
         cls.contract_hash = structured_decode_contract_hash(cls.contract)
         cls.schema_hash = model_semantic_output_schema_hash()
         cls.metadata = _structured_decode_metadata()
+        from ambiguity_manager.model.cluster.identities import load_immutable_selection
+
+        cls.immutable = load_immutable_selection()
 
     def _evaluate(self, raw_output: str, *, mode: str = "default", generation_status: str = "success"):
         return evaluate_probe_candidate(
@@ -232,6 +235,7 @@ class T12ResponseModeProbePolicyTests(unittest.TestCase):
             contract_hash=self.contract_hash,
             policy=self.policy,
             contract=self.contract,
+            immutable=self.immutable,
             structured_decode_metadata=self.metadata,
         )
 

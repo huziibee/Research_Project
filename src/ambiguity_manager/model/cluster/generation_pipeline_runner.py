@@ -822,7 +822,7 @@ def run_d_final_smoke(
     measurement_timestamp: str,
     snapshot_path: Path | str | None = None,
 ) -> DFinalRunResult:
-    base = root or repo_root()
+    base = (root or repo_root()).resolve()
     run_id = run_dir.name
 
     if run_dir.exists():
@@ -915,6 +915,19 @@ def run_d_final_smoke(
 
     rejections = _validate_preflight(preflight_result, config=active_config)
 
+    # Preload immutable selection under the authoritative source root so probe and
+    # record validation never depend on process CWD.
+    immutable = None
+    try:
+        immutable = load_immutable_selection(base)
+    except Exception as exc:  # noqa: BLE001
+        rejections.append(f"immutable_selection_load_failed:{exc}")
+    if immutable is not None:
+        if immutable.model_repository != active_config.model_repository:
+            rejections.append("immutable_selection_model_repository_mismatch")
+        if immutable.model_revision != active_config.model_revision:
+            rejections.append("immutable_selection_model_revision_mismatch")
+
     manifest: SourceIdentityManifest | None = source_identity_manifest
     if manifest is None and source_identity_manifest_path is not None:
         try:
@@ -976,7 +989,10 @@ def run_d_final_smoke(
         )
         decode_contract = load_structured_decode_contract(base / active_config.references["structured_decode_contract"])
         contract_hash = structured_decode_contract_hash(decode_contract)
-        _ = load_pipeline_contract(base / active_config.references["pipeline_contract"])
+        pipeline_contract = load_pipeline_contract(base / active_config.references["pipeline_contract"])
+        from ambiguity_manager.model.generation_policy import DEFAULT_POLICY_REL, load_generation_policy
+
+        generation_policy = load_generation_policy(base / DEFAULT_POLICY_REL)
 
     if rejections:
         _write_evidence_package(
@@ -1014,6 +1030,9 @@ def run_d_final_smoke(
             str(key): str(value)
             for key, value in active_config.tokenizer_snapshot["artefact_hashes"].items()
         },
+        expected_immutable_identity=(
+            (immutable.model_repository, immutable.model_revision) if immutable is not None else None
+        ),
         tokenizer_factory=tokenizer_factory,
     )
 
@@ -1107,6 +1126,7 @@ def run_d_final_smoke(
                 generation_status = "success"
                 finish_reason = "stop"
                 engine_request_id = f"probe-{index}"
+                manifest_base["generation_call_count"] = int(manifest_base.get("generation_call_count", 0)) + 1
             else:
                 output = generator.generate(
                     rendered_prompt=candidate.rendered_prompt_text,
@@ -1117,6 +1137,7 @@ def run_d_final_smoke(
                 generation_status = output.generation_status
                 finish_reason = output.finish_reason
                 engine_request_id = output.engine_request_id
+                manifest_base["generation_call_count"] = int(manifest_base.get("generation_call_count", 0)) + 1
 
             metadata = _probe_structured_decode_metadata(
                 backend,
@@ -1126,24 +1147,56 @@ def run_d_final_smoke(
                 metadata,
                 structured_readiness=structured_readiness,
             )
-            probe_results.append(
-                evaluate_probe_candidate(
-                    candidate_mode=candidate.candidate_mode,
-                    rendered_prompt_hash=candidate.rendered_prompt_hash,
-                    raw_output=raw_output,
-                    generation_status=generation_status,
-                    finish_reason=finish_reason,
-                    engine_request_id=engine_request_id,
-                    model_repository=active_config.model_repository,
-                    model_revision=active_config.model_revision,
-                    schema_hash=schema_hash,
-                    contract_hash=contract_hash,
-                    policy=probe_policy,
-                    contract=decode_contract,
-                    structured_decode_metadata=metadata,
-                    unconstrained_fallback_indicated=fallback,
+            try:
+                probe_results.append(
+                    evaluate_probe_candidate(
+                        candidate_mode=candidate.candidate_mode,
+                        rendered_prompt_hash=candidate.rendered_prompt_hash,
+                        raw_output=raw_output,
+                        generation_status=generation_status,
+                        finish_reason=finish_reason,
+                        engine_request_id=engine_request_id,
+                        model_repository=active_config.model_repository,
+                        model_revision=active_config.model_revision,
+                        schema_hash=schema_hash,
+                        contract_hash=contract_hash,
+                        policy=probe_policy,
+                        contract=decode_contract,
+                        immutable=immutable,
+                        structured_decode_metadata=metadata,
+                        unconstrained_fallback_indicated=fallback,
+                    )
                 )
-            )
+            except Exception as exc:  # noqa: BLE001
+                # Preserve raw probe output in evidence even if evaluation crashes.
+                probe_results.append(
+                    ProbeCandidateResult(
+                        candidate_mode=candidate.candidate_mode,
+                        rendered_prompt_hash=candidate.rendered_prompt_hash,
+                        raw_output=raw_output,
+                        raw_output_hash=sha256_hex(raw_output.encode("utf-8")) if raw_output else "",
+                        generation_status=generation_status,
+                        direct_json_parse_status="skipped",
+                        raw_object_status="skipped",
+                        local_repair_attempts=0,
+                        local_repair_log=(),
+                        semantic_schema_status="skipped",
+                        thinking_markers_present=False,
+                        prose_before_json=False,
+                        prose_after_json=False,
+                        engine_request_id=engine_request_id,
+                        finish_reason=finish_reason,
+                        unconstrained_fallback_indicated=fallback,
+                        structured_decode_metadata=metadata,
+                        model_repository=active_config.model_repository,
+                        model_revision=active_config.model_revision,
+                        schema_hash=schema_hash,
+                        contract_hash=contract_hash,
+                        passed=False,
+                        failure_reasons=(f"unexpected_probe_evaluator_exception:{type(exc).__name__}",),
+                    )
+                )
+                raise
 
         selected = select_response_mode(probe_results, policy=probe_policy)
         if selected is None:
@@ -1285,6 +1338,13 @@ def run_d_final_smoke(
                 generator=pipeline_generator,
                 backend=backend_identity,
                 structured_decode_readiness=structured_readiness,
+                immutable_selection={
+                    "model_repository": active_config.model_repository,
+                    "immutable_revision": active_config.model_revision,
+                },
+                policy=generation_policy,
+                structured_decode_contract=decode_contract,
+                pipeline_contract=pipeline_contract,
             )
             for entry in result.attempt_entries:
                 raw_attempt_rows.append(entry.to_dict())
@@ -1354,6 +1414,32 @@ def run_d_final_smoke(
             accepted_count=accepted_count,
             rejected_after_attempts_count=rejected_after_attempts_count,
             rejected_non_retryable_count=rejected_non_retryable_count,
+            semantic_correctness_status=SEMANTIC_CORRECTNESS_NOT_EVALUATED,
+        )
+    except Exception as exc:  # noqa: BLE001
+        # Unexpected exception boundary: emit honest BLOCKED evidence package.
+        reason = f"unexpected_runner_exception:{type(exc).__name__}"
+        _write_evidence_package(
+            run_dir,
+            status="BLOCKED",
+            run_id=run_id,
+            rejection_reasons=(reason,),
+            measurement_timestamp=measurement_timestamp,
+            config=active_config,
+            probe_results=probe_results,
+            selected_mode=None,
+            manifest_base={**manifest_base, "status": "BLOCKED", "rejection_reasons": [reason]},
+        )
+        return DFinalRunResult(
+            status="BLOCKED",
+            run_id=run_id,
+            rejection_reasons=(reason,),
+            run_dir=str(run_dir),
+            engine_started=engine_started,
+            response_mode=None,
+            accepted_count=0,
+            rejected_after_attempts_count=0,
+            rejected_non_retryable_count=0,
             semantic_correctness_status=SEMANTIC_CORRECTNESS_NOT_EVALUATED,
         )
     finally:

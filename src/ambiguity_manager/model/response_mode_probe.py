@@ -231,6 +231,7 @@ def evaluate_probe_candidate(
     contract_hash: str,
     policy: ResponseModeProbePolicy,
     contract: StructuredDecodeContract,
+    immutable: Any,
     structured_decode_metadata: dict[str, Any] | None = None,
     unconstrained_fallback_indicated: bool = False,
 ) -> ProbeCandidateResult:
@@ -309,13 +310,13 @@ def evaluate_probe_candidate(
             failures.append("model_schema_identity_mismatch")
 
     if model_repository and model_revision:
-        from ambiguity_manager.model.cluster.identities import load_immutable_selection
-
-        immutable = load_immutable_selection()
-        if model_repository != immutable.model_repository:
-            failures.append("model_repository_mismatch")
-        if model_revision != immutable.model_revision:
-            failures.append("model_revision_mismatch")
+        if immutable is None:
+            failures.append("immutable_selection_missing")
+        else:
+            if model_repository != getattr(immutable, "model_repository", None):
+                failures.append("model_repository_mismatch")
+            if model_revision != getattr(immutable, "model_revision", None):
+                failures.append("model_revision_mismatch")
 
     passed = not failures
     return ProbeCandidateResult(

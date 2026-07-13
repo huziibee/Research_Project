@@ -130,12 +130,14 @@ class Qwen3ChatTemplateRenderer:
         model_repository: str,
         immutable_revision: str,
         expected_tokenizer_hashes: dict[str, str] | None = None,
+        expected_immutable_identity: tuple[str, str] | None = None,
         tokenizer_factory: TokenizerFactory | None = None,
     ) -> None:
         self._snapshot_path = Path(snapshot_path)
         self._model_repository = model_repository
         self._immutable_revision = immutable_revision
         self._expected_tokenizer_hashes = expected_tokenizer_hashes or _load_expected_tokenizer_hashes()
+        self._expected_immutable_identity = expected_immutable_identity
         self._tokenizer_factory = tokenizer_factory
         self._tokenizer: Any | None = None
         self._observed_tokenizer_hashes: dict[str, str] | None = None
@@ -148,7 +150,7 @@ class Qwen3ChatTemplateRenderer:
         return dict(self._observed_tokenizer_hashes)
 
     def _verify_identity(self) -> None:
-        expected_repo, expected_revision = _load_immutable_identity()
+        expected_repo, expected_revision = self._expected_immutable_identity or _load_immutable_identity()
         if self._model_repository != expected_repo:
             raise Qwen3RendererError(
                 f"model repository mismatch: expected {expected_repo!r}, got {self._model_repository!r}"

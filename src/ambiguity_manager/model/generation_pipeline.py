@@ -794,6 +794,7 @@ def run_generation_pipeline(
     generator: GenerationAttemptGenerator,
     backend: BackendIdentity,
     structured_decode_readiness: StructuredDecodeReadiness | None,
+    immutable_selection: dict[str, str] | None = None,
     policy: GenerationPolicy | None = None,
     structured_decode_contract: StructuredDecodeContract | None = None,
     pipeline_contract: dict[str, object] | None = None,
@@ -874,7 +875,10 @@ def run_generation_pipeline(
 
         prompt_message_hash = _compute_message_hash(messages)
         envelope = renderer.render(messages)
-        envelope_failures = verify_generation_ready_envelope(envelope)
+        envelope_failures = verify_generation_ready_envelope(
+            envelope,
+            immutable_selection=immutable_selection,
+        )
         readiness_failures = verify_structured_decode_readiness(
             structured_decode_readiness, decode_contract
         )
