@@ -1018,6 +1018,50 @@ class T12PipelineGeneratorFailureTaxonomyTests(unittest.TestCase):
         self.assertEqual(len(generator.calls), 3)
 
 
+class T12PipelineSelectedInterpretationRegressionTests(unittest.TestCase):
+    def test_empty_supporting_evidence_rejected_and_regenerates(self) -> None:
+        invalid = _complete_semantic(
+            selected_interpretation={
+                "frame_id": "frame_001",
+                "supporting_evidence": [],
+            },
+        )
+        generator = FakeGenerator(
+            outputs=[_json_output(invalid), _json_output(_complete_semantic())]
+        )
+        result = run_generation_pipeline(
+            _pipeline_request(),
+            renderer=FakeRenderer(),
+            generator=generator,
+            backend=BackendIdentity("fake", "a" * 64),
+            structured_decode_readiness=_readiness(),
+        )
+        self.assertEqual(result.final_status, PipelineFinalStatus.ACCEPTED.value)
+        self.assertEqual(len(generator.calls), 2)
+        self.assertEqual(
+            result.attempt_entries[0].failure_categories[0],
+            FailureCategory.SEMANTIC_SCHEMA_VALIDATION_FAILURE.value,
+        )
+
+    def test_empty_supporting_evidence_rejected_after_three_attempts(self) -> None:
+        invalid = _complete_semantic(
+            selected_interpretation={
+                "frame_id": "frame_001",
+                "supporting_evidence": [],
+            },
+        )
+        generator = FakeGenerator(outputs=[_json_output(invalid)] * 3)
+        result = run_generation_pipeline(
+            _pipeline_request(),
+            renderer=FakeRenderer(),
+            generator=generator,
+            backend=BackendIdentity("fake", "a" * 64),
+            structured_decode_readiness=_readiness(),
+        )
+        self.assertEqual(result.final_status, PipelineFinalStatus.REJECTED_AFTER_ATTEMPTS.value)
+        self.assertEqual(len(generator.calls), 3)
+
+
 class T12PipelineSemanticStatusTests(unittest.TestCase):
     def test_structurally_accepted_has_not_evaluated_semantic_status(self) -> None:
         result = _run(_pipeline_request(), outputs=[_json_output(_complete_semantic())])

@@ -1138,6 +1138,11 @@ def run_d_final_smoke(
                 finish_reason = output.finish_reason
                 engine_request_id = output.engine_request_id
                 manifest_base["generation_call_count"] = int(manifest_base.get("generation_call_count", 0)) + 1
+                prompt_tokens = output.prompt_tokens
+                completion_tokens = output.completion_tokens
+            if probe_generator is not None:
+                prompt_tokens = None
+                completion_tokens = None
 
             metadata = _probe_structured_decode_metadata(
                 backend,
@@ -1156,6 +1161,8 @@ def run_d_final_smoke(
                         generation_status=generation_status,
                         finish_reason=finish_reason,
                         engine_request_id=engine_request_id,
+                        prompt_tokens=prompt_tokens,
+                        completion_tokens=completion_tokens,
                         model_repository=active_config.model_repository,
                         model_revision=active_config.model_revision,
                         schema_hash=schema_hash,
@@ -1176,11 +1183,14 @@ def run_d_final_smoke(
                         raw_output=raw_output,
                         raw_output_hash=sha256_hex(raw_output.encode("utf-8")) if raw_output else "",
                         generation_status=generation_status,
+                        prompt_tokens=prompt_tokens,
+                        completion_tokens=completion_tokens,
                         direct_json_parse_status="skipped",
                         raw_object_status="skipped",
                         local_repair_attempts=0,
                         local_repair_log=(),
                         semantic_schema_status="skipped",
+                        semantic_schema_error=None,
                         thinking_markers_present=False,
                         prose_before_json=False,
                         prose_after_json=False,

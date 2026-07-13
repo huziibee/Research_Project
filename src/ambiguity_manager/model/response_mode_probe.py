@@ -37,6 +37,9 @@ class ResponseModeProbePolicy:
     synthetic_probe_command: str
     semantic_schema_hash: str
     structured_decode_contract_hash: str
+    response_mode_verification_scope: str
+    semantic_schema_validation_role: str
+    semantic_schema_enforcement_owner: str
     generation: dict[str, Any]
     cleanliness_checks: dict[str, Any]
     structural_checks: dict[str, Any]
@@ -52,6 +55,9 @@ class ResponseModeProbePolicy:
             "synthetic_probe_command": self.synthetic_probe_command,
             "semantic_schema_hash": self.semantic_schema_hash,
             "structured_decode_contract_hash": self.structured_decode_contract_hash,
+            "response_mode_verification_scope": self.response_mode_verification_scope,
+            "semantic_schema_validation_role": self.semantic_schema_validation_role,
+            "semantic_schema_enforcement_owner": self.semantic_schema_enforcement_owner,
             "generation": dict(self.generation),
             "cleanliness_checks": dict(self.cleanliness_checks),
             "structural_checks": dict(self.structural_checks),
@@ -68,11 +74,14 @@ class ProbeCandidateResult:
     raw_output: str
     raw_output_hash: str
     generation_status: str
+    prompt_tokens: int | None
+    completion_tokens: int | None
     direct_json_parse_status: str
     raw_object_status: str
     local_repair_attempts: int
     local_repair_log: tuple[str, ...]
     semantic_schema_status: str
+    semantic_schema_error: str | None
     thinking_markers_present: bool
     prose_before_json: bool
     prose_after_json: bool
@@ -94,11 +103,14 @@ class ProbeCandidateResult:
             "raw_output": self.raw_output,
             "raw_output_hash": self.raw_output_hash,
             "generation_status": self.generation_status,
+            "prompt_tokens": self.prompt_tokens,
+            "completion_tokens": self.completion_tokens,
             "direct_json_parse_status": self.direct_json_parse_status,
             "raw_object_status": self.raw_object_status,
             "local_repair_attempts": self.local_repair_attempts,
             "local_repair_log": list(self.local_repair_log),
             "semantic_schema_status": self.semantic_schema_status,
+            "semantic_schema_error": self.semantic_schema_error,
             "thinking_markers_present": self.thinking_markers_present,
             "prose_before_json": self.prose_before_json,
             "prose_after_json": self.prose_after_json,
@@ -121,6 +133,11 @@ class RunScopedResponseModeVerification:
     immutable_revision: str
     tokenizer_artefact_hashes: dict[str, str]
     response_mode: str
+    verification_scope: str
+    semantic_schema_validation_role: str
+    probe_semantic_schema_status: str
+    semantic_schema_required_for_mode_selection: bool
+    final_semantic_schema_enforcement_owner: str
     rendered_prompt_hash: str
     probe_output_hash: str
     semantic_schema_hash: str
@@ -137,6 +154,11 @@ class RunScopedResponseModeVerification:
             "immutable_revision": self.immutable_revision,
             "tokenizer_artefact_hashes": dict(self.tokenizer_artefact_hashes),
             "response_mode": self.response_mode,
+            "verification_scope": self.verification_scope,
+            "semantic_schema_validation_role": self.semantic_schema_validation_role,
+            "probe_semantic_schema_status": self.probe_semantic_schema_status,
+            "semantic_schema_required_for_mode_selection": self.semantic_schema_required_for_mode_selection,
+            "final_semantic_schema_enforcement_owner": self.final_semantic_schema_enforcement_owner,
             "rendered_prompt_hash": self.rendered_prompt_hash,
             "probe_output_hash": self.probe_output_hash,
             "semantic_schema_hash": self.semantic_schema_hash,
@@ -160,6 +182,15 @@ def validate_probe_policy(payload: dict[str, Any]) -> list[str]:
         errors.append("probe_policy.synthetic_probe_command is required")
     if payload.get("semantic_schema_hash") != model_semantic_output_schema_hash():
         errors.append("probe_policy.semantic_schema_hash mismatch")
+    if (
+        payload.get("response_mode_verification_scope")
+        != "clean_single_json_object_with_verified_structured_decode"
+    ):
+        errors.append("probe_policy.response_mode_verification_scope mismatch")
+    if payload.get("semantic_schema_validation_role") != "diagnostic_only_for_response_mode_selection":
+        errors.append("probe_policy.semantic_schema_validation_role mismatch")
+    if payload.get("semantic_schema_enforcement_owner") != "d1c1_generation_pipeline":
+        errors.append("probe_policy.semantic_schema_enforcement_owner mismatch")
     return errors
 
 
@@ -182,6 +213,9 @@ def load_response_mode_probe_policy(path: Path | str | None = None) -> ResponseM
         synthetic_probe_command=str(payload["synthetic_probe_command"]),
         semantic_schema_hash=str(payload["semantic_schema_hash"]),
         structured_decode_contract_hash=str(payload["structured_decode_contract_hash"]),
+        response_mode_verification_scope=str(payload["response_mode_verification_scope"]),
+        semantic_schema_validation_role=str(payload["semantic_schema_validation_role"]),
+        semantic_schema_enforcement_owner=str(payload["semantic_schema_enforcement_owner"]),
         generation=dict(payload["generation"]),
         cleanliness_checks=dict(payload["cleanliness_checks"]),
         structural_checks=dict(payload["structural_checks"]),
@@ -225,6 +259,8 @@ def evaluate_probe_candidate(
     generation_status: str,
     finish_reason: str | None,
     engine_request_id: str | None,
+    prompt_tokens: int | None = None,
+    completion_tokens: int | None = None,
     model_repository: str,
     model_revision: str,
     schema_hash: str,
@@ -240,6 +276,9 @@ def evaluate_probe_candidate(
 
     if generation_status != "success":
         failures.append(f"generation_status={generation_status!r}")
+    required_finish_reason = policy.structural_checks.get("require_finish_reason")
+    if required_finish_reason is not None and finish_reason != required_finish_reason:
+        failures.append(f"finish_reason={finish_reason!r}")
     if policy.structural_checks.get("require_non_empty_raw_output") and not raw_output.strip():
         failures.append("empty_raw_output")
 
@@ -257,6 +296,7 @@ def evaluate_probe_candidate(
     direct_json_parse_status = "skipped"
     raw_object_status = "skipped"
     semantic_schema_status = "skipped"
+    semantic_schema_error: str | None = None
     local_repair_attempts = 0
     local_repair_log: tuple[str, ...] = ()
 
@@ -279,7 +319,7 @@ def evaluate_probe_candidate(
                 semantic_schema_status = "valid"
             except SemanticPayloadError as exc:
                 semantic_schema_status = "invalid"
-                failures.append(f"semantic_schema_invalid:{exc}")
+                semantic_schema_error = str(exc)
 
     if policy.structural_checks.get("reject_unconstrained_fallback") and unconstrained_fallback_indicated:
         failures.append("unconstrained_fallback_indicated")
@@ -325,11 +365,14 @@ def evaluate_probe_candidate(
         raw_output=raw_output,
         raw_output_hash=raw_hash,
         generation_status=generation_status,
+        prompt_tokens=prompt_tokens,
+        completion_tokens=completion_tokens,
         direct_json_parse_status=direct_json_parse_status,
         raw_object_status=raw_object_status,
         local_repair_attempts=local_repair_attempts,
         local_repair_log=local_repair_log,
         semantic_schema_status=semantic_schema_status,
+        semantic_schema_error=semantic_schema_error,
         thinking_markers_present=thinking,
         prose_before_json=prose_before,
         prose_after_json=prose_after,
@@ -373,17 +416,26 @@ def create_run_scoped_verification(
         immutable_revision=selected.model_revision,
         tokenizer_artefact_hashes=dict(tokenizer_artefact_hashes),
         response_mode=selected.candidate_mode,
+        verification_scope=policy.response_mode_verification_scope,
+        semantic_schema_validation_role=policy.semantic_schema_validation_role,
+        probe_semantic_schema_status=selected.semantic_schema_status,
+        semantic_schema_required_for_mode_selection=False,
+        final_semantic_schema_enforcement_owner=policy.semantic_schema_enforcement_owner,
         rendered_prompt_hash=selected.rendered_prompt_hash,
         probe_output_hash=selected.raw_output_hash,
         semantic_schema_hash=selected.schema_hash,
         structured_decode_contract_hash=selected.contract_hash,
         probe_checks={
             "generation_status": selected.generation_status,
+            "finish_reason": selected.finish_reason,
+            "prompt_tokens": selected.prompt_tokens,
+            "completion_tokens": selected.completion_tokens,
             "direct_json_parse_status": selected.direct_json_parse_status,
             "raw_object_status": selected.raw_object_status,
             "local_repair_attempts": selected.local_repair_attempts,
             "local_repair_log": list(selected.local_repair_log),
             "semantic_schema_status": selected.semantic_schema_status,
+            "semantic_schema_error": selected.semantic_schema_error,
             "thinking_markers_present": selected.thinking_markers_present,
             "prose_before_json": selected.prose_before_json,
             "prose_after_json": selected.prose_after_json,

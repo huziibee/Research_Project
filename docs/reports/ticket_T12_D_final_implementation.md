@@ -188,16 +188,35 @@ Preflight must report `status=pass`, exact model repository/revision, exact obse
 
 ## Response-mode probe design
 
-Phase A (future live run):
+Response-mode verification proves only that a chat-template mode can produce **clean single-object JSON transport** through the verified structured-output path. It does **not** prove semantic-schema validity, route correctness, or Stage E correctness.
+
+Policy version `1.1.0` separates:
+
+- **transport hygiene** (`response_mode_verification_scope`: `clean_single_json_object_with_verified_structured_decode`);
+- **semantic payload validity** (`semantic_schema_validation_role`: `diagnostic_only_for_response_mode_selection`; enforcement owner: `d1c1_generation_pipeline`).
+
+Phase A (live run):
 
 1. render fixed synthetic probe command in frozen candidate order;
 2. run one bounded structured-output generation per candidate via persistent backend;
-3. record raw output, hashes, generation status, direct JSON/parse/schema checks, thinking-marker and prose checks;
-4. apply frozen acceptance rules with zero repair tolerance;
-5. select first passing candidate;
-6. emit run-scoped verification evidence.
+3. record raw output, hashes, generation status, finish reason, token counts, direct JSON/parse checks, thinking-marker and prose checks;
+4. calculate full semantic-schema validation for diagnostics only (`semantic_schema_status` recorded; `invalid` does not reject a mode);
+5. apply transport-hygiene acceptance rules with zero repair tolerance (`require_finish_reason`: `stop`; `finish_reason=length` always fails);
+6. select first passing candidate;
+7. emit run-scoped verification evidence (`status=verified_for_run` means transport verified for this run only).
 
 Probe policy: `configs/model/t12_response_mode_probe_policy.json`
+
+### Job 2045 (first complete two-candidate probe)
+
+Historical live job **2045** (`29ea306`, archive `t12-29ea306.tar.gz`) was the first complete two-candidate response-mode probe after source-root anchoring:
+
+| Candidate | Transport | Semantic schema |
+|---|---|---|
+| `default` | **failed** — `finish_reason=length`; output began `[`; truncated mid-string; direct JSON parse failed | not reached |
+| `enable_thinking_false` | **passed** — `finish_reason=stop`; one complete JSON object; no prose, fences, thinking markers, or local repairs | **invalid** — `selected_interpretation.supporting_evidence` was empty |
+
+Prior probe policy incorrectly conflated transport hygiene with semantic-schema conformance, so `enable_thinking_false` was rejected and the four-record D1C1 pipeline never ran. Correction commit separates these concerns; D1C1 remains the strict semantic-schema enforcement boundary. No semantic or canonical schema constraint was weakened.
 
 ## Deterministic mode-selection rule
 
@@ -206,7 +225,7 @@ Frozen candidate order:
 1. `default`
 2. `enable_thinking_false`
 
-Select the first candidate passing all probe checks. If neither passes, block the four-record run.
+Select the first candidate passing transport-hygiene probe checks. Semantic-schema invalidity is recorded but does not reject a mode. If neither passes transport verification, block the four-record run.
 
 ## Four synthetic smoke inputs
 

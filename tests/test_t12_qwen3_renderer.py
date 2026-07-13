@@ -221,14 +221,25 @@ class T12ResponseModeProbePolicyTests(unittest.TestCase):
 
         cls.immutable = load_immutable_selection()
 
-    def _evaluate(self, raw_output: str, *, mode: str = "default", generation_status: str = "success"):
+    def _evaluate(
+        self,
+        raw_output: str,
+        *,
+        mode: str = "default",
+        generation_status: str = "success",
+        finish_reason: str = "stop",
+        prompt_tokens: int | None = 42,
+        completion_tokens: int | None = 17,
+    ):
         return evaluate_probe_candidate(
             candidate_mode=mode,
             rendered_prompt_hash="a" * 64,
             raw_output=raw_output,
             generation_status=generation_status,
-            finish_reason="stop",
+            finish_reason=finish_reason,
             engine_request_id="engine-1",
+            prompt_tokens=prompt_tokens,
+            completion_tokens=completion_tokens,
             model_repository=MODEL_REPO,
             model_revision=REVISION,
             schema_hash=self.schema_hash,
@@ -264,10 +275,67 @@ class T12ResponseModeProbePolicyTests(unittest.TestCase):
         result = self._evaluate("note " + _valid_semantic_json())
         self.assertFalse(result.passed)
 
-    def test_semantic_schema_invalid_exact_json_fails(self) -> None:
+    def test_semantic_schema_invalid_exact_json_passes_hygiene_only(self) -> None:
         result = self._evaluate('{"cpc": {}}')
-        self.assertFalse(result.passed)
+        self.assertTrue(result.passed)
         self.assertEqual(result.semantic_schema_status, "invalid")
+        self.assertIsNotNone(result.semantic_schema_error)
+        self.assertNotIn("semantic_schema_invalid", " ".join(result.failure_reasons))
+
+    def test_finish_reason_length_always_fails(self) -> None:
+        result = self._evaluate(_valid_semantic_json(), finish_reason="length")
+        self.assertFalse(result.passed)
+        self.assertIn("finish_reason='length'", result.failure_reasons)
+
+    def test_incomplete_top_level_array_fails(self) -> None:
+        result = self._evaluate('["action","actor"', finish_reason="length")
+        self.assertFalse(result.passed)
+
+    def test_default_like_truncated_output_cannot_be_selected(self) -> None:
+        truncated = '["_command_","action","object"'
+        default_result = self._evaluate(truncated, mode="default", finish_reason="length")
+        passing_second = self._evaluate(_valid_semantic_json(), mode="enable_thinking_false")
+        selected = select_response_mode([default_result, passing_second], policy=self.policy)
+        self.assertEqual(selected.candidate_mode, "enable_thinking_false")
+
+    def test_clean_object_with_semantic_invalidity_passes_response_mode(self) -> None:
+        payload = json.loads(_valid_semantic_json())
+        payload["selected_interpretation"] = {
+            "frame_id": "frame_001",
+            "supporting_evidence": [],
+        }
+        result = self._evaluate(json.dumps(payload), mode="enable_thinking_false")
+        self.assertTrue(result.passed)
+        self.assertEqual(result.semantic_schema_status, "invalid")
+
+    def test_token_counts_retained_in_probe_result(self) -> None:
+        result = self._evaluate(_valid_semantic_json(), prompt_tokens=100, completion_tokens=50)
+        self.assertEqual(result.prompt_tokens, 100)
+        self.assertEqual(result.completion_tokens, 50)
+
+    def test_verification_scope_is_explicit(self) -> None:
+        selected = self._evaluate(_valid_semantic_json())
+        verification = create_run_scoped_verification(
+            selected=selected,
+            tokenizer_artefact_hashes={"tokenizer.json": "a" * 64},
+            measurement_timestamp="2026-07-11T20:00:00Z",
+            container_sha=CONTAINER_SHA,
+            evidence_run_id="run-001",
+            policy=self.policy,
+        )
+        self.assertEqual(
+            verification.verification_scope,
+            "clean_single_json_object_with_verified_structured_decode",
+        )
+        self.assertEqual(
+            verification.semantic_schema_validation_role,
+            "diagnostic_only_for_response_mode_selection",
+        )
+        self.assertFalse(verification.semantic_schema_required_for_mode_selection)
+        self.assertEqual(
+            verification.final_semantic_schema_enforcement_owner,
+            "d1c1_generation_pipeline",
+        )
 
     def test_repair_count_zero_for_passing_probe(self) -> None:
         result = self._evaluate(_valid_semantic_json())
@@ -324,6 +392,11 @@ class T12ResponseModeProbePolicyTests(unittest.TestCase):
             "immutable_revision",
             "tokenizer_artefact_hashes",
             "response_mode",
+            "verification_scope",
+            "semantic_schema_validation_role",
+            "probe_semantic_schema_status",
+            "semantic_schema_required_for_mode_selection",
+            "final_semantic_schema_enforcement_owner",
             "rendered_prompt_hash",
             "probe_output_hash",
             "semantic_schema_hash",
@@ -499,6 +572,11 @@ class T12RunScopedVerifiedRendererTests(unittest.TestCase):
             immutable_revision=REVISION,
             tokenizer_artefact_hashes={"tokenizer.json": "a" * 64},
             response_mode="default",
+            verification_scope="clean_single_json_object_with_verified_structured_decode",
+            semantic_schema_validation_role="diagnostic_only_for_response_mode_selection",
+            probe_semantic_schema_status="valid",
+            semantic_schema_required_for_mode_selection=False,
+            final_semantic_schema_enforcement_owner="d1c1_generation_pipeline",
             rendered_prompt_hash="a" * 64,
             probe_output_hash="b" * 64,
             semantic_schema_hash=model_semantic_output_schema_hash(),
@@ -523,6 +601,11 @@ class T12RunScopedVerifiedRendererTests(unittest.TestCase):
             immutable_revision=REVISION,
             tokenizer_artefact_hashes={"tokenizer.json": "b" * 64},
             response_mode="default",
+            verification_scope="clean_single_json_object_with_verified_structured_decode",
+            semantic_schema_validation_role="diagnostic_only_for_response_mode_selection",
+            probe_semantic_schema_status="valid",
+            semantic_schema_required_for_mode_selection=False,
+            final_semantic_schema_enforcement_owner="d1c1_generation_pipeline",
             rendered_prompt_hash="a" * 64,
             probe_output_hash="b" * 64,
             semantic_schema_hash=model_semantic_output_schema_hash(),

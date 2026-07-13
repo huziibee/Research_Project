@@ -1001,5 +1001,64 @@ class T12DFinalRepoRootAnchoringTests(unittest.TestCase):
             self.assertFalse((run_dir / "response_mode_verification.json").exists())
 
 
+class T12DFinalJob2045ResponseModeAnalogueTests(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls) -> None:
+        cls.config = load_d_final_config(CONFIG_PATH, root=REPO_ROOT)
+
+    def test_job_2045_analogue_selects_enable_thinking_false_and_runs_records(self) -> None:
+        invalid_transport_hygiene = json.loads(_semantic())
+        invalid_transport_hygiene["selected_interpretation"] = {
+            "frame_id": "frame_001",
+            "supporting_evidence": [],
+        }
+        truncated_default = '["_command_","action","object"'
+
+        def _probe(**kwargs: object) -> str:
+            mode = kwargs.get("candidate_mode")
+            if mode == "default":
+                return truncated_default
+            return json.dumps(invalid_transport_hygiene)
+
+        with tempfile.TemporaryDirectory() as tmp:
+            tmp_path = Path(tmp)
+            manifest_path, archive = _source_identity_bundle(tmp_path)
+            (tmp_path / "extracted").mkdir()
+            result = run_d_final_smoke(
+                run_dir=tmp_path / "run-job2045",
+                preflight_result=_preflight(),
+                config=self.config,
+                root=REPO_ROOT,
+                source_identity_manifest_path=manifest_path,
+                source_archive=archive,
+                extracted_source_root=tmp_path / "extracted",
+                slurm_log_path="/cluster/logs/t12-d-final-smoke.log",
+                backend_factory=lambda *_a, **_k: FakeBackend(),
+                tokenizer_factory=lambda **_k: FakeTokenizer(),
+                probe_generator=_probe,
+                record_generator=lambda record_id, **_k: _record_output(record_id),
+                structured_decode_readiness_override=_readiness(),
+                measurement_timestamp="2026-07-13T12:00:00Z",
+                snapshot_path=tmp_path / "tokenizer",
+            )
+            self.assertEqual(result.status, "PASS")
+            self.assertEqual(result.response_mode, "enable_thinking_false")
+            run_dir = tmp_path / "run-job2045"
+            probe_payload = json.loads((run_dir / "response_mode_probe.json").read_text(encoding="utf-8"))
+            by_mode = {item["candidate_mode"]: item for item in probe_payload["candidates"]}
+            self.assertFalse(by_mode["default"]["passed"])
+            self.assertTrue(by_mode["enable_thinking_false"]["passed"])
+            self.assertEqual(by_mode["enable_thinking_false"]["semantic_schema_status"], "invalid")
+            verification = json.loads(
+                (run_dir / "response_mode_verification.json").read_text(encoding="utf-8")
+            )
+            self.assertEqual(
+                verification["verification_scope"],
+                "clean_single_json_object_with_verified_structured_decode",
+            )
+            self.assertEqual(verification["probe_semantic_schema_status"], "invalid")
+            self.assertTrue((run_dir / "record_results.jsonl").read_text(encoding="utf-8").strip())
+
+
 if __name__ == "__main__":
     unittest.main()

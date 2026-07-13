@@ -1,11 +1,14 @@
 {
   "schema_version": "1.0.0",
   "stage": "D-Final",
-  "policy_version": "1.0.0",
+  "policy_version": "1.1.0",
   "candidate_order": ["default", "enable_thinking_false"],
   "synthetic_probe_command": "Turn on the desk lamp.",
   "semantic_schema_hash": "232235fec53ee38eafcd714fd53664b250e848a6b0f75fca1ff7ec903b08cfb4",
   "structured_decode_contract_hash": "0c0aae4cff8e80c87a57833d476d7b41310a49c3256cf48b71593aca544bc5b9",
+  "response_mode_verification_scope": "clean_single_json_object_with_verified_structured_decode",
+  "semantic_schema_validation_role": "diagnostic_only_for_response_mode_selection",
+  "semantic_schema_enforcement_owner": "d1c1_generation_pipeline",
   "generation": {
     "temperature": 0.0,
     "top_p": 1.0,
@@ -19,7 +22,7 @@
   "structural_checks": {
     "require_non_empty_raw_output": true,
     "require_json_extraction": true,
-    "require_strict_semantic_schema": true,
+    "require_finish_reason": "stop",
     "reject_unconstrained_fallback": true,
     "require_identity_match": true
   },
