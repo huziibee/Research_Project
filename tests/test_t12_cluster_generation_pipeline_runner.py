@@ -10,7 +10,7 @@ from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any
 
-from ambiguity_manager.governance.hashing import sha256_hex
+from ambiguity_manager.governance.hashing import canonical_json_bytes, sha256_hex
 from ambiguity_manager.model.repair_prompt import (
     PIPELINE_CONTRACT_HASH_METHOD,
     generation_pipeline_contract_hash,
@@ -23,6 +23,7 @@ from ambiguity_manager.model.cluster.generation_pipeline_runner import (
     validate_pipeline_requests_from_records,
     validate_synthetic_records,
     verify_source_identity,
+    _validate_preflight,
 )
 from ambiguity_manager.model.generation_pipeline import (
     SEMANTIC_CORRECTNESS_NOT_EVALUATED,
@@ -45,7 +46,36 @@ PIPELINE_CONTRACT_PATH = REPO_ROOT / "configs/model/t12_generation_pipeline_cont
 
 
 def _preflight(**overrides: object) -> dict[str, Any]:
-    payload = {
+    payload: dict[str, Any] = {
+        "status": "pass",
+        "model_repository": "Qwen/Qwen3-8B",
+        "model_revision": "b968826d9c46dd6066d109eabc6255188de91218",
+        "observed_container_sha256": CONTAINER_SHA,
+        "offline_resolution_result": {
+            "passed": True,
+            "network_fallback": False,
+            "hf_home": "${T12_HF_CACHE}",
+            "hub_cache": "${T12_HF_CACHE}/hub",
+        },
+        "snapshot_inventory_result": {
+            "status": "pass",
+            "repository": "Qwen/Qwen3-8B",
+            "revision_directory": "b968826d9c46dd6066d109eabc6255188de91218",
+            "resolved_file_count": 15,
+            "resolved_total_bytes": 16397461266,
+            "safetensors_shard_count": 5,
+            "broken_symlink_count": 0,
+            "hub_cache_relationship_valid": True,
+            "rejection_reasons": [],
+            "warnings": [],
+        },
+    }
+    payload.update(overrides)
+    return payload
+
+
+def _obsolete_flat_preflight() -> dict[str, Any]:
+    return {
         "status": "pass",
         "model_repository": "Qwen/Qwen3-8B",
         "model_revision": "b968826d9c46dd6066d109eabc6255188de91218",
@@ -54,8 +84,6 @@ def _preflight(**overrides: object) -> dict[str, Any]:
         "network_fallback": False,
         "snapshot_inventory_status": "pass",
     }
-    payload.update(overrides)
-    return payload
 
 
 def _structured_decode_metadata_dict() -> dict[str, Any]:
@@ -645,6 +673,233 @@ class T12ClusterGenerationPipelineRunnerTests(unittest.TestCase):
             self.assertEqual(result.accepted_count, 4)
             manifest = json.loads((Path(tmp) / "run-test" / "run_manifest.json").read_text())
             self.assertIn("response_mode_verification.json", manifest["output_file_hashes"])
+
+
+class T12NestedPreflightValidationTests(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls) -> None:
+        cls.config = load_d_final_config(CONFIG_PATH, root=REPO_ROOT)
+
+    def test_invalid_preflight_writes_complete_blocked_evidence(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            tmp_path = Path(tmp)
+            manifest_path, archive = _source_identity_bundle(tmp_path)
+            (tmp_path / "extracted").mkdir()
+            tokenizer_calls: list[str] = []
+            backend = FakeBackend()
+            run_dir = tmp_path / "run-blocked-preflight"
+
+            def _tokenizer_factory(**_kwargs: object) -> FakeTokenizer:
+                tokenizer_calls.append("load")
+                return FakeTokenizer()
+
+            result = run_d_final_smoke(
+                run_dir=run_dir,
+                preflight_result=_obsolete_flat_preflight(),
+                config=self.config,
+                root=REPO_ROOT,
+                source_identity_manifest_path=manifest_path,
+                source_archive=archive,
+                extracted_source_root=tmp_path / "extracted",
+                slurm_log_path="/cluster/logs/t12-d-final-smoke.log",
+                backend_factory=lambda *_a, **_k: backend,
+                tokenizer_factory=_tokenizer_factory,
+                measurement_timestamp="2026-07-13T08:00:00Z",
+            )
+            self.assertEqual(result.status, "BLOCKED")
+            self.assertTrue(run_dir.is_dir())
+            summary = json.loads((run_dir / "summary.json").read_text(encoding="utf-8"))
+            self.assertEqual(summary["status"], "BLOCKED")
+            self.assertEqual(summary["generation_call_count"], 0)
+            self.assertFalse((run_dir / "response_mode_verification.json").exists())
+            for filename in (
+                "raw_attempts.jsonl",
+                "attempt_ledgers.jsonl",
+                "accepted_predictions.jsonl",
+                "record_results.jsonl",
+                "response_mode_probe.json",
+                "run_manifest.json",
+            ):
+                self.assertTrue((run_dir / filename).is_file())
+            manifest = json.loads((run_dir / "run_manifest.json").read_text(encoding="utf-8"))
+            self.assertEqual(manifest["engine_start_count"], 0)
+            self.assertEqual(tokenizer_calls, [])
+            self.assertEqual(backend.start_calls, 0)
+
+    def test_authoritative_nested_passing_preflight_accepted(self) -> None:
+        rejections = _validate_preflight(_preflight(), config=self.config)
+        self.assertEqual(rejections, [])
+
+    def test_obsolete_flat_only_preflight_rejected(self) -> None:
+        rejections = _validate_preflight(_obsolete_flat_preflight(), config=self.config)
+        self.assertIn("preflight_obsolete_flat_shape", rejections)
+        self.assertIn("preflight_offline_resolution_result_missing", rejections)
+
+    def test_missing_offline_resolution_result_rejected(self) -> None:
+        preflight = _preflight()
+        del preflight["offline_resolution_result"]
+        rejections = _validate_preflight(preflight, config=self.config)
+        self.assertIn("preflight_offline_resolution_result_missing", rejections)
+
+    def test_null_offline_resolution_result_rejected(self) -> None:
+        rejections = _validate_preflight(
+            _preflight(offline_resolution_result=None),
+            config=self.config,
+        )
+        self.assertIn("preflight_offline_resolution_result_null", rejections)
+
+    def test_missing_passed_field_rejected(self) -> None:
+        offline = {"network_fallback": False}
+        rejections = _validate_preflight(
+            _preflight(offline_resolution_result=offline),
+            config=self.config,
+        )
+        self.assertIn("preflight_offline_resolution_passed_missing", rejections)
+
+    def test_string_true_passed_rejected(self) -> None:
+        offline = dict(_preflight()["offline_resolution_result"])
+        offline["passed"] = "true"
+        rejections = _validate_preflight(
+            _preflight(offline_resolution_result=offline),
+            config=self.config,
+        )
+        self.assertIn("preflight_offline_resolution_not_passed", rejections)
+
+    def test_passed_false_rejected(self) -> None:
+        offline = dict(_preflight()["offline_resolution_result"])
+        offline["passed"] = False
+        rejections = _validate_preflight(
+            _preflight(offline_resolution_result=offline),
+            config=self.config,
+        )
+        self.assertIn("preflight_offline_resolution_not_passed", rejections)
+
+    def test_missing_network_fallback_rejected(self) -> None:
+        offline = {"passed": True}
+        rejections = _validate_preflight(
+            _preflight(offline_resolution_result=offline),
+            config=self.config,
+        )
+        self.assertIn("preflight_network_fallback_missing", rejections)
+
+    def test_string_false_network_fallback_rejected(self) -> None:
+        offline = dict(_preflight()["offline_resolution_result"])
+        offline["network_fallback"] = "false"
+        rejections = _validate_preflight(
+            _preflight(offline_resolution_result=offline),
+            config=self.config,
+        )
+        self.assertIn("preflight_network_fallback_not_false", rejections)
+
+    def test_network_fallback_true_rejected(self) -> None:
+        offline = dict(_preflight()["offline_resolution_result"])
+        offline["network_fallback"] = True
+        rejections = _validate_preflight(
+            _preflight(offline_resolution_result=offline),
+            config=self.config,
+        )
+        self.assertIn("preflight_network_fallback_not_false", rejections)
+
+    def test_missing_snapshot_inventory_result_rejected(self) -> None:
+        preflight = _preflight()
+        del preflight["snapshot_inventory_result"]
+        rejections = _validate_preflight(preflight, config=self.config)
+        self.assertIn("preflight_snapshot_inventory_result_missing", rejections)
+
+    def test_snapshot_status_not_pass_rejected(self) -> None:
+        snapshot = dict(_preflight()["snapshot_inventory_result"])
+        snapshot["status"] = "fail"
+        rejections = _validate_preflight(
+            _preflight(snapshot_inventory_result=snapshot),
+            config=self.config,
+        )
+        self.assertIn("preflight_snapshot_inventory_not_pass", rejections)
+
+    def test_model_repository_mismatch_rejected(self) -> None:
+        rejections = _validate_preflight(
+            _preflight(model_repository="Other/Model"),
+            config=self.config,
+        )
+        self.assertIn("preflight_model_repository_mismatch", rejections)
+
+    def test_revision_mismatch_rejected(self) -> None:
+        rejections = _validate_preflight(
+            _preflight(model_revision="0" * 40),
+            config=self.config,
+        )
+        self.assertIn("preflight_model_revision_mismatch", rejections)
+
+    def test_container_sha_mismatch_rejected(self) -> None:
+        rejections = _validate_preflight(
+            _preflight(observed_container_sha256="0" * 64),
+            config=self.config,
+        )
+        self.assertIn("container_sha_mismatch", rejections)
+
+    def test_valid_nested_preflight_proceeds_to_next_gate(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            tmp_path = Path(tmp)
+            manifest_path, archive = _source_identity_bundle(tmp_path)
+            (tmp_path / "extracted").mkdir()
+            gate_calls: list[str] = []
+
+            def _capture_gate(*_args: object, **_kwargs: object) -> list[str]:
+                gate_calls.append("runtime_consistency")
+                return []
+
+            with mock.patch(
+                "ambiguity_manager.model.cluster.generation_pipeline_runner.validate_runtime_config_consistency",
+                side_effect=_capture_gate,
+            ):
+                result = run_d_final_smoke(
+                    run_dir=tmp_path / "run-nested-pass",
+                    preflight_result=_preflight(),
+                    config=self.config,
+                    root=REPO_ROOT,
+                    source_identity_manifest_path=manifest_path,
+                    source_archive=archive,
+                    extracted_source_root=tmp_path / "extracted",
+                    slurm_log_path="/cluster/logs/t12-d-final-smoke.log",
+                    backend_factory=lambda *_a, **_k: FakeBackend(),
+                    tokenizer_factory=lambda **_k: FakeTokenizer(),
+                    probe_generator=lambda **_k: _semantic(),
+                    record_generator=lambda record_id, **_k: _record_output(record_id),
+                    structured_decode_readiness_override=_readiness(),
+                    measurement_timestamp="2026-07-13T08:00:00Z",
+                    snapshot_path=tmp_path / "tokenizer",
+                )
+            self.assertNotIn("preflight_obsolete_flat_shape", result.rejection_reasons)
+            self.assertNotIn("preflight_offline_resolution_not_passed", result.rejection_reasons)
+            self.assertEqual(gate_calls, ["runtime_consistency"])
+
+    def test_preflight_hash_uses_complete_nested_object(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            tmp_path = Path(tmp)
+            manifest_path, archive = _source_identity_bundle(tmp_path)
+            (tmp_path / "extracted").mkdir()
+            preflight = _preflight()
+            run_d_final_smoke(
+                run_dir=tmp_path / "run-hash",
+                preflight_result=preflight,
+                config=self.config,
+                root=REPO_ROOT,
+                source_identity_manifest_path=manifest_path,
+                source_archive=archive,
+                extracted_source_root=tmp_path / "extracted",
+                slurm_log_path="/cluster/logs/t12-d-final-smoke.log",
+                backend_factory=lambda *_a, **_k: FakeBackend(),
+                tokenizer_factory=lambda **_k: FakeTokenizer(),
+                probe_generator=lambda **_k: _semantic(),
+                record_generator=lambda record_id, **_k: _record_output(record_id),
+                structured_decode_readiness_override=_readiness(),
+                measurement_timestamp="2026-07-13T08:00:00Z",
+                snapshot_path=tmp_path / "tokenizer",
+            )
+            manifest = json.loads((tmp_path / "run-hash" / "run_manifest.json").read_text())
+            self.assertEqual(
+                manifest["preflight_hash"],
+                sha256_hex(canonical_json_bytes(preflight)),
+            )
 
 
 if __name__ == "__main__":

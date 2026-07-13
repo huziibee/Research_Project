@@ -43,6 +43,34 @@ The authoritative identity is now `generation_pipeline_contract_hash()` beside `
 
 `run_manifest.json` retains both the canonical hash (acceptance) and optional `pipeline_contract_file_sha256` (diagnostic raw bytes).
 
+### Nested cluster preflight validation (2026-07-13 live-smoke red evidence)
+
+Job **1862** (commit `c53906b`) proved the canonical portability fix and BLOCKED-evidence boundary: cluster preflight passed, canonical pipeline contract identity was accepted, and an honest BLOCKED package was written. The runner still blocked before tokenizer or engine startup because `_validate_preflight()` expected obsolete flat keys (`offline_resolution_passed`, `network_fallback`, `snapshot_inventory_status`) while the authoritative committed producer `PreflightResult.to_dict()` emits nested objects:
+
+```json
+{
+  "status": "pass",
+  "model_repository": "Qwen/Qwen3-8B",
+  "model_revision": "b968826d9c46dd6066d109eabc6255188de91218",
+  "observed_container_sha256": "<pinned SIF SHA>",
+  "offline_resolution_result": {
+    "passed": true,
+    "network_fallback": false,
+    "hf_home": "${T12_HF_CACHE}",
+    "hub_cache": "${T12_HF_CACHE}/hub"
+  },
+  "snapshot_inventory_result": {
+    "status": "pass",
+    "repository": "Qwen/Qwen3-8B",
+    "revision_directory": "b968826d9c46dd6066d109eabc6255188de91218",
+    "resolved_file_count": 15,
+    "resolved_total_bytes": 16397461266
+  }
+}
+```
+
+Correction: `_validate_preflight()` now validates the nested structure strictly (Boolean `true`/`false`, not strings), rejects obsolete flat-only input, and verifies snapshot identity/count fields when emitted. No engine or model generation occurred in job 1862.
+
 ### Config-load BLOCKED-evidence boundary
 
 `scripts/t12_run_d_final_smoke.py` no longer calls `load_d_final_config()` before the runner. The runner creates the unique run directory first, then loads config. Config or contract-identity failures after directory creation write an honest BLOCKED package with empty JSONL files, zero engine-start count, and no fabricated response-mode verification file.

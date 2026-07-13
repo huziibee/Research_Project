@@ -14,6 +14,10 @@ from typing import Any, Callable
 from ambiguity_manager.governance.hashing import canonical_json_bytes, sha256_hex
 from ambiguity_manager.model.cluster._config_loader import deterministic_json_dumps, repo_root
 from ambiguity_manager.model.cluster.identities import load_immutable_selection
+from ambiguity_manager.model.cluster.snapshot_verify import (
+    CANONICAL_RESOLVED_BYTES,
+    CANONICAL_RESOLVED_FILES,
+)
 from ambiguity_manager.model.generation_pipeline import (
     BackendIdentity,
     GenerationPipelineRequest,
@@ -622,8 +626,22 @@ def _atomic_write_jsonl(path: Path, rows: list[dict[str, Any]]) -> None:
             os.unlink(temp_name)
 
 
+_OBSOLETE_FLAT_PREFLIGHT_KEYS = (
+    "offline_resolution_passed",
+    "network_fallback",
+    "snapshot_inventory_status",
+)
+
+
 def _validate_preflight(preflight: dict[str, Any], *, config: DFinalSmokeConfig) -> list[str]:
     rejections: list[str] = []
+    if not isinstance(preflight, dict):
+        rejections.append("preflight_not_object")
+        return rejections
+
+    if any(key in preflight for key in _OBSOLETE_FLAT_PREFLIGHT_KEYS):
+        rejections.append("preflight_obsolete_flat_shape")
+
     if preflight.get("status") != "pass":
         rejections.append("preflight_not_pass")
     if preflight.get("model_repository") != config.model_repository:
@@ -633,12 +651,47 @@ def _validate_preflight(preflight: dict[str, Any], *, config: DFinalSmokeConfig)
     observed_sha = preflight.get("observed_container_sha256")
     if observed_sha != config.container_sha256:
         rejections.append("container_sha_mismatch")
-    if preflight.get("offline_resolution_passed") is not True:
-        rejections.append("preflight_offline_resolution_not_passed")
-    if preflight.get("network_fallback") is not False:
-        rejections.append("preflight_network_fallback_not_false")
-    if preflight.get("snapshot_inventory_status") != "pass":
-        rejections.append("preflight_snapshot_inventory_not_pass")
+
+    offline = preflight.get("offline_resolution_result")
+    if "offline_resolution_result" not in preflight:
+        rejections.append("preflight_offline_resolution_result_missing")
+    elif offline is None:
+        rejections.append("preflight_offline_resolution_result_null")
+    elif not isinstance(offline, dict):
+        rejections.append("preflight_offline_resolution_result_not_object")
+    else:
+        if "passed" not in offline:
+            rejections.append("preflight_offline_resolution_passed_missing")
+        elif offline.get("passed") is not True:
+            rejections.append("preflight_offline_resolution_not_passed")
+        if "network_fallback" not in offline:
+            rejections.append("preflight_network_fallback_missing")
+        elif offline.get("network_fallback") is not False:
+            rejections.append("preflight_network_fallback_not_false")
+
+    snapshot = preflight.get("snapshot_inventory_result")
+    if "snapshot_inventory_result" not in preflight:
+        rejections.append("preflight_snapshot_inventory_result_missing")
+    elif snapshot is None:
+        rejections.append("preflight_snapshot_inventory_result_null")
+    elif not isinstance(snapshot, dict):
+        rejections.append("preflight_snapshot_inventory_result_not_object")
+    else:
+        if snapshot.get("status") != "pass":
+            rejections.append("preflight_snapshot_inventory_not_pass")
+        repository = snapshot.get("repository")
+        if repository is not None and repository != config.model_repository:
+            rejections.append("preflight_snapshot_repository_mismatch")
+        revision_directory = snapshot.get("revision_directory")
+        if revision_directory is not None and revision_directory != config.model_revision:
+            rejections.append("preflight_snapshot_revision_mismatch")
+        resolved_file_count = snapshot.get("resolved_file_count")
+        if resolved_file_count is not None and resolved_file_count != CANONICAL_RESOLVED_FILES:
+            rejections.append("preflight_snapshot_resolved_file_count_mismatch")
+        resolved_total_bytes = snapshot.get("resolved_total_bytes")
+        if resolved_total_bytes is not None and resolved_total_bytes != CANONICAL_RESOLVED_BYTES:
+            rejections.append("preflight_snapshot_resolved_total_bytes_mismatch")
+
     return rejections
 
 
