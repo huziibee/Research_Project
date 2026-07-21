@@ -545,7 +545,18 @@ class T12PredictionAssemblerTests(unittest.TestCase):
             _runtime_metadata(),
             _provenance_policy(),
         )
-        self.assertEqual(extract_model_owned_semantic_fields(record), payload)
+        # Round-trip may materialise approved optional nulls on the assembled side;
+        # equality holds after the same comparison-only normalisation.
+        from ambiguity_manager.model.prediction_contract import (
+            _materialize_optional_canonical_nulls_for_comparison,
+        )
+
+        self.assertEqual(
+            _materialize_optional_canonical_nulls_for_comparison(
+                extract_model_owned_semantic_fields(record)
+            ),
+            _materialize_optional_canonical_nulls_for_comparison(payload),
+        )
 
     def test_parser_default_insertion_detected(self) -> None:
         payload = _complete_semantic()
@@ -571,6 +582,225 @@ class T12PredictionAssemblerTests(unittest.TestCase):
                         _provenance_policy(),
                     )
                     validate_canonical_record_v2(record)
+
+
+def _job3974_style_semantic(*, omit_text: bool, omit_safety: bool, omit_note: bool) -> dict:
+    """Minimal execute payload matching job-3974 optional-omission pattern."""
+    candidate: dict = {
+        "frame_id": "frame_001",
+        "confidence": 1.0,
+        "cpc": _empty_cpc(),
+    }
+    if not omit_text:
+        candidate["text"] = None
+    if not omit_safety:
+        candidate["safety_status"] = None
+    evidence_item: dict = {
+        "source": "original command",
+        "span": "Turn on the desk lamp.",
+    }
+    if not omit_note:
+        evidence_item["note"] = None
+    return _complete_semantic(
+        intent_summary="Turn on the desk lamp.",
+        candidate_interpretations=[candidate],
+        selected_interpretation={
+            "frame_id": "frame_001",
+            "supporting_evidence": [dict(evidence_item)],
+        },
+        supporting_evidence=[dict(evidence_item)],
+        recommended_strategy=RouteLabel.EXECUTE.value,
+    )
+
+
+class T12OptionalNullRoundTripTests(unittest.TestCase):
+    def test_omitted_candidate_text_equals_canonical_null(self) -> None:
+        payload = _job3974_style_semantic(omit_text=True, omit_safety=False, omit_note=False)
+        validate_semantic_payload(payload)
+        record = assemble_prediction_record(
+            _request_context(),
+            payload,
+            _runtime_metadata(),
+            _provenance_policy(),
+        )
+        extracted = extract_model_owned_semantic_fields(record)
+        self.assertIsNone(extracted["candidate_interpretations"][0]["text"])
+        self.assertNotIn("text", payload["candidate_interpretations"][0])
+
+    def test_omitted_candidate_safety_status_equals_canonical_null(self) -> None:
+        payload = _job3974_style_semantic(omit_text=False, omit_safety=True, omit_note=False)
+        validate_semantic_payload(payload)
+        record = assemble_prediction_record(
+            _request_context(),
+            payload,
+            _runtime_metadata(),
+            _provenance_policy(),
+        )
+        extracted = extract_model_owned_semantic_fields(record)
+        self.assertIsNone(extracted["candidate_interpretations"][0]["safety_status"])
+        self.assertNotIn("safety_status", payload["candidate_interpretations"][0])
+
+    def test_omitted_supporting_evidence_note_equals_canonical_null(self) -> None:
+        payload = _job3974_style_semantic(omit_text=False, omit_safety=False, omit_note=True)
+        validate_semantic_payload(payload)
+        record = assemble_prediction_record(
+            _request_context(),
+            payload,
+            _runtime_metadata(),
+            _provenance_policy(),
+        )
+        extracted = extract_model_owned_semantic_fields(record)
+        self.assertIsNone(extracted["selected_interpretation"]["supporting_evidence"][0]["note"])
+        self.assertIsNone(extracted["supporting_evidence"][0]["note"])
+        self.assertNotIn("note", payload["selected_interpretation"]["supporting_evidence"][0])
+
+    def test_combined_job3974_optional_omissions_assemble(self) -> None:
+        payload = _job3974_style_semantic(omit_text=True, omit_safety=True, omit_note=True)
+        snapshot = json.loads(json.dumps(payload))
+        validate_semantic_payload(payload)
+        record = assemble_prediction_record(
+            _request_context(),
+            payload,
+            _runtime_metadata(),
+            _provenance_policy(),
+        )
+        self.assertEqual(payload, snapshot)
+        validate_canonical_record_v2(record)
+        extracted = extract_model_owned_semantic_fields(record)
+        self.assertIsNone(extracted["candidate_interpretations"][0]["text"])
+        self.assertIsNone(extracted["candidate_interpretations"][0]["safety_status"])
+        self.assertIsNone(extracted["selected_interpretation"]["supporting_evidence"][0]["note"])
+
+    def test_normalisation_is_comparison_only_and_deterministic(self) -> None:
+        from ambiguity_manager.model.prediction_contract import (
+            _materialize_optional_canonical_nulls_for_comparison,
+        )
+
+        payload = _job3974_style_semantic(omit_text=True, omit_safety=True, omit_note=True)
+        first = _materialize_optional_canonical_nulls_for_comparison(payload)
+        second = _materialize_optional_canonical_nulls_for_comparison(payload)
+        self.assertEqual(first, second)
+        self.assertNotIn("text", payload["candidate_interpretations"][0])
+        self.assertNotIn("safety_status", payload["candidate_interpretations"][0])
+        self.assertNotIn("note", payload["supporting_evidence"][0])
+        self.assertIsNone(first["candidate_interpretations"][0]["text"])
+        self.assertIsNone(first["candidate_interpretations"][0]["safety_status"])
+        self.assertIsNone(first["supporting_evidence"][0]["note"])
+
+    def test_emitted_text_versus_canonical_null_fails(self) -> None:
+        from ambiguity_manager.model.prediction_contract import (
+            _assert_semantic_round_trip,
+        )
+
+        original = _job3974_style_semantic(omit_text=False, omit_safety=True, omit_note=True)
+        original["candidate_interpretations"][0]["text"] = "abc"
+        assembled = _job3974_style_semantic(omit_text=False, omit_safety=True, omit_note=True)
+        assembled["candidate_interpretations"][0]["text"] = None
+        with self.assertRaises(PredictionAssemblyError):
+            _assert_semantic_round_trip(original, assembled)
+
+    def test_safety_status_value_mutation_fails(self) -> None:
+        from ambiguity_manager.model.prediction_contract import (
+            _assert_semantic_round_trip,
+        )
+        from ambiguity_manager.schema.v2.taxonomies import SafetyStatus
+
+        original = _job3974_style_semantic(omit_text=True, omit_safety=False, omit_note=True)
+        original["candidate_interpretations"][0]["safety_status"] = SafetyStatus.SAFE.value
+        assembled = _job3974_style_semantic(omit_text=True, omit_safety=False, omit_note=True)
+        assembled["candidate_interpretations"][0]["safety_status"] = SafetyStatus.UNSAFE.value
+        with self.assertRaises(PredictionAssemblyError):
+            _assert_semantic_round_trip(original, assembled)
+
+    def test_supporting_evidence_source_mutation_fails(self) -> None:
+        from ambiguity_manager.model.prediction_contract import (
+            _assert_semantic_round_trip,
+        )
+
+        original = _job3974_style_semantic(omit_text=True, omit_safety=True, omit_note=True)
+        assembled = _job3974_style_semantic(omit_text=True, omit_safety=True, omit_note=True)
+        assembled["selected_interpretation"]["supporting_evidence"][0]["source"] = "scene_context"
+        assembled["supporting_evidence"][0]["source"] = "scene_context"
+        with self.assertRaises(PredictionAssemblyError):
+            _assert_semantic_round_trip(original, assembled)
+
+    def test_evidence_item_removal_fails(self) -> None:
+        from ambiguity_manager.model.prediction_contract import (
+            _assert_semantic_round_trip,
+        )
+
+        original = _job3974_style_semantic(omit_text=True, omit_safety=True, omit_note=True)
+        original["selected_interpretation"]["supporting_evidence"].append(
+            {"source": "scene_context", "span": "desk"}
+        )
+        original["supporting_evidence"].append({"source": "scene_context", "span": "desk"})
+        assembled = _job3974_style_semantic(omit_text=True, omit_safety=True, omit_note=True)
+        with self.assertRaises(PredictionAssemblyError):
+            _assert_semantic_round_trip(original, assembled)
+
+    def test_candidate_order_change_fails(self) -> None:
+        from ambiguity_manager.model.prediction_contract import (
+            _assert_semantic_round_trip,
+        )
+
+        first = {
+            "frame_id": "frame_001",
+            "confidence": 1.0,
+            "cpc": _empty_cpc(),
+        }
+        second = {
+            "frame_id": "frame_002",
+            "confidence": 0.5,
+            "cpc": _empty_cpc(),
+        }
+        evidence = [{"source": "original command", "span": "lamp"}]
+        original = _complete_semantic(
+            candidate_interpretations=[dict(first), dict(second)],
+            selected_interpretation={"frame_id": "frame_001", "supporting_evidence": evidence},
+            supporting_evidence=evidence,
+        )
+        assembled = _complete_semantic(
+            candidate_interpretations=[dict(second), dict(first)],
+            selected_interpretation={"frame_id": "frame_001", "supporting_evidence": evidence},
+            supporting_evidence=evidence,
+        )
+        with self.assertRaises(PredictionAssemblyError):
+            _assert_semantic_round_trip(original, assembled)
+
+    def test_arbitrary_missing_null_field_remains_unequal(self) -> None:
+        from ambiguity_manager.model.prediction_contract import (
+            _assert_semantic_round_trip,
+            _materialize_optional_canonical_nulls_for_comparison,
+        )
+
+        original = _complete_semantic(intent_summary="pick up object")
+        # intent_summary is model-owned but not an approved optional-null path
+        assembled = _complete_semantic()
+        assembled["intent_summary"] = None
+        del original["intent_summary"]
+        left = _materialize_optional_canonical_nulls_for_comparison(original)
+        right = _materialize_optional_canonical_nulls_for_comparison(assembled)
+        self.assertNotEqual(left, right)
+        with self.assertRaises(PredictionAssemblyError):
+            _assert_semantic_round_trip(original, assembled)
+
+    def test_empty_selected_supporting_evidence_remains_schema_invalid(self) -> None:
+        payload = _complete_semantic(
+            selected_interpretation={"frame_id": "frame_001", "supporting_evidence": []},
+            supporting_evidence=[{"source": "command", "span": "cup"}],
+            candidate_interpretations=[
+                {"frame_id": "frame_001", "confidence": 1.0, "cpc": _empty_cpc()}
+            ],
+        )
+        with self.assertRaises(SemanticPayloadError):
+            validate_semantic_payload(payload)
+        with self.assertRaises(SemanticPayloadError):
+            assemble_prediction_record(
+                _request_context(),
+                payload,
+                _runtime_metadata(),
+                _provenance_policy(),
+            )
 
 
 class T12JsonSchemaDependencyTests(unittest.TestCase):

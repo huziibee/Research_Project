@@ -400,12 +400,64 @@ def extract_model_owned_semantic_fields(record: dict[str, Any]) -> dict[str, Any
     return {name: copy.deepcopy(record[name]) for name in sorted(model_owned_prediction_fields())}
 
 
+# Optional fields that canonical schema-v2 serialisation materialises as JSON null
+# when omitted from schema-valid model output. Comparison-only; never mutates inputs.
+# Restricted to job-3974-evidenced absent→null classes (plus top-level EvidenceRef.note
+# under the same supporting_evidence item schema).
+_CANDIDATE_OPTIONAL_NULL_KEYS: frozenset[str] = frozenset({"text", "safety_status"})
+_EVIDENCE_OPTIONAL_NULL_KEYS: frozenset[str] = frozenset({"note"})
+
+
+def _materialize_evidence_item_optional_nulls(item: dict[str, Any]) -> None:
+    """Fill missing EvidenceRef optional keys as null for comparison copies only."""
+    for key in _EVIDENCE_OPTIONAL_NULL_KEYS:
+        if key not in item:
+            item[key] = None
+
+
+def _materialize_optional_canonical_nulls_for_comparison(
+    payload: dict[str, Any],
+) -> dict[str, Any]:
+    """Return a deep copy with approved optional absences materialised as null.
+
+    Path-aware and non-mutating. Does not globally equate absent and null.
+    """
+    normalised = copy.deepcopy(payload)
+
+    candidates = normalised.get("candidate_interpretations")
+    if isinstance(candidates, list):
+        for candidate in candidates:
+            if not isinstance(candidate, dict):
+                continue
+            for key in _CANDIDATE_OPTIONAL_NULL_KEYS:
+                if key not in candidate:
+                    candidate[key] = None
+
+    selected = normalised.get("selected_interpretation")
+    if isinstance(selected, dict):
+        selected_evidence = selected.get("supporting_evidence")
+        if isinstance(selected_evidence, list):
+            for item in selected_evidence:
+                if isinstance(item, dict):
+                    _materialize_evidence_item_optional_nulls(item)
+
+    top_evidence = normalised.get("supporting_evidence")
+    if isinstance(top_evidence, list):
+        for item in top_evidence:
+            if isinstance(item, dict):
+                _materialize_evidence_item_optional_nulls(item)
+
+    return normalised
+
+
 def _assert_semantic_round_trip(
     original_payload: dict[str, Any],
     assembled_record: dict[str, Any],
 ) -> None:
     extracted = extract_model_owned_semantic_fields(assembled_record)
-    if extracted != original_payload:
+    left = _materialize_optional_canonical_nulls_for_comparison(original_payload)
+    right = _materialize_optional_canonical_nulls_for_comparison(extracted)
+    if left != right:
         raise PredictionAssemblyError(
             "semantic round-trip mismatch between validated payload and assembled record"
         )

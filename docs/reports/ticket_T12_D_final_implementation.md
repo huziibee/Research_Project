@@ -293,3 +293,39 @@ D-Final implementation does **not** claim:
 8. Require schema-v2-valid accepted predictions and zero unsupported commitments
 9. Retain all raw attempts and attempt ledgers with hashed manifest evidence
 10. Record semantic correctness as `not_evaluated` only
+
+## Job 3974 live baseline (BLOCKED) and optional-null round-trip correction
+
+Live job **3974** (`02f4362`, archive `t12-02f4362.tar.gz`, run
+`stage-d-final-live-20260721T091036Z-02f4362`) verified infrastructure and
+response-mode gates:
+
+- full SIF hash matched;
+- nested preflight passed offline;
+- `enable_thinking_false` selected under transport-only verification;
+- one persistent engine;
+- all four synthetic records exhausted three attempts (`rejected_after_attempts`).
+
+Nine schema-valid attempts were rejected solely because omitted optional fields
+were materialised as JSON null by canonical schema-v2 serialisation, while
+`_assert_semantic_round_trip()` compared dictionaries with exact equality:
+
+- `candidate_interpretations[*].text`
+- `candidate_interpretations[*].safety_status`
+- `selected_interpretation.supporting_evidence[*].note` (and top-level
+  `supporting_evidence[*].note` under the same EvidenceRef item schema)
+
+This was a **comparison defect**, not a semantic-content mutation. The correction
+applies comparison-only, path-aware materialisation of those approved optional
+canonical-null fields before equality. It does **not** globally strip nulls or
+equate arbitrary absent/null pairs.
+
+`selected_interpretation.supporting_evidence.minItems >= 1` remains enforced.
+Empty supporting evidence remains schema-invalid and never accepted.
+
+Authoritative negative evidence for job 3974 remains at
+`configs/model/evidence/t12_d_final_live_smoke.json` and must not be rewritten.
+
+One final identical four-record live smoke is authorised after this correction.
+No further D-Final implementation correction is permitted if that rerun fails
+to accept 4/4 records under the frozen contract.
