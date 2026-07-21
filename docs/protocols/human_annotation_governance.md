@@ -5,25 +5,56 @@
 Machine-readable record:
 `configs/governance/human_annotation_governance.json`
 
+Evidence:
+`docs/governance/evidence/ETHGOV-001_supervisor_only_determination.md`
+
 ## Gate semantics
 
 | Status | T11 verdict | Collection permitted |
 | --- | --- | --- |
 | `pending` | BLOCKED | false |
+| `not_required` + supervisor-only evidence | PASS | true (supervisor-only scope only) |
 | `approval_required` + evidence | PASS | false |
 | `approved` | PASS | true |
 | `exempt_confirmed` | PASS | true |
 | `rejected` | FAIL/BLOCKED | false |
 | `blocked` | BLOCKED | false |
 
-Do not manufacture a determination to obtain PASS. Initial state is `pending`
-until a responsible authority provides evidence.
+### Current determination
+
+- Status: `not_required`
+- Basis: `supervisor_only_annotation`
+- Ethics clearance required: false
+- Ethics waiver required: false
+- Annotators: Steven James and Benjamin Rosman (project supervisors only)
+- External annotators permitted: false
+- Reassessment required if scope changes: true
+
+This is a determination that clearance and waiver are **not required** for the
+current supervisor-only scope. It is **not** an ethics approval, exemption, or
+waiver.
+
+`collection_permitted: true` means only that the ethics/governance gate permits
+annotation by the named project supervisors under the recorded scope. It does
+**not** mean T13/T14 are technically ready, that a handbook or sampling freeze
+exists, or that annotation collection has begun.
+
+## External-annotator hard guard
+
+Any future change involving an annotator who is not one of the project supervisors
+must:
+
+1. set `collection_permitted` to false;
+2. block annotation collection;
+3. require a fresh institutional determination;
+4. prohibit data collection until that determination is recorded.
+
+Leaving `determination_status = not_required` must not bypass this guard.
 
 ## Unresolved human fields
 
 Fields marked `pending_human_confirmation` must remain null until confirmed by
-the responsible authority. Do not assume employment status, compensation,
-retention, deletion, consent, or personal-data categories.
+the responsible authority. Confirmed supervisor-only fields are marked `recorded`.
 
 ## Stable pseudonyms
 

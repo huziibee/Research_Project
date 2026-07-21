@@ -327,11 +327,12 @@ class T12ModelCandidateVerificationTests(unittest.TestCase):
 
         self.assertIsNone(importlib.util.find_spec("torch"))
 
-    def test_t11_remains_blocked(self) -> None:
+    def test_t11_gate_is_pass_not_required(self) -> None:
         ethics = _load_json(ETHICS_PATH)
-        errors = validate_ethics_determination(ethics)
+        errors = validate_ethics_determination(ethics, repo_root=ROOT)
         self.assertEqual(errors, [])
-        self.assertEqual(derive_ticket_verdict(ethics), "BLOCKED")
+        self.assertEqual(ethics["determination_status"], "not_required")
+        self.assertEqual(derive_ticket_verdict(ethics), "PASS")
 
     def test_checkpoint_load_verified_remains_false(self) -> None:
         for rel in (INFERENCE_ENV_REL, TRAINING_ENV_REL):

@@ -5,7 +5,7 @@
 **Supersedes:** `cursor_plan/tickets/T12_local_text_model_and_training_stack_setup.md`  
 **Archive branch:** `archive/t12-local-wsl-slice4`  
 **Forward-migration base:** `b4865b3a101c87b7b5fe468c12c40adead74068f`  
-**Governance:** T11 remains **BLOCKED**; `DEV-20260711-001` permits T12 preparatory work only
+**Governance:** T11 is **PASS** with determination `not_required` (supervisor-only; `ETHGOV-001`). Historical preparatory work was authorised by `DEV-20260711-001` (pending-ethics rationale closed by `DEV-20260721-001`). D-Final live smoke has **not** yet passed. Response-mode correction is committed. `selected_model` remains `null`.
 
 ## Cluster-validation model (provisional)
 
@@ -20,13 +20,15 @@
 
 ## Shared governance limits (all stages)
 
-- T11 verdict remains **BLOCKED**; do not set `collection_permitted: true`.
-- No T13 or T14 progression.
-- No protected data or full research-pool execution.
+- T11 stage gate is **PASS** with determination `not_required` for supervisor-only annotation; this is not an ethics approval or exemption.
+- External annotators remain forbidden without reassessment (`external_annotators_permitted: false`).
+- Do not begin T13 or T14 collection: technical and protocol gates remain unmet (handbook, sampling freeze, annotation package, supervisor role-separation).
+- No protected data or full research-pool execution during Stages A–H.
 - No optimiser steps on research records except Stage F zero-step feasibility probe.
 - No change to `model_licence_register.selected_model` until Stage I.
 - No local model weight or environment deletion until Stage I cleanup gate.
-- Synthetic fixtures and synthetic corpora only while T11 is BLOCKED.
+- Synthetic fixtures and synthetic corpora only until T12 close-out and later tickets authorise otherwise.
+- Historical measurement artefacts that recorded `t11_status: BLOCKED` remain authoritative for their measurement time.
 
 ---
 
@@ -376,7 +378,7 @@ Stop if fewer than 10/10 schema-valid; do not proceed to Stage F until resolved 
 
 ### Governance limits
 
-Synthetic fixtures only; T11 remains BLOCKED.
+Synthetic fixtures only; no research-pool execution; no T13/T14 collection.
 
 ### Compute category
 
@@ -671,7 +673,7 @@ Final acceptance after all gates pass; update `selected_model` only here; docume
 - [ ] GPU evidence complete (Stages C–H).
 - [ ] Cluster runbook works from a fresh shell.
 - [ ] `selected_model` updated only here and only if all gates pass.
-- [ ] T11 remains BLOCKED.
+- [ ] T11 remains PASS with determination `not_required` (supervisor-only); external annotators still forbidden.
 - [ ] No research pool executed.
 - [ ] Local cleanup inventory completed.
 - [ ] Code and Git history preserved.
@@ -681,11 +683,11 @@ Final acceptance after all gates pass; update `selected_model` only here; docume
 
 ### Stopping conditions
 
-T12 complete; do not begin T13 until T11 reassessed.
+T12 complete; do not begin T13 collection until T13 technical and protocol gates are satisfied.
 
 ### Governance limits
 
-T11 remains BLOCKED; no research pool.
+T11 PASS / `not_required` (supervisor-only); no research pool; no external annotators.
 
 ### Compute category
 

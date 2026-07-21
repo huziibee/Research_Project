@@ -24,6 +24,7 @@ CHANGE_TYPES = frozenset(
         "licence_exception",
         "metric_exception",
         "schedule_exception",
+        "deviation_closure",
     }
 )
 
@@ -70,6 +71,14 @@ T12_SCOPE_PROHIBITED_PHRASES = (
     "fine-tune on research",
     "begin t13",
     "begin t14",
+)
+
+CLOSURE_REQUIRED_PHRASES = (
+    "ethgov-001",
+    "dev-20260711-001",
+    "not_required",
+    "completed work",
+    "external",
 )
 
 
@@ -125,6 +134,45 @@ def _validate_repository_path_field(
     return errors
 
 
+def _validate_deviation_closure(
+    entry: dict[str, Any],
+    *,
+    prefix: str,
+    combined: str,
+) -> list[str]:
+    errors: list[str] = []
+    closes = entry.get("closes_deviation_id")
+    if closes != "DEV-20260711-001":
+        errors.append(f"{prefix}: deviation_closure must set closes_deviation_id to DEV-20260711-001")
+
+    closure_basis = entry.get("closure_basis")
+    if not isinstance(closure_basis, str) or "ETHGOV-001" not in closure_basis:
+        errors.append(f"{prefix}: deviation_closure must set closure_basis referencing ETHGOV-001")
+
+    combined_lower = combined.lower()
+    for phrase in CLOSURE_REQUIRED_PHRASES:
+        if phrase not in combined_lower:
+            errors.append(f"{prefix}: deviation_closure text must document {phrase!r}")
+
+    ethics_disclaimer = entry.get("ethics_disclaimer", "")
+    if isinstance(ethics_disclaimer, str):
+        disclaimer_lower = ethics_disclaimer.lower()
+        if "institutional ethics determination remains pending" in disclaimer_lower:
+            errors.append(
+                f"{prefix}: closure ethics_disclaimer must not claim the determination remains pending"
+            )
+        if "does not constitute or imply institutional ethics approval" not in disclaimer_lower:
+            errors.append(
+                f"{prefix}: ethics_disclaimer must state this is not institutional ethics approval"
+            )
+        if "not_required" not in disclaimer_lower:
+            errors.append(
+                f"{prefix}: closure ethics_disclaimer must record determination status not_required"
+            )
+
+    return errors
+
+
 def validate_deviation_entry(
     entry: dict[str, Any],
     *,
@@ -175,10 +223,13 @@ def validate_deviation_entry(
     before = entry.get("protocol_version_before")
     after = entry.get("protocol_version_after")
     if isinstance(before, str) and isinstance(after, str):
-        if _protocol_unchanged(before, after) and change_type != "execution_order_exception":
+        if (
+            _protocol_unchanged(before, after)
+            and change_type not in {"execution_order_exception", "deviation_closure"}
+        ):
             errors.append(
                 f"{prefix}: unchanged protocol_version_after requires "
-                "change_type execution_order_exception"
+                "change_type execution_order_exception or deviation_closure"
             )
 
     affected_tickets = entry.get("affected_tickets")
@@ -239,9 +290,11 @@ def validate_deviation_entry(
             )
 
     combined = _combined_text(entry)
-    for pattern in ETHICS_BYPASS_PATTERNS:
-        if pattern.search(combined):
-            errors.append(f"{prefix}: entry appears to bypass the ethics gate")
+
+    if change_type != "deviation_closure":
+        for pattern in ETHICS_BYPASS_PATTERNS:
+            if pattern.search(combined):
+                errors.append(f"{prefix}: entry appears to bypass the ethics gate")
 
     if entry.get("collection_permitted") is True:
         errors.append(f"{prefix}: collection_permitted must not be set to true in a deviation entry")
@@ -249,29 +302,43 @@ def validate_deviation_entry(
     if entry.get("t11_verdict_override") == "PASS":
         errors.append(f"{prefix}: t11_verdict_override must not be PASS")
 
-    if change_type == "execution_order_exception" and isinstance(affected_tickets, list):
-        if "T11" in affected_tickets:
-            blocked_markers = ("blocked", "collection_permitted: false", "collection_permitted false")
-            if not any(marker in combined.lower() for marker in blocked_markers):
-                errors.append(f"{prefix}: execution_order_exception affecting T11 must preserve BLOCKED semantics")
-        if "T12" in affected_tickets:
-            combined_lower = combined.lower()
-            for phrase in T12_SCOPE_REQUIRED_PHRASES:
-                if phrase not in combined_lower:
-                    errors.append(f"{prefix}: T12 scope must document {phrase!r}")
-            for phrase in T12_SCOPE_PROHIBITED_PHRASES:
-                if phrase not in combined_lower:
-                    errors.append(f"{prefix}: T12 scope must prohibit {phrase!r}")
+    if change_type == "deviation_closure":
+        errors.extend(_validate_deviation_closure(entry, prefix=prefix, combined=combined))
+    else:
+        if change_type == "execution_order_exception" and isinstance(affected_tickets, list):
+            if "T11" in affected_tickets:
+                blocked_markers = (
+                    "blocked",
+                    "collection_permitted: false",
+                    "collection_permitted false",
+                )
+                if not any(marker in combined.lower() for marker in blocked_markers):
+                    errors.append(
+                        f"{prefix}: execution_order_exception affecting T11 must preserve "
+                        "BLOCKED semantics"
+                    )
+            if "T12" in affected_tickets:
+                combined_lower = combined.lower()
+                for phrase in T12_SCOPE_REQUIRED_PHRASES:
+                    if phrase not in combined_lower:
+                        errors.append(f"{prefix}: T12 scope must document {phrase!r}")
+                for phrase in T12_SCOPE_PROHIBITED_PHRASES:
+                    if phrase not in combined_lower:
+                        errors.append(f"{prefix}: T12 scope must prohibit {phrase!r}")
 
-    ethics_disclaimer = entry.get("ethics_disclaimer", "")
-    if isinstance(ethics_disclaimer, str):
-        disclaimer_lower = ethics_disclaimer.lower()
-        if "institutional ethics determination remains pending" not in disclaimer_lower:
-            errors.append(f"{prefix}: ethics_disclaimer must state the institutional determination remains pending")
-        if "does not constitute or imply institutional ethics approval" not in disclaimer_lower:
-            errors.append(
-                f"{prefix}: ethics_disclaimer must state this is not institutional ethics approval"
-            )
+        ethics_disclaimer = entry.get("ethics_disclaimer", "")
+        if isinstance(ethics_disclaimer, str):
+            disclaimer_lower = ethics_disclaimer.lower()
+            if "institutional ethics determination remains pending" not in disclaimer_lower:
+                errors.append(
+                    f"{prefix}: ethics_disclaimer must state the institutional determination "
+                    "remains pending"
+                )
+            if "does not constitute or imply institutional ethics approval" not in disclaimer_lower:
+                errors.append(
+                    f"{prefix}: ethics_disclaimer must state this is not institutional ethics "
+                    "approval"
+                )
 
     return errors
 

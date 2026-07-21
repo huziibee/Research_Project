@@ -382,10 +382,11 @@ class T12CheckpointDownloadPolicyTests(unittest.TestCase):
         self.assertIsNone(register["selected_model"])
         self.assertEqual(entry["verification_status"], "candidate_evaluated")
 
-    def test_t11_remains_blocked(self) -> None:
+    def test_t11_gate_is_pass_not_required(self) -> None:
         ethics = _load_json(ETHICS_PATH)
-        self.assertEqual(validate_ethics_determination(ethics), [])
-        self.assertEqual(derive_ticket_verdict(ethics), "BLOCKED")
+        self.assertEqual(validate_ethics_determination(ethics, repo_root=ROOT), [])
+        self.assertEqual(ethics["determination_status"], "not_required")
+        self.assertEqual(derive_ticket_verdict(ethics), "PASS")
 
     def test_t13_t14_not_started(self) -> None:
         for rel in (

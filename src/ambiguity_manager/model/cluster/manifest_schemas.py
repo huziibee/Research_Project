@@ -389,8 +389,27 @@ def validate_cluster_live_verification(data: dict[str, Any]) -> list[str]:
         errors.append("measurement_time_precision must be date_only")
 
     governance = data.get("governance_state", {})
-    if governance.get("t11_status") != "BLOCKED":
-        errors.append("t11_status must remain BLOCKED")
+    t11_status = governance.get("t11_status")
+    if t11_status not in {"BLOCKED", "PASS"}:
+        errors.append("t11_status must be BLOCKED (historical) or PASS (current)")
+    ethics_determination = governance.get("ethics_determination_status")
+    if ethics_determination is not None and ethics_determination not in {
+        "pending",
+        "not_required",
+        "approved",
+        "exempt_confirmed",
+        "approval_required",
+        "rejected",
+        "blocked",
+    }:
+        errors.append("ethics_determination_status invalid when present")
+    if t11_status == "PASS" and ethics_determination not in (None, "not_required"):
+        # Future artefacts may record PASS with not_required; historical omit the field.
+        if ethics_determination is not None and ethics_determination != "not_required":
+            errors.append(
+                "when t11_status is PASS, ethics_determination_status must be not_required "
+                "if present"
+            )
     if governance.get("protected_data_used") is True or governance.get("research_pool_used") is True:
         errors.append("protected or research pool data must not be used")
     if governance.get("model_weights_loaded") is True:
@@ -415,8 +434,9 @@ def validate_cluster_live_verification(data: dict[str, Any]) -> list[str]:
     summary = data.get("status_summary", {})
     if summary.get("fresh_sif_live_hash") != "deferred":
         errors.append("fresh_sif_live_hash must be deferred")
-    if summary.get("t11") != "BLOCKED":
-        errors.append("status_summary.t11 must be BLOCKED")
+    t11_summary = summary.get("t11")
+    if t11_summary not in {"BLOCKED", "PASS"}:
+        errors.append("status_summary.t11 must be BLOCKED (historical) or PASS (current)")
     if summary.get("t12_complete") is True or summary.get("stage_c_complete") is True:
         errors.append("must not claim stage completion")
 

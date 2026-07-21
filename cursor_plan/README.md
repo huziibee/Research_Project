@@ -4,9 +4,12 @@ This archive is the corrected stage-gated plan for completing the research imple
 
 ## Current status
 
-- **T00–T09 are completed and preserved.**
-- **The next ticket is T10.**
-- T10 migrates completed outputs into authoritative schema v2; it does not rerun completed tickets.
+- **T00–T10 are completed and preserved.**
+- **T11 is COMPLETE / PASS** with ethics determination `not_required` for supervisor-only annotation (`ETHGOV-001`).
+- **T12 is ACTIVE** on branch `feature/t12-cluster-redesign` (cluster-native Stages A–I).
+- Response-mode correction is committed; D-Final live smoke has **not** yet passed.
+- `model_licence_register.selected_model` remains `null`.
+- **T13/T14 are not active.** Ethics/governance no longer blocks supervisor-only annotation in principle, but technical and protocol gates remain unmet and no collection has begun.
 
 ## Key final decisions
 
@@ -19,6 +22,7 @@ This archive is the corrected stage-gated plan for completing the research imple
 - Official scores use human/source gold and deterministic code, not an LLM judge.
 - Dataset/metric restrictions are machine-enforced.
 - No calendar schedule constrains execution; stage gates do.
+- Annotation annotators are the two project supervisors only; external annotators require reassessment.
 
 ## Seven mandatory systems
 
@@ -33,11 +37,12 @@ This archive is the corrected stage-gated plan for completing the research imple
 ## Exact order
 
 ```text
-COMPLETED: T00 T01 T02 T03 T04 T05 T06 T07 T08 T09
+COMPLETED: T00 T01 T02 T03 T04 T05 T06 T07 T08 T09 T10 T11
 
-NEXT:
-T10 T11
+ACTIVE:
 T12
+
+NEXT AFTER T12 CLOSE-OUT:
 T13 T14 T15
 T16 T17 T18 T19 T20 T21 T22 T23
 T24 T25 T26

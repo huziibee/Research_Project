@@ -1,15 +1,19 @@
 # T14 — Blind double annotation, agreement, and adjudication
 
 **Status:** READY
+**Active:** no
+**Collection started:** no
 
 ## Shared context
 
-T00–T09 are completed. Follow `01_global_cursor_contract.md`, `02_context_refresh_protocol.md`, and the non-dataset proposal alignment. Work only on this ticket. Do not access protected test data before T29 passes.
+T00–T11 are completed. T11 ethics/governance determination is `not_required` for supervisor-only annotation (`ETHGOV-001`). T12 is ACTIVE. T13 has not started. Follow `01_global_cursor_contract.md`, `02_context_refresh_protocol.md`, and the non-dataset proposal alignment. Work only on this ticket when activated. Do not access protected test data before T29 passes.
 
 ## Required reference documents
 
 - `08_manual_gold_dataset_program.md`
 - `10_interpretation_evaluation_framework.md`
+- `docs/governance/evidence/ETHGOV-001_supervisor_only_determination.md`
+- `docs/protocols/human_annotation_governance.md`
 
 ## Goal
 
@@ -17,8 +21,12 @@ Create trustworthy human-adjudicated gold and measure whether the scheme is repr
 
 ## Preconditions
 
-- T13 pilot passed.
-- T11 ethics/governance determination permits collection.
+- T13 pilot passed. **Not yet satisfied.**
+- T11 ethics/governance determination permits supervisor-only collection. **Satisfied as ethics gate; does not start collection.**
+
+## Current readiness
+
+T14 remains blocked on the T13 pilot and unresolved protocol questions: supervisor role separation, independent Annotator A/B assignment when both annotators are project supervisors, and adjudication rules under role overlap. No collection has begun. External annotators remain forbidden without reassessment.
 
 ## Required tasks
 

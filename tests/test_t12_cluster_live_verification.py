@@ -325,9 +325,20 @@ class T12ClusterLiveVerificationTests(unittest.TestCase):
         )
 
     def test_t11_remains_blocked_in_evidence(self) -> None:
+        # Historical measurement-time status must remain BLOCKED in this artefact.
         self.assertEqual(self.live["governance_state"]["t11_status"], "BLOCKED")
         self.assertEqual(self.live["status_summary"]["t11"], "BLOCKED")
         self.assertIn("BLOCKED", self.report)
+        errors = validate_cluster_live_verification(self.live)
+        self.assertEqual(errors, [], msg="\n".join(errors))
+
+    def test_future_evidence_may_record_t11_pass_not_required(self) -> None:
+        future = json.loads(json.dumps(self.live))
+        future["governance_state"]["t11_status"] = "PASS"
+        future["governance_state"]["ethics_determination_status"] = "not_required"
+        future["status_summary"]["t11"] = "PASS"
+        errors = validate_cluster_live_verification(future)
+        self.assertEqual(errors, [], msg="\n".join(errors))
 
     def test_cross_references_present(self) -> None:
         refs = self.live["cross_references"]

@@ -87,3 +87,9 @@ None. T12 must not access protected test data (protected access remains gated un
 ## Preservation of prior outputs
 
 All T00–T11 artefacts, the T11 BLOCKED verdict, ethics pending state with `collection_permitted: false`, and licence null-permission gates remain authoritative and unchanged.
+
+---
+
+## Closure / supersession note (2026-07-21)
+
+The historical text above is preserved. The pending-ethics execution-order rationale of this deviation is **closed / superseded** by `DEV-20260721-001` on the basis of `ETHGOV-001` (supervisor-only determination status `not_required`). Completed work authorised under this deviation remains valid. See `docs/decisions/DEV-20260721-001_closure_of_DEV-20260711-001.md`.

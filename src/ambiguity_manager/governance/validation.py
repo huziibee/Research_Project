@@ -54,9 +54,8 @@ def validate_repository_governance(repo_root: Path) -> list[str]:
     ethics_path = repo_root / "configs" / "governance" / "human_annotation_governance.json"
     if ethics_path.is_file():
         ethics = _load_json(ethics_path)
-        errors.extend(validate_ethics_determination(ethics))
-        if derive_ticket_verdict(ethics) != "BLOCKED":
-            pass
+        errors.extend(validate_ethics_determination(ethics, repo_root=repo_root))
+        _ = derive_ticket_verdict(ethics)
     else:
         errors.append("missing configs/governance/human_annotation_governance.json")
 

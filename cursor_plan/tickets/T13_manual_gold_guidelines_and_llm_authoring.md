@@ -1,16 +1,19 @@
 # T13 — Manual-gold guidelines and LLM-assisted scenario authoring
 
 **Status:** READY
+**Active:** no
+**Collection started:** no
 
 ## Shared context
 
-T00–T09 are completed. Follow `01_global_cursor_contract.md`, `02_context_refresh_protocol.md`, and the non-dataset proposal alignment. Work only on this ticket. Do not access protected test data before T29 passes.
+T00–T11 are completed. T11 ethics/governance determination is `not_required` for supervisor-only annotation (`ETHGOV-001`). T12 is ACTIVE and not yet closed. Follow `01_global_cursor_contract.md`, `02_context_refresh_protocol.md`, and the non-dataset proposal alignment. Work only on this ticket when activated. Do not access protected test data before T29 passes.
 
 ## Required reference documents
 
 - `08_manual_gold_dataset_program.md`
 - `10_interpretation_evaluation_framework.md`
 - `03_dataset_roles_metrics.md`
+- `docs/governance/evidence/ETHGOV-001_supervisor_only_determination.md`
 
 ## Goal
 
@@ -18,9 +21,14 @@ Freeze operational annotation rules and create a human-reviewed candidate pool w
 
 ## Preconditions
 
-- T11 governance passed.
-- T12 local authoring model exists.
-- T10 schema-v2 validators pass.
+- T11 governance passed (PASS; determination `not_required`; supervisor-only scope). **Satisfied.**
+- T12 authoring/inference model identity is stable (`selected_model` set at Stage I / T12 close-out). **Not yet satisfied.**
+- T10 schema-v2 validators pass. **Satisfied.**
+- Annotation handbook, sampling freeze, and annotation package exist. **Not yet satisfied.**
+
+## Current readiness
+
+Ethics/governance prerequisite is satisfied for supervisor-only annotation. T13 remains **technically not ready**: requires T12 model stability, handbook, sampling freeze, and annotation package. No collection has begun.
 
 ## Required tasks
 

@@ -68,11 +68,20 @@ class T12ClusterAdrReferencesTests(unittest.TestCase):
         self.assertIn(CONTAINER_SHA, self.adr)
         self.assertIn(CONTAINER_SHA, self.new_ticket)
 
-    def test_t11_remains_blocked(self) -> None:
+    def test_t11_governance_current_status(self) -> None:
         combined = self.adr + self.new_ticket
-        self.assertRegex(combined, r"T11 remains\s+\*\*BLOCKED\*\*")
-        self.assertNotIn("T11 passed", combined.lower())
-        self.assertNotIn("T11: PASS", combined)
+        self.assertRegex(self.new_ticket, r"T11 is\s+\*\*PASS\*\*")
+        self.assertIn("not_required", self.new_ticket)
+        self.assertIn("ETHGOV-001", combined)
+        self.assertIn("PASS", self.adr)
+        self.assertIn("not_required", self.adr)
+        self.assertNotIn("ethics approved", combined.lower())
+        lowered = combined.lower()
+        self.assertTrue(
+            "not an ethics approval" in lowered or "not constitute or imply institutional ethics approval" in lowered
+            or "not an ethics approval or exemption" in lowered
+            or "this is not an ethics approval" in lowered
+        )
 
     def test_research_pool_prohibited(self) -> None:
         combined = self.adr + self.new_ticket

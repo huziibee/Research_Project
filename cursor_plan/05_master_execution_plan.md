@@ -16,6 +16,8 @@ Resolve the completed T01 schema conflicts without rerunning T00–T09. Define s
 
 Freeze the non-dataset proposal alignment, seven mandatory systems, mandatory fine-tuning, text-only scope, AI-use log, ethics determination, and licence registers before new human/model work.
 
+**Status:** COMPLETE / PASS. Ethics determination recorded as `not_required` for supervisor-only annotation (`ETHGOV-001`). This is not an ethics approval or exemption. External annotators are not permitted; scope change requires reassessment.
+
 **Gate:** schema v2 and the research/governance contract pass.
 
 ## Phase 2 — Cluster model foundation
@@ -48,9 +50,9 @@ Forward-migrate T12 from `b4865b3` to a cluster-native architecture on branch `f
 | H | Result publication, archival, email/GitHub notification |
 | I | Final acceptance, runbook, local cleanup gate (no automatic deletion) |
 
-**Dependency note:** T12 normally follows T11 PASS. **DEV-20260711-001** authorises narrow pre-T12 preparatory work while T11's annotation ethics gate remains pending; T11 verdict stays **BLOCKED** and T12 completion does not satisfy T11.
+**Dependency note:** T12 normally follows T11 PASS. **DEV-20260711-001** historically authorised narrow pre-T12 preparatory work while T11's annotation ethics gate was pending. That pending-ethics rationale is **closed / superseded** by **DEV-20260721-001** after `ETHGOV-001` recorded determination status `not_required` for supervisor-only annotation. T11 is now **PASS**. T12 completion still does not by itself satisfy T13/T14 technical gates.
 
-**Governance boundary (Stages A–H):** synthetic fixtures and synthetic corpora only; no full research-pool execution; no T13/T14 progression; no protected data.
+**Governance boundary (Stages A–H):** synthetic fixtures and synthetic corpora only; no full research-pool execution; no T13/T14 progression until T12 close-out and T13/T14 technical readiness; no protected data. Supervisor-only collection remains gated by T13/T14 protocol readiness even though T11 ethics determination is `not_required`.
 
 **Local cleanup:** Qwen2.5 local weights and T12-specific environments become eligible for deletion only after Stage I acceptance, via a separate gated cleanup task. Code, tests, manifests, and Git history are preserved.
 

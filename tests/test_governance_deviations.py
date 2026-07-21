@@ -76,9 +76,28 @@ class TestGovernanceDeviations(unittest.TestCase):
         log_path = self.repo_root / "docs/governance/logs/deviation_log.jsonl"
         entries, parse_errors = load_deviation_log(log_path)
         self.assertEqual(parse_errors, [])
-        self.assertEqual(len(entries), 1)
+        self.assertEqual(len(entries), 2)
+        self.assertEqual(entries[0]["deviation_id"], "DEV-20260711-001")
+        self.assertEqual(entries[0]["change_type"], "execution_order_exception")
+        self.assertEqual(entries[1]["deviation_id"], "DEV-20260721-001")
+        self.assertEqual(entries[1]["change_type"], "deviation_closure")
+        self.assertEqual(entries[1]["closes_deviation_id"], "DEV-20260711-001")
+        self.assertIn("ETHGOV-001", entries[1]["closure_basis"])
         errors = validate_deviation_log(entries, repo_root=self.repo_root, parse_errors=parse_errors)
         self.assertEqual(errors, [], msg="\n".join(errors))
+
+    def test_closure_retains_historical_authority(self) -> None:
+        log_path = self.repo_root / "docs/governance/logs/deviation_log.jsonl"
+        entries, _ = load_deviation_log(log_path)
+        historical = entries[0]
+        self.assertEqual(historical["status"], "accepted")
+        self.assertIn("pending", historical["ethics_disclaimer"].lower())
+        closure_doc = (
+            self.repo_root / "docs/decisions/DEV-20260721-001_closure_of_DEV-20260711-001.md"
+        ).read_text(encoding="utf-8")
+        self.assertIn("Completed work", closure_doc)
+        self.assertIn("ETHGOV-001", closure_doc)
+        self.assertIn("DEV-20260711-001", closure_doc)
 
     def test_repository_governance_includes_deviation_validation(self) -> None:
         errors = validate_repository_governance(self.repo_root)

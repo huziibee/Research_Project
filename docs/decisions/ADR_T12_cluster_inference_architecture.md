@@ -6,7 +6,8 @@
 **Active execution contract:** `cursor_plan/tickets/T12_cluster_model_stack_setup.md`  
 **Archive branch:** `archive/t12-local-wsl-slice4`  
 **Forward-migration base:** `b4865b3a101c87b7b5fe468c12c40adead74068f`  
-**Governance deviation:** `DEV-20260711-001` (T12 preparatory work only; T11 remains BLOCKED)
+**Governance deviation:** `DEV-20260711-001` (historical preparatory authorisation; pending-ethics rationale closed by `DEV-20260721-001` / `ETHGOV-001`)
+**Current T11 gate:** PASS — determination `not_required` (supervisor-only annotation)
 
 ## Context
 
@@ -16,7 +17,7 @@ Local synthetic evaluation on Qwen2.5-1.5B-Instruct with Transformers and bitsan
 
 The Wits HPC cluster provides authoritative GPU execution, shared model storage, Apptainer containers, and Slurm scheduling. The local RTX 3070 and WSL stack are no longer authoritative for T12 acceptance. They remain preserved source code and historical evidence until the Stage I cleanup gate.
 
-T11 remains **BLOCKED** on the pending institutional ethics determination. No research-pool records, protected data, annotation collection, T13, or T14 work is permitted during Stages A–H.
+T11 is **PASS** with determination `not_required` for supervisor-only annotation (`ETHGOV-001`). Historically, T11 was BLOCKED on a pending institutional ethics determination during early T12 preparatory work under `DEV-20260711-001`. No research-pool records, protected data, or T13/T14 collection is permitted during Stages A–H. External annotators remain forbidden without reassessment.
 
 ## Previous local Windows/WSL design
 
@@ -90,16 +91,17 @@ The cluster redesign replaces the **runtime authority** and **acceptance path**,
 - **Policy boundary:** the model proposes structured analysis; the deterministic routing policy remains the final authority for manager route decisions.
 - **Stack separation:** inference SIF and future training environment are separate; the inference container is not treated as the training stack.
 
-### Governance boundary (synthetic-only while T11 is BLOCKED)
+### Governance boundary (synthetic-only during Stages A–H)
 
-While T11 remains BLOCKED:
+During Stages A–H:
 
 - execution is synthetic-fixture and synthetic-corpus only;
 - full research-pool execution is prohibited;
 - optimiser steps equal zero except in Stage F feasibility probes explicitly scoped to adapter attach/save with zero research records;
 - no protected data access;
-- no T13 or T14 progression;
-- no change to T11 verdict or `collection_permitted`.
+- no T13 or T14 collection (technical/protocol gates unmet);
+- T11 gate is PASS with determination `not_required`; external annotators remain forbidden;
+- historical measurement artefacts that recorded `t11_status: BLOCKED` remain valid for their measurement time.
 
 ### Historical evidence preservation
 
@@ -160,19 +162,21 @@ Required publication states (Stage H contract):
 
 ## Relationship to DEV-20260711-001
 
-`DEV-20260711-001` continues to authorise **T12 preparatory work only** while T11 remains BLOCKED. The cluster redesign is within that preparatory scope: architecture, manifests, synthetic validation, and feasibility probes without research-pool execution. This ADR does not lift the T11 ethics blocker, permit collection, or authorise T13/T14.
+`DEV-20260711-001` historically authorised **T12 preparatory work** while T11 was BLOCKED on a pending ethics determination. That pending-ethics rationale is **closed / superseded** by `DEV-20260721-001` after `ETHGOV-001` recorded determination status `not_required` for supervisor-only annotation. Completed work under `DEV-20260711-001` remains valid. This ADR does not authorise external annotators, research-pool execution during Stages A–H, or T13/T14 collection before their technical gates.
 
 ## Explicit non-claims
 
 This ADR does **not** claim:
 
-- T11 passed;
+- that the determination is an ethics approval, exemption, or waiver;
 - Qwen3-8B is finally accepted as the project model;
 - the cluster training environment exists or passed LoRA feasibility;
 - the full schema-v2 bake-off passed on cluster hardware;
+- the live D-Final smoke passed;
 - the research pool was processed;
 - publication is already operational;
 - local model deletion has occurred;
-- `model_licence_register.selected_model` has been set.
+- `model_licence_register.selected_model` has been set;
+- T13/T14 have started.
 
 Only Stage I may set `selected_model` after every acceptance gate passes.

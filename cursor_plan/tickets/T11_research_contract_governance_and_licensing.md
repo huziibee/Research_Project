@@ -1,15 +1,19 @@
 # T11 — Research contract, AI governance, ethics, and licensing
 
-**Status:** READY
+**Status:** COMPLETE
+**Stage gate:** PASS
+**Determination:** `not_required` (supervisor-only annotation)
 
 ## Shared context
 
-T00–T09 are completed. Follow `01_global_cursor_contract.md`, `02_context_refresh_protocol.md`, and the non-dataset proposal alignment. Work only on this ticket. Do not access protected test data before T29 passes.
+T00–T10 are completed. Follow `01_global_cursor_contract.md`, `02_context_refresh_protocol.md`, and the non-dataset proposal alignment.
 
 ## Required reference documents
 
 - `11_proposal_alignment_contract.md`
 - `12_core_stretch_policy.md`
+- `docs/governance/evidence/ETHGOV-001_supervisor_only_determination.md`
+- `docs/reports/ticket_T11_completion_report.md`
 
 ## Goal
 
@@ -40,16 +44,23 @@ Freeze the research claim and governance requirements before new data, model, or
 
 ## Acceptance criteria
 
-- [ ] All seven systems are mandatory in the contract.
-- [ ] Fine-tuning is mandatory for the proposed manager.
-- [ ] No LVLM/raw-image scope remains.
-- [ ] Human judgement collection cannot begin without a recorded determination.
-- [ ] Licence status exists for every model/source intended for use.
+- [x] All seven systems are mandatory in the contract.
+- [x] Fine-tuning is mandatory for the proposed manager.
+- [x] No LVLM/raw-image scope remains.
+- [x] Human judgement collection cannot begin without a recorded determination.
+- [x] Licence status exists for every model/source intended for use.
+- [x] Institutional determination recorded: clearance and waiver **not required** for supervisor-only annotation (`ETHGOV-001`).
 
-## Test and evidence policy
+## Determination summary
 
-Use Red–Green–Refactor for all deterministic behaviour. Record the initial failing test, final command, and results in the completion report.
+- Annotators: Steven James and Benjamin Rosman (project supervisors only)
+- `determination_status`: `not_required`
+- Ethics clearance required: false
+- Ethics waiver required: false
+- External annotators permitted: false
+- Reassessment required if scope changes: true
+- This is **not** an ethics approval, exemption, or waiver
 
 ## Stop condition
 
-Stop after governance documents are approved. Do not install or select a model.
+Governance documents and the ethics determination are recorded. Do not treat T13/T14 as started. Model selection remains a T12 Stage I concern (`selected_model` remains null until then).
