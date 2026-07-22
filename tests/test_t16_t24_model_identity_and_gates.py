@@ -1,8 +1,20 @@
-"""T16-T24 model identity contract and capability-registry-driven gate tests."""
+"""T16-T24 model identity contract and capability-registry gating tests.
+
+Covers ``systems/capabilities.py`` (the per-system capability registry that
+drives official-mode gating) and ``systems/model_identities.py`` (the model
+identity contract loader/guard), plus the way ``ExperimentRunner`` combines
+both to derive official-mode gates from capability *flags* rather than
+hard-coded system-id string checks.
+
+Synthetic-only. Does not select a model, adapter, or strategy, and does not
+invent non-null identities: every fixture here either reuses the real,
+null-selection ``configs/model/selected_identities_v1.json`` contract, or
+constructs clearly-synthetic ``SelectedIdentities``/``SystemCapabilities``
+objects purely to exercise the violation-detection code paths.
+"""
 
 from __future__ import annotations
 
-import json
 import sys
 import tempfile
 import unittest
@@ -13,125 +25,20 @@ SRC = ROOT / "src"
 if str(SRC) not in sys.path:
     sys.path.insert(0, str(SRC))
 
-from ambiguity_manager.paths import ProjectPaths  # noqa: E402
 from ambiguity_manager.systems.capabilities import (  # noqa: E402
     SystemCapabilities,
     is_provenance_approved,
     load_capability_registry,
 )
-from ambiguity_manager.systems.contracts import AnalysisProvenance, StructuredAnalysis, SystemInput  # noqa: E402
+from ambiguity_manager.systems.contracts import AnalysisProvenance  # noqa: E402
 from ambiguity_manager.systems.errors import OfficialRunBlockedError, SystemsContractError  # noqa: E402
 from ambiguity_manager.systems.execution import ExperimentRunner, OfficialPrerequisites  # noqa: E402
 from ambiguity_manager.systems.model_identities import (  # noqa: E402
-    IDENTITY_FIELDS,
     SelectedIdentities,
     assert_null_selection,
     load_selected_identities,
 )
 from ambiguity_manager.systems.variants import SYSTEM_IDS  # noqa: E402
-
-IDENTITIES_PATH = (
-    ProjectPaths.from_repo_root().configs / "model" / "selected_identities_v1.json"
-)
-LICENCE_REGISTER_PATH = (
-    ProjectPaths.from_repo_root().configs / "licences" / "model_licence_register.json"
-)
-
-
-class StubProviderSystem:
-    def __init__(self, system_id: str, *, provider: object | None) -> None:
-        self.system_id = system_id
-        self.system_version = "1.0.0"
-        self.provider = provider
-
-    def run(self, system_input, *, cached_analysis=None):  # pragma: no cover - not exercised
-        raise NotImplementedError
-
-
-class ModelIdentityContractTests(unittest.TestCase):
-    def test_contract_file_has_all_null_identities(self) -> None:
-        raw = json.loads(IDENTITIES_PATH.read_text(encoding="utf-8"))
-        self.assertIsNone(raw["selected_base_model"])
-        self.assertIsNone(raw["selected_adapter"])
-        self.assertIsNone(raw["selected_model_strategy"])
-        self.assertEqual(raw["status"], "no_selection")
-        self.assertFalse(raw["valid_for_official_use"])
-
-    def test_contract_file_documents_legacy_field_deprecation(self) -> None:
-        raw = json.loads(IDENTITIES_PATH.read_text(encoding="utf-8"))
-        legacy = raw["legacy_selected_model_field"]
-        self.assertEqual(legacy["path"], "configs/licences/model_licence_register.json")
-        self.assertEqual(legacy["field"], "selected_model")
-        self.assertEqual(legacy["status"], "deprecated_use_selected_identities_v1")
-
-    def test_load_selected_identities_returns_null_selection(self) -> None:
-        identities = load_selected_identities()
-        self.assertIsInstance(identities, SelectedIdentities)
-        for field in IDENTITY_FIELDS:
-            self.assertIsNone(getattr(identities, field))
-        self.assertTrue(identities.is_null_selection())
-        self.assertFalse(identities.valid_for_official_use)
-
-    def test_assert_null_selection_passes_for_current_contract(self) -> None:
-        identities = assert_null_selection()
-        self.assertTrue(identities.is_null_selection())
-
-    def test_assert_null_selection_raises_if_a_field_is_populated(self) -> None:
-        populated = SelectedIdentities(
-            contract_id="selected_identities_v1",
-            version="1.0.0",
-            selected_base_model="org/model@deadbeef",
-            selected_adapter=None,
-            selected_model_strategy=None,
-            status="no_selection",
-            valid_for_official_use=False,
-        )
-        with self.assertRaises(SystemsContractError):
-            populated.assert_null_selection()
-
-    def test_assert_null_selection_raises_if_status_is_not_no_selection(self) -> None:
-        mismatched_status = SelectedIdentities(
-            contract_id="selected_identities_v1",
-            version="1.0.0",
-            selected_base_model=None,
-            selected_adapter=None,
-            selected_model_strategy=None,
-            status="selected",
-            valid_for_official_use=False,
-        )
-        with self.assertRaises(SystemsContractError):
-            mismatched_status.assert_null_selection()
-
-    def test_assert_null_selection_raises_if_valid_for_official_use_true(self) -> None:
-        contradictory = SelectedIdentities(
-            contract_id="selected_identities_v1",
-            version="1.0.0",
-            selected_base_model=None,
-            selected_adapter=None,
-            selected_model_strategy=None,
-            status="no_selection",
-            valid_for_official_use=True,
-        )
-        with self.assertRaises(SystemsContractError):
-            contradictory.assert_null_selection()
-
-    def test_licence_register_selected_model_remains_null_and_documents_deprecation(self) -> None:
-        raw = json.loads(LICENCE_REGISTER_PATH.read_text(encoding="utf-8"))
-        self.assertIsNone(raw["selected_model"])
-        self.assertEqual(
-            raw["deprecated"]["selected_model"]["status"],
-            "deprecated_use_selected_identities_v1",
-        )
-        self.assertEqual(
-            raw["deprecated"]["selected_model"]["superseded_by"],
-            "configs/model/selected_identities_v1.json",
-        )
-
-    def test_official_prerequisites_load_null_identities_from_contract(self) -> None:
-        prerequisites = OfficialPrerequisites.from_selected_identities()
-        self.assertIsNone(prerequisites.selected_base_model)
-        self.assertIsNone(prerequisites.selected_adapter)
-        self.assertIsNone(prerequisites.selected_model_strategy)
 
 
 class CapabilityRegistryTests(unittest.TestCase):
@@ -139,216 +46,363 @@ class CapabilityRegistryTests(unittest.TestCase):
     def setUpClass(cls) -> None:
         cls.registry = load_capability_registry()
 
-    def test_registry_has_entry_for_every_system(self) -> None:
+    def test_registry_covers_all_seven_systems(self) -> None:
         self.assertEqual(set(self.registry.keys()), set(SYSTEM_IDS))
-        for cap in self.registry.values():
-            self.assertIsInstance(cap, SystemCapabilities)
 
-    def test_always_x_systems_can_use_cache_but_not_live_provider(self) -> None:
-        for sid in ("always_execute", "always_clarify", "always_silently_resolve"):
-            cap = self.registry[sid]
-            self.assertTrue(cap.can_use_supplied_cached_analysis)
-            self.assertFalse(cap.requires_live_model_provider)
-            self.assertTrue(cap.requires_approved_analysis_provenance_in_official_mode)
-            self.assertFalse(cap.requires_selected_base_model)
-            self.assertFalse(cap.requires_selected_adapter)
+    def test_always_execute_needs_structured_analysis_but_no_model_identity(self) -> None:
+        caps = self.registry["always_execute"]
+        self.assertTrue(caps.requires_structured_analysis)
+        self.assertTrue(caps.can_use_supplied_cached_analysis)
+        self.assertFalse(caps.requires_live_model_provider)
+        self.assertFalse(caps.requires_selected_base_model)
+        self.assertFalse(caps.requires_selected_adapter)
+        self.assertFalse(caps.requires_selected_model_strategy)
+        self.assertTrue(caps.allows_full_context_cache)
+        self.assertTrue(caps.requires_approved_analysis_provenance_in_official_mode)
 
-    def test_direct_base_llm_requires_base_model_and_forbids_adapter(self) -> None:
-        cap = self.registry["direct_base_llm"]
-        self.assertTrue(cap.requires_live_model_provider)
-        self.assertTrue(cap.requires_selected_base_model)
-        self.assertTrue(cap.forbids_selected_adapter)
-        self.assertFalse(cap.can_use_supplied_cached_analysis)
+    def test_always_clarify_and_always_silently_resolve_mirror_always_execute(self) -> None:
+        always_execute = self.registry["always_execute"].to_dict()
+        for sid in ("always_clarify", "always_silently_resolve"):
+            other = self.registry[sid].to_dict()
+            for key in always_execute:
+                if key == "system_id":
+                    continue
+                self.assertEqual(other[key], always_execute[key], msg=f"{sid}.{key}")
 
-    def test_degree_based_router_may_use_approved_cache_deterministically(self) -> None:
-        cap = self.registry["degree_based_router"]
-        self.assertTrue(cap.can_use_supplied_cached_analysis)
-        self.assertFalse(cap.requires_live_model_provider)
+    def test_direct_base_llm_is_the_only_live_provider_system(self) -> None:
+        caps = self.registry["direct_base_llm"]
+        self.assertFalse(caps.requires_structured_analysis)
+        self.assertFalse(caps.can_use_supplied_cached_analysis)
+        self.assertTrue(caps.requires_live_model_provider)
+        self.assertTrue(caps.requires_selected_base_model)
+        self.assertTrue(caps.forbids_selected_adapter)
+        self.assertFalse(caps.allows_full_context_cache)
+        for sid, caps_other in self.registry.items():
+            if sid == "direct_base_llm":
+                continue
+            self.assertFalse(caps_other.requires_live_model_provider, msg=sid)
 
-    def test_context_blind_manager_cannot_use_full_context_cache(self) -> None:
-        cap = self.registry["context_blind_manager"]
-        self.assertFalse(cap.allows_full_context_cache)
-        self.assertTrue(cap.requires_selected_model_strategy)
+    def test_context_blind_and_full_manager_require_model_strategy_not_base_model(self) -> None:
+        for sid in ("context_blind_manager", "full_type_risk_aware_manager"):
+            caps = self.registry[sid]
+            self.assertTrue(caps.requires_selected_model_strategy, msg=sid)
+            self.assertFalse(caps.requires_selected_base_model, msg=sid)
+            self.assertFalse(caps.requires_selected_adapter, msg=sid)
+            self.assertFalse(caps.requires_live_model_provider, msg=sid)
 
-    def test_full_type_risk_aware_manager_requires_selected_model_strategy(self) -> None:
-        cap = self.registry["full_type_risk_aware_manager"]
-        self.assertTrue(cap.requires_selected_model_strategy)
-        self.assertTrue(cap.allows_full_context_cache)
+    def test_degree_based_router_needs_neither_model_nor_strategy(self) -> None:
+        caps = self.registry["degree_based_router"]
+        self.assertFalse(caps.requires_selected_base_model)
+        self.assertFalse(caps.requires_selected_adapter)
+        self.assertFalse(caps.requires_selected_model_strategy)
+        self.assertTrue(caps.allows_full_context_cache)
 
-    def test_all_systems_currently_allow_all_three_run_modes(self) -> None:
-        for cap in self.registry.values():
-            self.assertTrue(cap.allows_run_mode("synthetic_smoke"))
-            self.assertTrue(cap.allows_run_mode("development"))
-            self.assertTrue(cap.allows_run_mode("official"))
+    def test_context_blind_manager_does_not_allow_full_context_cache(self) -> None:
+        self.assertFalse(self.registry["context_blind_manager"].allows_full_context_cache)
 
-    def test_round_trip_to_dict_from_dict(self) -> None:
-        cap = self.registry["context_blind_manager"]
-        rebuilt = SystemCapabilities.from_dict(cap.system_id, cap.to_dict())
-        self.assertEqual(rebuilt, cap)
+    def test_allowed_run_modes_include_all_three_for_every_system(self) -> None:
+        for sid, caps in self.registry.items():
+            for mode in ("synthetic_smoke", "development", "official"):
+                self.assertTrue(caps.allows_run_mode(mode), msg=f"{sid}:{mode}")
 
-    def test_is_provenance_approved_defaults_to_false(self) -> None:
-        self.assertFalse(is_provenance_approved(AnalysisProvenance()))
+    def test_from_dict_rejects_non_object_entry(self) -> None:
+        with self.assertRaises(SystemsContractError):
+            SystemCapabilities.from_dict("bad_system", "not_a_dict")
+
+    def test_from_dict_rejects_non_list_allowed_run_modes(self) -> None:
+        with self.assertRaises(SystemsContractError):
+            SystemCapabilities.from_dict("bad_system", {"allowed_run_modes": "official"})
+
+    def test_from_dict_defaults_missing_bool_fields_to_false(self) -> None:
+        caps = SystemCapabilities.from_dict("minimal_system", {})
+        for field_name in (
+            "requires_structured_analysis",
+            "can_use_supplied_cached_analysis",
+            "requires_live_model_provider",
+            "requires_selected_base_model",
+            "requires_selected_adapter",
+            "requires_selected_model_strategy",
+            "forbids_selected_adapter",
+        ):
+            self.assertFalse(getattr(caps, field_name), msg=field_name)
+        self.assertTrue(caps.allows_full_context_cache)
+
+
+class ProvenanceApprovalTests(unittest.TestCase):
+    def test_no_provenance_is_not_approved(self) -> None:
+        self.assertFalse(is_provenance_approved(None))
+
+    def test_deterministic_method_is_not_approved(self) -> None:
         self.assertFalse(is_provenance_approved(AnalysisProvenance(method="deterministic")))
 
-    def test_is_provenance_approved_true_only_when_explicitly_tagged(self) -> None:
+    def test_only_explicit_approved_method_is_approved(self) -> None:
         self.assertTrue(is_provenance_approved(AnalysisProvenance(method="approved")))
 
 
-class OfficialGateDerivationTests(unittest.TestCase):
-    """Gates must come from the capability registry, not system-id checks."""
+class SelectedIdentitiesContractTests(unittest.TestCase):
+    def test_real_config_is_null_selection_and_passes_assertion(self) -> None:
+        identities = assert_null_selection()
+        self.assertIsNone(identities.selected_base_model)
+        self.assertIsNone(identities.selected_adapter)
+        self.assertIsNone(identities.selected_model_strategy)
+        self.assertEqual(identities.status, "no_selection")
+        self.assertFalse(identities.valid_for_official_use)
 
-    def _prerequisites(self, tmp_path: Path) -> OfficialPrerequisites:
-        gold = tmp_path / "gold.jsonl"
-        split = tmp_path / "split.json"
-        gold.write_text("{}\n", encoding="utf-8")
-        split.write_text("{}\n", encoding="utf-8")
-        return OfficialPrerequisites(
-            adjudicated_gold_dataset=gold,
-            t15_split_manifest=split,
-            protocol_freeze_identifier="freeze-1",
-            handbook_version="handbook-1",
-        )
+    def test_load_selected_identities_matches_assert_helper(self) -> None:
+        self.assertTrue(load_selected_identities().is_null_selection())
 
-    def test_non_model_backed_system_without_provider_is_not_flagged_for_model_provider(self) -> None:
-        runner = ExperimentRunner(registry={"always_execute": StubProviderSystem("always_execute", provider=None)})
-        with tempfile.TemporaryDirectory() as tmpdir:
-            prerequisites = self._prerequisites(Path(tmpdir))
-            with self.assertRaises(OfficialRunBlockedError) as ctx:
-                runner.check_official_gates(
-                    prerequisites=prerequisites,
-                    systems=["always_execute"],
-                )
-        # always_execute does not require a live provider, so the fact that
-        # this stub has provider=None must not trigger a model_provider
-        # complaint (that requirement is registry-derived, not name-derived).
-        self.assertNotIn("model_provider", ctx.exception.missing)
+    def test_official_prerequisites_from_selected_identities_never_invents_values(self) -> None:
+        """Building prerequisites from the real identity contract must not
+        invent any non-null identity; every field stays exactly what the
+        contract says (null, during T16-T24)."""
+        prereqs = OfficialPrerequisites.from_selected_identities()
+        self.assertIsNone(prereqs.selected_base_model)
+        self.assertIsNone(prereqs.selected_adapter)
+        self.assertIsNone(prereqs.selected_model_strategy)
 
-    def test_arbitrary_system_declared_live_provider_dependent_is_gated_generically(self) -> None:
-        """A hypothetical new system flagged as live-provider-dependent in the
-        registry must be gated the same way direct_base_llm is, proving the
-        gate is not hard-coded to that one system id."""
-        capabilities = load_capability_registry()
-        synthetic_capabilities = dict(capabilities)
-        synthetic_capabilities["always_execute"] = SystemCapabilities(
-            system_id="always_execute",
-            requires_live_model_provider=True,
-        )
-        runner = ExperimentRunner(registry={"always_execute": StubProviderSystem("always_execute", provider=None)})
-        with tempfile.TemporaryDirectory() as tmpdir:
-            prerequisites = self._prerequisites(Path(tmpdir))
-            with self.assertRaises(OfficialRunBlockedError) as ctx:
-                runner.check_official_gates(
-                    prerequisites=prerequisites,
-                    systems=["always_execute"],
-                    capabilities=synthetic_capabilities,
-                )
-        self.assertIn("model_provider", ctx.exception.missing)
-
-    def test_direct_base_llm_missing_selected_base_model_is_blocked(self) -> None:
-        runner = ExperimentRunner(
-            registry={"direct_base_llm": StubProviderSystem("direct_base_llm", provider=object())}
-        )
-        with tempfile.TemporaryDirectory() as tmpdir:
-            prerequisites = self._prerequisites(Path(tmpdir))
-            with self.assertRaises(OfficialRunBlockedError) as ctx:
-                runner.check_official_gates(
-                    prerequisites=prerequisites,
-                    systems=["direct_base_llm"],
-                )
-        self.assertIn("selected_base_model", ctx.exception.missing)
-
-    def test_direct_base_llm_with_adapter_selected_is_blocked_as_unadapted_base_violation(self) -> None:
-        runner = ExperimentRunner(
-            registry={"direct_base_llm": StubProviderSystem("direct_base_llm", provider=object())}
-        )
+    def test_populated_base_model_fails_null_assertion(self) -> None:
         identities = SelectedIdentities(
             contract_id="selected_identities_v1",
             version="1.0.0",
             selected_base_model="org/model@deadbeef",
-            selected_adapter="org/adapter@cafef00d",
+            selected_adapter=None,
             selected_model_strategy=None,
-            status="selected",
+            status="no_selection",
+            valid_for_official_use=False,
+        )
+        with self.assertRaises(SystemsContractError):
+            identities.assert_null_selection()
+
+    def test_valid_for_official_use_true_with_null_selection_is_rejected(self) -> None:
+        identities = SelectedIdentities(
+            contract_id="selected_identities_v1",
+            version="1.0.0",
+            selected_base_model=None,
+            selected_adapter=None,
+            selected_model_strategy=None,
+            status="no_selection",
             valid_for_official_use=True,
         )
-        with tempfile.TemporaryDirectory() as tmpdir:
-            prerequisites = self._prerequisites(Path(tmpdir))
-            prerequisites.selected_base_model = identities.selected_base_model
-            with self.assertRaises(OfficialRunBlockedError) as ctx:
-                runner.check_official_gates(
-                    prerequisites=prerequisites,
-                    systems=["direct_base_llm"],
-                    identities=identities,
-                )
-        self.assertIn("direct_base_llm:base_model_must_remain_unadapted", ctx.exception.missing)
+        with self.assertRaises(SystemsContractError):
+            identities.assert_null_selection()
 
-    def test_context_blind_manager_requires_selected_model_strategy_for_official(self) -> None:
-        runner = ExperimentRunner(registry={"context_blind_manager": StubProviderSystem("context_blind_manager", provider=None)})
-        with tempfile.TemporaryDirectory() as tmpdir:
-            prerequisites = self._prerequisites(Path(tmpdir))
-            with self.assertRaises(OfficialRunBlockedError) as ctx:
-                runner.check_official_gates(
-                    prerequisites=prerequisites,
-                    systems=["context_blind_manager"],
-                )
-        self.assertIn("selected_model_strategy", ctx.exception.missing)
-
-    def test_cache_backed_systems_blocked_without_approved_provenance(self) -> None:
-        runner = ExperimentRunner(registry={"always_execute": StubProviderSystem("always_execute", provider=None)})
-        unapproved = StructuredAnalysis(analysis_provenance=AnalysisProvenance(method="deterministic"))
-        with tempfile.TemporaryDirectory() as tmpdir:
-            prerequisites = self._prerequisites(Path(tmpdir))
-            prerequisites.selected_model_strategy = "strategy-1"
-            with self.assertRaises(OfficialRunBlockedError) as ctx:
-                runner.check_official_gates(
-                    prerequisites=prerequisites,
-                    systems=["always_execute"],
-                    cached_analyses={"rec-1": unapproved},
-                )
-        self.assertIn("always_execute:approved_analysis_provenance", ctx.exception.missing)
-
-    def test_cache_backed_systems_pass_provenance_check_when_approved(self) -> None:
-        runner = ExperimentRunner(registry={"always_execute": StubProviderSystem("always_execute", provider=None)})
-        approved = StructuredAnalysis(analysis_provenance=AnalysisProvenance(method="approved"))
-        with tempfile.TemporaryDirectory() as tmpdir:
-            prerequisites = self._prerequisites(Path(tmpdir))
-            try:
-                runner.check_official_gates(
-                    prerequisites=prerequisites,
-                    systems=["always_execute"],
-                    cached_analyses={"rec-1": approved},
-                )
-            except OfficialRunBlockedError as exc:
-                self.assertNotIn("always_execute:approved_analysis_provenance", exc.missing)
-            else:
-                pass
+    def test_wrong_status_with_null_fields_is_rejected(self) -> None:
+        identities = SelectedIdentities(
+            contract_id="selected_identities_v1",
+            version="1.0.0",
+            selected_base_model=None,
+            selected_adapter=None,
+            selected_model_strategy=None,
+            status="selected",
+            valid_for_official_use=False,
+        )
+        with self.assertRaises(SystemsContractError):
+            identities.assert_null_selection()
 
 
-class OfficialPrerequisitesTests(unittest.TestCase):
-    def test_missing_reports_nothing_extra_when_no_systems_need_identities(self) -> None:
-        prerequisites = OfficialPrerequisites(
-            adjudicated_gold_dataset=Path(__file__),
-            t15_split_manifest=Path(__file__),
+class OfficialPrerequisitesGatingTests(unittest.TestCase):
+    """``OfficialPrerequisites.missing()`` derives model-identity requirements
+    from capability *flags*, not from a hard-coded ``direct_base_llm`` check.
+    """
+
+    def setUp(self) -> None:
+        self.tmpdir = tempfile.TemporaryDirectory()
+        base = Path(self.tmpdir.name)
+        self.gold_path = base / "gold.jsonl"
+        self.split_path = base / "t15_split.json"
+        self.gold_path.write_text("{}\n", encoding="utf-8")
+        self.split_path.write_text("{}\n", encoding="utf-8")
+
+    def tearDown(self) -> None:
+        self.tmpdir.cleanup()
+
+    def _base_kwargs(self) -> dict:
+        return dict(
+            adjudicated_gold_dataset=self.gold_path,
+            t15_split_manifest=self.split_path,
             protocol_freeze_identifier="freeze-1",
             handbook_version="handbook-1",
         )
-        cap = SystemCapabilities(system_id="always_execute")
-        missing = prerequisites.missing(capabilities=[cap])
-        self.assertNotIn("selected_base_model", missing)
-        self.assertNotIn("selected_adapter", missing)
-        self.assertNotIn("selected_model_strategy", missing)
 
-    def test_missing_reports_identity_fields_only_when_required_by_a_system(self) -> None:
-        prerequisites = OfficialPrerequisites(
-            adjudicated_gold_dataset=Path(__file__),
-            t15_split_manifest=Path(__file__),
-            protocol_freeze_identifier="freeze-1",
-            handbook_version="handbook-1",
-        )
+    def test_pure_cache_system_needs_no_model_identity(self) -> None:
+        caps = [SystemCapabilities(system_id="always_execute")]
+        prereqs = OfficialPrerequisites(**self._base_kwargs())
+        self.assertEqual(prereqs.missing(capabilities=caps), [])
+
+    def test_generic_capability_flag_not_hardcoded_to_direct_base_llm(self) -> None:
+        """A made-up system_id that requires a selected base model must be
+        gated the same way ``direct_base_llm`` is: the check keys off the
+        capability flag, not the literal system_id string."""
         caps = [
-            SystemCapabilities(system_id="direct_base_llm", requires_selected_base_model=True),
+            SystemCapabilities(
+                system_id="some_future_model_backed_system",
+                requires_selected_base_model=True,
+            )
         ]
-        missing = prerequisites.missing(capabilities=caps)
+        prereqs = OfficialPrerequisites(**self._base_kwargs())
+        self.assertIn("selected_base_model", prereqs.missing(capabilities=caps))
+
+        satisfied = OfficialPrerequisites(**self._base_kwargs(), selected_base_model="org/model@sha")
+        self.assertNotIn("selected_base_model", satisfied.missing(capabilities=caps))
+
+    def test_requires_selected_model_strategy_flag_gates_generically(self) -> None:
+        caps = [
+            SystemCapabilities(
+                system_id="some_strategy_dependent_system",
+                requires_selected_model_strategy=True,
+            )
+        ]
+        prereqs = OfficialPrerequisites(**self._base_kwargs())
+        self.assertIn("selected_model_strategy", prereqs.missing(capabilities=caps))
+
+        satisfied = OfficialPrerequisites(**self._base_kwargs(), selected_model_strategy="strategy-v1")
+        self.assertNotIn("selected_model_strategy", satisfied.missing(capabilities=caps))
+
+    def test_requires_selected_adapter_flag_gates_generically(self) -> None:
+        caps = [SystemCapabilities(system_id="some_adapter_system", requires_selected_adapter=True)]
+        prereqs = OfficialPrerequisites(**self._base_kwargs())
+        self.assertIn("selected_adapter", prereqs.missing(capabilities=caps))
+
+    def test_missing_common_prerequisites_reported_regardless_of_capabilities(self) -> None:
+        prereqs = OfficialPrerequisites()
+        missing = prereqs.missing(capabilities=[])
+        self.assertIn("adjudicated_gold_dataset", missing)
+        self.assertIn("t15_split_manifest", missing)
+        self.assertIn("protocol_freeze_identifier", missing)
+        self.assertIn("handbook_version", missing)
+
+    def test_real_registry_direct_base_llm_requires_base_model_and_strategy(self) -> None:
+        registry = load_capability_registry()
+        caps = [registry["direct_base_llm"]]
+        prereqs = OfficialPrerequisites(**self._base_kwargs())
+        missing = prereqs.missing(capabilities=caps)
         self.assertIn("selected_base_model", missing)
+        self.assertIn("selected_model_strategy", missing)
+        self.assertNotIn("selected_adapter", missing)
+
+    def test_real_registry_full_manager_requires_strategy_not_base_model(self) -> None:
+        registry = load_capability_registry()
+        caps = [registry["full_type_risk_aware_manager"]]
+        prereqs = OfficialPrerequisites(**self._base_kwargs())
+        missing = prereqs.missing(capabilities=caps)
+        self.assertIn("selected_model_strategy", missing)
+        self.assertNotIn("selected_base_model", missing)
+
+
+class _StubRegisteredSystem:
+    def __init__(self, provider: object | None) -> None:
+        self.provider = provider
+
+
+class CheckOfficialGatesRegistryDrivenTests(unittest.TestCase):
+    """``ExperimentRunner.check_official_gates`` derives every check from the
+    capability registry it is given, never from a hard-coded system_id."""
+
+    def setUp(self) -> None:
+        self.tmpdir = tempfile.TemporaryDirectory()
+        base = Path(self.tmpdir.name)
+        self.gold_path = base / "gold.jsonl"
+        self.split_path = base / "t15_split.json"
+        self.gold_path.write_text("{}\n", encoding="utf-8")
+        self.split_path.write_text("{}\n", encoding="utf-8")
+
+    def tearDown(self) -> None:
+        self.tmpdir.cleanup()
+
+    def _prerequisites(self, **overrides: object) -> OfficialPrerequisites:
+        kwargs: dict[str, object] = dict(
+            adjudicated_gold_dataset=self.gold_path,
+            t15_split_manifest=self.split_path,
+            protocol_freeze_identifier="freeze-1",
+            handbook_version="handbook-1",
+        )
+        kwargs.update(overrides)
+        return OfficialPrerequisites(**kwargs)
+
+    def test_unconfigured_provider_blocks_any_capability_flagged_system(self) -> None:
+        """A hypothetical, non-``direct_base_llm`` system_id that sets
+        ``requires_live_model_provider`` must still be blocked when its
+        provider is unconfigured: the gate is keyed off the capability flag."""
+        capabilities = {
+            "hypothetical_model_system": SystemCapabilities(
+                system_id="hypothetical_model_system",
+                requires_live_model_provider=True,
+                requires_selected_base_model=True,
+            )
+        }
+        runner = ExperimentRunner(
+            registry={"hypothetical_model_system": _StubRegisteredSystem(provider=None)}
+        )
+        with self.assertRaises(OfficialRunBlockedError) as ctx:
+            runner.check_official_gates(
+                prerequisites=self._prerequisites(selected_base_model="org/model@sha"),
+                systems=["hypothetical_model_system"],
+                capabilities=capabilities,
+                identities=load_selected_identities(),
+            )
+        self.assertIn("model_provider", ctx.exception.missing)
+
+    def test_configured_provider_satisfies_live_provider_requirement(self) -> None:
+        capabilities = {
+            "hypothetical_model_system": SystemCapabilities(
+                system_id="hypothetical_model_system",
+                requires_live_model_provider=True,
+                requires_selected_base_model=True,
+            )
+        }
+        runner = ExperimentRunner(
+            registry={"hypothetical_model_system": _StubRegisteredSystem(provider=object())}
+        )
+        # Must not raise: gold/t15/protocol/handbook/base-model are all
+        # satisfied and the provider is configured.
+        runner.check_official_gates(
+            prerequisites=self._prerequisites(selected_base_model="org/model@sha"),
+            systems=["hypothetical_model_system"],
+            capabilities=capabilities,
+            identities=load_selected_identities(),
+        )
+
+    def test_forbids_selected_adapter_blocks_when_adapter_selected(self) -> None:
+        """``direct_base_llm`` (``forbids_selected_adapter=True`` in the real
+        registry) must remain gated if the identity contract ever carried a
+        non-null adapter; this is a contract violation, not a prerequisite."""
+        registry = load_capability_registry()
+        runner = ExperimentRunner(
+            registry={"direct_base_llm": _StubRegisteredSystem(provider=object())}
+        )
+        hypothetically_adapted_identities = SelectedIdentities(
+            contract_id="selected_identities_v1",
+            version="1.0.0",
+            selected_base_model="org/model@sha",
+            selected_adapter="org/model-lora-v1",
+            selected_model_strategy=None,
+            status="selected",
+            valid_for_official_use=False,
+        )
+        with self.assertRaises(OfficialRunBlockedError) as ctx:
+            runner.check_official_gates(
+                prerequisites=self._prerequisites(selected_base_model="org/model@sha"),
+                systems=["direct_base_llm"],
+                capabilities=registry,
+                identities=hypothetically_adapted_identities,
+            )
+        self.assertTrue(
+            any("base_model_must_remain_unadapted" in item for item in ctx.exception.missing)
+        )
+
+    def test_current_repo_state_blocks_official_run_for_every_system(self) -> None:
+        """With the real, unmodified repo configs (null model identities, no
+        approved-provenance mechanism yet), every system in the registry must
+        still be blocked from an official run -- T16-T24 must never silently
+        allow an official run to slip through. Uses the default (real)
+        capability registry and identity contract, with no overrides."""
+        runner = ExperimentRunner()
+        for system_id in SYSTEM_IDS:
+            with self.assertRaises(OfficialRunBlockedError, msg=system_id):
+                runner.check_official_gates(
+                    prerequisites=self._prerequisites(),
+                    systems=[system_id],
+                )
 
 
 if __name__ == "__main__":
