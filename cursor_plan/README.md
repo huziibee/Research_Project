@@ -16,6 +16,7 @@ This archive is the corrected stage-gated plan for completing the research imple
 - **T13 is ACTIVE for foundation/calibration** after T12 close. `selected_model` is not a T13 prerequisite. Calibration n=24; main target n=300. No official gold. No human annotation has started.
 - **T14A tooling may be implemented** on synthetic labels while supervisors are unavailable; T14B/T14C remain pending. Do not mark T14 human annotation started.
 - **Parallel work (`DEC-20260722-001`):** T16–T24 interface/synthetic development may proceed while annotation is pending; official train/tune/eval wait for adjudicated gold.
+- **Development data policy (`DEC-20260722-002`):** model selection, training, prompts, thresholds, and ablations use source datasets and synthetic fixtures only—not T13 calibration (n=24) and not the future `manual_protected_challenge_set` (~300 adjudicated records; not yet existing). T29 protocol freeze precedes unlocking manual gold for T30 protected execution.
 - Official annotators: Steven James (`ANN-A`), Benjamin Rosman (`ANN-B`). Author/reviewer: Mohammed Bangie (`AUTHOR-01`).
 
 ## Key final decisions

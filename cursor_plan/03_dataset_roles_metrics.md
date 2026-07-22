@@ -17,6 +17,17 @@ The dataset details in the original proposal are superseded. This document refle
 
 T15 must inspect actual files and completion reports rather than assume every listed source is available or eligible.
 
+## Development versus protected partitions (`DEC-20260722-002`)
+
+| Partition | Role | Development use | Protected / official use |
+|---|---|---|---|
+| Existing source datasets (AmbiK, IndirectRequests, CLARA/SaGC-derived, etc.) | verified native/mapped labels where available | permitted for model selection, training, prompts, thresholds, and ablations with explicit metric eligibility per record | eligible only where T15 manifest assigns the metric and split |
+| Synthetic fixtures | interface, evaluator, and smoke validation | permitted; hand-authored; must not derive from T13 calibration | not official gold |
+| T13 calibration (n=24) | annotation-process calibration only | **forbidden** — not development gold, not bake-off, not training, not synthetic evaluator input | **forbidden** |
+| Future `manual_protected_challenge_set` (~300 adjudicated records) | planned supervisor-double-annotated protected challenge set | **forbidden** — does not exist yet; must not influence model selection, training, adapter choice, prompts, thresholds, or policy editing | unlocked only after T29 protocol freeze for T30 execution |
+
+Weak or unavailable labels must not be invented. Missing gold stays `null` and excludes the record from that metric.
+
 ## Gold-field policy
 
 A record is eligible only when required gold is verified. Canonical gold may include:

@@ -14,6 +14,12 @@ A coordinated correctness-hardening pass closed 25 reproduced defects in system 
 
 Foundation architecture and synthetic scope are unchanged in intent; metric conventions, conditional denominators, per-system evaluation, official gates, and run identity semantics were corrected and regression-tested.
 
+## Variant-aware cache and development model selection (`DEC-20260722-002`)
+
+Per **`DEC-20260722-002`**, the foundation was extended with a typed analysis cache so `full_context` and `context_blind` analyses can coexist per record without cross-variant leakage. See **`docs/reports/variant_aware_analysis_cache_completion.md`**.
+
+Model selection infrastructure (development shortlist, frozen selection policy, 40-record development set, cluster bake-off operator profiles) is documented in **`docs/reports/base_model_shortlist_and_bakeoff.md`**. That work proceeds on existing source datasets and synthetic fixtures only; T13 calibration and the future manual protected challenge set are excluded. **`selected_base_model` remains `null`** until a Stage 2 bake-off PASS; cluster execution is pending. **Official experiment execution remains blocked** on adjudicated gold, T15 split freeze, T29 protocol freeze, and non-null approved model identities.
+
 ## Model identity contract (null — unchanged)
 
 Formal three-part identity in `configs/model/selected_identities_v1.json`:

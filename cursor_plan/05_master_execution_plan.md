@@ -77,6 +77,8 @@ Forward-migrate T12 from `b4865b3` to a cluster-native architecture on branch `f
 
 **Parallel execution (`DEC-20260722-001`):** while T14B is pending, T16–T24 may implement interfaces and synthetic-fixture behaviour. Official training, threshold tuning, protected evaluation, and dissertation performance claims remain blocked on adjudicated gold.
 
+**Development data policy (`DEC-20260722-002`):** model selection, provider work, QLoRA training, adapter selection, prompt development, threshold tuning, and ablations use existing source datasets and synthetic fixtures only. Each record requires explicit metric eligibility; weak labels are not invented. The 24 T13 calibration records are annotation-process material and must not enter development sets, bake-offs, training, synthetic evaluator fixtures, or protected evaluation. The future approximately 300-record adjudicated set is designated `manual_protected_challenge_set`; it does not exist yet and must not influence development. T29 freezes model, adapter, prompts, policies, metrics, thresholds, and the statistical plan before that manual gold is unlocked for T30 final execution. Variant-aware analysis caching is required so `full_context` and `context_blind` can coexist per record.
+
 **Gate:** trusted gold, agreement evidence, protected splits, and eligibility manifest exist.
 
 ## Phase 4 — Manager components and seven systems
@@ -92,7 +94,7 @@ Forward-migrate T12 from `b4865b3` to a cluster-native architecture on branch `f
 - T22: targeted clarification and face-preserving rejection generation.
 - T23: integrate and smoke-test all seven mandatory systems, including the exact degree-based baseline.
 
-**Foundation note (`DEC-20260722-001`):** model-independent contracts, deterministic components, seven-system adapters, and synthetic-fixture validation are implemented (`foundation_status=SYNTHETIC_VALIDATION_COMPLETE`). Official execution remains `BLOCKED` until adjudicated gold, T15 splits, viable model strategy where applicable, and T29 protocol freeze. See `docs/reports/ticket_T16_T24_model_independent_foundation.md`.
+**Foundation note (`DEC-20260722-001`, `DEC-20260722-002`):** model-independent contracts, deterministic components, seven-system adapters, and synthetic-fixture validation are implemented (`foundation_status=SYNTHETIC_VALIDATION_COMPLETE`). Development tuning uses source datasets and synthetic fixtures, not T13 calibration or future manual gold. Official execution remains `BLOCKED` until adjudicated gold, T15 splits, viable model strategy where applicable, and T29 protocol freeze. See `docs/reports/ticket_T16_T24_model_independent_foundation.md`.
 
 **Gate:** every system emits canonical schema-v2 predictions on non-test fixtures.
 
