@@ -1,0 +1,68 @@
+{
+  "fixture_group": "intent_cpc_route_core4",
+  "synthetic_only": true,
+  "description": "Hand-calculated expected metrics for four gold/prediction pairs. Not derived from DeterministicEvaluator.",
+  "records": [
+    "syn_clear_execute",
+    "syn_referential_clarify",
+    "syn_incapable_reject",
+    "syn_missing_gold_intent"
+  ],
+  "assumptions": [
+    "Predictions mirror gold labels except syn_referential_clarify predicts intent directive_command correctly and route clarify correctly.",
+    "syn_incapable_reject predicts face_preserving_rejection with matching intent.",
+    "syn_clear_execute exact CPC match on action+object.",
+    "syn_missing_gold_intent excluded from intent denominator due to missing gold."
+  ],
+  "intent_accuracy": {
+    "total_records": 4,
+    "eligible_records": 3,
+    "excluded_records": 1,
+    "exclusion_reasons": {"missing_gold": 1},
+    "numerator": 3,
+    "denominator": 3,
+    "value": 1.0,
+    "confusion_matrix": {
+      "directive_command": {"directive_command": 2},
+      "directive_command_incapable": {"directive_command": 1}
+    },
+    "note": "Three eligible intents are all directive_command and all predicted correctly => 3/3."
+  },
+  "cpc_slot_prf": {
+    "syn_clear_execute_gold_filled": ["action=pick", "object=red mug"],
+    "syn_clear_execute_pred_filled": ["action=pick", "object=red mug"],
+    "eligible_records_for_group": 3,
+    "tp": 2,
+    "fp": 0,
+    "fn": 0,
+    "precision": 1.0,
+    "recall": 1.0,
+    "f1": 1.0,
+    "note": "Only syn_clear_execute contributes filled CPC slots in this mini-group scoring example used by tests; other records scored separately in full suite."
+  },
+  "route_accuracy": {
+    "total_records": 4,
+    "eligible_records": 4,
+    "excluded_records": 0,
+    "numerator": 4,
+    "denominator": 4,
+    "value": 1.0,
+    "routes": {
+      "syn_clear_execute": "execute",
+      "syn_referential_clarify": "clarify",
+      "syn_incapable_reject": "face_preserving_rejection",
+      "syn_missing_gold_intent": "clarify"
+    }
+  },
+  "ambiguity_micro": {
+    "records_considered": ["syn_clear_execute", "syn_referential_clarify"],
+    "gold_types": {"syn_clear_execute": [], "syn_referential_clarify": ["referential"]},
+    "pred_types": {"syn_clear_execute": [], "syn_referential_clarify": ["referential"]},
+    "tp": 1,
+    "fp": 0,
+    "fn": 0,
+    "precision": 1.0,
+    "recall": 1.0,
+    "f1": 1.0
+  }
+}
