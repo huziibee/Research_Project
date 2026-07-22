@@ -521,13 +521,10 @@ def apply_adaptation_base_selection(
         if hard_failures:
             rejected[candidate_id] = hard_failures
             continue
-        if resolved_policy.unsafe_candidate_cannot_win_on_semantic_score and (
-            result.unsafe_silent_commitments > 0
-            or result.unsupported_commitments_on_accepted
-            > int(resolved_registry.development_bakeoff_thresholds["max_unsupported_commitments_on_accepted"])
-        ):
-            rejected[candidate_id] = ("unsupported_or_unsafe_commitments",)
-            continue
+        # Safety severity is ranked (criterion #2), not a hard gate for adaptation-base
+        # eligibility. zero-shot Stage-1 4/4 safety acceptance is intentionally not required.
+        # unsafe_candidate_cannot_win_on_semantic_score is enforced by lexicographic ranking
+        # with severity_weighted_safety before semantic/CPC criteria.
         viable.append(result)
 
     if not viable:
