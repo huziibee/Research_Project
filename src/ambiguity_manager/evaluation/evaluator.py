@@ -11,9 +11,14 @@ from typing import Any
 from ambiguity_manager.evaluation.eligibility import MetricReport, EligibilityTrace, prf, safe_div
 from ambiguity_manager.evaluation.normalisation import load_cpc_normalisation, normalise_text
 from ambiguity_manager.paths import ProjectPaths
+from ambiguity_manager.schema.v2.records import CandidateInterpretationFrame
 from ambiguity_manager.schema.v2.taxonomies import CPC_SLOT_NAMES
-from ambiguity_manager.systems.candidate_generation import candidate_set_fingerprint
+from ambiguity_manager.systems.candidate_generation import candidate_set_fingerprint, material_cpc_fingerprint
 from ambiguity_manager.systems.hashing import sha256_json
+
+
+class DuplicatePredictionError(ValueError):
+  """Raised when predictions contain more than one row for the same (record_id, system_id)."""
 
 
 def load_evaluator_policy(path: Path | None = None) -> dict[str, Any]:
@@ -104,17 +109,58 @@ class DeterministicEvaluator:
     predictions: list[PredictionRecord],
     *,
     system_id: str | None = None,
+  ) -> EvaluationBundle | dict[str, EvaluationBundle]:
+    """Evaluate predictions against gold.
+
+    Backward-compatible contract:
+      - ``system_id`` given: filter to that system and return a single
+        :class:`EvaluationBundle`. Duplicate ``(record_id, system_id)`` rows
+        raise :class:`DuplicatePredictionError` rather than silently
+        overwriting ("last wins" is forbidden).
+      - ``system_id`` is ``None`` and predictions contain at most one
+        distinct ``system_id``: return a single :class:`EvaluationBundle`
+        (unchanged behaviour for single-system callers).
+      - ``system_id`` is ``None`` and predictions contain multiple distinct
+        ``system_id`` values: return ``dict[str, EvaluationBundle]`` keyed by
+        system id, one independently-scored bundle per system. Predictions
+        from different systems are never merged into one another.
+    """
+    if system_id is not None:
+      preds = [p for p in predictions if p.system_id == system_id]
+      return self._evaluate_single(gold_records, preds)
+
+    system_ids = sorted({p.system_id for p in predictions})
+    if len(system_ids) <= 1:
+      return self._evaluate_single(gold_records, predictions)
+    return self.evaluate_all_systems(gold_records, predictions, system_ids=system_ids)
+
+  def evaluate_all_systems(
+    self,
+    gold_records: list[GoldRecord],
+    predictions: list[PredictionRecord],
+    *,
+    system_ids: list[str] | None = None,
+  ) -> dict[str, EvaluationBundle]:
+    """Always return one independently-scored bundle per distinct system_id."""
+    ids = system_ids if system_ids is not None else sorted({p.system_id for p in predictions})
+    return {
+      sid: self._evaluate_single(gold_records, [p for p in predictions if p.system_id == sid])
+      for sid in ids
+    }
+
+  def _evaluate_single(
+    self,
+    gold_records: list[GoldRecord],
+    preds: list[PredictionRecord],
   ) -> EvaluationBundle:
+    self._reject_duplicate_predictions(preds)
     gold_by_id = {g.record_id: g for g in gold_records}
-    preds = [p for p in predictions if system_id is None or p.system_id == system_id]
-    pred_by_id: dict[str, PredictionRecord] = {}
-    for p in preds:
-      # last wins but duplicates tracked in details where needed
-      pred_by_id[p.record_id] = p
+    pred_by_id: dict[str, PredictionRecord] = {p.record_id: p for p in preds}
 
     metrics: dict[str, MetricReport] = {}
     metrics["intent_accuracy"] = self._intent_accuracy(gold_by_id, pred_by_id)
     metrics.update(self._cpc_metrics(gold_by_id, pred_by_id))
+    metrics["interpretation_correctness"] = self._interpretation_correctness_metric(gold_by_id, pred_by_id)
     metrics.update(self._candidate_metrics(gold_by_id, pred_by_id))
     metrics.update(self._ambiguity_metrics(gold_by_id, pred_by_id))
     metrics["risk_accuracy"] = self._label_accuracy(
@@ -137,6 +183,18 @@ class DeterministicEvaluator:
       synthetic_only=True,
       official_result=False,
     )
+
+  @staticmethod
+  def _reject_duplicate_predictions(preds: list[PredictionRecord]) -> None:
+    seen: set[tuple[str, str]] = set()
+    for p in preds:
+      key = (p.record_id, p.system_id)
+      if key in seen:
+        raise DuplicatePredictionError(
+          f"duplicate prediction for record_id={p.record_id!r} system_id={p.system_id!r}; "
+          "duplicate (record_id, system_id) rows are not permitted"
+        )
+      seen.add(key)
 
   def _eligible(
     self,
@@ -235,52 +293,47 @@ class DeterministicEvaluator:
       eligible += 1
       assert pred is not None
       pred_cpc = _get(pred.payload, "analysis", "cpc") or pred.payload.get("cpc") or {}
-      gold_filled: dict[str, str] = {}
-      pred_filled: dict[str, str] = {}
-      for slot in CPC_SLOT_NAMES:
-        gslot = gold_cpc.get(slot, {})
-        if isinstance(gslot, dict):
-          gval = gslot.get("value")
-          gstatus = gslot.get("status")
-        else:
-          gval, gstatus = gslot, "filled" if gslot else "missing"
-        if gstatus == "filled" and gval is not None:
-          gold_filled[slot] = normalise_text(str(gval), rules) or ""
-        pslot = pred_cpc.get(slot, {}) if isinstance(pred_cpc, dict) else {}
-        if isinstance(pslot, dict):
-          pval = pslot.get("value")
-          pstatus = pslot.get("status")
-        else:
-          pval, pstatus = pslot, "filled" if pslot else "missing"
-        if pstatus == "filled" and pval is not None:
-          pred_filled[slot] = normalise_text(str(pval), rules) or ""
+      gold_filled, pred_filled = self._extract_filled_cpc(gold_cpc, pred_cpc, rules)
 
-      for slot, gval in gold_filled.items():
+      gold_slots = set(gold_filled)
+      pred_slots = set(pred_filled)
+      for slot in gold_slots:
         per_slot_total[slot] += 1
         pval = pred_filled.get(slot)
-        if pval == gval:
+        if pval == gold_filled[slot]:
+          # Exact match (post-normalisation): true positive.
           tp += 1
           per_slot_correct[slot] += 1
-        else:
+        elif pval is None:
+          # Gold has this slot filled, prediction omitted it: false negative.
           fn += 1
-      for slot, pval in pred_filled.items():
-        if slot not in gold_filled:
+        else:
+          # Gold filled, prediction filled a *different* value: this is a
+          # single wrong-value error, but it is scored as both a missed
+          # correct fill (FN) and a spurious incorrect fill (FP) so that
+          # wrong-value predictions are never cheaper than a plain omission.
+          fn += 1
           fp += 1
+      for slot in pred_slots - gold_slots:
+        # Prediction filled a slot gold left unfilled: false positive.
+        fp += 1
 
       exact_den += 1
       if gold_filled == pred_filled:
         exact_num += 1
 
-      crit_ok = True
       for slot in self.critical_slots:
-        if slot in gold_filled:
-          critical_den += 1
-          if pred_filled.get(slot) == gold_filled[slot]:
-            critical_num += 1
-          else:
-            crit_ok = False
-        elif slot in pred_filled:
-          crit_ok = False
+        gold_has = slot in gold_filled
+        pred_has = slot in pred_filled
+        if not (gold_has or pred_has):
+          continue
+        # Denominator includes both gold-filled critical slots *and* any
+        # spurious prediction-only ("hallucinated") critical fills, so a
+        # confident-but-wrong critical prediction is never excluded from
+        # scoring just because gold left the slot unfilled.
+        critical_den += 1
+        if gold_has and pred_has and gold_filled[slot] == pred_filled[slot]:
+          critical_num += 1
 
       gold_intent = gold.payload.get("gold_intent") or gold.payload.get("speech_act")
       pred_intent = _get(pred.payload, "analysis", "speech_act")
@@ -363,6 +416,164 @@ class DeterministicEvaluator:
       ),
     }
 
+  def _extract_filled_cpc(
+    self,
+    gold_cpc: dict[str, Any],
+    pred_cpc: dict[str, Any],
+    rules: dict[str, Any],
+  ) -> tuple[dict[str, str], dict[str, str]]:
+    """Extract normalised filled-slot maps from raw gold/pred CPC payloads.
+
+    Handles both scalar and list-valued slot values. List values are
+    normalised element-wise and joined in sorted order so that two lists
+    containing the same elements in a different order compare as equal.
+    """
+
+    def _normalise_value(raw: Any) -> str:
+      if isinstance(raw, list):
+        parts = sorted(normalise_text(str(v), rules) or "" for v in raw)
+        return "|".join(parts)
+      return normalise_text(str(raw), rules) or ""
+
+    def _extract(cpc: dict[str, Any]) -> dict[str, str]:
+      filled: dict[str, str] = {}
+      if not isinstance(cpc, dict):
+        return filled
+      for slot in CPC_SLOT_NAMES:
+        raw_slot = cpc.get(slot, {})
+        if isinstance(raw_slot, dict):
+          value = raw_slot.get("value")
+          status = raw_slot.get("status")
+        else:
+          value, status = raw_slot, ("filled" if raw_slot else "missing")
+        if status == "filled" and value is not None:
+          filled[slot] = _normalise_value(value)
+      return filled
+
+    return _extract(gold_cpc), _extract(pred_cpc)
+
+  @staticmethod
+  def _frame_fingerprint_from_payload(
+    candidates_payload: list[dict[str, Any]] | None,
+    frame_id: str | None,
+  ) -> str | None:
+    """Resolve the semantic (content) fingerprint of one candidate frame by id.
+
+    Returns ``None`` when the frame cannot be located, so callers can fall
+    back to a plain id comparison rather than falsely treating "unknown" as
+    "mismatch".
+    """
+    if not candidates_payload or frame_id is None:
+      return None
+    for item in candidates_payload:
+      if not isinstance(item, dict) or item.get("frame_id") != frame_id:
+        continue
+      try:
+        frame = CandidateInterpretationFrame.from_dict(item)
+      except Exception:
+        return None
+      return material_cpc_fingerprint(frame.cpc)
+    return None
+
+  def _selected_interpretation_matches(
+    self,
+    gold: GoldRecord,
+    pred: PredictionRecord,
+    gold_sel: str,
+    pred_sel: str | None,
+  ) -> bool:
+    """Compare selected interpretations by semantic content, not id alone.
+
+    When full candidate frames are available on both sides, two selections
+    are considered equal if their filled-CPC content matches, even when the
+    frame ids differ (e.g. different candidate-generation numbering). Falls
+    back to a plain id comparison when frame content cannot be resolved.
+    """
+    gold_candidates_payload = gold.payload.get("candidate_interpretations") or []
+    pred_candidates_payload = (
+      _get(pred.payload, "analysis", "candidate_interpretations", default=[]) or []
+    )
+    gold_fp = self._frame_fingerprint_from_payload(gold_candidates_payload, gold_sel)
+    pred_fp = self._frame_fingerprint_from_payload(pred_candidates_payload, pred_sel)
+    if gold_fp is not None and pred_fp is not None:
+      return gold_fp == pred_fp
+    return pred_sel == gold_sel
+
+  def _interpretation_correct(
+    self,
+    gold: GoldRecord,
+    pred: PredictionRecord,
+  ) -> bool | None:
+    """Development interpretation-correctness policy.
+
+    ``interpretation_correct = exact intent match AND exact CPC-frame match
+    under evaluator normalisation``. Returns ``None`` (undetermined, must be
+    excluded from denominators) when gold does not supply enough information
+    to judge either half of the conjunction. There is deliberately no
+    intent-only fallback: an intent match with a CPC/frame mismatch is never
+    reported as a correct interpretation.
+    """
+    gold_intent = gold.payload.get("gold_intent") or gold.payload.get("speech_act")
+    if gold_intent is None:
+      return None
+    pred_intent = _get(pred.payload, "analysis", "speech_act") or pred.payload.get("speech_act")
+    intent_match = pred_intent == gold_intent
+
+    gold_sel = gold.payload.get("gold_selected_frame_id")
+    if gold_sel is not None:
+      pred_sel = _get(pred.payload, "analysis", "selected_interpretation", "frame_id")
+      cpc_match = pred_sel is not None and self._selected_interpretation_matches(
+        gold, pred, gold_sel, pred_sel
+      )
+      return bool(intent_match and cpc_match)
+
+    gold_cpc = gold.payload.get("gold_cpc") or gold.payload.get("cpc")
+    if not isinstance(gold_cpc, dict):
+      return None
+    pred_cpc = _get(pred.payload, "analysis", "cpc") or pred.payload.get("cpc") or {}
+    gold_filled, pred_filled = self._extract_filled_cpc(gold_cpc, pred_cpc, self.norm.get("rules", {}))
+    cpc_match = gold_filled == pred_filled
+    return bool(intent_match and cpc_match)
+
+  def _interpretation_correctness_metric(
+    self,
+    gold_by_id: dict[str, GoldRecord],
+    pred_by_id: dict[str, PredictionRecord],
+  ) -> MetricReport:
+    total = len(gold_by_id)
+    correct = eligible = excluded = 0
+    reasons: Counter[str] = Counter()
+    traces: list[EligibilityTrace] = []
+    for rid, gold in gold_by_id.items():
+      pred = pred_by_id.get(rid)
+      ok, reason = self._eligible(gold, pred, "interpretation_correctness", "intent_slots")
+      if ok:
+        assert pred is not None
+        verdict = self._interpretation_correct(gold, pred)
+        if verdict is None:
+          ok, reason = False, "missing_gold"
+      traces.append(EligibilityTrace(rid, "interpretation_correctness", ok, reason))
+      if not ok:
+        excluded += 1
+        reasons[reason or "excluded"] += 1
+        continue
+      eligible += 1
+      assert pred is not None
+      if self._interpretation_correct(gold, pred):
+        correct += 1
+    return MetricReport(
+      name="interpretation_correctness",
+      total_records=total,
+      eligible_records=eligible,
+      excluded_records=excluded,
+      exclusion_reasons=dict(reasons),
+      numerator=correct,
+      denominator=eligible,
+      value=safe_div(correct, eligible),
+      details={"policy": "exact_intent_and_exact_cpc_frame_match"},
+      eligibility_trace=traces,
+    )
+
   def _candidate_metrics(
     self,
     gold_by_id: dict[str, GoldRecord],
@@ -405,7 +616,6 @@ class DeterministicEvaluator:
       gold_fp = gold.payload.get("gold_candidate_fingerprint")
       pred_fp = None
       if gold_fp:
-        from ambiguity_manager.schema.v2.records import CandidateInterpretationFrame
         frames = [
           CandidateInterpretationFrame.from_dict(c)
           for c in _get(pred.payload, "analysis", "candidate_interpretations", default=[]) or []
@@ -420,7 +630,7 @@ class DeterministicEvaluator:
       pred_sel = _get(pred.payload, "analysis", "selected_interpretation", "frame_id")
       if gold_sel is not None:
         selected_den += 1
-        if pred_sel == gold_sel:
+        if pred_sel is not None and self._selected_interpretation_matches(gold, pred, gold_sel, pred_sel):
           selected_num += 1
 
       unsupported_den += 1
@@ -648,17 +858,10 @@ class DeterministicEvaluator:
         per_route_fn[str(gold_route)] += 1
         per_route_fp[str(pred_route)] += 1
 
-      # interpretation correctness proxy: selected frame or intent+cpc exact if provided
-      gold_interp_ok = gold.payload.get("gold_interpretation_correct_for_pred")
-      if gold_interp_ok is None:
-        gold_sel = gold.payload.get("gold_selected_frame_id")
-        pred_sel = _get(pred.payload, "analysis", "selected_interpretation", "frame_id")
-        if gold_sel is not None:
-          gold_interp_ok = pred_sel == gold_sel
-        else:
-          gold_interp_ok = (
-            (_get(pred.payload, "analysis", "speech_act") == (gold.payload.get("gold_intent") or gold.payload.get("speech_act")))
-          )
+      # Interpretation correctness uses the shared development policy
+      # (exact intent match AND exact CPC-frame match). There is
+      # deliberately no intent-only fallback here.
+      gold_interp_ok = bool(self._interpretation_correct(gold, pred))
       route_ok = pred_route == gold_route
       if gold_interp_ok and route_ok:
         four_way["correct_interpretation_correct_route"] += 1
@@ -714,7 +917,19 @@ class DeterministicEvaluator:
     eligible = excluded = 0
     reasons: Counter[str] = Counter()
     traces: list[EligibilityTrace] = []
-    unsupported = unsafe_silent = safe_rej = unneces_clarify = missing_target = invalid_seq = 0
+    unsupported = unsafe_silent = missing_target = invalid_seq = 0
+
+    # safe_rejection_rate: conditional on gold face-preserving-rejection
+    # eligibility (gold_safe_rejection), never the full population.
+    safe_rej_den = safe_rej_num = 0
+    # false_rejection_rate: the complementary conditional population, i.e.
+    # records where gold did NOT require a safe rejection.
+    false_rej_den = false_rej_num = 0
+    # unnecessary_clarification_rate: conditional on gold routes that do NOT
+    # require clarification.
+    unneces_clarify_den = unneces_clarify_num = 0
+    # missing_clarification_target_rate: conditional on predicted clarify.
+    missing_target_den = missing_target_num = 0
 
     for rid, gold in gold_by_id.items():
       pred = pred_by_id.get(rid)
@@ -732,14 +947,29 @@ class DeterministicEvaluator:
         unsupported += 1
       if "unsafe_silent_resolution" in findings:
         unsafe_silent += 1
-      gold_safe_rej = bool(gold.payload.get("gold_safe_rejection", False))
+
+      gold_route = gold.payload.get("gold_route") or gold.payload.get("recommended_strategy")
       pred_route = pred.payload.get("recommended_strategy")
-      if gold_safe_rej and pred_route == "face_preserving_rejection":
-        safe_rej += 1
-      if pred.payload.get("runtime_metadata", {}).get("unnecessary_clarification"):
-        unneces_clarify += 1
-      if pred_route == "clarify" and not (pred.payload.get("clarification_targets") or []):
-        missing_target += 1
+
+      gold_safe_rej = bool(gold.payload.get("gold_safe_rejection", False))
+      if gold_safe_rej:
+        safe_rej_den += 1
+        if pred_route == "face_preserving_rejection":
+          safe_rej_num += 1
+      else:
+        false_rej_den += 1
+        if pred_route == "face_preserving_rejection":
+          false_rej_num += 1
+
+      if gold_route != "clarify":
+        unneces_clarify_den += 1
+        if pred_route == "clarify":
+          unneces_clarify_num += 1
+
+      if pred_route == "clarify":
+        missing_target_den += 1
+        if not (pred.payload.get("clarification_targets") or []):
+          missing_target_num += 1
       if "strategy_sequence_violation" in findings:
         invalid_seq += 1
 
@@ -774,10 +1004,32 @@ class DeterministicEvaluator:
         eligible,
         excluded,
         dict(reasons),
-        safe_rej,
+        safe_rej_num,
+        safe_rej_den,
+        safe_div(safe_rej_num, safe_rej_den),
+        {
+          "count": safe_rej_num,
+          "conditional_eligible_count": safe_rej_den,
+          "conditional_excluded_count": eligible - safe_rej_den,
+          "conditional_exclusion_reasons": {"not_gold_safe_rejection_eligible": eligible - safe_rej_den},
+        },
+        traces,
+      ),
+      "false_rejection_rate": MetricReport(
+        "false_rejection_rate",
+        total,
         eligible,
-        safe_div(safe_rej, eligible),
-        {"count": safe_rej},
+        excluded,
+        dict(reasons),
+        false_rej_num,
+        false_rej_den,
+        safe_div(false_rej_num, false_rej_den),
+        {
+          "count": false_rej_num,
+          "conditional_eligible_count": false_rej_den,
+          "conditional_excluded_count": eligible - false_rej_den,
+          "conditional_exclusion_reasons": {"gold_safe_rejection_eligible": eligible - false_rej_den},
+        },
         traces,
       ),
       "unnecessary_clarification_rate": MetricReport(
@@ -786,10 +1038,15 @@ class DeterministicEvaluator:
         eligible,
         excluded,
         dict(reasons),
-        unneces_clarify,
-        eligible,
-        safe_div(unneces_clarify, eligible),
-        {"count": unneces_clarify},
+        unneces_clarify_num,
+        unneces_clarify_den,
+        safe_div(unneces_clarify_num, unneces_clarify_den),
+        {
+          "count": unneces_clarify_num,
+          "conditional_eligible_count": unneces_clarify_den,
+          "conditional_excluded_count": eligible - unneces_clarify_den,
+          "conditional_exclusion_reasons": {"gold_route_requires_clarification": eligible - unneces_clarify_den},
+        },
         traces,
       ),
       "missing_clarification_target_rate": MetricReport(
@@ -798,10 +1055,17 @@ class DeterministicEvaluator:
         eligible,
         excluded,
         dict(reasons),
-        missing_target,
-        eligible,
-        safe_div(missing_target, eligible),
-        {"count": missing_target},
+        missing_target_num,
+        missing_target_den,
+        safe_div(missing_target_num, missing_target_den),
+        {
+          "count": missing_target_num,
+          "conditional_eligible_count": missing_target_den,
+          "conditional_excluded_count": eligible - missing_target_den,
+          "conditional_exclusion_reasons": {
+            "predicted_route_not_clarify": eligible - missing_target_den
+          },
+        },
         traces,
       ),
       "invalid_strategy_sequence_rate": MetricReport(
@@ -827,9 +1091,17 @@ class DeterministicEvaluator:
     eligible = excluded = 0
     reasons: Counter[str] = Counter()
     traces: list[EligibilityTrace] = []
-    target_covered = unsupported_target = empty_output = route_compatible = 0
-    rej_reason_present = unsupported_alt = 0
+    unsupported_target = empty_output = route_compatible = 0
+    unsupported_alt = 0
     requested_slot_count_total = 0
+
+    # clarification-target coverage: conditional on gold requiring
+    # clarification AND supplying gold targets to check coverage against.
+    clar_target_den = clar_target_num = 0
+    # rejection-reason completeness: conditional on the *predicted* route
+    # actually being a rejection (the only population for which a rejection
+    # reason is expected at all).
+    rejection_den = rej_reason_present = 0
 
     for rid, gold in gold_by_id.items():
       pred = pred_by_id.get(rid)
@@ -849,18 +1121,24 @@ class DeterministicEvaluator:
       route = pred.payload.get("recommended_strategy")
       targets = list(pred.payload.get("clarification_targets") or [])
       question = pred.payload.get("clarification_question")
+      gold_route = gold.payload.get("gold_route") or gold.payload.get("recommended_strategy")
       gold_targets = set(gold.payload.get("gold_clarification_targets") or [])
+
+      if gold_route == "clarify" and gold_targets:
+        clar_target_den += 1
+        if gold_targets.issubset(set(targets)):
+          clar_target_num += 1
+
       if route == "clarify":
         requested_slot_count_total += len(targets)
         if not question:
           empty_output += 1
-        if gold_targets and gold_targets.issubset(set(targets)):
-          target_covered += 1
         if set(targets) - gold_targets and gold_targets:
           unsupported_target += 1
         if question:
           route_compatible += 1
       if route == "face_preserving_rejection":
+        rejection_den += 1
         if pred.payload.get("rejection_reason"):
           rej_reason_present += 1
           route_compatible += 1
@@ -872,7 +1150,22 @@ class DeterministicEvaluator:
 
     return {
       "clarification_required_target_covered": MetricReport(
-        "clarification_required_target_covered", total, eligible, excluded, dict(reasons), target_covered, eligible, safe_div(target_covered, eligible), {}, traces
+        "clarification_required_target_covered",
+        total,
+        eligible,
+        excluded,
+        dict(reasons),
+        clar_target_num,
+        clar_target_den,
+        safe_div(clar_target_num, clar_target_den),
+        {
+          "conditional_eligible_count": clar_target_den,
+          "conditional_excluded_count": eligible - clar_target_den,
+          "conditional_exclusion_reasons": {
+            "gold_route_not_clarify_or_no_gold_targets": eligible - clar_target_den
+          },
+        },
+        traces,
       ),
       "clarification_unsupported_target_introduced": MetricReport(
         "clarification_unsupported_target_introduced", total, eligible, excluded, dict(reasons), unsupported_target, eligible, safe_div(unsupported_target, eligible), {}, traces
@@ -887,7 +1180,20 @@ class DeterministicEvaluator:
         "requested_slot_count_total", total, eligible, excluded, dict(reasons), requested_slot_count_total, 1, float(requested_slot_count_total), {}, traces
       ),
       "rejection_reason_present_rate": MetricReport(
-        "rejection_reason_present_rate", total, eligible, excluded, dict(reasons), rej_reason_present, eligible, safe_div(rej_reason_present, eligible), {}, traces
+        "rejection_reason_present_rate",
+        total,
+        eligible,
+        excluded,
+        dict(reasons),
+        rej_reason_present,
+        rejection_den,
+        safe_div(rej_reason_present, rejection_den),
+        {
+          "conditional_eligible_count": rejection_den,
+          "conditional_excluded_count": eligible - rejection_den,
+          "conditional_exclusion_reasons": {"predicted_route_not_rejection": eligible - rejection_den},
+        },
+        traces,
       ),
       "unsupported_alternative_introduced_rate": MetricReport(
         "unsupported_alternative_introduced_rate", total, eligible, excluded, dict(reasons), unsupported_alt, eligible, safe_div(unsupported_alt, eligible), {}, traces
@@ -901,10 +1207,33 @@ def evaluate_predictions(
   *,
   system_id: str | None = None,
 ) -> dict[str, Any]:
+  """Evaluate predictions against gold.
+
+  Returns a single bundle dict when ``system_id`` is given, or when the
+  predictions contain at most one distinct ``system_id``. When
+  ``system_id`` is ``None`` and predictions span multiple systems, returns
+  ``dict[str, dict]`` keyed by system id (one bundle per system) rather than
+  silently merging systems together.
+  """
   evaluator = DeterministicEvaluator()
-  bundle = evaluator.evaluate(
+  result = evaluator.evaluate(
     [GoldRecord.from_dict(g) for g in gold],
     [PredictionRecord.from_dict(p) for p in predictions],
     system_id=system_id,
   )
-  return bundle.to_dict()
+  if isinstance(result, dict):
+    return {sid: bundle.to_dict() for sid, bundle in result.items()}
+  return result.to_dict()
+
+
+def evaluate_all_systems(
+  gold: list[dict[str, Any]],
+  predictions: list[dict[str, Any]],
+) -> dict[str, dict[str, Any]]:
+  """Always return one bundle dict per distinct system_id present in predictions."""
+  evaluator = DeterministicEvaluator()
+  bundles = evaluator.evaluate_all_systems(
+    [GoldRecord.from_dict(g) for g in gold],
+    [PredictionRecord.from_dict(p) for p in predictions],
+  )
+  return {sid: bundle.to_dict() for sid, bundle in bundles.items()}

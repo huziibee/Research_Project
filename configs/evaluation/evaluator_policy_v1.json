@@ -1,6 +1,6 @@
 {
   "config_id": "evaluator_policy_v1",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "status": "development",
   "frozen": false,
   "valid_for_official_use": false,
@@ -26,6 +26,7 @@
   "metric_families": [
     "intent",
     "cpc",
+    "interpretation_correctness",
     "candidate_interpretations",
     "ambiguity",
     "risk",
@@ -36,8 +37,68 @@
   ],
   "missing_prediction_policy": "exclude_from_denominator_and_report",
   "missing_gold_policy": "exclude_from_denominator_and_report",
+  "cpc_matching_rule": {
+    "description": "Per-slot comparison over the union of gold-filled and prediction-filled slots, after CPC normalisation.",
+    "exact_match": "true_positive",
+    "gold_filled_pred_missing": "false_negative",
+    "gold_missing_pred_filled": "false_positive",
+    "gold_filled_pred_wrong_value": "one_false_negative_and_one_false_positive",
+    "note": "A wrong-value prediction is never cheaper than a plain omission: it always contributes both the missed correct fill (FN) and the spurious incorrect fill (FP)."
+  },
+  "critical_slot_rule": {
+    "denominator": "gold_filled_critical_slots union prediction_filled_critical_slots",
+    "numerator": "gold_filled_critical_slots where prediction matches exactly",
+    "note": "Spurious ('hallucinated') critical-slot fills not present in gold still enter the denominator; they are never ignored just because gold left the slot unfilled."
+  },
+  "prf_conventions": {
+    "description": "Explicit null-vs-zero convention shared by every precision/recall/F1 metric in this evaluator (see eligibility.prf).",
+    "precision_undefined_when": "tp + fp == 0 (no predicted positives)",
+    "recall_undefined_when": "tp + fn == 0 (no gold positives)",
+    "f1_undefined_when": "precision is undefined OR recall is undefined",
+    "zero_tp_with_defined_denominators": "precision/recall/f1 are 0.0, not null -- support and/or predictions exist but there is no overlap",
+    "no_gold_and_no_predicted_positives": "precision, recall, and f1 are all null (genuinely undefined; zero denominator)",
+    "no_gold_positives_but_predictions_exist": "precision is 0.0 (defined); recall is null (undefined, no gold positives to recall); f1 is null because recall is undefined",
+    "rule": "null must never be used to hide a total failure; null is reserved for a genuinely zero denominator"
+  },
+  "interpretation_correctness": {
+    "config_id": "interpretation_correctness_v1",
+    "rule": "interpretation_correct = exact_intent_match AND exact_cpc_frame_match_under_evaluator_normalisation",
+    "intent_only_fallback_forbidden": true,
+    "cpc_frame_match_rule": "When gold supplies a selected-frame id, compare the selected candidate frames by semantic (material CPC) fingerprint, not by frame_id alone, falling back to a frame_id comparison only when frame content cannot be resolved on both sides. Otherwise compare the normalised filled-CPC maps directly.",
+    "undetermined_when": "gold_intent is missing, or gold supplies neither a selected-frame id nor a gold CPC to compare against",
+    "used_by": ["interpretation_correctness_metric", "interpretation_route_decomposition_four_way_breakdown"]
+  },
+  "conditional_denominators": {
+    "safe_rejection_rate": {
+      "denominator": "eligible gold records where gold_safe_rejection is true (gold face-preserving-rejection eligible)",
+      "numerator": "of those, predictions whose recommended_strategy is face_preserving_rejection"
+    },
+    "false_rejection_rate": {
+      "denominator": "eligible gold records where gold_safe_rejection is NOT true",
+      "numerator": "of those, predictions whose recommended_strategy is face_preserving_rejection anyway"
+    },
+    "unnecessary_clarification_rate": {
+      "denominator": "eligible gold records whose gold route does NOT require clarification",
+      "numerator": "of those, predictions whose recommended_strategy is clarify"
+    },
+    "clarification_required_target_covered": {
+      "denominator": "eligible gold records whose gold route is clarify AND which supply non-empty gold_clarification_targets",
+      "numerator": "of those, predictions whose clarification_targets superset the gold targets"
+    },
+    "rejection_reason_present_rate": {
+      "denominator": "eligible records whose PREDICTED recommended_strategy is face_preserving_rejection",
+      "numerator": "of those, predictions that populate rejection_reason"
+    },
+    "note": "Every conditional-denominator metric additionally reports numerator, denominator, eligible_records/excluded_records/exclusion_reasons (base record-level eligibility) and details.conditional_eligible_count/conditional_excluded_count/conditional_exclusion_reasons (the conditional population actually used for numerator/denominator)."
+  },
+  "multi_system_evaluation": {
+    "rule": "evaluate(system_id=None) with multiple distinct system_id values present in predictions returns dict[system_id, EvaluationBundle], one independently-scored bundle per system. evaluate_all_systems() always returns this dict form regardless of system count.",
+    "duplicate_prediction_policy": "raise DuplicatePredictionError on any duplicate (record_id, system_id) pair; last-wins overwriting is forbidden",
+    "single_system_backward_compatibility": "when predictions contain at most one distinct system_id, evaluate() returns a single EvaluationBundle as before"
+  },
   "notes": [
     "No LLM judge may determine official correctness.",
-    "Every metric reports total/eligible/excluded/exclusion_reasons/numerator/denominator/value."
+    "Every metric reports total/eligible/excluded/exclusion_reasons/numerator/denominator/value.",
+    "This policy file is development-only (valid_for_official_use: false, frozen: false) and subject to change until frozen for T25."
   ]
 }

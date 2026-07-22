@@ -1,0 +1,35 @@
+{
+  "config_id": "interpretation_correctness_v1",
+  "version": "1.0.0",
+  "status": "development",
+  "frozen": false,
+  "valid_for_official_use": false,
+  "provenance": {
+    "decision_id": "DEC-20260722-001",
+    "author": "Mohammed Bangie",
+    "created_for": "T24 evaluator hardening: interpretation correctness policy"
+  },
+  "rule": "interpretation_correct = exact_intent_match AND exact_cpc_frame_match_under_evaluator_normalisation",
+  "components": {
+    "exact_intent_match": "predicted speech_act/intent equals gold_intent (or gold speech_act) exactly, no normalisation beyond that already applied to intent labels elsewhere",
+    "exact_cpc_frame_match": {
+      "when_gold_selected_frame_id_present": "compare the gold-selected candidate frame's material CPC fingerprint (systems.candidate_generation.material_cpc_fingerprint) to the predicted selected candidate frame's fingerprint; fall back to a plain frame_id equality check only when the frame content cannot be resolved from the available candidate_interpretations payloads on either side",
+      "when_gold_selected_frame_id_absent": "compare the normalised filled-CPC slot maps (gold_cpc vs analysis.cpc) for exact equality under configs/evaluation/cpc_normalisation_v1.json"
+    }
+  },
+  "forbidden": [
+    "intent_only_fallback: an intent match with a CPC/frame mismatch must never be reported as a correct interpretation",
+    "arbitrary_id_only_comparison_when_semantic_content_is_resolvable"
+  ],
+  "undetermined_policy": "returns null/undetermined (excluded from denominators, exclusion_reason=missing_gold) when gold_intent is missing, or when gold supplies neither a gold_selected_frame_id nor a gold_cpc to compare against",
+  "fixtures": {
+    "intent_right_cpc_wrong": "interpretation_correct == false",
+    "intent_wrong_cpc_right": "interpretation_correct == false",
+    "both_right": "interpretation_correct == true",
+    "both_wrong": "interpretation_correct == false"
+  },
+  "notes": [
+    "This policy is shared by the interpretation_correctness metric and the interpretation_route_decomposition four-way breakdown in evaluator.py.",
+    "Development-only; not valid for official use until frozen."
+  ]
+}

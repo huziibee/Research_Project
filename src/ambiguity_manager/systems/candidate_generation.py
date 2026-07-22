@@ -42,16 +42,19 @@ def material_cpc_fingerprint(cpc: CPC) -> str:
 
 
 def candidate_set_fingerprint(candidates: list[CandidateInterpretationFrame]) -> str:
-  payload = [
-    {
-      "frame_id": c.frame_id,
-      "text": c.text,
-      "cpc": material_cpc_fingerprint(c.cpc),
-      "safety_status": c.safety_status.value if c.safety_status else None,
-    }
+  """Order-independent, ID-independent semantic fingerprint of a candidate set.
+
+  Two candidate sets with identical CPC content match even if their
+  ``frame_id`` values differ or the candidates are listed in a different
+  order. ``frame_id`` and free-text ``text`` are deliberately excluded
+  because they are arbitrary labels, not material content; only the filled
+  CPC slots and safety status are semantically load-bearing.
+  """
+  items = sorted(
+    material_cpc_fingerprint(c.cpc) + ":" + (c.safety_status.value if c.safety_status else "")
     for c in candidates
-  ]
-  return sha256_json(payload)
+  )
+  return sha256_json(items)
 
 
 @dataclass
