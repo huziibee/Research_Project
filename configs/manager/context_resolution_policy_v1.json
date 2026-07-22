@@ -1,0 +1,77 @@
+{
+  "config_id": "context_resolution_policy_v1",
+  "version": "1.0.0",
+  "status": "development",
+  "frozen": false,
+  "valid_for_official_use": false,
+  "provenance": {
+    "decision_id": "DEC-20260722-001",
+    "author": "Mohammed Bangie",
+    "created_for": "T20 deterministic context resolver"
+  },
+  "canonical_json": {
+    "sort_keys": true,
+    "separators": [",", ":"],
+    "ensure_ascii": false,
+    "hash_algorithm": "sha256"
+  },
+  "critical_slots": [
+    "action",
+    "object",
+    "destination",
+    "tool",
+    "conditions",
+    "constraints"
+  ],
+  "allowed_outcomes": [
+    "resolved",
+    "unresolved",
+    "conflicting_context",
+    "insufficient_context",
+    "resolution_blocked_by_risk"
+  ],
+  "supported_resolution_kinds": [
+    "referential",
+    "destination_spatial",
+    "dialogue_history",
+    "capability_context",
+    "approved_default"
+  ],
+  "approved_defaults": {},
+  "block_silent_resolve_risk_levels": [
+    "medium",
+    "high",
+    "unknown"
+  ],
+  "rules": [
+    {
+      "rule_id": "unique_scene_referent",
+      "kind": "referential",
+      "description": "Resolve object when scene_context lists exactly one matching referent."
+    },
+    {
+      "rule_id": "unique_destination",
+      "kind": "destination_spatial",
+      "description": "Resolve destination when scene_context lists exactly one compatible destination."
+    },
+    {
+      "rule_id": "dialogue_prior_mention",
+      "kind": "dialogue_history",
+      "description": "Resolve slot from a unique prior explicit mention in dialogue_history."
+    },
+    {
+      "rule_id": "capability_lookup",
+      "kind": "capability_context",
+      "description": "Lookup capability facts without inventing unsupported abilities."
+    },
+    {
+      "rule_id": "approved_default_only",
+      "kind": "approved_default",
+      "description": "Apply preference/default only when listed in approved_defaults."
+    }
+  ],
+  "notes": [
+    "Do not implement general world-knowledge guessing.",
+    "Every resolution must retain evidence source, rule ID, confidence category, and safety eligibility."
+  ]
+}

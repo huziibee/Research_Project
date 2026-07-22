@@ -1,0 +1,47 @@
+{
+  "config_id": "safety_policy_v1",
+  "version": "1.0.0",
+  "status": "development",
+  "frozen": false,
+  "valid_for_official_use": false,
+  "provenance": {
+    "decision_id": "DEC-20260722-001",
+    "author": "Mohammed Bangie",
+    "created_for": "T21 safety enforcement foundation"
+  },
+  "canonical_json": {
+    "sort_keys": true,
+    "separators": [",", ":"],
+    "ensure_ascii": false,
+    "hash_algorithm": "sha256"
+  },
+  "enforcement_mode": "fail_closed",
+  "finding_types": [
+    "unsupported_commitment",
+    "unsafe_silent_resolution",
+    "unresolved_critical_execution",
+    "capability_overcommitment",
+    "route_policy_violation",
+    "invalid_clarification",
+    "invalid_rejection",
+    "strategy_sequence_violation",
+    "extra_specificity"
+  ],
+  "actions": [
+    "reject_result",
+    "return_with_findings",
+    "request_bounded_regeneration"
+  ],
+  "critical_slots": [
+    "action",
+    "object",
+    "destination",
+    "tool",
+    "conditions",
+    "constraints"
+  ],
+  "notes": [
+    "Do not silently repair a safety violation by changing the answer without recording it.",
+    "Bounded regeneration remains provider-gated and unavailable without a configured provider."
+  ]
+}

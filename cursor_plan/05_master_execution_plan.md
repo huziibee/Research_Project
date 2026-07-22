@@ -92,6 +92,8 @@ Forward-migrate T12 from `b4865b3` to a cluster-native architecture on branch `f
 - T22: targeted clarification and face-preserving rejection generation.
 - T23: integrate and smoke-test all seven mandatory systems, including the exact degree-based baseline.
 
+**Foundation note (`DEC-20260722-001`):** model-independent contracts, deterministic components, seven-system adapters, and synthetic-fixture validation are implemented (`foundation_status=SYNTHETIC_VALIDATION_COMPLETE`). Official execution remains `BLOCKED` until adjudicated gold, T15 splits, viable model strategy where applicable, and T29 protocol freeze. See `docs/reports/ticket_T16_T24_model_independent_foundation.md`.
+
 **Gate:** every system emits canonical schema-v2 predictions on non-test fixtures.
 
 ## Phase 5 — Evaluation infrastructure
@@ -99,8 +101,10 @@ Forward-migrate T12 from `b4865b3` to a cluster-native architecture on branch `f
 ### T24–T26
 
 - T24: official deterministic evaluator for intent, CPC, candidates, ambiguity, risk, capability, resolution, routes, clarification, rejection, safety, and efficiency.
-- T25: **stretch/nonblocking** human-calibrated semantic verifier.
+- T25: **stretch/nonblocking** human-calibrated semantic verifier / optional LLM-as-judge analysis; not official correctness.
 - T26: immutable experiment runner and provenance plumbing; no protected final runs.
+
+**T24 foundation note:** deterministic evaluator + eligibility machinery + synthetic hand-calculated fixtures are complete; official scoring remains blocked on adjudicated gold and T15 eligibility manifests.
 
 **Gate:** hand-calculated fixtures pass, eligibility is enforced, and run manifests are complete.
 

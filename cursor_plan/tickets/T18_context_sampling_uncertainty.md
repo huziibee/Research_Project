@@ -1,6 +1,8 @@
 # T18 — Context-sampling uncertainty and output-variance scoring
 
 **Status:** READY
+**foundation_status:** SYNTHETIC_VALIDATION_COMPLETE
+**official_execution_status:** BLOCKED
 
 ## Shared context
 

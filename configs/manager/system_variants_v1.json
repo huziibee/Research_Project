@@ -1,0 +1,92 @@
+{
+  "config_id": "system_variants_v1",
+  "version": "1.0.0",
+  "status": "development",
+  "frozen": false,
+  "valid_for_official_use": false,
+  "provenance": {
+    "decision_id": "DEC-20260722-001",
+    "author": "Mohammed Bangie",
+    "created_for": "T23 seven comparison systems"
+  },
+  "canonical_json": {
+    "sort_keys": true,
+    "separators": [",", ":"],
+    "ensure_ascii": false,
+    "hash_algorithm": "sha256"
+  },
+  "systems": [
+    {
+      "system_id": "always_execute",
+      "system_version": "1.0.0",
+      "shares_cached_analysis": true,
+      "forced_route": "execute",
+      "requires_model_provider": false,
+      "official_ready": false
+    },
+    {
+      "system_id": "always_clarify",
+      "system_version": "1.0.0",
+      "shares_cached_analysis": true,
+      "forced_route": "clarify",
+      "requires_model_provider": false,
+      "official_ready": false
+    },
+    {
+      "system_id": "always_silently_resolve",
+      "system_version": "1.0.0",
+      "shares_cached_analysis": true,
+      "forced_route": "silently_resolve",
+      "requires_model_provider": false,
+      "official_ready": false
+    },
+    {
+      "system_id": "direct_base_llm",
+      "system_version": "1.0.0",
+      "shares_cached_analysis": false,
+      "forced_route": null,
+      "requires_model_provider": true,
+      "official_ready": false
+    },
+    {
+      "system_id": "degree_based_router",
+      "system_version": "1.0.0",
+      "shares_cached_analysis": true,
+      "forced_route": null,
+      "requires_model_provider": false,
+      "allowed_routes": [
+        "execute",
+        "silently_resolve",
+        "clarify"
+      ],
+      "uses_type_risk_capability_precedence": false,
+      "official_ready": false
+    },
+    {
+      "system_id": "context_blind_manager",
+      "system_version": "1.0.0",
+      "shares_cached_analysis": false,
+      "forced_route": null,
+      "requires_model_provider": false,
+      "ablates_context": true,
+      "official_ready": false
+    },
+    {
+      "system_id": "full_type_risk_aware_manager",
+      "system_version": "1.0.0",
+      "shares_cached_analysis": false,
+      "forced_route": null,
+      "requires_model_provider": false,
+      "uses_deterministic_router": true,
+      "awaits_t28_adapter": true,
+      "official_ready": false
+    }
+  ],
+  "degree_router_thresholds": {
+    "status": "unfrozen",
+    "valid_for_official_use": false,
+    "execute_max_uncertainty": 0.15,
+    "silently_resolve_max_uncertainty": 0.4,
+    "clarify_min_uncertainty": 0.4
+  }
+}

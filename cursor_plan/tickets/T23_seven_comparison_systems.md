@@ -1,6 +1,8 @@
 # T23 — Seven mandatory comparison systems
 
 **Status:** READY
+**foundation_status:** SYNTHETIC_VALIDATION_COMPLETE
+**official_execution_status:** BLOCKED
 
 ## Shared context
 

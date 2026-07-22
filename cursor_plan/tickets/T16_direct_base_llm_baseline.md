@@ -1,6 +1,8 @@
 # T16 — Direct local base-LLM structured baseline
 
 **Status:** READY
+**foundation_status:** SYNTHETIC_VALIDATION_COMPLETE
+**official_execution_status:** BLOCKED
 
 ## Shared context
 
