@@ -554,6 +554,12 @@ class ClusterJobOperator:
                 # GPU profile without exclusive still needs a device request.
                 gpus = int(profile.get("gpus", 1))
                 gpu_lines += f"#SBATCH --gres=gpu:{gpus}\n"
+        exclude_nodes = str(profile.get("exclude_nodes") or "").strip()
+        if exclude_nodes:
+            gpu_lines += f"#SBATCH --exclude={exclude_nodes}\n"
+        nodelist = str(profile.get("nodelist") or "").strip()
+        if nodelist:
+            gpu_lines += f"#SBATCH --nodelist={nodelist}\n"
 
         if strict:
             header_guard = "set -euo pipefail\n\n"
@@ -599,7 +605,7 @@ class ClusterJobOperator:
             + "  --source-archive-sha256 \"${ARCHIVE_SHA}\" \\\n"
             + "  --source-identity-manifest \"${PREP_DIR}/source_identity_manifest.json\" \\\n"
             + entry_args_line
-        ).rstrip(" \\")
+        ).rstrip(" \t\r\n\\")
         if gpus_required:
             # Authoritative inference runs inside the pinned vLLM Apptainer SIF by
             # default. A profile may opt into a different (e.g. training) container
