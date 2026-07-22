@@ -14,6 +14,11 @@ if str(SRC) not in sys.path:
 
 from ambiguity_manager.evaluation.evaluator import DeterministicEvaluator, GoldRecord, PredictionRecord
 from ambiguity_manager.paths import ProjectPaths
+from ambiguity_manager.systems.analysis_cache import (
+  AnalysisCacheStore,
+  coerce_analysis_cache,
+  migrate_legacy_cache,
+)
 from ambiguity_manager.systems.contracts import StructuredAnalysis, SystemInput
 from ambiguity_manager.systems.errors import OfficialRunBlockedError
 from ambiguity_manager.systems.execution import ExperimentRunner, OfficialPrerequisites, load_json
@@ -30,9 +35,36 @@ def _load_records(path: Path) -> list[SystemInput]:
   return records
 
 
-def _load_analyses(path: Path) -> dict[str, StructuredAnalysis]:
+def _load_analyses(
+  path: Path,
+  *,
+  records: list[SystemInput] | None = None,
+  run_mode: str = "synthetic_smoke",
+) -> AnalysisCacheStore:
+  """Load variant-aware or legacy flat analysis caches.
+
+  Legacy flat ``{record_id: analysis}`` maps are accepted only outside
+  official mode and are interpreted as ``full_context``.
+  """
   raw = load_json(path)
-  return {rid: StructuredAnalysis.from_dict(payload) for rid, payload in raw.items()}
+  if run_mode == "official":
+    return coerce_analysis_cache(raw, compatibility_mode="reject_legacy")
+  # Prefer explicit migration when records are available so hashes are real.
+  if (
+    records is not None
+    and isinstance(raw, dict)
+    and raw
+    and all(isinstance(k, str) for k in raw.keys())
+    and not any(isinstance(k, str) and "::" in k for k in raw.keys())
+    and not any(
+      isinstance(v, dict) and any(vk in ("full_context", "context_blind") for vk in v.keys())
+      for v in raw.values()
+      if isinstance(v, dict)
+    )
+  ):
+    legacy = {rid: StructuredAnalysis.from_dict(payload) for rid, payload in raw.items()}
+    return migrate_legacy_cache(legacy, records=records, analysis_variant="full_context")
+  return coerce_analysis_cache(raw, compatibility_mode="legacy_as_full_context")
 
 
 def cmd_list_systems(_: argparse.Namespace) -> int:
@@ -69,7 +101,11 @@ def cmd_run_synthetic(args: argparse.Namespace) -> int:
   fixture_manifest = config.get("fixture_manifest", "tests/fixtures/t16_t24_synthetic/manifest.json")
   fixture_dir = paths.root / Path(fixture_manifest).parent
   records = _load_records(fixture_dir / "inputs.jsonl")
-  analyses = _load_analyses(fixture_dir / "cached_analyses.json")
+  analyses = _load_analyses(
+    fixture_dir / "cached_analyses.json",
+    records=records,
+    run_mode=str(config.get("run_mode") or "synthetic_smoke"),
+  )
   runner = ExperimentRunner(paths=paths)
   output = Path(args.output) if args.output else None
   try:
@@ -106,7 +142,11 @@ def cmd_resume(args: argparse.Namespace) -> int:
   fixture_manifest = config.get("fixture_manifest", "tests/fixtures/t16_t24_synthetic/manifest.json")
   fixture_dir = paths.root / Path(fixture_manifest).parent
   records = _load_records(fixture_dir / "inputs.jsonl")
-  analyses = _load_analyses(fixture_dir / "cached_analyses.json")
+  analyses = _load_analyses(
+    fixture_dir / "cached_analyses.json",
+    records=records,
+    run_mode=str(config.get("run_mode") or "synthetic_smoke"),
+  )
   runner = ExperimentRunner(paths=paths)
   summary = runner.run(
     config=config,

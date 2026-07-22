@@ -29,6 +29,18 @@ _BOOL_FIELDS: tuple[str, ...] = (
 )
 
 _DEFAULT_RUN_MODES: tuple[str, ...] = ("synthetic_smoke", "development", "official")
+_ALLOWED_ANALYSIS_VARIANTS: frozenset[str] = frozenset({"full_context", "context_blind"})
+
+# Fallback required variants when older configs omit the field.
+_DEFAULT_REQUIRED_ANALYSIS_VARIANT: dict[str, str | None] = {
+  "always_execute": "full_context",
+  "always_clarify": "full_context",
+  "always_silently_resolve": "full_context",
+  "degree_based_router": "full_context",
+  "full_type_risk_aware_manager": "full_context",
+  "context_blind_manager": "context_blind",
+  "direct_base_llm": None,
+}
 
 
 @dataclass(frozen=True)
@@ -43,12 +55,14 @@ class SystemCapabilities:
   requires_selected_model_strategy: bool = False
   forbids_selected_adapter: bool = False
   allows_full_context_cache: bool = True
+  required_analysis_variant: str | None = None
   allowed_run_modes: tuple[str, ...] = field(default_factory=lambda: _DEFAULT_RUN_MODES)
 
   def to_dict(self) -> dict[str, Any]:
     payload: dict[str, Any] = {"system_id": self.system_id}
     for name in _BOOL_FIELDS:
       payload[name] = getattr(self, name)
+    payload["required_analysis_variant"] = self.required_analysis_variant
     payload["allowed_run_modes"] = list(self.allowed_run_modes)
     return payload
 
@@ -58,6 +72,16 @@ class SystemCapabilities:
       raise SystemsContractError(f"capabilities for {system_id!r} must be an object")
     kwargs: dict[str, Any] = {name: bool(data.get(name, False)) for name in _BOOL_FIELDS}
     kwargs["allows_full_context_cache"] = bool(data.get("allows_full_context_cache", True))
+    if "required_analysis_variant" in data:
+      variant = data.get("required_analysis_variant")
+    else:
+      variant = _DEFAULT_REQUIRED_ANALYSIS_VARIANT.get(system_id, "full_context")
+    if variant is not None and variant not in _ALLOWED_ANALYSIS_VARIANTS:
+      raise SystemsContractError(
+        f"required_analysis_variant for {system_id!r} must be one of "
+        f"{sorted(_ALLOWED_ANALYSIS_VARIANTS)} or null, got {variant!r}"
+      )
+    kwargs["required_analysis_variant"] = variant
     modes = data.get("allowed_run_modes")
     if modes is None:
       modes = list(_DEFAULT_RUN_MODES)

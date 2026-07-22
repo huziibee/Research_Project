@@ -1,18 +1,21 @@
 {
   "config_id": "system_variants_v1",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "status": "development",
   "frozen": false,
   "valid_for_official_use": false,
   "provenance": {
-    "decision_id": "DEC-20260722-001",
+    "decision_id": "DEC-20260722-002",
     "author": "Mohammed Bangie",
     "created_for": "T23 seven comparison systems",
-    "updated_for": "T16-T24 correctness hardening capability registry"
+    "updated_for": "variant-aware analysis-cache required_analysis_variant registry"
   },
   "canonical_json": {
     "sort_keys": true,
-    "separators": [",", ":"],
+    "separators": [
+      ",",
+      ":"
+    ],
     "ensure_ascii": false,
     "hash_algorithm": "sha256"
   },
@@ -32,8 +35,13 @@
       "requires_selected_model_strategy": false,
       "forbids_selected_adapter": false,
       "allows_full_context_cache": true,
-      "allowed_run_modes": ["synthetic_smoke", "development", "official"],
-      "official_ready": false
+      "allowed_run_modes": [
+        "synthetic_smoke",
+        "development",
+        "official"
+      ],
+      "official_ready": false,
+      "required_analysis_variant": "full_context"
     },
     {
       "system_id": "always_clarify",
@@ -50,8 +58,13 @@
       "requires_selected_model_strategy": false,
       "forbids_selected_adapter": false,
       "allows_full_context_cache": true,
-      "allowed_run_modes": ["synthetic_smoke", "development", "official"],
-      "official_ready": false
+      "allowed_run_modes": [
+        "synthetic_smoke",
+        "development",
+        "official"
+      ],
+      "official_ready": false,
+      "required_analysis_variant": "full_context"
     },
     {
       "system_id": "always_silently_resolve",
@@ -68,8 +81,13 @@
       "requires_selected_model_strategy": false,
       "forbids_selected_adapter": false,
       "allows_full_context_cache": true,
-      "allowed_run_modes": ["synthetic_smoke", "development", "official"],
-      "official_ready": false
+      "allowed_run_modes": [
+        "synthetic_smoke",
+        "development",
+        "official"
+      ],
+      "official_ready": false,
+      "required_analysis_variant": "full_context"
     },
     {
       "system_id": "direct_base_llm",
@@ -86,8 +104,13 @@
       "requires_selected_model_strategy": true,
       "forbids_selected_adapter": true,
       "allows_full_context_cache": false,
-      "allowed_run_modes": ["synthetic_smoke", "development", "official"],
-      "official_ready": false
+      "allowed_run_modes": [
+        "synthetic_smoke",
+        "development",
+        "official"
+      ],
+      "official_ready": false,
+      "required_analysis_variant": null
     },
     {
       "system_id": "degree_based_router",
@@ -104,10 +127,19 @@
       "requires_selected_model_strategy": false,
       "forbids_selected_adapter": false,
       "allows_full_context_cache": true,
-      "allowed_routes": ["execute", "silently_resolve", "clarify"],
+      "allowed_routes": [
+        "execute",
+        "silently_resolve",
+        "clarify"
+      ],
       "uses_type_risk_capability_precedence": false,
-      "allowed_run_modes": ["synthetic_smoke", "development", "official"],
-      "official_ready": false
+      "allowed_run_modes": [
+        "synthetic_smoke",
+        "development",
+        "official"
+      ],
+      "official_ready": false,
+      "required_analysis_variant": "full_context"
     },
     {
       "system_id": "context_blind_manager",
@@ -125,8 +157,13 @@
       "forbids_selected_adapter": false,
       "allows_full_context_cache": false,
       "ablates_context": true,
-      "allowed_run_modes": ["synthetic_smoke", "development", "official"],
-      "official_ready": false
+      "allowed_run_modes": [
+        "synthetic_smoke",
+        "development",
+        "official"
+      ],
+      "official_ready": false,
+      "required_analysis_variant": "context_blind"
     },
     {
       "system_id": "full_type_risk_aware_manager",
@@ -145,8 +182,13 @@
       "allows_full_context_cache": true,
       "uses_deterministic_router": true,
       "awaits_t28_adapter": true,
-      "allowed_run_modes": ["synthetic_smoke", "development", "official"],
-      "official_ready": false
+      "allowed_run_modes": [
+        "synthetic_smoke",
+        "development",
+        "official"
+      ],
+      "official_ready": false,
+      "required_analysis_variant": "full_context"
     }
   ],
   "degree_router_thresholds": {

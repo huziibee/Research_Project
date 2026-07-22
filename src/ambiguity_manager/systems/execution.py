@@ -37,7 +37,7 @@ import json
 import subprocess
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import Any
+from typing import Any, Mapping
 
 from ambiguity_manager.paths import ProjectPaths
 from ambiguity_manager.schema.v2.version import SCHEMA_VERSION
@@ -51,12 +51,22 @@ from ambiguity_manager.systems.analysis import (
   build_analysis_identity,
   is_context_blind_provenance,
 )
+from ambiguity_manager.systems.analysis_cache import (
+  AnalysisCacheEntry,
+  AnalysisCacheKey,
+  AnalysisCacheStore,
+  build_coverage_matrix,
+  coerce_analysis_cache,
+  required_variant_for_system,
+  resolve_cached_analysis_for_system,
+)
 from ambiguity_manager.systems.contracts import StructuredAnalysis, SystemInput, SystemResult
 from ambiguity_manager.systems.errors import (
   DuplicateResultError,
   OfficialRunBlockedError,
   ProtectedDataBlockedError,
   ResumeContractError,
+  SystemsContractError,
 )
 from ambiguity_manager.systems.hashing import sha256_hex, sha256_json
 from ambiguity_manager.systems.model_identities import SelectedIdentities, load_selected_identities
@@ -294,11 +304,16 @@ class ExperimentRunner:
     protected_labels_in_prompts: bool = False,
     capabilities: dict[str, SystemCapabilities] | None = None,
     identities: SelectedIdentities | None = None,
-    cached_analyses: dict[str, StructuredAnalysis] | None = None,
+    cached_analyses: AnalysisCacheStore | dict[Any, Any] | None = None,
+    records: list[SystemInput] | None = None,
   ) -> None:
     capabilities = capabilities if capabilities is not None else load_capability_registry()
     identities = identities if identities is not None else load_selected_identities()
-    cached_analyses = cached_analyses or {}
+    # Official mode rejects legacy flat caches; require typed variant keys.
+    try:
+      cache_store = coerce_analysis_cache(cached_analyses, compatibility_mode="reject_legacy")
+    except SystemsContractError as exc:
+      raise OfficialRunBlockedError([f"analysis_cache:{exc}"]) from exc
     caps = [capabilities[sid] for sid in systems if sid in capabilities]
 
     missing = prerequisites.missing(capabilities=caps)
@@ -324,12 +339,44 @@ class ExperimentRunner:
       if cap.forbids_selected_adapter and identities.selected_adapter is not None:
         missing.append(f"{sid}:base_model_must_remain_unadapted")
       if cap.requires_approved_analysis_provenance_in_official_mode:
-        approved = any(
-          is_provenance_approved(analysis.analysis_provenance)
-          for analysis in cached_analyses.values()
+        required_variant = (
+          cap.required_analysis_variant
+          if cap.required_analysis_variant is not None
+          else required_variant_for_system(sid)
         )
-        if not approved:
-          missing.append(f"{sid}:approved_analysis_provenance")
+        if required_variant is None:
+          continue
+        # Per (record, system, required variant) provenance coverage.
+        record_list = list(records or [])
+        if not record_list:
+          # Without records, require at least one approved matching-variant entry.
+          approved = any(
+            entry.analysis_variant == required_variant
+            and is_provenance_approved(entry.analysis.analysis_provenance)
+            for entry in cache_store.values()
+          )
+          if not approved:
+            missing.append(f"{sid}:approved_analysis_provenance")
+          continue
+        for record in record_list:
+          entry = cache_store.get(AnalysisCacheKey(record.record_id, required_variant))
+          if entry is None or not is_provenance_approved(entry.analysis.analysis_provenance):
+            missing.append(
+              f"{sid}:approved_analysis_provenance:{record.record_id}:{required_variant}"
+            )
+
+    if records is not None:
+      coverage = build_coverage_matrix(
+        records=records,
+        systems=systems,
+        cache=cache_store,
+        run_mode="official",
+        identities=identities,
+      )
+      for row in coverage.missing_rows():
+        missing.append(
+          f"coverage:{row.system_id}:{row.record_id}:{row.required_analysis_variant}:{row.validation_result}"
+        )
 
     if missing:
       raise OfficialRunBlockedError(missing)
@@ -337,17 +384,39 @@ class ExperimentRunner:
   # -- Section C: full input-manifest hashing -------------------------------
 
   def _record_identity_hash(
-    self, record: SystemInput, cached: StructuredAnalysis | None
+    self,
+    record: SystemInput,
+    cached_entries: list[AnalysisCacheEntry] | StructuredAnalysis | None,
   ) -> str:
+    if isinstance(cached_entries, StructuredAnalysis):
+      entries_payload = [
+        {
+          "cached_analysis": cached_entries.to_dict(),
+          "analysis_identity": self._cached_analysis_identity(record, cached_entries).to_dict(),
+        }
+      ]
+    elif cached_entries:
+      entries_payload = []
+      for entry in sorted(cached_entries, key=lambda e: e.analysis_variant):
+        entries_payload.append(
+          {
+            "analysis_variant": entry.analysis_variant,
+            "cached_analysis": entry.analysis.to_dict(),
+            "source_input_hash": entry.source_input_hash,
+            "analysis_content_hash": entry.analysis_content_hash,
+            "analysis_identity": (
+              entry.analysis_identity.to_dict()
+              if entry.analysis_identity is not None
+              else self._cached_analysis_identity(record, entry.analysis).to_dict()
+            ),
+          }
+        )
+    else:
+      entries_payload = []
     return sha256_json(
       {
         "input": record.to_dict(),
-        "cached_analysis": cached.to_dict() if cached is not None else None,
-        "analysis_identity": (
-          self._cached_analysis_identity(record, cached).to_dict()
-          if cached is not None
-          else None
-        ),
+        "cached_analyses": entries_payload,
       }
     )
 
@@ -355,10 +424,15 @@ class ExperimentRunner:
     self,
     record: SystemInput,
     cached: StructuredAnalysis,
+    *,
+    analysis_variant: str | None = None,
   ) -> AnalysisIdentity:
-    is_blind = is_context_blind_provenance(cached.analysis_provenance)
-    source_input = record.without_context() if is_blind else record
-    variant = "context_blind" if is_blind else "full_context"
+    if analysis_variant is None:
+      is_blind = is_context_blind_provenance(cached.analysis_provenance)
+      variant = "context_blind" if is_blind else "full_context"
+    else:
+      variant = analysis_variant
+    source_input = record.without_context() if variant == "context_blind" else record
     return build_analysis_identity(
       record_id=record.record_id,
       source_input=source_input,
@@ -366,31 +440,90 @@ class ExperimentRunner:
       analysis_variant=variant,
     )
 
+  def _entries_for_record(
+    self,
+    store: AnalysisCacheStore,
+    record: SystemInput,
+  ) -> list[AnalysisCacheEntry]:
+    entries: list[AnalysisCacheEntry] = []
+    for variant in sorted(("full_context", "context_blind")):
+      entry = store.get(AnalysisCacheKey(record.record_id, variant))
+      if entry is not None:
+        entries.append(entry)
+    return entries
+
   def _build_input_manifest(
     self,
     *,
     records: list[SystemInput],
-    cached_analyses: dict[str, StructuredAnalysis],
+    cached_analyses: AnalysisCacheStore | dict[Any, Any],
     systems: list[str],
     run_mode: str,
   ) -> tuple[dict[str, Any], dict[str, str]]:
+    compatibility = (
+      "reject_legacy" if run_mode == "official" else "legacy_as_full_context"
+    )
+    store = coerce_analysis_cache(cached_analyses, compatibility_mode=compatibility)
     record_entries: list[dict[str, Any]] = []
     fingerprints: dict[str, str] = {}
     for record in records:
-      cached = cached_analyses.get(record.record_id)
-      identity_hash = self._record_identity_hash(record, cached)
+      entries = self._entries_for_record(store, record)
+      identity_hash = self._record_identity_hash(record, entries)
       fingerprints[record.record_id] = identity_hash
+      cached_variant_payloads: list[dict[str, Any]] = []
+      for entry in entries:
+        try:
+          store.validate_entry_integrity(entry, record=record)
+        except SystemsContractError:
+          # Integrity failures are surfaced via coverage matrix; still record.
+          pass
+        identity = entry.analysis_identity or self._cached_analysis_identity(
+          record,
+          entry.analysis,
+          analysis_variant=entry.analysis_variant,
+        )
+        cached_variant_payloads.append(
+          {
+            "record_id": entry.record_id,
+            "analysis_variant": entry.analysis_variant,
+            "source_input_hash": entry.source_input_hash,
+            "analysis_content_hash": entry.analysis_content_hash,
+            "provider_id": entry.provider_id,
+            "provider_version": entry.provider_version,
+            "selected_base_model": entry.selected_base_model,
+            "selected_adapter": entry.selected_adapter,
+            "selected_model_strategy": entry.selected_model_strategy,
+            "prompt_contract_id": entry.prompt_contract_id,
+            "schema_version": entry.schema_version,
+            "analysis_provenance": entry.analysis_provenance,
+            "analysis_identity": identity.to_dict(),
+            "cached_analysis": entry.analysis.to_dict(),
+            "cached_analysis_fingerprint": entry.analysis.fingerprint(),
+          }
+        )
+      # Backward-compatible single-entry projection prefers full_context.
+      primary = next(
+        (e for e in entries if e.analysis_variant == "full_context"),
+        entries[0] if entries else None,
+      )
       entry: dict[str, Any] = {
         "record_id": record.record_id,
         "input": record.to_dict(),
         "input_fingerprint": record.fingerprint(),
         "ablated_input_fingerprint": record.without_context().fingerprint(),
-        "cached_analysis": cached.to_dict() if cached is not None else None,
-        "cached_analysis_fingerprint": cached.fingerprint() if cached is not None else None,
+        "cached_analyses": cached_variant_payloads,
+        "cached_analysis": primary.analysis.to_dict() if primary is not None else None,
+        "cached_analysis_fingerprint": (
+          primary.analysis.fingerprint() if primary is not None else None
+        ),
         "record_identity_hash": identity_hash,
       }
-      if cached is not None:
-        analysis_identity = self._cached_analysis_identity(record, cached)
+      if primary is not None:
+        analysis_identity = primary.analysis_identity or self._cached_analysis_identity(
+          record,
+          primary.analysis,
+          analysis_variant=primary.analysis_variant,
+        )
         entry["analysis_identity"] = analysis_identity.to_dict()
         entry["analysis_variant"] = analysis_identity.analysis_variant
         entry["source_input_hash"] = analysis_identity.source_input_hash
@@ -401,6 +534,13 @@ class ExperimentRunner:
         entry["source_input_hash"] = None
         entry["analysis_content_hash"] = None
       record_entries.append(entry)
+
+    coverage = build_coverage_matrix(
+      records=records,
+      systems=systems,
+      cache=store,
+      run_mode=run_mode,
+    )
     manifest = {
       "input_schema_version": SCHEMA_VERSION,
       "run_mode": run_mode,
@@ -408,6 +548,9 @@ class ExperimentRunner:
       "record_ordering_policy": RECORD_ORDERING_POLICY,
       "record_count": len(records),
       "records": record_entries,
+      "cached_analysis_entries": store.to_manifest_entries(),
+      "cache_store_fingerprint": store.fingerprint(),
+      "coverage_matrix": coverage.to_dict(),
     }
     return manifest, fingerprints
 
@@ -452,7 +595,7 @@ class ExperimentRunner:
     run_mode: str,
     systems: list[str],
     records: list[SystemInput],
-    cached_analyses: dict[str, StructuredAnalysis],
+    cached_analyses: AnalysisCacheStore | Mapping[Any, Any],
     results_path: Path,
   ) -> None:
     mismatches: list[str] = []
@@ -485,6 +628,10 @@ class ExperimentRunner:
     if result_hash_mismatches:
       mismatches.append(f"existing_result_hash:{sorted(result_hash_mismatches)}")
 
+    compatibility = (
+      "reject_legacy" if run_mode == "official" else "legacy_as_full_context"
+    )
+    store = coerce_analysis_cache(cached_analyses, compatibility_mode=compatibility)
     stored_fingerprints: dict[str, str] = existing_manifest.get("record_identity_fingerprints") or {}
     current_by_id = {r.record_id: r for r in records}
     completed_record_ids = {key.split("::", 1)[0] for key in completed_keys}
@@ -493,7 +640,7 @@ class ExperimentRunner:
       if record is None:
         mismatches.append(f"input_manifest:missing_completed_record:{record_id}")
         continue
-      fresh_fp = self._record_identity_hash(record, cached_analyses.get(record_id))
+      fresh_fp = self._record_identity_hash(record, self._entries_for_record(store, record))
       stored_fp = stored_fingerprints.get(record_id)
       if stored_fp is not None and stored_fp != fresh_fp:
         mismatches.append(f"input_manifest:record_changed:{record_id}")
@@ -524,7 +671,7 @@ class ExperimentRunner:
     *,
     config: dict[str, Any],
     records: list[SystemInput],
-    cached_analyses: dict[str, StructuredAnalysis] | None = None,
+    cached_analyses: AnalysisCacheStore | Mapping[Any, Any] | None = None,
     run_id: str | None = None,
     resume: bool = False,
     output_dir: Path | None = None,
@@ -535,7 +682,13 @@ class ExperimentRunner:
     config = self.validate_config(config)
     run_mode = config["run_mode"]
     systems = list(config.get("systems") or list(SYSTEM_IDS))
-    cached_analyses = cached_analyses or {}
+    compatibility = (
+      "reject_legacy" if run_mode == "official" else "legacy_as_full_context"
+    )
+    cache_store = coerce_analysis_cache(
+      cached_analyses or {},
+      compatibility_mode=compatibility,
+    )
 
     # Section F: protected-data gate. Refuse outright outside official mode;
     # synthetic and development runs must never process protected records.
@@ -561,7 +714,8 @@ class ExperimentRunner:
           prerequisites=prerequisites or OfficialPrerequisites(),
           systems=systems,
           protected_labels_in_prompts=protected_labels_in_prompts,
-          cached_analyses=cached_analyses,
+          cached_analyses=cache_store,
+          records=records,
         )
       except OfficialRunBlockedError as exc:
         missing.extend(exc.missing)
@@ -583,7 +737,7 @@ class ExperimentRunner:
     config_hash = sha256_json(config)
     input_manifest, record_fingerprints = self._build_input_manifest(
       records=records,
-      cached_analyses=cached_analyses,
+      cached_analyses=cache_store,
       systems=systems,
       run_mode=run_mode,
     )
@@ -606,7 +760,7 @@ class ExperimentRunner:
         run_mode=run_mode,
         systems=systems,
         records=records,
-        cached_analyses=cached_analyses,
+        cached_analyses=cache_store,
         results_path=results_path,
       )
 
@@ -660,7 +814,11 @@ class ExperimentRunner:
             continue
           system = self.registry[system_id]
           try:
-            cached = cached_analyses.get(record.record_id)
+            cached = resolve_cached_analysis_for_system(
+              cache_store,
+              record_id=record.record_id,
+              system_id=system_id,
+            )
             result: SystemResult = system.run(record, cached_analysis=cached)
             if result.execution_status in {"provider_unavailable", "not_executable"}:
               not_executable_count += 1

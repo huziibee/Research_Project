@@ -252,11 +252,19 @@ class RunStatusSemanticsTests(unittest.TestCase):
                 return None
 
             runner.check_official_gates = _ok  # type: ignore[method-assign]
+            from ambiguity_manager.systems.analysis_cache import migrate_legacy_cache
+
+            record = _non_synthetic_record()
+            typed_cache = migrate_legacy_cache(
+                {"real_1": analysis},
+                records=[record],
+                analysis_variant="full_context",
+            )
             try:
                 summary = runner.run(
                     config=_config(run_mode="official", systems=["always_execute"]),
-                    records=[_non_synthetic_record()],
-                    cached_analyses={"real_1": analysis},
+                    records=[record],
+                    cached_analyses=typed_cache,
                     prerequisites=prereq,
                     output_dir=tmp / "official_run",
                 )
