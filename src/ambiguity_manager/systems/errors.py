@@ -27,3 +27,39 @@ class OfficialRunBlockedError(RuntimeError):
 
 class DuplicateResultError(RuntimeError):
   """Raised when a runner would overwrite or duplicate a completed result."""
+
+
+class ResumeContractError(SystemsContractError):
+  """Raised when a resume request's identity does not match the original run.
+
+  A resume must be provably a continuation of the same run: same run_mode,
+  config, input manifest (for already-completed records), systems/versions,
+  provider/model identities, evaluator version, source commit, and an
+  existing-results/expected-matrix that is still internally consistent.
+  Any mismatch is refused rather than silently accepted.
+  """
+
+  def __init__(self, mismatches: list[str]) -> None:
+    self.mismatches = list(mismatches)
+    joined = "; ".join(self.mismatches) if self.mismatches else "unknown mismatch"
+    super().__init__(f"resume contract violated: {joined}")
+
+
+class ProtectedDataBlockedError(RuntimeError):
+  """Raised when a protected-data record is presented outside official mode."""
+
+  def __init__(self, record_id: str, run_mode: str) -> None:
+    self.record_id = record_id
+    self.run_mode = run_mode
+    super().__init__(
+      f"protected_data record {record_id!r} is blocked in run_mode={run_mode!r}; "
+      "protected records may only be processed in run_mode='official'"
+    )
+
+
+class ContextAblationError(SystemsContractError):
+  """Raised when context-blind execution would consume incompatible analysis."""
+
+
+class EvaluationContractError(SystemsContractError):
+  """Raised when evaluation inputs violate contract (duplicates, mixed overwrite)."""

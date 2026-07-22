@@ -34,6 +34,7 @@ class RouterDecision:
   clarification_targets: list[str] = field(default_factory=list)
   rejection_reason: str | None = None
   notes: list[str] = field(default_factory=list)
+  requires_re_evaluation: bool = False
 
   def to_dict(self) -> dict[str, Any]:
     return {
@@ -44,6 +45,7 @@ class RouterDecision:
       "clarification_targets": list(self.clarification_targets),
       "rejection_reason": self.rejection_reason,
       "notes": list(self.notes),
+      "requires_re_evaluation": self.requires_re_evaluation,
     }
 
 
@@ -55,7 +57,6 @@ def _clarification_targets(analysis: StructuredAnalysis) -> list[str]:
   targets = [u.slot_name for u in analysis.unresolved_slots]
   if not targets and analysis.ambiguity_types:
     targets = [t.value if isinstance(t, AmbiguityType) else str(t) for t in analysis.ambiguity_types]
-  # unique preserve order
   seen: set[str] = set()
   ordered: list[str] = []
   for item in targets:
@@ -73,8 +74,7 @@ def _has_hazard_identity_ambiguity(analysis: StructuredAnalysis) -> bool:
 
 
 def _is_prohibited(analysis: StructuredAnalysis) -> bool:
-  if analysis.speech_act == "prohibition":
-    return True
+  """Reject only when the requested action itself is unsafe/prohibited — not speech_act alone."""
   findings = " ".join(analysis.findings).lower()
   return "prohibited" in findings or "unsafe_action" in findings
 
@@ -86,6 +86,54 @@ def _dependent_compound(analysis: StructuredAnalysis) -> bool:
   return len(types) >= 2 and bool(_unresolved_critical(analysis))
 
 
+def _conditions_verified(analysis: StructuredAnalysis) -> bool:
+  blob = " ".join(analysis.findings).lower()
+  if "conditions_verified" in blob or "conditional_capability_verified" in blob:
+    return True
+  if any(
+    (e.note or "").lower() in {"conditions_verified", "conditional_capability_verified"}
+    for e in analysis.supporting_evidence
+  ):
+    return True
+  return False
+
+
+def _effective_risk(analysis: StructuredAnalysis) -> RiskLevel | None:
+  """Missing safety-relevant evidence becomes unknown; explicit NONE remains NONE."""
+  if analysis.risk_level is not None:
+    return analysis.risk_level
+  # Absent risk with unresolved critical / ambiguity / findings → unknown.
+  if analysis.risk_relevant or _unresolved_critical(analysis) or analysis.ambiguity_types:
+    return RiskLevel.UNKNOWN
+  # Truly clear absences stay None and are not treated as safe for execute.
+  return None
+
+
+def _effective_capability(analysis: StructuredAnalysis) -> CapabilityStatus | None:
+  if analysis.capability_status is not None:
+    return analysis.capability_status
+  return None
+
+
+def _multi_step_clarify_only(
+  *,
+  matched_rule_id: str,
+  considered: list[str],
+  targets: list[str],
+  notes: list[str] | None = None,
+) -> RouterDecision:
+  """MULTI_STEP without precommitting to execute; re-evaluation is mandatory."""
+  return RouterDecision(
+    recommended_strategy=RouteLabel.MULTI_STEP,
+    strategy_sequence=[RouteLabel.CLARIFY],
+    matched_rule_id=matched_rule_id,
+    considered_rules=considered,
+    clarification_targets=targets,
+    notes=list(notes or []) + ["requires_re_evaluation", "no_precommit_execute"],
+    requires_re_evaluation=True,
+  )
+
+
 class DeterministicRouter:
   def __init__(self, precedence: dict[str, Any] | None = None) -> None:
     self.precedence = precedence or load_route_precedence()
@@ -93,12 +141,12 @@ class DeterministicRouter:
   def route(self, analysis: StructuredAnalysis) -> RouterDecision:
     considered: list[str] = []
     unresolved = _unresolved_critical(analysis)
-    risk = analysis.risk_level
-    capability = analysis.capability_status
+    risk = _effective_risk(analysis)
+    capability = _effective_capability(analysis)
     targets = _clarification_targets(analysis)
     notes: list[str] = []
 
-    # Rank 1 — known unsafe/prohibited, unless hazard identity needs clarify first
+    # Rank 1 — known unsafe/prohibited (evidence-based; speech_act alone is insufficient)
     considered.append("known_unsafe_or_prohibited")
     if _is_prohibited(analysis) or (
       risk == RiskLevel.HIGH and "unsafe" in " ".join(analysis.findings).lower()
@@ -143,7 +191,28 @@ class DeterministicRouter:
         rejection_reason="known_incapability",
       )
 
-    # Rank 3 — hazard identity unresolved (single-decision clarify-before-reject)
+    # Unknown / missing capability fail-safe (before execute paths)
+    considered.append("unknown_or_unverified_capability")
+    if capability in (None, CapabilityStatus.UNKNOWN):
+      return RouterDecision(
+        recommended_strategy=RouteLabel.CLARIFY,
+        strategy_sequence=[],
+        matched_rule_id="unknown_capability",
+        considered_rules=considered,
+        clarification_targets=targets or unresolved or ["capability"],
+        notes=["unknown_capability_cannot_execute"],
+      )
+    if capability == CapabilityStatus.CONDITIONAL and not _conditions_verified(analysis):
+      return RouterDecision(
+        recommended_strategy=RouteLabel.CLARIFY,
+        strategy_sequence=[],
+        matched_rule_id="unverified_conditional_capability",
+        considered_rules=considered,
+        clarification_targets=targets or unresolved or ["conditions"],
+        notes=["conditional_capability_requires_verified_conditions"],
+      )
+
+    # Rank 3 — hazard identity unresolved
     considered.append("hazard_identity_unresolved")
     if _has_hazard_identity_ambiguity(analysis) and unresolved and not _dependent_compound(analysis):
       return RouterDecision(
@@ -154,17 +223,14 @@ class DeterministicRouter:
         clarification_targets=targets or unresolved,
       )
 
-    # Rank 4 — critical unresolved medium/high risk
+    # Rank 4 — critical unresolved medium/high risk (no execute precommit)
     considered.append("critical_unresolved_medium_high_risk")
     if unresolved and risk in (RiskLevel.MEDIUM, RiskLevel.HIGH):
       if _dependent_compound(analysis):
-        sequence = [RouteLabel.CLARIFY, RouteLabel.EXECUTE]
-        return RouterDecision(
-          recommended_strategy=RouteLabel.MULTI_STEP,
-          strategy_sequence=sequence,
+        return _multi_step_clarify_only(
           matched_rule_id="critical_unresolved_medium_high_risk",
-          considered_rules=considered,
-          clarification_targets=targets or unresolved,
+          considered=considered,
+          targets=targets or unresolved,
           notes=["never_silently_resolve_medium_high_risk"],
         )
       return RouterDecision(
@@ -176,43 +242,45 @@ class DeterministicRouter:
         notes=["never_silently_resolve_medium_high_risk"],
       )
 
-    # Unknown risk affecting safety
-    if risk == RiskLevel.UNKNOWN and (analysis.risk_relevant or unresolved):
-      considered.append("unknown_safety_risk")
+    # Unknown / missing risk fail-safe
+    considered.append("unknown_safety_risk")
+    if risk in (None, RiskLevel.UNKNOWN):
+      # Missing risk is never treated as safe for silent resolve or execute.
       if _dependent_compound(analysis):
-        return RouterDecision(
-          recommended_strategy=RouteLabel.MULTI_STEP,
-          strategy_sequence=[RouteLabel.CLARIFY, RouteLabel.EXECUTE],
+        return _multi_step_clarify_only(
           matched_rule_id="unknown_safety_risk",
-          considered_rules=considered,
-          clarification_targets=targets or unresolved,
+          considered=considered,
+          targets=targets or unresolved or ["risk"],
+          notes=["unknown_risk_cannot_execute"],
         )
       return RouterDecision(
         recommended_strategy=RouteLabel.CLARIFY,
         strategy_sequence=[],
         matched_rule_id="unknown_safety_risk",
         considered_rules=considered,
-        clarification_targets=targets or unresolved,
+        clarification_targets=targets or unresolved or ["risk"],
+        notes=["unknown_risk_cannot_execute", "unknown_risk_cannot_silently_resolve"],
       )
 
     # Rank 5 — dependent compound
     considered.append("dependent_compound_ambiguities")
     if _dependent_compound(analysis):
-      return RouterDecision(
-        recommended_strategy=RouteLabel.MULTI_STEP,
-        strategy_sequence=[RouteLabel.CLARIFY, RouteLabel.SILENTLY_RESOLVE],
+      return _multi_step_clarify_only(
         matched_rule_id="dependent_compound_ambiguities",
-        considered_rules=considered,
-        clarification_targets=targets or unresolved,
+        considered=considered,
+        targets=targets or unresolved,
+        notes=["later_silent_resolve_only_after_re_evaluation"],
       )
 
     # Rank 6 — unique low-risk resolvable
     considered.append("unique_low_risk_resolvable")
     if (
       analysis.resolved_slots
-      and risk in (None, RiskLevel.NONE, RiskLevel.LOW)
+      and risk in (RiskLevel.NONE, RiskLevel.LOW)
       and not unresolved
       and (analysis.ambiguity_present or analysis.ambiguity_types)
+      and capability in (CapabilityStatus.CAPABLE, CapabilityStatus.CONDITIONAL)
+      and (capability != CapabilityStatus.CONDITIONAL or _conditions_verified(analysis))
     ):
       return RouterDecision(
         recommended_strategy=RouteLabel.SILENTLY_RESOLVE,
@@ -222,14 +290,17 @@ class DeterministicRouter:
         notes=["requires_resolved_slots"],
       )
 
-    # Rank 7 — clear safe capable
+    # Rank 7 — clear safe capable (explicit positive support only; None is not safe)
     considered.append("clear_safe_capable")
     if (
       not unresolved
       and not analysis.ambiguity_present
       and not analysis.ambiguity_types
-      and risk in (None, RiskLevel.NONE, RiskLevel.LOW)
-      and capability in (None, CapabilityStatus.CAPABLE, CapabilityStatus.CONDITIONAL)
+      and risk in (RiskLevel.NONE, RiskLevel.LOW)
+      and (
+        capability == CapabilityStatus.CAPABLE
+        or (capability == CapabilityStatus.CONDITIONAL and _conditions_verified(analysis))
+      )
     ):
       return RouterDecision(
         recommended_strategy=RouteLabel.EXECUTE,
@@ -251,27 +322,59 @@ class DeterministicRouter:
 
   def validate_decision(self, decision: RouterDecision, analysis: StructuredAnalysis) -> None:
     strategy = decision.recommended_strategy
-    if strategy == RouteLabel.SILENTLY_RESOLVE and not analysis.resolved_slots and not decision.notes:
-      # caller must supply resolved slots on analysis
-      if not analysis.resolved_slots:
-        raise SystemsContractError("silently_resolve requires resolved slot values")
+    if strategy == RouteLabel.SILENTLY_RESOLVE and not analysis.resolved_slots:
+      raise SystemsContractError("silently_resolve requires resolved slot values")
+    if strategy == RouteLabel.SILENTLY_RESOLVE and _effective_risk(analysis) in (
+      None,
+      RiskLevel.UNKNOWN,
+    ):
+      raise SystemsContractError("silently_resolve blocked under unknown risk")
     if strategy == RouteLabel.EXECUTE and _unresolved_critical(analysis):
       raise SystemsContractError("execute blocked with unresolved critical safety slots")
-    if strategy == RouteLabel.MULTI_STEP and len(decision.strategy_sequence) < 2:
-      raise SystemsContractError("multi_step requires strategy_sequence length >= 2")
+    if strategy == RouteLabel.EXECUTE and _effective_risk(analysis) in (None, RiskLevel.UNKNOWN):
+      raise SystemsContractError("execute blocked under unknown risk")
+    if strategy == RouteLabel.EXECUTE and _effective_capability(analysis) in (
+      None,
+      CapabilityStatus.UNKNOWN,
+    ):
+      raise SystemsContractError("execute blocked under unknown capability")
+    if strategy == RouteLabel.EXECUTE and analysis.capability_status == CapabilityStatus.CONDITIONAL:
+      if not _conditions_verified(analysis):
+        raise SystemsContractError("execute blocked under unverified conditional capability")
+    if strategy == RouteLabel.MULTI_STEP:
+      if not decision.strategy_sequence:
+        raise SystemsContractError("multi_step requires a non-empty strategy_sequence")
+      if RouteLabel.EXECUTE in decision.strategy_sequence and _unresolved_critical(analysis):
+        raise SystemsContractError(
+          "impossible strategy sequence: execute precommit with unresolved critical slots"
+        )
+      if not decision.requires_re_evaluation and RouteLabel.CLARIFY in decision.strategy_sequence:
+        # Allow legacy multi-step only when re-evaluation is explicit for clarify-first plans.
+        if any(
+          s in (RouteLabel.EXECUTE, RouteLabel.SILENTLY_RESOLVE) for s in decision.strategy_sequence[1:]
+        ):
+          raise SystemsContractError(
+            "multi_step clarify plans require requires_re_evaluation before later actions"
+          )
     if strategy == RouteLabel.CLARIFY and not decision.clarification_targets:
       raise SystemsContractError("clarify requires clarification targets")
     if strategy == RouteLabel.FACE_PRESERVING_REJECTION and not decision.rejection_reason:
       raise SystemsContractError("rejection requires a rejection reason")
-    # refuse impossible sequences
     if RouteLabel.SILENTLY_RESOLVE in decision.strategy_sequence:
       if analysis.risk_level in (RiskLevel.MEDIUM, RiskLevel.HIGH) and _unresolved_critical(analysis):
-        raise SystemsContractError("impossible strategy sequence: silent resolve under unresolved medium/high risk")
+        raise SystemsContractError(
+          "impossible strategy sequence: silent resolve under unresolved medium/high risk"
+        )
 
 
 def apply_router_decision(analysis: StructuredAnalysis, decision: RouterDecision) -> StructuredAnalysis:
-  analysis.recommended_strategy = decision.recommended_strategy
-  analysis.strategy_sequence = list(decision.strategy_sequence)
-  analysis.clarification_targets = list(decision.clarification_targets)
-  analysis.rejection_reason = decision.rejection_reason
-  return analysis
+  from ambiguity_manager.systems.analysis import analysis_from_cached
+
+  working = analysis_from_cached(analysis)
+  working.recommended_strategy = decision.recommended_strategy
+  working.strategy_sequence = list(decision.strategy_sequence)
+  working.clarification_targets = list(decision.clarification_targets)
+  working.rejection_reason = decision.rejection_reason
+  if decision.requires_re_evaluation:
+    working.findings = list(working.findings) + ["requires_re_evaluation"]
+  return working

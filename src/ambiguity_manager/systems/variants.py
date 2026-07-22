@@ -349,23 +349,56 @@ class ContextBlindManagerSystem(ComparisonSystem):
     *,
     cached_analysis: StructuredAnalysis | None = None,
   ) -> SystemResult:
-    original = system_input
+    from ambiguity_manager.systems.analysis import (
+      attach_ablation_provenance,
+      validate_context_blind_cache,
+    )
+    from ambiguity_manager.systems.errors import ContextAblationError
+
+    original_snapshot = system_input.to_dict()
     blinded = system_input.without_context()
-    # Ensure original not mutated.
-    assert original.scene_context == system_input.scene_context
+    ablated_hash = blinded.fingerprint()
     manager = self.inner or FullManager(
       system_id=self.system_id,
       system_version=self.system_version,
       analysis_provider=self.analysis_provider,
     )
-    # If cached analysis provided, strip context-dependent resolved slots that relied on context.
-    analysis = copy.deepcopy(cached_analysis) if cached_analysis is not None else None
-    if analysis is not None and not self.analysis_provider:
-      # Re-run manager pieces with blinded input and cached analysis as starting point.
-      manager.analysis_provider = None
-      result = manager.run(blinded, cached_analysis=analysis)
-    else:
-      result = manager.run(blinded, cached_analysis=analysis)
+
+    analysis: StructuredAnalysis | None = None
+    rejected_full_context_cache = False
+    if cached_analysis is not None:
+      # Reject full-context cache; accept only matching context_blind provenance.
+      try:
+        analysis = validate_context_blind_cache(cached_analysis, ablated_input=blinded)
+      except ContextAblationError:
+        rejected_full_context_cache = True
+        if self.analysis_provider is not None:
+          analysis = None
+        else:
+          # Synthetic/development path without a live provider: strip
+          # context-derived resolutions rather than silently consuming them.
+          from ambiguity_manager.systems.analysis import strip_context_dependent_fields
+
+          analysis = attach_ablation_provenance(
+            strip_context_dependent_fields(cached_analysis),
+            ablated_input=blinded,
+          )
+
+    if analysis is None:
+      if self.analysis_provider is not None:
+        fresh = self.analysis_provider.analyse(blinded)
+        analysis = attach_ablation_provenance(fresh, ablated_input=blinded)
+        manager.analysis_provider = None
+      else:
+        raise ProviderUnavailableError(
+          "context_blind_analysis",
+          "context-blind manager requires a matching context_blind cache or live provider",
+        )
+
+    result = manager.run(blinded, cached_analysis=analysis)
+    # Ensure original input was not mutated.
+    if system_input.to_dict() != original_snapshot:
+      raise AssertionError("context-blind manager mutated original SystemInput")
     result.system_id = self.system_id
     result.system_version = self.system_version
     result.runtime_metadata = {
@@ -374,8 +407,13 @@ class ContextBlindManagerSystem(ComparisonSystem):
         "dialogue_history_removed": True,
         "scene_context_removed": True,
         "capability_context_removed": True,
+        "ablated_input_hash": ablated_hash,
+        "rejected_full_context_cache": rejected_full_context_cache,
+        "stripped_context_derived_fields": rejected_full_context_cache
+        and self.analysis_provider is None,
       },
       "original_input_unmutated": True,
+      "analysis_identity": result.analysis.fingerprint(),
     }
     return result.with_computed_hash()
 

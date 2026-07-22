@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+import re
 from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any
@@ -18,6 +19,108 @@ def load_safety_policy(path: Path | None = None) -> dict[str, Any]:
   if path is None:
     path = ProjectPaths.from_repo_root().configs / "manager" / "safety_policy_v1.json"
   return json.loads(path.read_text(encoding="utf-8"))
+
+
+_TEMPLATE_VOCABULARY = frozenset(
+  {
+    "which",
+    "should",
+    "before",
+    "please",
+    "sorry",
+    "could",
+    "would",
+    "what",
+    "when",
+    "where",
+    "who",
+    "whom",
+    "whose",
+    "how",
+    "can",
+    "may",
+    "might",
+    "must",
+    "shall",
+    "will",
+    "need",
+    "clarify",
+    "continue",
+    "like",
+    "mean",
+    "object",
+    "tool",
+    "destination",
+    "action",
+    "condition",
+    "constraint",
+    "recipient",
+    "handle",
+    "perform",
+    "place",
+    "move",
+    "that",
+    "this",
+    "those",
+    "these",
+    "there",
+    "here",
+    "with",
+    "from",
+    "into",
+    "onto",
+    "about",
+    "your",
+    "you",
+    "the",
+    "and",
+    "or",
+    "for",
+    "not",
+    "do",
+    "does",
+    "did",
+    "have",
+    "has",
+    "had",
+    "been",
+    "being",
+    "are",
+    "is",
+    "was",
+    "were",
+    "am",
+    "i",
+    "me",
+    "my",
+    "we",
+    "us",
+    "our",
+    "they",
+    "them",
+    "their",
+    "it",
+    "its",
+    "a",
+    "an",
+    "to",
+    "of",
+    "in",
+    "on",
+    "at",
+    "by",
+    "as",
+    "if",
+    "then",
+    "else",
+    "item",
+    "safe",
+    "follow",
+    "respect",
+    "use",
+    "many",
+  }
+)
 
 
 @dataclass
@@ -99,6 +202,9 @@ class SafetyEnforcer:
     unresolved_critical = [
       u.slot_name for u in analysis.unresolved_slots if u.slot_name in CRITICAL_SLOTS
     ]
+    requires_re_eval = bool(decision.requires_re_evaluation) if decision is not None else (
+      "requires_re_evaluation" in " ".join(analysis.findings)
+    )
 
     if route == RouteLabel.SILENTLY_RESOLVE:
       if not resolved:
@@ -115,14 +221,19 @@ class SafetyEnforcer:
             message="silent resolution without evidence",
           )
         )
-      if analysis.risk_level in (RiskLevel.MEDIUM, RiskLevel.HIGH) and unresolved_critical:
-        findings.append(
-          SafetyFinding(
-            finding_type="unsafe_silent_resolution",
-            message="high-risk unresolved slot under silent resolve",
-            details={"unresolved": unresolved_critical},
+      if analysis.risk_level in (RiskLevel.MEDIUM, RiskLevel.HIGH, RiskLevel.UNKNOWN, None) and (
+        unresolved_critical or analysis.risk_level in (RiskLevel.UNKNOWN, None)
+      ):
+        if analysis.risk_level in (RiskLevel.UNKNOWN, None) or (
+          analysis.risk_level in (RiskLevel.MEDIUM, RiskLevel.HIGH) and unresolved_critical
+        ):
+          findings.append(
+            SafetyFinding(
+              finding_type="unsafe_silent_resolution",
+              message="silent resolve blocked under unknown or elevated unresolved risk",
+              details={"unresolved": unresolved_critical},
+            )
           )
-        )
 
     if route == RouteLabel.EXECUTE and unresolved_critical:
       findings.append(
@@ -130,6 +241,23 @@ class SafetyEnforcer:
           finding_type="unresolved_critical_execution",
           message="execute with unresolved critical slots",
           details={"unresolved": unresolved_critical},
+        )
+      )
+    if route == RouteLabel.EXECUTE and analysis.risk_level in (RiskLevel.UNKNOWN, None):
+      findings.append(
+        SafetyFinding(
+          finding_type="unknown_risk_execution",
+          message="execute blocked under unknown risk",
+        )
+      )
+    if route == RouteLabel.EXECUTE and analysis.capability_status in (
+      CapabilityStatus.UNKNOWN,
+      None,
+    ):
+      findings.append(
+        SafetyFinding(
+          finding_type="unknown_capability_execution",
+          message="execute blocked under unknown capability",
         )
       )
 
@@ -150,11 +278,29 @@ class SafetyEnforcer:
       )
 
     if route == RouteLabel.MULTI_STEP:
-      if len(sequence or []) < 2:
+      if not sequence:
         findings.append(
           SafetyFinding(
             finding_type="strategy_sequence_violation",
-            message="multi_step requires strategy_sequence length >= 2",
+            message="multi_step requires a non-empty strategy_sequence",
+          )
+        )
+      if RouteLabel.EXECUTE in (sequence or []) and unresolved_critical:
+        findings.append(
+          SafetyFinding(
+            finding_type="strategy_sequence_violation",
+            message="precommitted execute before clarification is resolved",
+            details={"sequence": [s.value for s in (sequence or [])]},
+          )
+        )
+      if (
+        any(s in (RouteLabel.EXECUTE, RouteLabel.SILENTLY_RESOLVE) for s in (sequence or [])[1:])
+        and not requires_re_eval
+      ):
+        findings.append(
+          SafetyFinding(
+            finding_type="strategy_sequence_violation",
+            message="later action without requires_re_evaluation boundary",
           )
         )
       if RouteLabel.SILENTLY_RESOLVE in (sequence or []) and analysis.risk_level in (
@@ -184,32 +330,48 @@ class SafetyEnforcer:
     analysis: StructuredAnalysis,
     system_command: str,
   ) -> list[SafetyFinding]:
+    """Domain-grounded specificity check; ignore sentence-initial capitalisation false positives."""
     findings: list[SafetyFinding] = []
     if not text:
       return findings
-    # Detect invented proper nouns not present in command/candidates/resolved values.
-    allowed = {system_command.lower()}
+
+    allowed_blobs = {system_command.lower()}
     for cand in analysis.candidate_interpretations:
       if cand.text:
-        allowed.add(cand.text.lower())
+        allowed_blobs.add(cand.text.lower())
       for name in CRITICAL_SLOTS:
         slot = getattr(cand.cpc, name)
         if slot.value:
-          allowed.add(slot.value.lower())
+          allowed_blobs.add(str(slot.value).lower())
     for resolved in analysis.resolved_slots:
-      allowed.add(resolved.value.lower())
-    tokens = [t.strip(".,?!") for t in text.split() if t[:1].isupper() and len(t) > 3]
-    for token in tokens:
-      if token.lower() not in " ".join(allowed) and token.lower() not in {
-        "which",
-        "should",
-        "before",
-        "please",
-        "sorry",
-      }:
-        # Only flag if token looks like an entity and is absent from allowed blobs.
-        blob = " ".join(allowed)
-        if token.lower() not in blob:
+      allowed_blobs.add(resolved.value.lower())
+    for target in analysis.clarification_targets:
+      allowed_blobs.add(target.replace("_", " ").lower())
+    allowed_blob = " ".join(sorted(allowed_blobs))
+    allowed_tokens = set(re.findall(r"[a-z0-9]+", allowed_blob))
+    allowed_tokens |= set(_TEMPLATE_VOCABULARY)
+
+    raw_tokens = [t.strip(".,?!:;\"'()[]") for t in text.split() if t.strip(".,?!:;\"'()[]")]
+    for idx, token in enumerate(raw_tokens):
+      lower = token.lower()
+      if lower in allowed_tokens or lower in allowed_blob:
+        continue
+      if lower in _TEMPLATE_VOCABULARY:
+        continue
+      # Ignore sentence-initial capitalisation of auxiliaries/question words/pronouns.
+      if idx == 0 or (idx > 0 and raw_tokens[idx - 1].endswith((".", "?", "!"))):
+        if lower in _TEMPLATE_VOCABULARY or not token[:1].isupper():
+          continue
+        # Still inspect sentence-initial tokens only if they look like multi-char proper nouns
+        # absent from all grounded evidence — but skip common function words already filtered.
+      # Flag invented entities: capitalised content words OR multi-word proper-looking tokens
+      # not present in command/candidates/templates.
+      looks_entity = token[:1].isupper() and len(token) > 3 and lower not in _TEMPLATE_VOCABULARY
+      invented_alt = lower in {"left", "right"} and (
+        "left" not in allowed_blob and "right" not in allowed_blob
+      )
+      if looks_entity or invented_alt:
+        if lower not in allowed_blob and lower not in allowed_tokens:
           findings.append(
             SafetyFinding(
               finding_type="extra_specificity",
@@ -232,12 +394,13 @@ class SafetyEnforcer:
     findings.extend(self.check_response_specificity(response_text, analysis, command))
     reject = self.fail_closed and any(f.severity == "error" for f in findings)
     action = "reject_result" if reject else "return_with_findings"
-    # Hard fail-closed only for critical finding types
     critical_types = {
       "unsafe_silent_resolution",
       "unresolved_critical_execution",
       "capability_overcommitment",
       "strategy_sequence_violation",
+      "unknown_risk_execution",
+      "unknown_capability_execution",
     }
     if self.fail_closed and any(f.finding_type in critical_types for f in findings):
       reject = True

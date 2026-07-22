@@ -162,6 +162,9 @@ class SystemInput:
       extra=copy.deepcopy(extra),
     )
 
+  def fingerprint(self) -> str:
+    return sha256_json(self.to_dict())
+
   def without_context(self) -> "SystemInput":
     """Return a copy with dialogue/scene/capability context removed."""
     return SystemInput(
@@ -184,6 +187,10 @@ class SystemInput:
         },
       },
     )
+
+  def fingerprint(self) -> str:
+    """Canonical content hash of the full SystemInput (no volatile timestamps)."""
+    return sha256_json(self.to_dict())
 
 
 @dataclass

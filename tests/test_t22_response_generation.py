@@ -32,7 +32,9 @@ class T22ResponseGenerationTests(unittest.TestCase):
 
         text = generate_clarification(analysis, ["object"])
 
-        self.assertEqual(text, "Which mug do you mean?")
+        self.assertIn("red mug", text)
+        self.assertIn("blue mug", text)
+        self.assertNotIn("left or right", text)
 
     def test_clarification_deduplicates_targets_and_skips_resolved_ones(self) -> None:
         analysis = StructuredAnalysis(
@@ -42,8 +44,8 @@ class T22ResponseGenerationTests(unittest.TestCase):
 
         text = generator.generate_clarification(analysis, ["object", "object", "destination", "destination"])
 
-        self.assertEqual(text, "Should I place it on the left or right table?")
-
+        self.assertEqual(text, "Could you clarify the destination?")
+        self.assertNotIn("left or right", text)
     def test_face_preserving_rejection_is_used(self) -> None:
         analysis = StructuredAnalysis()
 

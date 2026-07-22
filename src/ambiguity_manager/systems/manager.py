@@ -6,6 +6,7 @@ from dataclasses import dataclass, field
 from typing import Any
 
 from ambiguity_manager.schema.v2.taxonomies import RouteLabel
+from ambiguity_manager.systems.analysis import analysis_from_cached
 from ambiguity_manager.systems.classification import apply_classification_aggregate, derive_ambiguity_fields
 from ambiguity_manager.systems.context_resolution import ContextResolver
 from ambiguity_manager.systems.contracts import StructuredAnalysis, SystemInput, SystemResult
@@ -46,10 +47,12 @@ class FullManager:
     cached_analysis: StructuredAnalysis | None = None,
   ) -> SystemResult:
     if cached_analysis is not None:
-      analysis = cached_analysis
+      # Treat cached analysis as immutable input.
+      analysis = analysis_from_cached(cached_analysis)
       provider_prov = {"provider_id": "cached_analysis", "provider_version": "1.0.0"}
     elif self.analysis_provider is not None:
-      analysis = self.analysis_provider.analyse(system_input)
+      # Provider returns a copy; still isolate the working object.
+      analysis = analysis_from_cached(self.analysis_provider.analyse(system_input))
       provider_prov = {
         "provider_id": getattr(self.analysis_provider, "provider_id", "analysis_provider"),
         "provider_version": getattr(self.analysis_provider, "provider_version", "unknown"),
@@ -60,7 +63,7 @@ class FullManager:
         "full manager requires a configured analysis provider or cached analysis",
       )
 
-    # Context resolution before routing
+    # Context resolution before routing (resolver.apply returns a new working copy).
     resolution = self.resolver.resolve(system_input, analysis)
     analysis = self.resolver.apply(analysis, resolution)
 
@@ -83,7 +86,6 @@ class FullManager:
         )
 
     decision = self.router.route(analysis)
-    # Validate soft constraints where possible; safety layer records hard findings.
     try:
       self.router.validate_decision(decision, analysis)
     except Exception as exc:  # noqa: BLE001 - convert to safety finding path
@@ -100,7 +102,6 @@ class FullManager:
       rejection_text = generate_rejection(
         analysis, decision.rejection_reason or "capability_limitation"
       )
-      # Keep structured reason; surface text goes to runtime metadata.
     elif decision.recommended_strategy == RouteLabel.MULTI_STEP:
       if RouteLabel.CLARIFY in decision.strategy_sequence:
         clarification_question = generate_clarification(analysis, decision.clarification_targets)
@@ -134,8 +135,10 @@ class FullManager:
         "uncertainty": uncertainty.to_dict() if uncertainty else None,
         "rejection_text": rejection_text,
         "safety_action": enforcement.action,
+        "requires_re_evaluation": decision.requires_re_evaluation,
         "awaits_t28_adapter": True,
       },
+      # Runner owns official/synthetic flags; adapters must not override validated mode.
       synthetic_only=self.synthetic_only,
       official_result=False,
     )

@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import copy
 from dataclasses import dataclass, field
 from typing import Any, Protocol, runtime_checkable
 
@@ -80,7 +81,8 @@ class DeterministicAnalysisProvider:
         self.provider_id,
         f"no deterministic analysis for record_id={system_input.record_id}",
       )
-    return self.analyses_by_record[system_input.record_id]
+    # Never expose mutable provider-held state.
+    return copy.deepcopy(self.analyses_by_record[system_input.record_id])
 
 
 @dataclass
@@ -95,9 +97,9 @@ class DeterministicCandidateProvider:
     initial_analysis: StructuredAnalysis | None = None,
   ) -> StructuredAnalysis:
     if system_input.record_id in self.analyses_by_record:
-      return self.analyses_by_record[system_input.record_id]
+      return copy.deepcopy(self.analyses_by_record[system_input.record_id])
     if initial_analysis is not None:
-      return initial_analysis
+      return copy.deepcopy(initial_analysis)
     raise ProviderUnavailableError(
       self.provider_id,
       f"no candidate analysis for record_id={system_input.record_id}",

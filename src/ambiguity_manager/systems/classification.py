@@ -77,7 +77,18 @@ def apply_classification_aggregate(
     analysis.risk_level = RiskLevel(aggregate.risk_level)
   if analysis.capability_status is None and aggregate.capability_status:
     analysis.capability_status = CapabilityStatus(aggregate.capability_status)
-  analysis.risk_relevant = analysis.risk_level not in (None, RiskLevel.NONE)
+  # Missing risk is not "none"; treat absence as safety-relevant unknown when noted.
+  if analysis.risk_level is None:
+    analysis.risk_level = RiskLevel.UNKNOWN
+    analysis.risk_relevant = True
+    analysis.findings = list(analysis.findings) + ["risk_missing_treated_as_unknown"]
+  elif analysis.risk_level == RiskLevel.UNKNOWN:
+    analysis.risk_relevant = True
+  else:
+    analysis.risk_relevant = analysis.risk_level not in (RiskLevel.NONE,)
+  if analysis.capability_status is None:
+    analysis.capability_status = CapabilityStatus.UNKNOWN
+    analysis.findings = list(analysis.findings) + ["capability_missing_treated_as_unknown"]
   return analysis
 
 

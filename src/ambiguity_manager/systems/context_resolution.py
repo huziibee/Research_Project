@@ -64,14 +64,30 @@ class ResolutionResult:
     }
 
 
-_REFERENT_RE = re.compile(r"(?:objects?|referents?)\s*[:=]\s*([^;\n]+)", re.IGNORECASE)
-_DEST_RE = re.compile(r"(?:destinations?|locations?)\s*[:=]\s*([^;\n]+)", re.IGNORECASE)
-_MENTION_RE = re.compile(r"(?:object|destination|tool)\s*[:=]\s*([A-Za-z0-9_\- ]+)", re.IGNORECASE)
+_OBJECT_RE = re.compile(r"(?:^|[;\n])\s*objects?\s*[:=]\s*([^;\n]+)", re.IGNORECASE)
+_DEST_RE = re.compile(r"(?:^|[;\n])\s*destinations?\s*[:=]\s*([^;\n]+)", re.IGNORECASE)
+_TOOL_RE = re.compile(r"(?:^|[;\n])\s*tools?\s*[:=]\s*([^;\n]+)", re.IGNORECASE)
+_OBJECT_MENTION_RE = re.compile(r"(?:^|[|;])\s*object\s*[:=]\s*([^|;]+)", re.IGNORECASE)
+_DEST_MENTION_RE = re.compile(r"(?:^|[|;])\s*destination\s*[:=]\s*([^|;]+)", re.IGNORECASE)
+_TOOL_MENTION_RE = re.compile(r"(?:^|[|;])\s*tool\s*[:=]\s*([^|;]+)", re.IGNORECASE)
 
 
 def _split_values(blob: str) -> list[str]:
-  parts = [p.strip() for p in re.split(r"[,|/]", blob) if p.strip()]
-  return parts
+  return [p.strip() for p in re.split(r"[,|/]", blob) if p.strip()]
+
+
+def _command_compatible(value: str, command: str) -> bool:
+  """Require token overlap between candidate value and command (no unconditional bypass)."""
+  cmd = command.lower()
+  val = value.lower().strip()
+  if not val:
+    return False
+  if val in cmd:
+    return True
+  tokens = [t for t in re.split(r"\s+", val) if len(t) > 2]
+  if not tokens:
+    return val in cmd
+  return any(t in cmd for t in tokens)
 
 
 class ContextResolver:
@@ -91,7 +107,31 @@ class ContextResolver:
     evidence: list[EvidenceRef] = list(analysis.resolution_evidence)
     risk = analysis.risk_level
     block_levels = set(self.policy.get("block_silent_resolve_risk_levels", []))
-    targets = target_slots or [u.slot_name for u in unresolved] or ["object", "destination"]
+    already_filled = {r.slot_name: r for r in resolved}
+
+    # Only process explicitly unresolved / resolution-eligible slots.
+    if target_slots is not None:
+      targets = list(target_slots)
+    else:
+      targets = [u.slot_name for u in unresolved]
+    # De-duplicate targets while preserving order.
+    seen_targets: set[str] = set()
+    ordered_targets: list[str] = []
+    for slot in targets:
+      if slot in seen_targets:
+        continue
+      seen_targets.add(slot)
+      ordered_targets.append(slot)
+    targets = ordered_targets
+
+    if not targets:
+      return ResolutionResult(
+        events=events,
+        resolved_slots=resolved,
+        unresolved_slots=unresolved,
+        resolution_evidence=evidence,
+        resolution_method=None,
+      )
 
     if risk is not None and risk.value in block_levels and risk != RiskLevel.LOW:
       for slot in targets:
@@ -121,38 +161,117 @@ class ContextResolver:
     capability = system_input.capability_context or ""
     approved_defaults = self.policy.get("approved_defaults", {}) or {}
 
+    def _record_resolved(
+      slot: str,
+      value: str,
+      *,
+      source: str,
+      rule_id: str,
+      confidence: str,
+    ) -> None:
+      nonlocal unresolved
+      if slot in already_filled:
+        existing = already_filled[slot]
+        if existing.value != value:
+          events.append(
+            ResolutionEvent(
+              slot=slot,
+              previous_status="filled",
+              outcome="conflicting_context",
+              resolved_value=None,
+              evidence_source=source,
+              rule_id=rule_id,
+              confidence_category="none",
+              safety_eligibility=False,
+              details={
+                "existing_value": existing.value,
+                "candidate_value": value,
+                "reason": "refusing_overwrite_of_supported_value",
+              },
+            )
+          )
+        else:
+          events.append(
+            ResolutionEvent(
+              slot=slot,
+              previous_status="filled",
+              outcome="already_resolved",
+              resolved_value=existing.value,
+              evidence_source=source,
+              rule_id=rule_id,
+              confidence_category=confidence,
+              safety_eligibility=True,
+              details={"reason": "duplicate_resolution_suppressed"},
+            )
+          )
+        return
+      if any(r.slot_name == slot for r in resolved):
+        events.append(
+          ResolutionEvent(
+            slot=slot,
+            previous_status="resolved",
+            outcome="duplicate_suppressed",
+            resolved_value=value,
+            evidence_source=source,
+            rule_id=rule_id,
+            confidence_category="none",
+            safety_eligibility=False,
+          )
+        )
+        return
+      events.append(
+        ResolutionEvent(
+          slot=slot,
+          previous_status="unresolved",
+          outcome="resolved",
+          resolved_value=value,
+          evidence_source=source,
+          rule_id=rule_id,
+          confidence_category=confidence,
+          safety_eligibility=True,
+        )
+      )
+      item = ResolvedSlotValue(slot_name=slot, value=value)
+      resolved.append(item)
+      already_filled[slot] = item
+      evidence.append(EvidenceRef(source=source, span=value, note=rule_id))
+      unresolved = [u for u in unresolved if u.slot_name != slot]
+
     for slot in targets:
-      previous = "unresolved"
       if slot == "object":
-        match = _REFERENT_RE.search(scene)
+        match = _OBJECT_RE.search(scene)
         if match:
           values = _split_values(match.group(1))
           if len(values) == 1:
             value = values[0]
-            if value.lower() in system_input.command.lower() or True:
-              events.append(
-                ResolutionEvent(
-                  slot=slot,
-                  previous_status=previous,
-                  outcome="resolved",
-                  resolved_value=value,
-                  evidence_source="scene_context",
-                  rule_id="unique_scene_referent",
-                  confidence_category="high",
-                  safety_eligibility=True,
-                )
+            if _command_compatible(value, system_input.command):
+              _record_resolved(
+                slot,
+                value,
+                source="scene_context",
+                rule_id="unique_scene_referent",
+                confidence="high",
               )
-              resolved.append(ResolvedSlotValue(slot_name=slot, value=value))
-              evidence.append(
-                EvidenceRef(source="scene_context", span=value, note="unique_scene_referent")
-              )
-              unresolved = [u for u in unresolved if u.slot_name != slot]
               continue
+            events.append(
+              ResolutionEvent(
+                slot=slot,
+                previous_status="unresolved",
+                outcome="incompatible_command_context",
+                resolved_value=None,
+                evidence_source="scene_context",
+                rule_id="unique_scene_referent",
+                confidence_category="none",
+                safety_eligibility=False,
+                details={"value": value},
+              )
+            )
+            continue
           if len(values) > 1:
             events.append(
               ResolutionEvent(
                 slot=slot,
-                previous_status=previous,
+                previous_status="unresolved",
                 outcome="conflicting_context",
                 resolved_value=None,
                 evidence_source="scene_context",
@@ -163,53 +282,44 @@ class ContextResolver:
               )
             )
             continue
-        # dialogue history
-        mentions = _MENTION_RE.findall(dialogue)
-        object_mentions = [m.strip() for m in mentions]
+        object_mentions = [m.strip() for m in _OBJECT_MENTION_RE.findall(dialogue)]
         if len(object_mentions) == 1:
-          value = object_mentions[0]
+          _record_resolved(
+            slot,
+            object_mentions[0],
+            source="dialogue_history",
+            rule_id="dialogue_prior_mention",
+            confidence="medium",
+          )
+          continue
+        if len(object_mentions) > 1:
           events.append(
             ResolutionEvent(
               slot=slot,
-              previous_status=previous,
-              outcome="resolved",
-              resolved_value=value,
+              previous_status="unresolved",
+              outcome="conflicting_context",
+              resolved_value=None,
               evidence_source="dialogue_history",
               rule_id="dialogue_prior_mention",
-              confidence_category="medium",
-              safety_eligibility=True,
+              confidence_category="none",
+              safety_eligibility=False,
+              details={"candidates": object_mentions},
             )
           )
-          resolved.append(ResolvedSlotValue(slot_name=slot, value=value))
-          evidence.append(
-            EvidenceRef(source="dialogue_history", span=value, note="dialogue_prior_mention")
-          )
-          unresolved = [u for u in unresolved if u.slot_name != slot]
           continue
         if slot in approved_defaults:
-          value = str(approved_defaults[slot])
-          events.append(
-            ResolutionEvent(
-              slot=slot,
-              previous_status=previous,
-              outcome="resolved",
-              resolved_value=value,
-              evidence_source="approved_default",
-              rule_id="approved_default_only",
-              confidence_category="policy",
-              safety_eligibility=True,
-            )
+          _record_resolved(
+            slot,
+            str(approved_defaults[slot]),
+            source="approved_default",
+            rule_id="approved_default_only",
+            confidence="policy",
           )
-          resolved.append(ResolvedSlotValue(slot_name=slot, value=value))
-          evidence.append(
-            EvidenceRef(source="approved_default", span=value, note="approved_default_only")
-          )
-          unresolved = [u for u in unresolved if u.slot_name != slot]
           continue
         events.append(
           ResolutionEvent(
             slot=slot,
-            previous_status=previous,
+            previous_status="unresolved",
             outcome="insufficient_context",
             resolved_value=None,
             evidence_source=None,
@@ -224,29 +334,52 @@ class ContextResolver:
           values = _split_values(match.group(1))
           if len(values) == 1:
             value = values[0]
+            cmd_l = system_input.command.lower()
+            implies_destination = any(
+              tok in cmd_l
+              for tok in (
+                "there",
+                "that",
+                "here",
+                "put",
+                "place",
+                "bring",
+                "move",
+                "take",
+                "set",
+                "table",
+                "counter",
+                "shelf",
+              )
+            )
+            if _command_compatible(value, system_input.command) or implies_destination:
+              _record_resolved(
+                slot,
+                value,
+                source="scene_context",
+                rule_id="unique_destination",
+                confidence="high",
+              )
+              continue
             events.append(
               ResolutionEvent(
                 slot=slot,
-                previous_status=previous,
-                outcome="resolved",
-                resolved_value=value,
+                previous_status="unresolved",
+                outcome="incompatible_command_context",
+                resolved_value=None,
                 evidence_source="scene_context",
                 rule_id="unique_destination",
-                confidence_category="high",
-                safety_eligibility=True,
+                confidence_category="none",
+                safety_eligibility=False,
+                details={"value": value},
               )
             )
-            resolved.append(ResolvedSlotValue(slot_name=slot, value=value))
-            evidence.append(
-              EvidenceRef(source="scene_context", span=value, note="unique_destination")
-            )
-            unresolved = [u for u in unresolved if u.slot_name != slot]
             continue
           if len(values) > 1:
             events.append(
               ResolutionEvent(
                 slot=slot,
-                previous_status=previous,
+                previous_status="unresolved",
                 outcome="conflicting_context",
                 resolved_value=None,
                 evidence_source="scene_context",
@@ -257,10 +390,20 @@ class ContextResolver:
               )
             )
             continue
+        dest_mentions = [m.strip() for m in _DEST_MENTION_RE.findall(dialogue)]
+        if len(dest_mentions) == 1:
+          _record_resolved(
+            slot,
+            dest_mentions[0],
+            source="dialogue_history",
+            rule_id="dialogue_prior_mention",
+            confidence="medium",
+          )
+          continue
         events.append(
           ResolutionEvent(
             slot=slot,
-            previous_status=previous,
+            previous_status="unresolved",
             outcome="insufficient_context",
             resolved_value=None,
             evidence_source=None,
@@ -269,64 +412,60 @@ class ContextResolver:
             safety_eligibility=False,
           )
         )
-      elif slot.startswith("capability") or slot == "tool":
-        if capability.strip():
-          events.append(
-            ResolutionEvent(
-              slot=slot,
-              previous_status=previous,
-              outcome="resolved" if ":" in capability else "insufficient_context",
-              resolved_value=capability if ":" in capability else None,
-              evidence_source="capability_context",
+      elif slot == "tool" or slot.startswith("capability"):
+        tool_match = _TOOL_RE.search(capability) or _TOOL_MENTION_RE.search(capability)
+        if tool_match:
+          values = _split_values(tool_match.group(1))
+          if len(values) == 1:
+            _record_resolved(
+              slot,
+              values[0],
+              source="capability_context",
               rule_id="capability_lookup",
-              confidence_category="medium",
-              safety_eligibility=True,
+              confidence="medium",
             )
-          )
-          if ":" in capability:
-            resolved.append(ResolvedSlotValue(slot_name=slot, value=capability))
-            evidence.append(
-              EvidenceRef(source="capability_context", span=capability, note="capability_lookup")
-            )
-            unresolved = [u for u in unresolved if u.slot_name != slot]
-        else:
+            continue
           events.append(
             ResolutionEvent(
               slot=slot,
-              previous_status=previous,
-              outcome="insufficient_context",
+              previous_status="unresolved",
+              outcome="conflicting_context",
               resolved_value=None,
-              evidence_source=None,
+              evidence_source="capability_context",
               rule_id="capability_lookup",
               confidence_category="none",
               safety_eligibility=False,
+              details={"candidates": values},
             )
           )
+          continue
+        events.append(
+          ResolutionEvent(
+            slot=slot,
+            previous_status="unresolved",
+            outcome="insufficient_context",
+            resolved_value=None,
+            evidence_source=None,
+            rule_id="capability_lookup",
+            confidence_category="none",
+            safety_eligibility=False,
+            details={"reason": "refusing_raw_capability_string_as_tool_value"},
+          )
+        )
       else:
         if slot in approved_defaults:
-          value = str(approved_defaults[slot])
-          events.append(
-            ResolutionEvent(
-              slot=slot,
-              previous_status=previous,
-              outcome="resolved",
-              resolved_value=value,
-              evidence_source="approved_default",
-              rule_id="approved_default_only",
-              confidence_category="policy",
-              safety_eligibility=True,
-            )
+          _record_resolved(
+            slot,
+            str(approved_defaults[slot]),
+            source="approved_default",
+            rule_id="approved_default_only",
+            confidence="policy",
           )
-          resolved.append(ResolvedSlotValue(slot_name=slot, value=value))
-          evidence.append(
-            EvidenceRef(source="approved_default", span=value, note="approved_default_only")
-          )
-          unresolved = [u for u in unresolved if u.slot_name != slot]
         else:
           events.append(
             ResolutionEvent(
               slot=slot,
-              previous_status=previous,
+              previous_status="unresolved",
               outcome="unresolved",
               resolved_value=None,
               evidence_source=None,
@@ -349,8 +488,12 @@ class ContextResolver:
     )
 
   def apply(self, analysis: StructuredAnalysis, result: ResolutionResult) -> StructuredAnalysis:
-    analysis.resolved_slots = list(result.resolved_slots)
-    analysis.unresolved_slots = list(result.unresolved_slots)
-    analysis.resolution_evidence = list(result.resolution_evidence)
-    analysis.resolution_method = result.resolution_method
-    return analysis
+    # Operate on an isolated working copy; callers may pass shared analysis.
+    from ambiguity_manager.systems.analysis import analysis_from_cached
+
+    working = analysis_from_cached(analysis)
+    working.resolved_slots = list(result.resolved_slots)
+    working.unresolved_slots = list(result.unresolved_slots)
+    working.resolution_evidence = list(result.resolution_evidence)
+    working.resolution_method = result.resolution_method
+    return working

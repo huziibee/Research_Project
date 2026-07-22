@@ -116,7 +116,7 @@ class T19ClassificationAndRouterTests(unittest.TestCase):
             ambiguity_present=True,
             unresolved=["conditions"],
             risk=RiskLevel.UNKNOWN,
-            capability=CapabilityStatus.CONDITIONAL,
+            capability=CapabilityStatus.CAPABLE,
         )
         analysis.risk_relevant = True
 
@@ -159,7 +159,9 @@ class T19ClassificationAndRouterTests(unittest.TestCase):
         decision = self.router.route(analysis)
 
         self.assertEqual(decision.recommended_strategy, RouteLabel.MULTI_STEP)
-        self.assertEqual(decision.strategy_sequence, [RouteLabel.CLARIFY, RouteLabel.EXECUTE])
+        self.assertEqual(decision.strategy_sequence, [RouteLabel.CLARIFY])
+        self.assertTrue(decision.requires_re_evaluation)
+        self.assertNotIn(RouteLabel.EXECUTE, decision.strategy_sequence)
         self.assertEqual(decision.matched_rule_id, "critical_unresolved_medium_high_risk")
 
     def test_router_validation_requires_resolved_slots_for_silent(self) -> None:
@@ -193,6 +195,7 @@ class T19ClassificationAndRouterTests(unittest.TestCase):
             ambiguity_present=True,
             unresolved=["object"],
             risk=RiskLevel.LOW,
+            capability=CapabilityStatus.CAPABLE,
         )
 
         first = self.router.route(analysis).to_dict()

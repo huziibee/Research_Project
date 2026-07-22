@@ -205,7 +205,12 @@ class T16ContractsAndProvidersTests(unittest.TestCase):
 
         returned = provider.analyse(SystemInput(record_id="rec-1", command="Pick up the red mug."))
 
-        self.assertIs(returned, analysis)
+        # The provider must hand back a deep copy, not the stored instance,
+        # so a caller mutating the returned analysis cannot corrupt the
+        # provider's cache for later callers. Compare by content instead.
+        self.assertIsNot(returned, analysis)
+        self.assertEqual(returned.fingerprint(), analysis.fingerprint())
+        self.assertEqual(returned.to_dict(), analysis.to_dict())
         with self.assertRaises(ProviderUnavailableError):
             provider.analyse(SystemInput(record_id="missing", command="Unknown"))
 

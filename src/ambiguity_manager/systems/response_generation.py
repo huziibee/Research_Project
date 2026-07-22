@@ -10,8 +10,8 @@ from ambiguity_manager.systems.providers import ClarificationProvider, Rejection
 
 _SLOT_PROMPTS: dict[str, str] = {
   "object": "Which object do you mean?",
-  "destination": "Should I place it on the left or right destination?",
-  "spatial_relation": "Should I place it on the left or right table?",
+  "destination": "Could you clarify the destination?",
+  "spatial_relation": "Could you clarify the spatial relation?",
   "tool": "Which tool should I use?",
   "quantity": "How many should I handle?",
   "time": "When should I do that?",
@@ -21,7 +21,40 @@ _SLOT_PROMPTS: dict[str, str] = {
   "recipient": "Who is the recipient?",
   "referential": "Which referent do you mean?",
   "safety_precondition": "Before I continue, which item is safe to handle?",
+  "capability": "Could you clarify the required capability?",
+  "risk": "Could you clarify the safety constraint?",
+  "intent": "Could you clarify what you would like me to do?",
 }
+
+
+def _candidate_slot_options(analysis: StructuredAnalysis, slot: str) -> list[str]:
+  options: list[str] = []
+  seen: set[str] = set()
+  for cand in analysis.candidate_interpretations:
+    value = None
+    if hasattr(cand.cpc, slot):
+      slot_obj = getattr(cand.cpc, slot)
+      value = getattr(slot_obj, "value", None)
+    if not value and cand.text:
+      # Fall back only to explicit candidate text differences when slot empty.
+      value = None
+    if isinstance(value, str) and value.strip():
+      key = value.strip().lower()
+      if key not in seen:
+        seen.add(key)
+        options.append(value.strip())
+  # Also derive from distinct candidate texts when slot-level values absent.
+  if not options:
+    texts = []
+    for cand in analysis.candidate_interpretations:
+      if cand.text and cand.text.strip():
+        key = cand.text.strip().lower()
+        if key not in seen:
+          seen.add(key)
+          texts.append(cand.text.strip())
+    if len(texts) >= 2:
+      options = texts
+  return options
 
 
 @dataclass
@@ -49,20 +82,23 @@ class DeterministicClarificationGenerator:
       return "Could you clarify what you would like me to do?"
     if len(targets) == 1:
       target = targets[0]
-      cand_blob = " ".join(c.text or "" for c in analysis.candidate_interpretations).lower()
-      summary = (analysis.intent_summary or "").lower()
-      if target in {"object", "safety_precondition"} and (
-        "chemical" in cand_blob or "chemical" in summary
-      ):
-        return "Before I continue, should I move the chemical container or the empty box?"
-      if target == "object" and ("mug" in cand_blob or "mug" in summary):
-        return "Which mug do you mean?"
-      if target == "object":
-        return _SLOT_PROMPTS["object"]
-      if target in {"spatial_relation", "destination"}:
-        return "Should I place it on the left or right table?"
-      return _SLOT_PROMPTS.get(target, f"Could you clarify the {target.replace('_', ' ')}?")
-    # multi-target
+      options = _candidate_slot_options(analysis, target)
+      if len(options) >= 2:
+        # Grounded alternatives only from actual candidate differences.
+        if len(options) == 2:
+          return f"Do you mean {options[0]} or {options[1]}?"
+        joined = ", ".join(options[:-1]) + f", or {options[-1]}"
+        return f"Which {target.replace('_', ' ')} do you mean: {joined}?"
+      if len(options) == 1:
+        return (
+          f"Could you confirm the {target.replace('_', ' ')} is {options[0]}?"
+        )
+      # No grounded alternatives — open slot-specific question.
+      return _SLOT_PROMPTS.get(
+        target,
+        f"Could you clarify the {target.replace('_', ' ')}?",
+      )
+    # Multi-target: concise grounded prompt without inventing entities.
     pretty = ", ".join(t.replace("_", " ") for t in targets)
     return f"Before I continue, could you clarify: {pretty}?"
 
