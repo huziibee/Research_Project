@@ -621,6 +621,19 @@ class ExperimentRunner:
       json.dumps(manifest, indent=2, sort_keys=True, ensure_ascii=False) + "\n",
       encoding="utf-8",
     )
+
+    # In addition to being embedded in run_manifest.json, the full input
+    # manifest and the exact config snapshot that produced this run are each
+    # also stored as standalone files, so either artefact can be inspected,
+    # diffed, or reused (e.g. for resume) without parsing the whole manifest.
+    (out_dir / "input_manifest.json").write_text(
+      json.dumps(input_manifest, indent=2, sort_keys=True, ensure_ascii=False) + "\n",
+      encoding="utf-8",
+    )
+    (out_dir / "config_snapshot.json").write_text(
+      json.dumps(config, indent=2, sort_keys=True, ensure_ascii=False) + "\n",
+      encoding="utf-8",
+    )
     return summary
 
   # -- Section G: strengthened verify_run -----------------------------------
@@ -654,6 +667,23 @@ class ExperimentRunner:
     checks["input_manifest_hash_consistent"] = (
       manifest.get("input_manifest_hash") == summary.get("input_manifest_hash")
     )
+
+    # The standalone input_manifest.json / config_snapshot.json files must
+    # never drift from what is embedded in run_manifest.json.
+    input_manifest_file = run_path / "input_manifest.json"
+    if input_manifest_file.is_file():
+      checks["input_manifest_file_consistent"] = (
+        load_json(input_manifest_file) == stored_input_manifest
+      )
+    else:
+      checks["input_manifest_file_consistent"] = True
+    config_snapshot_file = run_path / "config_snapshot.json"
+    if config_snapshot_file.is_file():
+      checks["config_snapshot_file_consistent"] = (
+        load_json(config_snapshot_file) == manifest.get("config")
+      )
+    else:
+      checks["config_snapshot_file_consistent"] = True
 
     results_bytes = results_path.read_bytes() if results_path.is_file() else b""
     failures_bytes = failures_path.read_bytes() if failures_path.is_file() else b""
