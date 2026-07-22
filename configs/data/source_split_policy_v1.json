@@ -1,0 +1,162 @@
+{
+  "policy_id": "source_data_split_policy_v1",
+  "policy_version": "1.0.0",
+  "ticket": "T15",
+  "purpose": "Group-aware, leakage-checked development-era split of the schema-v2 weak-labelled source pool. This programme is independent of and does not wait for T14B/T14C manual adjudication.",
+  "seed": 20260722,
+  "seed_notes": "Fixed integer seed used for all deterministic pseudo-random group ordering. Changing this seed changes split membership and must bump policy_version.",
+  "protected_status": {
+    "development_only": true,
+    "protected": false,
+    "valid_for_official_final_claims": false,
+    "note": "source_holdout is a development-era holdout used for early model-selection and threshold checks. It is NOT the final protected manual benchmark (manual_protected_challenge_set) defined in cursor_plan/08_manual_gold_dataset_program.md and cursor_plan/tickets/T15_gold_splits_leakage_and_eligibility.md. The manual_protected_challenge_set remains gated on T14C adjudication and is out of scope for this programme."
+  },
+  "input_sources": {
+    "primary_weak_pool": {
+      "path": "data/processed/schema_v2/weak_pool/weak_pool_canonical.jsonl",
+      "included_source_datasets": ["ambik", "indirect_requests", "codraw_icr_v2", "vague", "clara"],
+      "role": "core_and_conditional_core",
+      "expected_record_count": 15839
+    },
+    "auxiliary_weak_pool": {
+      "path": "data/processed/schema_v2/weak_pool/weak_pool_auxiliary.jsonl",
+      "included_source_datasets": ["clariq"],
+      "role": "auxiliary_only",
+      "expected_record_count": 8565,
+      "note": "ClariQ is auxiliary only. It is never eligible for robot-facing metrics (route, risk, capability, rejection) and is split separately into auxiliary_train / auxiliary_dev only (no auxiliary_holdout)."
+    }
+  },
+  "excluded_sources": [
+    {
+      "name": "TEACh",
+      "reason": "Not part of the approved canonical weak-pool converters (T03-T09); excluded from this split programme entirely.",
+      "paths": ["data/raw/TEACh", "data/raw/teach_tatc"]
+    },
+    {
+      "name": "t13_calibration",
+      "reason": "T13 calibration (n=24) is annotation-process calibration only; forbidden as development gold, bake-off, training, or synthetic evaluator input.",
+      "id_pattern": "^manual:2026:cal:\\d{4}$",
+      "source_module": "src/ambiguity_manager/annotation/calibration_data.py"
+    },
+    {
+      "name": "future_manual_namespace",
+      "reason": "The future manual_protected_challenge_set (~300 adjudicated records) does not exist yet and must never influence source development splits, model selection, training, or thresholds.",
+      "id_patterns": [
+        "^manual:2026:main:\\d{4}$",
+        "^manual:2026:rsv:\\d{4}$",
+        "^manual:2026:hb:\\d{4}$"
+      ]
+    },
+    {
+      "name": "model_selection_development_set_v1",
+      "reason": "Frozen 40-record development bake-off set (T12/T16-T24 pipeline transport). Must stay disjoint from source splits by id and by normalised command text.",
+      "path": "data/development/model_selection_v1/manifest.json"
+    },
+    {
+      "name": "synthetic_evaluator_fixtures",
+      "reason": "Hand-authored interface/evaluator fixtures used for pipeline smoke testing are not source data and must not leak into or from the splits.",
+      "paths": [
+        "tests/fixtures/t16_t24_synthetic/inputs.jsonl",
+        "tests/fixtures/schema_v2/t12_synthetic_inputs.jsonl",
+        "tests/fixtures/schema_v2/t12_d_final_smoke_inputs.jsonl"
+      ]
+    }
+  ],
+  "target_ratios": {
+    "primary": {
+      "source_train": 0.70,
+      "source_dev": 0.15,
+      "source_holdout": 0.15
+    },
+    "auxiliary": {
+      "auxiliary_train": 0.85,
+      "auxiliary_dev": 0.15
+    }
+  },
+  "tolerance": {
+    "description": "Maximum allowed absolute deviation between the realised split percentage and the target ratio, measured per split over the whole primary pool and separately over the whole auxiliary pool.",
+    "max_absolute_percentage_point_deviation": 2.0
+  },
+  "grouping_rules": {
+    "description": "Deterministic, record-field-derived grouping keys so that no two records from the same lineage/scenario/dialogue/context/candidate family are ever split across source_train / source_dev / source_holdout (or across auxiliary_train / auxiliary_dev).",
+    "precedence": [
+      {
+        "rule": "existing_group_id",
+        "detail": "If the schema-v2 record's `group_id` field is non-null, the group key is `group:<group_id>`. Covers AmbiK plan-group siblings, CoDraw-iCR v2 game/dialogue families, CLARA scene families, and ClariQ topic families."
+      },
+      {
+        "rule": "lineage_suffix",
+        "detail": "If `group_id` is null but the record `id` ends in an `@<turn>` suffix or a `__frame_<n>` suffix, the group key is `lineage:<source_dataset>:<id-without-suffix>`. Covers VAGUE multi-turn / multi-frame context variants from the same source video."
+      },
+      {
+        "rule": "normalised_command_fallback",
+        "detail": "Otherwise, the group key is `cmd:<source_dataset>:<sha256(normalised command)[:16]>`. Keeps exact-duplicate and near-duplicate-by-normalisation commands (paraphrase/template repeats) inside a single dataset together in one split."
+      }
+    ],
+    "candidate_pair_variants": "Candidate interpretation frames are stored nested inside a single canonical record (candidate_interpretations[]), so they never require separate grouping; they always stay together because they belong to one record.",
+    "same_lineage_or_seed": "Records sharing a group key from any of the three rules above are always assigned to exactly one split as a unit; the split assignment never inspects individual member content."
+  },
+  "stratification_axes": [
+    "source_dataset",
+    "ambiguity_present_bucket (amb_true | amb_false | amb_unknown)"
+  ],
+  "stratification_notes": "Stratification operates at group granularity using the group's lowest-id member as the representative record. Coarse axes are used deliberately (dataset x ambiguity bucket) to keep every stratum large enough for a stable 70/15/15 (or 85/15) split under group-aware constraints.",
+  "assignment_algorithm": {
+    "name": "seeded_digest_order_greedy_proportional",
+    "steps": [
+      "1. Compute a group key for every record using grouping_rules.",
+      "2. Compute a stratum key per group from its representative record.",
+      "3. Within each stratum, order groups deterministically by sha256(f'{seed}:{group_key}') so ordering only depends on the fixed seed and the group key content, never on dict/set iteration order.",
+      "4. Walk the ordered groups once; for each group, assign it to whichever split currently has the largest deficit between its running record share and its target ratio for that stratum, then update running counts.",
+      "5. Aggregate per-stratum assignments; report realised percentages and compare against target_ratios within tolerance."
+    ]
+  },
+  "eligibility_manifest": {
+    "values": ["eligible", "weakly_eligible", "ineligible", "unavailable"],
+    "value_semantics": {
+      "eligible": "Task-relevant field(s) are present with a concrete, usable value for this record.",
+      "weakly_eligible": "The dataset/record supports this task in principle (per weak-pool label_eligibility policy) but only a partial or low-confidence signal is present.",
+      "ineligible": "This task structurally does not apply to this record given its source dataset / weak-pool label_eligibility policy (a dataset-design fact, not a missing value).",
+      "unavailable": "This task could apply in principle but the concrete label/value was not collected for this record. Never treated as a negative label."
+    },
+    "tasks": [
+      "structured_training_target",
+      "speech_act_intent",
+      "cpc",
+      "candidate_interpretations",
+      "ambiguity_presence_types",
+      "compound_ambiguity",
+      "risk",
+      "capability",
+      "route",
+      "clarification_target",
+      "rejection",
+      "context_blind_pairing",
+      "uncertainty_sampling",
+      "adapter_training",
+      "source_development_evaluation",
+      "source_holdout_evaluation"
+    ],
+    "invariant": "Missing or unknown labels are recorded as 'unavailable' (or 'ineligible' when structurally inapplicable). They are never rewritten as a negative class value for training or evaluation."
+  },
+  "leakage_checks": [
+    "t13_calibration_id_and_command_overlap",
+    "future_manual_namespace_id_overlap",
+    "model_selection_development_set_id_and_command_overlap",
+    "synthetic_evaluator_fixture_command_overlap",
+    "teach_source_dataset_presence"
+  ],
+  "outputs": {
+    "directory": "data/development/source_splits_v1",
+    "artifacts": [
+      "record_manifest.jsonl",
+      "group_manifest.jsonl",
+      "leakage_report.json",
+      "coverage_report.json",
+      "eligibility_summary.json",
+      "manifest.json",
+      "hashes.json"
+    ],
+    "dataset_card": "docs/dataset_cards/source_splits_v1.md"
+  }
+}

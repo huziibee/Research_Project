@@ -1,0 +1,99 @@
+{
+  "policy_id": "source_training_target_policy_v1",
+  "policy_version": "1.0.0",
+  "ticket": "T15",
+  "strategy": "D",
+  "strategy_name": "combination_with_explicit_per_field_loss_masks",
+  "strategy_summary": "Train one multi-field/multi-task model on the union of eligible/weakly_eligible fields across all source-eligible records. Every field carries its own per-record loss mask so that a record contributes loss only for the fields it actually supports; partial-field records are allowed and encouraged rather than dropped.",
+  "seed": 20260722,
+  "depends_on": "configs/data/source_split_policy_v1.json",
+  "field_groups": [
+    {
+      "field_group": "speech_act_intent",
+      "eligibility_task": "speech_act_intent",
+      "loss_type": "classification",
+      "source_fields": ["speech_act", "intent_summary"]
+    },
+    {
+      "field_group": "cpc_slots",
+      "eligibility_task": "cpc",
+      "loss_type": "per_slot_classification_and_span",
+      "source_fields": ["cpc.*"]
+    },
+    {
+      "field_group": "candidate_interpretations",
+      "eligibility_task": "candidate_interpretations",
+      "loss_type": "set_ranking",
+      "source_fields": ["candidate_interpretations", "selected_interpretation"]
+    },
+    {
+      "field_group": "ambiguity_presence_types",
+      "eligibility_task": "ambiguity_presence_types",
+      "loss_type": "binary_and_multilabel_classification",
+      "source_fields": ["ambiguity_present", "ambiguity_types", "primary_ambiguity_type"]
+    },
+    {
+      "field_group": "compound_ambiguity",
+      "eligibility_task": "compound_ambiguity",
+      "loss_type": "binary_and_count_regression",
+      "source_fields": ["compound_ambiguity", "compound_ambiguity_count"]
+    },
+    {
+      "field_group": "risk",
+      "eligibility_task": "risk",
+      "loss_type": "ordinal_classification",
+      "source_fields": ["risk_relevant", "risk_level"]
+    },
+    {
+      "field_group": "capability",
+      "eligibility_task": "capability",
+      "loss_type": "classification",
+      "source_fields": ["capability_status"]
+    },
+    {
+      "field_group": "route",
+      "eligibility_task": "route",
+      "loss_type": "classification",
+      "source_fields": ["recommended_strategy", "strategy_sequence"]
+    },
+    {
+      "field_group": "clarification_target",
+      "eligibility_task": "clarification_target",
+      "loss_type": "multilabel_classification_and_generation",
+      "source_fields": ["clarification_targets", "clarification_question", "clarification_subtype"]
+    },
+    {
+      "field_group": "rejection",
+      "eligibility_task": "rejection",
+      "loss_type": "classification_and_generation",
+      "source_fields": ["rejection_reason"]
+    }
+  ],
+  "mask_policy": {
+    "description": "Each field_group has a per-record scalar loss weight derived from that record's eligibility status for the matching eligibility_task in data/development/source_splits_v1/record_manifest.jsonl.",
+    "status_to_loss_weight": {
+      "eligible": 1.0,
+      "weakly_eligible": 0.5,
+      "ineligible": 0.0,
+      "unavailable": 0.0
+    },
+    "invariant": "unavailable and ineligible both mask the field out of the loss (weight 0.0). A masked field is never converted into a negative/none training target; it must be excluded from the loss computation graph for that record, not scored against a fabricated default label.",
+    "weakly_eligible_handling": "weakly_eligible fields are trained at half weight to reflect the lower-confidence weak-pool signal; they are not treated as gold."
+  },
+  "route_pressure_note": "Route-pressure-only synthetic fixtures (see docs/dataset_cards/model_selection_development_set.md) are out of scope for this policy; they belong to the separate model-selection bake-off set and are excluded from the source splits by configs/data/source_split_policy_v1.json.",
+  "qlora_smoke_subset": {
+    "purpose": "Fast CPU/GPU smoke test that a QLoRA training loop can consume the masked multi-field batches without shape or masking errors before any full run.",
+    "source_split": "source_train",
+    "selection": "deterministic_prefix",
+    "selection_detail": "First N group-sorted-by-digest records (see source_split_policy_v1.json assignment_algorithm) from source_train, in the same seeded order used to build the split.",
+    "smoke_record_count": 64,
+    "seed": 20260722,
+    "notes": [
+      "The smoke subset is a slice of source_train, not a separate held-out split.",
+      "It exists purely to validate tensor shapes, per-field masks, and adapter save/load; it is never used to report a result."
+    ]
+  },
+  "auxiliary_usage": {
+    "clariq": "May be used only for auxiliary clarification-style pretraining/regularisation on the speech_act_intent, clarification_target, and uncertainty_sampling field families where its own eligibility manifest marks it eligible or weakly_eligible. ClariQ rows are always ineligible/masked for route, risk, capability, rejection, and compound_ambiguity."
+  }
+}
