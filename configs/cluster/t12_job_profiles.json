@@ -113,8 +113,8 @@
       "exclusive": true,
       "requires_candidate_id": false,
       "container_role": "training",
-      "container_sif_default_relpath": "containers/t12-training-v1.sif",
-      "container_sif_note": "Separate training container (configs/environments/t12_training_container.def); this job never runs inside, rebuilds, or overwrites the pinned vllm-openai-v0.20.1.sif inference container. This training SIF has not been built yet; see docs/reports/qlora_technical_smoke.md.",
+      "container_sif_default_relpath": "containers/pytorch-2.11.0-cuda13.0-runtime.sif",
+      "container_sif_note": "Separate training runtime: pulled pytorch CUDA runtime SIF plus bind-mounted training-site-packages (peft/bitsandbytes/accelerate). Never uses or overwrites the pinned vllm-openai-v0.20.1.sif inference container.",
       "job_name": "t12-qlora-smoke",
       "entry_point": "scripts/t12_qlora_smoke.py",
       "required_branch": "feature/t12-cluster-redesign",
@@ -126,7 +126,8 @@
         "run_manifest.json",
         "source_identity_manifest.json"
       ],
-      "run_id_prefix": "t12-qlora-smoke"
+      "run_id_prefix": "t12-qlora-smoke",
+      "training_site_packages_relpath": "training-site-packages"
     }
   }
 }

@@ -608,6 +608,25 @@ class ClusterJobOperator:
             default_container_sif_relpath = str(
                 profile.get("container_sif_default_relpath") or "containers/vllm-openai-v0.20.1.sif"
             )
+            training_site = str(profile.get("training_site_packages_relpath") or "").strip()
+            use_training_site = (
+                str(profile.get("container_role") or "") == "training" or bool(training_site)
+            )
+            site_rel = training_site or "training-site-packages"
+            if use_training_site:
+                pythonpath_prefix = (
+                    "export T12_TRAINING_SITE_PACKAGES="
+                    f'"${{T12_TRAINING_SITE_PACKAGES:-${{T12_CLUSTER_ROOT}}/{site_rel}}}"\n'
+                )
+                pythonpath_env = (
+                    "  --env PYTHONPATH=\"${T12_TRAINING_SITE_PACKAGES}:${SRC_ROOT}/src"
+                    "${PYTHONPATH:+:$PYTHONPATH}\" \\\n"
+                )
+            else:
+                pythonpath_prefix = ""
+                pythonpath_env = (
+                    "  --env PYTHONPATH=\"${SRC_ROOT}/src${PYTHONPATH:+:$PYTHONPATH}\" \\\n"
+                )
             guarded_python = (
                 "export T12_CONTAINER_SIF=\"${T12_CONTAINER_SIF:-${T12_CLUSTER_ROOT}/"
                 + default_container_sif_relpath
@@ -618,7 +637,8 @@ class ClusterJobOperator:
                 "export HF_HUB_OFFLINE=\"${HF_HUB_OFFLINE:-1}\"\n"
                 "export TRANSFORMERS_OFFLINE=\"${TRANSFORMERS_OFFLINE:-1}\"\n"
                 "export VLLM_WORKER_MULTIPROC_METHOD=spawn\n"
-                "NODE_LOCAL_TEMP=\"/var/tmp/${USER}-apptainer-${SLURM_JOB_ID}\"\n"
+                + pythonpath_prefix
+                + "NODE_LOCAL_TEMP=\"/var/tmp/${USER}-apptainer-${SLURM_JOB_ID}\"\n"
                 "mkdir -p \"${NODE_LOCAL_TEMP}\"\n"
                 "apptainer exec --nv \\\n"
                 "  --bind \"${T12_CLUSTER_ROOT}:${T12_CLUSTER_ROOT}\" \\\n"
@@ -627,8 +647,8 @@ class ClusterJobOperator:
                 "  --env HF_HUB_CACHE=\"${HF_HUB_CACHE}\" \\\n"
                 "  --env HF_HUB_OFFLINE=\"${HF_HUB_OFFLINE}\" \\\n"
                 "  --env TRANSFORMERS_OFFLINE=\"${TRANSFORMERS_OFFLINE}\" \\\n"
-                "  --env PYTHONPATH=\"${SRC_ROOT}/src${PYTHONPATH:+:$PYTHONPATH}\" \\\n"
-                "  --env VLLM_WORKER_MULTIPROC_METHOD=spawn \\\n"
+                + pythonpath_env
+                + "  --env VLLM_WORKER_MULTIPROC_METHOD=spawn \\\n"
                 "  \"${T12_CONTAINER_SIF}\" \\\n"
                 "  python3 " + python_args
             )

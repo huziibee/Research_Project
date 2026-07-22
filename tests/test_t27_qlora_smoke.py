@@ -693,7 +693,8 @@ class OperatorProfileTests(unittest.TestCase):
             archive_sha="0" * 64,
             archive_filename="t12-src.tar.gz",
         )
-        self.assertIn("t12-training-v1.sif", rendered)
+        self.assertIn("pytorch-2.11.0-cuda13.0-runtime.sif", rendered)
+        self.assertIn("training-site-packages", rendered)
         self.assertNotIn("vllm-openai-v0.20.1.sif", rendered)
 
     def test_other_gpu_profiles_still_default_to_inference_sif(self) -> None:
@@ -746,11 +747,17 @@ class TrainingEnvironmentConfigTests(unittest.TestCase):
         self.assertTrue(separation["inference_and_training_envs_are_separate"])
         self.assertTrue(separation["inference_container_untouched_by_training"])
 
-    def test_container_recipe_documented_but_not_built(self) -> None:
+    def test_container_recipe_documented_with_pull_based_runtime(self) -> None:
         recipe = self.config["container_recipe"]
-        self.assertEqual(recipe["status"], "recipe_only_not_built")
+        self.assertIn(
+            recipe["status"],
+            {"recipe_only_not_built", "superseded_by_pull_based_runtime"},
+        )
         recipe_path = ROOT / recipe["recipe_relpath"]
         self.assertTrue(recipe_path.is_file())
+        if recipe["status"] == "superseded_by_pull_based_runtime":
+            self.assertIn("pytorch-2.11.0-cuda13.0-runtime.sif", recipe.get("pull_based_sif", ""))
+            self.assertEqual(recipe.get("site_packages"), "training-site-packages")
 
 
 class SmokeDataExclusionTests(unittest.TestCase):

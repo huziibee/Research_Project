@@ -4,7 +4,7 @@
   "ticket": "T12",
   "role": "training",
   "platform": "wits_slurm_cluster",
-  "environment_status": "planned_unverified",
+  "environment_status": "partially_verified_pull_based",
   "authoritative_runtime": "wits_slurm_cluster",
   "immutable_selection_relpath": "configs/model/immutable_selection.json",
   "execution_policy_relpath": "configs/model/cluster_execution_policy.json",
@@ -14,12 +14,13 @@
     "home": "${HOME}"
   },
   "training_stack": {
-    "container_built": false,
-    "peft_installed": false,
+    "container_built": true,
+    "peft_installed": true,
     "lora_attach_passed": false,
     "adapter_reload_passed": false,
     "optimiser_steps_performed": 0,
-    "research_records_used": 0
+    "research_records_used": 0,
+    "note": "Pulled pytorch-2.11.0-cuda13.0-runtime.sif via apptainer pull (no %post). Installed peft/bitsandbytes/accelerate/transformers into training-site-packages (job 4595). Live QLoRA smoke not yet executed; site-packages may still contain a shadowed torch wheel that must be removed before smoke. Inference SIF untouched."
   },
   "model_identity": {
     "model_repository": {
@@ -35,7 +36,7 @@
   },
   "qlora_smoke_pinned_versions": {
     "ticket": "T27",
-    "status": "planned_unverified",
+    "status": "installed_unverified_on_live_smoke",
     "note": "Pinned target versions for the QLoRA smoke training container recipe. Recorded ahead of any live container build so the recipe is reproducible; none of these have been measured on a live container yet (container_recipe_status below remains recipe_only_not_built).",
     "python_version": {
       "value_kind": "immutable_expected",
@@ -80,12 +81,14 @@
     }
   },
   "container_recipe": {
-    "status": "recipe_only_not_built",
+    "status": "superseded_by_pull_based_runtime",
     "recipe_relpath": "configs/environments/t12_training_container.def",
     "recipe_format": "apptainer_definition",
-    "recipe_sha256": null,
+    "recipe_sha256": "ffc78cda7c0142dbad093b71a78c2351b54c40a8cd52b1e6b61c7ad85cc6a726",
     "built_sif_sha256": null,
-    "note": "Live SIF build happens later on the cluster once approved; this recipe documents the intended container contents so the build is reproducible when it happens. This must never overwrite, replace, or be confused with the pinned inference SIF (vllm-openai-v0.20.1.sif, see configs/environments/t12_cluster_inference.json)."
+    "note": "Live SIF build happens later on the cluster once approved; this recipe documents the intended container contents so the build is reproducible when it happens. This must never overwrite, replace, or be confused with the pinned inference SIF (vllm-openai-v0.20.1.sif, see configs/environments/t12_cluster_inference.json).",
+    "pull_based_sif": "containers/pytorch-2.11.0-cuda13.0-runtime.sif",
+    "site_packages": "training-site-packages"
   },
   "separation_from_inference_env": {
     "inference_and_training_envs_are_separate": true,
