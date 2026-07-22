@@ -22,6 +22,7 @@ Invoked by ``configs/cluster/t12_job_profiles.json#profiles.qlora_smoke`` via:
 from __future__ import annotations
 
 import argparse
+import re
 import sys
 from pathlib import Path
 
@@ -29,7 +30,11 @@ _REPO_SRC = Path(__file__).resolve().parents[1] / "src"
 if str(_REPO_SRC) not in sys.path:
     sys.path.insert(0, str(_REPO_SRC))
 
-from ambiguity_manager.model.bakeoff_provider import ARCHIVE_SHA_RE, COMMIT_SHA_RE  # noqa: E402
+# Keep SHA validation local so the training entry point does not import the
+# inference bake-off stack (jsonschema / structured_decode / vLLM helpers).
+COMMIT_SHA_RE = re.compile(r"^[0-9a-f]{40}$")
+ARCHIVE_SHA_RE = re.compile(r"^[0-9a-f]{64}$")
+
 from ambiguity_manager.model.qlora_smoke import (  # noqa: E402
     QloraSmokeError,
     run_smoke_training,
