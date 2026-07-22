@@ -20,7 +20,7 @@ The three-candidate shortlist in `configs/model/base_model_candidates_v1.json` i
 | `selected_adapter` | `null` |
 | `selected_model_strategy` | `null` |
 
-`selected_base_model` remains **`null` until a candidate passes Stage 2 and the frozen selection policy produces a winning outcome**. No bake-off evidence files exist yet under `configs/model/evidence/` or local `outputs/` for the model-candidate profiles; **cluster execution is pending**.
+`selected_base_model` remains **`null`**. Development Stage 1 transport completed for all three candidates; **no candidate passed the frozen 4/4 hard gate**. Contract status is now `no_viable_base_candidate`. Stage 2 was not run. No QLoRA begun.
 
 ## Development set
 
@@ -93,7 +93,15 @@ Pinned runtime: `vllm-openai-v0.20.1.sif` (sha256 `d404bdf414e1b8f2d5af1568d0565
 - Eligibility-aware development metrics only (`metrics_summary.json`)
 - Lexicographic ranking per frozen policy; winner updates `selected_base_model` only after PASS evidence is pulled and verified
 
-**Current execution status:** no `preflight_result.json`, `transport_smoke_summary.json`, or `bakeoff_summary.json` evidence has been committed under `configs/model/evidence/` or local operator outputs. Stage 0–2 cluster jobs are **pending cluster execution**.
+**Current execution status (2026-07-22):** Stage 0/1 executed on Wits `biggpu`. Evidence under `configs/model/evidence/model_selection_bakeoff_v1/`.
+
+| Candidate | Stage 1 accepted/required | Primary failure | Run ID |
+|---|---|---|---|
+| `qwen3_8b` | 3/4 | `unsupported_silent_commitment` on `msel_t12_syn_005` | `t12-mc-transport-20260722T191742Z-96f6191` |
+| `phi4_14b` | 1/4 | semantic schema / canonical assembly failures | `t12-mc-transport-20260722T201932Z-b07f7e7` |
+| `mistral_small_24b_2501` | 0/4 | empty remote result directory after COMPLETED job 4364 | `t12-mc-transport-20260722T203945Z-da7e69e` |
+
+**Selection decision:** `no_viable_base_candidate`. `selected_base_model` / `selected_adapter` / `selected_model_strategy` remain `null`. Stage 2 not started.
 
 ## Data timing
 
