@@ -112,6 +112,7 @@ class OperatorUnitTests(unittest.TestCase):
         op = self._operator()
         self.runner.ssh_responses = [
             subprocess.CompletedProcess([], 0, stdout="ok\n", stderr=""),
+            subprocess.CompletedProcess([], 0, stdout="/home/u/t12-hpc\n", stderr=""),
             subprocess.CompletedProcess(
                 [], 0, stdout="/home/u/t12-hpc/runs/t12-canary/.prep-x\n", stderr=""
             ),
@@ -149,6 +150,7 @@ class OperatorUnitTests(unittest.TestCase):
         )
         self.runner.ssh_responses = [
             subprocess.CompletedProcess([], 0, stdout="ok\n", stderr=""),
+            subprocess.CompletedProcess([], 0, stdout="/home/u/t12-hpc\n", stderr=""),
             subprocess.CompletedProcess(
                 [], 0, stdout="/home/u/t12-hpc/runs/t12-canary/.prep-x\n", stderr=""
             ),

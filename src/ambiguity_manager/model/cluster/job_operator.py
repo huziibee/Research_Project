@@ -447,6 +447,23 @@ class ClusterJobOperator:
         default = str(self.profiles_doc.get("cluster_root_default_remote", "$HOME/t12-hpc"))
         return f'"${{{env_name}:-{default}}}"'
 
+    def resolve_remote_cluster_root(self) -> str:
+        """Resolve the remote cluster root to an absolute path.
+
+        Slurm does not expand shell variables in #SBATCH --output/--error directives,
+        so log paths must be absolute concrete paths at submit time.
+        """
+        if self.dry_run:
+            return "$HOME/t12-hpc"
+        root_expr = self.remote_cluster_root_expr()
+        resolved = self.ssh(f"ROOT={root_expr}; printf '%s\\n' \"$ROOT\"")
+        if resolved.returncode != 0:
+            raise OperatorError(f"remote_cluster_root_resolve_failed:{resolved.stderr or resolved.stdout}")
+        root = (resolved.stdout or "").strip().splitlines()[-1].strip()
+        if not root.startswith("/"):
+            raise OperatorError(f"remote_cluster_root_not_absolute:{root!r}")
+        return root
+
     # --- packaging ----------------------------------------------------
     def build_source_identity_manifest(
         self,
@@ -498,6 +515,7 @@ class ClusterJobOperator:
         archive_sha: str,
         archive_filename: str,
         candidate_id: str | None = None,
+        cluster_root_absolute: str | None = None,
     ) -> str:
         partition = str(profile["partition"])
         time_limit = str(profile["time_limit"])
@@ -505,7 +523,16 @@ class ClusterJobOperator:
         cpus = int(profile["cpus"])
         job_name = str(profile.get("job_name") or "t12-job")
         entry = str(profile["entry_point"])
-        root_expr = "${T12_CLUSTER_ROOT:-$HOME/t12-hpc}"
+        # Slurm does not expand ${VAR} in #SBATCH directives. Prefer a concrete
+        # absolute root resolved at submit time; fall back only for dry-run text.
+        if cluster_root_absolute and cluster_root_absolute.startswith("/"):
+            log_output = f"{cluster_root_absolute}/logs/{job_name}-%j.out"
+            log_error = f"{cluster_root_absolute}/logs/{job_name}-%j.err"
+        else:
+            # Dry-run / offline rendering: keep a literal relative logs path under
+            # the submission working directory rather than an unexpanded ${VAR}.
+            log_output = f"logs/{job_name}-%j.out"
+            log_error = f"logs/{job_name}-%j.err"
         result_root_suffix = _profile_result_root_suffix(profile)
         prep_dir = f"${{T12_CLUSTER_ROOT}}/{result_root_suffix}/.prep-${{RUN_ID}}"
         result_dir = f"${{T12_CLUSTER_ROOT}}/{result_root_suffix}/${{RUN_ID}}"
@@ -624,8 +651,8 @@ class ClusterJobOperator:
 #SBATCH --cpus-per-task={cpus}
 #SBATCH --mem={mem}
 #SBATCH --time={time_limit}
-{gpu_lines}#SBATCH --output={root_expr}/logs/{job_name}-%j.out
-#SBATCH --error={root_expr}/logs/{job_name}-%j.err
+{gpu_lines}#SBATCH --output={log_output}
+#SBATCH --error={log_error}
 
 {header_guard}export T12_CLUSTER_ROOT="${{T12_CLUSTER_ROOT:-$HOME/t12-hpc}}"
 {status_init}RUN_ID={shlex.quote(run_id)}
@@ -696,6 +723,10 @@ mkdir -p "${{T12_CLUSTER_ROOT}}/{result_root_suffix}"
         manifest_path = local_run_dir / "source_identity_manifest.json"
         atomic_write_json(manifest_path, manifest)
 
+        if not self.dry_run:
+            self.test_ssh_batch_mode()
+        cluster_root_absolute = self.resolve_remote_cluster_root()
+
         sbatch_text = self._render_sbatch(
             profile=profile,
             run_id=run_id,
@@ -703,6 +734,7 @@ mkdir -p "${{T12_CLUSTER_ROOT}}/{result_root_suffix}"
             archive_sha=archive_sha,
             archive_filename=archive_filename,
             candidate_id=candidate_id,
+            cluster_root_absolute=cluster_root_absolute if not self.dry_run else None,
         )
         ensure_no_forbidden_tokens(sbatch_text)
         sbatch_path = local_run_dir / "submit.sbatch"
@@ -726,9 +758,6 @@ mkdir -p "${{T12_CLUSTER_ROOT}}/{result_root_suffix}"
             "submission_timestamp_utc": packaging_timestamp,
         }
         atomic_write_json(local_run_dir / "remote_metadata.json", remote_meta)
-
-        if not self.dry_run:
-            self.test_ssh_batch_mode()
 
         root_expr = self.remote_cluster_root_expr()
         prep_rel = remote_prep_rel_path(profile, run_id)

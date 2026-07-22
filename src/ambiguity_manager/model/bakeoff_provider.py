@@ -762,6 +762,8 @@ def _analysis_output_row(
     analysis_variant: str,
     canonical: dict[str, Any] | None,
 ) -> dict[str, Any]:
+    from ambiguity_manager.systems.errors import SystemsContractError
+
     system_input = _system_input_from_record(record, analysis_variant=analysis_variant)
     if canonical is None:
         return {
@@ -770,12 +772,25 @@ def _analysis_output_row(
             "accepted": False,
             "analysis": None,
             "analysis_identity": None,
+            "conversion_error": None,
         }
-    analysis = canonical_to_structured_analysis(
-        canonical,
-        candidate=candidate,
-        analysis_variant=analysis_variant,
-    )
+    try:
+        analysis = canonical_to_structured_analysis(
+            canonical,
+            candidate=candidate,
+            analysis_variant=analysis_variant,
+        )
+    except (SystemsContractError, TypeError, ValueError, KeyError) as exc:
+        # Candidate-independent evidence finalisation: never abort the batch when an
+        # accepted canonical payload cannot form StructuredAnalysis. Downgrade instead.
+        return {
+            "record_id": record["record_id"],
+            "analysis_variant": analysis_variant,
+            "accepted": False,
+            "analysis": None,
+            "analysis_identity": None,
+            "conversion_error": str(exc),
+        }
     identity = build_analysis_identity(
         record_id=str(record["record_id"]),
         source_input=system_input,
@@ -789,6 +804,7 @@ def _analysis_output_row(
         "accepted": True,
         "analysis": analysis.to_dict(),
         "analysis_identity": identity.to_dict(),
+        "conversion_error": None,
     }
 
 
@@ -1014,22 +1030,32 @@ def _run_generation_batch(
                 )
                 raw_rows.extend(raw)
                 ledger_rows.extend(ledgers)
-                record_results.append(record_result)
-                if accepted is not None:
-                    accepted_rows.append({**accepted, "analysis_variant": variant})
-                    accepted_count += 1
                 if not raw:
                     unrecorded_failures += 1
                 if FailureCategory.UNCONSTRAINED_FALLBACK_INDICATED.value in pipeline_result.failure_categories:
                     unconstrained_fallback = True
-                analysis_rows.append(
-                    _analysis_output_row(
-                        record=record,
-                        candidate=candidate,
-                        analysis_variant=variant,
-                        canonical=accepted,
-                    )
+                analysis_row = _analysis_output_row(
+                    record=record,
+                    candidate=candidate,
+                    analysis_variant=variant,
+                    canonical=accepted,
                 )
+                analysis_rows.append(analysis_row)
+                if accepted is not None and not analysis_row.get("accepted", False):
+                    # Pipeline accepted a payload that cannot form StructuredAnalysis.
+                    record_result = {
+                        **record_result,
+                        "accepted": False,
+                        "final_status": PipelineFinalStatus.REJECTED_NON_RETRYABLE.value,
+                        "failure_categories": list(record_result.get("failure_categories") or [])
+                        + [FailureCategory.CANONICAL_ASSEMBLY_FAILURE.value],
+                        "conversion_error": analysis_row.get("conversion_error"),
+                    }
+                    accepted = None
+                record_results.append(record_result)
+                if accepted is not None:
+                    accepted_rows.append({**accepted, "analysis_variant": variant})
+                    accepted_count += 1
 
         return {
             "raw_rows": raw_rows,

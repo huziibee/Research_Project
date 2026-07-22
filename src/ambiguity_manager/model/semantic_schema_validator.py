@@ -33,6 +33,7 @@ def validate_against_model_semantic_schema(payload: dict[str, Any]) -> None:
 
 
 POST_SCHEMA_VALIDATION_RULES: tuple[str, ...] = (
+    "speech_act must be null or a declared INTENT_LABELS value",
     "selected_interpretation.frame_id must reference candidate_interpretations",
     "primary_ambiguity_type must appear in ambiguity_types when set",
     "compound_ambiguity requires at least two ambiguity_types",
@@ -43,6 +44,17 @@ POST_SCHEMA_VALIDATION_RULES: tuple[str, ...] = (
 
 def validate_post_schema_semantic_rules(payload: dict[str, Any]) -> None:
     """Enforce semantic rules not fully captured by JSON Schema conditionals."""
+    from ambiguity_manager.systems.contracts import INTENT_LABELS
+
+    speech_act = payload.get("speech_act")
+    if speech_act is not None:
+        if not isinstance(speech_act, str):
+            raise SemanticPayloadError("speech_act must be a string or null")
+        if speech_act not in INTENT_LABELS:
+            raise SemanticPayloadError(
+                f"speech_act must be one of {sorted(INTENT_LABELS)}; got {speech_act!r}"
+            )
+
     selected = payload.get("selected_interpretation")
     candidates = payload.get("candidate_interpretations", [])
     if selected is not None:

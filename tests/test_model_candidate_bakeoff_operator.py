@@ -217,6 +217,7 @@ class ModelCandidateBakeoffTests(unittest.TestCase):
         prep_rel = "runs/model-candidate-transport-smoke/.prep-x"
         self.runner.ssh_responses = [
             subprocess.CompletedProcess([], 0, stdout="ok\n", stderr=""),
+            subprocess.CompletedProcess([], 0, stdout="/home/u/t12-hpc\n", stderr=""),
             subprocess.CompletedProcess([], 0, stdout=f"/home/u/t12-hpc/{prep_rel}\n", stderr=""),
             subprocess.CompletedProcess([], 0, stdout="ARCHIVE_HASH_MATCH\n", stderr=""),
             subprocess.CompletedProcess([], 0, stdout="9001\n", stderr=""),
@@ -227,6 +228,7 @@ class ModelCandidateBakeoffTests(unittest.TestCase):
         sbatch = list((self.root / "outputs/t12_cluster_jobs").rglob("submit.sbatch"))[0].read_text(encoding="utf-8")
         self.assertIn("--candidate-id qwen3_8b", sbatch)
         self.assertIn(profile["remote_result_root_template"].split("/")[-1], sbatch)
+        self.assertIn("#SBATCH --output=/home/u/t12-hpc/logs/", sbatch)
 
     def test_no_secrets_persisted(self) -> None:
         op = self._operator()
@@ -481,6 +483,7 @@ class ModelCandidateBakeoffTests(unittest.TestCase):
             archive_sha="d" * 64,
             archive_filename="t12-aaaaaaa.tar.gz",
             candidate_id="qwen3_8b",
+            cluster_root_absolute="/home-mscluster/mbangie/t12-hpc",
         )
         ensure_no_forbidden_tokens(text)
         self.assertNotIn("rm -rf", text)
@@ -490,6 +493,67 @@ class ModelCandidateBakeoffTests(unittest.TestCase):
         self.assertIn("apptainer exec --nv", text)
         self.assertIn("vllm-openai-v0.20.1.sif", text)
         self.assertIn("--candidate-id qwen3_8b", text)
+        sbatch_lines = [line for line in text.splitlines() if line.startswith("#SBATCH")]
+        self.assertTrue(any(line.startswith("#SBATCH --output=/home-mscluster/mbangie/t12-hpc/logs/") for line in sbatch_lines))
+        self.assertTrue(all("T12_CLUSTER_ROOT" not in line for line in sbatch_lines))
+
+    def test_analysis_output_row_downgrades_invalid_speech_act(self) -> None:
+        from ambiguity_manager.model.bakeoff_provider import _analysis_output_row
+        from ambiguity_manager.model.base_model_candidates import load_base_model_candidate_registry
+
+        registry = load_base_model_candidate_registry(
+            self.root / "configs/model/base_model_candidates_v1.json"
+        )
+        candidate = registry.get_candidate("qwen3_8b")
+        record = {
+            "record_id": "msel_test_001",
+            "command": "pick up the mug",
+            "scene_context": None,
+            "dialogue_history": [],
+            "capability_context": None,
+            "source_dataset": "synthetic",
+            "source_id": "x",
+            "metric_eligibility": {},
+        }
+        bad_canonical = {
+            "speech_act": "request",
+            "intent_summary": "x",
+            "cpc": {
+                "action": {"status": "filled", "value": "pick"},
+                "object": {"status": "filled", "value": "mug"},
+            },
+            "candidate_interpretations": [],
+            "selected_interpretation": None,
+            "unresolved_slots": [],
+            "supporting_evidence": [],
+            "ambiguity_present": False,
+            "ambiguity_types": [],
+            "primary_ambiguity_type": None,
+            "compound_ambiguity": False,
+            "compound_ambiguity_count": 0,
+            "risk_relevant": False,
+            "risk_level": "none",
+            "capability_status": "capable",
+            "recommended_strategy": "execute",
+            "strategy_sequence": ["execute"],
+            "clarification_question": None,
+            "clarification_subtype": None,
+            "clarification_targets": [],
+            "rejection_reason": None,
+            "resolved_slots": [],
+            "resolution_method": None,
+            "resolution_evidence": [],
+            "context_sampling_uncertainty": None,
+        }
+        row = _analysis_output_row(
+            record=record,
+            candidate=candidate,
+            analysis_variant="full_context",
+            canonical=bad_canonical,
+        )
+        self.assertFalse(row["accepted"])
+        self.assertIsNone(row["analysis"])
+        self.assertIn("speech_act", row["conversion_error"] or "")
 
     def test_render_profile_entry_args_rejects_missing_candidate(self) -> None:
         profile = get_profile(load_profiles(self.root), "model_candidate_bakeoff")

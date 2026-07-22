@@ -534,9 +534,13 @@ class T12PredictionAssemblerTests(unittest.TestCase):
         with self.assertRaises(SemanticPayloadError):
             validate_semantic_payload(_complete_semantic(cpc="not-an-object"))
 
+    def test_invalid_speech_act_outside_intent_labels_fails(self) -> None:
+        with self.assertRaises(SemanticPayloadError):
+            validate_semantic_payload(_complete_semantic(speech_act="request"))
+
     def test_semantic_round_trip_preserves_model_fields(self) -> None:
         payload = _complete_semantic(
-            speech_act="request",
+            speech_act="directive_command",
             intent_summary="pick up object",
         )
         record = assemble_prediction_record(
