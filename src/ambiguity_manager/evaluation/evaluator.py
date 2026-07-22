@@ -14,6 +14,7 @@ from ambiguity_manager.paths import ProjectPaths
 from ambiguity_manager.schema.v2.records import CandidateInterpretationFrame
 from ambiguity_manager.schema.v2.taxonomies import CPC_SLOT_NAMES
 from ambiguity_manager.systems.candidate_generation import candidate_set_fingerprint, material_cpc_fingerprint
+from ambiguity_manager.systems.errors import EvaluationContractError
 from ambiguity_manager.systems.hashing import sha256_json
 
 
@@ -80,16 +81,24 @@ class EvaluationBundle:
   evaluator_version: str = "t24-deterministic-1.0.0"
   synthetic_only: bool = True
   official_result: bool = False
+  run_mode: str | None = None
+  run_id: str | None = None
 
   def to_dict(self) -> dict[str, Any]:
     return {
       "evaluator_version": self.evaluator_version,
       "synthetic_only": self.synthetic_only,
       "official_result": self.official_result,
+      "run_mode": self.run_mode,
+      "run_id": self.run_id,
       "metrics": {k: v.to_dict() for k, v in self.metrics.items()},
       "bundle_hash": sha256_json(
         {
           "evaluator_version": self.evaluator_version,
+          "synthetic_only": self.synthetic_only,
+          "official_result": self.official_result,
+          "run_mode": self.run_mode,
+          "run_id": self.run_id,
           "metrics": {k: v.to_dict() for k, v in self.metrics.items()},
         }
       ),
@@ -109,6 +118,7 @@ class DeterministicEvaluator:
     predictions: list[PredictionRecord],
     *,
     system_id: str | None = None,
+    run_context: Any | None = None,
   ) -> EvaluationBundle | dict[str, EvaluationBundle]:
     """Evaluate predictions against gold.
 
@@ -124,15 +134,22 @@ class DeterministicEvaluator:
         ``system_id`` values: return ``dict[str, EvaluationBundle]`` keyed by
         system id, one independently-scored bundle per system. Predictions
         from different systems are never merged into one another.
+
+    Status flags (``synthetic_only``, ``official_result``, ``run_mode``) are
+    inherited from the verified ``run_context`` when provided, otherwise from
+    a homogeneous prediction set. Mixed prediction statuses are rejected.
+    Official status is never inferred merely because gold exists.
     """
     if system_id is not None:
       preds = [p for p in predictions if p.system_id == system_id]
-      return self._evaluate_single(gold_records, preds)
+      return self._evaluate_single(gold_records, preds, run_context=run_context)
 
     system_ids = sorted({p.system_id for p in predictions})
     if len(system_ids) <= 1:
-      return self._evaluate_single(gold_records, predictions)
-    return self.evaluate_all_systems(gold_records, predictions, system_ids=system_ids)
+      return self._evaluate_single(gold_records, predictions, run_context=run_context)
+    return self.evaluate_all_systems(
+      gold_records, predictions, system_ids=system_ids, run_context=run_context
+    )
 
   def evaluate_all_systems(
     self,
@@ -140,20 +157,84 @@ class DeterministicEvaluator:
     predictions: list[PredictionRecord],
     *,
     system_ids: list[str] | None = None,
+    run_context: Any | None = None,
   ) -> dict[str, EvaluationBundle]:
     """Always return one independently-scored bundle per distinct system_id."""
     ids = system_ids if system_ids is not None else sorted({p.system_id for p in predictions})
+    # Enforce a single compatible run status across all systems before scoring.
+    self._resolve_run_status(predictions, run_context=run_context)
     return {
-      sid: self._evaluate_single(gold_records, [p for p in predictions if p.system_id == sid])
+      sid: self._evaluate_single(
+        gold_records,
+        [p for p in predictions if p.system_id == sid],
+        run_context=run_context,
+      )
       for sid in ids
+    }
+
+  def _resolve_run_status(
+    self,
+    preds: list[PredictionRecord],
+    *,
+    run_context: Any | None = None,
+  ) -> dict[str, Any]:
+    """Inherit runner-owned status; reject mixed or gold-inferred official claims."""
+    if run_context is not None:
+      status = {
+        "run_mode": getattr(run_context, "run_mode", None),
+        "synthetic_only": bool(getattr(run_context, "synthetic_only", True)),
+        "official_result": bool(getattr(run_context, "official_result", False)),
+        "run_id": getattr(run_context, "run_id", None),
+      }
+      # Predictions must not disagree with the verified run context.
+      for pred in preds:
+        payload = pred.payload
+        if payload.get("synthetic_only") not in (None, status["synthetic_only"]):
+          raise EvaluationContractError(
+            "prediction synthetic_only disagrees with verified run context"
+          )
+        if payload.get("official_result") not in (None, status["official_result"]):
+          raise EvaluationContractError(
+            "prediction official_result disagrees with verified run context"
+          )
+        if payload.get("run_mode") not in (None, status["run_mode"]):
+          raise EvaluationContractError(
+            "prediction run_mode disagrees with verified run context"
+          )
+      return status
+
+    modes = {p.payload.get("run_mode") for p in preds if p.payload.get("run_mode") is not None}
+    synthetics = {
+      p.payload.get("synthetic_only")
+      for p in preds
+      if "synthetic_only" in p.payload
+    }
+    officials = {
+      p.payload.get("official_result")
+      for p in preds
+      if "official_result" in p.payload
+    }
+    run_ids = {p.payload.get("run_id") for p in preds if p.payload.get("run_id") is not None}
+    if len(modes) > 1 or len(synthetics) > 1 or len(officials) > 1 or len(run_ids) > 1:
+      raise EvaluationContractError(
+        "mixed run-status flags across predictions; evaluation requires one compatible run context"
+      )
+    return {
+      "run_mode": next(iter(modes), None),
+      "synthetic_only": next(iter(synthetics), True),
+      "official_result": next(iter(officials), False),
+      "run_id": next(iter(run_ids), None),
     }
 
   def _evaluate_single(
     self,
     gold_records: list[GoldRecord],
     preds: list[PredictionRecord],
+    *,
+    run_context: Any | None = None,
   ) -> EvaluationBundle:
     self._reject_duplicate_predictions(preds)
+    status = self._resolve_run_status(preds, run_context=run_context)
     gold_by_id = {g.record_id: g for g in gold_records}
     pred_by_id: dict[str, PredictionRecord] = {p.record_id: p for p in preds}
 
@@ -180,8 +261,10 @@ class DeterministicEvaluator:
     return EvaluationBundle(
       metrics=metrics,
       evaluator_version=self.evaluator_version,
-      synthetic_only=True,
-      official_result=False,
+      synthetic_only=bool(status["synthetic_only"]),
+      official_result=bool(status["official_result"]),
+      run_mode=status.get("run_mode"),
+      run_id=status.get("run_id"),
     )
 
   @staticmethod

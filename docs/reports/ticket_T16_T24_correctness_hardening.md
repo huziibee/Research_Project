@@ -29,7 +29,7 @@ Each row lists the reproduced defect, the narrow correction, and the regression 
 
 | # | Defect | Correction | Regression test |
 |---|---|---|---|
-| 1 | Context-blind manager consumed full-context cached analysis; scene-derived resolutions and evidence leaked through ablation | Reject full-context cache (`ContextAblationError`); accept only cache whose provenance matches ablated input hash; strip context-derived resolved slots/evidence; record `ablated_input_hash` in runtime metadata | `tests/test_t16_t24_context_ablation_hardening.py` — `test_full_context_cached_analysis_is_rejected`, `test_context_derived_resolved_slot_cannot_survive_ablation`, `test_matching_context_blind_cache_is_accepted`, `test_ablation_input_hash_is_recorded_in_result_provenance`, `test_original_system_input_unchanged_after_context_blind_run`, `test_context_blind_and_full_manager_use_distinct_analysis_identities_when_context_matters` |
+| 1 | Context-blind manager consumed full-context cached analysis; scene-derived resolutions and evidence leaked through ablation | **Updated:** reject full-context cache completely — never sanitise/reuse; accept only fresh ablated analysis or matching `context_blind` cache with matching ablated input hash; variant-specific `AnalysisIdentity`; honest `provider_unavailable` when neither exists | `tests/test_t16_t24_context_ablation_hardening.py` — adversarial full-context rejection suite |
 | 2 | Provider and caller-supplied cached analyses were returned by reference and mutated in place by manager/resolver/router | Deep-copy at provider and manager boundaries; transformations operate on isolated working copies; deterministic fingerprints preserved | `tests/test_t16_t24_analysis_immutability.py` — full suite |
 | 3 | Official model gates hard-coded to `direct_base_llm` only | Per-system capability registry in `configs/manager/system_variants_v1.json`; `ExperimentRunner.check_official_gates` derives requirements from `load_capability_registry()` | `tests/test_t16_t24_model_identity_and_gates.py` — `CapabilityRegistryTests`, `OfficialGateCapabilityRegistryTests` |
 | 4 | Three-part model identity absent; no formal null contract | `configs/model/selected_identities_v1.json` with all identity fields `null`, `status=no_selection`, `valid_for_official_use=false`; loader + `assert_null_selection()` | `tests/test_t16_t24_model_identity_and_gates.py` — `SelectedIdentitiesContractTests` |
@@ -50,7 +50,7 @@ Each row lists the reproduced defect, the narrow correction, and the regression 
 | 19 | Safety/structural rates used full eligible population denominators | Per-metric conditional denominators with full breakdown (`conditional_eligible_count`, `conditional_excluded_count`, `conditional_exclusion_reasons`); separate `false_rejection_rate` | `tests/test_t24_evaluator_hardening.py` — `ConditionalDenominatorTests`; updated `tests/test_t24_deterministic_evaluator.py` |
 | 20 | Input manifest hashed record IDs only | Full content manifest: complete `SystemInput` records, cached analysis payloads, eligibility, `protected_data`, schema version, ordering policy; hash excludes volatile timestamps | `tests/test_t23_runner_integrity_hardening.py` — `InputManifestHashingTests` |
 | 21 | Resume appended without verifying experiment contract | `ResumeContractError` on config/input/system/version/commit drift, corrupted result hashes, dropped completed records, or config change | `tests/test_t23_runner_integrity_hardening.py` — `ResumeContractTests` |
-| 22 | System adapters hard-coded `synthetic_only` / `official_result` | Runner-owned `RunContext`; flags applied and hash recomputed after every `system.run()` before persistence | `tests/test_t23_runner_integrity_hardening.py` — `RunContextTests`, `RunnerModeOwnsFlagsTests` |
+| 22 | System adapters hard-coded `synthetic_only` / `official_result` | Runner-owned `RunContext` with official approval transition (`pending_official` → gates → `approved_official` with `official_result=true`); evaluator inherits verified status; failed official gates produce no result rows | `tests/test_t23_runner_integrity_hardening.py` — `RunContextTests`, `RunnerModeOwnsFlagsTests`; `tests/test_t16_t24_run_status_hardening.py` |
 | 23 | `protected_data=True` records passed silently in synthetic/development | `ProtectedDataBlockedError` outside `run_mode=official` | `tests/test_t23_runner_integrity_hardening.py` — `ProtectedDataGateTests` |
 | 24 | `verify_run()` checked only run_id and duplicate keys | Independent re-derivation of manifest/config/input hashes, file SHA256s, per-row `result_hash`, expected matrix, summary counts, duplicates; writes `verification_report.json` | `tests/test_t23_runner_integrity_hardening.py` — `VerifyRunCorruptionTests` |
 | 25 | Import isolation probe false-positive when host preloaded modules | Subprocess `-I` interpreter; diff `sys.modules` before/after target import; probe newly imported modules only | `tests/test_t16_t24_isolation.py` — updated `_probe_import` |
@@ -158,7 +158,7 @@ With all identities null, every official gate remains blocked.
 
 `ExperimentRunner.verify_run()` independently checks artefact integrity on disk. `ok=true` means evidence integrity passed (hashes, counts, matrix completeness, flag consistency), not merely matching run IDs. Corruption of any checked field surfaces in `verification_report.json`.
 
-`RunContext` owns `synthetic_only` and `official_result` on every persisted row. Even `run_mode=official` does not set `official_result=true` in this codebase — that requires evidence this task does not produce.
+`RunContext` owns `synthetic_only` and `official_result` on every persisted row. Official mode uses an explicit approval transition: `pending_official()` while gates evaluate, then `approved_official()` (`official_result=true`) only after every prerequisite passes. Failed or incomplete official gates raise before any result rows are written. See also `ticket_T16_T24_context_ablation_and_run_status_fix.md`.
 
 ## Architecture (post-hardening)
 
@@ -201,7 +201,7 @@ flowchart LR
 - T13 calibration packages were not used as gold; calibration hashes unchanged.
 - Thresholds, train/dev/protected splits, and protocol freeze remain future work (T15/T29).
 - Model-backed structured analysis, direct-base LLM, and bounded regeneration after safety rejection remain interface-only.
-- Official mode passes no real run in this task; `official_result` stays `false` on all outputs.
+- Official mode remains gated; a hypothetical approved `RunContext` can represent `official_result=true` after all gates pass (tested with doubles only). No real official experiment was executed in this task.
 
 ## Regression test files added or strengthened
 

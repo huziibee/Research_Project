@@ -24,6 +24,7 @@ def build_run_provenance(
   evaluator_version: str | None = None,
   provider_ids: dict[str, str] | None = None,
   synthetic_only: bool = True,
+  official_result: bool = False,
 ) -> dict[str, Any]:
   payload = {
     "source_commit": source_commit,
@@ -36,7 +37,7 @@ def build_run_provenance(
     "evaluator_version": evaluator_version,
     "provider_ids": dict(provider_ids or {}),
     "synthetic_only": synthetic_only,
-    "official_result": False if synthetic_only else None,
+    "official_result": official_result,
     "created_at": utc_now_iso(),
   }
   payload["provenance_hash"] = sha256_json(

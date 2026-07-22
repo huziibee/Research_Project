@@ -59,8 +59,9 @@ All evaluator and manager policies likewise remain `valid_for_official_use: fals
 - Per-system capability registry (`configs/manager/system_variants_v1.json`)
 - Three-part model identity contract (`configs/model/selected_identities_v1.json`, all null)
 - Experiment runner modes: `synthetic_smoke`, `development`, `official` (gated)
-- `RunContext` runner-owned `synthetic_only` / `official_result` flags
-- Full content input manifest and strengthened `verify_run()`
+- `RunContext` runner-owned `synthetic_only` / `official_result` flags, with official `pending_official` → `approved_official` transition
+- Full content input manifest (including analysis variant + source-input hash) and strengthened `verify_run()`
+- Strict context-blind ablation: fresh or matching ablated analysis only (no full-context sanitisation fallback)
 - Deterministic evaluator metrics + conditional denominator reporting
 - Per-system evaluation bundles (no silent last-wins)
 - Synthetic fixture suite (16 records) + hand-calculated expected metrics doc
@@ -166,7 +167,7 @@ flowchart LR
 3. `always_silently_resolve` — force silent; preserve unsupported resolution honestly
 4. `direct_base_llm` — provider-driven; not executable without provider
 5. `degree_based_router` — scalar uncertainty only; routes ∈ {execute, silently_resolve, clarify}
-6. `context_blind_manager` — ablates dialogue/scene/capability without mutating input; rejects full-context cache
+6. `context_blind_manager` — ablates dialogue/scene/capability without mutating input; accepts only fresh ablated analysis or matching `context_blind` cache (never sanitises full-context cache)
 7. `full_type_risk_aware_manager` — full deterministic pipeline; awaits T28 adapter; not empirically complete
 
 ## Safety invariants

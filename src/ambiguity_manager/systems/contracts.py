@@ -444,6 +444,8 @@ class SystemResult:
   result_hash: str | None = None
   synthetic_only: bool = True
   official_result: bool = False
+  run_mode: str | None = None
+  run_id: str | None = None
 
   def to_dict(self) -> dict[str, Any]:
     payload = {
@@ -466,6 +468,8 @@ class SystemResult:
       "runtime_metadata": copy.deepcopy(self.runtime_metadata),
       "synthetic_only": self.synthetic_only,
       "official_result": self.official_result,
+      "run_mode": self.run_mode,
+      "run_id": self.run_id,
     }
     payload["result_hash"] = self.result_hash or sha256_json(
       {k: v for k, v in payload.items() if k != "result_hash"}
@@ -522,6 +526,8 @@ class SystemResult:
       result_hash=data.get("result_hash"),
       synthetic_only=bool(data.get("synthetic_only", True)),
       official_result=bool(data.get("official_result", False)),
+      run_mode=data.get("run_mode"),
+      run_id=data.get("run_id"),
     )
     if result.result_hash is None:
       result.result_hash = result.compute_hash()

@@ -21,16 +21,19 @@ if str(SRC) not in sys.path:
 
 from ambiguity_manager.schema.v2.taxonomies import RouteLabel  # noqa: E402
 from ambiguity_manager.systems.contracts import (  # noqa: E402
+    InputProvenance,
     StructuredAnalysis,
     SystemInput,
     SystemResult,
 )
 from ambiguity_manager.systems.errors import (  # noqa: E402
+    OfficialRunBlockedError,
     ProtectedDataBlockedError,
     ResumeContractError,
 )
 from ambiguity_manager.systems.execution import (  # noqa: E402
     ExperimentRunner,
+    OfficialPrerequisites,
     RunContext,
 )
 
@@ -128,21 +131,39 @@ class RunContextTests(unittest.TestCase):
         ctx = RunContext.for_run_mode("synthetic_smoke")
         self.assertTrue(ctx.synthetic_only)
         self.assertFalse(ctx.official_result)
+        self.assertTrue(ctx.approved)
 
-    def test_development_flags(self) -> None:
-        ctx = RunContext.for_run_mode("development")
+    def test_development_flags_non_synthetic(self) -> None:
+        ctx = RunContext.for_run_mode("development", synthetic_inputs=False)
+        self.assertFalse(ctx.synthetic_only)
         self.assertFalse(ctx.official_result)
 
-    def test_official_flags_never_certify_official_result(self) -> None:
+    def test_development_flags_synthetic_inputs(self) -> None:
+        ctx = RunContext.for_run_mode("development", synthetic_inputs=True)
+        self.assertTrue(ctx.synthetic_only)
+        self.assertFalse(ctx.official_result)
+
+    def test_for_run_mode_official_is_pending_not_approved(self) -> None:
         ctx = RunContext.for_run_mode("official")
+        self.assertEqual(ctx.run_mode, "official")
+        self.assertFalse(ctx.synthetic_only)
         self.assertFalse(ctx.official_result)
+        self.assertFalse(ctx.approved)
+        with self.assertRaises(Exception):
+            ctx.ensure_executable()
+
+    def test_approved_official_sets_official_result_true(self) -> None:
+        ctx = RunContext.approved_official()
+        self.assertTrue(ctx.approved)
+        self.assertFalse(ctx.synthetic_only)
+        self.assertTrue(ctx.official_result)
 
     def test_unknown_run_mode_rejected(self) -> None:
         with self.assertRaises(ValueError):
             RunContext.for_run_mode("bogus_mode")
 
     def test_apply_overrides_adapter_supplied_flags(self) -> None:
-        ctx = RunContext.for_run_mode("development")
+        ctx = RunContext.for_run_mode("development", synthetic_inputs=False)
         hostile = SystemResult(
             record_id="rec-1",
             system_id="always_execute",
@@ -154,10 +175,12 @@ class RunContextTests(unittest.TestCase):
         ).with_computed_hash()
         original_hash = hostile.result_hash
 
-        fixed = ctx.apply(hostile)
+        fixed = ctx.apply(hostile, run_id="dev-test")
 
         self.assertFalse(fixed.synthetic_only)
         self.assertFalse(fixed.official_result)
+        self.assertEqual(fixed.run_mode, "development")
+        self.assertEqual(fixed.run_id, "dev-test")
         # The hash must be recomputed once the flags are forced, or a
         # verifier would flag a false "corruption".
         self.assertEqual(fixed.result_hash, fixed.compute_hash())
@@ -192,8 +215,34 @@ class RunnerModeOwnsFlagsTests(unittest.TestCase):
         # adapter's original (overridden) values.
         self.assertEqual(rows[0]["result_hash"], SystemResult.from_dict(rows[0]).compute_hash())
 
-    def test_development_run_sets_synthetic_only_false(self) -> None:
+    def test_development_run_on_non_synthetic_inputs_sets_synthetic_only_false(self) -> None:
         stub = StubSystem("always_execute", set_synthetic_only=True, set_official_result=False)
+        runner = ExperimentRunner(registry={"always_execute": stub})
+        records = [
+            SystemInput(
+                record_id="dev_real_1",
+                command="Pick up the mug.",
+                input_provenance=InputProvenance(source="teach_derived"),
+            )
+        ]
+
+        with tempfile.TemporaryDirectory() as tmpdir:
+            output_dir = Path(tmpdir) / "run"
+            summary = runner.run(
+                config=_config(run_mode="development", systems=["always_execute"]),
+                records=records,
+                cached_analyses={},
+                output_dir=output_dir,
+            )
+            rows = _read_jsonl(output_dir / "results.jsonl")
+
+        self.assertFalse(summary["synthetic_only"])
+        self.assertFalse(summary["official_result"])
+        self.assertFalse(rows[0]["synthetic_only"])
+        self.assertFalse(rows[0]["official_result"])
+
+    def test_development_run_on_synthetic_fixtures_sets_synthetic_only_true(self) -> None:
+        stub = StubSystem("always_execute", set_synthetic_only=False, set_official_result=False)
         runner = ExperimentRunner(registry={"always_execute": stub})
         records = self.inputs[:1]
 
@@ -207,8 +256,10 @@ class RunnerModeOwnsFlagsTests(unittest.TestCase):
             )
             rows = _read_jsonl(output_dir / "results.jsonl")
 
-        self.assertFalse(summary["synthetic_only"])
-        self.assertFalse(rows[0]["synthetic_only"])
+        self.assertTrue(summary["synthetic_only"])
+        self.assertFalse(summary["official_result"])
+        self.assertTrue(rows[0]["synthetic_only"])
+        self.assertFalse(rows[0]["official_result"])
 
 
 class ProtectedDataGateTests(unittest.TestCase):

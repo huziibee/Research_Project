@@ -6,12 +6,15 @@ Integrity model
   ``official_result`` flags on every persisted result; adapters may set
   whatever values they like internally but the runner always overwrites them
   before a row is written, and recomputes the result hash accordingly.
+  Official mode uses ``pending_official`` -> gate checks ->
+  ``approved_official`` (``official_result=True`` only after all gates pass).
 * The input manifest (Section C) hashes the *complete* ``SystemInput``
   records (including dialogue/scene/capability context, eligibility
   metadata, protected-data flags), plus any supplied cached analysis content
-  and provenance, the input schema version, and an explicit record-ordering
-  policy. It intentionally excludes timestamps so identical inputs always
-  hash identically.
+  and provenance (including analysis variant and source-input hash), the
+  input schema version, and an explicit record-ordering policy. It
+  intentionally excludes timestamps so identical inputs always hash
+  identically.
 * Resuming a run (Section D) re-derives the same identity bundle used at
   original-run time (systems/versions, provider identities, model
   identities, evaluator version, source commit) and refuses to continue if
@@ -20,7 +23,8 @@ Integrity model
   track of already-completed work is not.
 * Official-mode gating (Section B) is derived from the system capability
   registry (``ambiguity_manager.systems.capabilities``), never from
-  hard-coded system-id checks.
+  hard-coded system-id checks. Failed gates raise before any result rows
+  are written.
 * Protected-data records (Section F) are refused outright outside
   ``run_mode="official"``.
 * ``verify_run`` (Section G) independently re-derives everything it can from
@@ -42,6 +46,11 @@ from ambiguity_manager.systems.capabilities import (
   is_provenance_approved,
   load_capability_registry,
 )
+from ambiguity_manager.systems.analysis import (
+  AnalysisIdentity,
+  build_analysis_identity,
+  is_context_blind_provenance,
+)
 from ambiguity_manager.systems.contracts import StructuredAnalysis, SystemInput, SystemResult
 from ambiguity_manager.systems.errors import (
   DuplicateResultError,
@@ -53,6 +62,7 @@ from ambiguity_manager.systems.hashing import sha256_hex, sha256_json
 from ambiguity_manager.systems.model_identities import SelectedIdentities, load_selected_identities
 from ambiguity_manager.systems.provenance import build_run_provenance, utc_now_iso
 from ambiguity_manager.systems.variants import SYSTEM_IDS, get_registry
+
 
 RECORD_ORDERING_POLICY = "as_provided_stable_list_order"
 
@@ -92,37 +102,108 @@ def _default_evaluator_version() -> str:
   return DeterministicEvaluator().evaluator_version
 
 
+def _record_is_explicitly_synthetic(record: SystemInput) -> bool:
+  source = (record.input_provenance.source or "").strip().lower()
+  return source == "synthetic"
+
+
 @dataclass(frozen=True)
 class RunContext:
   """Runner-owned execution-mode flags.
 
   Adapters/systems must never be trusted to set ``synthetic_only`` /
   ``official_result`` themselves for the persisted record; the runner always
-  derives them from ``run_mode`` alone and overwrites whatever the adapter
-  returned.
+  derives them from the validated ``RunContext`` and overwrites whatever the
+  adapter returned.
+
+  Official mode uses an explicit approval transition:
+  ``pending_official()`` -> gate checks -> ``approved_official()``.
+  Only the approved context may label results ``official_result=True``.
   """
 
   run_mode: str
   synthetic_only: bool
   official_result: bool
+  approved: bool = True
 
   @classmethod
-  def for_run_mode(cls, run_mode: str) -> "RunContext":
+  def for_run_mode(
+    cls,
+    run_mode: str,
+    *,
+    synthetic_inputs: bool = False,
+  ) -> "RunContext":
     if run_mode == "synthetic_smoke":
-      return cls(run_mode=run_mode, synthetic_only=True, official_result=False)
+      return cls(
+        run_mode=run_mode,
+        synthetic_only=True,
+        official_result=False,
+        approved=True,
+      )
     if run_mode == "development":
-      return cls(run_mode=run_mode, synthetic_only=False, official_result=False)
+      return cls(
+        run_mode=run_mode,
+        synthetic_only=bool(synthetic_inputs),
+        official_result=False,
+        approved=True,
+      )
     if run_mode == "official":
-      # Passing the official gates in this codebase never certifies a result
-      # as official_result=True; that requires evidence this task does not
-      # produce. official_result stays False here by construction.
-      return cls(run_mode=run_mode, synthetic_only=False, official_result=False)
+      # Official mode starts unapproved. Callers must transition through
+      # approved_official() after every prerequisite gate passes.
+      return cls.pending_official()
     raise ValueError(f"unknown run_mode: {run_mode}")
 
-  def apply(self, result: SystemResult) -> SystemResult:
+  @classmethod
+  def pending_official(cls) -> "RunContext":
+    """Unapproved official context — must not be used to label result rows."""
+    return cls(
+      run_mode="official",
+      synthetic_only=False,
+      official_result=False,
+      approved=False,
+    )
+
+  @classmethod
+  def approved_official(cls) -> "RunContext":
+    """Validated official context after every prerequisite gate has passed."""
+    return cls(
+      run_mode="official",
+      synthetic_only=False,
+      official_result=True,
+      approved=True,
+    )
+
+  @classmethod
+  def from_dict(cls, data: dict[str, Any]) -> "RunContext":
+    if not isinstance(data, dict):
+      raise ValueError("run_context must be an object")
+    run_mode = str(data.get("run_mode") or "")
+    return cls(
+      run_mode=run_mode,
+      synthetic_only=bool(data.get("synthetic_only", False)),
+      official_result=bool(data.get("official_result", False)),
+      approved=bool(data.get("approved", True)),
+    )
+
+  def ensure_executable(self) -> None:
+    if self.run_mode == "official" and not self.approved:
+      raise OfficialRunBlockedError(["official_run_context_not_approved"])
+    if self.official_result and not self.approved:
+      raise OfficialRunBlockedError(["official_result_requires_approved_context"])
+
+  def apply(
+    self,
+    result: SystemResult,
+    *,
+    run_id: str | None = None,
+  ) -> SystemResult:
     """Overwrite the runner-owned flags on ``result`` and recompute its hash."""
+    self.ensure_executable()
     result.synthetic_only = self.synthetic_only
     result.official_result = self.official_result
+    result.run_mode = self.run_mode
+    if run_id is not None:
+      result.run_id = run_id
     return result.with_computed_hash()
 
   def to_dict(self) -> dict[str, Any]:
@@ -130,6 +211,7 @@ class RunContext:
       "run_mode": self.run_mode,
       "synthetic_only": self.synthetic_only,
       "official_result": self.official_result,
+      "approved": self.approved,
     }
 
 
@@ -261,7 +343,27 @@ class ExperimentRunner:
       {
         "input": record.to_dict(),
         "cached_analysis": cached.to_dict() if cached is not None else None,
+        "analysis_identity": (
+          self._cached_analysis_identity(record, cached).to_dict()
+          if cached is not None
+          else None
+        ),
       }
+    )
+
+  def _cached_analysis_identity(
+    self,
+    record: SystemInput,
+    cached: StructuredAnalysis,
+  ) -> AnalysisIdentity:
+    is_blind = is_context_blind_provenance(cached.analysis_provenance)
+    source_input = record.without_context() if is_blind else record
+    variant = "context_blind" if is_blind else "full_context"
+    return build_analysis_identity(
+      record_id=record.record_id,
+      source_input=source_input,
+      analysis=cached,
+      analysis_variant=variant,
     )
 
   def _build_input_manifest(
@@ -278,16 +380,27 @@ class ExperimentRunner:
       cached = cached_analyses.get(record.record_id)
       identity_hash = self._record_identity_hash(record, cached)
       fingerprints[record.record_id] = identity_hash
-      record_entries.append(
-        {
-          "record_id": record.record_id,
-          "input": record.to_dict(),
-          "input_fingerprint": record.fingerprint(),
-          "cached_analysis": cached.to_dict() if cached is not None else None,
-          "cached_analysis_fingerprint": cached.fingerprint() if cached is not None else None,
-          "record_identity_hash": identity_hash,
-        }
-      )
+      entry: dict[str, Any] = {
+        "record_id": record.record_id,
+        "input": record.to_dict(),
+        "input_fingerprint": record.fingerprint(),
+        "ablated_input_fingerprint": record.without_context().fingerprint(),
+        "cached_analysis": cached.to_dict() if cached is not None else None,
+        "cached_analysis_fingerprint": cached.fingerprint() if cached is not None else None,
+        "record_identity_hash": identity_hash,
+      }
+      if cached is not None:
+        analysis_identity = self._cached_analysis_identity(record, cached)
+        entry["analysis_identity"] = analysis_identity.to_dict()
+        entry["analysis_variant"] = analysis_identity.analysis_variant
+        entry["source_input_hash"] = analysis_identity.source_input_hash
+        entry["analysis_content_hash"] = analysis_identity.analysis_content_hash
+      else:
+        entry["analysis_identity"] = None
+        entry["analysis_variant"] = None
+        entry["source_input_hash"] = None
+        entry["analysis_content_hash"] = None
+      record_entries.append(entry)
     manifest = {
       "input_schema_version": SCHEMA_VERSION,
       "run_mode": run_mode,
@@ -297,6 +410,7 @@ class ExperimentRunner:
       "records": record_entries,
     }
     return manifest, fingerprints
+
 
   def _expected_matrix(self, records: list[SystemInput], systems: list[str]) -> list[str]:
     return sorted(self._result_key(r.record_id, sid) for r in records for sid in systems)
@@ -422,7 +536,6 @@ class ExperimentRunner:
     run_mode = config["run_mode"]
     systems = list(config.get("systems") or list(SYSTEM_IDS))
     cached_analyses = cached_analyses or {}
-    run_context = RunContext.for_run_mode(run_mode)
 
     # Section F: protected-data gate. Refuse outright outside official mode;
     # synthetic and development runs must never process protected records.
@@ -431,13 +544,41 @@ class ExperimentRunner:
         if record.protected_data:
           raise ProtectedDataBlockedError(record.record_id, run_mode)
 
+    # Build RunContext only after mode validation. Official mode remains
+    # unapproved until every prerequisite gate passes; failed gates raise
+    # before any result rows are written.
     if run_mode == "official":
-      self.check_official_gates(
-        prerequisites=prerequisites or OfficialPrerequisites(),
-        systems=systems,
-        protected_labels_in_prompts=protected_labels_in_prompts,
-        cached_analyses=cached_analyses,
+      pending = RunContext.pending_official()
+      assert pending.approved is False and pending.official_result is False
+      missing: list[str] = []
+      synthetic_ids = [
+        r.record_id for r in records if _record_is_explicitly_synthetic(r)
+      ]
+      if synthetic_ids:
+        missing.append(f"official_cannot_use_synthetic_inputs:{sorted(synthetic_ids)}")
+      try:
+        self.check_official_gates(
+          prerequisites=prerequisites or OfficialPrerequisites(),
+          systems=systems,
+          protected_labels_in_prompts=protected_labels_in_prompts,
+          cached_analyses=cached_analyses,
+        )
+      except OfficialRunBlockedError as exc:
+        missing.extend(exc.missing)
+      if missing:
+        raise OfficialRunBlockedError(missing)
+      run_context = RunContext.approved_official()
+    elif run_mode == "development":
+      synthetic_inputs = bool(records) and all(
+        _record_is_explicitly_synthetic(r) for r in records
       )
+      run_context = RunContext.for_run_mode(
+        "development",
+        synthetic_inputs=synthetic_inputs,
+      )
+    else:
+      run_context = RunContext.for_run_mode(run_mode)
+    run_context.ensure_executable()
 
     config_hash = sha256_json(config)
     input_manifest, record_fingerprints = self._build_input_manifest(
@@ -497,6 +638,7 @@ class ExperimentRunner:
       schema_version=SCHEMA_VERSION,
       evaluator_version=_default_evaluator_version(),
       synthetic_only=run_context.synthetic_only,
+      official_result=run_context.official_result,
     )
 
     results_count = 0
@@ -522,7 +664,7 @@ class ExperimentRunner:
             result: SystemResult = system.run(record, cached_analysis=cached)
             if result.execution_status in {"provider_unavailable", "not_executable"}:
               not_executable_count += 1
-            result = run_context.apply(result)
+            result = run_context.apply(result, run_id=run_id)
             row = result.to_dict()
             row["run_id"] = run_id
             row["run_mode"] = run_mode
@@ -554,7 +696,8 @@ class ExperimentRunner:
                 recommended_strategy=None,
                 execution_status="failed",
                 runtime_metadata={"error_type": type(exc).__name__, "error_message": str(exc)},
-              )
+              ),
+              run_id=run_id,
             )
             row = failed_result.to_dict()
             row["run_id"] = run_id
@@ -701,9 +844,37 @@ class ExperimentRunner:
     result_hash_mismatches: list[str] = []
     version_mismatches: list[str] = []
     flag_mismatches: list[str] = []
+    mode_mismatches: list[str] = []
+    context_blind_cache_mismatches: list[str] = []
     resume_contract = manifest.get("resume_contract") or {}
     stored_versions = resume_contract.get("system_versions") or {}
-    run_context = RunContext.for_run_mode(manifest.get("run_mode"))
+
+    stored_run_context = manifest.get("run_context")
+    if stored_run_context is not None:
+      run_context = RunContext.from_dict(stored_run_context)
+    else:
+      # Legacy manifests without an embedded run_context: reconstruct non-official
+      # modes only. Official mode without an embedded approved context cannot be
+      # treated as official_result=true.
+      run_context = RunContext.for_run_mode(manifest.get("run_mode"))
+
+    checks["run_mode_manifest_summary_consistent"] = (
+      manifest.get("run_mode") == summary.get("run_mode") == run_context.run_mode
+    )
+    checks["run_context_approved_when_official_result"] = (
+      (not run_context.official_result) or run_context.approved
+    )
+    checks["official_result_implies_official_mode"] = (
+      (not run_context.official_result) or run_context.run_mode == "official"
+    )
+    checks["synthetic_smoke_implies_synthetic_only"] = (
+      run_context.run_mode != "synthetic_smoke" or run_context.synthetic_only
+    )
+
+    input_records_by_id: dict[str, dict[str, Any]] = {}
+    for entry in (stored_input_manifest or {}).get("records") or []:
+      if isinstance(entry, dict) and entry.get("record_id"):
+        input_records_by_id[str(entry["record_id"])] = entry
 
     for row in rows:
       key = self._result_key(row["record_id"], row["system_id"])
@@ -721,6 +892,39 @@ class ExperimentRunner:
         or row.get("official_result") != run_context.official_result
       ):
         flag_mismatches.append(key)
+      if row.get("run_mode") not in (None, run_context.run_mode):
+        mode_mismatches.append(key)
+
+      # Context-blind results that executed successfully must not reference a
+      # full-context analysis identity or a mismatched ablated input hash.
+      if row.get("system_id") == "context_blind_manager" and row.get("execution_status") == "ok":
+        identity = (row.get("runtime_metadata") or {}).get("analysis_identity") or {}
+        ablation = (row.get("runtime_metadata") or {}).get("context_ablation") or {}
+        entry = input_records_by_id.get(str(row["record_id"]), {})
+        expected_ablated = entry.get("ablated_input_fingerprint")
+        if identity.get("analysis_variant") == "full_context":
+          context_blind_cache_mismatches.append(key)
+        if (
+          identity.get("analysis_variant")
+          and identity.get("analysis_variant") != "context_blind"
+        ):
+          context_blind_cache_mismatches.append(key)
+        if expected_ablated and identity.get("source_input_hash") not in (
+          None,
+          expected_ablated,
+        ):
+          context_blind_cache_mismatches.append(key)
+        if expected_ablated and ablation.get("ablated_input_hash") not in (
+          None,
+          expected_ablated,
+        ):
+          context_blind_cache_mismatches.append(key)
+        # Supplied cache in the input manifest must not have been substituted
+        # as a full-context identity for an ok context-blind execution.
+        if entry.get("analysis_variant") == "full_context" and identity.get(
+          "analysis_content_hash"
+        ) == entry.get("analysis_content_hash"):
+          context_blind_cache_mismatches.append(key)
 
     expected_matrix = set(manifest.get("expected_matrix") or [])
     missing_keys = sorted(expected_matrix - seen)
@@ -733,6 +937,8 @@ class ExperimentRunner:
     checks["all_result_hashes_valid"] = not result_hash_mismatches
     checks["system_versions_consistent"] = not version_mismatches
     checks["flag_consistency"] = not flag_mismatches
+    checks["run_mode_consistency"] = not mode_mismatches
+    checks["context_blind_analysis_identity_consistent"] = not context_blind_cache_mismatches
 
     failure_rows = _read_jsonl(failures_path)
     failed_result_rows = [r for r in rows if r.get("execution_status") == "failed"]
@@ -748,6 +954,31 @@ class ExperimentRunner:
       summary.get("synthetic_only") == run_context.synthetic_only
       and summary.get("official_result") == run_context.official_result
     )
+
+    # Evaluation bundles, when present, must inherit the same validated status.
+    eval_flag_mismatches: list[str] = []
+    for eval_name in ("evaluation_bundle.json", "evaluation_bundles.json"):
+      eval_path = run_path / eval_name
+      if not eval_path.is_file():
+        continue
+      payload = load_json(eval_path)
+      bundles = payload if isinstance(payload, list) else (
+        list(payload.values()) if isinstance(payload, dict) and "metrics" not in payload else [payload]
+      )
+      if isinstance(payload, dict) and "metrics" in payload:
+        bundles = [payload]
+      elif isinstance(payload, dict):
+        bundles = list(payload.values())
+      for idx, bundle in enumerate(bundles):
+        if not isinstance(bundle, dict):
+          continue
+        if (
+          bundle.get("synthetic_only") != run_context.synthetic_only
+          or bundle.get("official_result") != run_context.official_result
+          or bundle.get("run_mode") not in (None, run_context.run_mode)
+        ):
+          eval_flag_mismatches.append(f"{eval_name}:{idx}")
+    checks["evaluation_bundle_flags_consistent"] = not eval_flag_mismatches
 
     provenance = manifest.get("provenance") or {}
     checks["source_commit_consistent"] = provenance.get("source_commit") == resume_contract.get(
@@ -771,6 +1002,9 @@ class ExperimentRunner:
       "result_hash_mismatches": result_hash_mismatches,
       "version_mismatches": version_mismatches,
       "flag_mismatches": flag_mismatches,
+      "mode_mismatches": mode_mismatches,
+      "context_blind_cache_mismatches": sorted(set(context_blind_cache_mismatches)),
+      "evaluation_flag_mismatches": eval_flag_mismatches,
       "result_rows": len(rows),
       "synthetic_only": summary.get("synthetic_only", True),
       "official_result": summary.get("official_result", False),
