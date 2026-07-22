@@ -14,6 +14,8 @@
 **Forward-migration base:** `b4865b3a101c87b7b5fe468c12c40adead74068f`
 **Governance:** T11 is **PASS** (**COMPLETE / PASS**) with determination `not_required` (supervisor-only; `ETHGOV-001`). Historical preparatory work was authorised by `DEV-20260711-001` (pending-ethics rationale closed by `DEV-20260721-001`).
 **Final D-Final evidence:** job **3998** / commit `f0cf937` — 3/4 accepted; `dfinal-004` rejected ×3 on `unsupported_silent_commitment`.
+**Operator canary:** job **4122** / run `t12-canary-20260722T060451Z-fe85d8c` / commit `fe85d8c` — PASS
+**Completion report:** `docs/reports/ticket_T12_completion_report.md`
 **Next active ticket:** T13 (prep only; no human annotation started)
 
 ## Cluster-validation model (terminal disposition)
