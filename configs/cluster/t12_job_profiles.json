@@ -11,6 +11,7 @@
       "memory_mb": 4000,
       "cpus": 1,
       "gpus_required": false,
+      "sbatch_strict_mode": true,
       "job_name": "t12-canary",
       "entry_point": "scripts/t12_cluster_canary.py",
       "required_branch": "feature/t12-cluster-redesign",
@@ -22,6 +23,84 @@
         "source_identity_manifest.json"
       ],
       "run_id_prefix": "t12-canary"
+    },
+    "model_candidate_preflight": {
+      "description": "GPU preflight for one allowlisted development model candidate (metadata/tokenizer/runtime; no full generation).",
+      "partition": "biggpu",
+      "time_limit": "00:45:00",
+      "memory_mb": 64000,
+      "cpus": 8,
+      "gpus_required": true,
+      "gpus": 1,
+      "exclusive": true,
+      "requires_candidate_id": true,
+      "job_name": "t12-mc-preflight",
+      "entry_point": "scripts/t12_model_candidate_preflight.py",
+      "entry_args": "--candidate-id {candidate_id}",
+      "required_branch": "feature/t12-cluster-redesign",
+      "remote_result_root_template": "${T12_CLUSTER_ROOT}/runs/model-candidate-preflight",
+      "expected_result_files": [
+        "preflight_result.json",
+        "candidate_provenance.json",
+        "run_manifest.json",
+        "source_identity_manifest.json"
+      ],
+      "run_id_prefix": "t12-mc-preflight"
+    },
+    "model_candidate_transport_smoke": {
+      "description": "Four-record development transport smoke for one allowlisted model candidate.",
+      "partition": "biggpu",
+      "time_limit": "01:30:00",
+      "memory_mb": 64000,
+      "cpus": 8,
+      "gpus_required": true,
+      "gpus": 1,
+      "exclusive": true,
+      "requires_candidate_id": true,
+      "job_name": "t12-mc-transport",
+      "entry_point": "scripts/t12_model_candidate_transport_smoke.py",
+      "entry_args": "--candidate-id {candidate_id}",
+      "required_branch": "feature/t12-cluster-redesign",
+      "remote_result_root_template": "${T12_CLUSTER_ROOT}/runs/model-candidate-transport-smoke",
+      "expected_result_files": [
+        "transport_smoke_summary.json",
+        "raw_attempts.jsonl",
+        "attempt_ledgers.jsonl",
+        "accepted_predictions.jsonl",
+        "record_results.jsonl",
+        "analysis_outputs.jsonl",
+        "run_manifest.json",
+        "source_identity_manifest.json"
+      ],
+      "run_id_prefix": "t12-mc-transport"
+    },
+    "model_candidate_bakeoff": {
+      "description": "Full frozen development-set bake-off (full_context + context_blind) for one allowlisted candidate.",
+      "partition": "biggpu",
+      "time_limit": "08:00:00",
+      "memory_mb": 64000,
+      "cpus": 8,
+      "gpus_required": true,
+      "gpus": 1,
+      "exclusive": true,
+      "requires_candidate_id": true,
+      "job_name": "t12-mc-bakeoff",
+      "entry_point": "scripts/t12_model_candidate_bakeoff.py",
+      "entry_args": "--candidate-id {candidate_id}",
+      "required_branch": "feature/t12-cluster-redesign",
+      "remote_result_root_template": "${T12_CLUSTER_ROOT}/runs/model-candidate-bakeoff",
+      "expected_result_files": [
+        "bakeoff_summary.json",
+        "metrics_summary.json",
+        "raw_attempts.jsonl",
+        "attempt_ledgers.jsonl",
+        "accepted_predictions.jsonl",
+        "analysis_cache_entries.jsonl",
+        "record_results.jsonl",
+        "run_manifest.json",
+        "source_identity_manifest.json"
+      ],
+      "run_id_prefix": "t12-mc-bakeoff"
     }
   }
 }

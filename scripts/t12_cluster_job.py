@@ -25,6 +25,11 @@ def build_parser() -> argparse.ArgumentParser:
     )
     parser.add_argument("--run", metavar="PROFILE", help="Submit a profile (e.g. canary).")
     parser.add_argument(
+        "--candidate-id",
+        metavar="ID",
+        help="Allowlisted model candidate id for GPU bake-off profiles.",
+    )
+    parser.add_argument(
         "--status",
         nargs="?",
         const="latest",
@@ -106,6 +111,7 @@ def main(argv: list[str] | None = None) -> int:
             pull = args.pull is not None
             operator.run_profile(
                 args.run,
+                candidate_id=args.candidate_id,
                 poll=poll,
                 pull=pull,
                 interval=args.interval,

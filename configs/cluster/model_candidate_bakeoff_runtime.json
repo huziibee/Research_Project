@@ -1,0 +1,37 @@
+{
+  "schema_version": "1.0.0",
+  "backend_identifier": "vllm_batch_direct",
+  "references": {
+    "candidate_registry": "configs/model/base_model_candidates_v1.json",
+    "prompt_contract": "configs/model/bakeoff_prompt_contract_v1.json",
+    "immutable_selection": "configs/model/immutable_selection.json",
+    "inference_environment": "configs/environments/t12_cluster_inference.json",
+    "structured_decode_contract": "configs/model/t12_structured_decode_contract.json"
+  },
+  "batch_size": 4,
+  "generation": {
+    "temperature": 0.0,
+    "top_p": 1.0,
+    "max_tokens": 2048,
+    "frozen": true
+  },
+  "engine": {
+    "tensor_parallel_size": 1,
+    "gpu_memory_utilization": 0.9,
+    "frozen": true
+  },
+  "structured_decode": {
+    "enabled": true,
+    "contract_relpath": "configs/model/t12_structured_decode_contract.json",
+    "semantic_schema_relpath": "configs/model/schema/t12_model_semantic_output.schema.json"
+  },
+  "attempt_bounds": {
+    "total_model_attempts": 3,
+    "unconstrained_fallback_permitted": false
+  },
+  "offline_only": true,
+  "network_fallback_permitted": false,
+  "persistent_engine_required": true,
+  "container_filename": "vllm-openai-v0.20.1.sif",
+  "container_sha256": "d404bdf414e1b8f2d5af1568d0565d4e2da8435f26325b281fb28b9597c548d1"
+}

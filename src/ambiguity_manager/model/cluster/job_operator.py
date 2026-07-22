@@ -18,6 +18,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Callable, Mapping, Sequence
 
+from ambiguity_manager.model.base_model_candidates import ALLOWLISTED_CANDIDATE_IDS
 from ambiguity_manager.model.cluster.atomic_outputs import sha256_file
 from ambiguity_manager.model.cluster.path_policy import validate_path_template
 from ambiguity_manager.paths import ProjectPaths
@@ -135,6 +136,12 @@ def load_profiles(repo_root: Path) -> dict[str, Any]:
     return payload
 
 
+def validate_candidate_id(candidate_id: str) -> str:
+    if candidate_id not in ALLOWLISTED_CANDIDATE_IDS:
+        raise OperatorError(f"candidate_not_allowlisted:{candidate_id}")
+    return candidate_id
+
+
 def get_profile(profiles_doc: dict[str, Any], name: str) -> dict[str, Any]:
     if not PROFILE_NAME_RE.match(name):
         raise OperatorError(f"invalid_profile_name:{name}")
@@ -148,9 +155,45 @@ def get_profile(profiles_doc: dict[str, Any], name: str) -> dict[str, Any]:
     errors = validate_path_template(template)
     if errors:
         raise OperatorError(f"unsafe_remote_result_root:{';'.join(errors)}")
-    if bool(profile.get("gpus_required")):
-        raise OperatorError("gpus_required_profiles_not_supported_by_operator_v1")
     return profile
+
+
+def _profile_result_root_suffix(profile: dict[str, Any]) -> str:
+    template = str(profile["remote_result_root_template"])
+    if template.startswith("${T12_CLUSTER_ROOT}/"):
+        return template[len("${T12_CLUSTER_ROOT}/") :].rstrip("/")
+    if template == "${T12_CLUSTER_ROOT}":
+        return ""
+    return template.replace("${T12_CLUSTER_ROOT}", "").lstrip("/").rstrip("/")
+
+
+def remote_run_rel_path(profile: dict[str, Any], run_id: str) -> str:
+    suffix = _profile_result_root_suffix(profile)
+    if not suffix:
+        raise OperatorError("remote_result_root_template_unresolved")
+    return f"{suffix}/{run_id}"
+
+
+def remote_prep_rel_path(profile: dict[str, Any], run_id: str) -> str:
+    suffix = _profile_result_root_suffix(profile)
+    if not suffix:
+        raise OperatorError("remote_result_root_template_unresolved")
+    return f"{suffix}/.prep-{run_id}"
+
+
+def render_profile_entry_args(profile: dict[str, Any], *, candidate_id: str | None = None) -> str:
+    template = profile.get("entry_args")
+    if not template:
+        return ""
+    if profile.get("requires_candidate_id"):
+        if not candidate_id:
+            raise OperatorError("candidate_id_required_for_profile")
+        validate_candidate_id(candidate_id)
+    rendered = str(template)
+    if candidate_id:
+        rendered = rendered.replace("{candidate_id}", candidate_id)
+    rendered = rendered.replace("{run_id}", "{RUN_ID}")
+    return rendered.strip()
 
 
 def validate_run_id(run_id: str) -> str:
@@ -451,6 +494,7 @@ class ClusterJobOperator:
         head_sha: str,
         archive_sha: str,
         archive_filename: str,
+        candidate_id: str | None = None,
     ) -> str:
         partition = str(profile["partition"])
         time_limit = str(profile["time_limit"])
@@ -458,8 +502,80 @@ class ClusterJobOperator:
         cpus = int(profile["cpus"])
         job_name = str(profile.get("job_name") or "t12-job")
         entry = str(profile["entry_point"])
-        root_expr = '${T12_CLUSTER_ROOT:-$HOME/t12-hpc}'
-        # Intentionally no rm -rf. Refuse existing result dir instead.
+        root_expr = "${T12_CLUSTER_ROOT:-$HOME/t12-hpc}"
+        result_root_suffix = _profile_result_root_suffix(profile)
+        prep_dir = f"${{T12_CLUSTER_ROOT}}/{result_root_suffix}/.prep-${{RUN_ID}}"
+        result_dir = f"${{T12_CLUSTER_ROOT}}/{result_root_suffix}/${{RUN_ID}}"
+        src_root = f"${{PREP_DIR}}/source/t12-src"
+        entry_args = render_profile_entry_args(profile, candidate_id=candidate_id)
+        entry_args_line = f"  {entry_args} \\" if entry_args else ""
+        strict = bool(profile.get("sbatch_strict_mode"))
+        gpus_required = bool(profile.get("gpus_required"))
+        gpu_lines = ""
+        if gpus_required:
+            gpus = int(profile.get("gpus", 1))
+            gpu_lines = f"#SBATCH --gres=gpu:{gpus}\n"
+            if profile.get("exclusive"):
+                gpu_lines += "#SBATCH --exclusive\n"
+
+        if strict:
+            header_guard = "set -euo pipefail\n\n"
+            exists_check = (
+                f"if [[ -e \"${{RESULT_DIR}}\" ]]; then\n"
+                f"  echo \"RESULT_DIR_EXISTS:${{RESULT_DIR}}\" >&2\n"
+                f"  exit 40\n"
+                f"fi\n"
+            )
+            source_check = (
+                f"if [[ ! -d \"${{SRC_ROOT}}\" ]]; then\n"
+                f"  echo \"SOURCE_NOT_EXTRACTED:${{SRC_ROOT}}\" >&2\n"
+                f"  exit 41\n"
+                f"fi\n"
+            )
+            done_line = f"echo \"CANARY_JOB_DONE run_id=${{RUN_ID}} job_id=${{SLURM_JOB_ID}}\""
+        else:
+            header_guard = ""
+            exists_check = (
+                f"if [[ -e \"${{RESULT_DIR}}\" ]]; then\n"
+                f"  echo \"RESULT_DIR_EXISTS:${{RESULT_DIR}}\" >&2\n"
+                f"  JOB_STATUS=40\n"
+                f"fi\n"
+            )
+            source_check = (
+                f"if [[ ! -d \"${{SRC_ROOT}}\" ]]; then\n"
+                f"  echo \"SOURCE_NOT_EXTRACTED:${{SRC_ROOT}}\" >&2\n"
+                f"  JOB_STATUS=41\n"
+                f"fi\n"
+            )
+            done_line = (
+                f"echo \"MODEL_CANDIDATE_JOB_DONE run_id=${{RUN_ID}} job_id=${{SLURM_JOB_ID}} status=${{JOB_STATUS}}\""
+            )
+
+        status_init = "" if strict else "JOB_STATUS=0\n"
+        guarded_python = (
+            "python3 \"${SRC_ROOT}/"
+            + entry
+            + "\" \\\n"
+            + "  --result-dir \"${RESULT_DIR}\" \\\n"
+            + "  --run-id \"${RUN_ID}\" \\\n"
+            + "  --source-commit \"${SOURCE_COMMIT}\" \\\n"
+            + "  --source-archive-sha256 \"${ARCHIVE_SHA}\" \\\n"
+            + "  --source-identity-manifest \"${PREP_DIR}/source_identity_manifest.json\" \\\n"
+            + entry_args_line
+        ).rstrip(" \\")
+        if strict:
+            run_cmd = guarded_python
+        else:
+            run_cmd = (
+                "if [[ ${JOB_STATUS} -eq 0 ]]; then\n"
+                f"  {guarded_python}\n"
+                "  SCRIPT_RC=$?\n"
+                "  if [[ ${SCRIPT_RC} -ne 0 ]]; then\n"
+                "    JOB_STATUS=${SCRIPT_RC}\n"
+                "  fi\n"
+                "fi"
+            )
+
         return f"""#!/usr/bin/env bash
 #SBATCH --job-name={job_name}
 #SBATCH --partition={partition}
@@ -468,43 +584,27 @@ class ClusterJobOperator:
 #SBATCH --cpus-per-task={cpus}
 #SBATCH --mem={mem}
 #SBATCH --time={time_limit}
-#SBATCH --output={root_expr}/logs/{job_name}-%j.out
+{gpu_lines}#SBATCH --output={root_expr}/logs/{job_name}-%j.out
 #SBATCH --error={root_expr}/logs/{job_name}-%j.err
 
-set -euo pipefail
-
-export T12_CLUSTER_ROOT="${{T12_CLUSTER_ROOT:-$HOME/t12-hpc}}"
-RUN_ID={shlex.quote(run_id)}
+{header_guard}export T12_CLUSTER_ROOT="${{T12_CLUSTER_ROOT:-$HOME/t12-hpc}}"
+{status_init}RUN_ID={shlex.quote(run_id)}
 SOURCE_COMMIT={shlex.quote(head_sha)}
 ARCHIVE_SHA={shlex.quote(archive_sha)}
 ARCHIVE_NAME={shlex.quote(archive_filename)}
-PREP_DIR="${{T12_CLUSTER_ROOT}}/runs/t12-canary/.prep-${{RUN_ID}}"
-RESULT_DIR="${{T12_CLUSTER_ROOT}}/runs/t12-canary/${{RUN_ID}}"
-SRC_ROOT="${{PREP_DIR}}/source/t12-src"
+PREP_DIR="{prep_dir}"
+RESULT_DIR="{result_dir}"
+SRC_ROOT="{src_root}"
 
 mkdir -p "${{T12_CLUSTER_ROOT}}/logs"
-mkdir -p "${{T12_CLUSTER_ROOT}}/runs/t12-canary"
+mkdir -p "${{T12_CLUSTER_ROOT}}/{result_root_suffix}"
 
-if [[ -e "${{RESULT_DIR}}" ]]; then
-  echo "RESULT_DIR_EXISTS:${{RESULT_DIR}}" >&2
-  exit 40
-fi
-mkdir -p "${{RESULT_DIR}}"
+{exists_check}mkdir -p "${{RESULT_DIR}}"
 
-if [[ ! -d "${{SRC_ROOT}}" ]]; then
-  echo "SOURCE_NOT_EXTRACTED:${{SRC_ROOT}}" >&2
-  exit 41
-fi
+{source_check}export PYTHONPATH="${{SRC_ROOT}}/src${{PYTHONPATH:+:$PYTHONPATH}}"
+{run_cmd}
 
-export PYTHONPATH="${{SRC_ROOT}}/src${{PYTHONPATH:+:$PYTHONPATH}}"
-python3 "${{SRC_ROOT}}/{entry}" \\
-  --result-dir "${{RESULT_DIR}}" \\
-  --run-id "${{RUN_ID}}" \\
-  --source-commit "${{SOURCE_COMMIT}}" \\
-  --source-archive-sha256 "${{ARCHIVE_SHA}}" \\
-  --source-identity-manifest "${{PREP_DIR}}/source_identity_manifest.json"
-
-echo "CANARY_JOB_DONE run_id=${{RUN_ID}} job_id=${{SLURM_JOB_ID}}"
+{done_line}
 """
 
     # --- public actions -----------------------------------------------
@@ -512,12 +612,19 @@ echo "CANARY_JOB_DONE run_id=${{RUN_ID}} job_id=${{SLURM_JOB_ID}}"
         self,
         profile_name: str,
         *,
+        candidate_id: str | None = None,
         poll: bool = False,
         pull: bool = False,
         interval: float = 30.0,
         timeout: float = 3600.0,
     ) -> dict[str, Any]:
         profile = get_profile(self.profiles_doc, profile_name)
+        if profile.get("requires_candidate_id"):
+            if not candidate_id:
+                raise OperatorError("candidate_id_required_for_profile")
+            validate_candidate_id(candidate_id)
+        elif candidate_id:
+            validate_candidate_id(candidate_id)
         head_sha = "0" * 40 if self.dry_run else self._require_clean_for_submit(profile)
         if self.dry_run:
             # Still capture real HEAD for dry-run messaging when possible.
@@ -555,19 +662,27 @@ echo "CANARY_JOB_DONE run_id=${{RUN_ID}} job_id=${{SLURM_JOB_ID}}"
             head_sha=head_sha,
             archive_sha=archive_sha,
             archive_filename=archive_filename,
+            candidate_id=candidate_id,
         )
         ensure_no_forbidden_tokens(sbatch_text)
         sbatch_path = local_run_dir / "submit.sbatch"
         sbatch_path.write_text(sbatch_text, encoding="utf-8", newline="\n")
 
+        result_rel = remote_run_rel_path(profile, run_id)
+        prep_rel = remote_prep_rel_path(profile, run_id)
+        result_root_suffix = _profile_result_root_suffix(profile)
+
         remote_meta = {
             "run_id": run_id,
             "profile": profile_name,
+            "candidate_id": candidate_id,
             "source_commit_sha": head_sha,
             "source_archive_sha256": archive_sha,
             "archive_bytes": archive_bytes,
             "remote_result_path_template": f"{profile['remote_result_root_template']}/{run_id}",
             "remote_prep_path_template": f"{profile['remote_result_root_template']}/.prep-{run_id}",
+            "remote_result_rel_path": result_rel,
+            "remote_prep_rel_path": prep_rel,
             "submission_timestamp_utc": packaging_timestamp,
         }
         atomic_write_json(local_run_dir / "remote_metadata.json", remote_meta)
@@ -576,12 +691,13 @@ echo "CANARY_JOB_DONE run_id=${{RUN_ID}} job_id=${{SLURM_JOB_ID}}"
             self.test_ssh_batch_mode()
 
         root_expr = self.remote_cluster_root_expr()
-        prep_rel = f"runs/t12-canary/.prep-{run_id}"
-        result_rel = f"runs/t12-canary/{run_id}"
+        prep_rel = remote_prep_rel_path(profile, run_id)
+        result_rel = remote_run_rel_path(profile, run_id)
+        result_root_suffix = _profile_result_root_suffix(profile)
 
         mkdir_cmd = (
             f"ROOT={root_expr}; "
-            f"mkdir -p \"$ROOT/logs\" \"$ROOT/runs/t12-canary\"; "
+            f"mkdir -p \"$ROOT/logs\" \"$ROOT/{result_root_suffix}\"; "
             f"test ! -e \"$ROOT/{result_rel}\"; "
             f"test ! -e \"$ROOT/{prep_rel}\"; "
             f"mkdir -p \"$ROOT/{prep_rel}/source\"; "
@@ -644,6 +760,7 @@ echo "CANARY_JOB_DONE run_id=${{RUN_ID}} job_id=${{SLURM_JOB_ID}}"
                 "run_id": run_id,
                 "job_id": job_id,
                 "profile": profile_name,
+                "candidate_id": candidate_id,
                 "source_commit_sha": head_sha,
                 "archive_sha256": archive_sha,
                 "archive_bytes": archive_bytes,
@@ -808,6 +925,7 @@ echo "CANARY_JOB_DONE run_id=${{RUN_ID}} job_id=${{SLURM_JOB_ID}}"
     def pull(self, identifier: str = "latest", *, force: bool = False) -> Path:
         record = self.resolve_run_record(identifier)
         run_id = validate_run_id(str(record["run_id"]))
+        profile = get_profile(self.profiles_doc, str(record["profile"]))
         local_run_dir = self.state_dir / run_id
         pull_dir = local_run_dir / "pulled"
         if pull_dir.exists() and any(pull_dir.iterdir()) and not force:
@@ -818,7 +936,8 @@ echo "CANARY_JOB_DONE run_id=${{RUN_ID}} job_id=${{SLURM_JOB_ID}}"
             pull_dir.rename(backup)
 
         root_expr = self.remote_cluster_root_expr()
-        resolve_cmd = f"ROOT={root_expr}; printf '%s\\n' \"$ROOT/runs/t12-canary/{run_id}\""
+        result_rel = str(record.get("remote_result_rel_path") or remote_run_rel_path(profile, run_id))
+        resolve_cmd = f"ROOT={root_expr}; printf '%s\\n' \"$ROOT/{result_rel}\""
         resolved = self.ssh(resolve_cmd)
         if resolved.returncode != 0:
             raise OperatorError(f"remote_result_resolve_failed:{resolved.stderr}")
