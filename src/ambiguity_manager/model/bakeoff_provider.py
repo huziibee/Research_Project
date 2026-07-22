@@ -60,7 +60,7 @@ from ambiguity_manager.systems.analysis import ANALYSIS_VARIANTS, build_analysis
 from ambiguity_manager.systems.contracts import AnalysisProvenance, StructuredAnalysis, SystemInput
 
 PROVIDER_ID = "model_candidate_bakeoff_v1"
-PROVIDER_VERSION = "1.1.0"
+PROVIDER_VERSION = "1.2.0"
 RUNTIME_CONFIG_REL = "configs/cluster/model_candidate_bakeoff_runtime.json"
 PROMPT_CONTRACT_REL = "configs/model/bakeoff_prompt_contract_v1.json"
 COMMIT_SHA_RE = re.compile(r"^[0-9a-f]{40}$")
@@ -1002,6 +1002,10 @@ def _run_generation_batch(
                     generator=generator,
                     backend=backend_identity,
                     structured_decode_readiness=readiness,
+                    immutable_selection={
+                        "model_repository": candidate.repository,
+                        "immutable_revision": candidate.revision,
+                    },
                 )
                 raw, ledgers, accepted, record_result = _collect_attempt_rows(
                     pipeline_result,
