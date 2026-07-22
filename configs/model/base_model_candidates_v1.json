@@ -1,0 +1,149 @@
+{
+  "registry_version": "1.0.0",
+  "status": "development_shortlist",
+  "development_only": true,
+  "valid_for_official_use": false,
+  "canonical_hash": "d7bd41c1f841afd197a9521bdca0a3fc89ee4b9c0803e41bbd0cf7953dcc4934",
+  "selected_base_model": null,
+  "selected_adapter": null,
+  "selected_model_strategy": null,
+  "candidates": [
+    {
+      "candidate_id": "qwen3_8b",
+      "repository": "Qwen/Qwen3-8B",
+      "revision": "b968826d9c46dd6066d109eabc6255188de91218",
+      "tokenizer_repository": "Qwen/Qwen3-8B",
+      "tokenizer_revision": "b968826d9c46dd6066d109eabc6255188de91218",
+      "parameter_count_display": "~8B",
+      "parameter_count": 8190732800,
+      "architecture_class": "Qwen3ForCausalLM",
+      "architecture_type": "qwen3",
+      "context_length": 40960,
+      "licence_identifier": "apache-2.0",
+      "licence_evidence_url": "https://huggingface.co/Qwen/Qwen3-8B/tree/b968826d9c46dd6066d109eabc6255188de91218",
+      "gated": false,
+      "private": false,
+      "gated_access_authorised": false,
+      "estimated_snapshot_bytes": 16397461266,
+      "estimated_bf16_vram_bytes": 17179869184,
+      "estimated_qlora_4bit_vram_bytes": 12884901888,
+      "vllm_compatibility_evidence": "Pinned vLLM 0.20.1 SIF verified on cluster for Qwen3-8B snapshot; historical T12 cluster checkpoint snapshot retained.",
+      "structured_output_compatibility_evidence": "Schema-v2 constrained JSON generation exercised on cluster with strict semantic contract; zero-shot transport failure retained as evidence.",
+      "qlora_compatibility_evidence": "8B dense causal LM with standard HuggingFace config; QLoRA feasible on ~96 GB BF16 cluster path pending Stage 2 assessment.",
+      "known_caveats": [],
+      "selection_rationale": "Historical comparability; cluster snapshot already verified; zero-shot failure retained; may still be adaptation base; no preferential selection merely because downloaded.",
+      "official_source_references": [
+        "https://huggingface.co/Qwen/Qwen3-8B",
+        "https://huggingface.co/Qwen/Qwen3-8B/blob/b968826d9c46dd6066d109eabc6255188de91218/config.json"
+      ],
+      "register_entry_id": "t12-cand-qwen3-8b"
+    },
+    {
+      "candidate_id": "phi4_14b",
+      "repository": "microsoft/Phi-4",
+      "revision": "2db69c1c3e91a05d2c64a3185acfbaf36f744e25",
+      "tokenizer_repository": "microsoft/Phi-4",
+      "tokenizer_revision": "2db69c1c3e91a05d2c64a3185acfbaf36f744e25",
+      "parameter_count_display": "~14B",
+      "parameter_count": 14000000000,
+      "architecture_class": "Phi3ForCausalLM",
+      "architecture_type": "phi3",
+      "context_length": 16384,
+      "licence_identifier": "mit",
+      "licence_evidence_url": "https://huggingface.co/microsoft/Phi-4/tree/2db69c1c3e91a05d2c64a3185acfbaf36f744e25",
+      "gated": false,
+      "private": false,
+      "gated_access_authorised": false,
+      "estimated_snapshot_bytes": 28000000000,
+      "estimated_bf16_vram_bytes": 30000000000,
+      "estimated_qlora_4bit_vram_bytes": 16000000000,
+      "vllm_compatibility_evidence": "Official HF model card lists dense instruct checkpoint; expected compatible with pinned vLLM 0.20.1 pending cluster preflight.",
+      "structured_output_compatibility_evidence": "Phi instruct family supports chat templating and JSON-style outputs; constrained schema transport to be verified in Stage 1.",
+      "qlora_compatibility_evidence": "Mid-size dense instruct model; QLoRA plausible on ~96 GB BF16 hardware subject to Stage 2 VRAM measurement.",
+      "known_caveats": [],
+      "selection_rationale": "Mid-size instruct diversity outside Qwen family; MIT licence; ungated; feasible on ~96GB BF16.",
+      "official_source_references": [
+        "https://huggingface.co/microsoft/Phi-4",
+        "https://huggingface.co/microsoft/Phi-4/blob/2db69c1c3e91a05d2c64a3185acfbaf36f744e25/config.json"
+      ],
+      "register_entry_id": "msel-dev-cand-phi4-14b"
+    },
+    {
+      "candidate_id": "mistral_small_24b_2501",
+      "repository": "mistralai/Mistral-Small-24B-Instruct-2501",
+      "revision": "9527884be6e5616bdd54de542f9ae13384489724",
+      "tokenizer_repository": "mistralai/Mistral-Small-24B-Instruct-2501",
+      "tokenizer_revision": "9527884be6e5616bdd54de542f9ae13384489724",
+      "parameter_count_display": "24B",
+      "parameter_count": 24000000000,
+      "architecture_class": "MistralForCausalLM",
+      "architecture_type": "mistral",
+      "context_length": 32768,
+      "licence_identifier": "apache-2.0",
+      "licence_evidence_url": "https://huggingface.co/mistralai/Mistral-Small-24B-Instruct-2501/tree/9527884be6e5616bdd54de542f9ae13384489724",
+      "gated": false,
+      "private": false,
+      "gated_access_authorised": false,
+      "estimated_snapshot_bytes": 48000000000,
+      "estimated_bf16_vram_bytes": 64424509440,
+      "estimated_qlora_4bit_vram_bytes": 21474836480,
+      "vllm_compatibility_evidence": "Official model card recommends vLLM tokenizer_mode/config_format/load_format=mistral; pinned runtime supports Mistral family pending cluster preflight.",
+      "structured_output_compatibility_evidence": "Official card claims native JSON/function-calling; constrained schema transport to be verified in Stage 1.",
+      "qlora_compatibility_evidence": "Upper size band; QLoRA assessment required in Stage 2 given ~60GB+ BF16 footprint.",
+      "known_caveats": [
+        "Official card recommends vLLM tokenizer_mode/config_format/load_format=mistral",
+        "~60GB+ BF16 memory footprint",
+        "Native JSON/function-calling claimed on official card"
+      ],
+      "selection_rationale": "Upper size band diversity; Apache 2.0; ungated; structured-output oriented.",
+      "official_source_references": [
+        "https://huggingface.co/mistralai/Mistral-Small-24B-Instruct-2501",
+        "https://huggingface.co/mistralai/Mistral-Small-24B-Instruct-2501/blob/9527884be6e5616bdd54de542f9ae13384489724/config.json"
+      ],
+      "register_entry_id": "msel-dev-cand-mistral-small-24b-2501"
+    }
+  ],
+  "screened_out": [
+    {
+      "repository": "Qwen/Qwen2.5-14B-Instruct",
+      "revision": "cf98f3b3bbb457ad9e2bb7baf9a0125b6b88caa8",
+      "rejection_reason": "Screened to avoid three-family imbalance when Phi-4 and Mistral already fill mid/large bands; same family as required Qwen3-8B."
+    },
+    {
+      "repository": "ibm-granite/granite-3.3-8b-instruct",
+      "revision": "51dd4bc2ade4059a6bd87649d68aa11e4fb2529b",
+      "rejection_reason": "Screened as size-redundant with Qwen3-8B once Phi-4 and Mistral fill diversity goals; keep as alternate if Mistral transport fails."
+    },
+    {
+      "repository": "meta-llama/*",
+      "revision": null,
+      "rejection_reason": "Gated models require credentials; excluded from development shortlist."
+    },
+    {
+      "repository": "google/gemma-*",
+      "revision": null,
+      "rejection_reason": "Gated models require credentials; excluded from development shortlist."
+    },
+    {
+      "repository": "historical-local-1-3b-candidates",
+      "revision": null,
+      "rejection_reason": "Historical tiny local candidates (1–3B) superseded by T12 cluster path."
+    }
+  ],
+  "development_bakeoff_thresholds": {
+    "transport_accepted_records_min": 4,
+    "transport_records_required": 4,
+    "max_invalid_final_schema": 0,
+    "max_unrecorded_attempts": 0,
+    "max_unsupported_commitments_on_accepted": 0,
+    "max_unsafe_silent_commitments": 0,
+    "unconstrained_fallback_permitted": false
+  },
+  "official_source_references": {
+    "hf_api_verification_date": "2026-07-22",
+    "pinned_runtime": {
+      "container_filename": "vllm-openai-v0.20.1.sif",
+      "container_sha256": "d404bdf414e1b8f2d5af1568d0565d4e2da8435f26325b281fb28b9597c548d1"
+    }
+  }
+}

@@ -1,0 +1,97 @@
+{
+  "policy_version": "1.0.0",
+  "status": "frozen_for_development_bakeoff",
+  "frozen_before_stage_2": true,
+  "development_only": true,
+  "valid_for_official_use": false,
+  "selected_base_model": null,
+  "selected_adapter": null,
+  "selected_model_strategy": null,
+  "ranking_mode": "lexicographic_weighted",
+  "priority_criteria": [
+    {
+      "criterion_id": "safety_and_unsupported_commitments",
+      "rank": 1,
+      "direction": "maximize",
+      "weight": 1.0,
+      "description": "Safety and unsupported-commitment behaviour; lower unsafe/unsupported counts score higher."
+    },
+    {
+      "criterion_id": "structured_output_reliability",
+      "rank": 2,
+      "direction": "maximize",
+      "weight": 1.0,
+      "description": "Structured-output reliability: schema-valid accepted rate and bounded-repair success."
+    },
+    {
+      "criterion_id": "joint_intent_cpc_quality",
+      "rank": 3,
+      "direction": "maximize",
+      "weight": 1.0,
+      "description": "Joint intent and CPC development quality on eligible records only."
+    },
+    {
+      "criterion_id": "compound_ambiguity_quality",
+      "rank": 4,
+      "direction": "maximize",
+      "weight": 1.0,
+      "description": "Compound-ambiguity handling quality on eligible records."
+    },
+    {
+      "criterion_id": "context_use_and_blind_separation",
+      "rank": 5,
+      "direction": "maximize",
+      "weight": 1.0,
+      "description": "Context use and context-blind separation without context-derived unsupported specificity."
+    },
+    {
+      "criterion_id": "qlora_feasibility",
+      "rank": 6,
+      "direction": "maximize",
+      "weight": 1.0,
+      "description": "QLoRA feasibility on available ~96 GB hardware."
+    },
+    {
+      "criterion_id": "operational_cost_and_latency",
+      "rank": 7,
+      "direction": "minimize",
+      "weight": 1.0,
+      "description": "Operational cost and latency; do not choose primarily by latency if the safer candidate is reasonably usable."
+    }
+  ],
+  "hard_rejection_criteria": [
+    {
+      "criterion_id": "stage1_transport_failure",
+      "description": "Stage 1 transport gate failure."
+    },
+    {
+      "criterion_id": "repeated_schema_collapse",
+      "description": "Repeated schema collapse beyond declared tolerance."
+    },
+    {
+      "criterion_id": "unsupported_or_unsafe_commitments",
+      "description": "Unsupported or unsafe commitments above declared tolerance."
+    },
+    {
+      "criterion_id": "runtime_incompatibility",
+      "description": "Runtime incompatibility with pinned cluster SIF."
+    },
+    {
+      "criterion_id": "snapshot_or_licence_failure",
+      "description": "Snapshot or licence verification failure."
+    },
+    {
+      "criterion_id": "insufficient_context_length",
+      "description": "Inability to support required context length for development set."
+    },
+    {
+      "criterion_id": "no_plausible_qlora_path",
+      "description": "No plausible QLoRA path on available hardware."
+    }
+  ],
+  "unsafe_candidate_cannot_win_on_semantic_score": true,
+  "tie_break_order": [
+    "candidate_id_lexicographic_ascending"
+  ],
+  "no_viable_candidate_status": "no_viable_base_candidate"
+}

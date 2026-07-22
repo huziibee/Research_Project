@@ -23,6 +23,8 @@ IDENTITY_FIELDS: tuple[str, ...] = (
   "selected_model_strategy",
 )
 
+CHECKPOINT_IDENTITY_SEPARATOR = "@"
+
 
 @dataclass(frozen=True)
 class SelectedIdentities:
@@ -103,3 +105,96 @@ def assert_null_selection(path: Path | None = None) -> SelectedIdentities:
   identities = load_selected_identities(path)
   identities.assert_null_selection()
   return identities
+
+
+def checkpoint_identity(repository: str, revision: str) -> str:
+  """Format an immutable checkpoint identity used by selected_base_model."""
+  repo = repository.strip()
+  rev = revision.strip()
+  if not repo or not rev:
+    raise SystemsContractError("checkpoint identity requires non-empty repository and revision")
+  if CHECKPOINT_IDENTITY_SEPARATOR in rev:
+    raise SystemsContractError("revision must not contain the checkpoint identity separator")
+  return f"{repo}{CHECKPOINT_IDENTITY_SEPARATOR}{rev}"
+
+
+def parse_checkpoint_identity(identity: str) -> tuple[str, str]:
+  """Split a checkpoint identity into repository and revision."""
+  if CHECKPOINT_IDENTITY_SEPARATOR not in identity:
+    raise SystemsContractError(f"invalid checkpoint identity: {identity!r}")
+  repository, revision = identity.rsplit(CHECKPOINT_IDENTITY_SEPARATOR, 1)
+  if not repository or not revision:
+    raise SystemsContractError(f"invalid checkpoint identity: {identity!r}")
+  return repository, revision
+
+
+def assert_adapter_matches_selected_base(
+  *,
+  selected_base_model: str | None,
+  adapter_base_model: str | None,
+) -> None:
+  """An adapter must declare the same base checkpoint as selected_base_model."""
+  if selected_base_model is None:
+    raise SystemsContractError(
+      "adapter registration requires a selected_base_model before adapter identity can be validated"
+    )
+  if adapter_base_model is None:
+    raise SystemsContractError("adapter registration must declare adapter_base_model")
+  if adapter_base_model != selected_base_model:
+    raise SystemsContractError(
+      "adapter base-model identity must match selected_base_model "
+      f"(expected {selected_base_model!r}, got {adapter_base_model!r})"
+    )
+
+
+def assert_adapter_cannot_mutate_base_identity(
+  *,
+  original_selected_base_model: str,
+  proposed_selected_base_model: str | None,
+) -> None:
+  """Adapter registration must not rewrite the selected base checkpoint."""
+  if proposed_selected_base_model != original_selected_base_model:
+    raise SystemsContractError(
+      "adapter registration cannot mutate selected_base_model "
+      f"(expected {original_selected_base_model!r}, got {proposed_selected_base_model!r})"
+    )
+
+
+def assert_strategy_requires_selected_base(*, selected_base_model: str | None) -> None:
+  """A model strategy cannot be created without a valid selected base model."""
+  if selected_base_model is None:
+    raise SystemsContractError(
+      "selected_model_strategy cannot be created without a valid selected_base_model"
+    )
+
+
+def assert_official_approval_state(
+  *,
+  selected_base_model: str | None,
+  selected_adapter: str | None,
+  selected_model_strategy: str | None,
+  status: str,
+  valid_for_official_use: bool,
+) -> None:
+  """Official approval remains blocked until every required identity is frozen."""
+  if valid_for_official_use:
+    missing = [
+      field
+      for field, value in (
+        ("selected_base_model", selected_base_model),
+        ("selected_adapter", selected_adapter),
+        ("selected_model_strategy", selected_model_strategy),
+      )
+      if value is None
+    ]
+    if missing:
+      raise SystemsContractError(
+        f"valid_for_official_use cannot be true while identity fields are null: {missing}"
+      )
+    if status == "no_selection":
+      raise SystemsContractError("valid_for_official_use cannot be true while status is no_selection")
+  elif status == "no_selection" and any(
+    value is not None
+    for value in (selected_base_model, selected_adapter, selected_model_strategy)
+  ):
+    raise SystemsContractError("status no_selection requires all identity fields to remain null")

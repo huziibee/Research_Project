@@ -35,7 +35,12 @@ from ambiguity_manager.systems.errors import OfficialRunBlockedError, SystemsCon
 from ambiguity_manager.systems.execution import ExperimentRunner, OfficialPrerequisites  # noqa: E402
 from ambiguity_manager.systems.model_identities import (  # noqa: E402
     SelectedIdentities,
+    assert_adapter_cannot_mutate_base_identity,
+    assert_adapter_matches_selected_base,
     assert_null_selection,
+    assert_official_approval_state,
+    assert_strategy_requires_selected_base,
+    checkpoint_identity,
     load_selected_identities,
 )
 from ambiguity_manager.systems.variants import SYSTEM_IDS  # noqa: E402
@@ -198,6 +203,55 @@ class SelectedIdentitiesContractTests(unittest.TestCase):
         )
         with self.assertRaises(SystemsContractError):
             identities.assert_null_selection()
+
+
+class ModelIdentityContractHelperTests(unittest.TestCase):
+    def test_adapter_base_model_must_match_selected_base_model(self) -> None:
+        base = checkpoint_identity("Qwen/Qwen3-8B", "b968826d9c46dd6066d109eabc6255188de91218")
+        assert_adapter_matches_selected_base(
+            selected_base_model=base,
+            adapter_base_model=base,
+        )
+        with self.assertRaises(SystemsContractError):
+            assert_adapter_matches_selected_base(
+                selected_base_model=base,
+                adapter_base_model=checkpoint_identity("microsoft/Phi-4", "deadbeef"),
+            )
+
+    def test_adapter_registration_cannot_mutate_base_identity(self) -> None:
+        base = checkpoint_identity("Qwen/Qwen3-8B", "b968826d9c46dd6066d109eabc6255188de91218")
+        assert_adapter_cannot_mutate_base_identity(
+            original_selected_base_model=base,
+            proposed_selected_base_model=base,
+        )
+        with self.assertRaises(SystemsContractError):
+            assert_adapter_cannot_mutate_base_identity(
+                original_selected_base_model=base,
+                proposed_selected_base_model=checkpoint_identity("Qwen/Qwen3-8B", "0000000000000000000000000000000000000000"),
+            )
+
+    def test_selected_model_strategy_requires_valid_selected_base(self) -> None:
+        base = checkpoint_identity("Qwen/Qwen3-8B", "b968826d9c46dd6066d109eabc6255188de91218")
+        assert_strategy_requires_selected_base(selected_base_model=base)
+        with self.assertRaises(SystemsContractError):
+            assert_strategy_requires_selected_base(selected_base_model=None)
+
+    def test_official_approval_remains_false_while_selection_incomplete(self) -> None:
+        assert_official_approval_state(
+            selected_base_model=checkpoint_identity("Qwen/Qwen3-8B", "b968826d9c46dd6066d109eabc6255188de91218"),
+            selected_adapter=None,
+            selected_model_strategy=None,
+            status="development_base_selected",
+            valid_for_official_use=False,
+        )
+        with self.assertRaises(SystemsContractError):
+            assert_official_approval_state(
+                selected_base_model=None,
+                selected_adapter=None,
+                selected_model_strategy=None,
+                status="no_selection",
+                valid_for_official_use=True,
+            )
 
 
 class OfficialPrerequisitesGatingTests(unittest.TestCase):
