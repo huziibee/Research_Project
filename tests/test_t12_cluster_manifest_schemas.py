@@ -47,9 +47,16 @@ class T12ClusterManifestSchemasTests(unittest.TestCase):
         errors = validate_cluster_environment_manifest(data)
         self.assertTrue(any("lora_attach_passed" in e for e in errors))
 
-    def test_training_manifest_status_planned_unverified(self) -> None:
+    def test_training_manifest_status_partially_verified_pull_based(self) -> None:
         data = _load(CLUSTER_TRAINING_ENV_REL)
-        self.assertEqual(data["environment_status"], "planned_unverified")
+        self.assertEqual(data["environment_status"], "partially_verified_pull_based")
+        self.assertTrue(data["training_stack"]["container_built"])
+        self.assertTrue(data["training_stack"]["peft_installed"])
+        self.assertFalse(data["training_stack"]["lora_attach_passed"])
+        self.assertEqual(
+            data["container_recipe"]["status"],
+            "superseded_by_pull_based_runtime",
+        )
 
     def test_active_inference_does_not_reference_qwen25(self) -> None:
         data = _load(CLUSTER_INFERENCE_ENV_REL)

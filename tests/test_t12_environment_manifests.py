@@ -44,8 +44,11 @@ class T12EnvironmentManifestTests(unittest.TestCase):
             errors = validate_cluster_environment_manifest(manifest)
             self.assertEqual(errors, [], msg="\n".join(errors))
 
-    def test_training_status_planned_unverified(self) -> None:
-        self.assertEqual(self.training["environment_status"], "planned_unverified")
+    def test_training_status_partially_verified_pull_based(self) -> None:
+        self.assertEqual(
+            self.training["environment_status"],
+            "partially_verified_pull_based",
+        )
 
     def test_module_constants_match_active_cluster_paths(self) -> None:
         self.assertEqual(ENV_INFERENCE_REL, CLUSTER_INFERENCE_ENV_REL)

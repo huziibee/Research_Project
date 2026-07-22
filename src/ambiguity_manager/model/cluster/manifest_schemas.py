@@ -249,17 +249,50 @@ def validate_cluster_environment_manifest(data: dict[str, Any]) -> list[str]:
     elif env_id == "t12-cluster-training":
         if role != "training":
             errors.append("t12-cluster-training role must be training")
-        if status != "planned_unverified":
-            errors.append("training environment_status must be planned_unverified")
+        allowed_training_statuses = {
+            "planned_unverified",
+            "partially_verified_pull_based",
+        }
+        if status not in allowed_training_statuses:
+            errors.append(
+                "training environment_status must be planned_unverified or "
+                "partially_verified_pull_based"
+            )
         stack = data.get("training_stack", {})
-        for flag in (
-            "container_built",
-            "peft_installed",
-            "lora_attach_passed",
-            "adapter_reload_passed",
-        ):
-            if stack.get(flag) is True:
-                errors.append(f"training_stack.{flag} must not be true in Stage B1")
+        if status == "planned_unverified":
+            for flag in (
+                "container_built",
+                "peft_installed",
+                "lora_attach_passed",
+                "adapter_reload_passed",
+            ):
+                if stack.get(flag) is True:
+                    errors.append(f"training_stack.{flag} must not be true in Stage B1")
+        elif status == "partially_verified_pull_based":
+            if stack.get("container_built") is not True:
+                errors.append(
+                    "training_stack.container_built must be true for "
+                    "partially_verified_pull_based"
+                )
+            if stack.get("peft_installed") is not True:
+                errors.append(
+                    "training_stack.peft_installed must be true for "
+                    "partially_verified_pull_based"
+                )
+            for flag in ("lora_attach_passed", "adapter_reload_passed"):
+                if stack.get(flag) is True:
+                    errors.append(
+                        f"training_stack.{flag} must remain false until live QLoRA smoke"
+                    )
+            recipe = data.get("container_recipe", {})
+            if recipe.get("status") != "superseded_by_pull_based_runtime":
+                errors.append(
+                    "container_recipe.status must be superseded_by_pull_based_runtime"
+                )
+            if not recipe.get("pull_based_sif"):
+                errors.append("container_recipe.pull_based_sif required")
+            if not recipe.get("site_packages"):
+                errors.append("container_recipe.site_packages required")
         if stack.get("optimiser_steps_performed", 0) != 0:
             errors.append("training_stack.optimiser_steps_performed must be 0")
         if stack.get("research_records_used", 0) != 0:
