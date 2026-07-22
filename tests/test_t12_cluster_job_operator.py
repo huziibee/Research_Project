@@ -143,6 +143,22 @@ class OperatorUnitTests(unittest.TestCase):
             op.run_profile("canary")
         self.assertIn("unexpected_tracked", str(ctx.exception))
 
+    def test_allowed_teach_dirty_does_not_block(self) -> None:
+        self.runner.git_map[("diff", "--name-only")] = subprocess.CompletedProcess(
+            [], 0, stdout="data/raw/TEACh\n", stderr=""
+        )
+        self.runner.ssh_responses = [
+            subprocess.CompletedProcess([], 0, stdout="ok\n", stderr=""),
+            subprocess.CompletedProcess(
+                [], 0, stdout="/home/u/t12-hpc/runs/t12-canary/.prep-x\n", stderr=""
+            ),
+            subprocess.CompletedProcess([], 0, stdout="ARCHIVE_HASH_MATCH\n", stderr=""),
+            subprocess.CompletedProcess([], 0, stdout="4124\n", stderr=""),
+        ]
+        op = self._operator()
+        record = op.run_profile("canary")
+        self.assertEqual(record["job_id"], "4124")
+
     def test_source_manifest_hash_deterministic(self) -> None:
         op = self._operator()
         m1 = op.build_source_identity_manifest(

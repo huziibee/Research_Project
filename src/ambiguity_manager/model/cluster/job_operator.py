@@ -53,6 +53,9 @@ ALLOWED_UNTRACKED_PREFIXES = (
     "configs.zip",
     "test-output.txt",
 )
+ALLOWED_DIRTY_PREFIXES = (
+    "data/raw/TEACh",
+)
 ALLOWED_UNTRACKED_GLOBS = (
     re.compile(r"^t12-[0-9a-f]+\.tar\.gz$"),
 )
@@ -279,7 +282,15 @@ class ClusterJobOperator:
 
         tracked = self._git("diff", "--name-only").stdout.strip()
         if tracked:
-            raise OperatorError(f"unexpected_tracked_modifications:{tracked}")
+            unexpected = [
+                path
+                for path in tracked.splitlines()
+                if path.strip() and not self._is_allowed_dirty(path.strip())
+            ]
+            if unexpected:
+                raise OperatorError(
+                    "unexpected_tracked_modifications:" + ",".join(unexpected)
+                )
 
         porcelain = self._git("status", "--porcelain=v1", "--untracked-files=all").stdout.splitlines()
         for line in porcelain:
@@ -298,8 +309,17 @@ class ClusterJobOperator:
             raise OperatorError(f"invalid_head_sha:{head}")
         return head
 
+    def _is_allowed_dirty(self, path: str) -> bool:
+        normalised = path.replace("\\", "/")
+        for prefix in ALLOWED_DIRTY_PREFIXES:
+            if normalised == prefix or normalised.startswith(prefix.rstrip("/") + "/"):
+                return True
+        return False
+
     def _is_allowed_untracked(self, path: str) -> bool:
         normalised = path.replace("\\", "/")
+        if self._is_allowed_dirty(normalised):
+            return True
         for prefix in ALLOWED_UNTRACKED_PREFIXES:
             if normalised == prefix or normalised.startswith(prefix.rstrip("/") + "/"):
                 return True
