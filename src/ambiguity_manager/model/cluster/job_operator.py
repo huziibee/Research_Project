@@ -601,9 +601,17 @@ class ClusterJobOperator:
             + entry_args_line
         ).rstrip(" \\")
         if gpus_required:
-            # Authoritative inference runs inside the pinned vLLM Apptainer SIF.
+            # Authoritative inference runs inside the pinned vLLM Apptainer SIF by
+            # default. A profile may opt into a different (e.g. training) container
+            # via container_sif_default_relpath so a training job never silently
+            # runs inside, or is confused with, the pinned inference SIF.
+            default_container_sif_relpath = str(
+                profile.get("container_sif_default_relpath") or "containers/vllm-openai-v0.20.1.sif"
+            )
             guarded_python = (
-                "export T12_CONTAINER_SIF=\"${T12_CONTAINER_SIF:-${T12_CLUSTER_ROOT}/containers/vllm-openai-v0.20.1.sif}\"\n"
+                "export T12_CONTAINER_SIF=\"${T12_CONTAINER_SIF:-${T12_CLUSTER_ROOT}/"
+                + default_container_sif_relpath
+                + "}\"\n"
                 "export T12_HF_CACHE=\"${T12_HF_CACHE:-${T12_CLUSTER_ROOT}/hf-cache}\"\n"
                 "export HF_HOME=\"${T12_HF_CACHE}\"\n"
                 "export HF_HUB_CACHE=\"${T12_HF_CACHE}/hub\"\n"

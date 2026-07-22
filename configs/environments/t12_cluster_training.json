@@ -33,5 +33,65 @@
       "status": "verified_offline"
     }
   },
+  "qlora_smoke_pinned_versions": {
+    "ticket": "T27",
+    "status": "planned_unverified",
+    "note": "Pinned target versions for the QLoRA smoke training container recipe. Recorded ahead of any live container build so the recipe is reproducible; none of these have been measured on a live container yet (container_recipe_status below remains recipe_only_not_built).",
+    "python_version": {
+      "value_kind": "immutable_expected",
+      "value": "3.11.13",
+      "status": "planned_unverified"
+    },
+    "pytorch_version": {
+      "value_kind": "immutable_expected",
+      "value": "2.11.0+cu130",
+      "status": "planned_unverified",
+      "note": "Matches the pinned inference container's PyTorch/CUDA build (configs/environments/t12_cluster_inference.json) so training and inference stay CUDA-compatible even though the environments remain separate."
+    },
+    "cuda_version": {
+      "value_kind": "immutable_expected",
+      "value": "13.0",
+      "status": "planned_unverified"
+    },
+    "transformers_version": {
+      "value_kind": "immutable_expected",
+      "value": "5.7.0",
+      "status": "planned_unverified"
+    },
+    "peft_version": {
+      "value_kind": "immutable_expected",
+      "value": "0.18.0",
+      "status": "planned_unverified"
+    },
+    "bitsandbytes_version": {
+      "value_kind": "immutable_expected",
+      "value": "0.48.1",
+      "status": "planned_unverified"
+    },
+    "accelerate_version": {
+      "value_kind": "immutable_expected",
+      "value": "1.11.0",
+      "status": "planned_unverified"
+    },
+    "safetensors_version": {
+      "value_kind": "immutable_expected",
+      "value": "0.7.0",
+      "status": "planned_unverified"
+    }
+  },
+  "container_recipe": {
+    "status": "recipe_only_not_built",
+    "recipe_relpath": "configs/environments/t12_training_container.def",
+    "recipe_format": "apptainer_definition",
+    "recipe_sha256": null,
+    "built_sif_sha256": null,
+    "note": "Live SIF build happens later on the cluster once approved; this recipe documents the intended container contents so the build is reproducible when it happens. This must never overwrite, replace, or be confused with the pinned inference SIF (vllm-openai-v0.20.1.sif, see configs/environments/t12_cluster_inference.json)."
+  },
+  "separation_from_inference_env": {
+    "inference_and_training_envs_are_separate": true,
+    "inference_env_relpath": "configs/environments/t12_cluster_inference.json",
+    "inference_container_untouched_by_training": true,
+    "note": "Training uses its own recipe/container (planned) with peft/bitsandbytes/accelerate added; the pinned vLLM inference SIF is never rebuilt, modified, or reused as the training container."
+  },
   "notes": "Separate cluster training environment planned for Stage F. Inference SIF is not the training stack."
 }

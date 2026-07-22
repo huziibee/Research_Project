@@ -101,6 +101,32 @@
         "source_identity_manifest.json"
       ],
       "run_id_prefix": "t12-mc-bakeoff"
+    },
+    "qlora_smoke": {
+      "description": "GPU technical smoke of the QLoRA adaptation pipeline mechanics (frozen base, trainable adapter, separate save/reload, resume) on a tiny deterministic source_train subset for the frozen selected_base_model. Development-only; never an official training claim and never sets selected_adapter.",
+      "partition": "biggpu",
+      "time_limit": "00:30:00",
+      "memory_mb": 64000,
+      "cpus": 8,
+      "gpus_required": true,
+      "gpus": 1,
+      "exclusive": true,
+      "requires_candidate_id": false,
+      "container_role": "training",
+      "container_sif_default_relpath": "containers/t12-training-v1.sif",
+      "container_sif_note": "Separate training container (configs/environments/t12_training_container.def); this job never runs inside, rebuilds, or overwrites the pinned vllm-openai-v0.20.1.sif inference container. This training SIF has not been built yet; see docs/reports/qlora_technical_smoke.md.",
+      "job_name": "t12-qlora-smoke",
+      "entry_point": "scripts/t12_qlora_smoke.py",
+      "required_branch": "feature/t12-cluster-redesign",
+      "remote_result_root_template": "${T12_CLUSTER_ROOT}/runs/qlora-smoke",
+      "expected_result_files": [
+        "qlora_smoke_result.json",
+        "adapter_identity.json",
+        "loss_mask_summary.json",
+        "run_manifest.json",
+        "source_identity_manifest.json"
+      ],
+      "run_id_prefix": "t12-qlora-smoke"
     }
   }
 }

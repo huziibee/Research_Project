@@ -1,0 +1,48 @@
+# T12/T27 QLoRA training container recipe (Apptainer definition).
+#
+# STATUS: recipe_only_not_built. This file documents the intended contents of
+# a separate training container so a live build is reproducible when it is
+# actually approved and run on the cluster (see
+# configs/environments/t12_cluster_training.json -> container_recipe).
+#
+# This recipe MUST NOT be used to rebuild, replace, or overwrite the pinned
+# vLLM inference container (vllm-openai-v0.20.1.sif, see
+# configs/environments/t12_cluster_inference.json). Inference and training
+# environments are and remain separate containers.
+#
+# Base image is pinned to the same CUDA 13.0 / PyTorch 2.11.0 combination
+# already verified live for the inference container so the two stacks stay
+# CUDA-driver compatible on the same cluster nodes, even though they are
+# built and stored as distinct .sif files.
+
+Bootstrap: docker
+From: pytorch/pytorch:2.11.0-cuda13.0-cudnn9-runtime
+
+%labels
+    RECIPE_ID t12_training_container_v1
+    TICKET T27
+    ROLE training
+    DEVELOPMENT_ONLY true
+    NOT_THE_INFERENCE_CONTAINER true
+
+%post
+    set -e
+    python3 -m pip install --no-cache-dir \
+        "transformers==5.7.0" \
+        "peft==0.18.0" \
+        "bitsandbytes==0.48.1" \
+        "accelerate==1.11.0" \
+        "safetensors==0.7.0" \
+        "datasets==3.6.0"
+
+%environment
+    export HF_HUB_OFFLINE=1
+    export TRANSFORMERS_OFFLINE=1
+    export VLLM_WORKER_MULTIPROC_METHOD=spawn
+
+%help
+    T12/T27 QLoRA smoke/training container recipe (planned, not yet built).
+    Adds peft/bitsandbytes/accelerate on top of the pinned PyTorch/CUDA base
+    used by the inference container, without touching the inference SIF.
+    Build only after cluster/container-build approval; this .def file alone
+    does not create a live .sif artefact.
