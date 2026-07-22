@@ -485,7 +485,8 @@ class ModelCandidateBakeoffTests(unittest.TestCase):
         ensure_no_forbidden_tokens(text)
         self.assertNotIn("rm -rf", text)
         self.assertNotIn("set -euo pipefail", text)
-        self.assertIn("#SBATCH --gres=gpu:1", text)
+        self.assertNotIn("#SBATCH --gres=", text)
+        self.assertIn("#SBATCH --exclusive", text)
         self.assertIn("--candidate-id qwen3_8b", text)
 
     def test_render_profile_entry_args_rejects_missing_candidate(self) -> None:

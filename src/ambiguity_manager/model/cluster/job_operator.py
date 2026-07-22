@@ -516,10 +516,17 @@ class ClusterJobOperator:
         gpus_required = bool(profile.get("gpus_required"))
         gpu_lines = ""
         if gpus_required:
-            gpus = int(profile.get("gpus", 1))
-            gpu_lines = f"#SBATCH --gres=gpu:{gpus}\n"
+            # Wits biggpu historically accepts --exclusive without --gres.
+            # Only emit --gres when the profile explicitly requests it.
+            if profile.get("use_gres", False):
+                gpus = int(profile.get("gpus", 1))
+                gpu_lines += f"#SBATCH --gres=gpu:{gpus}\n"
             if profile.get("exclusive"):
                 gpu_lines += "#SBATCH --exclusive\n"
+            elif not profile.get("use_gres", False):
+                # GPU profile without exclusive still needs a device request.
+                gpus = int(profile.get("gpus", 1))
+                gpu_lines += f"#SBATCH --gres=gpu:{gpus}\n"
 
         if strict:
             header_guard = "set -euo pipefail\n\n"
