@@ -94,10 +94,17 @@ def cmd_resume(args: argparse.Namespace) -> int:
   if not run_dir.is_dir():
     run_dir = paths.outputs / "manager_experiments" / "synthetic" / args.run_id
   manifest = load_json(run_dir / "run_manifest.json")
-  config_path = paths.configs / "experiments" / "synthetic_smoke_v1.json"
-  config = load_json(config_path)
-  config["run_mode"] = manifest.get("run_mode", "synthetic_smoke")
-  fixture_dir = paths.tests / "fixtures" / "t16_t24_synthetic"
+  # The manifest is the source of truth for the exact config that produced
+  # this run; resume must reuse it verbatim so its config_hash matches (the
+  # resume contract refuses otherwise). Older manifests without an embedded
+  # config snapshot fall back to the static synthetic-smoke config.
+  config = manifest.get("config")
+  if config is None:
+    config_path = paths.configs / "experiments" / "synthetic_smoke_v1.json"
+    config = load_json(config_path)
+    config["run_mode"] = manifest.get("run_mode", "synthetic_smoke")
+  fixture_manifest = config.get("fixture_manifest", "tests/fixtures/t16_t24_synthetic/manifest.json")
+  fixture_dir = paths.root / Path(fixture_manifest).parent
   records = _load_records(fixture_dir / "inputs.jsonl")
   analyses = _load_analyses(fixture_dir / "cached_analyses.json")
   runner = ExperimentRunner(paths=paths)
@@ -124,8 +131,14 @@ def cmd_evaluate(args: argparse.Namespace) -> int:
     for line in Path(args.results_path).read_text(encoding="utf-8").splitlines()
     if line.strip()
   ]
-  bundle = DeterministicEvaluator().evaluate(gold, preds, system_id=args.system)
-  print(json.dumps(bundle.to_dict(), indent=2, sort_keys=True))
+  result = DeterministicEvaluator().evaluate(gold, preds, system_id=args.system)
+  if isinstance(result, dict):
+    # Multiple systems present and --system was not given: emit one
+    # independently-scored bundle per system_id rather than merging them.
+    output = {sid: bundle.to_dict() for sid, bundle in result.items()}
+  else:
+    output = result.to_dict()
+  print(json.dumps(output, indent=2, sort_keys=True))
   return 0
 
 
@@ -148,7 +161,7 @@ def cmd_official_dry(args: argparse.Namespace) -> int:
   }
   try:
     runner.check_official_gates(
-      prerequisites=OfficialPrerequisites(),
+      prerequisites=OfficialPrerequisites.from_selected_identities(),
       systems=config["systems"],
       protected_labels_in_prompts=False,
     )
