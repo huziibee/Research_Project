@@ -60,7 +60,7 @@ from ambiguity_manager.systems.analysis import ANALYSIS_VARIANTS, build_analysis
 from ambiguity_manager.systems.contracts import AnalysisProvenance, StructuredAnalysis, SystemInput
 
 PROVIDER_ID = "model_candidate_bakeoff_v1"
-PROVIDER_VERSION = "1.0.0"
+PROVIDER_VERSION = "1.1.0"
 RUNTIME_CONFIG_REL = "configs/cluster/model_candidate_bakeoff_runtime.json"
 PROMPT_CONTRACT_REL = "configs/model/bakeoff_prompt_contract_v1.json"
 COMMIT_SHA_RE = re.compile(r"^[0-9a-f]{40}$")
@@ -272,7 +272,7 @@ class BakeoffGenerationReadyRenderer:
             abstract_message_hash=abstract_hash,
             model_repository=self._candidate.repository,
             immutable_model_revision=self._candidate.revision,
-            response_mode_status="verified_for_bakeoff",
+            response_mode_status="verified",
             response_mode_method_identity=str(self._chat_renderer.mechanics.get("apply_chat_template_mode")),
             renderer_identity=str(self._chat_renderer.mechanics.get("renderer_id")),
             renderer_version=PROVIDER_VERSION,
