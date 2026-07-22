@@ -487,6 +487,8 @@ class ModelCandidateBakeoffTests(unittest.TestCase):
         self.assertNotIn("set -euo pipefail", text)
         self.assertNotIn("#SBATCH --gres=", text)
         self.assertIn("#SBATCH --exclusive", text)
+        self.assertIn("apptainer exec --nv", text)
+        self.assertIn("vllm-openai-v0.20.1.sif", text)
         self.assertIn("--candidate-id qwen3_8b", text)
 
     def test_render_profile_entry_args_rejects_missing_candidate(self) -> None:

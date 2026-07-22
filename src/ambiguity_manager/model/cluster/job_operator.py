@@ -562,8 +562,8 @@ class ClusterJobOperator:
             )
 
         status_init = "" if strict else "JOB_STATUS=0\n"
-        guarded_python = (
-            "python3 \"${SRC_ROOT}/"
+        python_args = (
+            "\"${SRC_ROOT}/"
             + entry
             + "\" \\\n"
             + "  --result-dir \"${RESULT_DIR}\" \\\n"
@@ -573,12 +573,42 @@ class ClusterJobOperator:
             + "  --source-identity-manifest \"${PREP_DIR}/source_identity_manifest.json\" \\\n"
             + entry_args_line
         ).rstrip(" \\")
+        if gpus_required:
+            # Authoritative inference runs inside the pinned vLLM Apptainer SIF.
+            guarded_python = (
+                "export T12_CONTAINER_SIF=\"${T12_CONTAINER_SIF:-${T12_CLUSTER_ROOT}/containers/vllm-openai-v0.20.1.sif}\"\n"
+                "export T12_HF_CACHE=\"${T12_HF_CACHE:-${T12_CLUSTER_ROOT}/hf-cache}\"\n"
+                "export HF_HOME=\"${T12_HF_CACHE}\"\n"
+                "export HF_HUB_CACHE=\"${T12_HF_CACHE}/hub\"\n"
+                "export HF_HUB_OFFLINE=\"${HF_HUB_OFFLINE:-1}\"\n"
+                "export TRANSFORMERS_OFFLINE=\"${TRANSFORMERS_OFFLINE:-1}\"\n"
+                "export VLLM_WORKER_MULTIPROC_METHOD=spawn\n"
+                "NODE_LOCAL_TEMP=\"/var/tmp/${USER}-apptainer-${SLURM_JOB_ID}\"\n"
+                "mkdir -p \"${NODE_LOCAL_TEMP}\"\n"
+                "apptainer exec --nv \\\n"
+                "  --bind \"${T12_CLUSTER_ROOT}:${T12_CLUSTER_ROOT}\" \\\n"
+                "  --bind \"${NODE_LOCAL_TEMP}:${NODE_LOCAL_TEMP}\" \\\n"
+                "  --env HF_HOME=\"${HF_HOME}\" \\\n"
+                "  --env HF_HUB_CACHE=\"${HF_HUB_CACHE}\" \\\n"
+                "  --env HF_HUB_OFFLINE=\"${HF_HUB_OFFLINE}\" \\\n"
+                "  --env TRANSFORMERS_OFFLINE=\"${TRANSFORMERS_OFFLINE}\" \\\n"
+                "  --env PYTHONPATH=\"${SRC_ROOT}/src${PYTHONPATH:+:$PYTHONPATH}\" \\\n"
+                "  --env VLLM_WORKER_MULTIPROC_METHOD=spawn \\\n"
+                "  \"${T12_CONTAINER_SIF}\" \\\n"
+                "  python3 " + python_args
+            )
+        else:
+            guarded_python = "python3 " + python_args
         if strict:
             run_cmd = guarded_python
         else:
+            # Indent multi-line GPU launcher under the status guard.
+            indented = "\n".join(
+                ("  " + line if line else line) for line in guarded_python.splitlines()
+            )
             run_cmd = (
                 "if [[ ${JOB_STATUS} -eq 0 ]]; then\n"
-                f"  {guarded_python}\n"
+                f"{indented}\n"
                 "  SCRIPT_RC=$?\n"
                 "  if [[ ${SCRIPT_RC} -ne 0 ]]; then\n"
                 "    JOB_STATUS=${SCRIPT_RC}\n"
