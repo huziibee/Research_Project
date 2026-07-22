@@ -55,7 +55,7 @@ class ZeroShotAndAdaptationStatusLayerTests(unittest.TestCase):
         self.assertEqual(self.raw_identities["zero_shot_candidate_status"], "rejected")
 
     def test_adaptation_base_status_is_separate_from_zero_shot(self) -> None:
-        self.assertIsNone(self.identities.adaptation_base_status)
+        self.assertEqual(self.identities.adaptation_base_status, "selected_for_qlora_development")
         self.assertEqual(self.identities.zero_shot_candidate_status, "rejected")
         self.assertNotEqual(
             self.identities.zero_shot_candidate_status,
@@ -64,8 +64,10 @@ class ZeroShotAndAdaptationStatusLayerTests(unittest.TestCase):
 
     def test_official_approval_remains_false(self) -> None:
         self.assertFalse(self.identities.valid_for_official_use)
-        identities = assert_null_selection(IDENTITIES_PATH)
+        identities = load_selected_identities(IDENTITIES_PATH)
         self.assertFalse(identities.valid_for_official_use)
+        self.assertIsNone(identities.selected_adapter)
+        self.assertIsNone(identities.selected_model_strategy)
 
     def test_failed_zero_shot_evidence_immutable(self) -> None:
         bakeoff = self.raw_identities["bakeoff_outcome"]
@@ -77,10 +79,18 @@ class ZeroShotAndAdaptationStatusLayerTests(unittest.TestCase):
         with self.assertRaises(SystemsContractError):
             assert_zero_shot_status_immutable(recorded_status="rejected", proposed_status="pending")
 
-    def test_real_contract_null_selection_with_adaptation_pending_status(self) -> None:
-        identities = assert_null_selection(IDENTITIES_PATH)
-        self.assertEqual(identities.status, "adaptation_base_pending")
-        self.assertIsNone(identities.selected_base_model)
+    def test_real_contract_development_base_selected_keeps_zero_shot_rejected(self) -> None:
+        identities = load_selected_identities(IDENTITIES_PATH)
+        self.assertEqual(identities.status, "development_base_selected")
+        self.assertEqual(
+            identities.selected_base_model,
+            "Qwen/Qwen3-8B@b968826d9c46dd6066d109eabc6255188de91218",
+        )
+        self.assertEqual(identities.zero_shot_candidate_status, "rejected")
+        self.assertEqual(identities.adaptation_base_status, "selected_for_qlora_development")
+        self.assertIsNone(identities.selected_adapter)
+        self.assertIsNone(identities.selected_model_strategy)
+        self.assertFalse(identities.valid_for_official_use)
 
 
 class AdaptationBaseSelectionPolicyTests(unittest.TestCase):

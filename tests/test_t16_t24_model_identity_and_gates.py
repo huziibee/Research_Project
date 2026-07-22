@@ -145,23 +145,38 @@ class ProvenanceApprovalTests(unittest.TestCase):
 
 
 class SelectedIdentitiesContractTests(unittest.TestCase):
-    def test_real_config_is_null_selection_and_passes_assertion(self) -> None:
-        identities = assert_null_selection()
-        self.assertIsNone(identities.selected_base_model)
+    def test_real_config_development_base_selected_without_adapter_or_official(self) -> None:
+        identities = load_selected_identities()
+        self.assertEqual(
+            identities.selected_base_model,
+            "Qwen/Qwen3-8B@b968826d9c46dd6066d109eabc6255188de91218",
+        )
         self.assertIsNone(identities.selected_adapter)
         self.assertIsNone(identities.selected_model_strategy)
-        self.assertIn(identities.status, {"no_selection", "no_viable_base_candidate", "adaptation_base_pending"})
+        self.assertEqual(identities.zero_shot_candidate_status, "rejected")
+        self.assertEqual(identities.adaptation_base_status, "selected_for_qlora_development")
+        self.assertEqual(identities.status, "development_base_selected")
         self.assertFalse(identities.valid_for_official_use)
+        self.assertFalse(identities.is_null_selection())
 
     def test_load_selected_identities_matches_assert_helper(self) -> None:
-        self.assertTrue(load_selected_identities().is_null_selection())
+        identities = load_selected_identities()
+        self.assertEqual(
+            identities.selected_base_model,
+            "Qwen/Qwen3-8B@b968826d9c46dd6066d109eabc6255188de91218",
+        )
+        self.assertIsNone(identities.selected_adapter)
+        self.assertFalse(identities.valid_for_official_use)
 
     def test_official_prerequisites_from_selected_identities_never_invents_values(self) -> None:
         """Building prerequisites from the real identity contract must not
-        invent any non-null identity; every field stays exactly what the
-        contract says (null, during T16-T24)."""
+        invent adapter/strategy identities; official use remains false while
+        only a development adaptation base is selected."""
         prereqs = OfficialPrerequisites.from_selected_identities()
-        self.assertIsNone(prereqs.selected_base_model)
+        self.assertEqual(
+            prereqs.selected_base_model,
+            "Qwen/Qwen3-8B@b968826d9c46dd6066d109eabc6255188de91218",
+        )
         self.assertIsNone(prereqs.selected_adapter)
         self.assertIsNone(prereqs.selected_model_strategy)
 

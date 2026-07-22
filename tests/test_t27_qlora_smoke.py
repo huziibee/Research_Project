@@ -100,10 +100,10 @@ class RequireSelectedBaseModelTests(unittest.TestCase):
         identities = _synthetic_identities(selected_base_model=QWEN_IDENTITY)
         self.assertEqual(qs.require_selected_base_model(identities=identities), QWEN_IDENTITY)
 
-    def test_real_repo_contract_currently_null(self) -> None:
-        # Documents current repo state: Phase D has not run yet.
-        with self.assertRaises(qs.QloraSmokeError):
-            qs.require_selected_base_model(ROOT)
+    def test_real_repo_contract_requires_selected_qwen_base(self) -> None:
+        # Phase D selected Qwen3-8B as the immutable QLoRA development base.
+        identity = qs.require_selected_base_model(ROOT)
+        self.assertEqual(identity, QWEN_IDENTITY)
 
 
 class RejectArbitraryBaseModelTests(unittest.TestCase):
@@ -568,16 +568,23 @@ class RunSmokeTrainingOrchestrationTests(unittest.TestCase):
             qs.assert_training_run_not_official(result)
 
     def test_run_raises_before_any_evidence_when_base_model_not_selected(self) -> None:
+        import unittest.mock as mock
+
         with tempfile.TemporaryDirectory() as tmp:
             result_dir = Path(tmp) / "result"
-            with self.assertRaises(qs.QloraSmokeError):
-                qs.run_smoke_training(
-                    result_dir=result_dir,
-                    run_id="test-run-no-base",
-                    root=ROOT,
-                    dataset_rows=self._real_dataset_rows(),
-                    config=self._real_config(),
-                )
+            with mock.patch.object(
+                qs,
+                "require_selected_base_model",
+                side_effect=qs.QloraSmokeError("selected_base_model_required"),
+            ):
+                with self.assertRaises(qs.QloraSmokeError):
+                    qs.run_smoke_training(
+                        result_dir=result_dir,
+                        run_id="test-run-no-base",
+                        root=ROOT,
+                        dataset_rows=self._real_dataset_rows(),
+                        config=self._real_config(),
+                    )
             self.assertFalse((result_dir / "qlora_smoke_result.json").exists())
 
     def test_run_refuses_nonempty_result_dir(self) -> None:

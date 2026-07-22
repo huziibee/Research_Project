@@ -1,27 +1,27 @@
 {
   "contract_id": "selected_identities_v1",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "zero_shot_candidate_status": "rejected",
-  "adaptation_base_status": null,
-  "selected_base_model": null,
+  "adaptation_base_status": "selected_for_qlora_development",
+  "selected_base_model": "Qwen/Qwen3-8B@b968826d9c46dd6066d109eabc6255188de91218",
   "selected_adapter": null,
   "selected_model_strategy": null,
-  "status": "adaptation_base_pending",
+  "status": "development_base_selected",
   "valid_for_official_use": false,
   "definitions": {
     "zero_shot_candidate_status": "Whether any shortlist candidate passed the frozen zero-shot Stage-1 structured-output and safety hard gate (4/4 accepted transport records). Values: 'pending' (bake-off not complete), 'rejected' (no candidate passed; immutable once set), 'accepted' (a candidate passed; does not imply adaptation-base or official approval). A failed zero-shot result remains failed even if the same checkpoint later becomes a QLoRA development base.",
     "adaptation_base_status": "Whether an immutable base checkpoint is technically suitable for controlled QLoRA development under the frozen adaptation-base selection policy. Values: null (not yet assessed or selected), 'no_viable_adaptation_base' (hard requirements failed for all candidates), 'selected_for_qlora_development' (exact checkpoint chosen for development only). This is not an official safety or performance approval.",
-    "selected_base_model": "Immutable checkpoint identity (repository@revision) of the unadapted base model chosen for QLoRA development, the direct-base baseline, and future adapter compatibility. Null until Phase D applies the frozen adaptation-base policy. Selecting a base does not approve an adapter or model strategy.",
+    "selected_base_model": "Immutable checkpoint identity (repository@revision) of the unadapted base model chosen for QLoRA development, the direct-base baseline, and future adapter compatibility. Selecting a base does not approve an adapter or model strategy.",
     "selected_adapter": "Identity of a trained adapter (e.g. LoRA) approved for official use with the selected base model. Null until adapter training, evaluation, and formal selection in a later phase.",
     "selected_model_strategy": "Identifier of the frozen inference/decoding strategy (prompting, sampling, routing configuration) approved for official runs. Null until base, adapter, prompt, provider, and inference policy are frozen together at protocol freeze.",
-    "status": "Overall contract lifecycle marker. 'no_selection' = every identity field null and zero-shot not yet decided; 'no_viable_base_candidate' = zero-shot bake-off completed with no Stage-1-passing candidate (legacy, superseded by zero_shot_candidate_status=rejected when adaptation layers present); 'adaptation_base_pending' = zero-shot rejected, adaptation-base selection not yet applied; 'development_base_selected' = adaptation-base chosen for QLoRA development only.",
+    "status": "Overall contract lifecycle marker. 'no_selection' = every identity field null and zero-shot not yet decided; 'no_viable_base_candidate' = zero-shot bake-off completed with no Stage-1-passing candidate (legacy); 'adaptation_base_pending' = zero-shot rejected, adaptation-base selection not yet applied; 'development_base_selected' = adaptation-base chosen for QLoRA development only.",
     "valid_for_official_use": "True only once every required identity field for official model-backed systems is populated and formally frozen at protocol freeze. Always false while selection fields remain null or during development-only adaptation-base selection."
   },
   "legacy_selected_model_field": {
     "path": "configs/licences/model_licence_register.json",
     "field": "selected_model",
     "status": "deprecated_use_selected_identities_v1",
-    "note": "The licence register's top-level 'selected_model' field predates this contract and must remain null. Use selected_identities_v1.json fields (selected_base_model, selected_adapter, selected_model_strategy) as the single source of truth. Do not set selected_model when setting selected_base_model; migration is one-way from legacy register pointer to the three-part identity contract."
+    "note": "The licence register's top-level 'selected_model' field predates this contract and must remain null. Use selected_identities_v1.json fields (selected_base_model, selected_adapter, selected_model_strategy) as the single source of truth."
   },
   "bakeoff_outcome": {
     "decision": "no_viable_zero_shot_candidate",
@@ -32,8 +32,19 @@
     "candidates": {
       "qwen3_8b": "3/4 accepted; unsupported_silent_commitment on msel_t12_syn_005",
       "phi4_14b": "1/4 accepted; semantic schema / assembly failures",
-      "mistral_small_24b_2501": "empty remote result directory after COMPLETED job 4364"
+      "mistral_small_24b_2501": "empty remote result directory after COMPLETED job 4364; later technical reruns did not retain accepted structured outputs before adaptation-base freeze"
     },
-    "note": "Zero-shot rejection is immutable. Adaptation-base eligibility is assessed separately under adaptation_base_selection_policy_v1.json. Do not force a zero-shot selection. Do not begin full QLoRA until Phase D selects an adaptation base."
+    "note": "Zero-shot rejection is immutable. Adaptation-base eligibility is assessed separately under adaptation_base_selection_policy_v1.json."
+  },
+  "adaptation_base_selection": {
+    "policy_id": "adaptation_base_selection_policy_v1",
+    "evidence": "configs/model/evidence/model_selection_bakeoff_v1/adaptation_base_selection_v1.json",
+    "winning_candidate_id": "qwen3_8b",
+    "selected_base_model": "Qwen/Qwen3-8B@b968826d9c46dd6066d109eabc6255188de91218",
+    "adaptation_base_status": "selected_for_qlora_development",
+    "selected_adapter": null,
+    "selected_model_strategy": null,
+    "valid_for_official_use": false,
+    "scope_note": "This base failed the zero-shot Stage-1 gate. Selection is only for QLoRA development. The base snapshot remains immutable. Future adapters are stored separately. The direct-base baseline later uses this unadapted checkpoint. Selecting the base does not approve a future adapter."
   }
 }

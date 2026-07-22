@@ -305,7 +305,10 @@ class BaseModelSelectionApplyTests(unittest.TestCase):
         self.assertFalse(identity_update["valid_for_official_use"])
 
         identities = load_selected_identities(IDENTITIES_PATH)
-        self.assertIsNone(identities.selected_base_model)
+        # apply_selection itself must not write adapters/strategies/official flags.
+        self.assertIsNone(identities.selected_adapter)
+        self.assertIsNone(identities.selected_model_strategy)
+        self.assertFalse(identities.valid_for_official_use)
 
     def test_non_allowlisted_result_ids_rejected(self) -> None:
         with self.assertRaises(BaseModelSelectionError):
@@ -323,8 +326,16 @@ class BaseModelSelectionApplyTests(unittest.TestCase):
 
 
 class SelectedIdentitiesContractIntegrationTests(unittest.TestCase):
-    def test_real_selected_identities_remain_null(self) -> None:
-        identities = assert_null_selection(IDENTITIES_PATH)
+    def test_real_selected_identities_development_base_without_official(self) -> None:
+        identities = load_selected_identities(IDENTITIES_PATH)
+        self.assertEqual(
+            identities.selected_base_model,
+            "Qwen/Qwen3-8B@b968826d9c46dd6066d109eabc6255188de91218",
+        )
+        self.assertEqual(identities.zero_shot_candidate_status, "rejected")
+        self.assertEqual(identities.adaptation_base_status, "selected_for_qlora_development")
+        self.assertIsNone(identities.selected_adapter)
+        self.assertIsNone(identities.selected_model_strategy)
         self.assertFalse(identities.valid_for_official_use)
 
     def test_registry_hash_mismatch_detected(self) -> None:
