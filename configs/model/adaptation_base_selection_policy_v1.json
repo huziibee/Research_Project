@@ -1,0 +1,172 @@
+{
+  "policy_version": "1.0.0",
+  "policy_id": "adaptation_base_selection_policy_v1",
+  "status": "frozen_for_adaptation_base_selection",
+  "frozen_before_application": true,
+  "development_only": true,
+  "valid_for_official_use": false,
+  "requires_zero_shot_stage1_pass": false,
+  "selected_base_model": null,
+  "selected_adapter": null,
+  "selected_model_strategy": null,
+  "ranking_mode": "lexicographic_weighted",
+  "priority_criteria": [
+    {
+      "criterion_id": "structured_output_reliability",
+      "rank": 1,
+      "direction": "maximize",
+      "weight": 1.0,
+      "description": "Structured-output reliability: schema-valid rate and bounded-repair success on development attempts."
+    },
+    {
+      "criterion_id": "severity_weighted_safety",
+      "rank": 2,
+      "direction": "maximize",
+      "weight": 1.0,
+      "description": "Severity-weighted safety behaviour; lower unsafe/unsupported commitment counts score higher."
+    },
+    {
+      "criterion_id": "semantic_validity_closeness",
+      "rank": 3,
+      "direction": "maximize",
+      "weight": 1.0,
+      "description": "Closeness to semantic validity on eligible development records."
+    },
+    {
+      "criterion_id": "joint_intent_cpc_quality",
+      "rank": 4,
+      "direction": "maximize",
+      "weight": 1.0,
+      "description": "Joint intent and CPC development quality where legitimately measurable."
+    },
+    {
+      "criterion_id": "compound_ambiguity_quality",
+      "rank": 5,
+      "direction": "maximize",
+      "weight": 1.0,
+      "description": "Compound-ambiguity handling quality on eligible records."
+    },
+    {
+      "criterion_id": "qlora_feasibility",
+      "rank": 6,
+      "direction": "maximize",
+      "weight": 1.0,
+      "description": "4-bit QLoRA technical feasibility on available ~96 GB hardware."
+    },
+    {
+      "criterion_id": "context_length",
+      "rank": 7,
+      "direction": "maximize",
+      "weight": 1.0,
+      "description": "Supported context length relative to development-set requirements."
+    },
+    {
+      "criterion_id": "runtime_stability",
+      "rank": 8,
+      "direction": "maximize",
+      "weight": 1.0,
+      "description": "Runtime stability across load, generation, and evidence finalisation."
+    },
+    {
+      "criterion_id": "vram_and_latency",
+      "rank": 9,
+      "direction": "minimize",
+      "weight": 1.0,
+      "description": "VRAM footprint and latency; must not override a materially safer or more reliable candidate."
+    }
+  ],
+  "hard_requirements": [
+    {
+      "requirement_id": "licence_compatible",
+      "description": "Licence compatible with research use and recorded in the candidate registry."
+    },
+    {
+      "requirement_id": "immutable_checkpoint_revision",
+      "description": "Exact immutable checkpoint revision pinned in the candidate registry."
+    },
+    {
+      "requirement_id": "verified_snapshot_complete",
+      "description": "Complete verified model snapshot with integrity checks passed."
+    },
+    {
+      "requirement_id": "tokenizer_loads",
+      "description": "Tokenizer loads successfully for the pinned revision."
+    },
+    {
+      "requirement_id": "runtime_load_reproducible",
+      "description": "Model loads reproducibly in an approved inference or training runtime."
+    },
+    {
+      "requirement_id": "min_one_strict_structured_output",
+      "description": "At least one strict structured output produced across retained attempts."
+    },
+    {
+      "requirement_id": "no_fundamental_schema_runtime_incompatibility",
+      "description": "No fundamental schema or runtime incompatibility with the frozen prompt contract."
+    },
+    {
+      "requirement_id": "context_length_sufficient",
+      "description": "Context length sufficient for the development set under the frozen contract."
+    },
+    {
+      "requirement_id": "qlora_4bit_plausible",
+      "description": "4-bit QLoRA training path technically plausible on available hardware."
+    },
+    {
+      "requirement_id": "immutable_base_separate_adapter_storage",
+      "description": "Base checkpoint remains immutable; adapter weights stored separately from base snapshot."
+    },
+    {
+      "requirement_id": "failures_and_attempts_retained",
+      "description": "All failures and attempts retained in evidence; no attempt hiding permitted."
+    }
+  ],
+  "hard_rejection_criteria": [
+    {
+      "criterion_id": "incomplete_corrupt_snapshot",
+      "description": "Incomplete or corrupt model snapshot."
+    },
+    {
+      "criterion_id": "unsupported_architecture",
+      "description": "Unsupported architecture in the available training/runtime stack."
+    },
+    {
+      "criterion_id": "tokenizer_load_failure",
+      "description": "Tokenizer cannot load for the pinned revision."
+    },
+    {
+      "criterion_id": "no_valid_structured_output",
+      "description": "No valid strict structured output across all retained attempts."
+    },
+    {
+      "criterion_id": "no_viable_4bit_training_path",
+      "description": "No viable 4-bit QLoRA training path on available hardware."
+    },
+    {
+      "criterion_id": "licence_incompatibility",
+      "description": "Licence incompatible with research use."
+    },
+    {
+      "criterion_id": "reproducibility_failure",
+      "description": "Model load or generation not reproducible across repeated attempts."
+    },
+    {
+      "criterion_id": "runtime_incompatibility",
+      "description": "Runtime incompatibility with pinned cluster environment."
+    },
+    {
+      "criterion_id": "insufficient_context_length",
+      "description": "Inability to support required context length."
+    },
+    {
+      "criterion_id": "fundamental_schema_runtime_incompatibility",
+      "description": "Fundamental schema or runtime incompatibility with the frozen structured-output contract."
+    }
+  ],
+  "unsafe_candidate_cannot_win_on_semantic_score": true,
+  "latency_must_not_override_safer_candidate": true,
+  "tie_break_order": [
+    "candidate_id_lexicographic_ascending"
+  ],
+  "no_viable_candidate_status": "no_viable_adaptation_base"
+}

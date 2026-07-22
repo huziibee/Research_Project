@@ -101,7 +101,18 @@ Pinned runtime: `vllm-openai-v0.20.1.sif` (sha256 `d404bdf414e1b8f2d5af1568d0565
 | `phi4_14b` | 1/4 | semantic schema / canonical assembly failures | `t12-mc-transport-20260722T201932Z-b07f7e7` |
 | `mistral_small_24b_2501` | 0/4 | empty remote result directory after COMPLETED job 4364 | `t12-mc-transport-20260722T203945Z-da7e69e` |
 
-**Selection decision:** `no_viable_base_candidate`. `selected_base_model` / `selected_adapter` / `selected_model_strategy` remain `null`. Stage 2 not started.
+**Selection decision:** `no_viable_base_candidate` under the zero-shot policy. `zero_shot_candidate_status = rejected` (immutable). `adaptation_base_status = null` until Phase D applies `adaptation_base_selection_policy_v1.json`. `selected_base_model` / `selected_adapter` / `selected_model_strategy` remain `null`. Stage 2 not started.
+
+## Zero-shot rejected ≠ adaptation-base ineligible
+
+The frozen zero-shot bake-off (`base_model_selection_policy_v1.json`) and the adaptation-base selection policy (`adaptation_base_selection_policy_v1.json`) are **separate contracts**:
+
+| Layer | Policy file | Stage-1 4/4 required? | Current status |
+|---|---|---|---|
+| Zero-shot candidate | `base_model_selection_policy_v1.json` | **Yes** | `zero_shot_candidate_status = rejected` |
+| Adaptation base (QLoRA) | `adaptation_base_selection_policy_v1.json` | **No** | `adaptation_base_status = null` (Phase D pending) |
+
+A model that failed the zero-shot hard gate may still be technically eligible as an immutable QLoRA development base if it meets adaptation-base hard requirements (verified snapshot, tokenizer/runtime load, ≥1 strict structured output, plausible 4-bit path, etc.). Zero-shot rejection evidence in `bakeoff_outcome` must not be erased or superseded. Adaptation-base selection does not approve an adapter, model strategy, or official use. See `docs/decisions/DEC-20260722-003_zero_shot_vs_adaptation_base_eligibility.md`.
 
 ## Data timing
 
@@ -152,7 +163,7 @@ Three-part identity contract (`configs/model/selected_identities_v1.json`) remai
 | Development set builder | `scripts/build_model_selection_development_set.py`, `src/ambiguity_manager/data/model_selection_set.py` |
 | Cluster scripts | `scripts/t12_model_candidate_preflight.py`, `scripts/t12_model_candidate_transport_smoke.py`, `scripts/t12_model_candidate_bakeoff.py` |
 | Runtime config | `configs/cluster/model_candidate_bakeoff_runtime.json` |
-| Tests | `tests/test_base_model_candidates_and_selection.py`, `tests/test_model_selection_development_set.py`, `tests/test_model_candidate_bakeoff_operator.py` |
+| Tests | `tests/test_base_model_candidates_and_selection.py`, `tests/test_model_status_layers.py`, `tests/test_model_selection_development_set.py`, `tests/test_model_candidate_bakeoff_operator.py` |
 
 ## Confirmation
 

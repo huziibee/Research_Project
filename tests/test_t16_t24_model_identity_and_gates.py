@@ -150,7 +150,7 @@ class SelectedIdentitiesContractTests(unittest.TestCase):
         self.assertIsNone(identities.selected_base_model)
         self.assertIsNone(identities.selected_adapter)
         self.assertIsNone(identities.selected_model_strategy)
-        self.assertIn(identities.status, {"no_selection", "no_viable_base_candidate"})
+        self.assertIn(identities.status, {"no_selection", "no_viable_base_candidate", "adaptation_base_pending"})
         self.assertFalse(identities.valid_for_official_use)
 
     def test_load_selected_identities_matches_assert_helper(self) -> None:
@@ -169,6 +169,8 @@ class SelectedIdentitiesContractTests(unittest.TestCase):
         identities = SelectedIdentities(
             contract_id="selected_identities_v1",
             version="1.0.0",
+            zero_shot_candidate_status="rejected",
+            adaptation_base_status=None,
             selected_base_model="org/model@deadbeef",
             selected_adapter=None,
             selected_model_strategy=None,
@@ -182,6 +184,8 @@ class SelectedIdentitiesContractTests(unittest.TestCase):
         identities = SelectedIdentities(
             contract_id="selected_identities_v1",
             version="1.0.0",
+            zero_shot_candidate_status=None,
+            adaptation_base_status=None,
             selected_base_model=None,
             selected_adapter=None,
             selected_model_strategy=None,
@@ -195,6 +199,8 @@ class SelectedIdentitiesContractTests(unittest.TestCase):
         identities = SelectedIdentities(
             contract_id="selected_identities_v1",
             version="1.0.0",
+            zero_shot_candidate_status=None,
+            adaptation_base_status=None,
             selected_base_model=None,
             selected_adapter=None,
             selected_model_strategy=None,
@@ -427,6 +433,8 @@ class CheckOfficialGatesRegistryDrivenTests(unittest.TestCase):
         hypothetically_adapted_identities = SelectedIdentities(
             contract_id="selected_identities_v1",
             version="1.0.0",
+            zero_shot_candidate_status="rejected",
+            adaptation_base_status="selected_for_qlora_development",
             selected_base_model="org/model@sha",
             selected_adapter="org/model-lora-v1",
             selected_model_strategy=None,
