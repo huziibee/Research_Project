@@ -1,22 +1,31 @@
 # T12 — Cluster model stack setup (Stages A–I)
 
-**Status:** ACTIVE  
-**ADR:** `docs/decisions/ADR_T12_cluster_inference_architecture.md`  
-**Supersedes:** `cursor_plan/tickets/T12_local_text_model_and_training_stack_setup.md`  
-**Archive branch:** `archive/t12-local-wsl-slice4`  
-**Forward-migration base:** `b4865b3a101c87b7b5fe468c12c40adead74068f`  
-**Governance:** T11 is **PASS** with determination `not_required` (supervisor-only; `ETHGOV-001`). Historical preparatory work was authorised by `DEV-20260711-001` (pending-ethics rationale closed by `DEV-20260721-001`). D-Final live smoke has **not** yet passed. Response-mode correction is committed. `selected_model` remains `null`.
+**Status:** COMPLETE
+**ticket_status:** COMPLETE
+**technical_stack_status:** PASS
+**candidate_selection_status:** NO_SELECTION
+**terminal_candidate_outcome:** `candidate_rejected`
+**D-Final correctness gate:** BLOCKED (3/4; stop rule triggered; no further D-Final fixes)
+**selected_model:** `null`
+**Terminal ADR:** `docs/decisions/ADR_T12_terminal_zero_shot_candidate_rejection.md`
+**Architecture ADR:** `docs/decisions/ADR_T12_cluster_inference_architecture.md`
+**Supersedes:** `cursor_plan/tickets/T12_local_text_model_and_training_stack_setup.md`
+**Archive branch:** `archive/t12-local-wsl-slice4`
+**Forward-migration base:** `b4865b3a101c87b7b5fe468c12c40adead74068f`
+**Governance:** T11 is **PASS** (**COMPLETE / PASS**) with determination `not_required` (supervisor-only; `ETHGOV-001`). Historical preparatory work was authorised by `DEV-20260711-001` (pending-ethics rationale closed by `DEV-20260721-001`).
+**Final D-Final evidence:** job **3998** / commit `f0cf937` — 3/4 accepted; `dfinal-004` rejected ×3 on `unsupported_silent_commitment`.
+**Next active ticket:** T13 (prep only; no human annotation started)
 
-## Cluster-validation model (provisional)
+## Cluster-validation model (terminal disposition)
 
 | Field | Value |
 |---|---|
 | Model ID | `Qwen/Qwen3-8B` |
 | Immutable revision SHA | `b968826d9c46dd6066d109eabc6255188de91218` |
-| Candidate status | `provisionally_selected_for_cluster_validation` |
+| Candidate status | `candidate_rejected` (zero-shot under frozen T12 structured-output and safety contract) |
 | Inference container | `vllm-openai-v0.20.1.sif` |
 | Container SHA-256 | `d404bdf414e1b8f2d5af1568d0565d4e2da8435f26325b281fb28b9597c548d1` |
-| `selected_model` | `null` until Stage I |
+| `selected_model` | `null` (no Stage I selection) |
 
 ## Shared governance limits (all stages)
 
@@ -700,6 +709,50 @@ Stages A–H all passed.
 ### Proposed commit boundary
 
 `feat(t12): complete cluster model stack acceptance and cleanup gate`
+
+---
+
+## Terminal close-out (reduced Stage I)
+
+**Authority:** `docs/decisions/ADR_T12_terminal_zero_shot_candidate_rejection.md`
+
+### Verified technical outcomes
+
+Cluster stack operational: immutable source packaging; SSH transfer; Slurm
+submission/monitoring; offline snapshot; pinned container; persistent vLLM;
+structured-output transport; strict semantic and safety rejection; complete
+negative evidence retention. Stage I close-out also includes the local Slurm
+operator (`run` / `status` / `poll` / `pull` / `verify`) and one lightweight
+non-model CPU canary.
+
+### Terminal candidate outcome
+
+Qwen3-8B is unsuitable as the zero-shot candidate under the frozen T12
+structured-output and safety contract. Final D-Final job **3998** accepted 3/4;
+`dfinal-004` failed three times on `unsupported_silent_commitment`. Stop rule
+triggered; no further D-Final fixes. `selected_model` remains `null`. Outcome:
+`candidate_rejected` / `NO_SELECTION`.
+
+### Deferred work (not required to close T12)
+
+- **E-Minimal / Stage E:** deferred until a viable future model/prompt strategy exists.
+- **LoRA / Stage F:** deferred to a future model/training strategy ticket.
+- **Performance benchmark / Stage G:** deferred until a viable candidate is selected.
+- **Publication automation / Stage H:** deferred as non-essential engineering.
+
+### Final state fields
+
+| Field | Value |
+|---|---|
+| `ticket_status` | COMPLETE |
+| `technical_stack_status` | PASS |
+| `candidate_selection_status` | NO_SELECTION |
+| `terminal_candidate_outcome` | candidate_rejected |
+| `selected_model` | null |
+| `next_active_ticket` | T13 |
+
+Do not call the D-Final correctness gate a PASS. Do not claim final system
+evaluation is complete.
 
 ---
 

@@ -1,0 +1,27 @@
+{
+  "schema_version": "1.0.0",
+  "default_ssh_alias": "wits-mscluster",
+  "cluster_root_env": "T12_CLUSTER_ROOT",
+  "cluster_root_default_remote": "$HOME/t12-hpc",
+  "profiles": {
+    "canary": {
+      "description": "Lightweight CPU-only operator/infrastructure canary (no model, no GPU).",
+      "partition": "stampede",
+      "time_limit": "00:10:00",
+      "memory_mb": 4000,
+      "cpus": 1,
+      "gpus_required": false,
+      "job_name": "t12-canary",
+      "entry_point": "scripts/t12_cluster_canary.py",
+      "required_branch": "feature/t12-cluster-redesign",
+      "remote_result_root_template": "${T12_CLUSTER_ROOT}/runs/t12-canary",
+      "expected_result_files": [
+        "canary_result.json",
+        "canary_records.jsonl",
+        "run_manifest.json",
+        "source_identity_manifest.json"
+      ],
+      "run_id_prefix": "t12-canary"
+    }
+  }
+}

@@ -26,15 +26,24 @@ Freeze the non-dataset proposal alignment, seven mandatory systems, mandatory fi
 
 Forward-migrate T12 from `b4865b3` to a cluster-native architecture on branch `feature/t12-cluster-redesign`. Historical local WSL/RTX 3070 work is preserved on `archive/t12-local-wsl-slice4`.
 
+**Status:** COMPLETE
+**ticket_status:** COMPLETE
+**technical_stack_status:** PASS
+**candidate_selection_status:** NO_SELECTION
+**terminal_candidate_outcome:** `candidate_rejected`
+**selected_model:** `null`
 **Active contract:** `cursor_plan/tickets/T12_cluster_model_stack_setup.md`
-**ADR:** `docs/decisions/ADR_T12_cluster_inference_architecture.md`
+**Architecture ADR:** `docs/decisions/ADR_T12_cluster_inference_architecture.md`
+**Terminal ADR:** `docs/decisions/ADR_T12_terminal_zero_shot_candidate_rejection.md`
 **Superseded local ticket:** `cursor_plan/tickets/T12_local_text_model_and_training_stack_setup.md`
 
-**Cluster-validation model (provisional, Stages A–H):**
+**Terminal disposition:** The cluster model stack is operational. Qwen/Qwen3-8B zero-shot is unsuitable as the zero-shot candidate under the frozen T12 structured-output and safety contract (D-Final job 3998: 3/4; stop rule). E-Minimal, LoRA feasibility, performance benchmarking, and publication automation are deferred. Stage I close-out retains runbook, immutable evidence, final negative evidence, local Slurm operator, and `selected_model = null`.
+
+**Cluster-validation model (rejected candidate):**
 
 - `Qwen/Qwen3-8B` @ `b968826d9c46dd6066d109eabc6255188de91218`
 - Apptainer `vllm-openai-v0.20.1.sif` (SHA-256 pinned in ADR)
-- `model_licence_register.selected_model` remains `null` until Stage I
+- `model_licence_register.selected_model` remains `null`
 
 **Stage summary:**
 
@@ -56,14 +65,14 @@ Forward-migrate T12 from `b4865b3` to a cluster-native architecture on branch `f
 
 **Local cleanup:** Qwen2.5 local weights and T12-specific environments become eligible for deletion only after Stage I acceptance, via a separate gated cleanup task. Code, tests, manifests, and Git history are preserved.
 
-**Gate:** cluster-validated base model with reproducible batch inference, structured decoding evidence, LoRA feasibility, benchmark recovery, and publication pipeline; `selected_model` set in Stage I only.
+**Gate:** technical stack PASS with terminal candidate outcome `candidate_rejected`; `selected_model` remains `null`. E-Minimal, LoRA, performance benchmarking, and publication automation deferred per terminal ADR. Next active ticket: T13 (preparation only).
 
 ## Phase 3 — Human-gold benchmark
 
 ### T13–T15
 
-- T13: annotation handbook, CPC/interpretation schema, design cells, LLM-assisted scenario authoring.
-- T14: blind double annotation, agreement, adjudication, gold build, and human semantic-comparison subset.
+- T13: annotation handbook, CPC/interpretation schema, design cells, LLM-assisted scenario authoring. May begin preparation after T12 close; no claim that annotation has started.
+- T14: blind double annotation, agreement, adjudication, gold build, and human semantic-comparison subset. Tooling may be implemented while supervisors are unavailable; human annotation and adjudication remain pending.
 - T15: group-safe splits, leakage checks, protected data, and machine-enforced eligibility.
 
 **Gate:** trusted gold, agreement evidence, protected splits, and eligibility manifest exist.
