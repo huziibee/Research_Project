@@ -1,0 +1,77 @@
+{
+  "config_id": "route_precedence_v1",
+  "schema_version": "1.0.0",
+  "status": "frozen",
+  "effective_date": "2026-07-22",
+  "schema_v2_field": "recommended_strategy",
+  "allowed_values": [
+    "execute",
+    "clarify",
+    "silently_resolve",
+    "face_preserving_rejection",
+    "multi_step"
+  ],
+  "canonical_json": {
+    "sort_keys": true,
+    "separators": [",", ":"],
+    "ensure_ascii": false,
+    "hash_algorithm": "sha256"
+  },
+  "precedence_order": [
+    {
+      "rank": 1,
+      "rule_id": "known_unsafe_or_prohibited",
+      "strategy": "face_preserving_rejection",
+      "condition": "Request is known unsafe or prohibited under supplied evidence."
+    },
+    {
+      "rank": 2,
+      "rule_id": "known_incapable",
+      "strategy": "face_preserving_rejection",
+      "condition": "Robot is known incapable of the requested action under capability context."
+    },
+    {
+      "rank": 3,
+      "rule_id": "hazard_identity_unresolved",
+      "strategy": "clarify",
+      "condition": "Safety or prohibition depends on unresolved critical referents; clarify before reject."
+    },
+    {
+      "rank": 4,
+      "rule_id": "critical_unresolved_medium_high_risk",
+      "strategy": "clarify_or_multi_step",
+      "condition": "Critical slots unresolved and risk is medium or high; never silently_resolve."
+    },
+    {
+      "rank": 5,
+      "rule_id": "dependent_compound_ambiguities",
+      "strategy": "multi_step",
+      "condition": "Multiple dependent ambiguities require ordered clarification or mixed strategies."
+    },
+    {
+      "rank": 6,
+      "rule_id": "unique_low_risk_resolvable",
+      "strategy": "silently_resolve",
+      "condition": "Ambiguity uniquely resolvable from supplied evidence, risk none/low, and resolved_slots can be stated."
+    },
+    {
+      "rank": 7,
+      "rule_id": "clear_safe_capable",
+      "strategy": "execute",
+      "condition": "Command is clear, safe, capable, and fully supported."
+    },
+    {
+      "rank": 8,
+      "rule_id": "default_clarify",
+      "strategy": "clarify",
+      "condition": "Otherwise clarify rather than invent unsupported specificity."
+    }
+  ],
+  "hard_invariants": [
+    "high_risk_unresolved_never_silently_resolve",
+    "silently_resolve_requires_resolved_slots",
+    "clarify_requires_clarification_targets",
+    "face_preserving_rejection_requires_rejection_reason",
+    "multi_step_requires_strategy_sequence_len_ge_2"
+  ]
+}

@@ -1,0 +1,160 @@
+{
+  "config_id": "annotation_schema_v1",
+  "schema_version": "1.0.0",
+  "status": "frozen",
+  "effective_date": "2026-07-22",
+  "handbook_version": "1.0.0",
+  "package_version": "1.0.0",
+  "schema_v2_compatibility": {
+    "canonical_schema_version": "2.0.0",
+    "cpc_slots": [
+      "action",
+      "actor",
+      "object",
+      "object_attributes",
+      "destination",
+      "spatial_relation",
+      "quantity",
+      "time",
+      "recipient",
+      "tool",
+      "conditions",
+      "constraints",
+      "negation"
+    ],
+    "cpc_slot_statuses": ["filled", "missing", "unknown", "not_applicable"],
+    "ambiguity_types": [
+      "referential",
+      "spatial",
+      "pragmatic",
+      "temporal",
+      "quantitative",
+      "preference",
+      "commonsense",
+      "safety_precondition",
+      "capability",
+      "contextual"
+    ],
+    "risk_levels": ["none", "low", "medium", "high", "unknown"],
+    "capability_statuses": ["capable", "conditional", "incapable", "unknown"],
+    "recommended_strategies": [
+      "execute",
+      "clarify",
+      "silently_resolve",
+      "face_preserving_rejection",
+      "multi_step"
+    ],
+    "speech_act_closed_enum": "configs/annotation/intent_taxonomy_v1.json",
+    "route_field_name": "recommended_strategy"
+  },
+  "canonical_json": {
+    "sort_keys": true,
+    "separators": [",", ":"],
+    "ensure_ascii": false,
+    "hash_algorithm": "sha256"
+  },
+  "prohibited_gold_fields": [
+    "gold_intent",
+    "gold_cpc_frame",
+    "gold_valid_interpretations",
+    "gold_ambiguity_types",
+    "gold_risk_level",
+    "gold_capability_status",
+    "gold_route",
+    "gold_strategy_sequence",
+    "gold_clarification_targets",
+    "gold_rejection_reason",
+    "gold_resolved_slots",
+    "gold_unresolved_slots",
+    "gold_supporting_evidence",
+    "adjudicated_gold",
+    "final_gold"
+  ],
+  "immutable_visible_fields": {
+    "required": [
+      "record_id",
+      "command",
+      "dialogue_history",
+      "scene_context",
+      "capability_context",
+      "visible_provenance_category",
+      "package_version",
+      "handbook_version",
+      "annotation_schema_version",
+      "dataset_partition"
+    ],
+    "visible_provenance_category_allowed": [
+      "human_seed",
+      "controlled_transform",
+      "human_reviewed_draft"
+    ],
+    "dataset_partition_allowed": ["calibration", "main", "reserve", "handbook_example", "synthetic_test"]
+  },
+  "hidden_author_admin_fields": [
+    "design_cell",
+    "seed_id",
+    "template_id",
+    "group_id",
+    "author_notes",
+    "review_codes",
+    "intended_answer",
+    "model_output",
+    "model_critique",
+    "author_expectation"
+  ],
+  "annotator_response_fields": {
+    "required": [
+      "record_id",
+      "speech_act",
+      "cpc",
+      "candidate_interpretations",
+      "ambiguity_present",
+      "ambiguity_types",
+      "compound_ambiguity_count",
+      "risk_level",
+      "capability_status",
+      "recommended_strategy",
+      "annotator_role",
+      "confidence",
+      "timestamp",
+      "handbook_version",
+      "annotation_schema_version",
+      "package_version"
+    ],
+    "conditional": {
+      "strategy_sequence": "required when recommended_strategy == multi_step",
+      "clarification_targets": "required when recommended_strategy == clarify",
+      "clarification_question": "required when recommended_strategy == clarify",
+      "rejection_reason": "required when recommended_strategy == face_preserving_rejection",
+      "resolved_slots": "required when recommended_strategy == silently_resolve",
+      "selected_interpretation": "allowed only when uniquely justified"
+    },
+    "optional": [
+      "unresolved_slots",
+      "supporting_evidence",
+      "uncertainty_notes",
+      "selected_interpretation"
+    ]
+  },
+  "derived_fields": [
+    "compound_ambiguity",
+    "package_hash",
+    "record_order_index",
+    "normalised_command",
+    "duplicate_flags",
+    "coverage_cell_keys"
+  ],
+  "future_adjudicated_gold_fields": [
+    "adjudication_decision",
+    "adjudicator_role",
+    "adjudication_rationale",
+    "final_speech_act",
+    "final_cpc",
+    "final_ambiguity_types",
+    "final_risk_level",
+    "final_capability_status",
+    "final_recommended_strategy"
+  ],
+  "confidence_allowed": ["low", "medium", "high"],
+  "official_annotator_roles": ["ANN-A", "ANN-B"]
+}

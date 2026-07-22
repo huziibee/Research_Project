@@ -1,12 +1,15 @@
 # T14 — Blind double annotation, agreement, and adjudication
 
-**Status:** READY
-**Active:** no
+**Status:** READY (T14A tooling may proceed; T14B/T14C pending)
+**Active:** no (human collection not started)
 **Collection started:** no
 
 ## Shared context
 
-T00–T11 are completed. T11 ethics/governance determination is `not_required` for supervisor-only annotation (`ETHGOV-001`). T12 is ACTIVE. T13 has not started. Follow `01_global_cursor_contract.md`, `02_context_refresh_protocol.md`, and the non-dataset proposal alignment. Work only on this ticket when activated. Do not access protected test data before T29 passes.
+T00–T12 are completed. T11 ethics/governance determination is `not_required` for
+supervisor-only annotation (`ETHGOV-001`). T13 foundation and calibration may be
+in progress or frozen for review. Follow `01_global_cursor_contract.md`,
+`02_context_refresh_protocol.md`, and `DEC-20260722-001`.
 
 ## Required reference documents
 
@@ -14,41 +17,64 @@ T00–T11 are completed. T11 ethics/governance determination is `not_required` f
 - `10_interpretation_evaluation_framework.md`
 - `docs/governance/evidence/ETHGOV-001_supervisor_only_determination.md`
 - `docs/protocols/human_annotation_governance.md`
+- `docs/protocols/annotation_handbook_v1.md`
+- `docs/protocols/annotation_role_policy_v1.md`
 
 ## Goal
 
-Create trustworthy human-adjudicated gold and measure whether the scheme is reproducible.
+Create trustworthy human-adjudicated gold and measure whether the scheme is
+reproducible. Split delivery:
+
+### T14A — tooling (may proceed before real annotation)
+
+Immutable package loading, independent A/B storage, validation, progress,
+blindness guards, agreement metrics, disagreement reports, adjudication queue,
+and gated gold export. Develop and test with **synthetic** submissions only.
+
+### T14B — human annotation (pending)
+
+Requires T13 calibration (and later main) package freeze, accepted handbook,
+role policy, and supervisor availability. Official annotators are Steven James
+(`ANN-A`) and Benjamin Rosman (`ANN-B`) only.
+
+### T14C — adjudication (pending)
+
+Requires both completed annotation sets. Retain originals; unresolved
+adjudicator identity (`ADJ-01`) until policy approval. No single annotation
+silently becomes gold.
 
 ## Preconditions
 
-- T13 pilot passed. **Not yet satisfied.**
-- T11 ethics/governance determination permits supervisor-only collection. **Satisfied as ethics gate; does not start collection.**
+- T13 handbook/schema/role policy exist. **Required for T14A completeness.**
+- T13 calibration package frozen before T14B calibration annotation.
+- T11 ethics/governance permits supervisor-only collection. **Satisfied as ethics gate; does not start collection.**
 
 ## Current readiness
 
-T14 remains blocked on the T13 pilot and unresolved protocol questions: supervisor role separation, independent Annotator A/B assignment when both annotators are project supervisors, and adjudication rules under role overlap. No collection has begun. External annotators remain forbidden without reassessment.
+T14B/T14C remain blocked on supervisor availability, calibration review, and
+adjudication-role resolution. External annotators remain forbidden without
+reassessment. Do not mark human annotation as started when only T14A tooling
+exists.
 
 ## Required tasks
 
 1. Build blind annotation tooling/views that hide model labels, critiques, and other annotator answers.
-2. Run a fresh calibration subset with Annotators A and B independently.
-3. Compute raw agreement, categorical kappas, per-label/macro ambiguity kappa, Jaccard/exact-set agreement, CPC/slot agreement, unresolved-slot agreement, risk/capability/route agreement, and prevalence.
-4. Apply predefined agreement gates; if failed, revise the handbook and annotate a new calibration subset rather than reusing the failed set as proof.
-5. Run full double annotation with immutable annotator IDs and timestamps.
-6. Adjudicate disagreements using documented evidence and reason codes.
-7. Build final gold schema-v2 records with valid interpretations, intent/CPC, evidence, ambiguity, risk, capability, route, response targets, and resolved slots.
-8. Create a separate adjudicated candidate-vs-gold relation subset for optional T25 semantic meta-evaluation.
-9. Audit role overlap, missing labels, impossible combinations, and actual counts.
+2. Support synthetic and later real independent A/B submissions.
+3. Compute raw agreement, categorical kappas, multi-label Jaccard, CPC/slot agreement, and prevalence.
+4. Apply predefined agreement gates on calibration before main annotation.
+5. Run full double annotation with immutable annotator IDs and timestamps (T14B).
+6. Adjudicate disagreements using documented evidence and reason codes (T14C).
+7. Build final gold schema-v2 records only after adjudication.
+8. Audit role overlap, missing labels, impossible combinations, and actual counts.
 
 ## Deliverables
 
-- Annotation tool/export.
+- Annotation tool/export foundations (T14A).
 - Agreement reports.
 - Adjudication log.
-- Final gold records.
-- Semantic relation subset.
+- Final gold records (after T14C only).
 - Governance/role-overlap audit.
-- T14 completion report.
+- T14 completion report (after T14B/T14C).
 
 ## Acceptance criteria
 
@@ -56,12 +82,17 @@ T14 remains blocked on the T13 pilot and unresolved protocol questions: supervis
 - [ ] Agreement is reported honestly with prevalence.
 - [ ] No model-generated label becomes gold without human verification.
 - [ ] CPC and route labels are both present where eligible.
-- [ ] Resolved-slot gold exists for silent-resolution cases.
+- [ ] Raw A/B submissions remain immutable.
+- [ ] Gold export refuses incomplete/unresolved adjudication.
 
 ## Test and evidence policy
 
-Do not force unit tests for subjective judgement. Test all validators, import/export logic, counters, and deterministic support scripts.
+Test all validators, import/export logic, counters, agreement metrics, and
+deterministic support scripts with synthetic fixtures. Do not force unit tests
+for subjective judgement.
 
 ## Stop condition
 
-Stop after gold build and agreement gate. Do not split or expose protected records.
+T14A may stop after synthetic readiness. T14B/T14C stop after gold build and
+agreement gate. Do not split or expose protected records. Do not claim human
+annotation started based on tooling alone.

@@ -8,8 +8,10 @@ Create a human-adjudicated benchmark that can judge both **what the command mean
 
 ## Planning target
 
-- Target: 400 adjudicated records.
-- Minimum defensible release: 300 adjudicated records, only with a documented coverage audit.
+- Calibration: 24 records (handbook/interface refinement; not automatic official gold).
+- Initial main target: 300 adjudicated records.
+- Optional expansion toward 400 only if a coverage audit identifies underfilled design cells and supervisor workload allows it.
+- Do not freeze 400 merely because an older draft mentioned it.
 - Counts are planning targets, not fabricated achievements. Record actual funnel counts.
 
 ## Required record structure
@@ -77,18 +79,20 @@ Annotators must separately label:
 ## Authoring rules
 
 - Use a frozen design-cell matrix rather than open-ended generation.
-- A local LLM may generate candidate scenarios, critics, and adversarial variants.
-- Store model, revision, quantisation, prompt hash, seed, and timestamp.
+- Prefer human-authored seeds and controlled transforms first.
+- A local LLM may optionally draft candidates later; it is not required for T13 and never supplies gold.
+- If used, store model, revision, quantisation, prompt hash, seed, and timestamp.
 - Hide proposed labels and critiques from blind annotators.
 - Human authors must accept/edit/reject every candidate before annotation.
-- Run exact, normalised, fuzzy, and semantic duplicate checks.
+- Run exact, normalised, and context-command duplicate checks in T13; heavier semantic checks only if later justified.
 - Keep generated siblings under one `group_id`.
 
 ## Human roles and governance
 
-- Author/reviewer: screens generated scenarios.
-- Annotator A and B: independently label blind records.
-- Adjudicator: resolves disagreements using the frozen handbook.
+- Author/reviewer (`AUTHOR-01`): Mohammed Bangie — screens scenarios; must not be ANN-A/ANN-B.
+- Annotator A (`ANN-A`): Steven James — independently labels blind records.
+- Annotator B (`ANN-B`): Benjamin Rosman — independently labels blind records.
+- Adjudicator (`ADJ-01`): unresolved until T14 policy approval; must retain both originals.
 
 Record role overlap. Before collection, T11 must document the institutional/supervisor determination on ethics, consent, personal data, compensation if any, pseudonymisation, storage, and deletion.
 
@@ -109,6 +113,7 @@ If the pilot gate fails, revise the handbook and annotate a fresh calibration su
 
 ## Ticket mapping
 
-- T13: guidelines, schemas, design cells, human seeds, local LLM authoring, pilot pool.
-- T14: tooling, double annotation, agreement, adjudication, final gold, semantic-comparison subset.
+- T13: guidelines, schemas, design cells, human seeds, calibration packages (24), main-pool readiness (300 target); optional LLM authoring deferred.
+- T14A: tooling on synthetic labels; T14B: double annotation; T14C: adjudication and final gold.
 - T15: group-aware splits, leakage checks, eligibility manifest, protected benchmark freeze.
+- Parallel: T16–T24 interfaces/synthetic fixtures may proceed while annotation is pending (`DEC-20260722-001`).

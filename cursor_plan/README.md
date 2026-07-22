@@ -13,8 +13,10 @@ This archive is the corrected stage-gated plan for completing the research imple
   - D-Final correctness gate: BLOCKED at 3/4 (stop rule; no further D-Final fixes)
   - ADR: `docs/decisions/ADR_T12_terminal_zero_shot_candidate_rejection.md`
 - `model_licence_register.selected_model` remains `null`.
-- **T13 may begin preparation** after T12 close (handbook, sampling freeze, pilot tooling). No human annotation has started.
-- **T14 tooling may be implemented** while supervisors are unavailable; human annotation and adjudication remain pending. Do not mark T13/T14 complete.
+- **T13 is ACTIVE for foundation/calibration** after T12 close. `selected_model` is not a T13 prerequisite. Calibration n=24; main target n=300. No official gold. No human annotation has started.
+- **T14A tooling may be implemented** on synthetic labels while supervisors are unavailable; T14B/T14C remain pending. Do not mark T14 human annotation started.
+- **Parallel work (`DEC-20260722-001`):** T16–T24 interface/synthetic development may proceed while annotation is pending; official train/tune/eval wait for adjudicated gold.
+- Official annotators: Steven James (`ANN-A`), Benjamin Rosman (`ANN-B`). Author/reviewer: Mohammed Bangie (`AUTHOR-01`).
 
 ## Key final decisions
 
@@ -45,10 +47,16 @@ This archive is the corrected stage-gated plan for completing the research imple
 COMPLETED: T00 T01 T02 T03 T04 T05 T06 T07 T08 T09 T10 T11 T12
 
 ACTIVE:
-T13 (preparation only)
+T13 (foundation and calibration freeze; main package not frozen)
 
-NEXT:
-T14 T15
+PARALLEL-ALLOWED (interfaces/synthetic only; no official gold/train/eval):
+T14A tooling; T16–T24 scaffolding
+
+PENDING HUMAN:
+T14B T14C
+
+NEXT AFTER GOLD PATH:
+T15
 T16 T17 T18 T19 T20 T21 T22 T23
 T24 T25 T26
 T27 T28

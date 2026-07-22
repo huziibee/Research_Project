@@ -223,10 +223,15 @@ class TestGovernanceEthics(unittest.TestCase):
 
     def test_t13_t14_not_marked_complete_or_collection_started(self) -> None:
         self.assertIn("Collection started:** no", self.t13)
-        self.assertIn("technically not ready", self.t13.lower())
         self.assertIn("Collection started:** no", self.t14)
         self.assertNotIn("**Status:** COMPLETE", self.t13)
         self.assertNotIn("**Status:** COMPLETE", self.t14)
+        # T13 may be ACTIVE for preparation/calibration, but must not claim
+        # human annotation collection has started or that gold exists.
+        self.assertIn("no official gold", self.t13.lower())
+        self.assertIn("human collection not started", self.t14.lower())
+        self.assertNotIn("collection started:** yes", self.t13.lower())
+        self.assertNotIn("collection started:** yes", self.t14.lower())
 
     def test_selected_model_remains_null(self) -> None:
         register_path = self.repo_root / "configs" / "licences" / "model_licence_register.json"

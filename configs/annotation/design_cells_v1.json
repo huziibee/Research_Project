@@ -1,0 +1,74 @@
+{
+  "config_id": "design_cells_v1",
+  "schema_version": "1.0.0",
+  "status": "frozen",
+  "effective_date": "2026-07-22",
+  "main_target_n": 300,
+  "calibration_n": 24,
+  "optional_expansion_cap": 400,
+  "expansion_policy": "Only if coverage audit shows underfilled cells and supervisor workload allows.",
+  "design_style": "stratified_quotas_not_full_cartesian",
+  "canonical_json": {
+    "sort_keys": true,
+    "separators": [",", ":"],
+    "ensure_ascii": false,
+    "hash_algorithm": "sha256"
+  },
+  "schema_v2_compatibility": {
+    "ambiguity_types": "AmbiguityType",
+    "risk_level": "RiskLevel",
+    "capability_status": "CapabilityStatus",
+    "recommended_strategy": "RouteLabel"
+  },
+  "primary_ambiguity_profile": {
+    "clear_no_ambiguity": 40,
+    "single_ambiguity": 110,
+    "compound_two_types": 100,
+    "compound_three_or_more": 50
+  },
+  "ambiguity_type_targets_among_ambiguous": {
+    "referential": 40,
+    "pragmatic": 35,
+    "spatial": 30,
+    "preference": 25,
+    "temporal": 25,
+    "commonsense": 25,
+    "safety_precondition": 25,
+    "quantitative": 20,
+    "capability": 20,
+    "contextual": 15
+  },
+  "risk_targets": {
+    "none": 80,
+    "low": 90,
+    "medium": 80,
+    "high": 40,
+    "unknown": 10
+  },
+  "strategy_targets": {
+    "clarify": 100,
+    "execute": 70,
+    "multi_step": 50,
+    "silently_resolve": 40,
+    "face_preserving_rejection": 40
+  },
+  "capability_targets": {
+    "capable": 200,
+    "conditional": 50,
+    "incapable": 35,
+    "unknown": 15
+  },
+  "secondary_targets": {
+    "direct_speech_act_proxy": 210,
+    "indirect_speech_act_proxy": 90,
+    "context_rich": 200,
+    "minimal_context": 100,
+    "safety_sensitive_min": 50,
+    "every_route_min": 30,
+    "every_ambiguity_type_min": 15
+  },
+  "tolerance": {
+    "absolute_per_cell": 2,
+    "note": "Soft quotas for authoring progress; hard gates only for minima listed in secondary_targets and calibration coverage."
+  }
+}

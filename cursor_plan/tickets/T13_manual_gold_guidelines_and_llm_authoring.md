@@ -1,12 +1,16 @@
-# T13 — Manual-gold guidelines and LLM-assisted scenario authoring
+# T13 — Manual-gold guidelines, calibration packages, and authoring programme
 
-**Status:** READY
-**Active:** no
+**Status:** ACTIVE (preparation / calibration freeze)
+**Active:** yes (foundation and calibration; main package not frozen)
 **Collection started:** no
 
 ## Shared context
 
-T00–T11 are completed. T11 ethics/governance determination is `not_required` for supervisor-only annotation (`ETHGOV-001`). T12 is ACTIVE and not yet closed. Follow `01_global_cursor_contract.md`, `02_context_refresh_protocol.md`, and the non-dataset proposal alignment. Work only on this ticket when activated. Do not access protected test data before T29 passes.
+T00–T12 are completed. T11 ethics/governance determination is `not_required` for
+supervisor-only annotation (`ETHGOV-001`). T12 closed with
+`technical_stack_status=PASS`, `terminal_candidate_outcome=candidate_rejected`,
+and `selected_model=null`. Follow `01_global_cursor_contract.md`,
+`02_context_refresh_protocol.md`, and `DEC-20260722-001`.
 
 ## Required reference documents
 
@@ -14,55 +18,79 @@ T00–T11 are completed. T11 ethics/governance determination is `not_required` f
 - `10_interpretation_evaluation_framework.md`
 - `03_dataset_roles_metrics.md`
 - `docs/governance/evidence/ETHGOV-001_supervisor_only_determination.md`
+- `docs/protocols/annotation_handbook_v1.md`
+- `docs/protocols/annotation_role_policy_v1.md`
+- `docs/decisions/DEC-20260722-001_t13_parallel_execution_order.md`
 
 ## Goal
 
-Freeze operational annotation rules and create a human-reviewed candidate pool without treating generated labels as gold.
+Freeze operational annotation rules and create an annotation-ready programme with
+a reviewed calibration package. Do **not** treat generated or authored labels as
+official gold. Do **not** freeze the final 300-record main package in the initial
+foundation delivery.
 
 ## Preconditions
 
-- T11 governance passed (PASS; determination `not_required`; supervisor-only scope). **Satisfied.**
-- T12 authoring/inference model identity is stable (`selected_model` set at Stage I / T12 close-out). **Not yet satisfied.**
+- T11 governance passed (PASS; determination `not_required`; supervisor-only). **Satisfied.**
+- T12 closed (stack PASS; candidate may be rejected; `selected_model` may remain null). **Satisfied.**
 - T10 schema-v2 validators pass. **Satisfied.**
-- Annotation handbook, sampling freeze, and annotation package exist. **Not yet satisfied.**
+- **`selected_model` is not a T13 prerequisite.**
 
-## Current readiness
+## Roles
 
-Ethics/governance prerequisite is satisfied for supervisor-only annotation. T13 remains **technically not ready**: requires T12 model stability, handbook, sampling freeze, and annotation package. No collection has begun.
+| Role | Person | Pseudonym |
+|---|---|---|
+| Dataset author / reviewer | Mohammed Bangie | `AUTHOR-01` |
+| Official Annotator A | Steven James | `ANN-A` |
+| Official Annotator B | Benjamin Rosman | `ANN-B` |
+| Adjudicator | unresolved until T14 | `ADJ-01` |
+
+Mohammed must not be assigned as `ANN-A` or `ANN-B`.
+
+## Dataset size policy
+
+- Calibration: **24** records (refine handbook/interface; not automatic gold).
+- Main target: **300** adjudicated records.
+- Optional expansion toward **400** only after coverage audit and supervisor workload review.
+- Local-LLM authoring is **optional future tooling**, not required for T13 acceptance.
 
 ## Required tasks
 
-1. Write the annotation handbook for speech act, CPC, valid interpretation sets, unique resolvability, unresolved slots, evidence, ambiguity, risk, capability, routes, strategy sequences, clarification targets, rejection reasons, and resolved slots.
-2. Define route precedence and borderline/tie-breaking cases.
-3. Freeze the benchmark target/minimum and a coverage/design-cell matrix before bulk generation.
-4. Create 20–30 human seed scenarios covering clear, single, compound, context-resolved, low/high risk, conditional capability, incapable, and multi-step cases.
-5. Implement local LLM generator, critic, adversarial critic, and coverage-check roles through `ModelClient`.
-6. Store all generation provenance and keep model-proposed labels/critiques out of blind annotation views.
-7. Generate a pilot pool across design cells and run schema, contamination, duplicate, and coverage checks.
-8. Perform human author review and retain/edit/reject each scenario with reason codes.
-9. Produce annotation-ready records with no official gold labels and actual funnel counts.
+1. Amend roadmap/ticket text for parallel execution (`DEC-20260722-001`).
+2. Freeze annotation handbook, role policy, taxonomies, and annotation schema.
+3. Implement deterministic candidate/package tooling (IDs, duplicates, contamination, coverage, manifests).
+4. Author and freeze the 24-record calibration package with independent ANN-A/ANN-B views.
+5. Prepare main-pool authoring templates and remaining-count tooling without freezing 300 records.
+6. Support T14A synthetic tooling foundations in the same delivery window.
+7. Produce foundation/calibration reports.
 
 ## Deliverables
 
-- Annotation handbook and decision tree.
-- Design-cell configuration and human seed bank.
-- LLM authoring pipeline.
-- Pilot candidate pool and provenance.
-- Duplicate/coverage/contamination reports.
-- Pilot readiness report and T13 completion report.
+- Annotation handbook and role policy.
+- Machine-readable taxonomies, schema, design cells, and roles.
+- Annotation package module and CLI.
+- Calibration source + ANN-A/ANN-B packages, manifests, hashes, reports.
+- Main-pool authoring readiness artefacts (templates/queue; no main freeze).
+- T13 foundation and calibration report.
 
 ## Acceptance criteria
 
-- [ ] Every retained scenario is coherent, answerable, and human-reviewed.
-- [ ] Generated labels are not exposed as gold.
-- [ ] CPC, evidence, valid-set, and resolved-slot semantics are operationally defined.
-- [ ] Generated siblings share group IDs.
-- [ ] Actual counts replace estimates.
+- [ ] Handbook and schema are frozen and versioned.
+- [ ] Roles enforce Mohammed ≠ ANN-A/ANN-B; only supervisors annotate officially.
+- [ ] Calibration has exactly 24 reviewed records with required coverage.
+- [ ] ANN-A and ANN-B packages share IDs, hide hidden fields, and contain no gold.
+- [ ] Duplicate/contamination/coverage tooling is deterministic and CPU-only.
+- [ ] Main 300 package is not frozen in this ticket stage.
+- [ ] No official gold labels; no real supervisor annotation started.
 
 ## Test and evidence policy
 
-Do not force unit tests for subjective judgement. Test all validators, import/export logic, counters, and deterministic support scripts.
+Test validators, package builders, hashing, role policy, coverage, contamination,
+and deterministic support scripts. Do not force unit tests for subjective
+judgement quality of scenarios beyond structural coverage gates.
 
 ## Stop condition
 
-Stop after the pilot is approved. Do not conduct full annotation or access protected data.
+Stop after calibration packages and tooling are ready for supervisor review.
+Do not start T14B human annotation. Do not freeze the main 300 package. Do not
+access protected data.

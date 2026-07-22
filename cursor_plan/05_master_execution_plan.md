@@ -71,9 +71,11 @@ Forward-migrate T12 from `b4865b3` to a cluster-native architecture on branch `f
 
 ### T13–T15
 
-- T13: annotation handbook, CPC/interpretation schema, design cells, LLM-assisted scenario authoring. May begin preparation after T12 close; no claim that annotation has started.
-- T14: blind double annotation, agreement, adjudication, gold build, and human semantic-comparison subset. Tooling may be implemented while supervisors are unavailable; human annotation and adjudication remain pending.
+- T13: annotation handbook, CPC/interpretation schema, design cells, calibration packages (n=24), and main-pool authoring readiness (target n=300; optional expansion toward 400 only after coverage audit). `selected_model` is **not** a T13 prerequisite. Local-LLM authoring is optional future tooling. Produces **no** official gold. Roles: Mohammed Bangie (`AUTHOR-01`); Steven James (`ANN-A`); Benjamin Rosman (`ANN-B`).
+- T14: split as T14A tooling (may proceed on synthetic labels), T14B human annotation (pending supervisors), and T14C adjudication (pending both annotation sets; `ADJ-01` unresolved). Do not mark human annotation started from tooling alone.
 - T15: group-safe splits, leakage checks, protected data, and machine-enforced eligibility.
+
+**Parallel execution (`DEC-20260722-001`):** while T14B is pending, T16–T24 may implement interfaces and synthetic-fixture behaviour. Official training, threshold tuning, protected evaluation, and dissertation performance claims remain blocked on adjudicated gold.
 
 **Gate:** trusted gold, agreement evidence, protected splits, and eligibility manifest exist.
 
@@ -81,7 +83,7 @@ Forward-migrate T12 from `b4865b3` to a cluster-native architecture on branch `f
 
 ### T16–T23
 
-- T16: direct base-LLM structured baseline.
+- T16: direct base-LLM structured baseline (interface/synthetic slices may proceed before selected model and gold; official runs wait).
 - T17: candidate interpretation generator.
 - T18: context-sampling uncertainty.
 - T19: ambiguity/risk/capability classifier and deterministic router.
