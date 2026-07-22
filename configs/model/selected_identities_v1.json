@@ -4,19 +4,30 @@
   "selected_base_model": null,
   "selected_adapter": null,
   "selected_model_strategy": null,
-  "status": "no_selection",
+  "status": "no_viable_base_candidate",
   "valid_for_official_use": false,
   "definitions": {
     "selected_base_model": "Immutable checkpoint identity (model_id + revision sha) of the unadapted base model chosen for official model-backed systems. Null until a model is formally selected and frozen.",
     "selected_adapter": "Identity of a trained adapter (e.g. LoRA) approved for official use with a base model. Null until an adapter is trained, evaluated, and formally selected.",
     "selected_model_strategy": "Identifier of the frozen inference/decoding strategy (prompting, sampling, routing configuration) approved for official runs of model-backed or structured-analysis-dependent systems. Null until frozen.",
-    "status": "Lifecycle marker for this contract: 'no_selection' means every identity field is null and no official model-backed run may proceed.",
-    "valid_for_official_use": "True only once every required identity field for the systems being run is populated and formally frozen; always false while status is 'no_selection'."
+    "status": "Lifecycle marker for this contract: 'no_selection' means every identity field is null and no official model-backed run may proceed; 'no_viable_base_candidate' means a development bake-off completed with no Stage-1-passing candidate.",
+    "valid_for_official_use": "True only once every required identity field for the systems being run is populated and formally frozen; always false while selection fields remain null."
   },
   "legacy_selected_model_field": {
     "path": "configs/licences/model_licence_register.json",
     "field": "selected_model",
     "status": "deprecated_use_selected_identities_v1",
     "note": "The licence register's top-level 'selected_model' field predates this contract and must remain null. This file (selected_identities_v1.json) is the single source of truth for model/adapter/strategy identity going forward."
+  },
+  "bakeoff_outcome": {
+    "decision": "no_viable_base_candidate",
+    "evidence_dir": "configs/model/evidence/model_selection_bakeoff_v1",
+    "stage1_hard_gate": "4/4 accepted transport records required",
+    "candidates": {
+      "qwen3_8b": "3/4 accepted; unsupported_silent_commitment on msel_t12_syn_005",
+      "phi4_14b": "1/4 accepted; semantic schema / assembly failures",
+      "mistral_small_24b_2501": "empty remote result directory after COMPLETED job 4364"
+    },
+    "note": "Do not force a selection. Preserve evidence. Do not begin QLoRA."
   }
 }

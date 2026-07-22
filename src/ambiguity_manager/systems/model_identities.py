@@ -55,16 +55,18 @@ class SelectedIdentities:
 
     T16-T24 must never select a model, adapter, or strategy. Calling this
     guard at gate-evaluation time keeps that invariant enforced in code, not
-    only in documentation.
+    only in documentation. ``no_viable_base_candidate`` is an allowed null
+    status after a failed development bake-off.
     """
     populated = [field for field in IDENTITY_FIELDS if getattr(self, field) is not None]
     if populated:
       raise SystemsContractError(
         f"model identity contract expected null selection but found populated fields: {populated}"
       )
-    if self.status != "no_selection":
+    if self.status not in {"no_selection", "no_viable_base_candidate"}:
       raise SystemsContractError(
-        f"model identity contract status must be 'no_selection', found {self.status!r}"
+        "model identity contract status must be 'no_selection' or "
+        f"'no_viable_base_candidate', found {self.status!r}"
       )
     if self.valid_for_official_use:
       raise SystemsContractError(

@@ -150,7 +150,7 @@ class SelectedIdentitiesContractTests(unittest.TestCase):
         self.assertIsNone(identities.selected_base_model)
         self.assertIsNone(identities.selected_adapter)
         self.assertIsNone(identities.selected_model_strategy)
-        self.assertEqual(identities.status, "no_selection")
+        self.assertIn(identities.status, {"no_selection", "no_viable_base_candidate"})
         self.assertFalse(identities.valid_for_official_use)
 
     def test_load_selected_identities_matches_assert_helper(self) -> None:
