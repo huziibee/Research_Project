@@ -3,6 +3,8 @@
 from __future__ import annotations
 
 import copy
+from dataclasses import dataclass
+from typing import Any
 
 from ambiguity_manager.schema.v2.records import UnresolvedSlot
 from ambiguity_manager.systems.contracts import AnalysisProvenance, StructuredAnalysis, SystemInput
@@ -10,6 +12,7 @@ from ambiguity_manager.systems.errors import ContextAblationError
 from ambiguity_manager.systems.hashing import sha256_json
 
 _CONTEXT_SOURCES = frozenset({"scene_context", "dialogue_history", "capability_context"})
+ANALYSIS_VARIANTS = frozenset({"full_context", "context_blind"})
 
 
 def analysis_from_cached(
@@ -28,8 +31,66 @@ def ensure_input_not_mutated(original: SystemInput, current: SystemInput) -> Non
     raise AssertionError("SystemInput was mutated")
 
 
+@dataclass(frozen=True)
+class AnalysisIdentity:
+  """Canonical identity for a cached or freshly produced structured analysis.
+
+  Distinguishes full-context vs context-blind analyses even when they share a
+  record_id. The source_input_hash must be the fingerprint of the SystemInput
+  actually analysed (ablated for context-blind).
+  """
+
+  record_id: str
+  source_input_hash: str
+  analysis_variant: str
+  provider_id: str | None
+  provider_version: str | None
+  model_strategy_id: str | None
+  analysis_content_hash: str
+
+  def to_dict(self) -> dict[str, Any]:
+    return {
+      "record_id": self.record_id,
+      "source_input_hash": self.source_input_hash,
+      "analysis_variant": self.analysis_variant,
+      "provider_id": self.provider_id,
+      "provider_version": self.provider_version,
+      "model_strategy_id": self.model_strategy_id,
+      "analysis_content_hash": self.analysis_content_hash,
+    }
+
+  def fingerprint(self) -> str:
+    return sha256_json(self.to_dict())
+
+
+def build_analysis_identity(
+  *,
+  record_id: str,
+  source_input: SystemInput,
+  analysis: StructuredAnalysis,
+  analysis_variant: str,
+  model_strategy_id: str | None = None,
+) -> AnalysisIdentity:
+  if analysis_variant not in ANALYSIS_VARIANTS:
+    raise ValueError(f"unknown analysis_variant: {analysis_variant}")
+  prov = analysis.analysis_provenance
+  return AnalysisIdentity(
+    record_id=record_id,
+    source_input_hash=source_input.fingerprint(),
+    analysis_variant=analysis_variant,
+    provider_id=prov.provider_id if prov else None,
+    provider_version=prov.provider_version if prov else None,
+    model_strategy_id=model_strategy_id,
+    analysis_content_hash=analysis.fingerprint(),
+  )
+
+
 def strip_context_dependent_fields(analysis: StructuredAnalysis) -> StructuredAnalysis:
-  """Remove resolutions and evidence that depended on dialogue/scene/capability context."""
+  """Remove resolutions and evidence that depended on dialogue/scene/capability context.
+
+  Retained only for diagnostics/legacy callers. Context-blind execution must
+  never use this as a fallback to sanitise a full-context cached analysis.
+  """
   working = copy.deepcopy(analysis)
   context_evidence = [
     e for e in working.resolution_evidence if (e.source or "") in _CONTEXT_SOURCES
@@ -110,41 +171,66 @@ def strip_context_dependent_fields(analysis: StructuredAnalysis) -> StructuredAn
   return working
 
 
+def _extract_recorded_input_hash(prov: AnalysisProvenance | None) -> str | None:
+  if prov is None:
+    return None
+  notes = prov.notes or ""
+  for key in ("ablated_input_hash=", "source_input_hash=", "ablation_input_hash="):
+    if key in notes:
+      return notes.split(key, 1)[1].split(";", 1)[0].strip() or None
+  if prov.analysis_id and len(prov.analysis_id) >= 16:
+    return prov.analysis_id
+  return None
+
+
+def is_context_blind_provenance(prov: AnalysisProvenance | None) -> bool:
+  return _explicit_context_blind_provenance(prov)
+
+
+def _explicit_context_blind_provenance(prov: AnalysisProvenance | None) -> bool:
+  if prov is None:
+    return False
+  notes = (prov.notes or "").lower()
+  method = (prov.method or "").lower()
+  provider_id = (prov.provider_id or "").lower()
+  return (
+    "context_blind" in notes
+    or method == "context_blind"
+    or provider_id.endswith("context_blind")
+    or "context_blind" in provider_id
+  )
+
+
 def validate_context_blind_cache(
   cached: StructuredAnalysis,
   *,
   ablated_input: SystemInput,
 ) -> StructuredAnalysis:
-  """Accept a cached analysis only when provenance explicitly states context_blind."""
-  prov = cached.analysis_provenance
-  notes = (prov.notes or "") if prov else ""
-  method = (prov.method or "") if prov else ""
-  provider_id = (prov.provider_id or "") if prov else ""
-  explicit_blind = (
-    "context_blind" in notes.lower()
-    or method.lower() == "context_blind"
-    or provider_id.endswith("context_blind")
-    or "context_blind" in provider_id
-  )
-  expected_hash = ablated_input.fingerprint()
-  recorded_hash = None
-  for key in ("ablated_input_hash=", "ablation_input_hash="):
-    if key in notes:
-      recorded_hash = notes.split(key, 1)[1].split(";", 1)[0].strip()
-      break
-  if recorded_hash is None and prov and prov.analysis_id and len(prov.analysis_id) >= 16:
-    recorded_hash = prov.analysis_id
+  """Accept a cached analysis only when it is explicitly context-blind and matches.
 
-  if not explicit_blind:
+  A matching cache is accepted as-is (deep-copied). Full-context analyses are
+  never sanitised for reuse — callers must obtain a fresh ablated analysis or
+  a genuine context-blind cache instead.
+  """
+  prov = cached.analysis_provenance
+  expected_hash = ablated_input.fingerprint()
+  recorded_hash = _extract_recorded_input_hash(prov)
+
+  if not _explicit_context_blind_provenance(prov):
     raise ContextAblationError(
       "context-blind system rejects full-context cached analysis; "
       "require fresh analysis or provenance explicitly stating context_blind"
     )
-  if recorded_hash is not None and recorded_hash != expected_hash:
+  if recorded_hash is None:
+    raise ContextAblationError(
+      "context-blind cached analysis is missing ablated/source input hash in provenance"
+    )
+  if recorded_hash != expected_hash:
     raise ContextAblationError(
       "context-blind cached analysis input hash does not match ablated SystemInput"
     )
-  working = strip_context_dependent_fields(cached)
+
+  working = copy.deepcopy(cached)
   working.analysis_provenance = AnalysisProvenance(
     provider_id=prov.provider_id if prov else "context_blind_cache",
     provider_version=prov.provider_version if prov else "1.0.0",

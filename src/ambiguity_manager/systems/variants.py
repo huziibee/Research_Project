@@ -351,6 +351,7 @@ class ContextBlindManagerSystem(ComparisonSystem):
   ) -> SystemResult:
     from ambiguity_manager.systems.analysis import (
       attach_ablation_provenance,
+      build_analysis_identity,
       validate_context_blind_cache,
     )
     from ambiguity_manager.systems.errors import ContextAblationError
@@ -366,23 +367,18 @@ class ContextBlindManagerSystem(ComparisonSystem):
 
     analysis: StructuredAnalysis | None = None
     rejected_full_context_cache = False
+    rejection_reason: str | None = None
     if cached_analysis is not None:
-      # Reject full-context cache; accept only matching context_blind provenance.
+      # Accept only a matching context_blind cache. Never sanitise/reuse
+      # a full-context semantic analysis — context may already have shaped
+      # CPC, candidates, selected interpretation, evidence, ambiguity, risk,
+      # and capability decisions beyond any field-strip heuristic.
       try:
         analysis = validate_context_blind_cache(cached_analysis, ablated_input=blinded)
-      except ContextAblationError:
+      except ContextAblationError as exc:
         rejected_full_context_cache = True
-        if self.analysis_provider is not None:
-          analysis = None
-        else:
-          # Synthetic/development path without a live provider: strip
-          # context-derived resolutions rather than silently consuming them.
-          from ambiguity_manager.systems.analysis import strip_context_dependent_fields
-
-          analysis = attach_ablation_provenance(
-            strip_context_dependent_fields(cached_analysis),
-            ablated_input=blinded,
-          )
+        rejection_reason = str(exc)
+        analysis = None
 
     if analysis is None:
       if self.analysis_provider is not None:
@@ -390,15 +386,44 @@ class ContextBlindManagerSystem(ComparisonSystem):
         analysis = attach_ablation_provenance(fresh, ablated_input=blinded)
         manager.analysis_provider = None
       else:
-        raise ProviderUnavailableError(
-          "context_blind_analysis",
-          "context-blind manager requires a matching context_blind cache or live provider",
+        # Honest not-executable: no matching ablated cache and no provider.
+        empty = StructuredAnalysis()
+        result = _base_result(
+          self.system_id,
+          self.system_version,
+          system_input,
+          empty,
+          None,
+          execution_status="provider_unavailable",
+          runtime_metadata={
+            "not_executable": True,
+            "reason": "matching_ablated_analysis_unavailable",
+            "context_ablation": {
+              "dialogue_history_removed": True,
+              "scene_context_removed": True,
+              "capability_context_removed": True,
+              "ablated_input_hash": ablated_hash,
+              "rejected_full_context_cache": rejected_full_context_cache,
+              "stripped_context_derived_fields": False,
+              "rejection_reason": rejection_reason,
+            },
+            "original_input_unmutated": True,
+          },
         )
+        if system_input.to_dict() != original_snapshot:
+          raise AssertionError("context-blind manager mutated original SystemInput")
+        return result
 
     result = manager.run(blinded, cached_analysis=analysis)
     # Ensure original input was not mutated.
     if system_input.to_dict() != original_snapshot:
       raise AssertionError("context-blind manager mutated original SystemInput")
+    identity = build_analysis_identity(
+      record_id=system_input.record_id,
+      source_input=blinded,
+      analysis=result.analysis,
+      analysis_variant="context_blind",
+    )
     result.system_id = self.system_id
     result.system_version = self.system_version
     result.runtime_metadata = {
@@ -409,11 +434,12 @@ class ContextBlindManagerSystem(ComparisonSystem):
         "capability_context_removed": True,
         "ablated_input_hash": ablated_hash,
         "rejected_full_context_cache": rejected_full_context_cache,
-        "stripped_context_derived_fields": rejected_full_context_cache
-        and self.analysis_provider is None,
+        "stripped_context_derived_fields": False,
+        "rejection_reason": rejection_reason,
       },
       "original_input_unmutated": True,
-      "analysis_identity": result.analysis.fingerprint(),
+      "analysis_identity": identity.to_dict(),
+      "analysis_identity_fingerprint": identity.fingerprint(),
     }
     return result.with_computed_hash()
 
