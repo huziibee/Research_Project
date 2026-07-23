@@ -15,6 +15,7 @@ from __future__ import annotations
 
 import functools
 import json
+import os
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, Mapping
@@ -106,8 +107,9 @@ def compile_task_constraint(json_schema: Mapping[str, Any]) -> Any:
 def _build_token_enforcer_tokenizer_data(tokenizer: Any) -> Any:
     """Mirror lm-format-enforcer's tokenizer-data builder without the broken import.
 
-    Uses ``batch_decode`` in chunks so Qwen3's ~150k vocab does not stall the
-    job for tens of minutes (cancelled job 7145 was stuck here).
+    Prefers a disk cache under ``$T12_TRAINING_SITE_PACKAGES/caches`` (see
+    ``scripts/prebuild_lmfe_tokenizer_cache.py``). Falls back to chunked
+    ``batch_decode`` when the cache is missing.
     """
     from lmformatenforcer import TokenEnforcerTokenizerData
 
@@ -124,22 +126,50 @@ def _build_token_enforcer_tokenizer_data(tokenizer: Any) -> Any:
     if vocab_size <= 0:
         raise ConstrainedDecodingError("tokenizer_vocab_size_unavailable")
 
-    token_0 = int(tokenizer.encode("0")[-1])
-    special_ids = set(int(x) for x in (getattr(tokenizer, "all_special_ids", None) or []))
-    regular_tokens: list[tuple[int, str, bool]] = []
-    chunk = 4096
-    for start in range(0, vocab_size, chunk):
-        idxs = [i for i in range(start, min(start + chunk, vocab_size)) if i not in special_ids]
-        if not idxs:
-            continue
-        pair_ids = [[token_0, i] for i in idxs]
-        singles = [[i] for i in idxs]
-        decoded_after_0 = tokenizer.batch_decode(pair_ids)
-        decoded_regular = tokenizer.batch_decode(singles)
-        for token_idx, after_0, regular in zip(idxs, decoded_after_0, decoded_regular):
-            after_0_s = after_0[1:] if after_0 else ""
-            is_word_start_token = len(after_0_s) > len(regular or "")
-            regular_tokens.append((token_idx, after_0_s, is_word_start_token))
+    regular_tokens: list[tuple[int, str, bool]] | None = None
+    site = os.environ.get("T12_TRAINING_SITE_PACKAGES", "").strip()
+    repo = str(getattr(tokenizer, "name_or_path", "") or "unknown")
+    # Prefer selected revision fragment when present in name_or_path snapshots.
+    cache_path = None
+    if site:
+        cache_dir = Path(site) / "caches"
+        # Accept any matching vocab-size cache for this vocab width.
+        if cache_dir.is_dir():
+            matches = sorted(
+                cache_dir.glob(f"lmfe_regular_tokens_*_{vocab_size}.json"),
+                key=lambda p: p.stat().st_mtime,
+                reverse=True,
+            )
+            if matches:
+                cache_path = matches[0]
+        if cache_path is not None and cache_path.is_file():
+            payload = json.loads(cache_path.read_text(encoding="utf-8"))
+            raw = payload.get("regular_tokens") or []
+            regular_tokens = [
+                (int(tid), str(text), bool(flag)) for tid, text, flag in raw
+            ]
+
+    if regular_tokens is None:
+        token_0 = int(tokenizer.encode("0")[-1])
+        special_ids = set(
+            int(x) for x in (getattr(tokenizer, "all_special_ids", None) or [])
+        )
+        regular_tokens = []
+        chunk = 4096
+        for start in range(0, vocab_size, chunk):
+            idxs = [
+                i
+                for i in range(start, min(start + chunk, vocab_size))
+                if i not in special_ids
+            ]
+            if not idxs:
+                continue
+            decoded_after_0 = tokenizer.batch_decode([[token_0, i] for i in idxs])
+            decoded_regular = tokenizer.batch_decode([[i] for i in idxs])
+            for token_idx, after_0, regular in zip(idxs, decoded_after_0, decoded_regular):
+                after_0_s = after_0[1:] if after_0 else ""
+                is_word_start_token = len(after_0_s) > len(regular or "")
+                regular_tokens.append((token_idx, after_0_s, is_word_start_token))
 
     def _decode(tokens: list[int]) -> str:
         return tokenizer.decode(tokens).rstrip("�")
