@@ -129,8 +129,62 @@
       "run_id_prefix": "t12-qlora-smoke",
       "training_site_packages_relpath": "training-site-packages",
       "exclude_nodes": "mscluster107",
-      "nodelist": "mscluster111",
-      "exclude_nodes_note": "mscluster107 rejects unprivileged Apptainer user-namespace mappings (setgroups permission denied). Pin qlora_smoke to mscluster111, which hosted successful Stage-1 bake-off Apptainer runs."
+      "exclude_nodes_note": "mscluster107 rejects unprivileged Apptainer user-namespace mappings (setgroups permission denied). Do not permanently pin a single success node; use scheduler selection among eligible GPUs."
+    },
+    "qlora_task_aligned_smoke": {
+      "description": "GPU task-aligned QLoRA technical smoke: structured-target supervision, real token loss masks, full checkpoint/resume, strict structured-output validation on a frozen four-record source_dev set. Development-only; never sets selected_adapter; never silently falls back to mock.",
+      "partition": "biggpu",
+      "time_limit": "01:30:00",
+      "memory_mb": 64000,
+      "cpus": 8,
+      "gpus_required": true,
+      "gpus": 1,
+      "exclusive": true,
+      "requires_candidate_id": false,
+      "container_role": "training",
+      "container_sif_default_relpath": "containers/pytorch-2.11.0-cuda13.0-runtime.sif",
+      "container_sif_note": "Separate training runtime: pulled pytorch CUDA runtime SIF plus bind-mounted training-site-packages. Never uses or overwrites the pinned vllm-openai-v0.20.1.sif inference container.",
+      "job_name": "t12-qlora-task-aligned",
+      "entry_point": "scripts/t12_qlora_task_aligned_smoke.py",
+      "required_branch": "feature/t12-cluster-redesign",
+      "remote_result_root_template": "${T12_CLUSTER_ROOT}/runs/qlora-task-aligned-smoke",
+      "expected_result_files": [
+        "qlora_task_aligned_smoke_result.json",
+        "adapter_identity.json",
+        "loss_mask_summary.json",
+        "structured_output_results.json",
+        "resume_components.json",
+        "run_manifest.json",
+        "source_identity_manifest.json"
+      ],
+      "run_id_prefix": "t12-qlora-task-aligned",
+      "training_site_packages_relpath": "training-site-packages",
+      "exclude_nodes": "mscluster107",
+      "exclude_nodes_note": "Exclude only documented incompatible nodes. No permanent nodelist pin."
+    },
+    "qlora_smoke_mock": {
+      "description": "Explicit CPU/mock contract-proof profile for QLoRA software mechanics without real 4-bit training. Never selected automatically by the live task-aligned profile.",
+      "partition": "stampede",
+      "time_limit": "00:20:00",
+      "memory_mb": 8000,
+      "cpus": 2,
+      "gpus_required": false,
+      "requires_candidate_id": false,
+      "job_name": "t12-qlora-mock",
+      "entry_point": "scripts/t12_qlora_smoke.py",
+      "entry_args": "--force-mock",
+      "required_branch": "feature/t12-cluster-redesign",
+      "remote_result_root_template": "${T12_CLUSTER_ROOT}/runs/qlora-smoke-mock",
+      "expected_result_files": [
+        "qlora_smoke_result.json",
+        "adapter_identity.json",
+        "loss_mask_summary.json",
+        "run_manifest.json",
+        "source_identity_manifest.json"
+      ],
+      "run_id_prefix": "t12-qlora-mock",
+      "exclude_nodes": "mscluster107",
+      "exclude_nodes_note": "mscluster107 rejects unprivileged Apptainer user-namespace mappings."
     }
   }
 }

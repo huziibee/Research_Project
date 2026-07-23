@@ -1,0 +1,104 @@
+{
+  "config_id": "qlora_task_aligned_smoke_v1",
+  "config_version": "1.0.0",
+  "ticket": "T27",
+  "purpose": "Task-aligned QLoRA technical smoke: structured-target supervision, real token-level loss masks, full checkpoint/resume, and strict structured-output validation on a frozen four-record source_dev set. Never selects an adapter or model strategy.",
+  "development_only": true,
+  "valid_for_official_use": false,
+  "technical_smoke_only": true,
+  "requires_selected_base_model": true,
+  "selected_base_model_source": "configs/model/selected_identities_v1.json#selected_base_model",
+  "selected_adapter": null,
+  "no_merge_into_base": true,
+  "forbid_manual_or_protected_eval": true,
+  "forbid_mock_fallback_in_live_mode": true,
+  "require_real_mode_on_cluster": true,
+  "allowed_data_manifest": "data/development/qlora_task_aligned_smoke_v2/manifest.json",
+  "allowed_validation_manifest": "data/development/qlora_task_aligned_smoke_val_v2/manifest.json",
+  "allowed_source_split": "source_train",
+  "validation_source_split": "source_dev",
+  "forbidden_data_sources": [
+    "source_holdout",
+    "model_selection_development_set_v1",
+    "t13_calibration",
+    "future_manual_namespace",
+    "manual_protected_challenge_set",
+    "protected_data",
+    "qlora_smoke_v1"
+  ],
+  "base_model_policy": {
+    "frozen": true,
+    "allow_arbitrary_repository": false
+  },
+  "quantization": {
+    "bits": 4,
+    "quant_type": "nf4",
+    "compute_dtype": "bfloat16",
+    "double_quant": true
+  },
+  "adapter": {
+    "method": "lora",
+    "rank": 8,
+    "alpha": 16,
+    "dropout": 0.05,
+    "target_modules": ["q_proj", "k_proj", "v_proj", "o_proj"],
+    "bias": "none",
+    "task_type": "CAUSAL_LM"
+  },
+  "sequence": {
+    "max_seq_len": 768,
+    "truncation": true,
+    "padding": "longest_in_batch"
+  },
+  "training": {
+    "seed": 20260723,
+    "micro_batch_size": 1,
+    "gradient_accumulation_steps": 1,
+    "max_steps": 8,
+    "checkpoint_interval_steps": 4,
+    "learning_rate": 0.0002,
+    "resume_test": true,
+    "resume_from_checkpoint_step": 4,
+    "optimizer": "adamw",
+    "scheduler": "constant",
+    "structured_targets": true,
+    "real_token_masks": true,
+    "forbid_command_reconstruction": true
+  },
+  "evaluation": {
+    "held_out_validation_manifest": "data/development/qlora_task_aligned_smoke_val_v2/manifest.json",
+    "strict_structured_output": true,
+    "forbid_braces_only_acceptance": true,
+    "max_new_tokens": 512,
+    "identical_prompt_and_settings_for_base_and_adapter": true
+  },
+  "output": {
+    "adapter_output_dir": "outputs/qlora_task_aligned_smoke_v1/adapters",
+    "checkpoint_dir_template": "outputs/qlora_task_aligned_smoke_v1/checkpoints/{run_id}",
+    "note": "Adapter and full checkpoints are written under outputs/, never into the immutable base snapshot."
+  },
+  "environment_manifest": "configs/environments/t12_cluster_training_task_aligned_v1.json",
+  "evidence": {
+    "result_dir_must_be_empty_before_run": true,
+    "finalise_on_failure": true,
+    "expected_files": [
+      "qlora_task_aligned_smoke_result.json",
+      "adapter_identity.json",
+      "loss_mask_summary.json",
+      "structured_output_results.json",
+      "resume_components.json",
+      "run_manifest.json"
+    ]
+  },
+  "references": {
+    "training_target_policy": "configs/data/training_target_policy_v1.json",
+    "selected_identities": "configs/model/selected_identities_v1.json",
+    "prior_mechanics_smoke_evidence": "configs/model/evidence/qlora_smoke_v1/",
+    "operator_profile": "configs/cluster/t12_job_profiles.json#profiles.qlora_task_aligned_smoke"
+  },
+  "notes": [
+    "technical_smoke_only=true; selected_adapter remains false/null; valid_for_official_use=false.",
+    "Live profile must set require_real_mode and must never silently fall back to mock_contract_proof.",
+    "Prior mechanics smoke evidence under qlora_smoke_v1 is retained and must not be overwritten."
+  ]
+}

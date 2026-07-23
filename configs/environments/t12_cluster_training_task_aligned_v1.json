@@ -1,0 +1,144 @@
+{
+  "manifest_schema_version": "1.0.0",
+  "environment_id": "t12-cluster-training-task-aligned-v1",
+  "ticket": "T27",
+  "role": "training",
+  "platform": "wits_slurm_cluster",
+  "environment_status": "measured_from_prior_smoke",
+  "authoritative_runtime": "wits_slurm_cluster",
+  "measured_from": {
+    "prior_smoke_job_id": "6056",
+    "prior_smoke_run_id": "t12-qlora-smoke-20260723T064511Z-d6b0182",
+    "prior_smoke_evidence": "configs/model/evidence/qlora_smoke_v1/",
+    "prior_smoke_report": "docs/reports/qlora_technical_smoke.md",
+    "note": "Stack versions below are recorded from the successful mechanics smoke (job 6056). Live task-aligned runs refresh measured values in run evidence only; this historical identity file is not overwritten by those runs."
+  },
+  "historical_training_env_pointer": {
+    "relpath": "configs/environments/t12_cluster_training.json",
+    "note": "Do not overwrite t12_cluster_training.json. That file retains the earlier pull-based / planned training-stack history; this file is the measured task-aligned smoke identity."
+  },
+  "paths": {
+    "cluster_root": "${T12_CLUSTER_ROOT}",
+    "hf_cache": "${T12_HF_CACHE}",
+    "home": "${HOME}"
+  },
+  "training_stack": {
+    "container_built": true,
+    "pull_based_sif": "containers/pytorch-2.11.0-cuda13.0-runtime.sif",
+    "site_packages": "training-site-packages",
+    "peft_installed": true,
+    "bitsandbytes_installed": true,
+    "accelerate_installed": true,
+    "lora_attach_passed": true,
+    "adapter_reload_passed": true,
+    "optimiser_steps_performed": 7,
+    "research_records_used": 64,
+    "mechanics_smoke_passed": true,
+    "task_aligned_smoke_passed": false,
+    "note": "Mechanics smoke (job 6056) proved LoRA attach, adapter save/reload, and optimiser steps. Task-aligned full-resume and strict structured-output remain to be proven by the live qlora_task_aligned_smoke profile; evidence from that run refreshes status fields in the result directory, not by mutating this file."
+  },
+  "measured_versions": {
+    "python_version": {
+      "value": "3.12.3",
+      "status": "measured_from_prior_smoke",
+      "source": "configs/model/evidence/qlora_smoke_v1/run_manifest.json#python_version"
+    },
+    "pytorch_version": {
+      "value": "2.11.0+cu130",
+      "status": "measured_from_prior_smoke",
+      "source": "docs/reports/qlora_technical_smoke.md + pinned SIF tag"
+    },
+    "cuda_version": {
+      "value": "13.0",
+      "status": "measured_from_prior_smoke",
+      "source": "containers/pytorch-2.11.0-cuda13.0-runtime.sif"
+    },
+    "transformers_version": {
+      "value": "5.7.0",
+      "status": "measured_from_prior_smoke",
+      "source": "docs/reports/qlora_technical_smoke.md#Environment"
+    },
+    "peft_version": {
+      "value": "0.18.0",
+      "status": "measured_from_prior_smoke",
+      "source": "docs/reports/qlora_technical_smoke.md#Environment"
+    },
+    "bitsandbytes_version": {
+      "value": "0.48.1",
+      "status": "measured_from_prior_smoke",
+      "source": "docs/reports/qlora_technical_smoke.md#Environment"
+    },
+    "accelerate_version": {
+      "value": "1.11.0",
+      "status": "measured_from_prior_smoke",
+      "source": "docs/reports/qlora_technical_smoke.md#Environment"
+    }
+  },
+  "capability_status": {
+    "node_pin_forbidden": {
+      "status": "policy",
+      "value": true,
+      "note": "Live QLoRA profiles must not permanently pin nodelist=mscluster111; exclude only documented incompatible nodes."
+    },
+    "four_bit_load": {
+      "status": "measured_from_prior_smoke",
+      "value": true
+    },
+    "lora_attach": {
+      "status": "measured_from_prior_smoke",
+      "value": true
+    },
+    "adapter_separate_save": {
+      "status": "measured_from_prior_smoke",
+      "value": true
+    },
+    "adapter_reload": {
+      "status": "measured_from_prior_smoke",
+      "value": true
+    },
+    "base_frozen": {
+      "status": "measured_from_prior_smoke",
+      "value": true
+    },
+    "full_resume_support": {
+      "status": "pending_task_aligned_live_run",
+      "value": null,
+      "note": "Placeholder: live qlora_task_aligned_smoke must prove optimiser/scheduler/RNG/data_position restore and record booleans in resume_components.json evidence (does not overwrite this file)."
+    },
+    "structured_token_loss_masks": {
+      "status": "pending_task_aligned_live_run",
+      "value": null
+    },
+    "strict_structured_output_validation": {
+      "status": "pending_task_aligned_live_run",
+      "value": null,
+      "note": "Prior mechanics smoke accepted braces-containing generation; task-aligned smoke forbids braces-only acceptance."
+    },
+    "held_out_source_dev_validation": {
+      "status": "pending_task_aligned_live_run",
+      "value": null
+    }
+  },
+  "model_identity": {
+    "model_repository": {
+      "value_kind": "immutable_expected",
+      "value": "Qwen/Qwen3-8B",
+      "status": "verified_offline"
+    },
+    "model_revision": {
+      "value_kind": "immutable_expected",
+      "value": "b968826d9c46dd6066d109eabc6255188de91218",
+      "status": "verified_offline"
+    }
+  },
+  "separation_from_inference_env": {
+    "inference_and_training_envs_are_separate": true,
+    "inference_env_relpath": "configs/environments/t12_cluster_inference.json",
+    "inference_container_untouched_by_training": true
+  },
+  "notes": [
+    "Measured from job-6056 mechanics smoke where known; remaining capability fields are placeholders refreshed only in live-run evidence.",
+    "Never overwrite configs/environments/t12_cluster_training.json historical content.",
+    "Never overwrite configs/model/evidence/qlora_smoke_v1/."
+  ]
+}

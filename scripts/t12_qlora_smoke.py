@@ -60,6 +60,11 @@ def build_parser() -> argparse.ArgumentParser:
         default=None,
         help="Repository root containing configs and the smoke data subset.",
     )
+    parser.add_argument(
+        "--force-mock",
+        action="store_true",
+        help="Explicitly run the deterministic CPU mock contract proof (qlora_smoke_mock profile only).",
+    )
     return parser
 
 
@@ -89,13 +94,14 @@ def main(argv: list[str] | None = None) -> int:
     )
 
     try:
-        # Cluster entry must request the real 4-bit path; library default stays
-        # force_mock=True so local imports never attempt GPU training.
+        # Live qlora_smoke requests the real path (force_mock=False). The
+        # explicit qlora_smoke_mock profile passes --force-mock. Silent mock
+        # fallback on the live task-aligned profile is forbidden separately.
         outcome = run_smoke_training(
             result_dir=result_dir,
             run_id=args.run_id,
             root=root,
-            force_mock=False,
+            force_mock=bool(args.force_mock),
         )
     except QloraSmokeError as exc:
         # Preconditions (missing selected_base_model, non-empty result dir,
