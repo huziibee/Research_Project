@@ -1103,12 +1103,23 @@ def run_real_task_conditioned_smoke(
             raise QloraTaskConditionedSmokeError("refusing_unmasked_command_reconstruction_labels")
         if int((batch["labels"] != IGNORE_INDEX).sum().item()) <= 0:
             raise QloraTaskConditionedSmokeError("zero_supervised_tokens_in_batch")
+        # Compute CE manually. Passing labels= into Qwen3ForCausalLM triggers
+        # transformers ForCausalLMLoss which does logits.view(-1, vocab_size)
+        # without contiguous() after .float(); on this stack that raises CUDA
+        # nll_loss asserts even when labels are in-range (jobs 6854/6904;
+        # debug 7015: manual CE OK, model labels= path FAIL).
         outputs = model(
             input_ids=batch["input_ids"],
             attention_mask=batch["attention_mask"],
-            labels=batch["labels"],
         )
-        loss = outputs.loss
+        logits = outputs.logits
+        shift_logits = logits[..., :-1, :].contiguous()
+        shift_labels = batch["labels"][..., 1:].contiguous()
+        loss = torch.nn.functional.cross_entropy(
+            shift_logits.view(-1, shift_logits.size(-1)),
+            shift_labels.view(-1),
+            ignore_index=IGNORE_INDEX,
+        )
         loss.backward()
         optimizer.step()
         scheduler.step()
@@ -1124,6 +1135,7 @@ def run_real_task_conditioned_smoke(
                 "task_id": example["task_id"],
                 "example_index": example_index,
                 "base_frozen_verified": True,
+                "loss_path": "manual_shifted_cross_entropy",
             }
         )
         if torch.cuda.is_available():
