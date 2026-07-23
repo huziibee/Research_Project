@@ -346,10 +346,11 @@ class OperatorEnvironmentTests(unittest.TestCase):
         profiles = load_profiles(ROOT)
         live = get_profile(profiles, "qlora_task_aligned_smoke")
         self.assertFalse(str(live.get("nodelist") or "").strip())
-        self.assertEqual(live.get("exclude_nodes"), "mscluster107")
+        self.assertEqual(live.get("exclude_nodes"), "mscluster107,mscluster108")
         # historical qlora_smoke must also no longer permanently pin a node
         old = get_profile(profiles, "qlora_smoke")
         self.assertFalse(str(old.get("nodelist") or "").strip())
+        self.assertEqual(old.get("exclude_nodes"), "mscluster107,mscluster108")
         mock = get_profile(profiles, "qlora_smoke_mock")
         self.assertIn("mock", mock.get("description", "").lower())
 
