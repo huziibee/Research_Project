@@ -1,0 +1,479 @@
+{
+  "registry_id": "task_conditioned_prediction_tasks_v1",
+  "registry_version": "1.0.0",
+  "ticket": "T27C",
+  "prompt_contract_family": "t27c_task_prompt_v1",
+  "shared_adapter_only": true,
+  "task_specific_adapter_search_permitted": false,
+  "adr": "docs/decisions/ADR_T27C_task_conditioned_partial_schema_prediction.md",
+  "field_responsibility_registry": "configs/model/t27c_field_responsibility_registry_v1.json",
+  "tasks": [
+    {
+      "task_id": "predict_intent_v1",
+      "task_version": "1.0.0",
+      "purpose": "Predict speech act and optional intent summary from the user command.",
+      "eligibility_task": "speech_act_intent",
+      "json_schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "$id": "t27c://predict_intent_v1",
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["intent_summary"],
+        "properties": {
+          "intent_summary": {
+            "type": "string",
+            "minLength": 1
+          },
+          "speech_act": {
+            "type": ["string", "null"],
+            "enum": [
+              "directive_command",
+              "indirect_request",
+              "information_question",
+              "permission_request",
+              "prohibition",
+              "conditional_directive",
+              "multi_intent",
+              "other_non_actionable",
+              null
+            ]
+          }
+        }
+      },
+      "required_fields": ["intent_summary"],
+      "optional_fields": ["speech_act"],
+      "allowed_enums": {
+        "speech_act": [
+          "directive_command",
+          "indirect_request",
+          "information_question",
+          "permission_request",
+          "prohibition",
+          "conditional_directive",
+          "multi_intent",
+          "other_non_actionable"
+        ]
+      },
+      "maximum_output_tokens": 96,
+      "source_datasets_that_may_supervise": [
+        "ambik",
+        "clara",
+        "codraw_icr_v2",
+        "indirect_requests",
+        "vague"
+      ],
+      "minimum_supervision_requirements": {
+        "min_strong_or_approved_weak_fields": 1,
+        "required_fields_must_be_present": true,
+        "zero_supervision_forbidden": true
+      },
+      "training_example_inclusion_rule": "include_only_when_speech_act_intent eligibility in {eligible, weakly_eligible} AND a non-empty intent_summary/intent value is present; speech_act included only when present in source (never fabricated)",
+      "inference_applicability": "always_for_sealed_and_diagnostic",
+      "assembler_mapping": {
+        "speech_act": "StructuredAnalysis.speech_act",
+        "intent_summary": "StructuredAnalysis.intent_summary"
+      },
+      "owned_production_fields": ["speech_act", "intent_summary"],
+      "excluded_fields": [
+        "cpc",
+        "ambiguity_present",
+        "ambiguity_types",
+        "candidate_interpretations",
+        "risk_level",
+        "capability_status",
+        "recommended_strategy",
+        "compound_ambiguity",
+        "analysis_provenance"
+      ],
+      "failure_behaviour": "required_task_failure → assembly unavailable",
+      "unknown_handling": "speech_act may be null when unsupported by source; do not fabricate speech_act from free-text intent",
+      "safety_checks": ["no_route_emission", "no_runner_fields"],
+      "prompt_contract_identity": "t27c_task_prompt_v1/predict_intent_v1",
+      "stable_field_order": ["intent_summary", "speech_act"]
+    },
+    {
+      "task_id": "predict_cpc_v1",
+      "task_version": "1.0.0",
+      "purpose": "Predict core propositional content slots with value and status.",
+      "eligibility_task": "cpc",
+      "json_schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "$id": "t27c://predict_cpc_v1",
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["cpc"],
+        "properties": {
+          "cpc": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "action",
+              "actor",
+              "object",
+              "object_attributes",
+              "destination",
+              "spatial_relation",
+              "quantity",
+              "time",
+              "recipient",
+              "tool",
+              "conditions",
+              "constraints",
+              "negation"
+            ],
+            "properties": {
+              "action": {"$ref": "#/$defs/cpc_slot"},
+              "actor": {"$ref": "#/$defs/cpc_slot"},
+              "object": {"$ref": "#/$defs/cpc_slot"},
+              "object_attributes": {"$ref": "#/$defs/cpc_slot"},
+              "destination": {"$ref": "#/$defs/cpc_slot"},
+              "spatial_relation": {"$ref": "#/$defs/cpc_slot"},
+              "quantity": {"$ref": "#/$defs/cpc_slot"},
+              "time": {"$ref": "#/$defs/cpc_slot"},
+              "recipient": {"$ref": "#/$defs/cpc_slot"},
+              "tool": {"$ref": "#/$defs/cpc_slot"},
+              "conditions": {"$ref": "#/$defs/cpc_slot"},
+              "constraints": {"$ref": "#/$defs/cpc_slot"},
+              "negation": {"$ref": "#/$defs/cpc_slot"}
+            }
+          }
+        },
+        "$defs": {
+          "cpc_slot": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["value", "status"],
+            "properties": {
+              "value": {"type": ["string", "null"]},
+              "status": {
+                "type": "string",
+                "enum": ["filled", "missing", "unknown", "not_applicable"]
+              }
+            }
+          }
+        }
+      },
+      "required_fields": ["cpc"],
+      "optional_fields": [],
+      "allowed_enums": {
+        "cpc.*.status": ["filled", "missing", "unknown", "not_applicable"]
+      },
+      "maximum_output_tokens": 384,
+      "source_datasets_that_may_supervise": [
+        "ambik",
+        "clara",
+        "codraw_icr_v2",
+        "indirect_requests",
+        "vague"
+      ],
+      "minimum_supervision_requirements": {
+        "min_strong_or_approved_weak_fields": 1,
+        "required_fields_must_be_present": true,
+        "zero_supervision_forbidden": true
+      },
+      "training_example_inclusion_rule": "include_only_when_cpc eligibility in {eligible, weakly_eligible} AND cpc object present with at least one supervised slot",
+      "inference_applicability": "always_for_sealed_and_diagnostic",
+      "assembler_mapping": {
+        "cpc": "StructuredAnalysis.cpc"
+      },
+      "owned_production_fields": ["cpc"],
+      "excluded_fields": [
+        "speech_act",
+        "ambiguity_types",
+        "candidate_interpretations",
+        "risk_level",
+        "recommended_strategy"
+      ],
+      "failure_behaviour": "required_task_failure → assembly unavailable",
+      "unknown_handling": "slot status unknown/missing allowed; do not invent filled values",
+      "safety_checks": ["no_fabricated_filled_slots_without_value"],
+      "prompt_contract_identity": "t27c_task_prompt_v1/predict_cpc_v1",
+      "stable_field_order": ["cpc"]
+    },
+    {
+      "task_id": "predict_ambiguity_v1",
+      "task_version": "1.0.0",
+      "purpose": "Predict ambiguity presence, types, primary type, and optional unresolved slots.",
+      "eligibility_task": "ambiguity_presence_types",
+      "json_schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "$id": "t27c://predict_ambiguity_v1",
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["ambiguity_present", "ambiguity_types"],
+        "properties": {
+          "ambiguity_present": {"type": "boolean"},
+          "ambiguity_types": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "referential",
+                "spatial",
+                "pragmatic",
+                "temporal",
+                "quantitative",
+                "preference",
+                "commonsense",
+                "safety_precondition",
+                "capability",
+                "contextual"
+              ]
+            }
+          },
+          "primary_ambiguity_type": {
+            "type": ["string", "null"],
+            "enum": [
+              "referential",
+              "spatial",
+              "pragmatic",
+              "temporal",
+              "quantitative",
+              "preference",
+              "commonsense",
+              "safety_precondition",
+              "capability",
+              "contextual",
+              null
+            ]
+          },
+          "unresolved_slots": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["slot_name"],
+              "properties": {
+                "slot_name": {"type": "string"},
+                "reason": {"type": ["string", "null"]}
+              }
+            }
+          }
+        }
+      },
+      "required_fields": ["ambiguity_present", "ambiguity_types"],
+      "optional_fields": ["primary_ambiguity_type", "unresolved_slots"],
+      "allowed_enums": {
+        "ambiguity_types": [
+          "referential",
+          "spatial",
+          "pragmatic",
+          "temporal",
+          "quantitative",
+          "preference",
+          "commonsense",
+          "safety_precondition",
+          "capability",
+          "contextual"
+        ]
+      },
+      "maximum_output_tokens": 192,
+      "source_datasets_that_may_supervise": [
+        "ambik",
+        "clara",
+        "codraw_icr_v2",
+        "indirect_requests",
+        "vague"
+      ],
+      "minimum_supervision_requirements": {
+        "min_strong_or_approved_weak_fields": 1,
+        "required_fields_must_be_present": true,
+        "zero_supervision_forbidden": true
+      },
+      "training_example_inclusion_rule": "include_only_when_ambiguity_presence_types eligibility in {eligible, weakly_eligible} AND ambiguity_present is boolean",
+      "inference_applicability": "always_for_sealed_and_diagnostic",
+      "assembler_mapping": {
+        "ambiguity_present": "StructuredAnalysis.ambiguity_present",
+        "ambiguity_types": "StructuredAnalysis.ambiguity_types",
+        "primary_ambiguity_type": "StructuredAnalysis.primary_ambiguity_type",
+        "unresolved_slots": "StructuredAnalysis.unresolved_slots"
+      },
+      "owned_production_fields": [
+        "ambiguity_present",
+        "ambiguity_types",
+        "primary_ambiguity_type",
+        "unresolved_slots"
+      ],
+      "excluded_fields": [
+        "compound_ambiguity",
+        "compound_ambiguity_count",
+        "recommended_strategy",
+        "risk_level",
+        "cpc"
+      ],
+      "failure_behaviour": "required_task_failure → assembly unavailable",
+      "unknown_handling": "empty ambiguity_types with ambiguity_present=false is valid; do not invent types",
+      "safety_checks": ["compound_fields_not_emitted"],
+      "prompt_contract_identity": "t27c_task_prompt_v1/predict_ambiguity_v1",
+      "stable_field_order": [
+        "ambiguity_present",
+        "ambiguity_types",
+        "primary_ambiguity_type",
+        "unresolved_slots"
+      ]
+    },
+    {
+      "task_id": "predict_interpretations_v1",
+      "task_version": "1.0.0",
+      "purpose": "Predict candidate interpretations and optional selected interpretation when source-supported.",
+      "eligibility_task": "candidate_interpretations",
+      "json_schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "$id": "t27c://predict_interpretations_v1",
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["candidate_interpretations"],
+        "properties": {
+          "candidate_interpretations": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["frame_id"],
+              "properties": {
+                "frame_id": {"type": "string"},
+                "text": {"type": ["string", "null"]},
+                "confidence": {"type": ["number", "null"]},
+                "safety_status": {
+                  "type": ["string", "null"],
+                  "enum": ["safe", "unsafe", "unknown", null]
+                },
+                "cpc": {"type": ["object", "null"]}
+              }
+            }
+          },
+          "selected_interpretation": {
+            "type": ["object", "null"],
+            "additionalProperties": false,
+            "required": ["frame_id"],
+            "properties": {
+              "frame_id": {"type": "string"},
+              "supporting_evidence": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": ["source"],
+                  "properties": {
+                    "source": {"type": "string"},
+                    "span": {"type": ["string", "null"]},
+                    "note": {"type": ["string", "null"]}
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "required_fields": ["candidate_interpretations"],
+      "optional_fields": ["selected_interpretation"],
+      "allowed_enums": {},
+      "maximum_output_tokens": 320,
+      "source_datasets_that_may_supervise": ["ambik", "clara", "codraw_icr_v2", "vague"],
+      "minimum_supervision_requirements": {
+        "min_strong_or_approved_weak_fields": 1,
+        "required_fields_must_be_present": true,
+        "zero_supervision_forbidden": true
+      },
+      "training_example_inclusion_rule": "include_only_when_candidate_interpretations eligibility in {eligible, weakly_eligible} AND candidate_interpretations is a non-empty list",
+      "inference_applicability": "when_required_by_sealed_matrix_or_always_attempt_optional",
+      "assembler_mapping": {
+        "candidate_interpretations": "StructuredAnalysis.candidate_interpretations",
+        "selected_interpretation": "StructuredAnalysis.selected_interpretation"
+      },
+      "owned_production_fields": [
+        "candidate_interpretations",
+        "selected_interpretation"
+      ],
+      "excluded_fields": [
+        "speech_act",
+        "cpc",
+        "risk_level",
+        "recommended_strategy",
+        "ambiguity_types"
+      ],
+      "failure_behaviour": "optional; missing → clarify-only path; never silently_resolve",
+      "unknown_handling": "empty candidates forbidden in training examples; at inference empty/missing blocks silent resolve",
+      "safety_checks": ["no_fabricated_candidates_on_missing_task"],
+      "prompt_contract_identity": "t27c_task_prompt_v1/predict_interpretations_v1",
+      "stable_field_order": ["candidate_interpretations", "selected_interpretation"]
+    },
+    {
+      "task_id": "predict_risk_capability_v1",
+      "task_version": "1.0.0",
+      "purpose": "Predict risk and capability only when source supervision is adequate.",
+      "eligibility_task": "risk",
+      "secondary_eligibility_task": "capability",
+      "json_schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "$id": "t27c://predict_risk_capability_v1",
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["risk_relevant", "risk_level", "capability_status"],
+        "properties": {
+          "risk_relevant": {"type": "boolean"},
+          "risk_level": {
+            "type": ["string", "null"],
+            "enum": ["none", "low", "medium", "high", "unknown", null]
+          },
+          "capability_status": {
+            "type": ["string", "null"],
+            "enum": ["capable", "conditional", "incapable", "unknown", null]
+          }
+        }
+      },
+      "required_fields": ["risk_relevant", "risk_level", "capability_status"],
+      "optional_fields": [],
+      "allowed_enums": {
+        "risk_level": ["none", "low", "medium", "high", "unknown"],
+        "capability_status": ["capable", "conditional", "incapable", "unknown"]
+      },
+      "maximum_output_tokens": 64,
+      "source_datasets_that_may_supervise": ["ambik", "clara", "vague"],
+      "minimum_supervision_requirements": {
+        "min_strong_or_approved_weak_fields": 1,
+        "required_fields_must_be_present": true,
+        "zero_supervision_forbidden": true,
+        "require_risk_or_capability_eligibility": true
+      },
+      "training_example_inclusion_rule": "include_only_when_(risk eligibility in {eligible, weakly_eligible} OR capability eligibility in {eligible, weakly_eligible}) AND risk_level and capability_status are both present (capability may be unknown)",
+      "inference_applicability": "attempt_when_sealed_matrix_requires_or_as_optional",
+      "assembler_mapping": {
+        "risk_relevant": "StructuredAnalysis.risk_relevant",
+        "risk_level": "StructuredAnalysis.risk_level",
+        "capability_status": "StructuredAnalysis.capability_status"
+      },
+      "owned_production_fields": [
+        "risk_relevant",
+        "risk_level",
+        "capability_status"
+      ],
+      "excluded_fields": [
+        "recommended_strategy",
+        "speech_act",
+        "cpc",
+        "ambiguity_types",
+        "candidate_interpretations"
+      ],
+      "failure_behaviour": "optional; missing → UNKNOWN risk and UNKNOWN capability; block execute",
+      "unknown_handling": "unknown is honest; never convert missing to none/low/capable",
+      "safety_checks": ["missing_not_safe", "missing_not_capable"],
+      "prompt_contract_identity": "t27c_task_prompt_v1/predict_risk_capability_v1",
+      "stable_field_order": ["risk_relevant", "risk_level", "capability_status"]
+    }
+  ],
+  "tasks_excluded_for_insufficient_or_deterministic_ownership": [
+    {
+      "candidate": "predict_route_v1",
+      "reason": "recommended_strategy/strategy_sequence are deterministic_derived via DeterministicRouter"
+    },
+    {
+      "candidate": "predict_compound_v1",
+      "reason": "compound_ambiguity fields are deterministic_derived from ambiguity_types"
+    },
+    {
+      "candidate": "predict_resolution_v1",
+      "reason": "resolution_method/resolution_evidence/supporting_evidence have no source supervision (unsupported_for_t27c)"
+    }
+  ]
+}

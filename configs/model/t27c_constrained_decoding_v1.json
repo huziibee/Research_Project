@@ -1,0 +1,25 @@
+{
+  "config_id": "t27c_constrained_decoding_v1",
+  "config_version": "1.0.0",
+  "ticket": "T27C",
+  "library": "lm-format-enforcer",
+  "version": "0.10.12",
+  "integration_point": "transformers.LogitsProcessorList + JsonSchemaParser via lmformatenforcer.integrations.transformers",
+  "supported_tokenizer_model": "Qwen/Qwen3-8B@b968826d9c46dd6066d109eabc6255188de91218",
+  "schema_conversion": "task json_schema objects from task_conditioned_prediction_tasks_v1.json passed directly to JsonSchemaParser",
+  "unconstrained_fallback_permitted": false,
+  "fallback_behaviour": "fail_task_call_with_ConstrainedDecodingError",
+  "limitations": [
+    "Requires lm-format-enforcer installed into training-site-packages on the cluster training SIF.",
+    "Does not use vLLM guided decoding (training runtime is HF Transformers).",
+    "Constraint syntax validity is not semantic acceptance."
+  ],
+  "runtime_install_packages": [
+    "interegular",
+    "lm-format-enforcer==0.10.12"
+  ],
+  "notes": [
+    "No unconstrained fallback is permitted in the live T27C profile.",
+    "If constraint initialisation fails, record evidence and fail the task call."
+  ]
+}
