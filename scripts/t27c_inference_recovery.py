@@ -53,6 +53,9 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--source-archive-sha256", default=None)
     parser.add_argument("--source-identity-manifest", type=Path, default=None)
     parser.add_argument("--diagnostic", action="store_true")
+    parser.add_argument("--records-manifest", type=Path, default=None)
+    parser.add_argument("--task-matrix", type=Path, default=None)
+    parser.add_argument("--adapter-source-commit", default=None)
     return parser
 
 
@@ -63,6 +66,7 @@ def main(argv: list[str] | None = None) -> int:
     task_registry = load_task_registry(root)
     field_registry = load_field_responsibility_registry(root)
     selected_base = require_selected_base_model(root)
+    adapter_source_commit = args.adapter_source_commit or args.source_commit
     reuse = verify_adapter_reuse(
         args.adapter_dir,
         selected_base_model=selected_base,
@@ -70,7 +74,7 @@ def main(argv: list[str] | None = None) -> int:
         train_manifest_hash=_data_manifest_hash(root),
         task_registry_hash=_task_registry_hash(root),
         field_registry_hash=_field_registry_hash(root),
-        source_commit=args.source_commit,
+        source_commit=adapter_source_commit,
     )
     if reuse.get("status") != "reusable":
         args.result_dir.mkdir(parents=True, exist_ok=True)
@@ -100,8 +104,19 @@ def main(argv: list[str] | None = None) -> int:
         device_map="auto",
     )
     adapter = PeftModel.from_pretrained(model, str(args.adapter_dir), is_trainable=False)
-    records = load_diagnostic_records(root) if args.diagnostic else load_sealed_records(root)
-    matrix = load_required_task_matrix(root)
+    if args.records_manifest:
+        manifest_path = args.records_manifest if args.records_manifest.is_absolute() else root / args.records_manifest
+        manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+        records = [json.loads(line) for line in (manifest_path.parent / "records.jsonl").read_text(encoding="utf-8").splitlines() if line.strip()]
+        if len(records) != int(manifest.get("record_count") or 0):
+            raise RuntimeError("t27d_manifest_record_count_mismatch")
+    else:
+        records = load_diagnostic_records(root) if args.diagnostic else load_sealed_records(root)
+    if args.task_matrix:
+        matrix_path = args.task_matrix if args.task_matrix.is_absolute() else root / args.task_matrix
+        matrix = json.loads(matrix_path.read_text(encoding="utf-8"))
+    else:
+        matrix = load_required_task_matrix(root)
     result_dir = args.result_dir.resolve()
     result_dir.mkdir(parents=True, exist_ok=True)
     from ambiguity_manager.model.t27c_runtime_recovery import Heartbeat, PredictionJournal

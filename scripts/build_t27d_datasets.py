@@ -65,6 +65,18 @@ def main() -> None:
         (out / "records.jsonl").write_bytes(payload)
         ids = [r["id"] for r in records]
         groups = [next(x.get("group_key") for x in selected if x["id"] == record["id"]) for record in records]
+        matrix = {
+            "matrix_version": "t27d_all_tasks_v1",
+            "records": {
+                record["id"]: {
+                    "required": ["predict_cpc_v1", "predict_ambiguity_v1"],
+                    "optional": ["predict_intent_v1", "predict_interpretations_v1", "predict_risk_capability_v1"],
+                }
+                for record in records
+            },
+        }
+        matrix["matrix_hash"] = sha256_bytes(json.dumps(matrix, sort_keys=True, separators=(",", ":")).encode("utf-8"))
+        (out / "required_task_matrix.json").write_text(json.dumps(matrix, indent=2, sort_keys=True) + "\n", encoding="utf-8")
         manifest_payload = {
             "dataset_id": name,
             "ticket": "T27D",
