@@ -89,10 +89,13 @@ def main(argv: list[str] | None = None) -> int:
     )
 
     try:
+        # Cluster entry must request the real 4-bit path; library default stays
+        # force_mock=True so local imports never attempt GPU training.
         outcome = run_smoke_training(
             result_dir=result_dir,
             run_id=args.run_id,
             root=root,
+            force_mock=False,
         )
     except QloraSmokeError as exc:
         # Preconditions (missing selected_base_model, non-empty result dir,

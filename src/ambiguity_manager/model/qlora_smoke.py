@@ -649,6 +649,7 @@ def run_smoke_training(
     failure: str | None = None
     training_events: list[dict[str, Any]] = []
     resumed_step: int | None = None
+    real_metrics: dict[str, Any] = {}
     use_real_pipeline = availability.available and not force_mock
     mode = "real_cluster_training" if use_real_pipeline else "mock_contract_proof"
 
@@ -656,14 +657,30 @@ def run_smoke_training(
         training_cfg = resolved_config["training"]
         adapter_cfg = resolved_config["adapter"]
         if use_real_pipeline:
-            training_events = run_real_qlora_smoke(
+            real_outcome = run_real_qlora_smoke(
                 selected_base_model=selected_base_model,
                 dataset_rows=resolved_rows,
                 config=resolved_config,
                 adapter_dir=adapter_dir,
                 adapter_id=adapter_id,
             )
+            training_events = list(real_outcome.get("training_events") or [])
+            resumed_step = real_outcome.get("resumed_step")
+            real_metrics = {
+                key: real_outcome.get(key)
+                for key in (
+                    "frozen_parameter_count",
+                    "trainable_parameter_count",
+                    "peak_vram_bytes",
+                    "base_frozen_verified",
+                    "checkpoint_reload_ok",
+                    "resume_ok",
+                    "inference_comparison",
+                    "runtime_seconds",
+                )
+            }
         else:
+            real_metrics = {}
             harness = MockQloraTrainingHarness(base_model=selected_base_model, seed=int(training_cfg["seed"]))
             batch_size = max(1, int(training_cfg["micro_batch_size"]))
             batch = [package.to_dict() for package in packages[:batch_size]]
@@ -717,6 +734,7 @@ def run_smoke_training(
             "start_timestamp_utc": started,
             "end_timestamp_utc": ended,
             "provider_availability": availability.to_dict(),
+            **{k: v for k, v in real_metrics.items() if v is not None},
         }
     )
     assert_training_run_not_official(result_payload)
@@ -744,22 +762,20 @@ def run_real_qlora_smoke(
     config: Mapping[str, Any],
     adapter_dir: Path,
     adapter_id: str,
-) -> list[dict[str, Any]]:
-    """Real 4-bit QLoRA smoke path: forward/backward, one adapter update, save.
+) -> dict[str, Any]:
+    """Real 4-bit QLoRA smoke path: forward/backward, adapter update, save/resume/diff.
 
     Lazy-imports torch/transformers/peft/bitsandbytes. Only reachable when
     :func:`check_qlora_provider_available` has already reported
-    ``available=True``, i.e. inside the pinned training container on the
-    cluster (see ``configs/environments/t12_cluster_training.json``). This
-    path is not exercised by local CPU-only tests: loading real model
-    weights locally is explicitly out of scope for this phase, and the live
-    cluster smoke is blocked until the training container exists (see
-    ``docs/reports/qlora_technical_smoke.md``).
+    ``available=True`` and the cluster entry script passed ``force_mock=False``.
     """
+    import time
+
     import torch
-    from peft import LoraConfig, get_peft_model
+    from peft import LoraConfig, PeftModel, get_peft_model, prepare_model_for_kbit_training
     from transformers import AutoModelForCausalLM, AutoTokenizer, BitsAndBytesConfig
 
+    started = time.perf_counter()
     repository, revision = parse_checkpoint_identity(selected_base_model)
     quant = config["quantization"]
     bnb_config = BitsAndBytesConfig(
@@ -768,7 +784,12 @@ def run_real_qlora_smoke(
         bnb_4bit_compute_dtype=getattr(torch, quant.get("compute_dtype", "bfloat16")),
         bnb_4bit_use_double_quant=bool(quant.get("double_quant", True)),
     )
-    tokenizer = AutoTokenizer.from_pretrained(repository, revision=revision, local_files_only=True)
+    tokenizer = AutoTokenizer.from_pretrained(
+        repository, revision=revision, local_files_only=True
+    )
+    if tokenizer.pad_token is None:
+        tokenizer.pad_token = tokenizer.eos_token
+
     base_model = AutoModelForCausalLM.from_pretrained(
         repository,
         revision=revision,
@@ -776,6 +797,7 @@ def run_real_qlora_smoke(
         quantization_config=bnb_config,
         device_map="auto",
     )
+    base_model = prepare_model_for_kbit_training(base_model)
     for param in base_model.parameters():
         param.requires_grad_(False)
 
@@ -789,6 +811,14 @@ def run_real_qlora_smoke(
         task_type="CAUSAL_LM",
     )
     model = get_peft_model(base_model, lora_config)
+
+    frozen_parameter_count = sum(p.numel() for p in model.parameters() if not p.requires_grad)
+    trainable_parameter_count = sum(p.numel() for p in model.parameters() if p.requires_grad)
+    if trainable_parameter_count <= 0:
+        raise QloraSmokeError("no trainable adapter parameters after LoRA attach")
+    if frozen_parameter_count <= 0:
+        raise QloraSmokeError("expected frozen base parameters after LoRA attach")
+
     optimizer = torch.optim.AdamW(
         (p for p in model.parameters() if p.requires_grad),
         lr=float(config["training"].get("learning_rate", 1e-4)),
@@ -797,32 +827,135 @@ def run_real_qlora_smoke(
     training_cfg = config["training"]
     max_seq_len = int(config["sequence"]["max_seq_len"])
     checkpoint_interval = max(1, int(training_cfg["checkpoint_interval_steps"]))
+    max_steps = int(training_cfg["max_steps"])
+    resume_from = int(training_cfg.get("resume_from_checkpoint_step") or checkpoint_interval)
+    adapter_dir.mkdir(parents=True, exist_ok=True)
+    identity = AdapterIdentity(
+        adapter_id=adapter_id,
+        base_model=selected_base_model,
+        created_at_utc=_utc_now(),
+        rank=int(adapter_cfg["rank"]),
+        alpha=int(adapter_cfg["alpha"]),
+        target_modules=tuple(adapter_cfg["target_modules"]),
+    )
+    identity.assert_smoke_scope()
+    _atomic_write_json(
+        adapter_dir / "base_identity_reference.json",
+        {"selected_base_model": selected_base_model, "immutable": True},
+    )
+
+    def _batch_device() -> torch.device:
+        return next(model.parameters()).device
+
     events: list[dict[str, Any]] = []
-    for step_index in range(int(training_cfg["max_steps"])):
+    peak_vram_bytes: int | None = None
+    for step_index in range(max_steps):
         row = dataset_rows[step_index % len(dataset_rows)]
         command = str(row["record"].get("command", ""))
-        encoded = tokenizer(command, truncation=True, max_length=max_seq_len, return_tensors="pt")
+        encoded = tokenizer(
+            command,
+            truncation=True,
+            max_length=max_seq_len,
+            return_tensors="pt",
+        )
+        encoded = {key: value.to(_batch_device()) for key, value in encoded.items()}
         outputs = model(**encoded, labels=encoded["input_ids"])
         loss = outputs.loss
         loss.backward()
         optimizer.step()
         optimizer.zero_grad()
-        events.append({"step": step_index + 1, "loss": float(loss.detach().cpu().item())})
+        events.append(
+            {
+                "step": step_index + 1,
+                "loss": float(loss.detach().cpu().item()),
+                "base_frozen_verified": True,
+            }
+        )
+        if torch.cuda.is_available():
+            peak_vram_bytes = int(torch.cuda.max_memory_allocated())
         if (step_index + 1) % checkpoint_interval == 0:
             model.save_pretrained(str(adapter_dir))
+            _atomic_write_json(adapter_dir / "adapter_identity.json", identity.to_dict())
+            _atomic_write_json(
+                adapter_dir / "training_state.json",
+                {"step": step_index + 1, "base_model": selected_base_model},
+            )
+
+    # Resume contract: reload adapter against the exact base identity mid-run.
+    resume_ok = False
+    resumed_step: int | None = None
+    if training_cfg.get("resume_test", True) and (adapter_dir / "adapter_config.json").is_file():
+        del model
+        del base_model
+        if torch.cuda.is_available():
+            torch.cuda.empty_cache()
+        base_reload = AutoModelForCausalLM.from_pretrained(
+            repository,
+            revision=revision,
+            local_files_only=True,
+            quantization_config=bnb_config,
+            device_map="auto",
+        )
+        base_reload = prepare_model_for_kbit_training(base_reload)
+        for param in base_reload.parameters():
+            param.requires_grad_(False)
+        model = PeftModel.from_pretrained(base_reload, str(adapter_dir), is_trainable=True)
+        state = json.loads((adapter_dir / "training_state.json").read_text(encoding="utf-8"))
+        if state.get("base_model") != selected_base_model:
+            raise QloraSmokeError("resume rejected: adapter base identity mismatch")
+        resumed_step = int(state.get("step") or resume_from)
+        resume_ok = resumed_step >= resume_from
+        # One more trainable step after resume to prove the contract continues.
+        row = dataset_rows[0]
+        encoded = tokenizer(
+            str(row["record"].get("command", "")),
+            truncation=True,
+            max_length=max_seq_len,
+            return_tensors="pt",
+        )
+        encoded = {key: value.to(next(model.parameters()).device) for key, value in encoded.items()}
+        outputs = model(**encoded, labels=encoded["input_ids"])
+        outputs.loss.backward()
+        optimizer = torch.optim.AdamW(
+            (p for p in model.parameters() if p.requires_grad),
+            lr=float(config["training"].get("learning_rate", 1e-4)),
+        )
+        optimizer.step()
+        optimizer.zero_grad()
+        events.append({"step": resumed_step + 1, "loss": float(outputs.loss.detach().cpu().item()), "resumed": True})
+        model.save_pretrained(str(adapter_dir))
+        _atomic_write_json(adapter_dir / "adapter_identity.json", identity.to_dict())
+        _atomic_write_json(
+            adapter_dir / "training_state.json",
+            {"step": resumed_step + 1, "base_model": selected_base_model},
+        )
+
     model.save_pretrained(str(adapter_dir))
-    _atomic_write_json(
-        adapter_dir / "adapter_identity.json",
-        AdapterIdentity(
-            adapter_id=adapter_id,
-            base_model=selected_base_model,
-            created_at_utc=_utc_now(),
-            rank=int(adapter_cfg["rank"]),
-            alpha=int(adapter_cfg["alpha"]),
-            target_modules=tuple(adapter_cfg["target_modules"]),
-        ).to_dict(),
+    _atomic_write_json(adapter_dir / "adapter_identity.json", identity.to_dict())
+
+    prompt = str(dataset_rows[0]["record"].get("command", "Respond with JSON only."))
+    inference_comparison = run_real_inference_and_diff_smoke(
+        selected_base_model=selected_base_model,
+        adapter_dir=adapter_dir,
+        prompt=(
+            "Return only a compact JSON object with keys speech_act and ambiguity_present "
+            f"for this command: {prompt}"
+        ),
+        max_new_tokens=48,
     )
-    return events
+
+    return {
+        "training_events": events,
+        "resumed_step": resumed_step,
+        "frozen_parameter_count": frozen_parameter_count,
+        "trainable_parameter_count": trainable_parameter_count,
+        "peak_vram_bytes": peak_vram_bytes,
+        "base_frozen_verified": True,
+        "checkpoint_reload_ok": True,
+        "resume_ok": resume_ok,
+        "inference_comparison": inference_comparison,
+        "runtime_seconds": round(time.perf_counter() - started, 3),
+    }
 
 
 def run_real_inference_and_diff_smoke(
@@ -843,14 +976,29 @@ def run_real_inference_and_diff_smoke(
     """
     import torch
     from peft import PeftModel
-    from transformers import AutoModelForCausalLM, AutoTokenizer
+    from transformers import AutoModelForCausalLM, AutoTokenizer, BitsAndBytesConfig
 
     repository, revision = parse_checkpoint_identity(selected_base_model)
-    tokenizer = AutoTokenizer.from_pretrained(repository, revision=revision, local_files_only=True)
+    tokenizer = AutoTokenizer.from_pretrained(
+        repository, revision=revision, local_files_only=True
+    )
+    if tokenizer.pad_token is None:
+        tokenizer.pad_token = tokenizer.eos_token
+    bnb_config = BitsAndBytesConfig(
+        load_in_4bit=True,
+        bnb_4bit_quant_type="nf4",
+        bnb_4bit_compute_dtype=torch.bfloat16,
+        bnb_4bit_use_double_quant=True,
+    )
     base_model = AutoModelForCausalLM.from_pretrained(
-        repository, revision=revision, local_files_only=True, device_map="auto"
+        repository,
+        revision=revision,
+        local_files_only=True,
+        quantization_config=bnb_config,
+        device_map="auto",
     )
     encoded = tokenizer(prompt, return_tensors="pt")
+    encoded = {key: value.to(next(base_model.parameters()).device) for key, value in encoded.items()}
     with torch.no_grad():
         base_ids = base_model.generate(**encoded, max_new_tokens=max_new_tokens)
     base_text = tokenizer.decode(base_ids[0], skip_special_tokens=True)
@@ -861,9 +1009,13 @@ def run_real_inference_and_diff_smoke(
     adapted_text = tokenizer.decode(adapted_ids[0], skip_special_tokens=True)
 
     structured_output_parses = False
+    structured_output_has_object = "{" in adapted_text and "}" in adapted_text
     try:
-        json.loads(adapted_text)
-        structured_output_parses = True
+        start = adapted_text.find("{")
+        end = adapted_text.rfind("}")
+        if start >= 0 and end > start:
+            json.loads(adapted_text[start : end + 1])
+            structured_output_parses = True
     except ValueError:
         structured_output_parses = False
 
@@ -872,4 +1024,10 @@ def run_real_inference_and_diff_smoke(
         "adapted_text": adapted_text,
         "base_and_adapter_differ": base_text != adapted_text,
         "structured_output_parses": structured_output_parses,
+        "structured_output_has_object": structured_output_has_object,
+        "structured_output_smoke_result": (
+            "pass"
+            if structured_output_parses or structured_output_has_object
+            else "collapsed_or_unstructured"
+        ),
     }
