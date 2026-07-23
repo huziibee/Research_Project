@@ -1,0 +1,181 @@
+{
+  "evidence_id": "t27b_structured_emission_recovery",
+  "ticket": "T27B",
+  "source_commit": "3ae20c776346352f46e2d9696b0758132c002114",
+  "implementation_freeze_commits": {
+    "docs_audit": "1ccf337f7b5c4ee7b47309fc5e209a3f6f4ee2de",
+    "full_schema_targets": "fe70e8f02e559e717dc3c98bf6efcee28c1ccd1d",
+    "datasets": "468e472f88492f456a921d5900abe1ae57f7577c",
+    "recovery_profile": "ba31f28503d9c46f639f675046aef780b9c184f8",
+    "jsonschema_runtime_fix": "3ae20c776346352f46e2d9696b0758132c002114"
+  },
+  "run_id": "t12-qlora-emission-recovery-20260723T090929Z-3ae20c7",
+  "slurm_job_id": "6382",
+  "node": "mscluster111",
+  "gpu_note": "1 GPU exclusive on biggpu; no permanent nodelist pin (exclude mscluster107,mscluster108)",
+  "mode": "real_cluster_training",
+  "operator_verify": "VERIFY_PASSED",
+  "selected_base_model": "Qwen/Qwen3-8B@b968826d9c46dd6066d109eabc6255188de91218",
+  "base_snapshot_verification": {
+    "immutable_identity": "Qwen/Qwen3-8B@b968826d9c46dd6066d109eabc6255188de91218",
+    "merged_into_base": false,
+    "base_dir_unchanged": true,
+    "base_frozen_verified": true
+  },
+  "environment_identity": "t12-cluster-training-task-aligned-v1",
+  "python_version_measured": "3.12.3",
+  "prior_failed_attempts": [
+    {
+      "run_id": "t12-qlora-emission-recovery-20260723T085807Z-ba31f28",
+      "slurm_job_id": "6307",
+      "failure": "ModuleNotFoundError: No module named 'jsonschema'",
+      "note": "Preserved; not overwritten."
+    },
+    {
+      "run_id": "t12-qlora-emission-recovery-20260723T090450Z-6fd6dcf",
+      "slurm_job_id": "6350",
+      "failure": "jsonschema_still_missing_after_install",
+      "note": "Preserved; dependency-closure install fix applied before job 6382."
+    }
+  ],
+  "retained_t27_job6059_evidence": {
+    "run_id": "t12-qlora-task-aligned-20260723T074715Z-991732e",
+    "slurm_job_id": "6059",
+    "evidence": "configs/model/evidence/t27_task_aligned_qlora_smoke.json",
+    "overwritten": false
+  },
+  "data": {
+    "train_manifest": "data/development/qlora_structured_emission_recovery_v1/manifest.json",
+    "train_manifest_hash": "cfc5306942bb8b78fde2cf133588923c27dfbcc8af8c9fd2525692aae12ada7d",
+    "train_record_count": 128,
+    "train_datasets": ["ambik", "clara", "codraw_icr_v2", "indirect_requests"],
+    "diagnostic_manifest": "data/development/t27b_diagnostic_dev_v1/manifest.json",
+    "diagnostic_manifest_hash": "bdb30993ebae6d510168598cc353ca1771833a7546541439a623837bc8c6b9b1",
+    "diagnostic_record_ids": ["ambik:100", "ambik:1000", "ambik:120", "ambik:125", "ambik:126", "ambik:64", "clara:193", "codraw_icr_v2:11410", "codraw_icr_v2:12416", "codraw_icr_v2:1400", "codraw_icr_v2:14616", "codraw_icr_v2:4208"],
+    "sealed_final_manifest": "data/development/t27b_final_smoke_v1/manifest.json",
+    "sealed_final_manifest_hash": "a1a7ad27612d9f163b1d0dc6aa9d587011b4b98c3ecf5ccb5e43571d88f0aa40",
+    "sealed_final_record_ids": ["ambik:622", "ambik:653", "ambik:947", "clara:1148", "clara:5166", "clara:882", "codraw_icr_v2:12153", "codraw_icr_v2:8190"],
+    "source_train_only_training": true,
+    "source_dev_only_eval": true,
+    "job6059_validation_ids_excluded": true,
+    "leakage_passed": true
+  },
+  "contracts": {
+    "envelope_id": "full_schema_envelope_v1",
+    "prompt_contract": "t27b_full_schema_prompt_v1",
+    "field_coverage_audit": "configs/model/t27b_production_schema_coverage_v1.json",
+    "envelope_policy": "configs/model/full_schema_envelope_policy_v1.json",
+    "training_config": "configs/model/qlora_structured_emission_recovery_v1.json",
+    "transport_method": "hf_generate_unconstrained",
+    "constrained_json_note": "Training SIF lacks vLLM guided JSON; transport never counted as semantic acceptance."
+  },
+  "training": {
+    "full_schema_envelope_used": true,
+    "real_token_masks_used": true,
+    "structural_and_semantic_supervision_recorded": true,
+    "command_reconstruction": false,
+    "optimiser_updates": 24,
+    "frozen_parameter_count": 4717851648,
+    "trainable_parameter_count": 7667712,
+    "supervised_token_diagnostics": {
+      "example_count": 128,
+      "mean_supervised_token_percentage": 34.0053,
+      "mean_structural_supervised_tokens": 507.0,
+      "mean_semantic_supervised_tokens": 15.3203,
+      "meets_minimum_useful_supervision": true,
+      "prior_job6059_mean_supervised_token_percentage": 6.7911
+    },
+    "loss_trace_summary": {
+      "step_1_loss": 6.701731204986572,
+      "step_12_loss": 0.22457610070705414,
+      "step_24_loss": 0.05721130594611168,
+      "monotone_decreasing_overall": true
+    }
+  },
+  "checkpoint_resume": {
+    "full_checkpoint_blob_sha256": "2a96d9e0f0649d5db242596ba9af1454e4045fecc1613b64e77c7de666ce8d14",
+    "full_checkpoint_blob_bytes": 61607323,
+    "adapter_reload_ok": true,
+    "optimiser_restore_ok": true,
+    "scheduler_restore_ok": true,
+    "rng_restore_ok": true,
+    "data_position_restore_ok": true,
+    "full_resume_ok": true
+  },
+  "adapter": {
+    "adapter_id": "qlora-structured-emission-recovery-adapter-t12-qlora-emission-recovery-20260723T090929Z-3ae20c7",
+    "safetensors_sha256": "494e67f43f0299325e01371db0c11aecf14e0e483191374cf65f9f1a1f9d19b7",
+    "safetensors_bytes": 30709192,
+    "technical_smoke_only": true,
+    "selected_adapter": false,
+    "committed": false
+  },
+  "structured_output": {
+    "base_and_adapter_records_attempted": 8,
+    "transport_status": "hf_generate_unconstrained",
+    "adapter_differs_from_base_count": 8,
+    "braces_only_acceptance_forbidden": true,
+    "unsupported_commitment_accepted": false,
+    "base": {
+      "attempted": 8,
+      "transport_valid": 0,
+      "parse_valid": 0,
+      "schema_valid": 0,
+      "semantic_valid": 0,
+      "safety_accepted": 0,
+      "final_accepted": 0,
+      "failure_stages": {"no_json": 5, "truncation": 3}
+    },
+    "adapter": {
+      "attempted": 8,
+      "transport_valid": 0,
+      "parse_valid": 1,
+      "schema_valid": 0,
+      "semantic_valid": 0,
+      "safety_accepted": 0,
+      "final_accepted": 0,
+      "failure_stages": {
+        "json_parse_failed": 2,
+        "no_json": 2,
+        "truncation": 3,
+        "unknown_field": 1
+      }
+    },
+    "frozen_pass_thresholds": {
+      "adapter_parse_valid_min": 6,
+      "adapter_schema_valid_min": 5,
+      "adapter_semantic_valid_min": 1,
+      "adapter_final_accepted_min": 1,
+      "adapter_differs_from_base_min": 1
+    },
+    "pass_threshold_evaluation_passed": false,
+    "note": "Mechanics/data/supervision gates passed. Structured-emission gate failed: adapter 0/8 final accepted (1 parse-valid, 0 schema-valid). Materially not better than job-6059 0/4 accepted under frozen thresholds."
+  },
+  "runtime": {
+    "runtime_seconds": 273.972,
+    "wall_elapsed": "00:04:51",
+    "peak_vram_bytes": 36102784000
+  },
+  "identities_unchanged": {
+    "selected_base_model": "Qwen/Qwen3-8B@b968826d9c46dd6066d109eabc6255188de91218",
+    "selected_adapter": null,
+    "selected_model_strategy": null,
+    "valid_for_official_use": false
+  },
+  "statuses": {
+    "mechanics_status": "PASS",
+    "data_status": "PASS",
+    "supervision_density_status": "PASS",
+    "structured_emission_status": "BLOCKED",
+    "ticket_status": "BLOCKED"
+  },
+  "t27_status": {
+    "mechanics_status": "PASS",
+    "task_aligned_training_status": "PASS",
+    "structured_output_smoke_status": "BLOCKED",
+    "ticket_status": "BLOCKED",
+    "note": "T27 remains BLOCKED; T27B recovery attempt also BLOCKED on structured emission."
+  },
+  "t28_may_begin": false,
+  "next_architecture_recommendation": "task_conditioned_partial_schema_prediction_plus_deterministic_StructuredAnalysis_assembly"
+}
