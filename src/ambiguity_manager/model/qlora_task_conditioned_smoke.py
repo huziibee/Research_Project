@@ -285,8 +285,15 @@ def _field_registry_hash(root: Path) -> str:
 
 
 def ensure_runtime_lm_format_enforcer() -> dict[str, Any]:
-    """Install pinned lm-format-enforcer into training-site-packages if needed."""
+    """Install pinned lm-format-enforcer into training-site-packages if needed.
+
+    Job 6786 failed when a stale ``lm_format_enforcer-*.dist-info`` directory
+    existed without a usable package body: ``pip install --target`` then raised
+    ``FileExistsError``. Clear stale target dirs before install and force a
+    clean re-import.
+    """
     import importlib
+    import shutil
     import subprocess
     import sys
 
@@ -299,52 +306,90 @@ def ensure_runtime_lm_format_enforcer() -> dict[str, Any]:
         except ImportError as exc:
             return f"{type(exc).__name__}:{exc}"
 
-    existing = _try_import()
-    if existing is None:
-        return {"status": "already_available", "package": "lm-format-enforcer", "version": "0.10.12"}
+    def _prepend_site(site_str: str) -> None:
+        while site_str in sys.path:
+            sys.path.remove(site_str)
+        sys.path.insert(0, site_str)
+
+    def _clear_stale_targets(site_path: Path) -> list[str]:
+        removed: list[str] = []
+        patterns = (
+            "lmformatenforcer",
+            "lmformatenforcer-*",
+            "lm_format_enforcer*",
+            "interegular",
+            "interegular-*",
+        )
+        for pattern in patterns:
+            for path in site_path.glob(pattern):
+                if path.is_dir():
+                    shutil.rmtree(path)
+                elif path.is_file():
+                    path.unlink()
+                removed.append(path.name)
+        return sorted(set(removed))
 
     site = os.environ.get("T12_TRAINING_SITE_PACKAGES", "").strip()
-    if not site:
+    if site:
+        site_path = Path(site)
+        site_path.mkdir(parents=True, exist_ok=True)
+        site_str = str(site_path.resolve())
+        _prepend_site(site_str)
+    else:
+        site_path = None
+        site_str = ""
+
+    existing = _try_import()
+    if existing is None:
+        return {
+            "status": "already_available",
+            "package": "lm-format-enforcer",
+            "version": "0.10.12",
+            "target": site_str or None,
+        }
+
+    if not site or site_path is None:
         raise QloraTaskConditionedSmokeError(
             f"lm_format_enforcer_missing_and_T12_TRAINING_SITE_PACKAGES_unset:{existing}"
         )
-    site_path = Path(site)
-    site_path.mkdir(parents=True, exist_ok=True)
-    site_str = str(site_path.resolve())
-    while site_str in sys.path:
-        sys.path.remove(site_str)
-    sys.path.insert(0, site_str)
 
+    removed = _clear_stale_targets(site_path)
     packages = ("interegular", "lm-format-enforcer==0.10.12")
-    cmd = [
+    cmd_deps = [
         sys.executable,
         "-m",
         "pip",
         "install",
         "--upgrade",
+        "--force-reinstall",
         "--disable-pip-version-check",
         "--no-input",
         "--target",
         site_str,
         *packages,
     ]
-    completed = subprocess.run(cmd, check=False, capture_output=True, text=True)
+    completed = subprocess.run(cmd_deps, check=False, capture_output=True, text=True)
+    if completed.returncode != 0:
+        # Retry once after clearing again (handles race / leftover dist-info).
+        removed.extend(_clear_stale_targets(site_path))
+        completed = subprocess.run(cmd_deps, check=False, capture_output=True, text=True)
     if completed.returncode != 0:
         raise QloraTaskConditionedSmokeError(
             f"lm_format_enforcer_install_failed:rc={completed.returncode};"
-            f"stderr={completed.stderr[-800:]}"
+            f"removed={removed};stderr={completed.stderr[-800:]}"
         )
     for name in list(sys.modules):
-        if name == "lmformatenforcer" or name.startswith("lmformatenforcer."):
+        if name == "lmformatenforcer" or name.startswith(
+            ("lmformatenforcer.", "interegular")
+        ):
             del sys.modules[name]
     importlib.invalidate_caches()
-    while site_str in sys.path:
-        sys.path.remove(site_str)
-    sys.path.insert(0, site_str)
+    _prepend_site(site_str)
     retry = _try_import()
     if retry is not None:
         raise QloraTaskConditionedSmokeError(
-            f"lm_format_enforcer_still_missing_after_install:{retry}"
+            f"lm_format_enforcer_still_missing_after_install:{retry};"
+            f"removed={removed};pip_stdout_tail={completed.stdout[-400:]}"
         )
     return {
         "status": "installed_into_training_site_packages",
@@ -352,6 +397,7 @@ def ensure_runtime_lm_format_enforcer() -> dict[str, Any]:
         "version": "0.10.12",
         "dependencies": list(packages),
         "target": site_str,
+        "removed_stale_targets": sorted(set(removed)),
         "prior_import_error": existing,
     }
 
