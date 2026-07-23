@@ -1,0 +1,48 @@
+{
+  "policy_id": "t27d_assembly_requirement_policy_v1",
+  "policy_version": "1.0.0",
+  "ticket": "T27D",
+  "required_for_structural_object": [],
+  "required_for_metric": {
+    "intent": ["predict_intent_v1"],
+    "cpc": ["predict_cpc_v1"],
+    "ambiguity": ["predict_ambiguity_v1"],
+    "interpretations": ["predict_interpretations_v1"],
+    "risk_capability": ["predict_risk_capability_v1"],
+    "route": ["predict_ambiguity_v1", "predict_risk_capability_v1"]
+  },
+  "required_for_route": {
+    "execute": ["predict_ambiguity_v1", "predict_risk_capability_v1"],
+    "silently_resolve": ["predict_ambiguity_v1", "predict_risk_capability_v1", "predict_interpretations_v1"],
+    "clarify": [],
+    "reject": []
+  },
+  "required_for_complete": ["predict_cpc_v1", "predict_ambiguity_v1"],
+  "optional_model_enrichments": [
+    "predict_intent_v1",
+    "predict_interpretations_v1",
+    "predict_risk_capability_v1"
+  ],
+  "fail_safe_defaults": {
+    "intent": {"speech_act": null, "intent_summary": null},
+    "cpc": "CPC.empty_unknown()",
+    "ambiguity": {"ambiguity_present": null, "ambiguity_types": []},
+    "interpretations": {"candidate_interpretations": [], "selected_interpretation": null},
+    "risk_capability": {"risk_level": "unknown", "capability_status": "unknown"}
+  },
+  "missing_task_effects": {
+    "intent": "metric_ineligible_only",
+    "cpc": "unknown_cpc_and_fail_safe_route",
+    "ambiguity": "null_unknown_and_no_execute_or_silent_resolve",
+    "interpretations": "empty_candidates_and_no_silent_resolve",
+    "risk_capability": "unknown_and_no_execute"
+  },
+  "task_failure_is_not_negative_class": true,
+  "model_cannot_emit": [
+    "recommended_strategy",
+    "strategy_sequence",
+    "compound_ambiguity",
+    "compound_ambiguity_count",
+    "findings"
+  ]
+}

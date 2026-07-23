@@ -33,9 +33,24 @@ from ambiguity_manager.systems.classification import (
 from ambiguity_manager.systems.contracts import AnalysisProvenance, StructuredAnalysis
 from ambiguity_manager.systems.routing import DeterministicRouter, apply_router_decision
 
-ASSEMBLER_VERSION = "structured_analysis_assembler_v1"
-REQUIRED_TASKS = ("predict_intent_v1", "predict_cpc_v1", "predict_ambiguity_v1")
-OPTIONAL_TASKS = ("predict_interpretations_v1", "predict_risk_capability_v1")
+ASSEMBLER_VERSION = "structured_analysis_assembler_v2"
+DEFAULT_ASSEMBLY_POLICY = {
+    "policy_id": "t27d_assembly_requirement_policy_v1",
+    "required_for_structural_object": [],
+    "required_for_complete": ["predict_cpc_v1", "predict_ambiguity_v1"],
+    "optional_model_enrichments": [
+        "predict_intent_v1",
+        "predict_interpretations_v1",
+        "predict_risk_capability_v1",
+    ],
+    "fail_safe_defaults": {
+        "intent": {"speech_act": None, "intent_summary": None},
+        "cpc": "CPC.empty_unknown()",
+        "ambiguity": {"ambiguity_present": None, "ambiguity_types": []},
+        "risk_capability": {"risk_level": "unknown", "capability_status": "unknown"},
+        "interpretations": {"candidate_interpretations": [], "selected_interpretation": None},
+    },
+}
 
 
 class StructuredAnalysisAssemblerError(RuntimeError):
@@ -64,7 +79,7 @@ class FieldProvenance:
 
 @dataclass
 class AssemblyResult:
-    status: str  # assembled | unavailable | conflict | validation_failed
+    status: str  # assembled_complete | assembled_partial_fail_safe | unavailable_* | conflict | validation_failed
     analysis: StructuredAnalysis | None
     field_provenance: list[FieldProvenance] = field(default_factory=list)
     accepted_task_hashes: dict[str, str] = field(default_factory=dict)
@@ -74,6 +89,9 @@ class AssemblyResult:
     production_schema_valid: bool = False
     semantic_safety_accepted: bool = False
     notes: list[str] = field(default_factory=list)
+    completeness_map: dict[str, str] = field(default_factory=dict)
+    task_states: dict[str, str] = field(default_factory=dict)
+    metric_eligibility: dict[str, Any] = field(default_factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
         return {
@@ -87,6 +105,9 @@ class AssemblyResult:
             "production_schema_valid": self.production_schema_valid,
             "semantic_safety_accepted": self.semantic_safety_accepted,
             "notes": list(self.notes),
+            "completeness_map": dict(self.completeness_map),
+            "task_states": dict(self.task_states),
+            "metric_eligibility": dict(self.metric_eligibility),
             "assembler_version": ASSEMBLER_VERSION,
         }
 
@@ -102,6 +123,7 @@ class StructuredAnalysisAssembler:
         base_model_identity: str | None = None,
         adapter_identity: str | None = None,
         input_hash: str | None = None,
+        assembly_policy: Mapping[str, Any] | None = None,
     ) -> None:
         self.field_registry = field_registry
         self.task_registry = task_registry
@@ -111,6 +133,7 @@ class StructuredAnalysisAssembler:
         self.adapter_identity = adapter_identity
         self.input_hash = input_hash
         self.version = ASSEMBLER_VERSION
+        self.assembly_policy = dict(assembly_policy or DEFAULT_ASSEMBLY_POLICY)
 
     def assemble(
         self,
@@ -123,6 +146,8 @@ class StructuredAnalysisAssembler:
         provenance: list[FieldProvenance] = []
         accepted: dict[str, Any] = {}
         accepted_hashes: dict[str, str] = {}
+        task_states: dict[str, str] = {}
+        completeness: dict[str, str] = {}
 
         # Index and validate task results.
         by_task: dict[str, Any] = {}
@@ -136,66 +161,62 @@ class StructuredAnalysisAssembler:
                 )
             by_task[str(task_id)] = result
 
-        # Reject wrong versions / non-accepted required tasks.
-        for task_id in REQUIRED_TASKS:
+        all_task_ids = [str(t["task_id"]) for t in self.task_registry.get("tasks") or []]
+        hard_failures: list[str] = []
+        for task_id in all_task_ids:
             result = by_task.get(task_id)
             if result is None:
-                failures.append(f"missing_required_task:{task_id}")
+                task_states[task_id] = "task_absent"
+                notes.append(f"task_absent:{task_id}")
                 continue
             if not _accepted(result):
-                failures.append(f"required_task_not_accepted:{task_id}")
+                task_states[task_id] = "task_rejected"
+                failures.append(f"task_rejected:{task_id}")
                 continue
             version = _attr(result, "task_version")
             expected = _task_version(self.task_registry, task_id)
             if version != expected:
-                failures.append(f"task_version_mismatch:{task_id}:{version}!={expected}")
+                task_states[task_id] = "task_corrupt"
+                hard_failures.append(f"task_version_mismatch:{task_id}:{version}!={expected}")
                 continue
             parsed = _attr(result, "parsed_output")
             if not isinstance(parsed, dict):
-                failures.append(f"required_task_empty_output:{task_id}")
+                task_states[task_id] = "task_corrupt"
+                hard_failures.append(f"task_empty_output:{task_id}")
                 continue
+            task_states[task_id] = "accepted"
             accepted[task_id] = parsed
             out_hash = _attr(result, "output_hash")
             if out_hash:
                 accepted_hashes[task_id] = str(out_hash)
 
-        for task_id in OPTIONAL_TASKS:
-            result = by_task.get(task_id)
-            if result is None:
-                notes.append(f"optional_task_missing:{task_id}")
-                continue
-            if not _accepted(result):
-                notes.append(f"optional_task_rejected:{task_id}")
-                continue
-            version = _attr(result, "task_version")
-            expected = _task_version(self.task_registry, task_id)
-            if version != expected:
-                failures.append(f"task_version_mismatch:{task_id}:{version}!={expected}")
-                continue
-            parsed = _attr(result, "parsed_output")
-            if isinstance(parsed, dict):
-                accepted[task_id] = parsed
-                out_hash = _attr(result, "output_hash")
-                if out_hash:
-                    accepted_hashes[task_id] = str(out_hash)
-
-        if failures:
+        if hard_failures:
             return AssemblyResult(
-                status="unavailable",
+                status="unavailable_corrupt_input",
                 analysis=None,
-                failures=failures,
+                failures=hard_failures,
                 notes=notes,
                 accepted_task_hashes=accepted_hashes,
+                task_states=task_states,
+            )
+        if not accepted:
+            return AssemblyResult(
+                status="unavailable_no_core_prediction",
+                analysis=None,
+                failures=["no_accepted_task_predictions"],
+                notes=notes,
+                task_states=task_states,
             )
 
         analysis = StructuredAnalysis()
 
-        # 1) Intent
-        intent = accepted["predict_intent_v1"]
-        analysis.speech_act = intent.get("speech_act")
-        analysis.intent_summary = intent.get("intent_summary")
-        provenance.extend(
-            [
+        # 1) Intent: optional; never infer speech_act from free text.
+        if "predict_intent_v1" in accepted:
+            intent = accepted["predict_intent_v1"]
+            analysis.speech_act = intent.get("speech_act")
+            analysis.intent_summary = intent.get("intent_summary")
+            completeness.update({"speech_act": "strong_prediction", "intent_summary": "weak_prediction"})
+            provenance.extend([
                 FieldProvenance(
                     "speech_act",
                     "task",
@@ -210,41 +231,42 @@ class StructuredAnalysisAssembler:
                     accepted_hashes.get("predict_intent_v1"),
                     "copy_optional_from_task",
                 ),
-            ]
-        )
+            ])
+        else:
+            analysis.speech_act = None
+            analysis.intent_summary = None
+            notes.append("intent_prediction_unavailable")
+            completeness.update({"speech_act": "task_rejected_or_absent", "intent_summary": "task_rejected_or_absent"})
 
         # 2) CPC
-        cpc_payload = accepted["predict_cpc_v1"]["cpc"]
-        analysis.cpc = CPC.from_dict(cpc_payload)
-        provenance.append(
-            FieldProvenance(
-                "cpc",
-                "task",
-                "predict_cpc_v1",
-                accepted_hashes.get("predict_cpc_v1"),
-                "copy_from_task",
-            )
-        )
+        if "predict_cpc_v1" in accepted:
+            cpc_payload = accepted["predict_cpc_v1"]["cpc"]
+            analysis.cpc = CPC.from_dict(cpc_payload)
+            provenance.append(FieldProvenance("cpc", "task", "predict_cpc_v1", accepted_hashes.get("predict_cpc_v1"), "copy_from_task"))
+            completeness["cpc"] = "strong_prediction"
+        else:
+            analysis.cpc = CPC.empty_unknown()
+            analysis.findings = list(analysis.findings) + ["cpc_prediction_unavailable"]
+            completeness["cpc"] = "task_rejected_or_absent"
 
         # 3) Ambiguity
-        amb = accepted["predict_ambiguity_v1"]
-        analysis.ambiguity_present = bool(amb.get("ambiguity_present"))
-        analysis.ambiguity_types = [AmbiguityType(t) for t in (amb.get("ambiguity_types") or [])]
-        primary = amb.get("primary_ambiguity_type")
-        if primary is None and analysis.ambiguity_types:
-            primary = analysis.ambiguity_types[0].value
-        analysis.primary_ambiguity_type = AmbiguityType(primary) if primary else None
-        unresolved_raw = amb.get("unresolved_slots") or []
-        analysis.unresolved_slots = [
-            UnresolvedSlot.from_dict(item) for item in unresolved_raw
-        ]
-        for path in (
+        if "predict_ambiguity_v1" in accepted:
+            amb = accepted["predict_ambiguity_v1"]
+            analysis.ambiguity_present = bool(amb.get("ambiguity_present"))
+            analysis.ambiguity_types = [AmbiguityType(t) for t in (amb.get("ambiguity_types") or [])]
+            primary = amb.get("primary_ambiguity_type")
+            if primary is None and analysis.ambiguity_types:
+                primary = analysis.ambiguity_types[0].value
+            analysis.primary_ambiguity_type = AmbiguityType(primary) if primary else None
+            unresolved_raw = amb.get("unresolved_slots") or []
+            analysis.unresolved_slots = [UnresolvedSlot.from_dict(item) for item in unresolved_raw]
+            for path in (
             "ambiguity_present",
             "ambiguity_types",
             "primary_ambiguity_type",
             "unresolved_slots",
         ):
-            provenance.append(
+                provenance.append(
                 FieldProvenance(
                     path,
                     "task",
@@ -252,7 +274,16 @@ class StructuredAnalysisAssembler:
                     accepted_hashes.get("predict_ambiguity_v1"),
                     "copy_from_task",
                 )
-            )
+                )
+            completeness.update({"ambiguity_present": "strong_prediction", "ambiguity_types": "strong_prediction", "primary_ambiguity_type": "strong_prediction", "unresolved_slots": "strong_prediction"})
+        else:
+            analysis.ambiguity_present = None
+            analysis.ambiguity_types = []
+            analysis.primary_ambiguity_type = None
+            analysis.unresolved_slots = []
+            analysis.findings = list(analysis.findings) + ["ambiguity_prediction_unavailable"]
+            notes.append("ambiguity_prediction_unavailable_fail_safe")
+            completeness.update({"ambiguity_present": "task_rejected_or_absent", "ambiguity_types": "task_rejected_or_absent", "primary_ambiguity_type": "task_rejected_or_absent", "unresolved_slots": "task_rejected_or_absent"})
 
         # 4) Optional interpretations
         if "predict_interpretations_v1" in accepted:
@@ -274,6 +305,7 @@ class StructuredAnalysisAssembler:
                     "copy_from_task_if_present",
                 )
             )
+            completeness.update({"candidate_interpretations": "strong_prediction", "selected_interpretation": "strong_prediction"})
             provenance.append(
                 FieldProvenance(
                     "selected_interpretation",
@@ -285,6 +317,8 @@ class StructuredAnalysisAssembler:
             )
         else:
             notes.append("missing_optional_interpretations_forbid_silent_resolve")
+            analysis.findings = list(analysis.findings) + ["interpretation_prediction_unavailable"]
+            completeness.update({"candidate_interpretations": "task_rejected_or_absent", "selected_interpretation": "task_rejected_or_absent"})
             provenance.append(
                 FieldProvenance(
                     "candidate_interpretations",
@@ -315,6 +349,7 @@ class StructuredAnalysisAssembler:
                         "copy_if_task_present",
                     )
                 )
+            completeness.update({"risk_relevant": "strong_prediction", "risk_level": "strong_prediction", "capability_status": "strong_prediction"})
         else:
             analysis.risk_level = RiskLevel.UNKNOWN
             analysis.capability_status = CapabilityStatus.UNKNOWN
@@ -324,6 +359,7 @@ class StructuredAnalysisAssembler:
                 "capability_missing_treated_as_unknown",
             ]
             notes.append("missing_risk_capability_set_unknown_block_execute")
+            completeness.update({"risk_relevant": "deterministic_unknown", "risk_level": "deterministic_unknown", "capability_status": "deterministic_unknown"})
             for path in ("risk_relevant", "risk_level", "capability_status"):
                 provenance.append(
                     FieldProvenance(
@@ -353,8 +389,12 @@ class StructuredAnalysisAssembler:
             )
 
         # Classification derive (compound_* from types; reconcile present)
-        aggregate = derive_ambiguity_fields(analysis)
-        analysis = apply_classification_aggregate(analysis, aggregate)
+        if "predict_ambiguity_v1" in accepted:
+            aggregate = derive_ambiguity_fields(analysis)
+            analysis = apply_classification_aggregate(analysis, aggregate)
+        else:
+            analysis.compound_ambiguity = False
+            analysis.compound_ambiguity_count = 0
         provenance.append(
             FieldProvenance(
                 "compound_ambiguity",
@@ -375,11 +415,7 @@ class StructuredAnalysisAssembler:
         )
 
         # If interpretations missing under ambiguity, ensure we do not silent-resolve.
-        if (
-            "predict_interpretations_v1" not in accepted
-            and analysis.ambiguity_present
-            and analysis.recommended_strategy is None
-        ):
+        if "predict_interpretations_v1" not in accepted and analysis.ambiguity_present:
             notes.append("ambiguity_without_interpretations")
 
         # Router (authoritative)
@@ -483,12 +519,21 @@ class StructuredAnalysisAssembler:
             semantic_safety_accepted = False
             failures.append("execute_with_unknown_risk_or_capability")
 
-        status = "assembled" if production_schema_valid and not failures else "validation_failed"
+        failures.extend([f for f in failures if f not in hard_failures])
+        for task_id, task_state in task_states.items():
+            if task_state != "accepted":
+                notes.append(f"task_failure_retained:{task_id}:{task_state}")
+        complete = production_schema_valid and not failures and all(
+            task_states.get(t) == "accepted" for t in self.assembly_policy.get("required_for_complete", [])
+        )
+        status = "assembled_complete" if complete else (
+            "assembled_partial_fail_safe" if production_schema_valid else "validation_failed"
+        )
         if failures and not production_schema_valid:
             status = "validation_failed"
         elif failures and production_schema_valid:
             # Still assembled object but not fully accepted.
-            status = "assembled"
+            status = "assembled_partial_fail_safe"
             semantic_safety_accepted = False
 
         return AssemblyResult(
@@ -500,8 +545,17 @@ class StructuredAnalysisAssembler:
             failures=failures,
             router_decision=decision.to_dict(),
             production_schema_valid=production_schema_valid,
-            semantic_safety_accepted=semantic_safety_accepted and status == "assembled" and not failures,
+            semantic_safety_accepted=semantic_safety_accepted and status == "assembled_complete" and not failures,
             notes=notes,
+            completeness_map=completeness,
+            task_states=task_states,
+            metric_eligibility={
+                "intent": task_states.get("predict_intent_v1") == "accepted",
+                "cpc": task_states.get("predict_cpc_v1") == "accepted",
+                "ambiguity": task_states.get("predict_ambiguity_v1") == "accepted",
+                "interpretations": task_states.get("predict_interpretations_v1") == "accepted",
+                "risk_capability": task_states.get("predict_risk_capability_v1") == "accepted",
+            },
         )
 
 

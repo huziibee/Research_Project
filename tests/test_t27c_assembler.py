@@ -85,7 +85,7 @@ class T27CAssemblerExtraTests(unittest.TestCase):
 
     def test_missing_interpretations_forbid_silent_resolve(self) -> None:
         out = self._assembler().assemble(record_id="test:asm", task_results=self._required())
-        self.assertEqual(out.status, "assembled")
+        self.assertEqual(out.status, "assembled_complete")
         assert out.analysis is not None
         self.assertNotEqual(out.analysis.recommended_strategy, RouteLabel.SILENTLY_RESOLVE)
         self.assertTrue(any("missing_optional_interpretations" in n for n in out.notes))

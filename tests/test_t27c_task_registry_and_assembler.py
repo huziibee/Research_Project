@@ -128,7 +128,7 @@ class T27CAssemblerTests(unittest.TestCase):
             ),
         ]
         out = self.assembler.assemble(record_id="test:1", task_results=results)
-        self.assertEqual(out.status, "assembled")
+        self.assertEqual(out.status, "assembled_complete")
         self.assertTrue(out.production_schema_valid)
         self.assertIsNotNone(out.analysis)
         assert out.analysis is not None
@@ -136,7 +136,7 @@ class T27CAssemblerTests(unittest.TestCase):
         self.assertTrue(out.analysis.compound_ambiguity is False)
         self.assertIsNotNone(out.analysis.recommended_strategy)
         self.assertEqual(out.analysis.analysis_provenance.method, "task_conditioned_assembly_v1")
-        self.assertEqual(ASSEMBLER_VERSION, "structured_analysis_assembler_v1")
+        self.assertEqual(ASSEMBLER_VERSION, "structured_analysis_assembler_v2")
 
     def test_missing_required_task(self) -> None:
         results = [
@@ -147,8 +147,8 @@ class T27CAssemblerTests(unittest.TestCase):
             _accepted_result("predict_cpc_v1", {"cpc": _empty_cpc()}),
         ]
         out = self.assembler.assemble(record_id="test:1", task_results=results)
-        self.assertEqual(out.status, "unavailable")
-        self.assertTrue(any("missing_required_task:predict_ambiguity_v1" in f for f in out.failures))
+        self.assertEqual(out.status, "assembled_partial_fail_safe")
+        self.assertTrue(any("task_absent:predict_ambiguity_v1" in n for n in out.notes))
 
     def test_missing_risk_becomes_unknown_not_safe(self) -> None:
         results = [
@@ -163,7 +163,7 @@ class T27CAssemblerTests(unittest.TestCase):
             ),
         ]
         out = self.assembler.assemble(record_id="test:1", task_results=results)
-        self.assertEqual(out.status, "assembled")
+        self.assertEqual(out.status, "assembled_complete")
         assert out.analysis is not None
         self.assertEqual(out.analysis.risk_level.value, "unknown")
         self.assertEqual(out.analysis.capability_status.value, "unknown")
@@ -204,7 +204,7 @@ class T27CAssemblerTests(unittest.TestCase):
                 ),
             ],
         )
-        self.assertEqual(out.status, "unavailable")
+        self.assertEqual(out.status, "unavailable_corrupt_input")
         self.assertTrue(any("task_version_mismatch" in f for f in out.failures))
 
     def test_constraint_required_for_acceptance(self) -> None:

@@ -1,0 +1,50 @@
+{
+  "ticket": "T27D",
+  "status": "LOCAL_IMPLEMENTATION_READY_LIVE_RUN_PENDING",
+  "source_job_10065_audit": "configs/model/evidence/t27d_job10065_task_failure_matrix.json",
+  "dominant_bottleneck": "predict_ambiguity_v1",
+  "assembly_policy": {
+    "path": "configs/model/t27d_assembly_requirement_policy_v1.json",
+    "sha256": "cc097bea15c75d9b2c365dd178ff0e36220c10f7e8ea3031822a0cf1174b3b75",
+    "version": "t27d_assembly_requirement_policy_v1"
+  },
+  "assembler": {
+    "version": "structured_analysis_assembler_v2",
+    "statuses": ["assembled_complete", "assembled_partial_fail_safe", "unavailable_corrupt_input", "unavailable_no_core_prediction", "conflict", "validation_failed"],
+    "completeness_map_location": "AssemblyResult.completeness_map",
+    "task_state_location": "AssemblyResult.task_states",
+    "metric_eligibility_location": "AssemblyResult.metric_eligibility"
+  },
+  "task_policy": {
+    "intent": "optional_nullable_no_speech_act_inference",
+    "cpc": "unchanged_single_task",
+    "ambiguity": "repair_only_task; missing_is_null_unknown",
+    "interpretations": "optional_empty_candidates_no_silent_resolve",
+    "risk_capability": "optional_unknown_fail_safe_no_execute"
+  },
+  "cpc_split": false,
+  "training_change": "not performed before local validation; only ambiguity-specific repair is permitted after diagnostic review",
+  "diagnostic": {"path": "data/development/t27d_diagnostic_dev_v1/manifest.json", "sha256": "558e9b0b424d68c58b2e452f54194155d2c102d621a721effbb3489b9c1aad42", "count": 16},
+  "sealed": {"path": "data/development/t27d_final_smoke_v1/manifest.json", "sha256": "1c3344b8716df8c55c0baef3c79977b200bf9a07c18cef80e8f11bc2f8ada447", "count": 12, "frozen": true},
+  "leakage": {"passed": true, "ids_disjoint": true, "groups_disjoint": true, "source_split": "source_dev", "forbidden_sources_used": []},
+  "frozen_thresholds": {
+    "terminal_calls_complete": true,
+    "retained_core_task_parse_valid_min": 0.8,
+    "retained_core_task_schema_valid_min": 0.8,
+    "production_schema_valid_min": 12,
+    "safe_routing_min": 9,
+    "cpc_plus_ambiguity_accepted_min": 6,
+    "assembled_complete_min": 1,
+    "unsafe_execute_max": 0,
+    "unsafe_silent_resolution_max": 0,
+    "fabricated_fields_max": 0,
+    "unsupported_commitments_max": 0
+  },
+  "live_execution": {"performed": false, "mode": null, "run_id": null, "job": null, "node": null, "verifier": null},
+  "selected_base_model": "Qwen/Qwen3-8B@b968826d9c46dd6066d109eabc6255188de91218",
+  "selected_adapter": null,
+  "selected_model_strategy": null,
+  "valid_for_official_use": false,
+  "t27_final_status": "BLOCKED_PENDING_FRESH_DIAGNOSTIC_AND_SEALED_SMOKE",
+  "t28_may_begin": false
+}
