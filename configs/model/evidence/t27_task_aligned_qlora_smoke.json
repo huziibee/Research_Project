@@ -1,0 +1,113 @@
+{
+  "evidence_id": "t27_task_aligned_qlora_smoke",
+  "ticket": "T27",
+  "source_commit": "991732ea08e0d4db7b873cdc42fbcacd3fc5aac4",
+  "run_id": "t12-qlora-task-aligned-20260723T074715Z-991732e",
+  "slurm_job_id": "6059",
+  "node": "mscluster111",
+  "gpu_note": "1 GPU exclusive on biggpu; no permanent nodelist pin (exclude mscluster107,mscluster108)",
+  "mode": "real_cluster_training",
+  "operator_verify": "VERIFY_PASSED",
+  "selected_base_model": "Qwen/Qwen3-8B@b968826d9c46dd6066d109eabc6255188de91218",
+  "base_snapshot_verification": {
+    "immutable_identity": "Qwen/Qwen3-8B@b968826d9c46dd6066d109eabc6255188de91218",
+    "merged_into_base": false,
+    "base_dir_unchanged": true,
+    "base_frozen_verified": true
+  },
+  "environment_identity": "t12-cluster-training-task-aligned-v1",
+  "python_version_measured": "3.12.3",
+  "data": {
+    "train_manifest": "data/development/qlora_task_aligned_smoke_v2/manifest.json",
+    "train_manifest_hash": "f7cbf62faf94e6678d8bacc0563372097b45817240dad6a03fb107ca6a35a9d2",
+    "train_record_count": 64,
+    "validation_manifest": "data/development/qlora_task_aligned_smoke_val_v2/manifest.json",
+    "validation_record_ids": ["clara:1003", "clara:1180", "clara:1349", "codraw_icr_v2:4784"],
+    "validation_record_count": 4,
+    "source_train_only": true,
+    "source_dev_validation_only": true,
+    "leakage_passed": true
+  },
+  "training": {
+    "structured_targets_used": true,
+    "real_token_masks_used": true,
+    "command_reconstruction": false,
+    "optimiser_updates": 8,
+    "frozen_parameter_count": 4717851648,
+    "trainable_parameter_count": 7667712,
+    "supervised_token_diagnostics": {
+      "example_count": 64,
+      "examples_with_supervised_tokens": 64,
+      "mean_supervised_token_percentage": 6.7911
+    },
+    "loss_trace": [
+      {"step": 1, "loss": 4.7757182121276855, "supervised_token_count": 67},
+      {"step": 2, "loss": 6.489792346954346, "supervised_token_count": 52},
+      {"step": 3, "loss": 5.714330673217773, "supervised_token_count": 52},
+      {"step": 4, "loss": 5.292547702789307, "supervised_token_count": 53},
+      {"step": 5, "loss": 4.570764064788818, "supervised_token_count": 53},
+      {"step": 6, "loss": 3.7711942195892334, "supervised_token_count": 53},
+      {"step": 7, "loss": 3.2266745567321777, "supervised_token_count": 52},
+      {"step": 8, "loss": 2.688220977783203, "supervised_token_count": 52}
+    ]
+  },
+  "checkpoint_resume": {
+    "full_checkpoint_blob_sha256": "8168fc93f9dcee01a7dba587fdf674cbac2b53c86cfaded80719cfd9cf609d4b",
+    "full_checkpoint_blob_bytes": 61606939,
+    "adapter_reload_ok": true,
+    "optimiser_restore_ok": true,
+    "scheduler_restore_ok": true,
+    "rng_restore_ok": true,
+    "data_position_restore_ok": true,
+    "full_resume_ok": true
+  },
+  "adapter": {
+    "adapter_id": "qlora-task-aligned-smoke-adapter-t12-qlora-task-aligned-20260723T074715Z-991732e",
+    "safetensors_sha256": "275f76e8d3d2827e1b551b3cf9df394051db68a19279361785c6f4c8ec22860b",
+    "safetensors_bytes": 30709192,
+    "technical_smoke_only": true,
+    "selected_adapter": false,
+    "committed": false
+  },
+  "structured_output": {
+    "base_and_adapter_records_attempted": 4,
+    "adapter_differs_from_base_count": 4,
+    "braces_only_acceptance_forbidden": true,
+    "accepted_count": 0,
+    "status_counts": {"schema_invalid": 4},
+    "unsupported_commitment_accepted": false,
+    "per_record": [
+      {"record_id": "clara:1003", "base_status": "schema_invalid", "adapter_status": "schema_invalid", "outputs_differ": true},
+      {"record_id": "clara:1180", "base_status": "no_json", "adapter_status": "schema_invalid", "outputs_differ": true},
+      {"record_id": "clara:1349", "base_status": "no_json", "adapter_status": "schema_invalid", "outputs_differ": true},
+      {"record_id": "codraw_icr_v2:4784", "base_status": "schema_invalid", "adapter_status": "schema_invalid", "outputs_differ": true}
+    ],
+    "note": "Adapter emitted JSON that parsed but failed the strict model-facing semantic schema (often schema-shaped keys such as properties/required/type). Zero accepted strict semantic outputs."
+  },
+  "runtime": {
+    "runtime_seconds": 96.026,
+    "wall_elapsed": "00:02:28",
+    "peak_vram_bytes": 24163487744
+  },
+  "prior_failed_attempt": {
+    "run_id": "t12-qlora-task-aligned-20260723T074258Z-de18cec",
+    "slurm_job_id": "6058",
+    "node": "mscluster108",
+    "failure": "apptainer_userns_setgroups_permission_denied",
+    "evidence": "configs/model/evidence/t27_task_aligned_qlora_smoke_job6058_fail.json"
+  },
+  "prior_mechanics_smoke_retained": "configs/model/evidence/qlora_smoke_v1/",
+  "identities_unchanged": {
+    "selected_base_model": "Qwen/Qwen3-8B@b968826d9c46dd6066d109eabc6255188de91218",
+    "selected_adapter": null,
+    "selected_model_strategy": null,
+    "valid_for_official_use": false
+  },
+  "statuses": {
+    "mechanics_status": "PASS",
+    "task_aligned_training_status": "PASS",
+    "structured_output_smoke_status": "BLOCKED",
+    "ticket_status": "BLOCKED"
+  },
+  "t28_may_begin": false
+}
