@@ -83,8 +83,9 @@ EVIDENCE_FILES = (
     "structured_output_results.json",
     "resume_components.json",
     "run_manifest.json",
+    "supervision_density.json",
 )
-OPTIONAL_EVIDENCE_FILES = ("supervision_density.json",)
+OPTIONAL_EVIDENCE_FILES: tuple[str, ...] = ()
 
 JOB6059_EVIDENCE_PATHS = frozenset(
     {
@@ -522,6 +523,64 @@ def _write_failure_evidence(
         "structured_output_results": dict(structured_output or {"records": [], "status": "not_run"}),
         "loss_mask_summary": loss,
         "supervision_density": density,
+    }
+
+
+def ensure_runtime_jsonschema() -> dict[str, Any]:
+    """Ensure ``jsonschema`` is importable for production semantic validation.
+
+    Generic runtime correction for the training container: production
+    ``validate_semantic_payload`` requires Draft 2020-12 validation. Job 6307
+    failed with ``ModuleNotFoundError: No module named 'jsonschema'`` because the
+    bind-mounted training-site-packages lacked it (T27 job 6059 never reached
+    Draft202012 validation — outputs failed earlier on unknown fields).
+    """
+    try:
+        import jsonschema  # noqa: F401
+
+        return {"status": "already_available", "package": "jsonschema"}
+    except ImportError:
+        pass
+
+    import subprocess
+    import sys
+
+    site = os.environ.get("T12_TRAINING_SITE_PACKAGES", "").strip()
+    if not site:
+        raise QloraStructuredEmissionRecoveryError(
+            "jsonschema_missing_and_T12_TRAINING_SITE_PACKAGES_unset"
+        )
+    site_path = Path(site)
+    site_path.mkdir(parents=True, exist_ok=True)
+    cmd = [
+        sys.executable,
+        "-m",
+        "pip",
+        "install",
+        "--upgrade",
+        "--target",
+        str(site_path),
+        "jsonschema",
+    ]
+    completed = subprocess.run(cmd, check=False, capture_output=True, text=True)
+    if completed.returncode != 0:
+        raise QloraStructuredEmissionRecoveryError(
+            "jsonschema_install_failed:"
+            f"rc={completed.returncode}; stderr={completed.stderr[-500:]}"
+        )
+    site_str = str(site_path)
+    if site_str not in sys.path:
+        sys.path.insert(0, site_str)
+    try:
+        import jsonschema  # noqa: F401
+    except ImportError as exc:
+        raise QloraStructuredEmissionRecoveryError(
+            "jsonschema_still_missing_after_install"
+        ) from exc
+    return {
+        "status": "installed_into_training_site_packages",
+        "package": "jsonschema",
+        "target": site_str,
     }
 
 
@@ -1444,7 +1503,11 @@ def run_structured_emission_recovery_training(
 
     try:
         max_seq_len = int(resolved_config["sequence"]["max_seq_len"])
+        jsonschema_runtime: dict[str, Any] | None = None
         if use_real:
+            # Generic runtime fix after job 6307: production schema validation
+            # requires jsonschema in the training-site-packages bind mount.
+            jsonschema_runtime = ensure_runtime_jsonschema()
             outcome = run_real_structured_emission_recovery(
                 selected_base_model=selected_base_model,
                 dataset_rows=train_rows,
@@ -1454,6 +1517,7 @@ def run_structured_emission_recovery_training(
                 adapter_id=adapter_id,
                 root=repo,
             )
+            outcome["jsonschema_runtime"] = jsonschema_runtime
         else:
             examples = _build_envelope_examples(
                 train_rows,
