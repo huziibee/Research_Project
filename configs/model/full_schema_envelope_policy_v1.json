@@ -1,0 +1,236 @@
+{
+  "policy_id": "full_schema_envelope_policy_v1",
+  "policy_version": "1.0.0",
+  "ticket": "T27B",
+  "envelope_id": "full_schema_envelope_v1",
+  "production_schema": "t12_model_semantic_output",
+  "prompt_contract_version": "t27b_full_schema_prompt_v1",
+  "purpose": "Every training target uses the same complete production-compatible structural envelope. Structural tokens are supervised; strong/weak semantic values are supervised per eligibility; unavailable semantic value tokens are masked (-100). No fabricated supervised labels.",
+  "structural_token_supervision": {
+    "enabled": true,
+    "covers": [
+      "braces",
+      "brackets",
+      "commas",
+      "colons",
+      "quotes",
+      "field_names",
+      "stable_nested_keys",
+      "schema_version_markers_if_model_facing"
+    ],
+    "note": "Structural and field-name tokens retain causal-LM token IDs in the loss."
+  },
+  "strong_semantic_supervision": {
+    "enabled": true,
+    "eligibility_statuses": ["eligible"],
+    "token_policy": "retain_token_ids",
+    "causal_lm_weight": 1.0
+  },
+  "weak_semantic_supervision": {
+    "enabled": true,
+    "eligibility_statuses": ["weakly_eligible"],
+    "token_policy": "retain_token_ids",
+    "causal_lm_weight": 1.0,
+    "metadata_records_weak": true,
+    "note": "Causal-LM token IDs use weight 1.0; weakness is recorded in metadata only (not down-weighted at the token-ID layer for this envelope)."
+  },
+  "unavailable_semantic_masking": {
+    "enabled": true,
+    "value_tokens": "mask_to_-100",
+    "envelope_filler_required": true,
+    "never_fabricate_supervised_negatives": true
+  },
+  "field_decisions": {
+    "ambiguity_present": {
+      "treatment": "strong_when_eligible",
+      "field_group": "ambiguity_presence_types",
+      "unavailable_representation": false,
+      "notes": "Boolean never known: put false in envelope but MASK the value token; do not supervise false as a negative."
+    },
+    "ambiguity_types": {
+      "treatment": "strong_when_eligible",
+      "field_group": "ambiguity_presence_types",
+      "unavailable_representation": [],
+      "notes": "Empty list is structural placeholder; brackets may be structural; value tokens masked when unavailable."
+    },
+    "candidate_interpretations": {
+      "treatment": "strong_when_eligible",
+      "field_group": "candidate_interpretations",
+      "unavailable_representation": [],
+      "notes": "Deterministic candidate order when supervised; empty list when unavailable."
+    },
+    "capability_status": {
+      "treatment": "honest_unknown_when_permitted",
+      "field_group": "capability",
+      "unavailable_representation": null,
+      "notes": "Schema allows null or unknown. Use null as masked unavailable filler to avoid asserting unknown as a supervised label. If unknown is ever placed in the envelope without eligibility, MASK it."
+    },
+    "clarification_question": {
+      "treatment": "strong_when_eligible",
+      "field_group": "clarification_target",
+      "unavailable_representation": null,
+      "notes": "Nullable string: null in envelope, MASK null token when unavailable."
+    },
+    "clarification_subtype": {
+      "treatment": "strong_when_eligible",
+      "field_group": "clarification_target",
+      "unavailable_representation": null,
+      "notes": "Nullable string: null in envelope, MASK null token when unavailable."
+    },
+    "clarification_targets": {
+      "treatment": "strong_when_eligible",
+      "field_group": "clarification_target",
+      "unavailable_representation": [],
+      "notes": "Empty list structural placeholder when unavailable."
+    },
+    "compound_ambiguity": {
+      "treatment": "strong_when_eligible",
+      "field_group": "compound_ambiguity",
+      "unavailable_representation": false,
+      "notes": "Boolean never known: false in envelope, MASK value token."
+    },
+    "compound_ambiguity_count": {
+      "treatment": "strong_when_eligible",
+      "field_group": "compound_ambiguity",
+      "unavailable_representation": 0,
+      "notes": "Schema-compatible zero filler; MASK value token when unavailable."
+    },
+    "context_sampling_uncertainty": {
+      "treatment": "masked_unavailable_envelope",
+      "field_group": null,
+      "unavailable_representation": null,
+      "notes": "Never in training policy; always masked_unavailable_envelope."
+    },
+    "cpc": {
+      "treatment": "strong_when_eligible",
+      "field_group": "cpc_slots",
+      "unavailable_representation": {
+        "pattern": "full_13_slot_object",
+        "slot_status": "unknown",
+        "slot_value": null
+      },
+      "notes": "Unavailable CPC: full 13-slot object with status=unknown and value=null. MASK semantic values; SUPERVISE structure and field names. Slots always complete in CPC_SLOT_NAMES order at build time; canonical JSON uses sort_keys for nested objects."
+    },
+    "intent_summary": {
+      "treatment": "strong_when_eligible",
+      "field_group": "speech_act_intent",
+      "unavailable_representation": null,
+      "notes": "Nullable string: null in envelope, MASK null token when unavailable. Alias: intent."
+    },
+    "primary_ambiguity_type": {
+      "treatment": "strong_when_eligible",
+      "field_group": "ambiguity_presence_types",
+      "unavailable_representation": null,
+      "notes": "Nullable string/enum: null in envelope, MASK when unavailable."
+    },
+    "recommended_strategy": {
+      "treatment": "strong_when_eligible",
+      "field_group": "route",
+      "unavailable_representation": "execute",
+      "notes": "Schema-valid route filler when unavailable (execute with empty strategy_sequence). MASK value token. If supervised as clarify/silently_resolve/face_preserving_rejection/multi_step without required companion fields, envelope build must reject the record."
+    },
+    "rejection_reason": {
+      "treatment": "strong_when_eligible",
+      "field_group": "rejection",
+      "unavailable_representation": null,
+      "notes": "Nullable string: null in envelope, MASK when unavailable."
+    },
+    "resolution_evidence": {
+      "treatment": "masked_unavailable_envelope",
+      "field_group": null,
+      "unavailable_representation": [],
+      "notes": "Never in training policy; always masked. Empty list structural placeholder."
+    },
+    "resolution_method": {
+      "treatment": "masked_unavailable_envelope",
+      "field_group": null,
+      "unavailable_representation": null,
+      "notes": "Never in training policy; always masked_unavailable_envelope."
+    },
+    "resolved_slots": {
+      "treatment": "masked_unavailable_envelope",
+      "field_group": null,
+      "unavailable_representation": [],
+      "notes": "Never in training policy; always masked. Empty list structural placeholder."
+    },
+    "risk_level": {
+      "treatment": "honest_unknown_when_permitted",
+      "field_group": "risk",
+      "unavailable_representation": null,
+      "notes": "Schema allows null or unknown. Use null as masked unavailable filler to avoid asserting unknown as supervised. If unknown is used without eligibility, MASK it."
+    },
+    "risk_relevant": {
+      "treatment": "strong_when_eligible",
+      "field_group": "risk",
+      "unavailable_representation": false,
+      "notes": "Boolean never known: false in envelope, MASK value token."
+    },
+    "selected_interpretation": {
+      "treatment": "strong_when_eligible",
+      "field_group": "candidate_interpretations",
+      "unavailable_representation": null,
+      "notes": "Nullable object/string: null in envelope, MASK when unavailable."
+    },
+    "speech_act": {
+      "treatment": "strong_when_eligible",
+      "field_group": "speech_act_intent",
+      "unavailable_representation": null,
+      "notes": "Nullable enum: null in envelope, MASK when unavailable."
+    },
+    "strategy_sequence": {
+      "treatment": "strong_when_eligible",
+      "field_group": "route",
+      "unavailable_representation": [],
+      "notes": "Empty list when unavailable or when recommended_strategy is not multi_step."
+    },
+    "supporting_evidence": {
+      "treatment": "masked_unavailable_envelope",
+      "field_group": null,
+      "unavailable_representation": [],
+      "notes": "Never in training policy; always masked. Empty list structural placeholder."
+    },
+    "unresolved_slots": {
+      "treatment": "masked_unavailable_envelope",
+      "field_group": null,
+      "unavailable_representation": [],
+      "notes": "Never in training policy; always masked. Empty list structural placeholder."
+    }
+  },
+  "always_masked_fields": [
+    "unresolved_slots",
+    "supporting_evidence",
+    "resolved_slots",
+    "resolution_method",
+    "resolution_evidence",
+    "context_sampling_uncertainty"
+  ],
+  "weak_when_weakly_eligible_note": "Fields whose field_group is weakly_eligible use treatment weak_when_weakly_eligible at runtime: value tokens retain IDs; metadata records weak=true.",
+  "never_fabricate": true,
+  "minimum_useful_supervision": {
+    "frozen_before_live_results": true,
+    "frozen_at": "2026-07-23T00:00:00Z",
+    "min_semantic_supervised_tokens_per_example": 1,
+    "min_structural_supervised_tokens_per_example": 1,
+    "min_mean_supervised_token_percentage": 12.0,
+    "note": "Materially above prior job-6059 partial-target density (~6.79%) without fabricating labels."
+  },
+  "pass_thresholds": {
+    "frozen_before_live_results": true,
+    "frozen_at": "2026-07-23T00:00:00Z",
+    "sealed_final_count": 8,
+    "adapter_parse_valid_min": 6,
+    "adapter_schema_valid_min": 5,
+    "adapter_semantic_valid_min": 1,
+    "adapter_safety_accepted_min": 1,
+    "adapter_final_accepted_min": 1,
+    "adapter_differs_from_base_min": 1,
+    "unsupported_commitment_accepted_max": 0,
+    "base_attempted_min": 8,
+    "adapter_attempted_min": 8
+  },
+  "references": {
+    "training_target_policy": "configs/data/training_target_policy_v1.json",
+    "production_schema": "configs/model/schema/t12_model_semantic_output.schema.json",
+    "job6059_evidence": "configs/model/evidence/t27_task_aligned_qlora_smoke.json"
+  }
+}
