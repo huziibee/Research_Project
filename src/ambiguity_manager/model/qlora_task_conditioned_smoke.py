@@ -361,23 +361,14 @@ def ensure_runtime_lm_format_enforcer() -> dict[str, Any]:
         "pip",
         "install",
         "--upgrade",
-        "--force-reinstall",
         "--disable-pip-version-check",
         "--no-input",
+        "--no-cache-dir",
         "--target",
         site_str,
         *packages,
     ]
     completed = subprocess.run(cmd_deps, check=False, capture_output=True, text=True)
-    if completed.returncode != 0:
-        # Retry once after clearing again (handles race / leftover dist-info).
-        removed.extend(_clear_stale_targets(site_path))
-        completed = subprocess.run(cmd_deps, check=False, capture_output=True, text=True)
-    if completed.returncode != 0:
-        raise QloraTaskConditionedSmokeError(
-            f"lm_format_enforcer_install_failed:rc={completed.returncode};"
-            f"removed={removed};stderr={completed.stderr[-800:]}"
-        )
     for name in list(sys.modules):
         if name == "lmformatenforcer" or name.startswith(
             ("lmformatenforcer.", "interegular")
@@ -386,10 +377,24 @@ def ensure_runtime_lm_format_enforcer() -> dict[str, Any]:
     importlib.invalidate_caches()
     _prepend_site(site_str)
     retry = _try_import()
+    if retry is not None and completed.returncode != 0:
+        # NFS bind mounts can leave busy .nfs* files during pip cleanup even when
+        # the package body is already usable; clear again and retry once.
+        removed.extend(_clear_stale_targets(site_path))
+        completed = subprocess.run(cmd_deps, check=False, capture_output=True, text=True)
+        for name in list(sys.modules):
+            if name == "lmformatenforcer" or name.startswith(
+                ("lmformatenforcer.", "interegular")
+            ):
+                del sys.modules[name]
+        importlib.invalidate_caches()
+        _prepend_site(site_str)
+        retry = _try_import()
     if retry is not None:
         raise QloraTaskConditionedSmokeError(
             f"lm_format_enforcer_still_missing_after_install:{retry};"
-            f"removed={removed};pip_stdout_tail={completed.stdout[-400:]}"
+            f"pip_rc={completed.returncode};removed={removed};"
+            f"stderr={completed.stderr[-600:]};stdout_tail={completed.stdout[-300:]}"
         )
     return {
         "status": "installed_into_training_site_packages",
@@ -398,6 +403,7 @@ def ensure_runtime_lm_format_enforcer() -> dict[str, Any]:
         "dependencies": list(packages),
         "target": site_str,
         "removed_stale_targets": sorted(set(removed)),
+        "pip_returncode": completed.returncode,
         "prior_import_error": existing,
     }
 
