@@ -127,27 +127,37 @@ def _build_token_enforcer_tokenizer_data(tokenizer: Any) -> Any:
         raise ConstrainedDecodingError("tokenizer_vocab_size_unavailable")
 
     regular_tokens: list[tuple[int, str, bool]] | None = None
+    cache_dirs: list[Path] = []
     site = os.environ.get("T12_TRAINING_SITE_PACKAGES", "").strip()
-    repo = str(getattr(tokenizer, "name_or_path", "") or "unknown")
-    # Prefer selected revision fragment when present in name_or_path snapshots.
-    cache_path = None
     if site:
-        cache_dir = Path(site) / "caches"
-        # Accept any matching vocab-size cache for this vocab width.
-        if cache_dir.is_dir():
-            matches = sorted(
-                cache_dir.glob(f"lmfe_regular_tokens_*_{vocab_size}.json"),
-                key=lambda p: p.stat().st_mtime,
-                reverse=True,
-            )
-            if matches:
-                cache_path = matches[0]
-        if cache_path is not None and cache_path.is_file():
-            payload = json.loads(cache_path.read_text(encoding="utf-8"))
-            raw = payload.get("regular_tokens") or []
-            regular_tokens = [
-                (int(tid), str(text), bool(flag)) for tid, text, flag in raw
-            ]
+        cache_dirs.append(Path(site) / "caches")
+    # Apptainer sbatch historically exports site packages only via PYTHONPATH,
+    # not T12_TRAINING_SITE_PACKAGES (jobs 7145/7407/9153 rebuilt the 150k table).
+    try:
+        import lmformatenforcer as _lmfe
+
+        pkg_site = Path(_lmfe.__file__).resolve().parents[1]
+        cache_dirs.append(pkg_site / "caches")
+    except Exception:  # noqa: BLE001
+        pass
+    cache_path = None
+    for cache_dir in cache_dirs:
+        if not cache_dir.is_dir():
+            continue
+        matches = sorted(
+            cache_dir.glob(f"lmfe_regular_tokens_*_{vocab_size}.json"),
+            key=lambda p: p.stat().st_mtime,
+            reverse=True,
+        )
+        if matches:
+            cache_path = matches[0]
+            break
+    if cache_path is not None and cache_path.is_file():
+        payload = json.loads(cache_path.read_text(encoding="utf-8"))
+        raw = payload.get("regular_tokens") or []
+        regular_tokens = [
+            (int(tid), str(text), bool(flag)) for tid, text, flag in raw
+        ]
 
     if regular_tokens is None:
         token_0 = int(tokenizer.encode("0")[-1])

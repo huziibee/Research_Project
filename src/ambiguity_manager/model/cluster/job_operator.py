@@ -625,6 +625,7 @@ class ClusterJobOperator:
                     f'"${{T12_TRAINING_SITE_PACKAGES:-${{T12_CLUSTER_ROOT}}/{site_rel}}}"\n'
                 )
                 pythonpath_env = (
+                    "  --env T12_TRAINING_SITE_PACKAGES=\"${T12_TRAINING_SITE_PACKAGES}\" \\\n"
                     "  --env PYTHONPATH=\"${T12_TRAINING_SITE_PACKAGES}:${SRC_ROOT}/src"
                     "${PYTHONPATH:+:$PYTHONPATH}\" \\\n"
                 )
