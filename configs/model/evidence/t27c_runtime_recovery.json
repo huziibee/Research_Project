@@ -1,11 +1,13 @@
 {
   "evidence_id": "t27c_runtime_recovery",
   "ticket": "T27C-R1",
-  "status": "BLOCKED — RUNTIME INFERENCE",
+  "status": "BLOCKED - SEMANTIC/ASSEMBLY THRESHOLDS",
+  "source_commit_used_for_sealed_run": "6419cfc479c7cf53d347c3343b6e2a859cad946b",
+  "current_verification_commit": "0293c8461b01e6892f3927a17623c0725d6ce1f4",
   "selected_base_model": "Qwen/Qwen3-8B@b968826d9c46dd6066d109eabc6255188de91218",
   "selected_adapter": null,
   "selected_model_strategy": null,
-  "source_commit": "54ba3438c28e2908b385cec7a41536622e9b44b1",
+  "t28_may_begin": false,
   "job_9479": {
     "slurm_job_id": "9479",
     "state": "CANCELLED by 328600030",
@@ -18,6 +20,7 @@
     "last_application_stage": "evaluation model loading before first task generation",
     "root_cause_classification": "insufficient observability",
     "genuine_generation_hang": false,
+    "cancellation_source": "operator cancellation propagated by Slurm signal",
     "evidence_paths": [
       "outputs/t12_cluster_jobs/t12-qlora-task-conditioned-20260723T171913Z-f3fdf91/remote_metadata.json",
       "outputs/t12_cluster_jobs/t12-qlora-task-conditioned-20260723T171913Z-f3fdf91/pulled",
@@ -38,6 +41,11 @@
   "runtime_design": {
     "base_model_loads_per_worker": 1,
     "adapter_loads_per_worker": 1,
+    "sealed_training_plus_evaluation_load_counts": {
+      "base_model_loads": 3,
+      "adapter_loads": 2,
+      "constraint_compilations": 5
+    },
     "constraint_compilation_cache": "task-schema hash",
     "heartbeat": "atomic heartbeat.json; 30-second policy",
     "journal": "append-only prediction_journal.jsonl with raw-output hashes",
@@ -45,7 +53,12 @@
     "failure_status": "prediction_timeout",
     "unconstrained_fallback": false,
     "qwen_chat_template": "apply_chat_template with add_generation_prompt=true and enable_thinking=false",
-    "continuation_isolation": "generated output must preserve the encoded prompt prefix"
+    "continuation_isolation": "generated output must preserve the encoded prompt prefix",
+    "task_timeout_rule": "max(declared_minimum_seconds, diagnostic_p95_seconds * multiplier)",
+    "task_timeout_policy_seconds": 300,
+    "max_attempts": 1,
+    "max_output_bytes": 65536,
+    "diagnostic_p95_multiplier": 3
   },
   "adapter_reuse": {
     "source_run": "t12-qlora-task-conditioned-20260723T171913Z-f3fdf91",
@@ -54,8 +67,67 @@
     "selected_adapter": null,
     "selected_model_strategy": null
   },
+  "sealed_run": {
+    "run_id": "t12-qlora-task-conditioned-20260723T185137Z-6419cfc",
+    "slurm_job_id": "10065",
+    "node": "mscluster112",
+    "gpu": "one exclusive biggpu allocation; exact model not retained",
+    "command": "python scripts/t12_cluster_job.py --run qlora_task_conditioned_smoke --poll --pull",
+    "mode": "full smoke training plus sealed inference",
+    "runtime_seconds": 245.292,
+    "peak_vram_bytes": 28080521216,
+    "expected_task_calls": 120,
+    "completed_task_calls": 120,
+    "timed_out_task_calls": 0,
+    "failed_task_calls": 0,
+    "missing_task_calls": 0,
+    "heartbeat_final_phase": "evaluation_complete",
+    "heartbeat_final_progress": "120/120",
+    "journal_entries": 120,
+    "journal_reconciles": true,
+    "verifier": "VERIFY_PASSED"
+  },
+  "task_metrics": {
+    "base": {"attempted": 60, "parse_valid": 15, "parse_valid_rate": 0.25, "schema_valid": 15, "schema_valid_rate": 0.25, "semantic_valid": 15, "semantic_valid_rate": 0.25},
+    "adapter": {"attempted": 60, "parse_valid": 33, "parse_valid_rate": 0.55, "schema_valid": 33, "schema_valid_rate": 0.55, "semantic_valid": 33, "semantic_valid_rate": 0.55}
+  },
+  "assembly_metrics": {
+    "base": {"attempts": 12, "production_schema_valid": 0, "semantic_safety_accepted": 0, "status_counts": {"unavailable": 12}},
+    "adapter": {"attempts": 12, "production_schema_valid": 0, "semantic_safety_accepted": 0, "status_counts": {"unavailable": 12}},
+    "adapter_vs_base_diff_count": 44,
+    "unsupported_commitment_findings": 0,
+    "fabricated_field_findings": 0,
+    "unknown_risk_outcomes": 0,
+    "unknown_capability_outcomes": 0
+  },
   "diagnostic_run_id": null,
-  "sealed_run_id": null,
-  "semantic_thresholds": "unchanged and not evaluated",
-  "t28_may_begin": false
+  "diagnostic_note": "No separate cluster diagnostic was run because job 9479 adapter reuse was rejected and only one full rerun was permitted; bounded local/runtime tests and the sealed journal verified terminal progress. The 300-second policy minimum was not tuned from sealed outputs.",
+  "backend": {
+    "package": "lm-format-enforcer",
+    "version": "0.10.12",
+    "status": "already_available",
+    "unconstrained_fallback": false,
+    "same_backend_base_and_adapter": true
+  },
+  "verification": {
+    "adapter_hash": "9a206da3ac205a725bfbcdcc8958d16ec760d63db1d31e53e019a1281a734212",
+    "base_identity_verified": true,
+    "task_registry_verified": true,
+    "field_registry_verified": true,
+    "training_manifest_verified": true,
+    "sealed_manifest_verified": true,
+    "assembler_verified": true,
+    "runtime_recovery_status": "PASS",
+    "t27c_semantic_status": "BLOCKED - SEMANTIC/ASSEMBLY THRESHOLDS",
+    "t27_status": "BLOCKED",
+    "t28_may_begin": false
+  },
+  "evidence_paths": [
+    "configs/model/evidence/t27c_runtime_recovery.json",
+    "docs/reports/ticket_T27C_R1_job9479_forensic_diagnosis.md",
+    "docs/reports/ticket_T27C_R1_runtime_recovery.md",
+    "outputs/t12_cluster_jobs/t12-qlora-task-conditioned-20260723T185137Z-6419cfc/pulled/heartbeat.json",
+    "outputs/t12_cluster_jobs/t12-qlora-task-conditioned-20260723T185137Z-6419cfc/pulled/prediction_journal.jsonl",
+    "outputs/t12_cluster_jobs/t12-qlora-task-conditioned-20260723T185137Z-6419cfc/pulled/qlora_task_conditioned_smoke_result.json"
+  ]
 }
