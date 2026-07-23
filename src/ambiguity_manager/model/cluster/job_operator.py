@@ -55,6 +55,7 @@ ALLOWED_UNTRACKED_PREFIXES = (
     "test-output.txt",
     "Benjamin_T13_Calibration_Annotation.zip",
     "Steve_T13_Calibration_Annotation.zip",
+    "pyproject.zip",
     "scripts/build_annotator_delivery_zips.py",
 )
 ALLOWED_DIRTY_PREFIXES = (
