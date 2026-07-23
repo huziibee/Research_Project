@@ -104,7 +104,11 @@ def compile_task_constraint(json_schema: Mapping[str, Any]) -> Any:
 
 
 def _build_token_enforcer_tokenizer_data(tokenizer: Any) -> Any:
-    """Mirror lm-format-enforcer's tokenizer-data builder without the broken import."""
+    """Mirror lm-format-enforcer's tokenizer-data builder without the broken import.
+
+    Uses ``batch_decode`` in chunks so Qwen3's ~150k vocab does not stall the
+    job for tens of minutes (cancelled job 7145 was stuck here).
+    """
     from lmformatenforcer import TokenEnforcerTokenizerData
 
     cache_key = id(tokenizer)
@@ -112,23 +116,30 @@ def _build_token_enforcer_tokenizer_data(tokenizer: Any) -> Any:
     if cached is not None:
         return cached
 
-    vocab_size = int(getattr(tokenizer, "vocab_size", 0) or len(tokenizer))
-    # Prefer the full tokenizer length when it exceeds vocab_size (Qwen3: 151669 vs 151643).
+    vocab_size = int(getattr(tokenizer, "vocab_size", 0) or 0)
     try:
-        vocab_size = max(vocab_size, len(tokenizer))
+        vocab_size = max(vocab_size, int(len(tokenizer)))
     except Exception:  # noqa: BLE001
         pass
+    if vocab_size <= 0:
+        raise ConstrainedDecodingError("tokenizer_vocab_size_unavailable")
 
-    token_0 = tokenizer.encode("0")[-1]
-    special_ids = set(getattr(tokenizer, "all_special_ids", None) or [])
+    token_0 = int(tokenizer.encode("0")[-1])
+    special_ids = set(int(x) for x in (getattr(tokenizer, "all_special_ids", None) or []))
     regular_tokens: list[tuple[int, str, bool]] = []
-    for token_idx in range(vocab_size):
-        if token_idx in special_ids:
+    chunk = 4096
+    for start in range(0, vocab_size, chunk):
+        idxs = [i for i in range(start, min(start + chunk, vocab_size)) if i not in special_ids]
+        if not idxs:
             continue
-        decoded_after_0 = tokenizer.decode([token_0, token_idx])[1:]
-        decoded_regular = tokenizer.decode([token_idx])
-        is_word_start_token = len(decoded_after_0) > len(decoded_regular)
-        regular_tokens.append((token_idx, decoded_after_0, is_word_start_token))
+        pair_ids = [[token_0, i] for i in idxs]
+        singles = [[i] for i in idxs]
+        decoded_after_0 = tokenizer.batch_decode(pair_ids)
+        decoded_regular = tokenizer.batch_decode(singles)
+        for token_idx, after_0, regular in zip(idxs, decoded_after_0, decoded_regular):
+            after_0_s = after_0[1:] if after_0 else ""
+            is_word_start_token = len(after_0_s) > len(regular or "")
+            regular_tokens.append((token_idx, after_0_s, is_word_start_token))
 
     def _decode(tokens: list[int]) -> str:
         return tokenizer.decode(tokens).rstrip("�")
