@@ -228,6 +228,7 @@ def verify_adapter_reuse(
     task_registry_hash: str,
     field_registry_hash: str,
     source_commit: str,
+    expected_adapter_sha256: str | None = None,
 ) -> dict[str, Any]:
     """Verify a technical adapter without selecting it for official use."""
     required = ["adapter_model.safetensors", "adapter_config.json", "adapter_identity.json", "training_state.json"]
@@ -249,7 +250,7 @@ def verify_adapter_reuse(
             "training_manifest_hash": manifest.get("smoke_data_manifest_hash") == train_manifest_hash,
             "config_hash": manifest.get("training_config_hash") == expected_config_hash,
             "source_commit": source.get("source_commit_sha") == source_commit,
-            "adapter_hash": bool(identity.get("safetensors_sha256")) and _file_hash(adapter_dir / "adapter_model.safetensors") == identity.get("safetensors_sha256"),
+            "adapter_hash": _file_hash(adapter_dir / "adapter_model.safetensors") == (identity.get("safetensors_sha256") or expected_adapter_sha256),
             "not_selected": identity.get("selected_adapter") is False,
         }
         status = "reusable" if all(checks.values()) else "identity_mismatch"

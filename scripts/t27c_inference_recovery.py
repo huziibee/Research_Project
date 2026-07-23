@@ -56,6 +56,7 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--records-manifest", type=Path, default=None)
     parser.add_argument("--task-matrix", type=Path, default=None)
     parser.add_argument("--adapter-source-commit", default=None)
+    parser.add_argument("--adapter-sha256", default=None)
     return parser
 
 
@@ -75,6 +76,7 @@ def main(argv: list[str] | None = None) -> int:
         task_registry_hash=_task_registry_hash(root),
         field_registry_hash=_field_registry_hash(root),
         source_commit=adapter_source_commit,
+        expected_adapter_sha256=args.adapter_sha256,
     )
     if reuse.get("status") != "reusable":
         args.result_dir.mkdir(parents=True, exist_ok=True)
