@@ -448,6 +448,12 @@ def _prepare_training_tensors(
     *,
     max_seq_len: int,
 ) -> list[dict[str, Any]]:
+    """Pad/trim pre-tokenised examples (mock / CPU contract path only).
+
+    Real-cluster training must call
+    :func:`_prepare_training_tensors_with_hf_tokenizer` so labels use the
+    immutable base tokenizer vocabulary — not DeterministicCharTokenizer IDs.
+    """
     prepared: list[dict[str, Any]] = []
     for ex in examples:
         input_ids = [int(x) for x in ex["input_ids"]]
@@ -485,6 +491,94 @@ def _prepare_training_tensors(
                 "labels": labels,
                 "attention_mask": attention,
                 "mask_diagnostics": dict(ex.get("mask_diagnostics") or {}),
+            }
+        )
+    return prepared
+
+
+class _HFTokenizerAdapter:
+    """Thin encode/decode wrapper matching the training TokenizerLike protocol."""
+
+    def __init__(self, tokenizer: Any) -> None:
+        self._tokenizer = tokenizer
+        pad = getattr(tokenizer, "pad_token_id", None)
+        eos = getattr(tokenizer, "eos_token_id", None)
+        self.pad_token_id = int(pad if pad is not None else (eos or 0))
+
+    def encode(self, text: str, add_special_tokens: bool = False) -> list[int]:
+        return [
+            int(x)
+            for x in self._tokenizer.encode(text, add_special_tokens=add_special_tokens)
+        ]
+
+    def decode(self, ids: Sequence[int], skip_special_tokens: bool = True) -> str:
+        return str(
+            self._tokenizer.decode(list(ids), skip_special_tokens=skip_special_tokens)
+        )
+
+
+def _prepare_training_tensors_with_hf_tokenizer(
+    examples: Sequence[Mapping[str, Any]],
+    *,
+    tokenizer: Any,
+    max_seq_len: int,
+) -> list[dict[str, Any]]:
+    """Retokenise task prompts/targets with the immutable base HF tokenizer.
+
+    Stored ``task_examples.jsonl`` rows carry DeterministicCharTokenizer ids for
+    CPU contract tests. Feeding those ids into Qwen3 causes CUDA
+    ``nll_loss`` asserts (job 6854). Always rebuild masks here for real training.
+    """
+    from ambiguity_manager.model.task_conditioned_training import (
+        build_fully_supervised_task_sequence,
+    )
+
+    tok = _HFTokenizerAdapter(tokenizer)
+    vocab_size = int(getattr(tokenizer, "vocab_size", 0) or 0)
+    prepared: list[dict[str, Any]] = []
+    for ex in examples:
+        prompt = str(ex.get("task_instruction_prompt") or "")
+        target_json = str(ex.get("canonical_task_target_json") or "")
+        if not prompt or not target_json:
+            raise QloraTaskConditionedSmokeError(
+                f"missing_prompt_or_target:{ex.get('training_example_id')}"
+            )
+        masked = build_fully_supervised_task_sequence(
+            prompt_text=prompt,
+            target_json=target_json,
+            tokenizer=tok,
+            max_seq_len=max_seq_len,
+            pad_token_id=tok.pad_token_id,
+        )
+        input_ids = list(masked.input_ids)
+        labels = list(masked.labels)
+        attention = list(masked.attention_mask)
+        if labels == input_ids:
+            raise QloraTaskConditionedSmokeError(
+                f"labels_equal_input_ids:{ex.get('training_example_id')}"
+            )
+        supervised = [x for x in labels if x != IGNORE_INDEX]
+        if not supervised:
+            raise QloraTaskConditionedSmokeError(
+                f"zero_supervision:{ex.get('training_example_id')}"
+            )
+        if vocab_size > 0:
+            oov = [x for x in supervised if x < 0 or x >= vocab_size]
+            if oov:
+                raise QloraTaskConditionedSmokeError(
+                    f"label_id_out_of_vocab:{ex.get('training_example_id')}:"
+                    f"count={len(oov)};vocab_size={vocab_size};sample={oov[:5]}"
+                )
+        prepared.append(
+            {
+                "training_example_id": ex["training_example_id"],
+                "task_id": ex["task_id"],
+                "source_record_id": ex["source_record_id"],
+                "input_ids": input_ids,
+                "labels": labels,
+                "attention_mask": attention,
+                "mask_diagnostics": dict(masked.diagnostics),
+                "retokenised_with_hf": True,
             }
         )
     return prepared
@@ -857,8 +951,6 @@ def run_real_task_conditioned_smoke(
     field_hash = _field_registry_hash(root)
     source_commit = os.environ.get("T12_SOURCE_COMMIT") or os.environ.get("SOURCE_COMMIT") or "unknown"
 
-    prepared = _prepare_training_tensors(task_examples, max_seq_len=max_seq_len)
-
     bnb_config = BitsAndBytesConfig(
         load_in_4bit=True,
         bnb_4bit_quant_type=quant.get("quant_type", "nf4"),
@@ -870,6 +962,13 @@ def run_real_task_conditioned_smoke(
     )
     if tokenizer.pad_token is None:
         tokenizer.pad_token = tokenizer.eos_token
+
+    # Retokenise with the immutable base vocabulary (never use char-token ids).
+    prepared = _prepare_training_tensors_with_hf_tokenizer(
+        task_examples,
+        tokenizer=tokenizer,
+        max_seq_len=max_seq_len,
+    )
 
     base_model = AutoModelForCausalLM.from_pretrained(
         repository,
