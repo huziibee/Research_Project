@@ -1,12 +1,19 @@
 """T27C constrained task-specific JSON decoding (HF Transformers compatible).
 
-Pinned library: lm-format-enforcer.
+Pinned library: lm-format-enforcer==0.10.12.
 No unconstrained fallback is permitted when constraints cannot initialise.
-Heavy imports are lazy so CPU-only modules remain import-isolated.
+
+The stock ``lmformatenforcer.integrations.transformers`` module imports
+``PreTrainedTokenizerBase`` from ``transformers.tokenization_utils``, which
+fails on the cluster transformers build (job 7054:
+``lm-format-enforcer_transformers_integration_unavailable``). This module
+uses lm-format-enforcer *core* (``JsonSchemaParser`` / ``TokenEnforcer``) and
+HF ``prefix_allowed_tokens_fn`` instead.
 """
 
 from __future__ import annotations
 
+import functools
 import json
 from dataclasses import dataclass
 from pathlib import Path
@@ -18,6 +25,9 @@ from ambiguity_manager.paths import ProjectPaths
 CONSTRAINT_CONFIG_REL = "configs/model/t27c_constrained_decoding_v1.json"
 PINNED_LIBRARY = "lm-format-enforcer"
 PINNED_VERSION = "0.10.12"
+
+# Process-local cache: building the token→str table over a 150k vocab is expensive.
+_TOKENIZER_DATA_CACHE: dict[int, Any] = {}
 
 
 class ConstrainedDecodingError(RuntimeError):
@@ -69,7 +79,10 @@ def build_constraint_identity(
     return ConstraintIdentity(
         library=PINNED_LIBRARY,
         version=PINNED_VERSION,
-        integration_point="transformers.LogitsProcessorList + JsonSchemaParser",
+        integration_point=(
+            "transformers.prefix_allowed_tokens_fn + JsonSchemaParser "
+            "(core TokenEnforcer; not stock integrations.transformers)"
+        ),
         unconstrained_fallback_permitted=False,
         schema_hash=sha256_hex(canonical_json_bytes(dict(json_schema))),
         task_id=task_id,
@@ -77,10 +90,7 @@ def build_constraint_identity(
 
 
 def compile_task_constraint(json_schema: Mapping[str, Any]) -> Any:
-    """Compile a task JSON schema into an lm-format-enforcer parser.
-
-    Raises ConstrainedDecodingError on failure. Never falls back to unconstrained.
-    """
+    """Compile a task JSON schema into an lm-format-enforcer parser."""
     try:
         from lmformatenforcer import JsonSchemaParser
     except ImportError as exc:
@@ -90,57 +100,88 @@ def compile_task_constraint(json_schema: Mapping[str, Any]) -> Any:
     try:
         return JsonSchemaParser(dict(json_schema))
     except Exception as exc:  # noqa: BLE001
+        raise ConstrainedDecodingError(f"constraint_compile_failed:{exc}") from exc
+
+
+def _build_token_enforcer_tokenizer_data(tokenizer: Any) -> Any:
+    """Mirror lm-format-enforcer's tokenizer-data builder without the broken import."""
+    from lmformatenforcer import TokenEnforcerTokenizerData
+
+    cache_key = id(tokenizer)
+    cached = _TOKENIZER_DATA_CACHE.get(cache_key)
+    if cached is not None:
+        return cached
+
+    vocab_size = int(getattr(tokenizer, "vocab_size", 0) or len(tokenizer))
+    # Prefer the full tokenizer length when it exceeds vocab_size (Qwen3: 151669 vs 151643).
+    try:
+        vocab_size = max(vocab_size, len(tokenizer))
+    except Exception:  # noqa: BLE001
+        pass
+
+    token_0 = tokenizer.encode("0")[-1]
+    special_ids = set(getattr(tokenizer, "all_special_ids", None) or [])
+    regular_tokens: list[tuple[int, str, bool]] = []
+    for token_idx in range(vocab_size):
+        if token_idx in special_ids:
+            continue
+        decoded_after_0 = tokenizer.decode([token_0, token_idx])[1:]
+        decoded_regular = tokenizer.decode([token_idx])
+        is_word_start_token = len(decoded_after_0) > len(decoded_regular)
+        regular_tokens.append((token_idx, decoded_after_0, is_word_start_token))
+
+    def _decode(tokens: list[int]) -> str:
+        return tokenizer.decode(tokens).rstrip("�")
+
+    data = TokenEnforcerTokenizerData(
+        regular_tokens,
+        functools.partial(_decode),
+        tokenizer.eos_token_id,
+    )
+    _TOKENIZER_DATA_CACHE[cache_key] = data
+    return data
+
+
+def build_prefix_allowed_tokens_fn(tokenizer: Any, json_schema: Mapping[str, Any]) -> Any:
+    """Build HF ``prefix_allowed_tokens_fn`` for the given task schema."""
+    try:
+        from lmformatenforcer import JsonSchemaParser, TokenEnforcer
+    except ImportError as exc:
         raise ConstrainedDecodingError(
-            f"constraint_compile_failed:{exc}"
+            "lm-format-enforcer_not_available:cannot_initialise_constraints"
         ) from exc
+
+    try:
+        parser = JsonSchemaParser(dict(json_schema))
+        tokenizer_data = _build_token_enforcer_tokenizer_data(tokenizer)
+        token_enforcer = TokenEnforcer(tokenizer_data, parser)
+    except ConstrainedDecodingError:
+        raise
+    except Exception as exc:  # noqa: BLE001
+        raise ConstrainedDecodingError(
+            f"constraint_initialisation_failed:{exc}"
+        ) from exc
+
+    def _prefix_allowed_tokens_fn(batch_id: int, sent: Any) -> list[int]:  # noqa: ARG001
+        if hasattr(sent, "tolist"):
+            token_sequence = sent.tolist()
+        else:
+            token_sequence = list(sent)
+        return list(token_enforcer.get_allowed_tokens(token_sequence))
+
+    return _prefix_allowed_tokens_fn
 
 
 def build_transformers_logits_processor(
     tokenizer: Any,
     json_schema: Mapping[str, Any],
 ) -> Any:
-    """Build an HF LogitsProcessor that enforces the task JSON schema."""
-    try:
-        from lmformatenforcer.integrations.transformers import (
-            build_transformers_prefix_allowed_tokens_fn,
-        )
-        from lmformatenforcer import JsonSchemaParser
-    except ImportError as exc:
-        raise ConstrainedDecodingError(
-            "lm-format-enforcer_transformers_integration_unavailable"
-        ) from exc
+    """Compatibility wrapper: returns a prefix-allowed-tokens callable.
 
-    try:
-        parser = JsonSchemaParser(dict(json_schema))
-        prefix_fn = build_transformers_prefix_allowed_tokens_fn(tokenizer, parser)
-    except Exception as exc:  # noqa: BLE001
-        raise ConstrainedDecodingError(
-            f"constraint_initialisation_failed:{exc}"
-        ) from exc
-
-    class _PrefixAllowedTokensProcessor:
-        """Minimal LogitsProcessor wrapper around prefix-allowed tokens fn."""
-
-        def __init__(self, allowed_fn):  # noqa: ANN001
-            self._allowed_fn = allowed_fn
-
-        def __call__(self, input_ids, scores):  # noqa: ANN001
-            import torch
-
-            batch = input_ids.shape[0]
-            for i in range(batch):
-                allowed = self._allowed_fn(i, input_ids[i])
-                if allowed is None:
-                    continue
-                mask = torch.full_like(scores[i], float("-inf"))
-                # allowed may be a list/set of token ids
-                idx = list(allowed)
-                if idx:
-                    mask[idx] = 0.0
-                    scores[i] = scores[i] + mask
-            return scores
-
-    return _PrefixAllowedTokensProcessor(prefix_fn)
+    Historical name retained for tests; prefer
+    :func:`build_prefix_allowed_tokens_fn` for new call sites.
+    """
+    return build_prefix_allowed_tokens_fn(tokenizer, json_schema)
 
 
 def generate_with_task_constraint(
@@ -155,17 +196,18 @@ def generate_with_task_constraint(
     """Run constrained generation. Fails closed if constraints cannot init."""
     import torch
 
-    processor = build_transformers_logits_processor(tokenizer, json_schema)
+    prefix_fn = build_prefix_allowed_tokens_fn(tokenizer, json_schema)
     encoded = tokenizer(prompt, return_tensors="pt")
-    input_ids = encoded["input_ids"].to(model.device)
+    device = next(model.parameters()).device
+    input_ids = encoded["input_ids"].to(device)
     attention_mask = encoded.get("attention_mask")
     if attention_mask is not None:
-        attention_mask = attention_mask.to(model.device)
+        attention_mask = attention_mask.to(device)
 
     gen_kwargs: dict[str, Any] = {
         "max_new_tokens": int(max_new_tokens),
         "do_sample": bool((generation_config or {}).get("do_sample", False)),
-        "logits_processor": [processor],
+        "prefix_allowed_tokens_fn": prefix_fn,
     }
     if attention_mask is not None:
         gen_kwargs["attention_mask"] = attention_mask
