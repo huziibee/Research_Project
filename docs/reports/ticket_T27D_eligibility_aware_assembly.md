@@ -2,7 +2,7 @@
 
 ## Decision
 
-Local implementation and evidence preparation are complete. T27D remains **BLOCKED pending one fresh frozen diagnostic and sealed smoke**. No live job has been launched, so no claim is made for new task prediction or routing results.
+T27D is **BLOCKED** by the frozen sealed gate. The eligibility-aware assembler works and both fresh runs reconcile, but `predict_ambiguity_v1` was accepted 0/12 for both base and adapter on the sealed set. Consequently there were 0/12 CPC-plus-ambiguity records and 0/12 complete assemblies. T28 must not begin.
 
 ## Implemented contract
 
@@ -27,3 +27,14 @@ Job 10065 had 120/120 terminal calls, zero timeouts, zero missing calls, and zer
 The new run must have terminal journal reconciliation, retained-core parse/schema validity at least 80%, 12/12 production-schema-valid complete or partial analyses, at least 9 safe routes, at least 6 CPC-plus-ambiguity accepted records, one complete assembly, and zero unsafe execute, unsafe silent resolution, fabricated fields, or unsupported commitments. Thresholds cannot be changed after sealed output inspection.
 
 Selected identities remain unchanged: base `Qwen/Qwen3-8B@b968826d9c46dd6066d109eabc6255188de91218`, adapter `null`, model strategy `null`, official use `false`. T28 must not begin until the fresh run passes.
+
+## Live evidence
+
+- Diagnostic: run `t27d-inference-diagnostic-20260723T201803Z-5c6430b`, Slurm job `10527`, node `mscluster112`; 160/160 terminal calls; verifier `VERIFY_PASSED`. Base parse/schema/semantic validity was 17/80; adapter was 38/80. Both modes produced 16/16 production-schema-valid partial analyses.
+- Sealed: run `t27d-inference-sealed-20260723T202830Z-5c6430b`, Slurm job `10560`, node `mscluster112`; 120/120 terminal calls; verifier `VERIFY_PASSED`. Base validity was 14/60 and adapter validity 28/60. Both modes produced 12/12 production-schema-valid partial analyses, 12/12 `clarify` routes, zero unsafe execute decisions, zero silent resolutions, and zero fabricated or unsupported commitments.
+- Sealed assembly counts for both modes: complete `0/12`, partial fail-safe `12/12`, unavailable `0/12`; CPC-plus-ambiguity accepted `0/12`.
+- The adapter was reused only as technical evidence; its SHA-256 was `9a206da3ac205a725bfbcdcc8958d16ec760d63db1d31e53e019a1281a734212`. It remains unselected and invalid for official use.
+
+## Next decision
+
+Do not broaden the architecture or begin T28. The next repair must be ambiguity-specific: first determine whether the decoder/schema failure is separable from the learned ambiguity task, then consider a deterministic ambiguity fallback or task-specific adaptation. Any follow-on run requires a newly frozen contract and fresh evidence.

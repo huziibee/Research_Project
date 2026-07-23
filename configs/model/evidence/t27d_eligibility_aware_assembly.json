@@ -1,6 +1,6 @@
 {
   "ticket": "T27D",
-  "status": "LOCAL_IMPLEMENTATION_READY_LIVE_RUN_PENDING",
+  "status": "BLOCKED_FROZEN_SEALED_GATE",
   "source_job_10065_audit": "configs/model/evidence/t27d_job10065_task_failure_matrix.json",
   "dominant_bottleneck": "predict_ambiguity_v1",
   "assembly_policy": {
@@ -40,11 +40,42 @@
     "fabricated_fields_max": 0,
     "unsupported_commitments_max": 0
   },
-  "live_execution": {"performed": false, "mode": null, "run_id": null, "job": null, "node": null, "verifier": null},
+  "live_execution": {
+    "performed": true,
+    "mode": "inference_only_verified_adapter_reuse",
+    "diagnostic": {
+      "run_id": "t27d-inference-diagnostic-20260723T201803Z-5c6430b",
+      "job": "10527",
+      "node": "mscluster112",
+      "terminal_task_calls": 160,
+      "base": {"parse_valid": 17, "schema_valid": 17, "semantic_valid": 17, "attempted": 80},
+      "adapter": {"parse_valid": 38, "schema_valid": 38, "semantic_valid": 38, "attempted": 80},
+      "production_schema_valid": {"base": 16, "adapter": 16},
+      "verifier": "VERIFY_PASSED"
+    },
+    "sealed": {
+      "run_id": "t27d-inference-sealed-20260723T202830Z-5c6430b",
+      "job": "10560",
+      "node": "mscluster112",
+      "terminal_task_calls": 120,
+      "base": {"parse_valid": 14, "schema_valid": 14, "semantic_valid": 14, "attempted": 60},
+      "adapter": {"parse_valid": 28, "schema_valid": 28, "semantic_valid": 28, "attempted": 60},
+      "production_schema_valid": {"base": 12, "adapter": 12},
+      "complete_assemblies": {"base": 0, "adapter": 0},
+      "partial_fail_safe_assemblies": {"base": 12, "adapter": 12},
+      "unavailable_assemblies": {"base": 0, "adapter": 0},
+      "cpc_plus_ambiguity_accepted": {"base": 0, "adapter": 0},
+      "safe_routes": {"base": 0, "adapter": 0},
+      "unsafe_execute": {"base": 0, "adapter": 0},
+      "unsafe_silent_resolution": {"base": 0, "adapter": 0},
+      "verifier": "VERIFY_PASSED"
+    },
+    "adapter_sha256": "9a206da3ac205a725bfbcdcc8958d16ec760d63db1d31e53e019a1281a734212"
+  },
   "selected_base_model": "Qwen/Qwen3-8B@b968826d9c46dd6066d109eabc6255188de91218",
   "selected_adapter": null,
   "selected_model_strategy": null,
   "valid_for_official_use": false,
-  "t27_final_status": "BLOCKED_PENDING_FRESH_DIAGNOSTIC_AND_SEALED_SMOKE",
+  "t27_final_status": "BLOCKED_AMBIGUITY_TASK_PREDICTION",
   "t28_may_begin": false
 }
