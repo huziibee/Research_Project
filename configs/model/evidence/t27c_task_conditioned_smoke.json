@@ -1,0 +1,143 @@
+{
+  "evidence_id": "t27c_task_conditioned_smoke",
+  "ticket": "T27C",
+  "provider_id": "qlora_task_conditioned_smoke_v1",
+  "verdict": "BLOCKED",
+  "source_commit": "f9e252c81ac6c5106bf561bb3621844eb556a7ae",
+  "implementation_freeze_commits": {
+    "docs_architecture": "53eee96",
+    "schemas_assembler": "10344e1",
+    "datasets": "13e0e98",
+    "smoke_profile": "a39b8cf",
+    "evidence_source_commit": "f9e252c",
+    "latest_constraint_fix": "f3fdf91"
+  },
+  "run_id": "t12-qlora-task-conditioned-20260723T105312Z-f9e252c",
+  "slurm_job_id": "7054",
+  "node": "mscluster109",
+  "gpu_note": "1 GPU exclusive on biggpu; exclude mscluster107,mscluster108; no permanent nodelist pin",
+  "mode": "real_cluster_training",
+  "operator_verify": "VERIFY_PASSED",
+  "selected_base_model": "Qwen/Qwen3-8B@b968826d9c46dd6066d109eabc6255188de91218",
+  "selected_adapter": null,
+  "selected_model_strategy": null,
+  "valid_for_official_use": false,
+  "t28_may_begin": false,
+  "pass_threshold_evaluation": {
+    "passed": false,
+    "checks": {
+      "constraint_initialised": true,
+      "no_unconstrained_fallback": true,
+      "resume_full_ok": true,
+      "sealed_final_count": true,
+      "assembly_attempts": true,
+      "adapter_differs_from_base": false,
+      "task_parse_rate": false,
+      "task_schema_rate": false,
+      "production_schema_valid": false,
+      "semantic_safety_accepted": false
+    },
+    "adapter_eval_summary": {
+      "task_calls_attempted": 60,
+      "parse_valid": 0,
+      "parse_valid_rate": 0.0,
+      "schema_valid": 0,
+      "schema_valid_rate": 0.0,
+      "production_schema_valid": 0,
+      "semantic_safety_accepted": 0,
+      "assembly_attempts": 12,
+      "unconstrained_fallback_count": 0
+    },
+    "base_eval_summary": {
+      "task_calls_attempted": 60,
+      "parse_valid": 0,
+      "parse_valid_rate": 0.0,
+      "schema_valid": 0,
+      "schema_valid_rate": 0.0,
+      "production_schema_valid": 0,
+      "semantic_safety_accepted": 0,
+      "assembly_attempts": 12,
+      "unconstrained_fallback_count": 0
+    }
+  },
+  "mechanics": {
+    "real_cluster_training": true,
+    "trainable_parameter_count": 7667712,
+    "frozen_parameter_count": 4717851648,
+    "full_resume_ok": true,
+    "peak_vram_bytes": 9205609472,
+    "runtime_seconds": 305.725,
+    "train_source_record_count": 192,
+    "task_example_count": 470,
+    "sealed_count": 12,
+    "diagnostic_count": 16
+  },
+  "blocking_failure": {
+    "summary": "Constrained task generation did not produce any parse-valid outputs on the sealed set.",
+    "transport_status": "failed:constraint_failed_no_unconstrained_fallback:lm-format-enforcer_transformers_integration_unavailable",
+    "detail": "Stock lmformatenforcer.integrations.transformers import fails on the cluster transformers build (PreTrainedTokenizerBase import path). Subsequent fixes (core TokenEnforcer + disk tokenizer cache + Apptainer env) were pushed, but follow-on GPU sealed evals hung after training without finalising result JSON before cancellation (jobs 7145/7407/9153/9479). Job 7054 remains the complete pulled+verified live evidence artefact.",
+    "unconstrained_fallback_used": false
+  },
+  "prior_failed_attempts": [
+    {
+      "run_id": "t12-qlora-task-conditioned-20260723T100855Z-a39b8cf",
+      "slurm_job_id": "6786",
+      "failure": "lm_format_enforcer_install_failed FileExistsError stale dist-info",
+      "note": "Preserved; not overwritten."
+    },
+    {
+      "run_id": "t12-qlora-task-conditioned-20260723T101556Z-8585571",
+      "slurm_job_id": "6823",
+      "failure": "lm_format_enforcer_install_failed NFS busy .nfs during pip cleanup",
+      "note": "Preserved; not overwritten."
+    },
+    {
+      "run_id": "t12-qlora-task-conditioned-20260723T102117Z-f843148",
+      "slurm_job_id": "6854",
+      "failure": "CUDA nll_loss assert (char-tokenizer ids / HF labels= path)",
+      "note": "Preserved; not overwritten."
+    },
+    {
+      "run_id": "t12-qlora-task-conditioned-20260723T103026Z-9d65e70",
+      "slurm_job_id": "6904",
+      "failure": "CUDA nll_loss assert via model labels= path",
+      "note": "Preserved; fixed by manual shifted CE before job 7054."
+    },
+    {
+      "run_id": "t12-qlora-task-conditioned-20260723T110642Z-e11ae85",
+      "slurm_job_id": "7145",
+      "failure": "cancelled \u2014 stalled building 150k-token lmfe table",
+      "note": "Preserved; tokenizer cache prebuild added."
+    },
+    {
+      "run_id": "t12-qlora-task-conditioned-20260723T115027Z-43a5381",
+      "slurm_job_id": "7407",
+      "failure": "cancelled \u2014 stalled post-train (cache not visible without env)",
+      "note": "Preserved."
+    },
+    {
+      "run_id": "t12-qlora-task-conditioned-20260723T163122Z-e8c1d63",
+      "slurm_job_id": "9153",
+      "failure": "cancelled \u2014 stalled post-train sealed eval",
+      "note": "Preserved."
+    },
+    {
+      "run_id": "t12-qlora-task-conditioned-20260723T171913Z-f3fdf91",
+      "slurm_job_id": "9479",
+      "failure": "cancelled \u2014 stalled post-train sealed eval after cache/env fix",
+      "note": "Preserved; next work is to finish constrained generation without hang."
+    }
+  ],
+  "retained_prior_evidence": {
+    "t27_job": 6059,
+    "t27b_job": 6382,
+    "overwritten": false
+  },
+  "hashes": {
+    "task_registry_hash": "b4d32bf6b8275167d13b1728a33959dd90ce1e678338ae72cdc203947b56db8b",
+    "field_responsibility_registry_hash": "903df6f1b045f80dfb7bd1220415125ea886ea1a6572fc76dac301deae2cd10d",
+    "train_manifest_hash": "fb3dc16d8becaab00db990b7fcf34ec1f24206edf676a6cef9a2a0be890565fe"
+  },
+  "pulled_result": "outputs/t12_cluster_jobs/t12-qlora-task-conditioned-20260723T105312Z-f9e252c/pulled/qlora_task_conditioned_smoke_result.json",
+  "report": "docs/reports/ticket_T27C_task_conditioned_prediction.md"
+}

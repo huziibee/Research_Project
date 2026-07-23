@@ -1,70 +1,52 @@
 # T27C — Task-Conditioned Partial-Schema Prediction
 
-**Status: IMPLEMENTATION COMPLETE / LIVE RESULTS TBD**
+**Status: BLOCKED (live sealed prediction gates failed)**
 
 Author: Mohammed Bangie — 2610990  
 Ticket: T27C  
-ADR: `docs/decisions/ADR_T27C_task_conditioned_partial_schema_prediction.md`
+ADR: `docs/decisions/ADR_T27C_task_conditioned_partial_schema_prediction.md`  
+Evidence: `configs/model/evidence/t27c_task_conditioned_smoke.json`
 
-## Verdict (local)
+## Verdict
 
-Local contracts, datasets, assembler, constrained-decoding policy, and mock
-orchestrator evidence finalisation are implemented. The live cluster profile
-`qlora_task_conditioned_smoke` is allowlisted but **has not been run**.
+Live job **7054** (`t12-qlora-task-conditioned-20260723T105312Z-f9e252c`) completed
+training/resume/mechanics and independently verified (`VERIFY_PASSED`), but **0/60**
+sealed task calls were parse-valid because constrained decoding could not initialise
+(`lm-format-enforcer_transformers_integration_unavailable`). No unconstrained
+fallback was used. `selected_adapter` remains null; **T28 must not begin**.
 
-Do **not** begin T28 until T27C live gates pass.  
-Do **not** overwrite T27 job **6059** or T27B job **6382** evidence.
+Follow-on constraint fixes (core TokenEnforcer, disk tokenizer cache, Apptainer
+`T12_TRAINING_SITE_PACKAGES`) are on the branch, but sealed GPU evals after those
+fixes hung post-train before writing final result JSON and were cancelled.
 
-## What was implemented
+## What passed locally / on cluster mechanics
 
-| Area | Artefact |
-|------|----------|
-| Field responsibility registry | `configs/model/t27c_field_responsibility_registry_v1.json` |
-| Task registry | `configs/model/task_conditioned_prediction_tasks_v1.json` |
-| Constrained decoding pin | `configs/model/t27c_constrained_decoding_v1.json` (`lm-format-enforcer==0.10.12`, no fallback) |
-| Training config | `configs/model/qlora_task_conditioned_smoke_v1.json` |
-| Task contracts | `src/ambiguity_manager/model/task_prediction_contract.py` |
-| Constrained decoding | `src/ambiguity_manager/model/task_constrained_decoding.py` |
-| Assembler | `src/ambiguity_manager/systems/structured_analysis_assembler.py` |
-| Training examples | `src/ambiguity_manager/model/task_conditioned_training.py` |
-| Datasets | `src/ambiguity_manager/model/t27c_datasets.py` |
-| Orchestrator | `src/ambiguity_manager/model/qlora_task_conditioned_smoke.py` |
-| Cluster entry | `scripts/t12_qlora_task_conditioned_smoke.py` |
-| Profile | `configs/cluster/t12_job_profiles.json#qlora_task_conditioned_smoke` |
+| Gate | Result |
+|------|--------|
+| Task registry / field registry / assembler | Implemented + unit-tested |
+| Datasets 192→470 / diagnostic 16 / sealed 12 | Built; leakage exclusions applied |
+| Real 4-bit QLoRA + shared adapter | PASS (job 7054) |
+| Full checkpoint / resume | PASS |
+| Base frozen; adapter not selected | PASS |
+| T27 6059 / T27B 6382 evidence | Preserved |
 
-## Datasets (built)
+## What failed
 
-| Set | Count | Notes |
-|-----|-------|-------|
-| `qlora_task_conditioned_smoke_v1` | 192 source_train / 470 task examples | per-task supervision present |
-| `t27c_diagnostic_dev_v1` | 16 source_dev | `diagnostic_only=true`, not final gate |
-| `t27c_final_smoke_v1` | 12 source_dev sealed | required-task matrix written |
-
-Historical T27 / T27B validation IDs, holdout, calibration, and model-selection
-fixtures are excluded.
-
-## Frozen live thresholds (pre-run)
-
-- task parse ≥ 90%; task schema ≥ 80%
-- assembly ≥ 9/12 structural; ≥ 6/12 semantic consistency; ≥ 1/12 full accept
-- adapter differs ≥ 1; unsupported commitments 0; unconstrained fallback 0
-
-## Live results
-
-TBD — run:
-
-```text
-python scripts/t12_cluster_job.py --run qlora_task_conditioned_smoke --poll --pull
-```
-
-## Retained prior evidence
-
-- T27 job 6059 — `configs/model/evidence/t27_task_aligned_qlora_smoke.json`
-- T27B job 6382 — `configs/model/evidence/t27b_structured_emission_recovery.json`
+| Gate | Result |
+|------|--------|
+| Constraint initialisation on sealed gen (7054) | FAIL (stock transformers integration import) |
+| Task parse / schema / assembly accept rates | FAIL (0 valid parses) |
+| Adapter≠base on sealed outputs | FAIL (both empty/rejected) |
 
 ## Official identities (unchanged)
 
 - `selected_adapter = null`
 - `selected_model_strategy = null`
 - `valid_for_official_use = false`
-- `t28_may_begin = false` until T27C passes
+- `t28_may_begin = false`
+
+## Next recommended task
+
+Debug and finish **constrained sealed generation** on cluster (confirm cache hit +
+non-hanging `prefix_allowed_tokens_fn` generate path), then re-run
+`qlora_task_conditioned_smoke` once and replace this evidence only if gates pass.

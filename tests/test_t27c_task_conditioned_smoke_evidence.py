@@ -12,7 +12,7 @@ SRC = ROOT / "src"
 if str(SRC) not in sys.path:
     sys.path.insert(0, str(SRC))
 
-EVIDENCE = ROOT / "configs/model/evidence/t27c_task_conditioned_qlora_smoke.json"
+EVIDENCE = ROOT / "configs/model/evidence/t27c_task_conditioned_smoke.json"
 T27_EVIDENCE = ROOT / "configs/model/evidence/t27_task_aligned_qlora_smoke.json"
 T27B_EVIDENCE = ROOT / "configs/model/evidence/t27b_structured_emission_recovery.json"
 
