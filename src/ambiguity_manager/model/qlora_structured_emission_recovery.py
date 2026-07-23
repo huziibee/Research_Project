@@ -534,53 +534,86 @@ def ensure_runtime_jsonschema() -> dict[str, Any]:
     failed with ``ModuleNotFoundError: No module named 'jsonschema'`` because the
     bind-mounted training-site-packages lacked it (T27 job 6059 never reached
     Draft202012 validation — outputs failed earlier on unknown fields).
+
+    Job 6350 then reported ``jsonschema_still_missing_after_install`` because
+    ``pip install jsonschema`` alone can omit runtime deps (``attrs``,
+    ``referencing``, ``rpds-py``) depending on resolver behaviour inside the
+    container. Install the closed dependency set and force a clean re-import.
     """
-    try:
-        import jsonschema  # noqa: F401
-
-        return {"status": "already_available", "package": "jsonschema"}
-    except ImportError:
-        pass
-
+    import importlib
     import subprocess
     import sys
+
+    def _try_import() -> str | None:
+        try:
+            importlib.invalidate_caches()
+            import jsonschema  # noqa: F401
+
+            return None
+        except ImportError as exc:
+            return f"{type(exc).__name__}:{exc}"
+
+    existing_err = _try_import()
+    if existing_err is None:
+        return {"status": "already_available", "package": "jsonschema"}
 
     site = os.environ.get("T12_TRAINING_SITE_PACKAGES", "").strip()
     if not site:
         raise QloraStructuredEmissionRecoveryError(
-            "jsonschema_missing_and_T12_TRAINING_SITE_PACKAGES_unset"
+            "jsonschema_missing_and_T12_TRAINING_SITE_PACKAGES_unset:"
+            f"import_error={existing_err}"
         )
     site_path = Path(site)
     site_path.mkdir(parents=True, exist_ok=True)
+    site_str = str(site_path.resolve())
+    # Prefer the bind-mounted site packages ahead of any stale container paths.
+    while site_str in sys.path:
+        sys.path.remove(site_str)
+    sys.path.insert(0, site_str)
+
+    packages = ("attrs", "rpds-py", "referencing", "jsonschema")
     cmd = [
         sys.executable,
         "-m",
         "pip",
         "install",
         "--upgrade",
+        "--disable-pip-version-check",
+        "--no-input",
         "--target",
-        str(site_path),
-        "jsonschema",
+        site_str,
+        *packages,
     ]
     completed = subprocess.run(cmd, check=False, capture_output=True, text=True)
     if completed.returncode != 0:
         raise QloraStructuredEmissionRecoveryError(
             "jsonschema_install_failed:"
-            f"rc={completed.returncode}; stderr={completed.stderr[-500:]}"
+            f"rc={completed.returncode}; stderr={completed.stderr[-800:]}"
         )
-    site_str = str(site_path)
-    if site_str not in sys.path:
-        sys.path.insert(0, site_str)
-    try:
-        import jsonschema  # noqa: F401
-    except ImportError as exc:
+
+    # Drop any partially-imported failure modules before retrying.
+    for name in list(sys.modules):
+        if name == "jsonschema" or name.startswith(
+            ("jsonschema.", "referencing", "attrs", "rpds")
+        ):
+            del sys.modules[name]
+    importlib.invalidate_caches()
+    while site_str in sys.path:
+        sys.path.remove(site_str)
+    sys.path.insert(0, site_str)
+
+    retry_err = _try_import()
+    if retry_err is not None:
         raise QloraStructuredEmissionRecoveryError(
-            "jsonschema_still_missing_after_install"
-        ) from exc
+            "jsonschema_still_missing_after_install:"
+            f"import_error={retry_err}; pip_stdout_tail={completed.stdout[-400:]}"
+        )
     return {
         "status": "installed_into_training_site_packages",
         "package": "jsonschema",
+        "dependencies": list(packages),
         "target": site_str,
+        "prior_import_error": existing_err,
     }
 
 
