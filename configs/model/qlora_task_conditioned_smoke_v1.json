@@ -97,6 +97,18 @@
     "assemble_structured_analysis": true,
     "run_deterministic_router": true
   },
+  "runtime_recovery": {
+    "heartbeat_interval_seconds": 30,
+    "maximum_attempts_per_task": 1,
+    "maximum_output_bytes": 65536,
+    "timeout_rule": "max(declared_minimum_seconds, diagnostic_p95_seconds * multiplier)",
+    "declared_minimum_seconds": 300,
+    "multiplier": 3,
+    "task_timeout_seconds_frozen_before_sealed": false,
+    "no_unconstrained_fallback": true,
+    "resume_completed_valid_task_calls": true,
+    "finalise_incomplete_evidence": true
+  },
   "pass_thresholds": {
     "frozen_before_live_results": true,
     "frozen_at": "2026-07-23T00:00:00Z",

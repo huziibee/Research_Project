@@ -1,0 +1,61 @@
+{
+  "evidence_id": "t27c_runtime_recovery",
+  "ticket": "T27C-R1",
+  "status": "BLOCKED — RUNTIME INFERENCE",
+  "selected_base_model": "Qwen/Qwen3-8B@b968826d9c46dd6066d109eabc6255188de91218",
+  "selected_adapter": null,
+  "selected_model_strategy": null,
+  "source_commit": "54ba3438c28e2908b385cec7a41536622e9b44b1",
+  "job_9479": {
+    "slurm_job_id": "9479",
+    "state": "CANCELLED by 328600030",
+    "exit_code": "0:0",
+    "elapsed": "00:27:52",
+    "node": "mscluster109",
+    "final_stderr_timestamp": "2026-07-23T17:49:10.390",
+    "final_stderr_line": "JOB 9479 ON mscluster109 CANCELLED ... DUE to SIGNAL Terminated",
+    "stdout_bytes": 0,
+    "last_application_stage": "evaluation model loading before first task generation",
+    "root_cause_classification": "insufficient observability",
+    "genuine_generation_hang": false,
+    "evidence_paths": [
+      "outputs/t12_cluster_jobs/t12-qlora-task-conditioned-20260723T171913Z-f3fdf91/remote_metadata.json",
+      "outputs/t12_cluster_jobs/t12-qlora-task-conditioned-20260723T171913Z-f3fdf91/pulled",
+      "docs/reports/ticket_T27C_R1_job9479_forensic_diagnosis.md"
+    ]
+  },
+  "frozen_data": {
+    "train_source_records": 192,
+    "train_task_examples": 470,
+    "diagnostic_records": 16,
+    "sealed_records": 12,
+    "sealed_task_calls_per_mode": 60,
+    "sealed_total_task_calls": 120,
+    "task_registry_hash": "b4d32bf6b8275167d13b1728a33959dd90ce1e678338ae72cdc203947b56db8b",
+    "field_registry_hash": "903df6f1b045f80dfb7bd1220415125ea886ea1a6572fc76dac301deae2cd10d",
+    "train_manifest_hash": "fb3dc16d8becaab00db990b7fcf34ec1f24206edf676a6cef9a2a0be890565fe"
+  },
+  "runtime_design": {
+    "base_model_loads_per_worker": 1,
+    "adapter_loads_per_worker": 1,
+    "constraint_compilation_cache": "task-schema hash",
+    "heartbeat": "atomic heartbeat.json; 30-second policy",
+    "journal": "append-only prediction_journal.jsonl with raw-output hashes",
+    "resume": "skip only completed valid task calls; reject corrupt or duplicate journal entries",
+    "failure_status": "prediction_timeout",
+    "unconstrained_fallback": false,
+    "qwen_chat_template": "apply_chat_template with add_generation_prompt=true and enable_thinking=false",
+    "continuation_isolation": "generated output must preserve the encoded prompt prefix"
+  },
+  "adapter_reuse": {
+    "source_run": "t12-qlora-task-conditioned-20260723T171913Z-f3fdf91",
+    "status": "identity_mismatch",
+    "reason": "checkpoint source_commit is unknown; adapter hash is absent from pulled identity; submitted config/source commit precede this recovery freeze",
+    "selected_adapter": null,
+    "selected_model_strategy": null
+  },
+  "diagnostic_run_id": null,
+  "sealed_run_id": null,
+  "semantic_thresholds": "unchanged and not evaluated",
+  "t28_may_begin": false
+}

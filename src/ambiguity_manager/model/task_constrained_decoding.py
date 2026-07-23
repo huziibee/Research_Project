@@ -21,6 +21,8 @@ from pathlib import Path
 from typing import Any, Mapping
 
 from ambiguity_manager.governance.hashing import canonical_json_bytes, sha256_hex
+from ambiguity_manager.model.t27c_runtime_recovery import generated_continuation
+from ambiguity_manager.model.task_prediction_contract import render_qwen_task_prompt
 from ambiguity_manager.paths import ProjectPaths
 
 CONSTRAINT_CONFIG_REL = "configs/model/t27c_constrained_decoding_v1.json"
@@ -29,6 +31,8 @@ PINNED_VERSION = "0.10.12"
 
 # Process-local cache: building the token→str table over a 150k vocab is expensive.
 _TOKENIZER_DATA_CACHE: dict[int, Any] = {}
+_SCHEMA_PARSER_CACHE: dict[str, Any] = {}
+_PREFIX_FN_CACHE: dict[tuple[int, str], Any] = {}
 
 
 class ConstrainedDecodingError(RuntimeError):
@@ -92,6 +96,9 @@ def build_constraint_identity(
 
 def compile_task_constraint(json_schema: Mapping[str, Any]) -> Any:
     """Compile a task JSON schema into an lm-format-enforcer parser."""
+    schema_hash = sha256_hex(canonical_json_bytes(dict(json_schema)))
+    if schema_hash in _SCHEMA_PARSER_CACHE:
+        return _SCHEMA_PARSER_CACHE[schema_hash]
     try:
         from lmformatenforcer import JsonSchemaParser
     except ImportError as exc:
@@ -99,7 +106,9 @@ def compile_task_constraint(json_schema: Mapping[str, Any]) -> Any:
             "lm-format-enforcer_not_available:cannot_initialise_constraints"
         ) from exc
     try:
-        return JsonSchemaParser(dict(json_schema))
+        parser = JsonSchemaParser(dict(json_schema))
+        _SCHEMA_PARSER_CACHE[schema_hash] = parser
+        return parser
     except Exception as exc:  # noqa: BLE001
         raise ConstrainedDecodingError(f"constraint_compile_failed:{exc}") from exc
 
@@ -195,6 +204,11 @@ def _build_token_enforcer_tokenizer_data(tokenizer: Any) -> Any:
 
 def build_prefix_allowed_tokens_fn(tokenizer: Any, json_schema: Mapping[str, Any]) -> Any:
     """Build HF ``prefix_allowed_tokens_fn`` for the given task schema."""
+    schema_hash = sha256_hex(canonical_json_bytes(dict(json_schema)))
+    cache_key = (id(tokenizer), schema_hash)
+    cached = _PREFIX_FN_CACHE.get(cache_key)
+    if cached is not None:
+        return cached
     try:
         from lmformatenforcer import JsonSchemaParser, TokenEnforcer
     except ImportError as exc:
@@ -203,7 +217,7 @@ def build_prefix_allowed_tokens_fn(tokenizer: Any, json_schema: Mapping[str, Any
         ) from exc
 
     try:
-        parser = JsonSchemaParser(dict(json_schema))
+        parser = compile_task_constraint(json_schema)
         tokenizer_data = _build_token_enforcer_tokenizer_data(tokenizer)
         token_enforcer = TokenEnforcer(tokenizer_data, parser)
     except ConstrainedDecodingError:
@@ -220,6 +234,7 @@ def build_prefix_allowed_tokens_fn(tokenizer: Any, json_schema: Mapping[str, Any
             token_sequence = list(sent)
         return list(token_enforcer.get_allowed_tokens(token_sequence))
 
+    _PREFIX_FN_CACHE[cache_key] = _prefix_allowed_tokens_fn
     return _prefix_allowed_tokens_fn
 
 
@@ -248,7 +263,8 @@ def generate_with_task_constraint(
     import torch
 
     prefix_fn = build_prefix_allowed_tokens_fn(tokenizer, json_schema)
-    encoded = tokenizer(prompt, return_tensors="pt")
+    rendered_prompt = render_qwen_task_prompt(tokenizer, prompt)
+    encoded = tokenizer(rendered_prompt, return_tensors="pt")
     device = next(model.parameters()).device
     input_ids = encoded["input_ids"].to(device)
     attention_mask = encoded.get("attention_mask")
@@ -260,6 +276,12 @@ def generate_with_task_constraint(
         "do_sample": bool((generation_config or {}).get("do_sample", False)),
         "prefix_allowed_tokens_fn": prefix_fn,
     }
+    eos_token_id = getattr(tokenizer, "eos_token_id", None)
+    pad_token_id = getattr(tokenizer, "pad_token_id", None)
+    if eos_token_id is not None:
+        gen_kwargs["eos_token_id"] = int(eos_token_id)
+    if pad_token_id is not None:
+        gen_kwargs["pad_token_id"] = int(pad_token_id)
     if attention_mask is not None:
         gen_kwargs["attention_mask"] = attention_mask
     temperature = (generation_config or {}).get("temperature")
@@ -268,7 +290,9 @@ def generate_with_task_constraint(
 
     with torch.no_grad():
         output_ids = model.generate(input_ids, **gen_kwargs)
-    continuation = output_ids[0, input_ids.shape[-1] :]
+    continuation = generated_continuation(
+        input_ids[0].tolist(), output_ids[0].tolist()
+    )
     text = tokenizer.decode(continuation, skip_special_tokens=True)
     return {
         "constraint_initialised": True,

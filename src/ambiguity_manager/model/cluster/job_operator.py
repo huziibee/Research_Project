@@ -983,6 +983,35 @@ mkdir -p "${{T12_CLUSTER_ROOT}}/{result_root_suffix}"
         if status.terminal and not status.success:
             print("Terminal failure (not reported as success).")
 
+    def _print_heartbeat(self, record: Mapping[str, Any]) -> None:
+        """Display runner progress; quiet stdout is not treated as inactivity."""
+        profile_name = str(record["profile"])
+        if profile_name not in {"t27c_inference_diagnostic", "qlora_task_conditioned_inference_recovery", "qlora_task_conditioned_smoke"}:
+            return
+        profile = get_profile(self.profiles_doc, profile_name)
+        run_id = validate_run_id(str(record["run_id"]))
+        root_suffix = _profile_result_root_suffix(profile)
+        heartbeat_path = f"$T12_CLUSTER_ROOT/{root_suffix}/{run_id}/heartbeat.json"
+        result = self.ssh(
+            f'if test -f "{heartbeat_path}"; then cat "{heartbeat_path}"; fi'
+        )
+        text = (result.stdout or "").strip()
+        if not text:
+            return
+        try:
+            payload = json.loads(text)
+        except json.JSONDecodeError:
+            print("Heartbeat: invalid JSON (runner evidence is not trusted)")
+            return
+        print(
+            "Heartbeat: "
+            f"phase={payload.get('phase')} mode={payload.get('model_mode')} "
+            f"task={payload.get('task_id')} record={payload.get('record_id')} "
+            f"completed={payload.get('completed_task_call_count')}/"
+            f"{payload.get('total_expected_task_calls')} "
+            f"updated={payload.get('timestamp_utc')}"
+        )
+
     def poll(
         self,
         identifier: str = "latest",
@@ -1014,6 +1043,7 @@ mkdir -p "${{T12_CLUSTER_ROOT}}/{result_root_suffix}"
             if status.state != last_state:
                 self._print_status(status, run_id=run_id)
                 last_state = status.state
+            self._print_heartbeat(record)
             if status.terminal:
                 if pull:
                     self.pull(run_id)

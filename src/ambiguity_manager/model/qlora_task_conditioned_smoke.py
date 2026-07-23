@@ -54,6 +54,14 @@ from ambiguity_manager.model.task_prediction_contract import (
     load_field_responsibility_registry,
     load_task_registry,
     registry_hash,
+    render_qwen_task_prompt,
+)
+from ambiguity_manager.model.t27c_runtime_recovery import (
+    Heartbeat,
+    PREDICTION_TIMEOUT,
+    PredictionJournal,
+    PredictionTimeout,
+    run_bounded,
 )
 from ambiguity_manager.model.token_loss_masking import IGNORE_INDEX
 from ambiguity_manager.paths import ProjectPaths
@@ -543,8 +551,9 @@ def _prepare_training_tensors_with_hf_tokenizer(
             raise QloraTaskConditionedSmokeError(
                 f"missing_prompt_or_target:{ex.get('training_example_id')}"
             )
+        rendered_prompt = render_qwen_task_prompt(tokenizer, prompt)
         masked = build_fully_supervised_task_sequence(
-            prompt_text=prompt,
+            prompt_text=rendered_prompt,
             target_json=target_json,
             tokenizer=tok,
             max_seq_len=max_seq_len,
@@ -645,6 +654,7 @@ def _evaluate_task_matrix(
     role: str,
     generate_fn,
     constraint_initialised: bool,
+    runtime: Mapping[str, Any] | None = None,
 ) -> dict[str, Any]:
     task_results_out: list[dict[str, Any]] = []
     assembly_out: list[dict[str, Any]] = []
@@ -678,17 +688,61 @@ def _evaluate_task_matrix(
                 capability_context=capability,
                 analysis_variant="full_context",
             )
-            try:
-                gen = generate_fn(request=request, task_spec=task_spec)
-                raw = str(gen.get("raw_text") or "")
-                constr_ok = bool(gen.get("constraint_initialised"))
-                if gen.get("unconstrained_fallback"):
-                    unconstrained += 1
-                transport = str(gen.get("transport_status") or "generated")
-            except Exception as exc:  # noqa: BLE001
-                raw = ""
-                constr_ok = False
-                transport = f"failed:{exc}"
+            journal = runtime.get("journal") if runtime else None
+            resumed = journal.completed(mode=role, record_id=record_id, task_id=task_id) if journal else None
+            raw = ""
+            constr_ok = False
+            transport = "generated"
+            if resumed:
+                raw_path = Path(str(resumed.get("raw_output_path") or ""))
+                if not raw_path.is_file():
+                    raise QloraTaskConditionedSmokeError("journal_raw_output_missing")
+                raw = raw_path.read_text(encoding="utf-8")
+                if sha256_hex(raw.encode("utf-8")) != resumed.get("raw_output_sha256"):
+                    raise QloraTaskConditionedSmokeError("journal_raw_output_hash_mismatch")
+                constr_ok = True
+                transport = "resumed_completed"
+            else:
+                started_at = _utc_now()
+                try:
+                    def _call() -> dict[str, Any]:
+                        return generate_fn(request=request, task_spec=task_spec)
+
+                    timeout = float((runtime or {}).get("timeouts", {}).get(task_id, 300))
+                    gen = run_bounded(_call, timeout) if runtime else _call()
+                    raw = str(gen.get("raw_text") or "")
+                    constr_ok = bool(gen.get("constraint_initialised"))
+                    if gen.get("unconstrained_fallback"):
+                        unconstrained += 1
+                    transport = str(gen.get("transport_status") or "generated")
+                    status = "completed"
+                except PredictionTimeout:
+                    transport = PREDICTION_TIMEOUT
+                    status = PREDICTION_TIMEOUT
+                except Exception as exc:  # noqa: BLE001
+                    transport = f"failed:{exc}"
+                    status = "failed"
+                if runtime:
+                    raw_dir = Path(str(runtime["raw_output_dir"])) / role
+                    raw_dir.mkdir(parents=True, exist_ok=True)
+                    raw_path = raw_dir / f"{record_id.replace('/', '_').replace(':', '_')}__{task_id}.json.txt"
+                    raw_path.write_text(raw, encoding="utf-8")
+                    journal.append(
+                        {
+                            "mode": role,
+                            "record_id": record_id,
+                            "task_id": task_id,
+                            "attempt": 1,
+                            "input_hash": request.input_hash,
+                            "schema_hash": request.schema_hash,
+                            "constraint_hash": request.schema_hash,
+                            "start_timestamp_utc": started_at,
+                            "end_timestamp_utc": _utc_now(),
+                            "status": status,
+                            "raw_output_path": str(raw_path),
+                            "raw_output_sha256": sha256_hex(raw.encode("utf-8")),
+                        }
+                    )
             result = evaluate_task_output(
                 request=request,
                 task_spec=task_spec,
@@ -712,6 +766,15 @@ def _evaluate_task_matrix(
                     **result.to_dict(),
                 }
             )
+            if runtime:
+                runtime["heartbeat"].update(
+                    phase="task_generation",
+                    model_mode=role,
+                    task_id=task_id,
+                    record_id=record_id,
+                    completed_task_call_count=len(journal.entries),
+                    status="completed" if transport != PREDICTION_TIMEOUT else PREDICTION_TIMEOUT,
+                )
 
         assembler = StructuredAnalysisAssembler(
             field_registry=field_registry,
@@ -1208,34 +1271,56 @@ def run_real_task_conditioned_smoke(
     if torch.cuda.is_available():
         torch.cuda.empty_cache()
 
-    # --- Evaluation: immutable base vs adapter, constrained tasks ---
-    base_eval_model = AutoModelForCausalLM.from_pretrained(
+    # --- Evaluation: one immutable base plus one in-process adapter ---
+    # ponytail: PeftModel.disable_adapter() gives the direct-base comparison
+    # without loading a second 8B model and exhausting the GPU before inference.
+    evaluation_base = AutoModelForCausalLM.from_pretrained(
         repository,
         revision=revision,
         local_files_only=True,
         quantization_config=bnb_config,
         device_map="auto",
     )
-    adapter_base = AutoModelForCausalLM.from_pretrained(
-        repository,
-        revision=revision,
-        local_files_only=True,
-        quantization_config=bnb_config,
-        device_map="auto",
-    )
-    adapter_model = PeftModel.from_pretrained(adapter_base, str(adapter_dir), is_trainable=False)
+    adapter_model = PeftModel.from_pretrained(evaluation_base, str(adapter_dir), is_trainable=False)
 
-    def _make_gen(active_model):  # noqa: ANN001
+    result_dir = adapter_dir.parent
+    task_call_count = sum(
+        len(_tasks_for_record(matrix, str(record["id"]))) for record in sealed_rows
+    ) * 2
+    heartbeat = Heartbeat(result_dir / "heartbeat.json", str(adapter_id), task_call_count)
+    journal = PredictionJournal(result_dir / "prediction_journal.jsonl")
+    runtime = {
+        "heartbeat": heartbeat,
+        "journal": journal,
+        "raw_output_dir": result_dir / "raw_outputs",
+        "timeouts": {
+            str(task["task_id"]): int(task.get("runtime_timeout_seconds") or 300)
+            for task in task_registry.get("tasks") or []
+        },
+    }
+    heartbeat.update(phase="evaluation_model_loaded", model_mode="base", status="running")
+
+    def _make_gen(active_model, *, adapter_enabled: bool):  # noqa: ANN001
         def _gen(*, request, task_spec):  # noqa: ANN001
             try:
-                return generate_with_task_constraint(
-                    model=active_model,
-                    tokenizer=tokenizer,
-                    prompt=request.model_input,
-                    json_schema=task_spec["json_schema"],
-                    max_new_tokens=int(task_spec.get("maximum_output_tokens") or 128),
-                    generation_config={"do_sample": False},
-                )
+                if adapter_enabled:
+                    return generate_with_task_constraint(
+                        model=active_model,
+                        tokenizer=tokenizer,
+                        prompt=request.model_input,
+                        json_schema=task_spec["json_schema"],
+                        max_new_tokens=int(task_spec.get("maximum_output_tokens") or 128),
+                        generation_config={"do_sample": False},
+                    )
+                with active_model.disable_adapter():
+                    return generate_with_task_constraint(
+                        model=active_model,
+                        tokenizer=tokenizer,
+                        prompt=request.model_input,
+                        json_schema=task_spec["json_schema"],
+                        max_new_tokens=int(task_spec.get("maximum_output_tokens") or 128),
+                        generation_config={"do_sample": False},
+                    )
             except ConstrainedDecodingError as exc:
                 raise QloraTaskConditionedSmokeError(
                     f"constraint_failed_no_unconstrained_fallback:{exc}"
@@ -1251,8 +1336,9 @@ def run_real_task_conditioned_smoke(
         selected_base_model=selected_base_model,
         adapter_identity=None,
         role="base",
-        generate_fn=_make_gen(base_eval_model),
+        generate_fn=_make_gen(adapter_model, adapter_enabled=False),
         constraint_initialised=True,
+        runtime=runtime,
     )
     adapter_eval = _evaluate_task_matrix(
         records=sealed_rows,
@@ -1262,9 +1348,12 @@ def run_real_task_conditioned_smoke(
         selected_base_model=selected_base_model,
         adapter_identity=adapter_id,
         role="adapter",
-        generate_fn=_make_gen(adapter_model),
+        generate_fn=_make_gen(adapter_model, adapter_enabled=True),
         constraint_initialised=True,
+        runtime=runtime,
     )
+
+    heartbeat.update(phase="evaluation_complete", model_mode="adapter", status="completed")
 
     return {
         "training_events": events,

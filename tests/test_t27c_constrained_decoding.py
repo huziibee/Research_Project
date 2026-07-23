@@ -20,6 +20,8 @@ from ambiguity_manager.model.task_constrained_decoding import (  # noqa: E402
     load_constraint_config,
 )
 from ambiguity_manager.model.task_prediction_contract import load_task_registry  # noqa: E402
+from ambiguity_manager.model.task_prediction_contract import render_qwen_task_prompt  # noqa: E402
+from ambiguity_manager.model.t27c_runtime_recovery import generated_continuation  # noqa: E402
 
 
 class T27CConstrainedDecodingTests(unittest.TestCase):
@@ -61,6 +63,26 @@ class T27CConstrainedDecodingTests(unittest.TestCase):
             # Some library versions may raise a different error; still fail-closed.
             return
         # If compile succeeds despite bad type, that is library-specific; do not force fail.
+
+    def test_qwen_chat_template_disables_thinking_and_adds_assistant_boundary(self) -> None:
+        class FakeTokenizer:
+            def __init__(self) -> None:
+                self.calls = []
+
+            def apply_chat_template(self, messages, **kwargs):
+                self.calls.append((messages, kwargs))
+                return "<|user|>" + messages[0]["content"] + "<|assistant|>"
+
+        tokenizer = FakeTokenizer()
+        rendered = render_qwen_task_prompt(tokenizer, "TASK_ID=predict_cpc_v1")
+        self.assertTrue(rendered.endswith("<|assistant|>"))
+        self.assertFalse(tokenizer.calls[0][1]["enable_thinking"])
+        self.assertTrue(tokenizer.calls[0][1]["add_generation_prompt"])
+
+    def test_generated_continuation_excludes_prompt_echo(self) -> None:
+        self.assertEqual(generated_continuation([1, 2, 3], [1, 2, 3, 4]), [4])
+        with self.assertRaises(Exception):
+            generated_continuation([1, 2, 3], [1, 9, 3, 4])
 
 
 if __name__ == "__main__":

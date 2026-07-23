@@ -265,6 +265,21 @@ def build_task_prompt(
     return "\n".join(lines)
 
 
+def render_qwen_task_prompt(tokenizer: Any, task_prompt: str) -> str:
+    """Render the frozen task prompt with the pinned Qwen3 chat contract."""
+    if not callable(getattr(tokenizer, "apply_chat_template", None)):
+        raise TaskPredictionContractError("qwen_chat_template_unavailable")
+    rendered = tokenizer.apply_chat_template(
+        [{"role": "user", "content": str(task_prompt)}],
+        tokenize=False,
+        add_generation_prompt=True,
+        enable_thinking=False,
+    )
+    if not isinstance(rendered, str) or not rendered:
+        raise TaskPredictionContractError("qwen_chat_template_empty")
+    return rendered
+
+
 def build_task_prediction_request(
     *,
     record_id: str,
