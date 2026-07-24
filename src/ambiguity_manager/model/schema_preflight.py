@@ -39,6 +39,18 @@ def run_schema_preflight(root: Path | None = None) -> dict[str, Any]:
         installed = importlib.metadata.version("lm-format-enforcer")
     except importlib.metadata.PackageNotFoundError:
         installed = None
+    if installed != PINNED_VERSION:
+        # The cluster container intentionally keeps project packages in an
+        # external site-packages directory.  Bootstrap only the pinned decoder
+        # here; no model or adapter is loaded before the subsequent compile.
+        from ambiguity_manager.model.qlora_task_conditioned_smoke import ensure_runtime_lm_format_enforcer
+
+        ensure_runtime_lm_format_enforcer()
+        importlib.invalidate_caches()
+        try:
+            installed = importlib.metadata.version("lm-format-enforcer")
+        except importlib.metadata.PackageNotFoundError:
+            installed = None
     records: list[dict[str, Any]] = []
     for task in registry["tasks"]:
         task_id = str(task["task_id"])
