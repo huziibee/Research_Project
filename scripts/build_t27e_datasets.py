@@ -61,6 +61,18 @@ def main() -> None:
         rows = [records[row["id"]] for row in manifest_rows]
         body = "".join(json.dumps(row, ensure_ascii=False, sort_keys=True) + "\n" for row in rows).encode()
         (out / "records.jsonl").write_bytes(body)
+        matrix = {
+            "matrix_version": "t27e_all_tasks_v1",
+            "records": {
+                record["id"]: {
+                    "required": ["predict_cpc_v1", "predict_ambiguity_v1"],
+                    "optional": ["predict_intent_v1", "predict_interpretations_v1", "predict_risk_capability_v1"],
+                }
+                for record in rows
+            },
+        }
+        matrix["matrix_hash"] = digest(json.dumps(matrix, sort_keys=True, separators=(",", ":")).encode())
+        (out / "required_task_matrix.json").write_text(json.dumps(matrix, indent=2, sort_keys=True) + "\n")
         payload = {
             "dataset_id": name, "ticket": "T27E", "split": "source_dev",
             "record_count": len(rows), "record_ids": [r["id"] for r in manifest_rows],

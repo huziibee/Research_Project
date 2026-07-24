@@ -339,6 +339,28 @@
       "training_site_packages_relpath": "training-site-packages",
       "exclude_nodes": "mscluster107,mscluster108"
     },
+    "t27e_ambiguity_sealed": {
+      "description": "T27E one-shot sealed all-task smoke on a fresh 12-record source_dev set; only ambiguity uses the frozen minimal required-field schema; no adapter selection.",
+      "partition": "biggpu",
+      "time_limit": "02:30:00",
+      "memory_mb": 64000,
+      "cpus": 8,
+      "gpus": 1,
+      "gpus_required": true,
+      "exclusive": true,
+      "requires_candidate_id": false,
+      "container_role": "training",
+      "container_sif_default_relpath": "containers/pytorch-2.11.0-cuda13.0-runtime.sif",
+      "job_name": "t27e-ambiguity-sealed",
+      "entry_point": "scripts/t27e_ambiguity_sealed.py",
+      "entry_args": "--adapter-dir $T12_CLUSTER_ROOT/runs/qlora-task-conditioned-smoke/t12-qlora-task-conditioned-20260723T185137Z-6419cfc/adapter --records-manifest data/development/t27e_final_smoke_v1/manifest.json --task-matrix data/development/t27e_final_smoke_v1/required_task_matrix.json --adapter-source-commit 6419cfc479c7cf53d347c3343b6e2a859cad946b --adapter-sha256 9a206da3ac205a725bfbcdcc8958d16ec760d63db1d31e53e019a1281a734212",
+      "required_branch": "feature/t12-cluster-redesign",
+      "remote_result_root_template": "${T12_CLUSTER_ROOT}/runs/t27e-ambiguity-sealed",
+      "expected_result_files": ["t27e_sealed_evidence.json", "task_prediction_results.json", "assembly_results.json", "run_manifest.json", "heartbeat.json", "prediction_journal.jsonl"],
+      "run_id_prefix": "t27e-ambiguity-sealed",
+      "training_site_packages_relpath": "training-site-packages",
+      "exclude_nodes": "mscluster107,mscluster108"
+    },
     "qlora_smoke_mock": {
       "description": "Explicit CPU/mock contract-proof profile for QLoRA software mechanics without real 4-bit training. Never selected automatically by the live task-aligned profile.",
       "partition": "stampede",

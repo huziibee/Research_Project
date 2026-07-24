@@ -72,3 +72,12 @@ def test_cluster_profile_is_allowlisted_and_forensic_run_is_diagnostic_only() ->
     assert "t27e" in profile["run_id_prefix"]
     assert "sealed" not in profile["description"].lower()
     assert "unconstrained" not in profile["entry_args"].lower()
+
+
+def test_sealed_profile_uses_frozen_manifest_and_minimal_schema_runner() -> None:
+    profiles = json.loads((ROOT / "configs/cluster/t12_job_profiles.json").read_text())
+    profile = profiles["profiles"]["t27e_ambiguity_sealed"]
+    assert profile["entry_point"] == "scripts/t27e_ambiguity_sealed.py"
+    assert "t27e_final_smoke_v1/manifest.json" in profile["entry_args"]
+    assert "required_task_matrix.json" in profile["entry_args"]
+    assert profile["expected_result_files"][-1] == "prediction_journal.jsonl"

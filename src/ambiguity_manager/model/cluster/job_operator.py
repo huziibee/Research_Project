@@ -987,7 +987,7 @@ mkdir -p "${{T12_CLUSTER_ROOT}}/{result_root_suffix}"
     def _print_heartbeat(self, record: Mapping[str, Any]) -> None:
         """Display runner progress; quiet stdout is not treated as inactivity."""
         profile_name = str(record["profile"])
-        if profile_name not in {"t27c_inference_diagnostic", "qlora_task_conditioned_inference_recovery", "qlora_task_conditioned_smoke", "t27d_inference_diagnostic", "t27d_inference_sealed", "t27e_ambiguity_diagnostic"}:
+        if profile_name not in {"t27c_inference_diagnostic", "qlora_task_conditioned_inference_recovery", "qlora_task_conditioned_smoke", "t27d_inference_diagnostic", "t27d_inference_sealed", "t27e_ambiguity_diagnostic", "t27e_ambiguity_sealed"}:
             return
         profile = get_profile(self.profiles_doc, profile_name)
         run_id = validate_run_id(str(record["run_id"]))
