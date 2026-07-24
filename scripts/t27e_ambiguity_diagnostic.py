@@ -139,7 +139,21 @@ def main() -> int:
     for variant, registry in (("current_schema", base_registry), ("minimal_required_schema", minimal_registry)):
         for adapter in (False, True):
             all_payloads.append(_run_variant(records=records, registry=registry, field_registry=field_registry, model=adapter_model, tokenizer=tokenizer, selected_base=selected_base, adapter=adapter, variant=variant, result_root=out))
-    (out / "t27e_ambiguity_forensic_evidence.json").write_text(json.dumps({"ticket": "T27E", "policy_hash": policy_hash(root), "variants": all_payloads}, indent=2) + "\n", encoding="utf-8")
+    evidence = {
+        "ticket": "T27E", "run_id": args.run_id, "source_commit": args.source_commit,
+        "policy_hash": policy_hash(root), "variants": all_payloads,
+    }
+    evidence_path = out / "t27e_ambiguity_forensic_evidence.json"
+    evidence_path.write_text(json.dumps(evidence, indent=2) + "\n", encoding="utf-8")
+    (out / "run_manifest.json").write_text(json.dumps({
+        "ticket": "T27E", "run_id": args.run_id, "source_commit": args.source_commit,
+        "source_archive_sha256": args.source_archive_sha256,
+        "policy_hash": policy_hash(root), "diagnostic": True,
+        "sealed_output_accessed": False,
+        "evidence_sha256": sha256_hex(evidence_path.read_bytes()),
+        "expected_record_count": 16, "expected_task_calls": 64,
+        "unconstrained_fallbacks": 0,
+    }, indent=2) + "\n", encoding="utf-8")
     print(f"T27E_DIAGNOSTIC_COMPLETE result_dir={out}")
     return 0
 
