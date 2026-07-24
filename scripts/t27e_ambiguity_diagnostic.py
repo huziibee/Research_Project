@@ -104,6 +104,12 @@ def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--adapter-dir", required=True, type=Path)
     parser.add_argument("--result-dir", required=True, type=Path)
+    # Standard cluster operator provenance arguments are accepted and recorded
+    # by the wrapper; this diagnostic does not use them to alter generation.
+    parser.add_argument("--run-id", default=None)
+    parser.add_argument("--source-commit", default=None)
+    parser.add_argument("--source-archive-sha256", default=None)
+    parser.add_argument("--source-identity-manifest", type=Path, default=None)
     args = parser.parse_args()
     root = repo_root()
     selected_base = require_selected_base_model(root)
