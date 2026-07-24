@@ -619,8 +619,6 @@ def _mock_task_json(task_id: str) -> str:
             {
                 "ambiguity_present": True,
                 "ambiguity_types": ["referential"],
-                "primary_ambiguity_type": "referential",
-                "unresolved_slots": [{"slot_name": "object", "reason": "underspecified"}],
             }
         )
     if task_id == "predict_interpretations_v1":
@@ -994,6 +992,15 @@ def run_real_task_conditioned_smoke(
     """Real 4-bit shared-adapter QLoRA with constrained task eval + assembly."""
     import time
 
+    # Compile every effective schema before importing/loading heavyweight model
+    # components.  This is the same compiler used by inference.
+    constraint_runtime = ensure_runtime_lm_format_enforcer()
+    from ambiguity_manager.model.schema_preflight import run_schema_preflight
+
+    preflight = run_schema_preflight(root)
+    if not preflight["passed"]:
+        raise QloraTaskConditionedSmokeError("schema_preflight_failed_before_model_loading")
+
     import torch
     from peft import LoraConfig, PeftModel, get_peft_model, prepare_model_for_kbit_training
     from torch.optim.lr_scheduler import ConstantLR
@@ -1006,7 +1013,7 @@ def run_real_task_conditioned_smoke(
 
     started = time.perf_counter()
     jsonschema_runtime = ensure_runtime_jsonschema()
-    constraint_runtime = ensure_runtime_lm_format_enforcer()
+    # The pinned runtime was installed and preflighted above.
 
     repository, revision = parse_checkpoint_identity(selected_base_model)
     quant = config["quantization"]

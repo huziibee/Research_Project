@@ -276,7 +276,11 @@ class JobStatus:
 
     @property
     def success(self) -> bool:
-        return self.state == "COMPLETED"
+        # Slurm COMPLETED only means the batch shell exited; require its
+        # reported exit code to be exactly zero when available.
+        if self.state != "COMPLETED":
+            return False
+        return self.exit_code in (None, "0:0", "0")
 
     def as_dict(self) -> dict[str, Any]:
         return {
@@ -707,7 +711,15 @@ mkdir -p "${{T12_CLUSTER_ROOT}}/{result_root_suffix}"
 {source_check}export PYTHONPATH="${{SRC_ROOT}}/src${{PYTHONPATH:+:$PYTHONPATH}}"
 {run_cmd}
 
+if [[ ${{JOB_STATUS:-0}} -ne 0 ]]; then
+  printf '{{"status":"failed","run_id":"%s","job_id":"%s","job_status":%s,"entry_point":"%s"}}\n' "${{RUN_ID}}" "${{SLURM_JOB_ID}}" "${{JOB_STATUS}}" "{entry}" > "${{RESULT_DIR}}/runtime_failure.json"
+  printf '{{"status":"failed","run_id":"%s","job_id":"%s","job_status":%s}}\n' "${{RUN_ID}}" "${{SLURM_JOB_ID}}" "${{JOB_STATUS}}" > "${{RESULT_DIR}}/heartbeat.json"
+  echo "T12_JOB_FAILED run_id=${{RUN_ID}} job_id=${{SLURM_JOB_ID}} status=${{JOB_STATUS}}"
+else
+  echo "T12_JOB_SUCCEEDED run_id=${{RUN_ID}} job_id=${{SLURM_JOB_ID}} status=0"
+fi
 {done_line}
+exit ${{JOB_STATUS:-0}}
 """
 
     # --- public actions -----------------------------------------------

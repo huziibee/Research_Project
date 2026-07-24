@@ -116,9 +116,6 @@ def main() -> int:
     records = _records(root)
     base_registry = load_task_registry(root)
     minimal_registry = json.loads(json.dumps(base_registry))
-    for index, task in enumerate(minimal_registry["tasks"]):
-        if task.get("task_id") == "predict_ambiguity_v1":
-            minimal_registry["tasks"][index] = effective_ambiguity_task_spec(base_registry)
     field_registry = load_field_responsibility_registry(root)
     import torch
     from peft import PeftModel

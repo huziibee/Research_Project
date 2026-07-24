@@ -32,6 +32,14 @@ def build_minimal_ambiguity_schema() -> dict[str, Any]:
 
 
 def effective_ambiguity_task_spec(registry: Mapping[str, Any]) -> dict[str, Any]:
+    # Compatibility name retained for historical T27E diagnostics.  The
+    # canonical layer now applies this contract for every entry point.
+    from ambiguity_manager.model.generation_schema import effective_task_registry
+
+    canonical = effective_task_registry()
+    for task in canonical.get("tasks", []):
+        if task.get("task_id") == "predict_ambiguity_v1":
+            return copy.deepcopy(task)
     for original in registry.get("tasks", []):
         if original.get("task_id") == "predict_ambiguity_v1":
             task = copy.deepcopy(original)

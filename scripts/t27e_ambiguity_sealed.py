@@ -20,6 +20,7 @@ from ambiguity_manager.model.qlora_task_conditioned_smoke import (  # noqa: E402
     _tasks_for_record,
     _utc_now,
 )
+from ambiguity_manager.model.schema_preflight import run_schema_preflight  # noqa: E402
 from ambiguity_manager.model.task_constrained_decoding import generate_with_task_constraint  # noqa: E402
 from ambiguity_manager.model.task_prediction_contract import (  # noqa: E402
     load_field_responsibility_registry,
@@ -48,6 +49,9 @@ def main() -> int:
     parser.add_argument("--adapter-sha256", required=True)
     args = parser.parse_args()
     root = repo_root()
+    preflight = run_schema_preflight(root)
+    if not preflight["passed"]:
+        raise RuntimeError("t27f_schema_preflight_failed_before_model_loading")
     selected_base = require_selected_base_model(root)
     manifest_path = args.records_manifest if args.records_manifest.is_absolute() else root / args.records_manifest
     manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
@@ -57,9 +61,6 @@ def main() -> int:
     matrix_path = args.task_matrix if args.task_matrix.is_absolute() else root / args.task_matrix
     matrix = json.loads(matrix_path.read_text(encoding="utf-8"))
     registry = load_task_registry(root)
-    for index, task in enumerate(registry["tasks"]):
-        if task.get("task_id") == "predict_ambiguity_v1":
-            registry["tasks"][index] = effective_ambiguity_task_spec(registry)
     field_registry = load_field_responsibility_registry(root)
 
     import torch

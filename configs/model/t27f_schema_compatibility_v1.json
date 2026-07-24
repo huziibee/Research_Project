@@ -1,0 +1,17 @@
+{
+  "config_id": "t27f_schema_compatibility_v1",
+  "generation_schema_version": "1.0.0",
+  "production_registry": "configs/model/task_conditioned_prediction_tasks_v1.json",
+  "lm_format_enforcer": {"library": "lm-format-enforcer", "version": "0.10.12", "integration": "ambiguity_manager.model.task_constrained_decoding.compile_task_constraint"},
+  "unconstrained_fallback_permitted": false,
+  "transformations": {
+    "predict_intent_v1": ["speech_act:optional_string_enum_omit_null"],
+    "predict_ambiguity_v1": ["retain_minimal_contract:ambiguity_present,ambiguity_types", "maximum_output_tokens:96"],
+    "predict_interpretations_v1": ["optional_properties_omit_null: text,confidence,safety_status,cpc,selected_interpretation.supporting_evidence.span,selected_interpretation.supporting_evidence.note"],
+    "predict_risk_capability_v1": ["required_enum_unknown: risk_level,capability_status"]
+  },
+  "protected_data_access_permitted": false,
+  "selected_adapter": null,
+  "selected_model_strategy": null,
+  "valid_for_official_use": false
+}

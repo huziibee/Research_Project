@@ -120,10 +120,18 @@ def _root(root: Path | None) -> Path:
 
 
 def load_task_registry(root: Path | None = None) -> dict[str, Any]:
-    path = _root(root) / TASK_REGISTRY_REL
-    payload = json.loads(path.read_text(encoding="utf-8"))
+    from ambiguity_manager.model.generation_schema import effective_task_registry
+
+    payload = effective_task_registry(_root(root))
     validate_task_registry(payload)
     return payload
+
+
+def load_production_task_registry(root: Path | None = None) -> dict[str, Any]:
+    """Load the semantic production registry without generation transforms."""
+    from ambiguity_manager.model.generation_schema import production_task_registry
+
+    return production_task_registry(_root(root))
 
 
 def load_field_responsibility_registry(root: Path | None = None) -> dict[str, Any]:
@@ -141,6 +149,8 @@ def validate_task_registry(payload: Mapping[str, Any]) -> None:
     errors: list[str] = []
     if payload.get("registry_id") != "task_conditioned_prediction_tasks_v1":
         errors.append("registry_id mismatch")
+    if payload.get("generation_schema_version") != "1.0.0":
+        errors.append("generation_schema_version mismatch")
     if payload.get("shared_adapter_only") is not True:
         errors.append("shared_adapter_only must be true")
     if payload.get("task_specific_adapter_search_permitted") is not False:
