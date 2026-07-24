@@ -1,0 +1,79 @@
+{
+  "config_id": "t27e_ambiguity_recovery_v1",
+  "config_version": "1.0.0",
+  "ticket": "T27E",
+  "status": "frozen_for_diagnostic",
+  "purpose": "Ambiguity-only recovery contract; technical evidence only and never an adapter-selection gate.",
+  "base_model": "Qwen/Qwen3-8B@b968826d9c46dd6066d109eabc6255188de91218",
+  "selected_adapter": null,
+  "selected_model_strategy": null,
+  "valid_for_official_use": false,
+  "diagnostic": {
+    "manifest": "data/development/t27e_diagnostic_dev_v1/manifest.json",
+    "record_count": 16,
+    "fresh_source_split": "source_dev",
+    "contract": "compare_current_and_minimal_required_field_schemas",
+    "constrained_decoding_required": true,
+    "unconstrained_fallback_permitted": false,
+    "inspect_before_sealed_freeze": true
+  },
+  "sealed": {
+    "manifest": "data/development/t27e_final_smoke_v1/manifest.json",
+    "record_count": 12,
+    "frozen_before_execution": true,
+    "thresholds_frozen_before_output_inspection": true,
+    "one_run_only": true
+  },
+  "repair": {
+    "primary_path": "pending_diagnostic",
+    "structural_change_first": true,
+    "task": "predict_ambiguity_v1",
+    "other_tasks_enabled": false,
+    "ambiguity_training": {
+      "source_split": "source_train",
+      "strong_labels_only": true,
+      "eligible_only": true,
+      "minimum_full_traversals": 1,
+      "balance_presence_types_sources_compound_when_feasible": true,
+      "records_and_hashes_required": true
+    },
+    "optional_fields": [],
+    "missing_ambiguity_representation": null,
+    "missing_ambiguity_blocks": ["execute", "silently_resolve"],
+    "deterministic_router_authoritative": true
+  },
+  "generation": {
+    "do_sample": false,
+    "eos_and_pad_explicit": true,
+    "continuation_only_parsing": true,
+    "maximum_output_tokens_current": 192,
+    "maximum_output_tokens_minimal": 96,
+    "token_limit_change_requires_frozen_target_analysis": true,
+    "constraint_library": "lm-format-enforcer==0.10.12"
+  },
+  "data_isolation": {
+    "protected_access_permitted": false,
+    "forbidden_sets": [
+      "T27", "T27B", "T27C", "T27C-R1", "T27D",
+      "model_selection_fixtures", "source_holdout", "T13_calibration",
+      "supervisor_annotations", "future_manual_protected_challenge_set"
+    ],
+    "disjoint_by": ["source_id", "group_key"],
+    "source_datasets": ["ambik", "clara", "codraw_icr_v2", "indirect_requests", "vague"]
+  },
+  "gate": {
+    "terminal_journal_entries_required": true,
+    "unconstrained_fallbacks_max": 0,
+    "missing_or_skipped_calls_max": 0,
+    "ambiguity_parse_schema_valid_rate_min": 0.8,
+    "cpc_plus_ambiguity_accepted_min": 6,
+    "complete_assemblies_min": 1,
+    "production_schema_valid_complete_or_partial_min": 12,
+    "safe_routes_min": 9,
+    "unsafe_execute_max": 0,
+    "unsafe_silently_resolve_max": 0,
+    "fabricated_fields_max": 0,
+    "unsupported_commitments_max": 0,
+    "missing_ambiguity_must_not_be_false": true
+  }
+}

@@ -294,9 +294,19 @@ def generate_with_task_constraint(
         input_ids[0].tolist(), output_ids[0].tolist()
     )
     text = tokenizer.decode(continuation, skip_special_tokens=True)
+    generated_token_count = len(continuation)
+    termination_reason = (
+        "maximum_token" if generated_token_count >= int(max_new_tokens) else "eos_or_constraint_stop"
+    )
     return {
         "constraint_initialised": True,
         "raw_text": text,
         "transport_status": "constrained_generated",
         "unconstrained_fallback": False,
+        "rendered_prompt_token_count": int(input_ids.shape[-1]),
+        "generated_token_count": generated_token_count,
+        "maximum_output_tokens": int(max_new_tokens),
+        "termination_reason": termination_reason,
+        "eos_token_id": int(eos_token_id) if eos_token_id is not None else None,
+        "pad_token_id": int(pad_token_id) if pad_token_id is not None else None,
     }

@@ -763,6 +763,14 @@ def _evaluate_task_matrix(
                     "role": role,
                     "record_id": record_id,
                     "task_id": task_id,
+                    "generation_telemetry": {
+                        key: gen.get(key)
+                        for key in (
+                            "rendered_prompt_token_count", "generated_token_count",
+                            "maximum_output_tokens", "termination_reason", "eos_token_id",
+                            "pad_token_id",
+                        )
+                    } if isinstance(gen, dict) else {},
                     **result.to_dict(),
                 }
             )

@@ -317,6 +317,28 @@
       "training_site_packages_relpath": "training-site-packages",
       "exclude_nodes": "mscluster107,mscluster108"
     },
+    "t27e_ambiguity_diagnostic": {
+      "description": "T27E ambiguity-only forensic diagnostic comparing current and minimal required-field constrained schemas on a fresh 16-record source_dev set; no sealed output is accessed.",
+      "partition": "biggpu",
+      "time_limit": "02:00:00",
+      "memory_mb": 64000,
+      "cpus": 8,
+      "gpus": 1,
+      "gpus_required": true,
+      "exclusive": true,
+      "requires_candidate_id": false,
+      "container_role": "training",
+      "container_sif_default_relpath": "containers/pytorch-2.11.0-cuda13.0-runtime.sif",
+      "job_name": "t27e-ambiguity-diagnostic",
+      "entry_point": "scripts/t27e_ambiguity_diagnostic.py",
+      "entry_args": "--adapter-dir $T12_CLUSTER_ROOT/runs/qlora-task-conditioned/t12-qlora-task-conditioned-20260723T185137Z-6419cfc/adapter",
+      "required_branch": "feature/t12-cluster-redesign",
+      "remote_result_root_template": "${T12_CLUSTER_ROOT}/runs/t27e-ambiguity-diagnostic",
+      "expected_result_files": ["t27e_ambiguity_forensic_evidence.json"],
+      "run_id_prefix": "t27e-ambiguity-diagnostic",
+      "training_site_packages_relpath": "training-site-packages",
+      "exclude_nodes": "mscluster107,mscluster108"
+    },
     "qlora_smoke_mock": {
       "description": "Explicit CPU/mock contract-proof profile for QLoRA software mechanics without real 4-bit training. Never selected automatically by the live task-aligned profile.",
       "partition": "stampede",
