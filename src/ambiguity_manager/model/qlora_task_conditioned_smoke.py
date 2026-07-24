@@ -768,7 +768,7 @@ def _evaluate_task_matrix(
                         for key in (
                             "rendered_prompt_token_count", "generated_token_count",
                             "maximum_output_tokens", "termination_reason", "eos_token_id",
-                            "pad_token_id",
+                            "pad_token_id", "last_generated_token_id", "ended_with_eos",
                         )
                     } if isinstance(gen, dict) else {},
                     **result.to_dict(),

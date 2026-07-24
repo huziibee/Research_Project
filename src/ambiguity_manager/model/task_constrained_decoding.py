@@ -307,6 +307,8 @@ def generate_with_task_constraint(
         "generated_token_count": generated_token_count,
         "maximum_output_tokens": int(max_new_tokens),
         "termination_reason": termination_reason,
+        "last_generated_token_id": int(continuation[-1]) if continuation else None,
+        "ended_with_eos": bool(eos_token_id is not None and continuation and int(continuation[-1]) == int(eos_token_id)),
         "eos_token_id": int(eos_token_id) if eos_token_id is not None else None,
         "pad_token_id": int(pad_token_id) if pad_token_id is not None else None,
     }
