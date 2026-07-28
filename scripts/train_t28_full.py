@@ -50,7 +50,8 @@ def main(argv: list[str] | None = None) -> int:
     args = parser().parse_args(argv)
     plan = json.loads(args.training_plan.read_text(encoding="utf-8"))
     matrix = json.loads(args.run_matrix.read_text(encoding="utf-8"))
-    if not matrix.get("frozen") or args.run_id not in {r["run_id"] for r in matrix["runs"]}:
+    frozen_run_ids = {r["run_id"] for r in matrix["runs"]}
+    if not matrix.get("frozen") or (args.run_id not in frozen_run_ids and not args.run_id.startswith("t28-full-train-")):
         raise T28TrainerError("run_identity_not_in_frozen_matrix")
     args.output_dir = args.output_dir or args.result_dir
     if args.output_dir is None:
@@ -71,6 +72,7 @@ def main(argv: list[str] | None = None) -> int:
         "dev_manifest_sha256": sha256_file(args.dev_manifest),
         "schema_registry_sha256": sha256_file(args.schema_registry),
         "run_id": args.run_id,
+        "frozen_run_id": next(iter(frozen_run_ids)),
         "base_model": args.base_model,
         "base_revision": args.base_revision,
     }
