@@ -95,7 +95,7 @@ def main(argv: list[str] | None = None) -> int:
     }
     actual_canonical_sha256 = sha256_file(args.canonical_corpus)
     if not hmac.compare_digest(actual_canonical_sha256, str(identity["canonical_sha256"])):
-        raise T28TrainerError(f"canonical_hash_mismatch:{actual_canonical_sha256!r}:{identity['canonical_sha256']!r}:{type(actual_canonical_sha256).__name__}:{type(identity['canonical_sha256']).__name__}")
+        raise T28TrainerError(f"canonical_hash_mismatch:{actual_canonical_sha256!r}:{identity['canonical_sha256']!r}:lengths={len(actual_canonical_sha256)},{len(str(identity['canonical_sha256']))}")
     evidence = {**identity, "record_count": len(train_rows), "target_count": int(plan["permitted_view"]["valid_task_conditioned_targets"]), "source_holdout_loaded": 0, "protected_records_loaded": 0}
     validate_full_data_contract(evidence)
     (args.output_dir / "run_manifest.json").write_text(json.dumps({"plan": plan, "matrix": matrix, "identity": identity, "seed": args.seed, "source_commit": args.source_commit, "resume_checkpoint": str(args.resume_checkpoint) if args.resume_checkpoint else None, "validate_only": args.validate_only, "immutable": True}, sort_keys=True, indent=2) + "\n", encoding="utf-8")
