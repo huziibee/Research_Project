@@ -7,6 +7,7 @@ path deliberately fails closed when the pinned training stack is unavailable.
 from __future__ import annotations
 
 import argparse
+import hmac
 import json
 import sys
 from pathlib import Path
@@ -93,7 +94,7 @@ def main(argv: list[str] | None = None) -> int:
         **bundle_identity,
     }
     actual_canonical_sha256 = sha256_file(args.canonical_corpus)
-    if actual_canonical_sha256 != identity["canonical_sha256"]:
+    if not hmac.compare_digest(actual_canonical_sha256, str(identity["canonical_sha256"])):
         raise T28TrainerError(f"canonical_hash_mismatch:{actual_canonical_sha256!r}:{identity['canonical_sha256']!r}:{type(actual_canonical_sha256).__name__}:{type(identity['canonical_sha256']).__name__}")
     evidence = {**identity, "record_count": len(train_rows), "target_count": int(plan["permitted_view"]["valid_task_conditioned_targets"]), "source_holdout_loaded": 0, "protected_records_loaded": 0}
     validate_full_data_contract(evidence)
