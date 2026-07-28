@@ -21,7 +21,7 @@ umask 077
 cd "${T28_CODE_ROOT}"
 
 /usr/bin/nvidia-smi --query-gpu=name,memory.total,compute_cap --format=csv,noheader
-python - <<'PY'
+/usr/bin/python3 - <<'PY'
 import os, shutil
 ram = shutil.disk_usage('/').free
 print({'node': os.uname().nodename, 'python': os.sys.version, 'free_root_bytes': ram})
