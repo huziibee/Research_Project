@@ -28,6 +28,7 @@ def main() -> int:
     parser.add_argument("--run-id", required=True)
     parser.add_argument("--source-commit", default=None)
     parser.add_argument("--source-archive-sha256", default=None)
+    parser.add_argument("--source-identity-manifest", type=Path, default=None)
     args = parser.parse_args()
     preflight = run_schema_preflight(ROOT)
     if not preflight["passed"]:

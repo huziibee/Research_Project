@@ -26,6 +26,7 @@ def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--adapter-dir", required=True, type=Path); parser.add_argument("--result-dir", required=True, type=Path)
     parser.add_argument("--run-id", required=True); parser.add_argument("--source-commit", required=True); parser.add_argument("--source-archive-sha256", required=True)
+    parser.add_argument("--source-identity-manifest", type=Path, default=None)
     parser.add_argument("--records-manifest", required=True, type=Path); parser.add_argument("--task-matrix", required=True, type=Path)
     parser.add_argument("--adapter-source-commit", required=True); parser.add_argument("--adapter-sha256", required=True)
     args = parser.parse_args(); root = ROOT
