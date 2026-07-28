@@ -151,7 +151,9 @@ def safe_extract(archive: Path, destination: Path, manifest: Mapping[str, Any], 
         for directory in sorted((p for p in temp.rglob("*") if p.is_dir()), key=lambda p: len(p.parts), reverse=True):
             directory.chmod(stat.S_IRUSR | stat.S_IXUSR | stat.S_IRGRP | stat.S_IXGRP | stat.S_IROTH | stat.S_IXOTH)
         temp.chmod(stat.S_IRUSR | stat.S_IXUSR | stat.S_IRGRP | stat.S_IXGRP | stat.S_IROTH | stat.S_IXOTH)
-        (temp / "VERIFY_PASSED.json").write_bytes(canonical_json({"status": "VERIFY_PASSED", "archive_sha256": archive_sha256, "members": manifest["members"]}))
+        marker = temp / "VERIFY_PASSED.json"
+        marker.write_bytes(canonical_json({"status": "VERIFY_PASSED", "archive_sha256": archive_sha256, "members": manifest["members"]}))
+        marker.chmod(stat.S_IRUSR | stat.S_IRGRP | stat.S_IROTH)
         os.replace(temp, destination)
         return {"status": "VERIFY_PASSED", "destination": str(destination), "archive_sha256": archive_sha256}
     except Exception:
