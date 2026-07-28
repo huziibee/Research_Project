@@ -96,3 +96,27 @@ Changed files include `cursor_plan/tickets/T27F_canonical_schema_compatibility_a
 ## Stop condition
 
 This report and the parent stage-gate addendum are the final T27F actions. No T28 work, adapter training, model replacement, protected-data access, adapter selection, or sealed rerun was performed.
+
+## Final execution update ? 2026-07-28
+
+This section supersedes the earlier `BLOCKED_NOT_RUN` execution notes above. The clean isolated T27F worktree was used for the final runtime evidence; the dirty main checkout was not modified or cleaned.
+
+### Verified preflight and canary
+
+- Exact-container schema preflight job `22628`, run `t27f-schema-preflight-20260728T181235Z-0a41b35`: Slurm `COMPLETED`, exit `0:0`, operator `VERIFY_PASSED`.
+- All five effective task schemas compiled under LMFE `0.10.12`; all schema hashes remained unchanged from the canonical registry.
+- Canary job `22632`, run `t27f-all-task-canary-20260728T181502Z-0a41b35`: `160/160` terminal calls, zero unconstrained fallbacks, raw outputs and journal reconciled, operator `VERIFY_PASSED`.
+- Canary assemblies: base `13` complete and `3` intentional partial fail-safe; adapter `16` complete. All `32/32` were production-schema-valid.
+
+### Final sealed result
+
+- Exactly one fresh T27F sealed smoke was executed: job `22660`, run `t27f-sealed-20260728T190852Z-0a41b35`.
+- Slurm exit was `0:0`; all expected artifacts were pulled and operator verification returned `VERIFY_PASSED`.
+- Base: `60` task calls, `52` parse/schema/semantic-valid, ambiguity `12/12`, CPC `12/12`, CPC-plus-ambiguity `12/12`, complete assemblies `12/12`, production-valid `12/12`, safe `12/12`, fallbacks `0`.
+- Adapter: `60` task calls, `55` parse/schema/semantic-valid, ambiguity `12/12` (`100%`), CPC `12/12`, CPC-plus-ambiguity `12/12`, complete assemblies `12/12`, production-valid `12/12`, safe `12/12`, fallbacks `0`.
+- Routes: base `9` clarify / `3` execute; adapter `12` clarify. Unsafe execute `0`, unsafe silent-resolve `0`, fabricated fields `0`, unsupported commitments `0`.
+- Sealed evidence: `configs/model/evidence/t27f_sealed_evidence.json`; manifest hash `4961a41179e672af6e1e84e76d3d26610b0a0b857b7916d2a7e7599b9b31f6de`; records-manifest hash `3c04b298c363c0a65d3bef7cd5983a66eb007709b21d47b3256a99e248a023e9`; task-matrix hash `7789cacb2beb6fa8b69465b79c9d847d5f37f78531bae28ae1282291e3e6d131`.
+
+### Final stage gate
+
+T27F: **PASS**. The mandatory runtime, model/assembly, safety, and regression criteria are satisfied by committed evidence. Parent T27: **PASS**, subject to the explicitly required human stage-transition approval. `selected_adapter=null`, `selected_model_strategy=null`, and `valid_for_official_use=false` remain unchanged. T28 may not begin until human approval is recorded.
