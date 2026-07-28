@@ -288,33 +288,44 @@ class StructuredAnalysisAssembler:
         # 4) Optional interpretations
         if "predict_interpretations_v1" in accepted:
             interp = accepted["predict_interpretations_v1"]
-            analysis.candidate_interpretations = [
-                CandidateInterpretationFrame.from_dict(item)
-                for item in (interp.get("candidate_interpretations") or [])
-            ]
-            selected = interp.get("selected_interpretation")
-            analysis.selected_interpretation = (
-                SelectedInterpretation.from_dict(selected) if selected else None
-            )
-            provenance.append(
-                FieldProvenance(
-                    "candidate_interpretations",
-                    "task",
-                    "predict_interpretations_v1",
-                    accepted_hashes.get("predict_interpretations_v1"),
-                    "copy_from_task_if_present",
+            try:
+                analysis.candidate_interpretations = [
+                    CandidateInterpretationFrame.from_dict(item)
+                    for item in (interp.get("candidate_interpretations") or [])
+                ]
+                selected = interp.get("selected_interpretation")
+                analysis.selected_interpretation = (
+                    SelectedInterpretation.from_dict(selected) if selected else None
                 )
-            )
-            completeness.update({"candidate_interpretations": "strong_prediction", "selected_interpretation": "strong_prediction"})
-            provenance.append(
-                FieldProvenance(
-                    "selected_interpretation",
-                    "task",
-                    "predict_interpretations_v1",
-                    accepted_hashes.get("predict_interpretations_v1"),
-                    "copy_from_task_if_present",
+            except Exception as exc:  # noqa: BLE001
+                # Optional model enrichment must never make the complete
+                # record unavailable. Preserve the core/ambiguity result and
+                # route fail-safe with an explicit retained failure.
+                analysis.candidate_interpretations = []
+                analysis.selected_interpretation = None
+                failures.append(f"optional_interpretations_invalid:{type(exc).__name__}")
+                notes.append("optional_interpretations_invalid_fail_safe")
+                completeness.update({"candidate_interpretations": "task_rejected_or_absent", "selected_interpretation": "task_rejected_or_absent"})
+            else:
+                provenance.append(
+                    FieldProvenance(
+                        "candidate_interpretations",
+                        "task",
+                        "predict_interpretations_v1",
+                        accepted_hashes.get("predict_interpretations_v1"),
+                        "copy_from_task_if_present",
+                    )
                 )
-            )
+                completeness.update({"candidate_interpretations": "strong_prediction", "selected_interpretation": "strong_prediction"})
+                provenance.append(
+                    FieldProvenance(
+                        "selected_interpretation",
+                        "task",
+                        "predict_interpretations_v1",
+                        accepted_hashes.get("predict_interpretations_v1"),
+                        "copy_from_task_if_present",
+                    )
+                )
         else:
             notes.append("missing_optional_interpretations_forbid_silent_resolve")
             analysis.findings = list(analysis.findings) + ["interpretation_prediction_unavailable"]

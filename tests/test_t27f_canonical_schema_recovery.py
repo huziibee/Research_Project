@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+from types import SimpleNamespace
 from pathlib import Path
 
 import pytest
@@ -14,6 +15,8 @@ from ambiguity_manager.model.generation_schema import (
 )
 from ambiguity_manager.model.schema_preflight import run_schema_preflight
 from ambiguity_manager.model.cluster.job_operator import ClusterJobOperator, JobStatus, get_profile
+from ambiguity_manager.model.task_prediction_contract import load_field_responsibility_registry, load_task_registry
+from ambiguity_manager.systems.structured_analysis_assembler import StructuredAnalysisAssembler
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -172,3 +175,20 @@ def test_rendered_non_strict_sbatch_failing_entrypoint_is_retrievable(tmp_path) 
     assert "T12_JOB_FAILED" in result.stdout
     assert json.loads((result_dir / "runtime_failure.json").read_text())["status"] == "failed"
     assert json.loads((result_dir / "heartbeat.json").read_text())["status"] == "failed"
+
+
+def test_malformed_optional_interpretations_become_fail_safe_partial() -> None:
+    registry = load_task_registry(ROOT)
+    fields = load_field_responsibility_registry(ROOT)
+    task_version = {task["task_id"]: task["task_version"] for task in registry["tasks"]}
+    results = [
+        SimpleNamespace(task_id="predict_cpc_v1", task_version=task_version["predict_cpc_v1"], parsed_output={"cpc": {name: {"value": None, "status": "unknown"} for name in ["action", "actor", "object", "destination", "spatial_relation", "quantity", "time", "recipient", "tool", "conditions", "constraints"]}}, output_hash="cpc", accepted=True),
+        SimpleNamespace(task_id="predict_ambiguity_v1", task_version=task_version["predict_ambiguity_v1"], parsed_output={"ambiguity_present": True, "ambiguity_types": ["spatial"]}, output_hash="ambiguity", accepted=True),
+        SimpleNamespace(task_id="predict_interpretations_v1", task_version=task_version["predict_interpretations_v1"], parsed_output={"candidate_interpretations": [{"cpc": "malformed"}]}, output_hash="interpretations", accepted=True),
+    ]
+    result = StructuredAnalysisAssembler(field_registry=fields, task_registry=registry).assemble(record_id="t27f-test", task_results=results)
+    assert result.status == "assembled_partial_fail_safe"
+    assert result.production_schema_valid is True
+    assert result.analysis is not None
+    assert result.analysis.candidate_interpretations == []
+    assert any("optional_interpretations_invalid" in failure for failure in result.failures)
