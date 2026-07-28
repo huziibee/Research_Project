@@ -15,6 +15,8 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
 
+AUTHORITATIVE_CANONICAL_SHA256 = "1e51cac046e014a6b890b10a155d22e32e01aa276d4507a10ad4f86abcf9942a"
+
 from ambiguity_manager.model.t28_trainer import (  # noqa: E402
     FullDataLoader,
     T28TrainerError,
@@ -82,7 +84,11 @@ def main(argv: list[str] | None = None) -> int:
     if any(r.get("protected_data") or r.get("source_holdout") for r in train_rows + dev_rows):
         raise T28TrainerError("protected_role_violation")
     identity = {
-        "canonical_sha256": plan["canonical_corpus"]["sha256"],
+        # The frozen plan is retained byte-for-byte; its historical field is
+        # 63 characters and lacks the final `a`. The bundle manifest and the
+        # authoritative T28 input contract provide the 64-character identity.
+        "canonical_sha256": AUTHORITATIVE_CANONICAL_SHA256,
+        "plan_declared_canonical_sha256": plan["canonical_corpus"]["sha256"],
         "permitted_view_sha256": sha256_file(args.permitted_view),
         "train_manifest_sha256": sha256_file(args.train_manifest),
         "dev_manifest_sha256": sha256_file(args.dev_manifest),
