@@ -94,6 +94,24 @@ def test_exact_runtime_preflight_is_fail_fast_and_records_all_tasks() -> None:
 def test_slurm_completed_with_nonzero_exit_is_not_success() -> None:
     assert JobStatus(job_id="1", state="COMPLETED", exit_code="1:0").success is False
     assert JobStatus(job_id="1", state="COMPLETED", exit_code="0:0").success is True
+    assert JobStatus(job_id="1", state="COMPLETED", exit_code=None).success is False
+
+
+def test_verification_rejects_durable_failure_markers(tmp_path) -> None:
+    operator = ClusterJobOperator(repo_root=ROOT, dry_run=True)
+    run_id = "t27f-failure-marker"
+    operator.state_dir = tmp_path / "state"
+    pull_dir = operator.state_dir / run_id / "pulled"
+    pull_dir.mkdir(parents=True)
+    (pull_dir / "runtime_failure.json").write_text('{"status":"failed"}\n')
+    (pull_dir / "heartbeat.json").write_text('{"status":"failed"}\n')
+    (pull_dir / "run_manifest.json").write_text('{"status":"failed","files":[]}\n')
+    operator.state_dir.joinpath("state.json").write_text(json.dumps({"runs": {run_id: {
+        "run_id": run_id, "job_id": "1", "profile": "t27f_all_task_canary",
+        "local_pull_path": str(pull_dir),
+    }}}))
+    with pytest.raises(Exception):
+        operator.verify(run_id)
 
 
 def test_non_strict_sbatch_template_propagates_failure_and_writes_artifact() -> None:
@@ -107,3 +125,50 @@ def test_non_strict_sbatch_template_propagates_failure_and_writes_artifact() -> 
     assert "runtime_failure.json" in rendered
     assert "T12_JOB_FAILED" in rendered
     assert "JOB_STATUS=${SCRIPT_RC}" in rendered
+
+
+def test_rendered_non_strict_sbatch_failing_entrypoint_is_retrievable(tmp_path) -> None:
+    operator = ClusterJobOperator(repo_root=ROOT, dry_run=True)
+    profile = {
+        "partition": "stampede", "time_limit": "00:01:00", "memory_mb": 100,
+        "cpus": 1, "gpus_required": False, "sbatch_strict_mode": False,
+        "job_name": "t27f-dummy-failure", "entry_point": "scripts/fail.py",
+        "remote_result_root_template": "${T12_CLUSTER_ROOT}/runs/t27f-dummy-failure",
+    }
+    run_id = "t27f-dummy-failure"
+    prep = tmp_path / "runs" / "t27f-dummy-failure" / f".prep-{run_id}" / "source" / "t12-src" / "scripts"
+    prep.mkdir(parents=True)
+    (prep / "fail.py").write_text("raise SystemExit(23)\n")
+    rendered = operator._render_sbatch(
+        profile=profile, run_id=run_id, head_sha="a" * 40,
+        archive_sha="b" * 64, archive_filename="source.tar.gz",
+        cluster_root_absolute=str(tmp_path),
+    )
+    sbatch = tmp_path / "submit.sbatch"
+    # Preserve LF line endings because the rendered artifact is a Linux
+    # sbatch script and this test may execute it through WSL on Windows.
+    sbatch.write_bytes(rendered.encode("utf-8"))
+    import os
+    import subprocess
+    if os.name == "nt":
+        # The managed Windows runner resolves ``bash`` through WSL.  Convert
+        # pytest's Windows temp path so the same rendered sbatch is executable
+        # there as it is on the cluster's Linux shell.
+        drive = sbatch.drive.rstrip(":").lower()
+        wsl_sbatch = f"/mnt/{drive}/" + "/".join(sbatch.parts[1:])
+        wsl_root = f"/mnt/{tmp_path.drive.rstrip(':').lower()}/" + "/".join(tmp_path.parts[1:])
+        result = subprocess.run(
+            [
+                "wsl.exe", "--", "env", f"T12_CLUSTER_ROOT={wsl_root}",
+                "SLURM_JOB_ID=1234", "bash", wsl_sbatch,
+            ],
+            env=os.environ.copy(), text=True, capture_output=True,
+        )
+    else:
+        env = dict(os.environ, T12_CLUSTER_ROOT=str(tmp_path), SLURM_JOB_ID="1234")
+        result = subprocess.run(["bash", str(sbatch)], env=env, text=True, capture_output=True)
+    result_dir = tmp_path / "runs" / "t27f-dummy-failure" / run_id
+    assert result.returncode == 23
+    assert "T12_JOB_FAILED" in result.stdout
+    assert json.loads((result_dir / "runtime_failure.json").read_text())["status"] == "failed"
+    assert json.loads((result_dir / "heartbeat.json").read_text())["status"] == "failed"

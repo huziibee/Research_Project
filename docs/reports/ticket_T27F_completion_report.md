@@ -16,11 +16,11 @@
 
 ## Root cause
 
-The T27C production registry mixed semantic nullable/optional representations with LMFE 0.10.12 generation constraints. T27E proved the ambiguity task itself worked under a minimal two-field schema, but ticket-local replacement left nullable enum schemas in other task entry points. The cluster wrapper also recorded nonzero Python status without making the sbatch process fail.
+The T27C production registry mixed semantic nullable/optional representations with LMFE 0.10.12 generation constraints. T27E proved the ambiguity task itself worked under a minimal two-field schema, but ticket-local replacement left nullable enum schemas in other task entry points. Training-target rendering also retained optional nulls and production-owned ambiguity fields until the canonical layer was promoted. The cluster wrapper recorded nonzero Python status without making the sbatch process fail.
 
 ## Tests written first
 
-`tests/test_t27f_canonical_schema_recovery.py` was written before the canonical implementation. The initial run failed because `ambiguity_manager.model.generation_schema` did not exist. The project environment initially lacked pytest; pytest 9.1.1, LMFE 0.10.12, and jsonschema were installed into `data/raw/.venv` and the tests then ran. Six canonical tests passed. The focused affected regression set passed 81/81.
+`tests/test_t27f_canonical_schema_recovery.py` contains the canonical tests plus deterministic failure-marker tests. The pinned Windows environment `data/raw/.venv` supplied pytest 9.1.1 and LMFE 0.10.12. The deliberate red tests exposed missing Slurm exit propagation, failure-marker acceptance, and Linux sbatch portability on Windows (CRLF/WSL path handling). After repair, 43 focused schema/training/assembly tests, 28 cluster-operator tests, and 2 T27F failure-propagation tests passed. A governance subset passed 56 tests; four governance tests were blocked by the managed temporary-directory permission harness.
 
 ## Implemented contract
 
@@ -47,9 +47,9 @@ The authoritative layer is `src/ambiguity_manager/model/generation_schema.py`, c
 
 Local exact LMFE 0.10.12 preflight passed all five schemas and produced `configs/model/evidence/t27f_schema_preflight.json`. It records task/version/schema/prompt/bound, compile results, minimal instances, omission behavior, no nullable enums, and no fallback.
 
-The first cluster preflight job 13843 failed with exit `2:0` because the script did not accept standard operator arguments. Its durable `runtime_failure.json` and failed heartbeat were pulled. After repair, job 13856 reached the exact container but failed with exit `1:0` because LMFE was absent; its preflight JSON and failure artifacts were pulled. A subsequent submission failed before job creation during SCP connection reset. No successful cluster preflight was obtained.
+The first cluster preflight job 13843 failed with exit `2:0` because the script did not accept standard operator arguments. Its durable `runtime_failure.json` and failed heartbeat were pulled. After repair, job 13856 reached the exact container but failed with exit `1:0` because LMFE was absent; its preflight JSON and failure artifacts were pulled. In the current checkout, SSH reachability passed, but the submission was correctly refused by the clean-source invariant because the working tree contains the uncommitted T27F implementation, regenerated development examples, evidence, and report changes. No successful cluster preflight was obtained.
 
-The operator regression test proves rendered non-strict sbatch includes nonzero exit propagation, failure marker, failed heartbeat, and `runtime_failure.json`; `COMPLETED` with nonzero exit is not success.
+The operator regression tests execute a rendered non-strict sbatch with a deliberately failing dummy entry point and prove nonzero exit propagation, retrievable `runtime_failure.json`, failed heartbeat, and refusal to verify failure markers. `COMPLETED` with nonzero or missing exit code is not success.
 
 ## Canary and sealed results
 
@@ -60,13 +60,19 @@ The fresh T27F sealed set was frozen but the single sealed smoke was not run. `c
 ## Commands and validation
 
 - Required plan/evidence files inspected in the requested order.
+- `python3 -m compileall -q src scripts tests` — passed for the inspected implementation set.
 - `python -m compileall -q src scripts tests` — passed.
-- `python scripts/t27f_schema_preflight.py` — local five-task preflight passed.
-- Focused pytest command over T27F/T27E/T27C/cluster tests — 81 passed.
+- `data/raw/.venv/Scripts/python.exe scripts/t27f_schema_preflight.py --output configs/model/evidence/t27f_schema_preflight.json` — local five-task LMFE 0.10.12 preflight passed.
+- `data/raw/.venv/Scripts/python.exe -m pytest -p no:cacheprovider ...` focused T27F/T27C/T27D/T27E tests — 43 passed, 2 Windows temp-fixture tests initially blocked; corrected cluster tests then passed 2/2.
+- `data/raw/.venv/Scripts/python.exe -m pytest ... tests/test_t12_cluster_job_operator.py` — 28 passed; cluster failure-propagation tests passed 2/2.
+- `data/raw/.venv/Scripts/python.exe -m pytest ...` governance subset — 56 passed, 4 blocked by managed temp-directory permissions.
+- `ssh -o BatchMode=yes -o ConnectTimeout=5 wits-mscluster 'printf T27F_CLUSTER_REACHABLE'` — passed.
 - Full `pytest -q` — incomplete; timed out after 120 seconds with a Windows pytest output-handle error. Not claimed as pass.
 - `python scripts/build_t27f_sealed_dataset.py` — produced fresh 12-record manifest.
-- Cluster operator dry-run — rendered successfully.
-- Cluster jobs 13843 and 13856 — failed durably as described above; no successful preflight.
+- `data/raw/.venv/Scripts/python.exe scripts/build_t27c_datasets.py` — regenerated 192 development source-train records and 470 task examples under the canonical generation registry; no protected data accessed.
+- `data/raw/.venv/Scripts/python.exe scripts/t12_cluster_job.py --run t27f_schema_preflight --poll --pull --interval 5 --timeout 90` — refused before submission with `unexpected_tracked_modifications`; no cluster job and no sealed allowance consumed.
+- Historical cluster jobs 13843 and 13856 — failed durably as described above; no successful preflight.
+- No new cluster preflight, canary, or sealed submission was made after the clean-source refusal; no sealed one-run allowance was consumed.
 
 ## Hashes and identities
 
@@ -75,7 +81,7 @@ The fresh T27F sealed set was frozen but the single sealed smoke was not run. `c
 - Constraint config hash in local preflight: `0077dd8165f25ae89b269d7700aded86fd259abfb6b3a0e7bdf3bbe5e50bcd7c`.
 - Implementation commits: `a9643c2`, `a39cb15`, `4d4c6a3`.
 - Adapter evidence identity remains technical-only: source commit `6419cfc479c7cf53d347c3343b6e2a859cad946b`, SHA-256 `9a206da3ac205a725bfbcdcc8958d16ec760d63db1d31e53e019a1281a734212`.
-- Runtime/resource measurements: local preflight CPU-only; cluster preflight jobs allocated 1 node/8 CPUs/64 GB and failed before model load. GPU inference measurements are `NOT_COMPUTED`.
+- Runtime/resource measurements: local preflight CPU-only; historical cluster preflight jobs allocated 1 node/8 CPUs/64 GB and failed before model load. Current cluster/canary/sealed GPU measurements are `NOT_COMPUTED`.
 
 ## Acceptance status
 
@@ -85,7 +91,7 @@ Parent T27: **BLOCKED**. T27F cannot establish the original sealed gate. T28 may
 
 ## Changed files
 
-See commits `a9643c2`, `a39cb15`, and `4d4c6a3`; key files include the T27F ticket, ADR, generation-schema layer/config, preflight module/script, canary/sealed scripts/profiles, fresh manifest, cluster operator, task contract integration, tests, and evidence files.
+Changed files include `cursor_plan/tickets/T27F_canonical_schema_compatibility_and_sealed_recovery.md`, `configs/model/t27f_schema_compatibility_v1.json`, `configs/model/evidence/t27f_schema_preflight.json`, `configs/model/evidence/t27f_canary_evidence.json`, `configs/model/evidence/t27f_sealed_evidence.json`, `configs/cluster/t12_job_profiles.json`, `src/ambiguity_manager/model/generation_schema.py`, `src/ambiguity_manager/model/schema_preflight.py`, `src/ambiguity_manager/model/task_prediction_contract.py`, `src/ambiguity_manager/model/t27e_ambiguity_recovery.py`, `src/ambiguity_manager/model/qlora_task_conditioned_smoke.py`, `src/ambiguity_manager/model/cluster/job_operator.py`, `scripts/t27f_schema_preflight.py`, `scripts/t27f_all_task_canary.py`, `scripts/t27f_sealed.py`, `scripts/build_t27f_sealed_dataset.py`, `tests/test_t27f_canonical_schema_recovery.py`, `docs/decisions/ADR_T27F_generation_schema_authority.md`, this report, the parent addendum, and the fresh `data/development/t27f_final_smoke_v1` manifest/evidence files. Historical implementation commits are `a9643c2`, `a39cb15`, and `4d4c6a3`.
 
 ## Stop condition
 

@@ -212,12 +212,14 @@ def _normalize_candidates(raw: Any) -> list[dict[str, Any]] | None:
             # Deterministic synthetic id from stable content — not a semantic label.
             digest = sha256_hex(str(text or idx).encode("utf-8"))[:12]
             frame_id = f"cand_{idx}_{digest}"
-        entry: dict[str, Any] = {
-            "frame_id": str(frame_id),
-            "text": text,
-            "confidence": item.get("confidence"),
-            "safety_status": item.get("safety_status"),
-        }
+        entry: dict[str, Any] = {"frame_id": str(frame_id)}
+        if isinstance(text, str) and text.strip():
+            entry["text"] = text.strip()
+        if item.get("confidence") is not None:
+            entry["confidence"] = item.get("confidence")
+        safety_status = item.get("safety_status")
+        if safety_status in {"safe", "unsafe", "unknown"}:
+            entry["safety_status"] = safety_status
         if isinstance(item.get("cpc"), dict):
             entry["cpc"] = item.get("cpc")
         out.append(entry)
@@ -245,7 +247,8 @@ def _extract_task_fields(
             fields["speech_act"] = speech.strip()
             supervision["speech_act"] = "strong"
         else:
-            fields["speech_act"] = None
+            # Optional generation properties are omitted when unsupported.
+            # The production assembler may restore null after validation.
             supervision["speech_act"] = "missing"
         return fields, supervision
 
@@ -267,28 +270,8 @@ def _extract_task_fields(
             "ambiguity_present": "strong",
             "ambiguity_types": "strong",
         }
-        primary = record.get("primary_ambiguity_type")
-        if primary is None and types:
-            primary = types[0]
-        if primary is not None:
-            fields["primary_ambiguity_type"] = primary
-            supervision["primary_ambiguity_type"] = "strong"
-        unresolved = record.get("unresolved_slots") or record.get("missing_slots")
-        if isinstance(unresolved, list) and unresolved:
-            norm = []
-            for item in unresolved:
-                if isinstance(item, str):
-                    norm.append({"slot_name": item, "reason": None})
-                elif isinstance(item, dict) and item.get("slot_name"):
-                    norm.append(
-                        {
-                            "slot_name": item.get("slot_name"),
-                            "reason": item.get("reason"),
-                        }
-                    )
-            if norm:
-                fields["unresolved_slots"] = norm
-                supervision["unresolved_slots"] = "strong"
+        # primary_ambiguity_type and unresolved_slots remain production-owned
+        # fields and are intentionally excluded from model generation.
         return fields, supervision
 
     if task_id == "predict_interpretations_v1":
@@ -303,9 +286,20 @@ def _extract_task_fields(
             if not fid and cands:
                 fid = cands[0]["frame_id"]
             if fid:
+                evidence = []
+                for evidence_item in list(selected.get("supporting_evidence") or []):
+                    if not isinstance(evidence_item, dict):
+                        continue
+                    cleaned = {}
+                    for key in ("span", "note"):
+                        value = evidence_item.get(key)
+                        if isinstance(value, str) and value.strip():
+                            cleaned[key] = value.strip()
+                    if cleaned:
+                        evidence.append(cleaned)
                 fields["selected_interpretation"] = {
                     "frame_id": str(fid),
-                    "supporting_evidence": list(selected.get("supporting_evidence") or []),
+                    "supporting_evidence": evidence,
                 }
                 supervision["selected_interpretation"] = "weak"
         elif isinstance(selected, str) and selected.strip() and cands:

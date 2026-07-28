@@ -280,7 +280,7 @@ class JobStatus:
         # reported exit code to be exactly zero when available.
         if self.state != "COMPLETED":
             return False
-        return self.exit_code in (None, "0:0", "0")
+        return self.exit_code in ("0:0", "0")
 
     def as_dict(self) -> dict[str, Any]:
         return {
@@ -528,6 +528,13 @@ class ClusterJobOperator:
         cpus = int(profile["cpus"])
         job_name = str(profile.get("job_name") or "t12-job")
         entry = str(profile["entry_point"])
+        mail_type = str(profile.get("mail_type") or "").strip()
+        mail_user = str(profile.get("mail_user") or "").strip()
+        mail_lines = ""
+        if mail_type:
+            mail_lines += f"#SBATCH --mail-type={mail_type}\n"
+        if mail_user:
+            mail_lines += f"#SBATCH --mail-user={mail_user}\n"
         # Slurm does not expand ${VAR} in #SBATCH directives. Prefer a concrete
         # absolute root resolved at submit time; fall back only for dry-run text.
         if cluster_root_absolute and cluster_root_absolute.startswith("/"):
@@ -691,7 +698,7 @@ class ClusterJobOperator:
 #SBATCH --cpus-per-task={cpus}
 #SBATCH --mem={mem}
 #SBATCH --time={time_limit}
-{gpu_lines}#SBATCH --output={log_output}
+{gpu_lines}{mail_lines}#SBATCH --output={log_output}
 #SBATCH --error={log_error}
 
 {header_guard}export T12_CLUSTER_ROOT="${{T12_CLUSTER_ROOT:-$HOME/t12-hpc}}"
@@ -712,8 +719,8 @@ mkdir -p "${{T12_CLUSTER_ROOT}}/{result_root_suffix}"
 {run_cmd}
 
 if [[ ${{JOB_STATUS:-0}} -ne 0 ]]; then
-  printf '{{"status":"failed","run_id":"%s","job_id":"%s","job_status":%s,"entry_point":"%s"}}\n' "${{RUN_ID}}" "${{SLURM_JOB_ID}}" "${{JOB_STATUS}}" "{entry}" > "${{RESULT_DIR}}/runtime_failure.json"
-  printf '{{"status":"failed","run_id":"%s","job_id":"%s","job_status":%s}}\n' "${{RUN_ID}}" "${{SLURM_JOB_ID}}" "${{JOB_STATUS}}" > "${{RESULT_DIR}}/heartbeat.json"
+  printf '{{"status":"failed","run_id":"%s","job_id":"%s","job_status":%s,"entry_point":"%s"}}\\n' "${{RUN_ID}}" "${{SLURM_JOB_ID}}" "${{JOB_STATUS}}" "{entry}" > "${{RESULT_DIR}}/runtime_failure.json"
+  printf '{{"status":"failed","run_id":"%s","job_id":"%s","job_status":%s}}\\n' "${{RUN_ID}}" "${{SLURM_JOB_ID}}" "${{JOB_STATUS}}" > "${{RESULT_DIR}}/heartbeat.json"
   echo "T12_JOB_FAILED run_id=${{RUN_ID}} job_id=${{SLURM_JOB_ID}} status=${{JOB_STATUS}}"
 else
   echo "T12_JOB_SUCCEEDED run_id=${{RUN_ID}} job_id=${{SLURM_JOB_ID}} status=0"
@@ -1151,6 +1158,19 @@ exit ${{JOB_STATUS:-0}}
         manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
 
         errors: list[str] = []
+        if (pull_dir / "runtime_failure.json").is_file():
+            errors.append("runtime_failure_present")
+        heartbeat_path = pull_dir / "heartbeat.json"
+        if heartbeat_path.is_file():
+            try:
+                heartbeat = json.loads(heartbeat_path.read_text(encoding="utf-8"))
+            except json.JSONDecodeError:
+                errors.append("heartbeat_invalid_json")
+            else:
+                if heartbeat.get("status") == "failed" or heartbeat.get("phase") == "failed":
+                    errors.append("heartbeat_failed")
+        if manifest.get("status") == "failed":
+            errors.append("run_manifest_failed")
         expected_files = {str(name) for name in profile["expected_result_files"]}
         listed = {str(entry["relative_path"]): entry for entry in manifest.get("files", [])}
 
