@@ -17,6 +17,8 @@ umask 077
 : "${T28_OUTPUT_DIR:?T28_OUTPUT_DIR is required}"
 : "${T28_BUNDLE_ROOT:?T28_BUNDLE_ROOT is required}"
 : "${T28_SOURCE_COMMIT:?T28_SOURCE_COMMIT is required}"
+: "${T28_CODE_ROOT:?T28_CODE_ROOT is required}"
+cd "${T28_CODE_ROOT}"
 
 module purge || true
 module load apptainer || true
