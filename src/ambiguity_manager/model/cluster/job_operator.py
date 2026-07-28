@@ -618,7 +618,8 @@ class ClusterJobOperator:
             + "  --source-identity-manifest \"${PREP_DIR}/source_identity_manifest.json\" \\\n"
             + entry_args_line
         ).rstrip(" \t\r\n\\")
-        if gpus_required:
+        use_training_container = str(profile.get("container_role") or "") == "training"
+        if gpus_required or use_training_container:
             # Authoritative inference runs inside the pinned vLLM Apptainer SIF by
             # default. A profile may opt into a different (e.g. training) container
             # via container_sif_default_relpath so a training job never silently
@@ -646,6 +647,7 @@ class ClusterJobOperator:
                 pythonpath_env = (
                     "  --env PYTHONPATH=\"${SRC_ROOT}/src${PYTHONPATH:+:$PYTHONPATH}\" \\\n"
                 )
+            nv_prefix = "  --nv \\\n" if gpus_required else ""
             guarded_python = (
                 "export T12_CONTAINER_SIF=\"${T12_CONTAINER_SIF:-${T12_CLUSTER_ROOT}/"
                 + default_container_sif_relpath
@@ -659,8 +661,9 @@ class ClusterJobOperator:
                 + pythonpath_prefix
                 + "NODE_LOCAL_TEMP=\"/var/tmp/${USER}-apptainer-${SLURM_JOB_ID}\"\n"
                 "mkdir -p \"${NODE_LOCAL_TEMP}\"\n"
-                "apptainer exec --nv \\\n"
-                "  --bind \"${T12_CLUSTER_ROOT}:${T12_CLUSTER_ROOT}\" \\\n"
+                "apptainer exec \\\n"
+                + nv_prefix
+                + "  --bind \"${T12_CLUSTER_ROOT}:${T12_CLUSTER_ROOT}\" \\\n"
                 "  --bind \"${NODE_LOCAL_TEMP}:${NODE_LOCAL_TEMP}\" \\\n"
                 "  --env HF_HOME=\"${HF_HOME}\" \\\n"
                 "  --env HF_HUB_CACHE=\"${HF_HUB_CACHE}\" \\\n"
