@@ -1,9 +1,5 @@
-# T28 handover
+# T28 Handover
 
-T28 is **BLOCKED** before training.
+T28 is **BLOCKED at T28-R4 data-integrity execution**. The R3 preparation is preserved and the R4 trainer/profile/tests are committed. The single frozen training run was attempted under bounded recovery, but the remote canonical corpus failed the authoritative SHA-256 gate twice after the initial run-ID correction.
 
-The T27F-to-T28 human approval is recorded in `docs/reports/ticket_T28_completion_report.md`. T27F and Parent T27 remain PASS, the exact Qwen3-8B base identity remains frozen, and all three preserved T27F artifact verifiers return `VERIFY_PASSED`.
-
-The blocker is concrete: the frozen T15 manifest has IDs and eligibility but the full joined source records required for task-conditioned targets are absent. Only the 192-record T27C smoke subset is available; it cannot be promoted to the mandatory T28 full-data run. No training job, checkpoint selection, adapter package, manager configuration update, protected evaluation, or T29 work was performed.
-
-No protected data was accessed. The working tree’s pre-existing untracked artifacts were preserved. Resume only after the full frozen source-record join is restored and the T28 predeclare/data-integrity gate is re-run with human direction.
+No training, checkpoint evaluation, adapter selection, packaging, clean-load verification, or manager identity propagation occurred. Protected data and public release boundaries were preserved. T29 must not begin. See `T28_R4_full_training_completion.md` and `T28_R4_handover.md`.
