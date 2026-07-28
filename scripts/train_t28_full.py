@@ -20,6 +20,7 @@ from ambiguity_manager.model.t28_trainer import (  # noqa: E402
     iter_jsonl,
     sha256_file,
     validate_full_data_contract,
+    validate_verified_bundle_root,
 )
 
 
@@ -39,6 +40,7 @@ def parser() -> argparse.ArgumentParser:
     p.add_argument("--base-revision", required=True)
     p.add_argument("--schema-registry", type=Path, required=True)
     p.add_argument("--seed", type=int, required=True)
+    p.add_argument("--bundle-root", type=Path, required=True)
     p.add_argument("--source-archive-sha256")
     p.add_argument("--source-identity-manifest", type=Path)
     p.add_argument("--resume-checkpoint", type=Path)
@@ -48,6 +50,19 @@ def parser() -> argparse.ArgumentParser:
 
 def main(argv: list[str] | None = None) -> int:
     args = parser().parse_args(argv)
+    bundle_identity = validate_verified_bundle_root(args.bundle_root)
+    expected = {
+        "permitted_view": args.bundle_root / "data/processed/weak_pool/t28_permitted_train_dev.jsonl",
+        "canonical_corpus": args.bundle_root / "data/processed/weak_pool/weak_pool_canonical.jsonl",
+        "train_manifest": args.bundle_root / "outputs/t28_r3/frozen_manifests/source_train_task_manifest.jsonl",
+        "dev_manifest": args.bundle_root / "outputs/t28_r3/frozen_manifests/source_dev_task_manifest.jsonl",
+        "schema_registry": args.bundle_root / "configs/model/evidence/t27f_schema_preflight_live.json",
+        "training_plan": args.bundle_root / "configs/model/t28_training_plan_v1.json",
+        "run_matrix": args.bundle_root / "configs/model/t28_frozen_run_matrix_v1.json",
+    }
+    for name, path in expected.items():
+        if path.resolve() != getattr(args, name).resolve():
+            raise T28TrainerError(f"bundle_path_mismatch:{name}")
     plan = json.loads(args.training_plan.read_text(encoding="utf-8"))
     matrix = json.loads(args.run_matrix.read_text(encoding="utf-8"))
     frozen_run_ids = {r["run_id"] for r in matrix["runs"]}
@@ -75,12 +90,13 @@ def main(argv: list[str] | None = None) -> int:
         "frozen_run_id": next(iter(frozen_run_ids)),
         "base_model": args.base_model,
         "base_revision": args.base_revision,
+        **bundle_identity,
     }
     if sha256_file(args.canonical_corpus) != identity["canonical_sha256"]:
         raise T28TrainerError("canonical_hash_mismatch")
     evidence = {**identity, "record_count": len(train_rows), "target_count": int(plan["permitted_view"]["valid_task_conditioned_targets"]), "source_holdout_loaded": 0, "protected_records_loaded": 0}
     validate_full_data_contract(evidence)
-    (args.output_dir / "run_manifest.json").write_text(json.dumps({"plan": plan, "matrix": matrix, "identity": identity, "seed": args.seed, "resume_checkpoint": str(args.resume_checkpoint) if args.resume_checkpoint else None, "validate_only": args.validate_only, "immutable": True}, sort_keys=True, indent=2) + "\n", encoding="utf-8")
+    (args.output_dir / "run_manifest.json").write_text(json.dumps({"plan": plan, "matrix": matrix, "identity": identity, "seed": args.seed, "source_commit": args.source_commit, "resume_checkpoint": str(args.resume_checkpoint) if args.resume_checkpoint else None, "validate_only": args.validate_only, "immutable": True}, sort_keys=True, indent=2) + "\n", encoding="utf-8")
     if args.validate_only:
         print(json.dumps({"status": "VALIDATED", "targets": 13058, "train_records": 11294}, sort_keys=True))
         return 0

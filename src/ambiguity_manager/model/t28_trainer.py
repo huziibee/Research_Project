@@ -11,6 +11,7 @@ import hashlib
 import json
 import os
 import shutil
+import re
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, Iterator, Mapping
@@ -67,6 +68,34 @@ def validate_full_data_contract(evidence: Mapping[str, Any]) -> None:
     _required_identity(evidence)
     if evidence.get("base_revision") in (None, "", "latest", "main"):
         raise T28TrainerError("unpinned_base_revision")
+
+
+def validate_verified_bundle_root(bundle_root: Path) -> dict[str, Any]:
+    """Require the exact immutable extraction produced by the bundle verifier."""
+    if not re.fullmatch(r"[0-9a-f]{64}", bundle_root.parent.name):
+        raise T28TrainerError("bundle_root_not_content_addressed")
+    marker = bundle_root / "VERIFY_PASSED.json"
+    if not marker.is_file():
+        raise T28TrainerError("bundle_verification_record_missing")
+    marker_data = json.loads(marker.read_text(encoding="utf-8"))
+    if marker_data.get("status") != "VERIFY_PASSED" or not marker_data.get("archive_sha256"):
+        raise T28TrainerError("bundle_not_verified")
+    if any(os.access(path, os.W_OK) for path in bundle_root.rglob("*") if path.is_file()):
+        raise T28TrainerError("bundle_file_writable")
+    required = {
+        "permitted_view": bundle_root / "data/processed/weak_pool/t28_permitted_train_dev.jsonl",
+        "canonical": bundle_root / "data/processed/weak_pool/weak_pool_canonical.jsonl",
+        "train_manifest": bundle_root / "outputs/t28_r3/frozen_manifests/source_train_task_manifest.jsonl",
+        "dev_manifest": bundle_root / "outputs/t28_r3/frozen_manifests/source_dev_task_manifest.jsonl",
+        "schema_registry": bundle_root / "configs/model/evidence/t27f_schema_preflight_live.json",
+        "training_plan": bundle_root / "configs/model/t28_training_plan_v1.json",
+        "run_matrix": bundle_root / "configs/model/t28_frozen_run_matrix_v1.json",
+        "selection_policy": bundle_root / "configs/model/t28_frozen_selection_policy_v1.json",
+    }
+    missing = [name for name, path in required.items() if not path.is_file()]
+    if missing:
+        raise T28TrainerError("bundle_members_missing:" + ",".join(missing))
+    return {"bundle_root": str(bundle_root), "bundle_sha256": bundle_root.parent.name, "archive_sha256": marker_data["archive_sha256"], "verification_record": str(marker)}
 
 
 def iter_jsonl(path: Path) -> Iterator[dict[str, Any]]:
