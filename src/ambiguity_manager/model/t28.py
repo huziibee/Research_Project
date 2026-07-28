@@ -13,6 +13,8 @@ import re
 from pathlib import Path
 from typing import Any, Iterable, Mapping
 
+from ambiguity_manager.governance.t28_r2 import training_allowed
+
 BASE_MODEL = "Qwen/Qwen3-8B"
 BASE_REVISION = "b968826d9c46dd6066d109eabc6255188de91218"
 TRAIN_SPLIT = "source_train"
@@ -25,11 +27,18 @@ class T28Error(RuntimeError):
 
 
 def assert_dataset_training_permissions(register_path: Path, dataset_ids: Iterable[str]) -> None:
-    """Stop every T28 training caller until each source has explicit permission."""
+    """Stop T28 training unless the separate institutional internal-use gate passes."""
     register = json.loads(Path(register_path).read_text(encoding="utf-8"))
     entries = {entry["dataset_id"]: entry for entry in register.get("entries", [])}
+    requested = tuple(dataset_ids)
+    if set(requested).issubset({"ambik", "indirect_requests", "codraw_icr_v2", "vague", "clara"}):
+        allowed, errors = training_allowed(register, repo_root=Path(register_path).resolve().parents[2])
+        if allowed and set(requested) == {"ambik", "indirect_requests", "codraw_icr_v2", "vague", "clara"}:
+            return
+        if register.get("internal_academic_research_use_gate", {}).get("decision") in {"approved", "approved_with_conditions"}:
+            raise T28Error("dataset_permission_gate_blocked:" + ",".join(errors))
     blocked = []
-    for dataset_id in dataset_ids:
+    for dataset_id in requested:
         entry = entries.get(dataset_id)
         if not entry or entry.get("verification_status") != "verified":
             blocked.append(dataset_id)

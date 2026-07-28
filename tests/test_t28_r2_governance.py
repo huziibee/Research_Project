@@ -8,6 +8,7 @@ import unittest
 from pathlib import Path
 
 from ambiguity_manager.governance.dataset_licence import validate_dataset_licence_register
+from ambiguity_manager.governance.t28_r2 import training_allowed, validate_internal_research_gate
 from ambiguity_manager.model.t28 import T28Error, assert_dataset_training_permissions
 
 
@@ -93,6 +94,48 @@ class T28R2GovernanceTests(unittest.TestCase):
     def test_training_entry_gate_rejects_unresolved_permissions(self) -> None:
         with self.assertRaisesRegex(T28Error, "dataset_permission_gate_blocked"):
             assert_dataset_training_permissions(self.path, ["ambik", "clara"])
+
+    def test_internal_use_is_separate_from_unresolved_licence_status(self) -> None:
+        entries = {entry["dataset_id"]: entry for entry in self.data["entries"]}
+        self.assertEqual(self.data["internal_academic_research_use_gate"]["decision"], "approved_with_conditions")
+        self.assertEqual(entries["ambik"]["internal_academic_research_use"], "approved_with_conditions")
+        self.assertEqual(entries["ambik"]["dataset_licence_status"], "unresolved")
+        self.assertEqual(validate_internal_research_gate(self.data, repo_root=ROOT), [])
+
+    def test_r3_decision_permits_internal_use_but_not_public_release(self) -> None:
+        decision = json.loads((ROOT / "docs/governance/decisions/T28-R3_internal_use_decision.json").read_text(encoding="utf-8"))
+        self.assertTrue(decision["internal_training_gate"])
+        self.assertTrue(decision["dataset_licence_statuses_unchanged"])
+        self.assertFalse(decision["raw_data_redistribution_allowed"])
+        self.assertFalse(decision["adapter_public_release_allowed"])
+        allowed, errors = training_allowed(self.data, repo_root=ROOT)
+        self.assertTrue(allowed, errors)
+
+    def test_r3_decision_is_independent_of_legacy_pending_document_hash(self) -> None:
+        bad = copy.deepcopy(self.data)
+        bad["internal_academic_research_use_gate"]["approval_document_sha256"] = "0" * 64
+        allowed, errors = training_allowed(bad, repo_root=ROOT)
+        self.assertTrue(allowed, errors)
+
+    def test_student_self_approval_rejected(self) -> None:
+        bad = {"approval_status": "approved", "internal_academic_research_use": "approved", "datasets_covered": ["ambik", "indirect_requests", "codraw_icr_v2", "vague", "clara", "clariq"], "scope": [], "student_name": "Mohammed Bangie", "approving_authority": "Mohammed Bangie", "approving_authority_role": "student", "approval_date": "2026-07-28", "signature_or_recorded_written_approval": "self", "raw_data_redistribution": False, "adapter_release_permission": "pending", "does_not_declare_open_licence": True, "does_not_authorise_public_redistribution": True}
+        from ambiguity_manager.governance.t28_r2 import validate_approval_record
+        self.assertTrue(any("student" in error for error in validate_approval_record(bad, repo_root=ROOT)))
+
+    def test_release_restrictions_and_matrix_decision_field(self) -> None:
+        matrix = json.loads((ROOT / "docs/licences/T28_dataset_rights_matrix.json").read_text(encoding="utf-8"))
+        self.assertEqual(matrix["institutional_decision_field"], "internal_academic_research_use")
+        self.assertFalse(self.data["internal_academic_research_use_gate"]["raw_data_redistribution"])
+        self.assertEqual(self.data["internal_academic_research_use_gate"]["adapter_release_permission"], "pending")
+
+    def test_explicit_source_prohibition_overrides_institutional_flag(self) -> None:
+        bad = copy.deepcopy(self.data)
+        bad["internal_academic_research_use_gate"]["decision"] = "approved"
+        bad["entries"][0]["internal_academic_research_use"] = "approved"
+        bad["entries"][0]["explicit_prohibition_against_internal_training"] = True
+        allowed, errors = training_allowed(bad, repo_root=ROOT)
+        self.assertFalse(allowed)
+        self.assertTrue(any("explicit source prohibition" in error for error in errors))
 
 
 if __name__ == "__main__":

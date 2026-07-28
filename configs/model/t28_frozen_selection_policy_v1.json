@@ -1,0 +1,10 @@
+{
+  "policy_id": "t28_frozen_selection_policy_v1",
+  "primary_metric": "routing_correctness",
+  "ranking": "highest_primary_metric_first",
+  "tie_break_order": ["schema_validity_rate_desc", "safety_margin_desc", "repair_count_asc", "checkpoint_step_asc", "checkpoint_id_asc"],
+  "eligible_checkpoint_requirements": ["exact_base_load", "complete_adapter_files", "matching_hashes", "all_schema_preflight_pass", "zero_unconstrained_fallback", "dev_calls_reconcile", "zero_silent_dev_skips", "raw_and_parsed_outputs_retained", "production_assemblies_validate", "deterministic_routing_completes", "unknowns_not_fabricated", "no_protected_access", "schema_tolerance_pass", "safety_tolerance_pass"],
+  "disqualification_rules": ["any_protected_access", "schema_hash_mismatch", "unconstrained_fallback", "missing_dev_call", "silent_dev_skip", "incomplete_adapter", "safety_regression", "failed_clean_load"],
+  "no_adapter_final_strategy": true,
+  "frozen": true
+}

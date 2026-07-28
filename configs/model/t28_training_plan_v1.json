@@ -1,0 +1,95 @@
+{
+  "plan_id": "t28_training_plan_v1",
+  "ticket": "T28-R3",
+  "status": "frozen_before_submission",
+  "source_commit": "c8e464be0b97bd1d138ff2a59e97c849c643c1a2",
+  "source_archive_sha256": "0879f576ba2d4a03349a393dcea85f66d9b1fa3652e3d6c337559d1bf5ad7a94",
+  "canonical_corpus": {
+    "path": "data/processed/weak_pool/weak_pool_canonical.jsonl",
+    "sha256": "1e51cac046e014a6b890b10a155d22e32e01aa276d4507a10ad4f86abcf9942"
+  },
+  "permitted_view": {
+    "path": "data/processed/weak_pool/t28_permitted_train_dev.jsonl",
+    "sha256": "34b551c37c8f97c24c1263a2cc12a9497e65f754924f1404c47055999f04ea22",
+    "source_train_count": 11294,
+    "source_dev_count": 2396,
+    "source_holdout_loaded": 0,
+    "valid_task_conditioned_targets": 13058,
+    "skipped_unsupported_records": 632,
+    "train_dev_group_overlap": 0
+  },
+  "base_model": {
+    "repository": "Qwen/Qwen3-8B",
+    "revision": "b968826d9c46dd6066d109eabc6255188de91218",
+    "quantisation": "4-bit NF4 double-quant",
+    "compute_dtype": "bfloat16"
+  },
+  "generation_schema_registry": {
+    "version": "1.0.0",
+    "registry_hash": "3d84474d5f0db49ee3689dc68336a0b51ac72231a0591b606a15a0de0fe6998c",
+    "schema_hashes": {
+      "predict_intent_v1": "40f7c5c2549ee6491264f5bdbfab5518cd545a4e1af9c30bb068e7d25d2da40b",
+      "predict_cpc_v1": "ca07907149b0c07bcac97c148d211e8b31543731ba6424bacf3f09583666428f",
+      "predict_ambiguity_v1": "a12d86f1276d6a7b740e6aa25e0562ca49c157045d8887120b6e3799ccb2091f",
+      "predict_interpretations_v1": "5dcaafe640c75107596f1c30cecc8a880e44e4186f6974f817aebcf89ac5b58a",
+      "predict_risk_capability_v1": "853577d378e88f40aa7ba7996ace3ff3478e0b7708743aa791d6e7d16d2f0ad9"
+    }
+  },
+  "training": {
+    "method": "QLoRA",
+    "target_modules": ["q_proj", "k_proj", "v_proj", "o_proj"],
+    "rank": 8,
+    "alpha": 16,
+    "dropout": 0.05,
+    "optimizer": "AdamW",
+    "learning_rate": 0.0002,
+    "scheduler": "constant",
+    "epochs": 1,
+    "maximum_steps": 1500,
+    "micro_batch_size": 1,
+    "gradient_accumulation_steps": 8,
+    "maximum_sequence_length": 1024,
+    "precision": "bfloat16",
+    "gradient_checkpointing": true,
+    "seed": 20260728,
+    "checkpoint_interval_steps": 250,
+    "task_sampling": "round_robin_over_eligible_authoritative_task_schemas",
+    "training_data_split": "source_train_only"
+  },
+  "evaluation": {
+    "data_split": "source_dev_only",
+    "evaluator": "T24 official deterministic evaluator",
+    "primary_metric": "routing_correctness",
+    "tie_break_order": ["routing_correctness", "schema_validity_rate", "safety_margin", "repair_count", "checkpoint_step_ascending"],
+    "missing_gold": "exclude_not_incorrect",
+    "no_protected_data": true
+  },
+  "bounded_run_policy": {
+    "primary_runs": 1,
+    "predeclared_variants": 0,
+    "maximum_total_runs": 1,
+    "retry_rule": "retry only the same immutable configuration after infrastructure failure; no adaptive changes",
+    "storage_budget_gib": 500,
+    "runtime_budget_hours": 24
+  },
+  "eligibility_and_safety": {
+    "require_exact_base_revision": true,
+    "require_all_effective_schemas_preflight": true,
+    "require_zero_unconstrained_fallback": true,
+    "require_dev_call_reconciliation": true,
+    "require_no_silent_dev_skips": true,
+    "disqualify_protected_access": true,
+    "disqualify_schema_drift": true,
+    "disqualify_safety_regression": true,
+    "disqualify_incomplete_adapter": true
+  },
+  "environment": {
+    "container_profile": "configs/environments/t12_cluster_training_task_aligned_v1.json",
+    "container_identity": "t12-cluster-training-task-aligned-v1",
+    "container_sha256": "275ea14cc37200a40a2be27b69da5a99cf445571b780b1672168310c68c4cf52",
+    "inference_container_reused": false
+  },
+  "expected_artifacts": ["run_manifest.json", "trainer_state.json", "loss_history.jsonl", "checkpoint_eligibility.json", "dev_predictions.jsonl", "dev_evaluation.json", "adapter_package", "clean_load_verification.json"],
+  "public_release_allowed": false,
+  "immutable": true
+}

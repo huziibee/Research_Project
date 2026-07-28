@@ -28,6 +28,7 @@ VERIFICATION_STATUSES = frozenset(
         "excluded",
     }
 )
+INTERNAL_RESEARCH_USE_DECISIONS = frozenset({"approved", "approved_with_conditions", "denied", "pending"})
 
 PERMISSION_FIELDS = (
     "local_storage_permitted",
@@ -55,6 +56,16 @@ def _has_evidence(entry: dict[str, Any]) -> bool:
 def validate_dataset_licence_entry(entry: dict[str, Any], *, index: int) -> list[str]:
     prefix = f"entries[{index}]"
     errors: list[str] = []
+
+    internal_use = entry.get("internal_academic_research_use")
+    if internal_use is not None and internal_use not in INTERNAL_RESEARCH_USE_DECISIONS:
+        errors.append(f"{prefix}.internal_academic_research_use invalid")
+    if entry.get("attribution_required") is not None and not isinstance(entry.get("attribution_required"), bool):
+        errors.append(f"{prefix}.attribution_required must be boolean")
+    if entry.get("explicit_prohibition_against_internal_training") is not None and not isinstance(
+        entry.get("explicit_prohibition_against_internal_training"), bool
+    ):
+        errors.append(f"{prefix}.explicit_prohibition_against_internal_training must be boolean")
 
     if entry.get("verification_status") not in VERIFICATION_STATUSES:
         errors.append(f"{prefix}.verification_status invalid")
