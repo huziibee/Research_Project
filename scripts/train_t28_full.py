@@ -80,6 +80,8 @@ def main(argv: list[str] | None = None) -> int:
     train_rows = list(iter_jsonl(args.train_manifest))
     dev_rows = list(iter_jsonl(args.dev_manifest))
     permitted_rows = list(iter_jsonl(args.permitted_view))
+    train_manifest_ids = {str(row["record_id"]) for row in train_rows}
+    dev_manifest_ids = {str(row["record_id"]) for row in dev_rows}
     if any(r.get("split") != "source_train" for r in train_rows) or any(r.get("split") != "source_dev" for r in dev_rows):
         raise T28TrainerError("split_role_violation")
     if any(r.get("protected_data") or r.get("source_holdout") for r in train_rows + dev_rows):
@@ -104,6 +106,7 @@ def main(argv: list[str] | None = None) -> int:
     if not hmac.compare_digest(actual_canonical_sha256, str(identity["canonical_sha256"])):
         raise T28TrainerError(f"canonical_hash_mismatch:{actual_canonical_sha256!r}:{identity['canonical_sha256']!r}:lengths={len(actual_canonical_sha256)},{len(str(identity['canonical_sha256']))}")
     source_train_rows = [row for row in permitted_rows if row.get("split") == "source_train"]
+    source_dev_rows = [row for row in permitted_rows if row.get("split") == "source_dev"]
     evidence = {**identity, "record_count": len(source_train_rows), "task_manifest_record_count": len(train_rows), "target_count": int(plan["permitted_view"]["valid_task_conditioned_targets"]), "source_holdout_loaded": 0, "protected_records_loaded": 0}
     validate_full_data_contract(evidence)
     (args.output_dir / "run_manifest.json").write_text(json.dumps({"plan": plan, "matrix": matrix, "identity": identity, "seed": args.seed, "source_commit": args.source_commit, "resume_checkpoint": str(args.resume_checkpoint) if args.resume_checkpoint else None, "validate_only": args.validate_only, "immutable": True}, sort_keys=True, indent=2) + "\n", encoding="utf-8")
@@ -114,9 +117,8 @@ def main(argv: list[str] | None = None) -> int:
         from ambiguity_manager.model.qlora_task_aligned_smoke import run_real_task_aligned_qlora_smoke
     except ImportError as exc:
         raise T28TrainerError(f"pinned_training_dependencies_missing:{exc}") from exc
-    rows = permitted_rows
-    train_rows = [row for row in rows if row.get("split") == "source_train"]
-    dev_rows = [row for row in rows if row.get("split") == "source_dev"]
+    train_rows = [row for row in source_train_rows if str(row.get("id")) in train_manifest_ids]
+    dev_rows = [row for row in source_dev_rows if str(row.get("id")) in dev_manifest_ids]
     t = plan["training"]
     config = {
         "quantization": {"quant_type": "nf4", "compute_dtype": "bfloat16", "double_quant": True},
