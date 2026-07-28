@@ -7,6 +7,18 @@ from typing import Any
 T02_HISTORICAL_MANIFEST_REL = "configs/datasets/licence_provenance_manifest.json"
 REGISTER_SCHEMA_VERSION = "2.0.0"
 
+SUPPORTED_SPDX_IDENTIFIERS = frozenset(
+    {
+        "Apache-2.0",
+        "MIT",
+        "CC-BY-4.0",
+        "CC-BY-SA-4.0",
+        "CC-BY-NC-4.0",
+        "CC-BY-NC-SA-4.0",
+        "CC0-1.0",
+    }
+)
+
 VERIFICATION_STATUSES = frozenset(
     {
         "verified",
@@ -49,6 +61,26 @@ def validate_dataset_licence_entry(entry: dict[str, Any], *, index: int) -> list
 
     if entry.get("verification_status") == "verified" and not _has_evidence(entry):
         errors.append(f"{prefix}.verified requires evidence_path or institutional_decision_ref")
+
+    dataset_identifier = entry.get("dataset_licence_identifier")
+    if dataset_identifier is not None and dataset_identifier not in SUPPORTED_SPDX_IDENTIFIERS:
+        if entry.get("dataset_licence_kind") != "custom_terms":
+            errors.append(f"{prefix}.dataset_licence_identifier is not a supported SPDX identifier")
+
+    evidence_url_or_path = entry.get("evidence_url_or_path")
+    evidence_hash = entry.get("evidence_hash")
+    if evidence_url_or_path and (not isinstance(evidence_hash, str) or len(evidence_hash) != 64):
+        errors.append(f"{prefix}.evidence_hash is required for every evidence artifact")
+    if evidence_hash is not None and (
+        not isinstance(evidence_hash, str) or len(evidence_hash) != 64 or any(c not in "0123456789abcdef" for c in evidence_hash.lower())
+    ):
+        errors.append(f"{prefix}.evidence_hash must be a lowercase SHA-256")
+    if entry.get("evidence_type") == "public_repository_only" and entry.get("verification_status") == "verified":
+        errors.append(f"{prefix}.public repository alone cannot verify a dataset")
+    if entry.get("verification_status") == "verified" and entry.get("dependency_status") == "unresolved":
+        errors.append(f"{prefix}.dependency_status unresolved blocks verification")
+    if entry.get("verification_status") == "verified" and entry.get("dataset_licence_status") != "verified":
+        errors.append(f"{prefix}.verified requires dataset_licence_status verified")
 
     for field_name in PERMISSION_FIELDS:
         value = entry.get(field_name)
