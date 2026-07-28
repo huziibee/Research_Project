@@ -454,6 +454,29 @@
       "run_id_prefix": "t12-qlora-mock",
       "exclude_nodes": "mscluster107",
       "exclude_nodes_note": "mscluster107 rejects unprivileged Apptainer user-namespace mappings."
+    },
+    "t28_full_train": {
+      "description": "Production T28 full-data QLoRA. Uses source_train only, frozen manifests and exact T27F schemas; development-only and never publishes weights.",
+      "partition": "biggpu",
+      "time_limit": "24:00:00",
+      "memory_mb": 110000,
+      "cpus": 16,
+      "gpus_required": true,
+      "gpus": 1,
+      "exclusive": true,
+      "use_gres": false,
+      "requires_candidate_id": false,
+      "container_role": "training",
+      "container_sif_default_relpath": "containers/pytorch-2.11.0-cuda13.0-runtime.sif",
+      "training_site_packages_relpath": "training-site-packages",
+      "job_name": "t28-full-train",
+      "entry_point": "scripts/train_t28_full.py",
+      "entry_args": "--training-plan $SRC_ROOT/configs/model/t28_training_plan_v1.json --run-matrix $SRC_ROOT/configs/model/t28_frozen_run_matrix_v1.json --permitted-view $SRC_ROOT/data/processed/weak_pool/t28_permitted_train_dev.jsonl --canonical-corpus $SRC_ROOT/data/processed/weak_pool/weak_pool_canonical.jsonl --train-manifest $SRC_ROOT/outputs/t28_r3/frozen_manifests/source_train_task_manifest.jsonl --dev-manifest $SRC_ROOT/outputs/t28_r3/frozen_manifests/source_dev_task_manifest.jsonl --base-model Qwen/Qwen3-8B --base-revision b968826d9c46dd6066d109eabc6255188de91218 --schema-registry $SRC_ROOT/configs/model/evidence/t27f_schema_preflight_live.json --seed 20260728",
+      "required_branch": "feature/t12-cluster-redesign",
+      "remote_result_root_template": "${T12_CLUSTER_ROOT}/runs/t28-full-train",
+      "expected_result_files": ["run_manifest.json", "trainer_state.json"],
+      "run_id_prefix": "t28-full-train",
+      "exclude_nodes": "mscluster107,mscluster108"
     }
   }
 }

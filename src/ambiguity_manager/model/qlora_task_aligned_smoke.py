@@ -614,6 +614,8 @@ def run_real_task_aligned_qlora_smoke(
     adapter_dir: Path,
     adapter_id: str,
     root: Path,
+    production: bool = False,
+    data_manifest_hash_override: str | None = None,
 ) -> dict[str, Any]:
     """Real 4-bit task-aligned QLoRA path with masked labels and full resume."""
     import time
@@ -635,7 +637,7 @@ def run_real_task_aligned_qlora_smoke(
     max_new_tokens = int((config.get("evaluation") or {}).get("max_new_tokens") or 512)
     env_identity = _environment_identity(root)
     config_hash = _config_hash(config)
-    data_hash = _data_manifest_hash(root)
+    data_hash = data_manifest_hash_override or _data_manifest_hash(root)
     source_commit = os.environ.get("T12_SOURCE_COMMIT") or os.environ.get("SOURCE_COMMIT") or "unknown"
 
     bnb_config = BitsAndBytesConfig(
@@ -712,7 +714,8 @@ def run_real_task_aligned_qlora_smoke(
         alpha=int(adapter_cfg["alpha"]),
         target_modules=tuple(adapter_cfg["target_modules"]),
     )
-    identity.assert_smoke_scope()
+    if not production:
+        identity.assert_smoke_scope()
     _atomic_write_json(
         adapter_dir / "base_identity_reference.json",
         {"selected_base_model": selected_base_model, "immutable": True},
