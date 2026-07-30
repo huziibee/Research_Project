@@ -50,6 +50,15 @@ def _append_jsonl(path: Path, rows: Iterable[dict[str, Any]]) -> None:
         os.fsync(handle.fileno())
 
 
+def _append_log(path: Path, event: str, **fields: Any) -> None:
+    payload = {"timestamp_epoch": time.time(), "event": event, **fields}
+    path.parent.mkdir(parents=True, exist_ok=True)
+    with path.open("a", encoding="utf-8", newline="\n") as handle:
+        handle.write(json.dumps(payload, sort_keys=True) + "\n")
+        handle.flush()
+        os.fsync(handle.fileno())
+
+
 def _load_completed(path: Path) -> dict[str, dict[str, Any]]:
     if not path.exists():
         return {}
@@ -107,8 +116,10 @@ def main() -> int:
     args.output_dir.mkdir(parents=True, exist_ok=True)
     results_path = args.output_dir / "dev_raw_and_parsed.jsonl"
     summary_path = args.output_dir / "dev_evaluation.json"
+    log_path = args.output_dir / "evaluation_progress.log.jsonl"
     completed = _load_completed(results_path)
     pending = [row for row in rows if str(row["record_id"]) not in completed]
+    started_epoch = time.time()
     run_meta = {
         "status": "RUNNING",
         "dev_manifest_sha256": sha256_file(args.dev_manifest),
@@ -120,11 +131,20 @@ def main() -> int:
         "bundle_root": str(args.bundle_root),
         "batch_size": args.batch_size,
         "max_new_tokens": args.max_new_tokens,
+        "log_path": str(log_path),
         "source_holdout_loaded": 0,
         "protected_records_loaded": 0,
-        "started_at_epoch": time.time(),
+        "started_at_epoch": started_epoch,
     }
     _write_json(args.output_dir / "evaluation_manifest.json", run_meta)
+    _append_log(
+        log_path,
+        "evaluation_started",
+        total=len(rows),
+        completed=len(completed),
+        remaining=len(pending),
+        batch_size=args.batch_size,
+    )
     if not pending:
         return _finalize(args.output_dir, rows, completed, run_meta)
 
@@ -132,6 +152,7 @@ def main() -> int:
     from peft import PeftModel
     from transformers import AutoModelForCausalLM, AutoTokenizer, BitsAndBytesConfig
 
+    _append_log(log_path, "model_loading_started", completed=len(completed))
     tokenizer = AutoTokenizer.from_pretrained(
         args.base_model, revision=args.base_revision, local_files_only=True
     )
@@ -155,6 +176,7 @@ def main() -> int:
     adapted = PeftModel.from_pretrained(adapter_base, str(args.adapter))
     base.eval()
     adapted.eval()
+    _append_log(log_path, "model_loading_finished", completed=len(completed))
 
     for start in range(0, len(pending), args.batch_size):
         batch = pending[start : start + args.batch_size]
@@ -162,9 +184,27 @@ def main() -> int:
         encoded = tokenizer(prompts, return_tensors="pt", padding=True, truncation=False)
         base_inputs = {key: value.to(next(base.parameters()).device) for key, value in encoded.items()}
         adapted_inputs = {key: value.to(next(adapted.parameters()).device) for key, value in encoded.items()}
+        batch_number = (start // args.batch_size) + 1
+        total_batches = (len(pending) + args.batch_size - 1) // args.batch_size
+        elapsed = max(time.time() - started_epoch, 1e-6)
+        rate = len(completed) / elapsed
+        _append_log(
+            log_path,
+            "batch_started",
+            batch=batch_number,
+            total_batches=total_batches,
+            completed=len(completed),
+            remaining=len(rows) - len(completed),
+            eta_seconds=((len(rows) - len(completed)) / rate if rate > 0 else None),
+        )
+        batch_started = time.time()
         with torch.no_grad():
+            base_started = time.time()
             base_ids = base.generate(**base_inputs, max_new_tokens=args.max_new_tokens, do_sample=False)
+            _append_log(log_path, "base_batch_finished", batch=batch_number, seconds=time.time() - base_started)
+            adapted_started = time.time()
             adapted_ids = adapted.generate(**adapted_inputs, max_new_tokens=args.max_new_tokens, do_sample=False)
+            _append_log(log_path, "adapter_batch_finished", batch=batch_number, seconds=time.time() - adapted_started)
         base_texts = tokenizer.batch_decode(base_ids, skip_special_tokens=True)
         adapted_texts = tokenizer.batch_decode(adapted_ids, skip_special_tokens=True)
         emitted: list[dict[str, Any]] = []
@@ -183,13 +223,22 @@ def main() -> int:
             })
         _append_jsonl(results_path, emitted)
         completed.update({str(row["record_id"]): row for row in emitted})
-        _write_json(args.output_dir / "evaluation_progress.json", {
+        elapsed = max(time.time() - started_epoch, 1e-6)
+        rate = len(completed) / elapsed
+        progress = {
             "status": "RUNNING",
             "completed": len(completed),
             "total": len(rows),
             "remaining": len(rows) - len(completed),
             "last_batch_start": start,
-        })
+            "last_batch_seconds": time.time() - batch_started,
+            "records_per_second": rate,
+            "eta_seconds": ((len(rows) - len(completed)) / rate if rate > 0 else None),
+            "last_event_epoch": time.time(),
+        }
+        _write_json(args.output_dir / "evaluation_progress.json", progress)
+        _append_log(log_path, "batch_finished", batch=batch_number, **progress)
+        print(json.dumps({"event": "batch_finished", **progress}, sort_keys=True), flush=True)
     return _finalize(args.output_dir, rows, completed, run_meta)
 
 
@@ -215,6 +264,8 @@ def _finalize(output_dir: Path, rows: list[dict[str, Any]], completed: dict[str,
     }
     _write_json(output_dir / "dev_evaluation.json", summary)
     _write_json(output_dir / "evaluation_progress.json", summary)
+    _append_log(output_dir / "evaluation_progress.log.jsonl", "evaluation_finished", **summary)
+    print(json.dumps({"event": "evaluation_finished", **summary}, sort_keys=True), flush=True)
     return 0
 
 
