@@ -9,23 +9,33 @@ def main():
     cmd=prefix+["-m","vllm.entrypoints.openai.api_server","--model",a.model,"--revision",a.revision,"--port",str(a.port),"--max-model-len",os.environ.get("A01_MAX_MODEL_LEN","8192"),"--max-num-seqs","1","--tensor-parallel-size","1","--gpu-memory-utilization","0.90",*extra_args]
     with open(a.log,"a",encoding="utf-8") as log: proc=subprocess.Popen(cmd,stdout=log,stderr=subprocess.STDOUT,start_new_session=True)
     ready=False
-    for _ in range(180):
+    readiness_timeout=int(os.environ.get("A02_READY_TIMEOUT_SECONDS", "900"))
+    readiness_started=time.monotonic()
+    for _ in range(max(1, readiness_timeout // 2)):
         if proc.poll() is not None: break
         try:
             with urllib.request.urlopen(f"http://127.0.0.1:{a.port}/v1/models",timeout=2): ready=True; break
         except Exception: time.sleep(2)
+    readiness_seconds=time.monotonic()-readiness_started
     if not ready:
+        print(f"SERVER_NOT_READY after {readiness_seconds:.1f}s; terminating model server", flush=True)
         if proc.poll() is None: os.killpg(proc.pid,signal.SIGTERM)
-        proc.wait(timeout=30)
-        raise SystemExit("server failed readiness check")
+        try: proc.wait(timeout=120)
+        except subprocess.TimeoutExpired:
+            if proc.poll() is None: os.killpg(proc.pid,signal.SIGKILL)
+            proc.wait(timeout=30)
+        raise SystemExit(f"server failed readiness check after {readiness_seconds:.1f}s")
+    print(f"SERVER_READY after {readiness_seconds:.1f}s", flush=True)
     try: code=subprocess.call(prefix+[a.runner,*a.runner_args])
     finally:
         if proc.poll() is None:
             os.killpg(proc.pid,signal.SIGTERM)
-        try: proc.wait(timeout=90)
+        cleanup_started=time.monotonic()
+        try: proc.wait(timeout=120)
         except subprocess.TimeoutExpired:
             if proc.poll() is None: os.killpg(proc.pid,signal.SIGKILL)
-            proc.wait()
+            proc.wait(timeout=30)
+        print(f"SERVER_CLEANUP_COMPLETE after {time.monotonic()-cleanup_started:.1f}s", flush=True)
         if proc.poll() is None: raise SystemExit("server did not exit")
     raise SystemExit(code)
 if __name__=="__main__": main()

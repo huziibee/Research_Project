@@ -23,6 +23,8 @@ def test_r3_sequential_offline_no_gres_and_full_run_gate():
     assert "HF_HUB_OFFLINE=1" in pilot and "HF_HUB_DISABLE_TELEMETRY=1" in pilot
     assert "releasing allocation without model load" in pilot
     assert "GPU_WAIT_DEADLINE" not in pilot
+    lifecycle = (ROOT / "scripts/annotation/server_lifecycle.py").read_text()
+    assert "A02_READY_TIMEOUT_SECONDS" in lifecycle and "timeout=120" in lifecycle
     assert "gemma-4-26b-a4b-it" in pilot and "glm-4.7-flash-bf16" in pilot
     assert "mistral-small-4" not in pilot
     assert "log()" in pilot and "GEMMA canary start" in pilot and "GLM canary start" in pilot
