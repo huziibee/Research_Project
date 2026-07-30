@@ -7,7 +7,8 @@
 #SBATCH --cpus-per-task=12
 #SBATCH --mem=110G
 #SBATCH --exclusive
-#SBATCH --nodelist=mscluster112
+# Restrict placement to the verified Blackwell nodes; Slurm may choose any one.
+#SBATCH --nodelist=mscluster110,mscluster111,mscluster112
 #SBATCH --time=24:00:00
 #SBATCH --output=%x-%j.out
 #SBATCH --error=%x-%j.err
