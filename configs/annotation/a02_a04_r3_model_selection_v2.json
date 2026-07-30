@@ -1,0 +1,38 @@
+{
+  "ticket": "A02-A04-R3",
+  "record_version": "model_selection_v2",
+  "decision": "Gemma 4 + GLM active pair",
+  "selection_basis": "runtime compatibility before any pilot annotation was accepted; not annotation quality",
+  "historical_v1": {
+    "pair": ["mistralai/Mistral-Small-4-119B-2603-NVFP4", "zai-org/GLM-4.7-Flash"],
+    "status": "blocked",
+    "reason": "Mistral Small 4 structured decoding reproducibly failed in the Triton MLA kernel with incompatible 256 and 512 dimensions in jobs 23083 and 23087"
+  },
+  "active_pair": {
+    "annotator_a_gemma4": {
+      "annotator_id": "annotator_a_gemma4",
+      "repository": "google/gemma-4-26B-A4B-it",
+      "revision": "4d7ae4984b7db7de8f8457170b3f1a419ee76d52",
+      "local_path": "/home-mscluster/mbangie/models/dual_llm_benchmark_v1/gemma-4-26b-a4b-it",
+      "family": "Google Gemma",
+      "status": "active"
+    },
+    "annotator_b_glm": {
+      "annotator_id": "annotator_b_glm",
+      "repository": "zai-org/GLM-4.7-Flash",
+      "revision": "7dd20894a642a0aa287e9827cb1a1f7f91386b67",
+      "local_path": "/home-mscluster/mbangie/models/dual_llm_benchmark_v1/glm-4.7-flash-bf16",
+      "family": "Z.ai GLM",
+      "status": "active"
+    }
+  },
+  "independence": {"different_families": true, "same_outputs_hidden": true, "protected_data_access": false},
+  "retired": {
+    "annotator_a_mistral_retired_incompatible": {
+      "repository": "mistralai/Mistral-Small-4-119B-2603-NVFP4",
+      "revision": "b1a9048590131d38491bd23a7c9f6ed0962f0358",
+      "status": "retired_incompatible",
+      "evidence_jobs": [23083, 23087]
+    }
+  }
+}

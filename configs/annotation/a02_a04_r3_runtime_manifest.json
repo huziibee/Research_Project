@@ -1,0 +1,21 @@
+{
+  "ticket": "A02-A04-R3",
+  "runtime_version": "a02-a04-r3-runtime-1.0.0",
+  "status": "pinned_before_gpu_submission",
+  "python": "3.12.13",
+  "torch": "2.11.0+cu130",
+  "cuda": "13.0",
+  "vllm": "0.20.1",
+  "transformers": "5.7.0",
+  "compressed_tensors": "0.15.0.1",
+  "mistral_common": "1.11.1",
+  "lmformatenforcer": "0.11.3",
+  "apptainer": "1.4.5",
+  "container": "/home-mscluster/mbangie/t12-hpc/containers/vllm-openai-v0.20.1.sif",
+  "container_sha256": "d404bdf414e1b8f2d5af1568d0565d4e2da8435f26325b281fb28b9597c548d1",
+  "build_policy": "isolated existing image; no package or model downloads in GPU allocation",
+  "offline": {"HF_HUB_OFFLINE": "1", "TRANSFORMERS_OFFLINE": "1", "HF_DATASETS_OFFLINE": "1", "HF_HUB_DISABLE_TELEMETRY": "1"},
+  "model_checks": ["architecture registration", "config loading", "tokenizer loading", "chat-template loading", "processor loading", "frozen JSON-schema compilation"],
+  "allocation": {"partition": "biggpu", "nodes": 1, "ntasks": 1, "cpus_per_task": 16, "mem": "110G", "exclusive": true, "gres": null, "tensor_parallel_size": 1, "max_num_seqs": 1, "max_model_len": 8192, "gpu_memory_utilization": 0.9},
+  "repair_budget": {"annotator_a": 1, "annotator_b": 1, "allowed_changes": ["pinned runtime build", "kernel/backend", "eager_or_compiled", "CUDA graphs", "bounded context/cache", "text-only processor", "max batched tokens", "max active sequences"]}
+}
