@@ -42,12 +42,16 @@ def main():
         rec=json.loads(line); expected.append(rec["record_id"]); prompt=f"Command: {rec['command']}\nContext: {rec.get('context') or '(none)'}\nReturn one JSON annotation matching the frozen A01 schema."
         body={"model":a.model,"messages":[{"role":"system","content":"You are an independent A01 annotation assistant. Use only supplied evidence. Return JSON only."},{"role":"user","content":prompt}],"temperature":0.0,"top_p":1.0,"max_tokens":768,"n":1,"response_format":{"type":"json_schema","json_schema":{"name":"a01_annotation","schema":schema_for_record(rec["record_id"], a.annotator)}}}
         attempts=[]; obj=None; error="none"
+        retry_guidance=None
         for attempt in range(3):
             try:
-                started=time.time(); response=post(f"http://127.0.0.1:{a.port}/v1/chat/completions",body); content=response["choices"][0]["message"]["content"]; obj=json.loads(content); schema_errors=parsed_schema_errors(obj, rec["record_id"])
+                request_body=body if retry_guidance is None else {**body,"messages":body["messages"]+[{
+                    "role":"user","content":f"Technical schema retry. Correct only these schema defects: {', '.join(retry_guidance)}. Return the complete annotation JSON again. record_id must be exactly {rec['record_id']}; confidence must be a string exactly high, medium, or low; if recommended_strategy is clarify, include clarification_question and clarification_targets. Do not return extraction annotations or numeric confidence values."
+                }]}
+                started=time.time(); response=post(f"http://127.0.0.1:{a.port}/v1/chat/completions",request_body); content=response["choices"][0]["message"]["content"]; obj=json.loads(content); schema_errors=parsed_schema_errors(obj, rec["record_id"])
                 entry={"attempt":attempt+1,"response":response,"elapsed_seconds":time.time()-started}
                 if schema_errors:
-                    entry.update({"status":"schema_invalid","retry_reason":"schema_invalid_output","schema_errors":schema_errors}); attempts.append(entry); error="schema_error"; continue
+                    entry.update({"status":"schema_invalid","retry_reason":"schema_invalid_output","schema_errors":schema_errors}); attempts.append(entry); error="schema_error"; retry_guidance=schema_errors; continue
                 attempts.append(entry); error="none"; break
             except Exception as exc: attempts.append({"attempt":attempt+1,"error":repr(exc),"retry_reason":"transport_or_parse_failure"}); error="retry_exhausted"
         valid=not parsed_schema_errors(obj, rec["record_id"])
