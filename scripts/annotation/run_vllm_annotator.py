@@ -28,6 +28,7 @@ def parsed_schema_errors(obj, record_id):
     required={"record_id","speech_act","cpc","candidate_interpretations","ambiguity_present","ambiguity_types","compound_ambiguity_count","risk_level","capability_status","recommended_strategy","annotator_role","confidence","timestamp","handbook_version","annotation_schema_version","package_version"}
     errors.extend(f"missing_required_field:{field}" for field in sorted(required-set(obj)))
     if obj.get("confidence") not in {"high", "medium", "low"}: errors.append("confidence_must_be_frozen_enum")
+    if "rationale" in obj and obj.get("rationale") is not None and not isinstance(obj.get("rationale"), str): errors.append("rationale_must_be_string_or_null")
     if obj.get("recommended_strategy")=="clarify" and not (obj.get("clarification_question") or obj.get("clarification_target") or obj.get("clarification_targets")): errors.append("clarification_requires_target")
     if obj.get("recommended_strategy")=="execute" and (obj.get("capability_status") in {"unknown","unresolved"} or obj.get("risk_level") in {"unknown","unresolved"}): errors.append("execute_with_critical_unknown")
     return errors
@@ -46,7 +47,7 @@ def main():
         for attempt in range(3):
             try:
                 request_body=body if retry_guidance is None else {**body,"messages":body["messages"]+[{
-                    "role":"user","content":f"Technical schema retry. Correct only these schema defects: {', '.join(retry_guidance)}. Return the complete annotation JSON again. record_id must be exactly {rec['record_id']}; confidence must be a string exactly high, medium, or low; if recommended_strategy is clarify, include clarification_question and clarification_targets. Do not return extraction annotations or numeric confidence values."
+                    "role":"user","content":f"Technical schema retry. Correct only these schema defects: {', '.join(retry_guidance)}. Return the complete annotation JSON again. record_id must be exactly {rec['record_id']}; confidence must be a string exactly high, medium, or low; rationale must be a string or null; if recommended_strategy is clarify, include clarification_question and clarification_targets. Do not return extraction annotations or numeric confidence/rationale values."
                 }]}
                 started=time.time(); response=post(f"http://127.0.0.1:{a.port}/v1/chat/completions",request_body); content=response["choices"][0]["message"]["content"]; obj=json.loads(content); schema_errors=parsed_schema_errors(obj, rec["record_id"])
                 entry={"attempt":attempt+1,"response":response,"elapsed_seconds":time.time()-started}
