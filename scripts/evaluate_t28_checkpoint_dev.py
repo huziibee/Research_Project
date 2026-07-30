@@ -26,7 +26,7 @@ from ambiguity_manager.model.qlora_task_aligned_smoke import (  # noqa: E402
     _HFTokenizerAdapter,
     _build_validation_prompt,
 )
-from ambiguity_manager.model.structured_output import (  # noqa: E402
+from ambiguity_manager.model.structured_output_validation import (  # noqa: E402
     validate_structured_model_output,
 )
 
