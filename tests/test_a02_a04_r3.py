@@ -32,3 +32,10 @@ def test_r3_sequential_offline_no_gres_and_full_run_gate():
 def test_exact_pilot_jsonl_hash():
     data = (ROOT / "data/dual_llm_benchmark_v1/manifests/a03_pilot_manifest.jsonl").read_bytes()
     assert hashlib.sha256(data).hexdigest() == "23a34310ff167fce2171178a306b0c2b441a2ea2c1466d9d7302e23e2d0744e6"
+
+def test_schema_invalid_confidence_is_retryable_not_silently_coerced():
+    import importlib.util
+    spec = importlib.util.spec_from_file_location("r3_runner", ROOT / "scripts/annotation/run_vllm_annotator.py")
+    module = importlib.util.module_from_spec(spec); spec.loader.exec_module(module)
+    assert module.parsed_schema_errors({"record_id": "r", "confidence": 0.9}, "r") == ["confidence_must_be_frozen_enum"]
+    assert module.parsed_schema_errors({"record_id": "r", "confidence": "high"}, "r") == []
