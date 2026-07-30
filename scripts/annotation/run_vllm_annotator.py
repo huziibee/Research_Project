@@ -4,6 +4,8 @@ import argparse, json, time, urllib.request
 from datetime import datetime, timezone
 from pathlib import Path
 
+FROZEN_RESPONSE_SCHEMA={"type":"object","required":["record_id","speech_act","cpc","candidate_interpretations","ambiguity_present","ambiguity_types","compound_ambiguity_count","risk_level","capability_status","recommended_strategy","annotator_role","confidence","timestamp","handbook_version","annotation_schema_version","package_version"],"properties":{"record_id":{"type":"string"},"speech_act":{"type":"string"},"cpc":{"type":"object"},"candidate_interpretations":{"type":"array"},"ambiguity_present":{"type":"boolean"},"ambiguity_types":{"type":"array","items":{"type":"string"}},"compound_ambiguity_count":{"type":"integer"},"risk_level":{"type":"string","enum":["none","low","medium","high","unknown"]},"capability_status":{"type":"string","enum":["capable","conditional","incapable","unknown"]},"recommended_strategy":{"type":"string","enum":["execute","clarify","silently_resolve","face_preserving_rejection","multi_step"]},"annotator_role":{"type":"string","enum":["ANN-A","ANN-B"]},"confidence":{"type":"string","enum":["low","medium","high"]},"timestamp":{"type":"string"},"handbook_version":{"type":"string"},"annotation_schema_version":{"type":"string"},"package_version":{"type":"string"}}}
+
 def post(url, body):
     req=urllib.request.Request(url, data=json.dumps(body).encode(), headers={"Content-Type":"application/json"})
     with urllib.request.urlopen(req, timeout=180) as response: return json.loads(response.read())
@@ -12,7 +14,9 @@ def parsed_schema_errors(obj, record_id):
     if not isinstance(obj, dict): return ["parsed_annotation_not_object"]
     errors=[]
     if obj.get("record_id", record_id) != record_id: errors.append("record_id_mismatch")
-    if obj.get("confidence") not in {"high", "medium", "low", "unknown"}: errors.append("confidence_must_be_frozen_enum")
+    required={"record_id","speech_act","cpc","candidate_interpretations","ambiguity_present","ambiguity_types","compound_ambiguity_count","risk_level","capability_status","recommended_strategy","annotator_role","confidence","timestamp","handbook_version","annotation_schema_version","package_version"}
+    errors.extend(f"missing_required_field:{field}" for field in sorted(required-set(obj)))
+    if obj.get("confidence") not in {"high", "medium", "low"}: errors.append("confidence_must_be_frozen_enum")
     return errors
 
 def main():
@@ -23,7 +27,7 @@ def main():
     for line in lines:
         if not line.strip(): continue
         rec=json.loads(line); expected.append(rec["record_id"]); prompt=f"Command: {rec['command']}\nContext: {rec.get('context') or '(none)'}\nReturn one JSON annotation matching the frozen A01 schema."
-        body={"model":a.model,"messages":[{"role":"system","content":"You are an independent A01 annotation assistant. Use only supplied evidence. Return JSON only."},{"role":"user","content":prompt}],"temperature":0.0,"top_p":1.0,"max_tokens":768,"n":1,"response_format":{"type":"json_object"}}
+        body={"model":a.model,"messages":[{"role":"system","content":"You are an independent A01 annotation assistant. Use only supplied evidence. Return JSON only."},{"role":"user","content":prompt}],"temperature":0.0,"top_p":1.0,"max_tokens":768,"n":1,"response_format":{"type":"json_schema","json_schema":{"name":"a01_annotation","schema":FROZEN_RESPONSE_SCHEMA}}}
         attempts=[]; obj=None; error="none"
         for attempt in range(3):
             try:

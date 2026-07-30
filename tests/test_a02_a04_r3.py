@@ -37,5 +37,6 @@ def test_schema_invalid_confidence_is_retryable_not_silently_coerced():
     import importlib.util
     spec = importlib.util.spec_from_file_location("r3_runner", ROOT / "scripts/annotation/run_vllm_annotator.py")
     module = importlib.util.module_from_spec(spec); spec.loader.exec_module(module)
-    assert module.parsed_schema_errors({"record_id": "r", "confidence": 0.9}, "r") == ["confidence_must_be_frozen_enum"]
-    assert module.parsed_schema_errors({"record_id": "r", "confidence": "high"}, "r") == []
+    valid={"record_id":"r","speech_act":"command","cpc":{},"candidate_interpretations":[],"ambiguity_present":False,"ambiguity_types":[],"compound_ambiguity_count":0,"risk_level":"none","capability_status":"unknown","recommended_strategy":"clarify","annotator_role":"ANN-A","confidence":"high","timestamp":"2026-07-30T00:00:00Z","handbook_version":"1.0.0","annotation_schema_version":"1.0.0","package_version":"1.0.0"}
+    assert "confidence_must_be_frozen_enum" in module.parsed_schema_errors({**valid, "confidence": 0.9}, "r")
+    assert module.parsed_schema_errors(valid, "r") == []
