@@ -2,17 +2,17 @@
 
 ## Current status
 
-`INCOMPLETE — waiting for one authorised lifecycle/runtime repair.`
+`INCOMPLETE — both primary servers now load; pilot completion remains in progress.`
 
 The pilot is not yet eligible for `PASS_TO_HUMAN_REVIEW`. No full annotation job was submitted, no protected data was accessed, and no T15/T27/T28/T29 files were modified.
 
 ## Latest execution
 
-Latest job: `23146`, submitted to `mscluster110` in `biggpu` with exclusive 110G/no-GRES allocation.
+Latest completed diagnostic job: `23152`, submitted to `mscluster110` in `biggpu` with exclusive 110G/no-GRES allocation. Current retry: `23155`.
 
 Run directory:
 
-`/home-mscluster/mbangie/dual-llm-a02-r1/data/dual_llm_benchmark_v1/runs/a02-a04-r3-pilot-23146-20260730`
+`/home-mscluster/mbangie/dual-llm-a02-r1/data/dual_llm_benchmark_v1/runs/a02-a04-r3-pilot-23152-20260730`
 
 Observed phase evidence:
 
@@ -20,9 +20,10 @@ Observed phase evidence:
 - Gemma 4 canary passed and the 40-record Gemma annotation phase completed without validator errors in the job log.
 - Gemma cleanup evidence was written.
 - GLM resolved to `Glm4MoeLiteForCausalLM` and began loading its 48 shards.
-- GLM reached shard `21/48`; the lifecycle readiness window expired before `/v1/models` became ready.
-- Cleanup then failed at the current 30-second `proc.wait()` timeout. This is a lifecycle timeout, not evidence of GLM model incompatibility.
-- No GLM annotation, agreement metrics, or review packet exists yet.
+- GLM reached `SERVER_READY after 390.1s` after loading all 48 shards; cleanup completed in 22.9s.
+- Both primary servers therefore load sequentially on Blackwell under the repaired 900-second readiness/120-second cleanup lifecycle.
+- The job then stopped at GLM canary envelope validation because two rationales were numeric `0.0`; those raw attempts are preserved and `23155` retries only that schema defect.
+- No accepted GLM annotation, agreement metrics, or review packet exists yet.
 
 The GLM server log contains the preserved startup evidence. Job stdout/stderr are the authoritative phase logs in the run directory above.
 
@@ -33,20 +34,16 @@ The GLM server log contains the preserved startup evidence. Job stdout/stderr ar
 - Gemma download job `23090` completed successfully. Its resolved manifest checksum and recorded key-file hashes matched.
 - Mistral jobs `23083` and `23087` remain historical BLOCKED evidence and were not reused as annotation data.
 - Earlier R3 allocation guards `23102` and `23111` correctly released unsafe busy-GPU allocations before model load.
+- Job `23152` is the first evidence that Gemma and GLM both load and clean up sequentially: Gemma ready in 360.1s; GLM ready in 390.1s.
 - Schema-invalid Gemma attempts from `23113`, `23141`, `23143`, and `23144` remain preserved; no invalid output was accepted.
 
 ## Next steps
 
-1. Repair `scripts/annotation/server_lifecycle.py` only within the authorised lifecycle/runtime boundary:
-   - increase model readiness timeout from 360 seconds to at least 900 seconds for the 48-shard GLM load;
-   - on readiness failure, send TERM, wait up to 120 seconds, then send KILL and verify process exit;
-   - record readiness duration and cleanup duration in evidence.
-2. Run the focused lifecycle/schema tests and commit the repair.
-3. Resubmit the unchanged frozen pilot on verified `mscluster110` when the node is available.
-4. Confirm Gemma canary, Gemma 40-record outputs, cleanup, then GLM canary and cleanup.
-5. Complete GLM’s 40 records with raw attempts, parsed outputs, and technical retry history.
-6. Reconcile exactly 80 final statuses; calculate agreement/subgroup metrics; build the consolidated review packet and audit sample.
-7. Prepare the full-run command/configuration but do not submit it. Human review remains the only approval gate.
+1. Monitor retry job `23155` for the rationale-type schema repair.
+2. Confirm Gemma canary, Gemma 40-record outputs, cleanup, then GLM canary and cleanup.
+3. Complete GLM’s 40 records with raw attempts, parsed outputs, and technical retry history.
+4. Reconcile exactly 80 final statuses; calculate agreement/subgroup metrics; build the consolidated review packet and audit sample.
+5. Prepare the full-run command/configuration but do not submit it. Human review remains the only approval gate.
 
 ## Important constraints
 
@@ -54,4 +51,4 @@ Do not redownload or change either active model revision. Do not use Mistral out
 
 ## Local commits
 
-The R3 implementation and successive evidence-preserving repairs are committed through `40c9b96`; the next lifecycle repair should be a new focused commit.
+The R3 implementation and successive evidence-preserving repairs are committed through `471c7e8`; the current retry is `23155`.
