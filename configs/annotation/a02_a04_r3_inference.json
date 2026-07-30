@@ -12,7 +12,10 @@
   "seed": 20260728,
   "max_model_len": 8192,
   "max_output_tokens": 768,
-  "structured_output_backend": "vLLM response_format json_object plus frozen schema validation",
+  "structured_output_backend": {
+    "gemma4": "vLLM response_format json_schema plus frozen schema validation",
+    "glm": "vLLM response_format json_object plus frozen schema validation (authorised runtime repair; no semantic change)"
+  },
   "timeout_seconds": 180,
   "technical_retries": 2,
   "semantic_retries": false,

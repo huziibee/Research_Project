@@ -8,11 +8,11 @@ The pilot is not yet eligible for `PASS_TO_HUMAN_REVIEW`. No full annotation job
 
 ## Latest execution
 
-Latest completed diagnostic job: `23152`, submitted to `mscluster110` in `biggpu` with exclusive 110G/no-GRES allocation. Current retry: `23155`.
+Latest completed diagnostic job: `23155`, submitted to `mscluster110` in `biggpu` with exclusive 110G/no-GRES allocation. It confirmed GLM startup but stopped in validation. The repaired retry is pending submission.
 
 Run directory:
 
-`/home-mscluster/mbangie/dual-llm-a02-r1/data/dual_llm_benchmark_v1/runs/a02-a04-r3-pilot-23152-20260730`
+`/home-mscluster/mbangie/dual-llm-a02-r1/data/dual_llm_benchmark_v1/runs/a02-a04-r3-pilot-23155-20260730`
 
 Observed phase evidence:
 
@@ -20,9 +20,10 @@ Observed phase evidence:
 - Gemma 4 canary passed and the 40-record Gemma annotation phase completed without validator errors in the job log.
 - Gemma cleanup evidence was written.
 - GLM resolved to `Glm4MoeLiteForCausalLM` and began loading its 48 shards.
-- GLM reached `SERVER_READY after 390.1s` after loading all 48 shards; cleanup completed in 22.9s.
+- GLM reached `SERVER_READY after 508.1s` after loading all 48 shards; canary requests returned HTTP 200 and cleanup completed in 21.5s. The server log records 55.94 GiB model memory.
 - Both primary servers therefore load sequentially on Blackwell under the repaired 900-second readiness/120-second cleanup lifecycle.
-- The job then stopped at GLM canary envelope validation because two rationales were numeric `0.0`; those raw attempts are preserved and `23155` retries only that schema defect.
+- Job `23155` stopped in the validator because malformed GLM scalar outputs reached the envelope as `parsed_annotation: Infinity`/`0.0`; raw attempts are preserved. This was a validator crash, not a model-load failure.
+- The authorised GLM runtime repair is staged: use `response_format: json_object` and apply the unchanged frozen schema locally. This changes only the structured-output backend.
 - No accepted GLM annotation, agreement metrics, or review packet exists yet.
 
 The GLM server log contains the preserved startup evidence. Job stdout/stderr are the authoritative phase logs in the run directory above.
@@ -34,12 +35,12 @@ The GLM server log contains the preserved startup evidence. Job stdout/stderr ar
 - Gemma download job `23090` completed successfully. Its resolved manifest checksum and recorded key-file hashes matched.
 - Mistral jobs `23083` and `23087` remain historical BLOCKED evidence and were not reused as annotation data.
 - Earlier R3 allocation guards `23102` and `23111` correctly released unsafe busy-GPU allocations before model load.
-- Job `23152` is the first evidence that Gemma and GLM both load and clean up sequentially: Gemma ready in 360.1s; GLM ready in 390.1s.
+- Jobs `23152` and `23155` establish that Gemma and GLM both load and clean up sequentially. Job `23155` is the strongest current GLM evidence.
 - Schema-invalid Gemma attempts from `23113`, `23141`, `23143`, and `23144` remain preserved; no invalid output was accepted.
 
 ## Next steps
 
-1. Monitor retry job `23155` for the rationale-type schema repair.
+1. Submit and monitor the repaired retry with GLM `json_object`.
 2. Confirm Gemma canary, Gemma 40-record outputs, cleanup, then GLM canary and cleanup.
 3. Complete GLM’s 40 records with raw attempts, parsed outputs, and technical retry history.
 4. Reconcile exactly 80 final statuses; calculate agreement/subgroup metrics; build the consolidated review packet and audit sample.
@@ -51,4 +52,4 @@ Do not redownload or change either active model revision. Do not use Mistral out
 
 ## Local commits
 
-The R3 implementation and successive evidence-preserving repairs are committed through `471c7e8`; the current retry is `23155`.
+The R3 implementation and successive evidence-preserving repairs are committed through `ddc18ce`; the next retry must include the validator guard and GLM backend repair.

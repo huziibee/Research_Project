@@ -42,3 +42,10 @@ def test_schema_invalid_confidence_is_retryable_not_silently_coerced():
     valid={"record_id":"r","speech_act":"command","cpc":{},"candidate_interpretations":[],"ambiguity_present":False,"ambiguity_types":[],"compound_ambiguity_count":0,"risk_level":"none","capability_status":"unknown","recommended_strategy":"clarify","annotator_role":"ANN-A","confidence":"high","timestamp":"2026-07-30T00:00:00Z","handbook_version":"1.0.0","annotation_schema_version":"1.0.0","package_version":"1.0.0"}
     assert "confidence_must_be_frozen_enum" in module.parsed_schema_errors({**valid, "confidence": 0.9}, "r")
     assert module.parsed_schema_errors(valid, "r") == []
+
+def test_glm_runtime_repair_uses_json_object_and_validator_preserves_invalid_scalars():
+    pilot = (ROOT / "cluster/annotation/a03_dual_annotator_pilot.sbatch").read_text()
+    assert "--structured-backend json_object" in pilot
+    spec = __import__("importlib.util").util.spec_from_file_location("validator", ROOT / "scripts/annotation/validate_annotations.py")
+    module = __import__("importlib.util").util.module_from_spec(spec); spec.loader.exec_module(module)
+    assert module.validate_annotation({"parsed_annotation": 0.0}) == ["parsed_annotation_must_be_object_or_null"]

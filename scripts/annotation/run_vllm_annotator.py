@@ -34,14 +34,15 @@ def parsed_schema_errors(obj, record_id):
     return errors
 
 def main():
-    ap=argparse.ArgumentParser(); ap.add_argument("--model",required=True); ap.add_argument("--revision",required=True); ap.add_argument("--annotator",required=True); ap.add_argument("--port",type=int,required=True); ap.add_argument("--pilot",required=True); ap.add_argument("--output",required=True); ap.add_argument("--cache",required=True); ap.add_argument("--server-log",required=True); ap.add_argument("--limit",type=int); a=ap.parse_args()
+    ap=argparse.ArgumentParser(); ap.add_argument("--model",required=True); ap.add_argument("--revision",required=True); ap.add_argument("--annotator",required=True); ap.add_argument("--port",type=int,required=True); ap.add_argument("--pilot",required=True); ap.add_argument("--output",required=True); ap.add_argument("--cache",required=True); ap.add_argument("--server-log",required=True); ap.add_argument("--limit",type=int); ap.add_argument("--structured-backend",choices=["json_schema","json_object"],default="json_schema"); a=ap.parse_args()
     out=Path(a.output); out.mkdir(parents=True,exist_ok=True); raw=out/"raw.jsonl"; parsed=out/"parsed.jsonl"; expected=[]
     lines=Path(a.pilot).read_text(encoding="utf-8").splitlines()
     if a.limit: lines=lines[:a.limit]
     for line in lines:
         if not line.strip(): continue
         rec=json.loads(line); expected.append(rec["record_id"]); prompt=f"Command: {rec['command']}\nContext: {rec.get('context') or '(none)'}\nReturn one JSON annotation matching the frozen A01 schema."
-        body={"model":a.model,"messages":[{"role":"system","content":"You are an independent A01 annotation assistant. Use only supplied evidence. Return JSON only."},{"role":"user","content":prompt}],"temperature":0.0,"top_p":1.0,"max_tokens":768,"n":1,"response_format":{"type":"json_schema","json_schema":{"name":"a01_annotation","schema":schema_for_record(rec["record_id"], a.annotator)}}}
+        response_format={"type":"json_object"} if a.structured_backend=="json_object" else {"type":"json_schema","json_schema":{"name":"a01_annotation","schema":schema_for_record(rec["record_id"], a.annotator)}}
+        body={"model":a.model,"messages":[{"role":"system","content":"You are an independent A01 annotation assistant. Use only supplied evidence. Return JSON only."},{"role":"user","content":prompt}],"temperature":0.0,"top_p":1.0,"max_tokens":768,"n":1,"response_format":response_format}
         attempts=[]; obj=None; error="none"
         retry_guidance=None
         for attempt in range(3):

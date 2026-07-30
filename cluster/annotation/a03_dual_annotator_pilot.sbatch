@@ -57,11 +57,11 @@ log "GEMMA 40-record annotation complete"
 python3 scripts/annotation/validate_annotations.py --schema schemas/annotation/model_annotation.schema.json --input "$OUT/annotator_a/raw.jsonl"
 python3 scripts/annotation/cleanup_evidence.py --output "$OUT/cleanup_a.json" || true
 log "GLM canary start model=$GLM revision=$GLM_REV"
-python3 scripts/annotation/server_lifecycle.py --model "$GLM" --revision "$GLM_REV" --port 8002 --runner scripts/annotation/run_vllm_annotator.py --log "$OUT/glm.canary.server.log" --runner-args --model "$GLM" --revision "$GLM_REV" --annotator ANN-B --port 8002 --pilot data/dual_llm_benchmark_v1/manifests/a03_pilot_manifest.jsonl --output "$OUT/canary_glm" --cache "${A01_MODEL_CACHE:?}" --server-log "$OUT/glm.canary.server.log" --limit 2
+python3 scripts/annotation/server_lifecycle.py --model "$GLM" --revision "$GLM_REV" --port 8002 --runner scripts/annotation/run_vllm_annotator.py --log "$OUT/glm.canary.server.log" --runner-args --model "$GLM" --revision "$GLM_REV" --annotator ANN-B --port 8002 --pilot data/dual_llm_benchmark_v1/manifests/a03_pilot_manifest.jsonl --output "$OUT/canary_glm" --cache "${A01_MODEL_CACHE:?}" --server-log "$OUT/glm.canary.server.log" --structured-backend json_object --limit 2
 log "GLM canary complete; validating and checking cleanup"
 python3 scripts/annotation/validate_annotations.py --schema schemas/annotation/model_annotation.schema.json --input "$OUT/canary_glm/raw.jsonl"
 python3 scripts/annotation/cleanup_evidence.py --output "$OUT/cleanup_b_canary.json" || true
-python3 scripts/annotation/server_lifecycle.py --model "$GLM" --revision "$GLM_REV" --port 8002 --runner scripts/annotation/run_vllm_annotator.py --log "$OUT/glm.server.log" --runner-args --model "$GLM" --revision "$GLM_REV" --annotator ANN-B --port 8002 --pilot data/dual_llm_benchmark_v1/manifests/a03_pilot_manifest.jsonl --output "$OUT/annotator_b" --cache "${A01_MODEL_CACHE:?}" --server-log "$OUT/glm.server.log"
+python3 scripts/annotation/server_lifecycle.py --model "$GLM" --revision "$GLM_REV" --port 8002 --runner scripts/annotation/run_vllm_annotator.py --log "$OUT/glm.server.log" --runner-args --model "$GLM" --revision "$GLM_REV" --annotator ANN-B --port 8002 --pilot data/dual_llm_benchmark_v1/manifests/a03_pilot_manifest.jsonl --output "$OUT/annotator_b" --cache "${A01_MODEL_CACHE:?}" --server-log "$OUT/glm.server.log" --structured-backend json_object
 log "GLM 40-record annotation complete"
 python3 scripts/annotation/validate_annotations.py --schema schemas/annotation/model_annotation.schema.json --input "$OUT/annotator_b/raw.jsonl"
 python3 scripts/annotation/cleanup_evidence.py --output "$OUT/cleanup_b.json" || true
