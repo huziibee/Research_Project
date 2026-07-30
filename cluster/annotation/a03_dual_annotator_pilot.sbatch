@@ -28,16 +28,11 @@ GPU_NAME="$(nvidia-smi --query-gpu=name --format=csv,noheader | head -1)"
 GPU_MEM="$(nvidia-smi --query-gpu=memory.total --format=csv,noheader,nounits | head -1)"
 [[ "$GPU_NAME" == *Blackwell* ]] || fail "non-Blackwell GPU allocated: $GPU_NAME"
 [[ "${GPU_MEM:-0}" -ge 90000 ]] || fail "visible GPU VRAM below 90000 MiB: $GPU_MEM"
-GPU_WAIT_DEADLINE=$(( $(date +%s) + 86400 ))
-while :; do
-  GPU_USED="$(nvidia-smi --query-gpu=memory.used --format=csv,noheader,nounits | head -1)"
-  if [[ "${GPU_USED:-999999}" -le 1000 ]]; then break; fi
-  if (( $(date +%s) >= GPU_WAIT_DEADLINE )); then
-    fail "GPU remained occupied for 24 hours before model load: ${GPU_USED} MiB used"
-  fi
-  echo "WAITING_FOR_IDLE_GPU: ${GPU_USED} MiB used; rechecking in 30 seconds" >&2
-  sleep 30
-done
+GPU_USED="$(nvidia-smi --query-gpu=memory.used --format=csv,noheader,nounits | head -1)"
+if [[ "${GPU_USED:-999999}" -gt 1000 ]]; then
+  echo "WAITING_FOR_IDLE_GPU: ${GPU_USED} MiB used; releasing allocation without model load" >&2
+  fail "GPU was occupied at allocation time; resubmit after the node is genuinely idle"
+fi
 log "idle GPU confirmed; collecting pre-load system snapshot"
 python3 scripts/annotation/runtime_preflight.py --output "$OUT/runtime_preflight.json" --container "${A01_CONTAINER_SIF:?}" --model-manifest configs/annotation/a02_a04_r3_model_selection_v2.json
 log "runtime CPU/import preflight complete"

@@ -21,6 +21,8 @@ def test_r3_sequential_offline_no_gres_and_full_run_gate():
     pilot = (ROOT / "cluster/annotation/a03_dual_annotator_pilot.sbatch").read_text()
     assert "--exclusive" in pilot and "--mem=110G" in pilot and "--gres=" not in pilot
     assert "HF_HUB_OFFLINE=1" in pilot and "HF_HUB_DISABLE_TELEMETRY=1" in pilot
+    assert "releasing allocation without model load" in pilot
+    assert "GPU_WAIT_DEADLINE" not in pilot
     assert "gemma-4-26b-a4b-it" in pilot and "glm-4.7-flash-bf16" in pilot
     assert "mistral-small-4" not in pilot
     assert "log()" in pilot and "GEMMA canary start" in pilot and "GLM canary start" in pilot
