@@ -1,10 +1,21 @@
 """A01-only vLLM OpenAI-compatible runner with append-only raw attempts."""
 from __future__ import annotations
-import argparse, json, time, urllib.request
+import argparse, copy, json, time, urllib.request
 from datetime import datetime, timezone
 from pathlib import Path
 
 FROZEN_RESPONSE_SCHEMA={"type":"object","required":["record_id","speech_act","cpc","candidate_interpretations","ambiguity_present","ambiguity_types","compound_ambiguity_count","risk_level","capability_status","recommended_strategy","annotator_role","confidence","timestamp","handbook_version","annotation_schema_version","package_version"],"properties":{"record_id":{"type":"string"},"speech_act":{"type":"string"},"cpc":{"type":"object"},"candidate_interpretations":{"type":"array"},"ambiguity_present":{"type":"boolean"},"ambiguity_types":{"type":"array","items":{"type":"string"}},"compound_ambiguity_count":{"type":"integer"},"risk_level":{"type":"string","enum":["none","low","medium","high","unknown"]},"capability_status":{"type":"string","enum":["capable","conditional","incapable","unknown"]},"recommended_strategy":{"type":"string","enum":["execute","clarify","silently_resolve","face_preserving_rejection","multi_step"]},"annotator_role":{"type":"string","enum":["ANN-A","ANN-B"]},"confidence":{"type":"string","enum":["low","medium","high"]},"timestamp":{"type":"string"},"handbook_version":{"type":"string"},"annotation_schema_version":{"type":"string"},"package_version":{"type":"string"}}}
+
+def schema_for_record(record_id, annotator):
+    schema=copy.deepcopy(FROZEN_RESPONSE_SCHEMA)
+    schema["properties"]["record_id"]={"const":record_id}
+    schema["properties"]["annotator_role"]={"const":annotator}
+    schema["properties"]["handbook_version"]={"const":"a01-handbook-1.0.0"}
+    schema["properties"]["annotation_schema_version"]={"const":"a01-annotation-1.0.0"}
+    schema["properties"]["package_version"]={"const":"1.0.0"}
+    schema["properties"].update({"clarification_question":{"type":"string"},"clarification_targets":{"type":"array"},"rejection_reason":{"type":"string"},"strategy_sequence":{"type":"array"},"resolved_slots":{"type":"object"}})
+    schema["allOf"]=[{"if":{"properties":{"recommended_strategy":{"const":"clarify"}}},"then":{"required":["clarification_question","clarification_targets"]}},{"if":{"properties":{"recommended_strategy":{"const":"multi_step"}}},"then":{"required":["strategy_sequence"]}}]
+    return schema
 
 def post(url, body):
     req=urllib.request.Request(url, data=json.dumps(body).encode(), headers={"Content-Type":"application/json"})
@@ -17,6 +28,8 @@ def parsed_schema_errors(obj, record_id):
     required={"record_id","speech_act","cpc","candidate_interpretations","ambiguity_present","ambiguity_types","compound_ambiguity_count","risk_level","capability_status","recommended_strategy","annotator_role","confidence","timestamp","handbook_version","annotation_schema_version","package_version"}
     errors.extend(f"missing_required_field:{field}" for field in sorted(required-set(obj)))
     if obj.get("confidence") not in {"high", "medium", "low"}: errors.append("confidence_must_be_frozen_enum")
+    if obj.get("recommended_strategy")=="clarify" and not (obj.get("clarification_question") or obj.get("clarification_target") or obj.get("clarification_targets")): errors.append("clarification_requires_target")
+    if obj.get("recommended_strategy")=="execute" and (obj.get("capability_status") in {"unknown","unresolved"} or obj.get("risk_level") in {"unknown","unresolved"}): errors.append("execute_with_critical_unknown")
     return errors
 
 def main():
@@ -27,7 +40,7 @@ def main():
     for line in lines:
         if not line.strip(): continue
         rec=json.loads(line); expected.append(rec["record_id"]); prompt=f"Command: {rec['command']}\nContext: {rec.get('context') or '(none)'}\nReturn one JSON annotation matching the frozen A01 schema."
-        body={"model":a.model,"messages":[{"role":"system","content":"You are an independent A01 annotation assistant. Use only supplied evidence. Return JSON only."},{"role":"user","content":prompt}],"temperature":0.0,"top_p":1.0,"max_tokens":768,"n":1,"response_format":{"type":"json_schema","json_schema":{"name":"a01_annotation","schema":FROZEN_RESPONSE_SCHEMA}}}
+        body={"model":a.model,"messages":[{"role":"system","content":"You are an independent A01 annotation assistant. Use only supplied evidence. Return JSON only."},{"role":"user","content":prompt}],"temperature":0.0,"top_p":1.0,"max_tokens":768,"n":1,"response_format":{"type":"json_schema","json_schema":{"name":"a01_annotation","schema":schema_for_record(rec["record_id"], a.annotator)}}}
         attempts=[]; obj=None; error="none"
         for attempt in range(3):
             try:
