@@ -7,8 +7,8 @@
 #SBATCH --cpus-per-task=12
 #SBATCH --mem=110G
 #SBATCH --exclusive
-# Restrict placement to the verified Blackwell nodes; Slurm may choose any one.
-#SBATCH --nodelist=mscluster110,mscluster111,mscluster112
+# Target the previously verified Blackwell node; the guard still rejects a busy GPU.
+#SBATCH --nodelist=mscluster110
 #SBATCH --time=24:00:00
 #SBATCH --output=%x-%j.out
 #SBATCH --error=%x-%j.err
