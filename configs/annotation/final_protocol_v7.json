@@ -1,0 +1,80 @@
+{
+  "protocol_id": "final_protocol_v7",
+  "protocol_version": "7.0.0",
+  "status": "active_for_pilot_120_only",
+  "effective_date": "2026-08-07",
+  "handbook_path": "docs/protocols/annotation_handbook_v1.md",
+  "handbook_version": "1.0.0",
+  "annotation_schema_version": "1.0.0",
+  "canonical_label_targets": [
+    "terminal_strategy",
+    "ambiguity_types",
+    "capability_status",
+    "capability_interpretation",
+    "risk_level",
+    "speech_act"
+  ],
+  "terminal_strategy_field": "recommended_strategy",
+  "terminal_strategy_values": [
+    "execute",
+    "clarify",
+    "silently_resolve",
+    "face_preserving_rejection",
+    "multi_step"
+  ],
+  "capability_evidence_classes": {
+    "A": "capability_context factually adequate and consistent with command/scene",
+    "B": "capability_context usable with minor incompleteness; not contradictory",
+    "C": "capability_context degraded but partially usable",
+    "D": "capability_context failure: contradictory, critically missing, or unusable"
+  },
+  "pilot_120_gates": {
+    "exact_record_count": 120,
+    "capability_class_D_allowed": 0,
+    "one_path_determinacy_required": true,
+    "independent_double_annotation_required": true,
+    "adjudication_required_for_disagreements": true,
+    "evaluation_only": true,
+    "forbid_training_load": true
+  },
+  "blindness_policy": {
+    "forbidden_inputs_for_final_annotators": [
+      "pilot_annotator_a_labels",
+      "pilot_annotator_b_labels",
+      "pilot_gold_labels",
+      "private_owner_qa_labels",
+      "prior_adjudication_decisions"
+    ],
+    "permitted_inputs": [
+      "finalized_annotation_handbook",
+      "final_protocol_v7",
+      "record_evidence_fields"
+    ],
+    "permitted_evidence_fields": [
+      "record_id",
+      "command",
+      "scene_context",
+      "dialogue_history",
+      "capability_context",
+      "schema_version",
+      "group_id"
+    ]
+  },
+  "agreement_metrics": {
+    "terminal_strategy": ["cohen_kappa", "raw_agreement", "disagreement_count"],
+    "ambiguity_types": ["exact_set_agreement", "mean_jaccard", "macro_binary_f1"],
+    "capability_status": ["cohen_kappa", "raw_agreement", "disagreement_count"],
+    "capability_interpretation": ["cohen_kappa", "raw_agreement", "disagreement_count"]
+  },
+  "historical_labels": {
+    "pilot_annotation_agreement": {
+      "label": "pilot_annotation_agreement",
+      "note": "Prior pilot agreement (~0.95 kappa) is historical only and must not be reused as final-protocol agreement."
+    }
+  },
+  "full_1000_scope": {
+    "freeze_permitted": false,
+    "deferred": true,
+    "note": "Full-1000 remains deferred; this protocol freezes Pilot-120 only when gates close."
+  }
+}

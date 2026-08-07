@@ -1,0 +1,44 @@
+{
+  "artifact_paths": {
+    "eval_handoff": "configs/evaluation/pilot_120_v1_eval_handoff.json",
+    "final_gold": "data/annotations/pilot_120_v1/final_gold.jsonl",
+    "freeze_report": "data/annotations/pilot_120_v1/freeze_report.json",
+    "hashes": "data/annotations/pilot_120_v1/hashes.json",
+    "manifest": "data/annotations/pilot_120_v1/manifest.json",
+    "root": "data/annotations/pilot_120_v1",
+    "source_canonical": "data/annotations/pilot_120_v1/source_canonical.jsonl"
+  },
+  "base_branch_note": "Pilot-120 is evaluation-only; never load as train/dev.",
+  "evaluation_only": true,
+  "evaluation_set_id": "pilot_120_v1",
+  "evaluator_command": "python3 -m ambiguity_manager.evaluation.pilot_120_cli evaluate --config configs/evaluation/pilot_120_v1.json --predictions <PREDICTIONS.jsonl>",
+  "exact_record_count": 120,
+  "excluded_from_eval_inputs": [
+    "pilot annotation files",
+    "private owner QA",
+    "adjudication rationale"
+  ],
+  "forbid_dev_tuning": true,
+  "forbid_training_load": true,
+  "gates": {
+    "annotation_gates_closed": true,
+    "capability_class_D_count": 0,
+    "deterministic_ordering": true,
+    "no_train_dev_overlap": true,
+    "one_path_determinacy_all_true": true,
+    "unique_stable_ids": true
+  },
+  "required_gold_fields": [
+    "record_id",
+    "terminal_strategy",
+    "ambiguity_types",
+    "capability_status",
+    "capability_interpretation",
+    "risk_level",
+    "speech_act",
+    "capability_evidence_class",
+    "one_path_determinacy"
+  ],
+  "schema_version": "1.0.0",
+  "status": "not_frozen"
+}
