@@ -137,7 +137,12 @@ def _build_token_enforcer_tokenizer_data(tokenizer: Any) -> Any:
 
     regular_tokens: list[tuple[int, str, bool]] | None = None
     cache_dirs: list[Path] = []
-    site = os.environ.get("T12_TRAINING_SITE_PACKAGES", "").strip()
+    # Prefer T28_TRAINING_SITE_PACKAGES (set by t28_checkpoint_dev_eval.sbatch);
+    # fall back to T12_TRAINING_SITE_PACKAGES for backwards compatibility.
+    site = (
+        os.environ.get("T28_TRAINING_SITE_PACKAGES", "").strip()
+        or os.environ.get("T12_TRAINING_SITE_PACKAGES", "").strip()
+    )
     if site:
         cache_dirs.append(Path(site) / "caches")
     # Apptainer sbatch historically exports site packages only via PYTHONPATH,
@@ -262,7 +267,7 @@ def generate_with_task_constraint(
     """Run constrained generation. Fails closed if constraints cannot init."""
     import torch
 
-    prefix_fn = build_prefix_allowed_tokens_fn(tokenizer, json_schema)
+    _raw_prefix_fn = build_prefix_allowed_tokens_fn(tokenizer, json_schema)
     rendered_prompt = render_qwen_task_prompt(tokenizer, prompt)
     encoded = tokenizer(rendered_prompt, return_tensors="pt")
     device = next(model.parameters()).device
@@ -271,10 +276,22 @@ def generate_with_task_constraint(
     if attention_mask is not None:
         attention_mask = attention_mask.to(device)
 
+    # HF prefix_allowed_tokens_fn receives the FULL token sequence (prompt +
+    # generated so far).  lm-format-enforcer's TokenEnforcer expects ONLY the
+    # generated portion: passing prompt tokens causes it to try parsing the
+    # prompt as JSON, enter a dead/permissive state, and allow the entire
+    # vocabulary every step — producing garbage at ~4 s/token on GPU.
+    # Strip the prompt prefix here so LMFE starts from a clean JSON state.
+    _prompt_len = int(input_ids.shape[-1])
+
+    def _prompt_stripped_prefix_fn(batch_id: int, sent: Any) -> list[int]:
+        toks = sent.tolist() if hasattr(sent, "tolist") else list(sent)
+        return _raw_prefix_fn(batch_id, toks[_prompt_len:])
+
     gen_kwargs: dict[str, Any] = {
         "max_new_tokens": int(max_new_tokens),
         "do_sample": bool((generation_config or {}).get("do_sample", False)),
-        "prefix_allowed_tokens_fn": prefix_fn,
+        "prefix_allowed_tokens_fn": _prompt_stripped_prefix_fn,
     }
     eos_token_id = getattr(tokenizer, "eos_token_id", None)
     pad_token_id = getattr(tokenizer, "pad_token_id", None)
@@ -287,6 +304,19 @@ def generate_with_task_constraint(
     temperature = (generation_config or {}).get("temperature")
     if temperature is not None and gen_kwargs["do_sample"]:
         gen_kwargs["temperature"] = float(temperature)
+    repetition_penalty = (generation_config or {}).get("repetition_penalty")
+    if repetition_penalty is not None:
+        penalty = float(repetition_penalty)
+        if penalty < 1.0:
+            raise ConstrainedDecodingError("repetition_penalty_must_be_at_least_one")
+        gen_kwargs["repetition_penalty"] = penalty
+    no_repeat_ngram_size = (generation_config or {}).get("no_repeat_ngram_size")
+    if no_repeat_ngram_size is not None:
+        size = int(no_repeat_ngram_size)
+        if size < 0:
+            raise ConstrainedDecodingError("no_repeat_ngram_size_must_be_nonnegative")
+        if size:
+            gen_kwargs["no_repeat_ngram_size"] = size
 
     with torch.no_grad():
         output_ids = model.generate(input_ids, **gen_kwargs)
