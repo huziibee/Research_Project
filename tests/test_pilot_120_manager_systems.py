@@ -1,7 +1,10 @@
 from __future__ import annotations
 
 from ambiguity_manager.systems.contracts import SystemInput
-from scripts.evaluate_pilot_120_manager_systems import normalise_analysis_output
+from scripts.evaluate_pilot_120_manager_systems import (
+    TransformerAnalysisProvider,
+    normalise_analysis_output,
+)
 
 
 def _input() -> SystemInput:
@@ -47,3 +50,41 @@ def test_normalise_manager_analysis_rejects_unknown_label() -> None:
     assert analysis is None
     assert metadata is None
     assert error == "unknown_pilot_ambiguity_type"
+
+
+def test_invalid_model_analysis_is_retried_once_without_gold(monkeypatch) -> None:
+    provider = TransformerAnalysisProvider(
+        model=None,
+        tokenizer=None,
+        max_new_tokens=16,
+        retry_max_new_tokens=32,
+        provider_id="test",
+    )
+    prompts: list[tuple[str, int]] = []
+    responses = iter(
+        [
+            '{"speech_act":"directive_command","pilot_ambiguity_types":["invented"]}',
+            """{
+                "speech_act": "directive_command",
+                "pilot_ambiguity_types": ["object_reference"],
+                "pilot_capability_status": "capable",
+                "risk_level": "low",
+                "unresolved_slots": ["object"],
+                "uncertainty": 0.5
+            }""",
+        ]
+    )
+
+    def fake_generate(prompt: str, max_new_tokens: int) -> str:
+        prompts.append((prompt, max_new_tokens))
+        return next(responses)
+
+    monkeypatch.setattr(provider, "_generate", fake_generate)
+    analysis = provider.analyse(_input())
+
+    assert analysis is not None
+    assert [limit for _, limit in prompts] == [16, 32]
+    assert "validation error: unknown_pilot_ambiguity_type" in prompts[1][0]
+    assert "Do not infer any hidden gold labels." in prompts[1][0]
+    attempts = provider.attempts_by_input_hash[_input().fingerprint()]
+    assert [attempt["validation_error"] for attempt in attempts] == ["unknown_pilot_ambiguity_type", None]

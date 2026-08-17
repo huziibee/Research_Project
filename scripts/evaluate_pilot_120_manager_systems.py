@@ -158,6 +158,17 @@ def _analysis_prompt(system_input: SystemInput) -> str:
     )
 
 
+def _retry_analysis_prompt(system_input: SystemInput, validation_error: str) -> str:
+    """Ask the same model to re-analyse an invalid non-gold response once."""
+    return (
+        "Your prior answer did not satisfy the required machine-readable schema "
+        f"(validation error: {validation_error}). Re-analyse the source record. "
+        "You may reason carefully, but ensure the response completes with exactly one "
+        "valid JSON object and uses only the listed labels. Do not infer any hidden gold labels.\n\n"
+        + _analysis_prompt(system_input)
+    )
+
+
 def normalise_analysis_output(
     obj: dict[str, Any] | None, *, system_input: SystemInput, provider_id: str
 ) -> tuple[StructuredAnalysis | None, dict[str, Any] | None, str | None]:
@@ -231,13 +242,14 @@ class TransformerAnalysisProvider:
     model: Any
     tokenizer: Any
     max_new_tokens: int
+    retry_max_new_tokens: int
     provider_id: str
     provider_version: str = "pilot120-manager-r1"
     metadata_by_input_hash: dict[str, dict[str, Any]] = field(default_factory=dict)
     raw_by_input_hash: dict[str, str] = field(default_factory=dict)
+    attempts_by_input_hash: dict[str, list[dict[str, Any]]] = field(default_factory=dict)
 
-    def analyse(self, system_input: SystemInput) -> StructuredAnalysis:
-        prompt = _analysis_prompt(system_input)
+    def _generate(self, prompt: str, max_new_tokens: int) -> str:
         rendered = self.tokenizer.apply_chat_template(
             [{"role": "user", "content": prompt}], tokenize=False, add_generation_prompt=True
         )
@@ -245,21 +257,41 @@ class TransformerAnalysisProvider:
         with __import__("torch").inference_mode():
             output_ids = self.model.generate(
                 **inputs,
-                max_new_tokens=self.max_new_tokens,
+                max_new_tokens=max_new_tokens,
                 do_sample=False,
                 pad_token_id=self.tokenizer.eos_token_id,
             )
         generated = output_ids[0][inputs["input_ids"].shape[-1] :]
-        raw = self.tokenizer.decode(generated, skip_special_tokens=True)
-        analysis, meta, error = normalise_analysis_output(
-            extract_json(raw), system_input=system_input, provider_id=self.provider_id
-        )
-        if error or analysis is None or meta is None:
-            raise ValueError(error or "analysis_validation_failed")
+        return self.tokenizer.decode(generated, skip_special_tokens=True)
+
+    def analyse(self, system_input: SystemInput) -> StructuredAnalysis:
         key = system_input.fingerprint()
-        self.metadata_by_input_hash[key] = meta
-        self.raw_by_input_hash[key] = raw
-        return analysis
+        attempts: list[dict[str, Any]] = []
+        prompt = _analysis_prompt(system_input)
+        validation_error = "analysis_validation_failed"
+        for attempt_number, token_limit in enumerate((self.max_new_tokens, self.retry_max_new_tokens), 1):
+            if attempt_number == 2:
+                prompt = _retry_analysis_prompt(system_input, validation_error)
+            raw = self._generate(prompt, token_limit)
+            self.raw_by_input_hash[key] = raw  # Preserve invalid model output for audit/recovery.
+            analysis, meta, error = normalise_analysis_output(
+                extract_json(raw), system_input=system_input, provider_id=self.provider_id
+            )
+            validation_error = error or "analysis_validation_failed"
+            attempts.append(
+                {
+                    "attempt": attempt_number,
+                    "max_new_tokens": token_limit,
+                    "raw_chars": len(raw),
+                    "raw_sha256": hashlib.sha256(raw.encode("utf-8")).hexdigest(),
+                    "validation_error": None if error is None and analysis is not None and meta is not None else validation_error,
+                }
+            )
+            self.attempts_by_input_hash[key] = attempts
+            if error is None and analysis is not None and meta is not None:
+                self.metadata_by_input_hash[key] = {**meta, "analysis_attempt_count": attempt_number}
+                return analysis
+        raise ValueError(f"{validation_error};attempts={len(attempts)}")
 
 
 def _terminal(result: Any) -> str | None:
@@ -277,6 +309,7 @@ def _terminal(result: Any) -> str | None:
 def _prediction_row(
     *, record_id: str, system_id: str, result: Any | None, meta: dict[str, Any] | None,
     raw_output: str | None, latency_ms: float, error: str | None,
+    analysis_attempts: list[dict[str, Any]] | None = None,
 ) -> dict[str, Any]:
     terminal = _terminal(result) if result is not None else None
     failed = bool(error) or terminal is None or meta is None
@@ -295,6 +328,7 @@ def _prediction_row(
         "schema_valid": not failed,
         "failed": failed,
         "error": error,
+        "analysis_attempts": analysis_attempts or [],
         "latency_ms": latency_ms,
         "execution_mode": "cluster-gpu-manager-pipeline",
     }
@@ -333,13 +367,14 @@ def main() -> int:
     parser.add_argument("--root", type=Path, default=ROOT)
     parser.add_argument("--output-dir", type=Path, required=True)
     parser.add_argument("--max-new-tokens", type=int, default=4096)
+    parser.add_argument("--retry-max-new-tokens", type=int, default=8192)
     parser.add_argument("--adapter", type=Path)
     parser.add_argument("--adapter-identity", type=Path)
     parser.add_argument("--adapter-scale", type=float, default=1.0)
     args = parser.parse_args()
     if bool(args.adapter) != bool(args.adapter_identity):
         raise SystemExit("adapter_and_adapter_identity_must_be_supplied_together")
-    if args.adapter_scale <= 0:
+    if args.adapter_scale <= 0 or args.max_new_tokens <= 0 or args.retry_max_new_tokens <= 0:
         raise SystemExit("adapter_scale_must_be_positive")
 
     root = args.root.resolve()
@@ -351,8 +386,12 @@ def main() -> int:
     if len(source_rows) != p120.EXPECTED_N or len(set(expected_ids)) != p120.EXPECTED_N:
         raise SystemExit("pilot120_source_denominator_invalid")
     model, tokenizer, adapter_id = _load_model(args)
-    full_provider = TransformerAnalysisProvider(model, tokenizer, args.max_new_tokens, "pilot120_full_context")
-    blind_provider = TransformerAnalysisProvider(model, tokenizer, args.max_new_tokens, "pilot120_context_blind")
+    full_provider = TransformerAnalysisProvider(
+        model, tokenizer, args.max_new_tokens, args.retry_max_new_tokens, "pilot120_full_context"
+    )
+    blind_provider = TransformerAnalysisProvider(
+        model, tokenizer, args.max_new_tokens, args.retry_max_new_tokens, "pilot120_context_blind"
+    )
     systems = {
         "degree_based_router": DegreeBasedRouterSystem(),
         "context_blind_manager": ContextBlindManagerSystem(analysis_provider=blind_provider),
@@ -370,12 +409,40 @@ def main() -> int:
         "base_model": BASE_MODEL,
         "base_revision": BASE_REVISION,
         "max_new_tokens": args.max_new_tokens,
+        "retry_max_new_tokens": args.retry_max_new_tokens,
+        "invalid_analysis_retry_attempts": 1,
         "evaluation_only": True,
         "pilot120_used_for_training_or_selection": False,
         "protected_data_accessed": False,
         "n_expected": len(expected_ids),
     }
     _write_json(output / "run_manifest.json", manifest)
+    started_at = time.time()
+
+    def write_progress(status: str, current_record_id: str | None = None) -> None:
+        completed = sum(all(record_id in existing[sid] for sid in SYSTEMS) for record_id in expected_ids)
+        elapsed_seconds = time.time() - started_at
+        seconds_per_record = elapsed_seconds / completed if completed else None
+        payload = {
+            "status": status,
+            "current_record_id": current_record_id,
+            "records_completed": completed,
+            "records_expected": len(expected_ids),
+            "percent_complete": round(100.0 * completed / len(expected_ids), 2),
+            "failed_rows_so_far": sum(
+                row.get("failed") is True for sid in SYSTEMS for row in existing[sid].values()
+            ),
+            "elapsed_seconds": round(elapsed_seconds, 1),
+            "estimated_remaining_seconds": (
+                round(seconds_per_record * (len(expected_ids) - completed), 1)
+                if seconds_per_record is not None else None
+            ),
+            "updated_at_epoch": time.time(),
+        }
+        _write_json(output / "progress.json", payload)
+        _append_jsonl(output / "progress.log.jsonl", payload)
+
+    write_progress("RUNNING")
     for row in source_rows:
         record = _system_input(row)
         if all(record.record_id in existing[sid] for sid in SYSTEMS):
@@ -391,6 +458,8 @@ def main() -> int:
             full_raw = full_provider.raw_by_input_hash[record.fingerprint()]
         except Exception as exc:  # noqa: BLE001
             full_error = f"analysis_exception:{type(exc).__name__}:{exc}"
+            full_raw = full_provider.raw_by_input_hash.get(record.fingerprint())
+        full_attempts = full_provider.attempts_by_input_hash.get(record.fingerprint(), [])
         full_latency = (time.perf_counter() - full_started) * 1000.0
         for sid in ("degree_based_router", "full_type_risk_aware_manager"):
             if record.record_id in existing[sid]:
@@ -406,9 +475,10 @@ def main() -> int:
             pred = _prediction_row(
                 record_id=record.record_id, system_id=sid, result=result, meta=full_meta,
                 raw_output=full_raw, latency_ms=full_latency + (time.perf_counter() - started) * 1000.0,
-                error=error,
+                error=error, analysis_attempts=full_attempts,
             )
             _append_jsonl(paths[sid], pred)
+            existing[sid][record.record_id] = pred
         sid = "context_blind_manager"
         if record.record_id not in existing[sid]:
             started = time.perf_counter()
@@ -423,13 +493,19 @@ def main() -> int:
                 blind_raw = blind_provider.raw_by_input_hash[blind_input.fingerprint()]
             except Exception as exc:  # noqa: BLE001
                 error = f"system_exception:{type(exc).__name__}:{exc}"
+                blind_input = record.without_context()
+                blind_raw = blind_provider.raw_by_input_hash.get(blind_input.fingerprint())
+            blind_attempts = blind_provider.attempts_by_input_hash.get(record.without_context().fingerprint(), [])
             pred = _prediction_row(
                 record_id=record.record_id, system_id=sid, result=result, meta=blind_meta,
                 raw_output=blind_raw, latency_ms=(time.perf_counter() - started) * 1000.0,
-                error=error,
+                error=error, analysis_attempts=blind_attempts,
             )
             _append_jsonl(paths[sid], pred)
+            existing[sid][record.record_id] = pred
+        write_progress("RUNNING", record.record_id)
 
+    write_progress("EVALUATING")
     reports: dict[str, Any] = {}
     validation: dict[str, Any] = {}
     for sid, path in paths.items():
@@ -452,6 +528,7 @@ def main() -> int:
     manifest["validation"] = validation
     manifest["reports"] = {sid: str((output / "evaluations" / f"{sid}.eval.json").as_posix()) for sid in SYSTEMS}
     _write_json(output / "run_manifest.json", manifest)
+    write_progress(manifest["status"])
     print(json.dumps({"status": manifest["status"], "systems": list(SYSTEMS), "validation": validation}, sort_keys=True))
     return 0 if manifest["status"] == "VERIFY_PASSED" else 2
 
