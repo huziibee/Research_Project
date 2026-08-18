@@ -90,6 +90,26 @@ SLOT_NAMES = {
     "spatial_relation", "quantity", "time", "recipient", "tool",
     "conditions", "constraints", "negation", "intent",
 }
+MANAGER_ANALYSIS_JSON_SCHEMA = {
+    "type": "object",
+    "additionalProperties": False,
+    "required": [
+        "speech_act",
+        "pilot_ambiguity_types",
+        "pilot_capability_status",
+        "risk_level",
+        "unresolved_slots",
+        "uncertainty",
+    ],
+    "properties": {
+        "speech_act": {"type": "string", "enum": sorted(SPEECH_ACTS)},
+        "pilot_ambiguity_types": {"type": "array", "items": {"type": "string", "enum": AMBIGUITY_TYPES}},
+        "pilot_capability_status": {"type": "string", "enum": CAPABILITIES},
+        "risk_level": {"type": "string", "enum": sorted(CANONICAL_RISKS)},
+        "unresolved_slots": {"type": "array", "items": {"type": "string", "enum": sorted(SLOT_NAMES)}},
+        "uncertainty": {"type": "number", "minimum": 0.0, "maximum": 1.0},
+    },
+}
 
 
 def _sha256(path: Path) -> str:
@@ -169,6 +189,19 @@ def _retry_analysis_prompt(system_input: SystemInput, validation_error: str) -> 
     )
 
 
+def _constrained_analysis_prompt(system_input: SystemInput) -> str:
+    """Minimal final-emission request after the normal thinking attempts failed."""
+    return (
+        "Produce the routing-manager analysis for this source record. "
+        "The JSON schema enforces the allowed fields and labels. Do not use gold labels.\n\n"
+        f"record_id: {system_input.record_id}\n"
+        f"command: {system_input.command}\n"
+        f"dialogue_history: {json.dumps(list(system_input.dialogue_history), ensure_ascii=False)}\n"
+        f"scene_context: {system_input.scene_context}\n"
+        f"capability_context: {system_input.capability_context}\n"
+    )
+
+
 def normalise_analysis_output(
     obj: dict[str, Any] | None, *, system_input: SystemInput, provider_id: str
 ) -> tuple[StructuredAnalysis | None, dict[str, Any] | None, str | None]:
@@ -243,6 +276,7 @@ class TransformerAnalysisProvider:
     tokenizer: Any
     max_new_tokens: int
     retry_max_new_tokens: int
+    constrained_final_max_new_tokens: int
     provider_id: str
     provider_version: str = "pilot120-manager-r1"
     metadata_by_input_hash: dict[str, dict[str, Any]] = field(default_factory=dict)
@@ -264,12 +298,34 @@ class TransformerAnalysisProvider:
         generated = output_ids[0][inputs["input_ids"].shape[-1] :]
         return self.tokenizer.decode(generated, skip_special_tokens=True)
 
+    def _generate_constrained(self, system_input: SystemInput) -> tuple[str, dict[str, Any]]:
+        """Emit only the final JSON after two preserved thinking attempts fail."""
+        from ambiguity_manager.model.task_constrained_decoding import generate_with_task_constraint
+
+        generated = generate_with_task_constraint(
+            model=self.model,
+            tokenizer=self.tokenizer,
+            prompt=_constrained_analysis_prompt(system_input),
+            json_schema=MANAGER_ANALYSIS_JSON_SCHEMA,
+            max_new_tokens=self.constrained_final_max_new_tokens,
+            generation_config={"do_sample": False},
+        )
+        return str(generated["raw_text"]), {
+            "transport_status": generated["transport_status"],
+            "constraint_initialised": generated["constraint_initialised"],
+            "generated_token_count": generated["generated_token_count"],
+            "maximum_output_tokens": generated["maximum_output_tokens"],
+            "termination_reason": generated["termination_reason"],
+            "response_mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+        }
+
     def analyse(self, system_input: SystemInput) -> StructuredAnalysis:
         key = system_input.fingerprint()
         attempts: list[dict[str, Any]] = []
         prompt = _analysis_prompt(system_input)
         validation_error = "analysis_validation_failed"
-        for attempt_number, token_limit in enumerate((self.max_new_tokens, self.retry_max_new_tokens), 1):
+        attempt_plan = (("thinking", self.max_new_tokens), ("thinking_retry", self.retry_max_new_tokens))
+        for attempt_number, (mode, token_limit) in enumerate(attempt_plan, 1):
             if attempt_number == 2:
                 prompt = _retry_analysis_prompt(system_input, validation_error)
             raw = self._generate(prompt, token_limit)
@@ -281,6 +337,7 @@ class TransformerAnalysisProvider:
             attempts.append(
                 {
                     "attempt": attempt_number,
+                    "mode": mode,
                     "max_new_tokens": token_limit,
                     "raw_chars": len(raw),
                     "raw_sha256": hashlib.sha256(raw.encode("utf-8")).hexdigest(),
@@ -291,6 +348,27 @@ class TransformerAnalysisProvider:
             if error is None and analysis is not None and meta is not None:
                 self.metadata_by_input_hash[key] = {**meta, "analysis_attempt_count": attempt_number}
                 return analysis
+        raw, constraint_metadata = self._generate_constrained(system_input)
+        self.raw_by_input_hash[key] = raw
+        analysis, meta, error = normalise_analysis_output(
+            extract_json(raw), system_input=system_input, provider_id=self.provider_id
+        )
+        validation_error = error or "analysis_validation_failed"
+        attempts.append(
+            {
+                "attempt": len(attempts) + 1,
+                "mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+                "max_new_tokens": self.constrained_final_max_new_tokens,
+                "raw_chars": len(raw),
+                "raw_sha256": hashlib.sha256(raw.encode("utf-8")).hexdigest(),
+                "validation_error": None if error is None and analysis is not None and meta is not None else validation_error,
+                "constraint": constraint_metadata,
+            }
+        )
+        self.attempts_by_input_hash[key] = attempts
+        if error is None and analysis is not None and meta is not None:
+            self.metadata_by_input_hash[key] = {**meta, "analysis_attempt_count": len(attempts)}
+            return analysis
         raise ValueError(f"{validation_error};attempts={len(attempts)}")
 
 
@@ -368,13 +446,20 @@ def main() -> int:
     parser.add_argument("--output-dir", type=Path, required=True)
     parser.add_argument("--max-new-tokens", type=int, default=4096)
     parser.add_argument("--retry-max-new-tokens", type=int, default=8192)
+    parser.add_argument("--constrained-final-max-new-tokens", type=int, default=512)
+    parser.add_argument("--resume-from", type=Path)
     parser.add_argument("--adapter", type=Path)
     parser.add_argument("--adapter-identity", type=Path)
     parser.add_argument("--adapter-scale", type=float, default=1.0)
     args = parser.parse_args()
     if bool(args.adapter) != bool(args.adapter_identity):
         raise SystemExit("adapter_and_adapter_identity_must_be_supplied_together")
-    if args.adapter_scale <= 0 or args.max_new_tokens <= 0 or args.retry_max_new_tokens <= 0:
+    if (
+        args.adapter_scale <= 0
+        or args.max_new_tokens <= 0
+        or args.retry_max_new_tokens <= 0
+        or args.constrained_final_max_new_tokens <= 0
+    ):
         raise SystemExit("adapter_scale_must_be_positive")
 
     root = args.root.resolve()
@@ -385,20 +470,60 @@ def main() -> int:
     expected_ids = [str(row["record_id"]) for row in source_rows]
     if len(source_rows) != p120.EXPECTED_N or len(set(expected_ids)) != p120.EXPECTED_N:
         raise SystemExit("pilot120_source_denominator_invalid")
-    model, tokenizer, adapter_id = _load_model(args)
-    full_provider = TransformerAnalysisProvider(
-        model, tokenizer, args.max_new_tokens, args.retry_max_new_tokens, "pilot120_full_context"
+    paths = {sid: output / "predictions" / f"{sid}.predictions.jsonl" for sid in SYSTEMS}
+    resume_metadata: dict[str, Any] | None = None
+    if args.resume_from is not None:
+        resume = args.resume_from.resolve()
+        seed_manifest = json.loads((resume / "run_manifest.json").read_text(encoding="utf-8"))
+        if seed_manifest.get("adapter_scale") != args.adapter_scale or seed_manifest.get("base_revision") != BASE_REVISION:
+            raise SystemExit("resume_parent_model_or_scale_mismatch")
+        failed_seed_rows: dict[str, list[dict[str, Any]]] = {}
+        for sid in SYSTEMS:
+            seed_path = resume / "predictions" / f"{sid}.predictions.jsonl"
+            seed_rows = p120.load_jsonl(seed_path)
+            ids = [str(item.get("record_id") or "") for item in seed_rows]
+            if ids != expected_ids:
+                raise SystemExit(f"resume_parent_denominator_or_order_invalid:{sid}")
+            failed_seed_rows[sid] = []
+            for item in seed_rows:
+                if item.get("failed") is True:
+                    failed_seed_rows[sid].append(
+                        {
+                            "record_id": item["record_id"],
+                            "error": item.get("error"),
+                            "raw_sha256": hashlib.sha256(str(item.get("raw_output") or "").encode("utf-8")).hexdigest(),
+                            "analysis_attempts": item.get("analysis_attempts") or [],
+                        }
+                    )
+                else:
+                    _append_jsonl(paths[sid], item)
+        resume_metadata = {
+            "parent_dir": str(resume),
+            "parent_manifest_sha256": _sha256(resume / "run_manifest.json"),
+            "parent_prediction_sha256": {sid: _sha256(resume / "predictions" / f"{sid}.predictions.jsonl") for sid in SYSTEMS},
+            "excluded_failed_rows": failed_seed_rows,
+        }
+    existing = {sid: _load_jsonl_by_id(path) for sid, path in paths.items()}
+    needs_generation = any(
+        record_id not in existing[sid] for sid in SYSTEMS for record_id in expected_ids
     )
-    blind_provider = TransformerAnalysisProvider(
-        model, tokenizer, args.max_new_tokens, args.retry_max_new_tokens, "pilot120_context_blind"
-    )
-    systems = {
+    model = tokenizer = adapter_id = None
+    full_provider = blind_provider = None
+    systems: dict[str, Any] = {
         "degree_based_router": DegreeBasedRouterSystem(),
-        "context_blind_manager": ContextBlindManagerSystem(analysis_provider=blind_provider),
         "full_type_risk_aware_manager": FullTypeRiskAwareManagerSystem(),
     }
-    paths = {sid: output / "predictions" / f"{sid}.predictions.jsonl" for sid in SYSTEMS}
-    existing = {sid: _load_jsonl_by_id(path) for sid, path in paths.items()}
+    if needs_generation:
+        model, tokenizer, adapter_id = _load_model(args)
+        full_provider = TransformerAnalysisProvider(
+            model, tokenizer, args.max_new_tokens, args.retry_max_new_tokens,
+            args.constrained_final_max_new_tokens, "pilot120_full_context"
+        )
+        blind_provider = TransformerAnalysisProvider(
+            model, tokenizer, args.max_new_tokens, args.retry_max_new_tokens,
+            args.constrained_final_max_new_tokens, "pilot120_context_blind"
+        )
+        systems["context_blind_manager"] = ContextBlindManagerSystem(analysis_provider=blind_provider)
     manifest = {
         "status": "RUNNING",
         "systems": list(SYSTEMS),
@@ -410,12 +535,16 @@ def main() -> int:
         "base_revision": BASE_REVISION,
         "max_new_tokens": args.max_new_tokens,
         "retry_max_new_tokens": args.retry_max_new_tokens,
+        "constrained_final_max_new_tokens": args.constrained_final_max_new_tokens,
+        "constrained_final_emission_after_thinking_failures": True,
         "invalid_analysis_retry_attempts": 1,
         "evaluation_only": True,
         "pilot120_used_for_training_or_selection": False,
         "protected_data_accessed": False,
         "n_expected": len(expected_ids),
     }
+    if resume_metadata is not None:
+        manifest["resume"] = resume_metadata
     _write_json(output / "run_manifest.json", manifest)
     started_at = time.time()
 
@@ -451,16 +580,21 @@ def main() -> int:
         full_meta = None
         full_raw = None
         full_error = None
-        full_started = time.perf_counter()
-        try:
-            full_analysis = full_provider.analyse(record)
-            full_meta = full_provider.metadata_by_input_hash[record.fingerprint()]
-            full_raw = full_provider.raw_by_input_hash[record.fingerprint()]
-        except Exception as exc:  # noqa: BLE001
-            full_error = f"analysis_exception:{type(exc).__name__}:{exc}"
-            full_raw = full_provider.raw_by_input_hash.get(record.fingerprint())
-        full_attempts = full_provider.attempts_by_input_hash.get(record.fingerprint(), [])
-        full_latency = (time.perf_counter() - full_started) * 1000.0
+        full_latency = 0.0
+        full_attempts: list[dict[str, Any]] = []
+        if any(record.record_id not in existing[sid] for sid in ("degree_based_router", "full_type_risk_aware_manager")):
+            if full_provider is None:
+                raise RuntimeError("full_provider_not_loaded")
+            full_started = time.perf_counter()
+            try:
+                full_analysis = full_provider.analyse(record)
+                full_meta = full_provider.metadata_by_input_hash[record.fingerprint()]
+                full_raw = full_provider.raw_by_input_hash[record.fingerprint()]
+            except Exception as exc:  # noqa: BLE001
+                full_error = f"analysis_exception:{type(exc).__name__}:{exc}"
+                full_raw = full_provider.raw_by_input_hash.get(record.fingerprint())
+            full_attempts = full_provider.attempts_by_input_hash.get(record.fingerprint(), [])
+            full_latency = (time.perf_counter() - full_started) * 1000.0
         for sid in ("degree_based_router", "full_type_risk_aware_manager"):
             if record.record_id in existing[sid]:
                 continue
@@ -481,6 +615,8 @@ def main() -> int:
             existing[sid][record.record_id] = pred
         sid = "context_blind_manager"
         if record.record_id not in existing[sid]:
+            if blind_provider is None:
+                raise RuntimeError("blind_provider_not_loaded")
             started = time.perf_counter()
             result = None
             error = None

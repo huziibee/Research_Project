@@ -25,12 +25,19 @@ umask 077
 : "${P120_ADAPTER_SCALE:?}"
 cd "${P120_CODE_ROOT}"
 
+runner_args=(
+  python3 scripts/evaluate_pilot_120_manager_systems.py
+  --root "${P120_CODE_ROOT}"
+  --output-dir "${P120_MANAGER_OUTPUT}"
+  --adapter "${P120_SELECTED_ADAPTER}"
+  --adapter-identity "${P120_SELECTED_ADAPTER_IDENTITY}"
+  --adapter-scale "${P120_ADAPTER_SCALE}"
+)
+if [[ -n "${P120_RESUME_FROM:-}" ]]; then
+  runner_args+=(--resume-from "${P120_RESUME_FROM}")
+fi
+
 exec /usr/bin/apptainer exec --nv --cleanenv \
   --env "PYTHONPATH=${P120_TRAINING_SITE_PACKAGES}:${P120_CODE_ROOT}/src,HF_HOME=${P120_HF_HOME},HUGGINGFACE_HUB_CACHE=${P120_HF_HOME}/hub,TRANSFORMERS_CACHE=${P120_HF_HOME}/hub" \
   "${P120_CONTAINER}" \
-  python scripts/evaluate_pilot_120_manager_systems.py \
-  --root "${P120_CODE_ROOT}" \
-  --output-dir "${P120_MANAGER_OUTPUT}" \
-  --adapter "${P120_SELECTED_ADAPTER}" \
-  --adapter-identity "${P120_SELECTED_ADAPTER_IDENTITY}" \
-  --adapter-scale "${P120_ADAPTER_SCALE}"
+  "${runner_args[@]}"

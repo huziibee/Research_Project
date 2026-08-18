@@ -58,6 +58,7 @@ def test_invalid_model_analysis_is_retried_once_without_gold(monkeypatch) -> Non
         tokenizer=None,
         max_new_tokens=16,
         retry_max_new_tokens=32,
+        constrained_final_max_new_tokens=64,
         provider_id="test",
     )
     prompts: list[tuple[str, int]] = []
@@ -88,3 +89,42 @@ def test_invalid_model_analysis_is_retried_once_without_gold(monkeypatch) -> Non
     assert "Do not infer any hidden gold labels." in prompts[1][0]
     attempts = provider.attempts_by_input_hash[_input().fingerprint()]
     assert [attempt["validation_error"] for attempt in attempts] == ["unknown_pilot_ambiguity_type", None]
+
+
+def test_schema_constrained_final_emission_follows_two_thinking_failures(monkeypatch) -> None:
+    provider = TransformerAnalysisProvider(
+        model=None,
+        tokenizer=None,
+        max_new_tokens=16,
+        retry_max_new_tokens=32,
+        constrained_final_max_new_tokens=64,
+        provider_id="test",
+    )
+    responses = iter(["not-json", "still-not-json"])
+    monkeypatch.setattr(provider, "_generate", lambda *_: next(responses))
+    monkeypatch.setattr(
+        provider,
+        "_generate_constrained",
+        lambda _: (
+            """{
+                "speech_act": "directive_command",
+                "pilot_ambiguity_types": [],
+                "pilot_capability_status": "capable",
+                "risk_level": "none",
+                "unresolved_slots": [],
+                "uncertainty": 0.0
+            }""",
+            {"constraint_initialised": True, "transport_status": "constrained_generated"},
+        ),
+    )
+
+    analysis = provider.analyse(_input())
+
+    assert analysis is not None
+    attempts = provider.attempts_by_input_hash[_input().fingerprint()]
+    assert [attempt["mode"] for attempt in attempts] == [
+        "thinking",
+        "thinking_retry",
+        "schema_constrained_final_emission_after_two_thinking_attempts",
+    ]
+    assert attempts[-1]["constraint"]["constraint_initialised"] is True
