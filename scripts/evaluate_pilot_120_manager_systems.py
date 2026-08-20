@@ -472,6 +472,7 @@ def main() -> int:
         raise SystemExit("pilot120_source_denominator_invalid")
     paths = {sid: output / "predictions" / f"{sid}.predictions.jsonl" for sid in SYSTEMS}
     resume_metadata: dict[str, Any] | None = None
+    seeded_valid_rows: dict[str, dict[str, dict[str, Any]]] = {sid: {} for sid in SYSTEMS}
     if args.resume_from is not None:
         resume = args.resume_from.resolve()
         seed_manifest = json.loads((resume / "run_manifest.json").read_text(encoding="utf-8"))
@@ -496,7 +497,9 @@ def main() -> int:
                         }
                     )
                 else:
-                    _append_jsonl(paths[sid], item)
+                    # Do not write here: rows must be emitted in canonical source order,
+                    # interleaved with any regenerated failures below.
+                    seeded_valid_rows[sid][str(item["record_id"])] = item
         resume_metadata = {
             "parent_dir": str(resume),
             "parent_manifest_sha256": _sha256(resume / "run_manifest.json"),
@@ -505,7 +508,8 @@ def main() -> int:
         }
     existing = {sid: _load_jsonl_by_id(path) for sid, path in paths.items()}
     needs_generation = any(
-        record_id not in existing[sid] for sid in SYSTEMS for record_id in expected_ids
+        record_id not in existing[sid] and record_id not in seeded_valid_rows[sid]
+        for sid in SYSTEMS for record_id in expected_ids
     )
     model = tokenizer = adapter_id = None
     full_provider = blind_provider = None
@@ -574,6 +578,14 @@ def main() -> int:
     write_progress("RUNNING")
     for row in source_rows:
         record = _system_input(row)
+        # Materialise valid parent rows only when their canonical position is
+        # reached. This prevents repaired middle rows being appended after all
+        # seeded rows, which would invalidate the evaluator's ordered denominator.
+        for sid in SYSTEMS:
+            seed = seeded_valid_rows[sid].get(record.record_id)
+            if seed is not None and record.record_id not in existing[sid]:
+                _append_jsonl(paths[sid], seed)
+                existing[sid][record.record_id] = seed
         if all(record.record_id in existing[sid] for sid in SYSTEMS):
             continue
         full_analysis = None
