@@ -18,11 +18,12 @@ umask 077
 : "${P120_EARLY_POLICY:?}"
 : "${P120_T31PLUS_PREFLIGHT:?}"
 : "${P120_T29_T30_GATE:?}"
+: "${P120_PAIRED_COMPARISON:?}"
 : "${P120_EARLY_STAGE:?}"
 : "${P120_EARLY_OUTPUT:?}"
 cd "${P120_CODE_ROOT}"
 
-args=(python3 scripts/pilot120_early_analysis.py --root "${P120_CODE_ROOT}" --policy "${P120_EARLY_POLICY}" --preflight "${P120_T31PLUS_PREFLIGHT}" --early-gate "${P120_T29_T30_GATE}")
+args=(python3 scripts/pilot120_early_analysis.py --root "${P120_CODE_ROOT}" --policy "${P120_EARLY_POLICY}" --preflight "${P120_T31PLUS_PREFLIGHT}" --early-gate "${P120_T29_T30_GATE}" --paired-comparison "${P120_PAIRED_COMPARISON}")
 case "${P120_EARLY_STAGE}" in
   t31)
     : "${P120_PREDICTION_ARGS:?}"

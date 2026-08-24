@@ -78,7 +78,7 @@ def _load_policy(path: Path) -> dict[str, Any]:
 
 
 def _validated_matrix(
-    *, root: Path, preflight_path: Path, early_gate_path: Path, predictions: list[tuple[str, Path]]
+    *, root: Path, preflight_path: Path, early_gate_path: Path, paired_path: Path, predictions: list[tuple[str, Path]]
 ) -> tuple[list[str], dict[str, str], dict[str, dict[str, dict[str, Any]]], dict[str, Any]]:
     p120.assert_evaluation_only("early_analysis")
     preflight = _load_json(preflight_path)
@@ -89,6 +89,9 @@ def _validated_matrix(
         raise ValueError("t29_t30_early_matrix_not_complete")
     if preflight.get("protected_data_accessed") is not False or gate.get("protected_data_accessed") is not False:
         raise ValueError("non_protected_boundary_invalid")
+    paired = _load_json(paired_path)
+    if paired.get("status") != "VERIFY_PASSED" or paired.get("denominator") != p120.EXPECTED_N:
+        raise ValueError("paired_comparison_not_verified")
     source = p120.load_jsonl(root / "data/annotations/pilot_120_v1/source_canonical.jsonl")
     gold = {str(row["record_id"]): row for row in p120.load_jsonl(root / "data/annotations/pilot_120_v1/pilot_120_final_gold.jsonl")}
     ids = [str(row["record_id"]) for row in source]
@@ -109,6 +112,10 @@ def _validated_matrix(
             raise ValueError(f"prediction_schema_or_failure_invalid:{system_id}")
         matrix[system_id] = by_id
         hashes[system_id] = _sha256(path)
+    if paired.get("base", {}).get("predictions_sha256") != hashes.get("direct_base_llm"):
+        raise ValueError("paired_direct_base_hash_mismatch")
+    if paired.get("adapter", {}).get("predictions_sha256") != hashes.get("t28_selected_adapter_llm"):
+        raise ValueError("paired_adapter_hash_mismatch")
     return ids, hashes, matrix, gold
 
 
@@ -118,7 +125,7 @@ def _cost(policy: dict[str, Any], gold_terminal: str, predicted_terminal: str) -
     return float(policy["terminal_cost"][gold_terminal][predicted_terminal])
 
 
-def _common_payload(*, policy_path: Path, policy: dict[str, Any], preflight_path: Path, early_gate_path: Path, hashes: dict[str, str]) -> dict[str, Any]:
+def _common_payload(*, policy_path: Path, policy: dict[str, Any], preflight_path: Path, early_gate_path: Path, paired_path: Path, hashes: dict[str, str]) -> dict[str, Any]:
     return {
         "scope": "non_protected_pilot120_early_analysis_only",
         "valid_for_official_use": False,
@@ -128,6 +135,7 @@ def _common_payload(*, policy_path: Path, policy: dict[str, Any], preflight_path
         "policy_sha256": _sha256(policy_path),
         "preflight_sha256": _sha256(preflight_path),
         "early_gate_sha256": _sha256(early_gate_path),
+        "paired_comparison_sha256": _sha256(paired_path),
         "prediction_sha256": hashes,
     }
 
@@ -136,7 +144,7 @@ def run_cost(args: argparse.Namespace) -> None:
     root = args.root.resolve()
     policy = _load_policy(args.policy)
     ids, hashes, matrix, gold = _validated_matrix(
-        root=root, preflight_path=args.preflight, early_gate_path=args.early_gate, predictions=args.prediction
+        root=root, preflight_path=args.preflight, early_gate_path=args.early_gate, paired_path=args.paired_comparison, predictions=args.prediction
     )
     systems: dict[str, Any] = {}
     for system_id, rows in matrix.items():
@@ -151,7 +159,7 @@ def run_cost(args: argparse.Namespace) -> None:
             "mean_cost": sum(costs) / len(costs),
             "mean_cost_by_gold_terminal": {terminal: sum(values) / len(values) for terminal, values in by_gold.items()},
         }
-    payload = _common_payload(policy_path=args.policy, policy=policy, preflight_path=args.preflight, early_gate_path=args.early_gate, hashes=hashes)
+    payload = _common_payload(policy_path=args.policy, policy=policy, preflight_path=args.preflight, early_gate_path=args.early_gate, paired_path=args.paired_comparison, hashes=hashes)
     payload.update({"status": "T31_EARLY_COST_SENSITIVE_EVALUATION_COMPLETE", "denominator": len(ids), "systems": systems,
                     "prediction_paths": {sid: str(path.resolve()) for sid, path in args.prediction}})
     _write_json(args.output, payload)
@@ -186,7 +194,7 @@ def run_paired(args: argparse.Namespace) -> None:
         raise ValueError("t31_policy_hash_mismatch")
     predictions = [(str(system_id), Path(path)) for system_id, path in (cost.get("prediction_paths") or {}).items()]
     ids, hashes, matrix, gold = _validated_matrix(
-        root=args.root.resolve(), preflight_path=args.preflight, early_gate_path=args.early_gate, predictions=predictions
+        root=args.root.resolve(), preflight_path=args.preflight, early_gate_path=args.early_gate, paired_path=args.paired_comparison, predictions=predictions
     )
     if hashes != cost.get("prediction_sha256"):
         raise ValueError("t31_prediction_hash_mismatch")
@@ -214,7 +222,7 @@ def run_paired(args: argparse.Namespace) -> None:
             "discordant_base_only_correct": base_only,
             "exact_two_sided_sign_test_p_value": _two_sided_sign_pvalue(candidate_only, base_only),
         }
-    payload = _common_payload(policy_path=args.policy, policy=policy, preflight_path=args.preflight, early_gate_path=args.early_gate, hashes=hashes)
+    payload = _common_payload(policy_path=args.policy, policy=policy, preflight_path=args.preflight, early_gate_path=args.early_gate, paired_path=args.paired_comparison, hashes=hashes)
     payload.update({"status": "T32_EARLY_PAIRED_STATISTICS_COMPLETE", "denominator": len(ids), "baseline_system_id": baseline,
                     "bootstrap": policy["bootstrap"], "t31_cost_sha256": _sha256(args.cost_input), "comparisons": comparison})
     _write_json(args.output, payload)
@@ -243,7 +251,9 @@ def run_ablations(args: argparse.Namespace) -> None:
             "descriptive_only": True,
             "must_not_be_used_for_tuning_or_selection": True,
         })
-    payload = _common_payload(policy_path=args.policy, policy=policy, preflight_path=args.preflight, early_gate_path=args.early_gate, hashes=cost["prediction_sha256"])
+    if cost.get("paired_comparison_sha256") != _sha256(args.paired_comparison):
+        raise ValueError("t31_paired_comparison_hash_mismatch")
+    payload = _common_payload(policy_path=args.policy, policy=policy, preflight_path=args.preflight, early_gate_path=args.early_gate, paired_path=args.paired_comparison, hashes=cost["prediction_sha256"])
     payload.update({"status": "T33_EARLY_PREDECLARED_ABLATIONS_COMPLETE", "denominator": cost["denominator"],
                     "t31_cost_sha256": _sha256(args.cost_input), "t32_paired_sha256": _sha256(args.paired_input), "ablations": output})
     _write_json(args.output, payload)
@@ -256,6 +266,7 @@ def main() -> int:
     parser.add_argument("--policy", type=Path, required=True)
     parser.add_argument("--preflight", type=Path, required=True)
     parser.add_argument("--early-gate", type=Path, required=True)
+    parser.add_argument("--paired-comparison", type=Path, required=True)
     sub = parser.add_subparsers(dest="command", required=True)
     p_cost = sub.add_parser("cost")
     p_cost.add_argument("--prediction", type=_parse_prediction_arg, action="append", required=True)
