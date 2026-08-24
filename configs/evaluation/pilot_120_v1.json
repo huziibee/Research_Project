@@ -1,0 +1,35 @@
+{
+  "config_id": "pilot_120_v1",
+  "version": "1.0.0",
+  "role": "evaluation_only",
+  "must_not_use_for_training_or_model_selection": true,
+  "gold_policy": "data/annotations/pilot_120_v1/GOLD_POLICY.json",
+  "gold_policy_decision": "use_existing_pilot_adjudicated_gold",
+  "source_canonical_jsonl": "data/annotations/pilot_120_v1/source_canonical.jsonl",
+  "gold_jsonl": "data/annotations/pilot_120_v1/pilot_120_final_gold.jsonl",
+  "frozen_manifest": "data/annotations/pilot_120_v1/frozen/FROZEN_MANIFEST.json",
+  "n_records": 120,
+  "agreement_label": "pilot_annotation_agreement",
+  "labels": {
+    "terminal_strategy": ["execute", "clarify", "face_preserving_rejection"],
+    "capability_status": [
+      "capable",
+      "conditionally_capable",
+      "incapable",
+      "unauthorized",
+      "unsafe"
+    ],
+    "ambiguity_types_multilabel": true
+  },
+  "metrics": {
+    "terminal_strategy": ["accuracy", "macro_f1", "per_class", "confusion_matrix"],
+    "ambiguity_types": ["micro_f1", "macro_f1", "exact_set_accuracy", "per_label"],
+    "capability_status": ["accuracy", "macro_f1", "per_class"],
+    "operational": ["schema_valid_rate", "failure_error_rate", "latency_ms_mean", "tokens_mean"]
+  },
+  "denominator_policy": "never_drop_failed_or_missing_predictions",
+  "agreement_labels": {
+    "historical_pilot": "pilot_annotation_agreement",
+    "final_protocol": "final_protocol_annotation_agreement"
+  }
+}
