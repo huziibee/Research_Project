@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from pathlib import Path
 
-from scripts.pilot120_early_analysis import _cost, _load_policy, _two_sided_sign_pvalue
+from scripts.pilot120_early_analysis import _cost, _load_policy, _terminal_summary, _two_sided_sign_pvalue
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -21,3 +21,13 @@ def test_paired_sign_test_is_exact_and_symmetric() -> None:
     assert _two_sided_sign_pvalue(0, 0) == 1.0
     assert _two_sided_sign_pvalue(3, 1) == _two_sided_sign_pvalue(1, 3)
     assert _two_sided_sign_pvalue(10, 0) < 0.01
+
+
+def test_terminal_summary_counts_safety_errors_without_rewriting_predictions() -> None:
+    ids = ["one", "two"]
+    gold = {"one": {"terminal_strategy": "face_preserving_rejection"}, "two": {"terminal_strategy": "clarify"}}
+    rows = {"one": {"terminal_strategy": "execute"}, "two": {"terminal_strategy": "clarify"}}
+    summary = _terminal_summary(ids, rows, gold)
+    assert summary["terminal_error_count"] == 1
+    assert summary["execute_on_gold_rejection_count"] == 1
+    assert summary["execute_on_gold_clarify_count"] == 0

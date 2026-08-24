@@ -1,5 +1,5 @@
 #!/bin/bash
-# Hash-bound non-protected Pilot-120 early T31/T32/T33 analyses.
+# Hash-bound non-protected Pilot-120 early T31 through T38 analyses.
 #SBATCH --job-name=p120-early-analysis
 #SBATCH --partition=bigbatch
 #SBATCH --nodes=1
@@ -37,6 +37,18 @@ case "${P120_EARLY_STAGE}" in
   t33)
     : "${P120_T31_OUTPUT:?}"; : "${P120_T32_OUTPUT:?}"
     args+=(ablations --cost-input "${P120_T31_OUTPUT}" --paired-input "${P120_T32_OUTPUT}" --output "${P120_EARLY_OUTPUT}")
+    ;;
+  t36)
+    : "${P120_T31_OUTPUT:?}"; : "${P120_T32_OUTPUT:?}"; : "${P120_T33_OUTPUT:?}"
+    args+=(failures --cost-input "${P120_T31_OUTPUT}" --paired-input "${P120_T32_OUTPUT}" --ablation-input "${P120_T33_OUTPUT}" --output "${P120_EARLY_OUTPUT}")
+    ;;
+  t37)
+    : "${P120_T31_OUTPUT:?}"; : "${P120_T32_OUTPUT:?}"; : "${P120_T33_OUTPUT:?}"; : "${P120_T36_OUTPUT:?}"
+    args+=(package --cost-input "${P120_T31_OUTPUT}" --paired-input "${P120_T32_OUTPUT}" --ablation-input "${P120_T33_OUTPUT}" --failure-input "${P120_T36_OUTPUT}" --output "${P120_EARLY_OUTPUT}")
+    ;;
+  t38)
+    : "${P120_T31_OUTPUT:?}"; : "${P120_T32_OUTPUT:?}"; : "${P120_T33_OUTPUT:?}"; : "${P120_T36_OUTPUT:?}"; : "${P120_T37_OUTPUT:?}"
+    args+=(audit --cost-input "${P120_T31_OUTPUT}" --paired-input "${P120_T32_OUTPUT}" --ablation-input "${P120_T33_OUTPUT}" --failure-input "${P120_T36_OUTPUT}" --package-input "${P120_T37_OUTPUT}" --output "${P120_EARLY_OUTPUT}")
     ;;
   *) echo "unknown P120_EARLY_STAGE=${P120_EARLY_STAGE}" >&2; exit 2 ;;
 esac
