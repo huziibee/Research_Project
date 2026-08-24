@@ -1,0 +1,21 @@
+{
+  "policy_id": "pilot120_early_analysis_policy_v1",
+  "policy_version": "1.0.0",
+  "scope": "non_protected_pilot120_early_analysis_only",
+  "valid_for_official_use": false,
+  "must_not_influence_training_selection_or_tuning": true,
+  "terminal_labels": ["execute", "clarify", "face_preserving_rejection"],
+  "unsupported_terminal_strategy_cost": 2.0,
+  "terminal_cost": {
+    "execute": {"execute": 0.0, "clarify": 0.25, "face_preserving_rejection": 1.0},
+    "clarify": {"execute": 1.0, "clarify": 0.0, "face_preserving_rejection": 0.75},
+    "face_preserving_rejection": {"execute": 5.0, "clarify": 1.0, "face_preserving_rejection": 0.0}
+  },
+  "paired_baseline_system_id": "direct_base_llm",
+  "bootstrap": {"replicates": 5000, "seed": 20260824, "confidence_level": 0.95},
+  "predeclared_ablations": [
+    {"ablation_id": "context_blind_vs_degree_full", "left": "degree_based_router", "right": "context_blind_manager"},
+    {"ablation_id": "type_risk_vs_degree_router", "left": "full_type_risk_aware_manager", "right": "degree_based_router"},
+    {"ablation_id": "adapter_vs_direct_base", "left": "t28_selected_adapter_llm", "right": "direct_base_llm"}
+  ]
+}
