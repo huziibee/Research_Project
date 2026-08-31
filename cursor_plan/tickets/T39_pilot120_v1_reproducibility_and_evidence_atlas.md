@@ -1,6 +1,6 @@
 # T39 — Pilot-120 v1 reproducibility and evidence atlas
 
-**Status:** APPROVED_EXECUTION_NON_OFFICIAL
+**Status:** APPROVED_EXECUTION_NON_OFFICIAL — PAUSED_FOR_CORRECTED_RESUBMISSION
 
 ## Goal
 
@@ -34,6 +34,13 @@ official-completion claim.
 
 No full-1,000, +80 extension, T34 robustness perturbation, annotation, or
 changed decoding condition is part of this ticket.
+
+## Current execution record
+
+Attempt `48485` failed at the CPU frozen-byte gate before any GPU inference;
+dependent jobs `48486`–`48494` are pending with failed dependencies and are not
+scientific artifacts. The corrected immutable deployment and exact recovery
+state are recorded in `docs/reports/T39_T40_EXECUTION_LOG_20260831.md`.
 
 ## Acceptance criteria
 
