@@ -8,3 +8,7 @@ outputs/t28_r3/frozen_manifests/*.json -text
 # Slurm scripts must retain LF bytes when staged from Windows.
 cluster/**/*.sbatch -text
 cluster/**/*.sh text eol=lf
+# Pilot-120 v1 is hash-frozen; archive extraction must not rewrite its bytes.
+data/annotations/pilot_120_v1/source_canonical.jsonl -text
+data/annotations/pilot_120_v1/pilot_120_final_gold.jsonl -text
+data/annotations/pilot_120_v1/frozen/*.json -text
