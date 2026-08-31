@@ -1,0 +1,47 @@
+{
+  "policy_id": "pilot120_t39_evidence_policy_v1",
+  "policy_version": "1.0.0",
+  "scope": "non_protected_pilot120_v1_evidence_only",
+  "valid_for_official_use": false,
+  "must_not_influence_training_selection_or_tuning": true,
+  "frozen_decoding_expectation": "greedy_do_sample_false",
+  "substantive_systems": [
+    "direct_base_llm",
+    "t28_selected_adapter_llm",
+    "degree_based_router",
+    "full_type_risk_aware_manager",
+    "context_blind_manager"
+  ],
+  "paired_base_adapter": {
+    "baseline_system_id": "direct_base_llm",
+    "candidate_system_id": "t28_selected_adapter_llm",
+    "bootstrap_replicates": 10000,
+    "bootstrap_seed": 20260831,
+    "confidence_level": 0.95,
+    "metrics": ["terminal_accuracy_delta", "mean_cost_delta"]
+  },
+  "structural_difficulty": {
+    "outcome_independent_dimensions": [
+      "compound_depth",
+      "gold_route",
+      "capability_status",
+      "ambiguity_type",
+      "ambiguity_pair",
+      "gold_status",
+      "dialogue_presence",
+      "scene_context_length",
+      "capability_context_length"
+    ],
+    "ambiguity_type_min_support": 15,
+    "ambiguity_pair_min_support": 10,
+    "small_slice_policy": "count_only_no_ranking_or_generalised_conclusion"
+  },
+  "context_claim_boundary": "paired descriptive all-context removal only; no scene-only dialogue-only capability-only or causal claim",
+  "not_computed": [
+    "interpretation_cpc_candidate_quality",
+    "clarification_rejection_silent_resolution_quality",
+    "single_ambiguity_performance",
+    "scene_dialogue_capability_isolated_effects",
+    "generalisation"
+  ]
+}

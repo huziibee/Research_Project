@@ -1,6 +1,6 @@
 # T38 — Final experiment completeness and integrity audit
 
-**Status:** READY
+**Status:** EARLY_AUDIT_PASSED_NON_OFFICIAL; OFFICIAL_CLOSURE_BLOCKED
 
 ## Shared context
 
@@ -14,6 +14,15 @@ T00–T09 are completed. Follow `01_global_cursor_contract.md`, `02_context_refr
 ## Goal
 
 Issue the final PASS/FAIL/BLOCKED decision for the complete core experiment and separately report stretch status.
+
+## Early-artifact boundary and T39 relationship
+
+The existing `T38_EARLY_INTEGRITY_AUDIT_COMPLETE` artifact passed its stated
+120-record hash/denominator/non-tuning checks. It explicitly does not close
+official T28 completion, full-1,000 evaluation, model/adapter selection, or
+training/tuning. T39 reproducibility evidence is likewise non-official; it can
+strengthen early-report traceability but cannot upgrade this ticket's official
+status.
 
 ## Preconditions
 

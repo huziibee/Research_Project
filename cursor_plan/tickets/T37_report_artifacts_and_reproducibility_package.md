@@ -1,6 +1,7 @@
 # T37 — Report artifacts and reproducibility package
 
-**Status:** READY
+**Status:** EARLY_PARTIAL_NON_OFFICIAL — early package exists; T39 supplies
+additional evidence artifacts and T40 records missing interpretation gold.
 
 ## Shared context
 
@@ -14,6 +15,14 @@ T00–T09 are completed. Follow `01_global_cursor_contract.md`, `02_context_refr
 ## Goal
 
 Generate traceable report-ready evidence without manually inventing or copying result values.
+
+## Early-artifact boundary and T39 relationship
+
+`T37_EARLY_REPORT_AND_REPRODUCIBILITY_PACKAGE_COMPLETE` is a hash-bound,
+non-official package. It must not be read as a complete T37 closure. T39
+generates a new provenance preflight, per-replicate evidence atlases, and a
+final greedy-replay hash audit; T40 records why interpretation/CPC/candidate
+and wording metrics remain `NOT_COMPUTED`.
 
 ## Preconditions
 

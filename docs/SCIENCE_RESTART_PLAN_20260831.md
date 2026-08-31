@@ -17,11 +17,12 @@ Current manager/Compound-120 work is preserved separately on
 - Pilot-120 v1 is frozen, evaluation-only, hash-verified, 120/120 one-path
   deterministic, and has no T28 train/dev overlap. It must not be used for
   training, threshold selection, prompt tuning, or adapter selection.
-- The T28 fine-tuning lineage has working development evidence, but the
-  resulting adapter is not evidence of a general performance improvement.
-- Cluster jobs 45826 (T36), 45827 (T37), and 45828 (T38) completed with exit
-  `0:0`. The canonical T38 audit reports `audit_passed=true` for the early
-  120-record chain and explicitly says it is not valid for official use,
+- The selected T28 recovery adapter is technically viable: it passed the
+  source-development selection/assembly gate and is the adapter used in the
+  Pilot matrix. That does not make it a Pilot-120 performance improvement.
+- Cluster jobs 45801--45803 (T31--T33) and 45826--45828 (T36--T38) completed
+  with exit `0:0`. The canonical T38 audit reports `audit_passed=true` for the
+  early 120-record chain and explicitly says it is not valid for official use,
   full-1000 closure, tuning, training, or selection.
 
 ## Current early result table
@@ -43,17 +44,19 @@ of improvement would require a separately frozen confirmation set.
 
 ## Sample-size decision
 
-Use the frozen 120 now. Do not jump directly to the current 1,000-record
-artifact: its semantic QA is not ready to freeze, including 231
-capability-evidence-D records and incomplete one-path contracts.
+Use the frozen 120 now. No work on the current 1,000-record artifact is
+authorised by this plan: it requires explicit supervisor authorisation before
+any QA, repair, annotation, sampling, execution, or claim. It is not ready to
+freeze in any event, because it has 231 capability-evidence-D records and
+incomplete one-path contracts.
 
-The recommended next expansion, if authorised, is a separately frozen,
-stratified 80-record extension (total 200). It should repair known coverage
-gaps rather than add more common execute cases: aim for at least about 40
-clarify cases, 40 rejection cases, 40 depth-4/5 cases, and meaningful counts
-of safety/capability/type phenomena. Preserve family isolation from the
-original 120 and publish independent sampling, gold, hash, and protocol
-records.
+Do not expand merely to obtain a larger number. A separately frozen,
+stratified 80-record extension (total 200) is worthwhile only if the
+supervisor wants claims that the present 120 cannot support: a single-versus-
+compound comparison, rare safety/capability cases, or a confirmatory external
+test. It must repair coverage gaps rather than add common execute cases,
+preserve family isolation from the original 120, and have its own sampling,
+gold, hash, and protocol records.
 
 At a proportion near 50%, a 95% interval is roughly plus/minus 8.8 percentage
 points with 120, 6.9 with 200, and 3.1 with 1,000. Thus 120 supports large
@@ -86,17 +89,24 @@ reported as a distinct study, not a retrospective slice of this benchmark.
 
 ## Operational next steps
 
-1. Retrieve and hash-verify the canonical T31-T38 artifacts; do not recreate
-   them from local status files.
-2. Produce the above analysis table and a short error atlas, preserving all
-   120 records in each denominator.
-3. Write a results report that labels every outcome `EARLY`, `NON-PROTECTED`,
-   and `NOT FOR TUNING OR SELECTION`.
-4. Decide from that report whether an 80-record extension is justified. If
-   yes, obtain approval and freeze its protocol before sampling or annotation.
-5. Leave manager changes, adapter changes, and the current Compound-120 v2
-   work on the archive branch unless a later scientific finding justifies a
-   separate authorised intervention.
+1. Run approved T39: a hash-bound preflight, five isolated greedy replays of
+   direct base, selected adapter, and the three manager variants, plus
+   per-replay CPU scoring. Use `afterany` continuation after the preflight so
+   an incomplete replicate is recorded without consuming the remaining window.
+2. Run approved T40: inspect the gold fields and publish an
+   interpretation-evaluation requirements audit without annotation or model
+   inference.
+3. Publish terminal/cost/safety, ambiguity/capability, pairwise, slice, and
+   error-atlas evidence. Equal replay hashes establish execution
+   reproducibility; they are not averaged as independent samples. Label all
+   unavailable measures `NOT_COMPUTED`.
+4. Decide whether an 80-record extension is justified only after that report
+   and supervisor review. If authorised, freeze its protocol before sampling
+   or annotation.
+5. Leave manager changes, adapter changes, Compound-120 v2, T34 robustness,
+   and all
+   full-1,000 work on their separate/deferred paths unless a later scientific
+   finding receives explicit authorisation.
 
 ## Scope boundary
 

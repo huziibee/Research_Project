@@ -1,6 +1,7 @@
 # T36 — Layered interpretation, classification, and routing failure analysis
 
-**Status:** READY
+**Status:** EARLY_PARTIAL_NON_OFFICIAL — early T36 contains terminal/cost
+layers only; T39 extends evidence-only scoring without closing this ticket.
 
 ## Shared context
 
@@ -13,6 +14,15 @@ T00–T09 are completed. Follow `01_global_cursor_contract.md`, `02_context_refr
 ## Goal
 
 Explain where errors arise without changing the frozen systems.
+
+## Early-artifact boundary and T39 relationship
+
+The completed `T36_EARLY_LAYERED_FAILURE_ANALYSIS_COMPLETE` artifact is
+non-official and covers schema/failure flags, terminal confusion, safety-cost
+errors, and predeclared ablations. It does not score intent/CPC/candidate or
+wording correctness. T39 may add reproducibility, ambiguity/capability scoring,
+structural slices, and a deterministic double-coded route taxonomy from saved
+predictions; unavailable interpretation measures remain `NOT_COMPUTED`.
 
 ## Preconditions
 

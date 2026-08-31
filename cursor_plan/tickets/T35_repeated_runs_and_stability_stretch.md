@@ -1,6 +1,7 @@
 # T35 — Repeated-run and route-stability analysis
 
-**Status:** STRETCH_NONBLOCKING
+**Status:** STRETCH_NONBLOCKING — stochastic stability is not applicable to
+the current frozen greedy decoder; T39 owns execution-reproducibility checks.
 
 ## Shared context
 
@@ -12,7 +13,10 @@ T00–T09 are completed. Follow `01_global_cursor_contract.md`, `02_context_refr
 
 ## Goal
 
-Measure stochastic variability and safety-critical route flips under frozen settings.
+Measure stochastic variability and safety-critical route flips only when a
+separate frozen stochastic-decoding protocol exists. The current Pilot-120
+evaluator uses `do_sample=False`: five T39 replays therefore test byte/output
+reproducibility, not independent stochastic performance.
 
 ## Preconditions
 
@@ -21,9 +25,11 @@ Measure stochastic variability and safety-critical route flips under frozen sett
 
 ## Required tasks
 
-1. Run the frozen stochastic systems over the predeclared seed set.
-2. Confirm deterministic systems remain identical.
-3. Compute mean, standard deviation, minimum, maximum, and confidence summaries.
+1. Do not introduce sampling, temperatures, or seeds into the current Pilot.
+2. Confirm greedy replay prediction hashes remain identical; any drift is a
+   defect requiring runtime investigation.
+3. Do not report mean, standard deviation, or confidence summaries over
+   byte-identical reruns as statistical performance variability.
 4. Measure per-example interpretation agreement, route agreement, and safety-critical flips.
 5. Trace unstable cases to raw outputs and context-sampling features.
 6. Do not choose the best seed as the official result.
@@ -36,7 +42,7 @@ Measure stochastic variability and safety-critical route flips under frozen sett
 
 ## Acceptance criteria
 
-- [ ] Seeds/settings are frozen.
+- [ ] Decoding/settings are frozen and remain greedy.
 - [ ] Deterministic drift is treated as a defect.
 - [ ] Safety-critical flips are explicit.
 - [ ] A truthful nonblocking status is allowed.
