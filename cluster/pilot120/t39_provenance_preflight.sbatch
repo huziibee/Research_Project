@@ -23,14 +23,24 @@ umask 077
 : "${T39_CONTAINER_SHA256:?}"
 cd "${T39_CODE_ROOT}"
 
+failure_output="${T39_OUTPUT_ROOT}/t39_provenance_preflight_failure.json"
+passed_output="${T39_OUTPUT_ROOT}/t39_provenance_preflight.json"
+write_failure() {
+  local reason="$1"
+  if [[ ! -e "${passed_output}" && ! -e "${failure_output}" ]]; then
+    printf '{\n  "status": "VERIFY_FAILED",\n  "stage": "t39_provenance_preflight",\n  "reason": "%s",\n  "scope": "non_protected_pilot120_v1_evidence_only",\n  "valid_for_official_use": false\n}\n' "${reason}" > "${failure_output}"
+  fi
+}
+
 container_actual=$(sha256sum "${T39_CONTAINER}")
 container_actual=${container_actual%% *}
 if [[ "${container_actual}" != "${T39_CONTAINER_SHA256}" ]]; then
+  write_failure "container_sha256_mismatch"
   echo "t39_container_sha256_mismatch" >&2
   exit 2
 fi
 
-exec /usr/bin/apptainer exec --cleanenv \
+if ! /usr/bin/apptainer exec --cleanenv \
   --env "PYTHONPATH=${T39_TRAINING_SITE_PACKAGES}:${T39_CODE_ROOT}/src" \
   "${T39_CONTAINER}" \
   python3 scripts/pilot120_t39_evidence.py \
@@ -42,4 +52,7 @@ exec /usr/bin/apptainer exec --cleanenv \
   --code-commit "${T39_CODE_COMMIT}" \
   --container "${T39_CONTAINER}" \
   --container-sha256 "${T39_CONTAINER_SHA256}" \
-  --output "${T39_OUTPUT_ROOT}/t39_provenance_preflight.json"
+  --output "${passed_output}"; then
+  write_failure "frozen_provenance_or_identity_validation_failed"
+  exit 1
+fi
