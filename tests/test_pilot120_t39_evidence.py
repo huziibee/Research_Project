@@ -179,6 +179,7 @@ def test_evidence_payload_scores_all_five_systems_from_frozen_predictions(monkey
         return {record_id: {**row, "system_id": system_id} for record_id, row in by_id.items()}
 
     monkeypatch.setattr(t39, "_load_prediction", fake_load_prediction)
+    monkeypatch.setattr(t39, "_prediction_replay_content_sha256", lambda path: f"replay-content:{path}")
     predictions = []
     for system_id in (
         "direct_base_llm",
@@ -269,10 +270,88 @@ def test_reproducibility_drift_names_changed_records_and_runtime(monkeypatch) ->
     captured = {}
     monkeypatch.setattr(t39, "_load_json", lambda path: evidences[str(path)])
     monkeypatch.setattr(t39.p120, "load_jsonl", lambda path: predictions[str(path)])
+    monkeypatch.setattr(
+        t39,
+        "_sha256",
+        lambda path: "changed" if Path(path) == changed_prediction else "reference",
+    )
     monkeypatch.setattr(t39, "_write_json", lambda _path, payload: captured.update(payload))
     t39.run_reproducibility(SimpleNamespace(replica_evidence=evidence_paths, output=ROOT / "audit.json"))
     audit = captured
     assert audit["status"] == "VERIFY_FAILED"
     changed = audit["drift_report"]["per_replica"]["R2"]["direct_base_llm"]["changed_records"]
     assert changed == [{"record_id": "r1", "changed_fields": ["raw_output_sha256", "terminal_strategy"]}]
+    assert audit["replay_content_hash_drift"]["R2"]["direct_base_llm"] == {"R1": audit["replicate_prediction_replay_content_sha256"]["R1"]["direct_base_llm"], "R2": audit["replicate_prediction_replay_content_sha256"]["R2"]["direct_base_llm"]}
     assert audit["drift_report"]["runtime_conditions"]["R2"]["status"] == "COMPLETE"
+
+
+def test_replay_content_hash_normalises_only_finite_latency_values(monkeypatch) -> None:
+    first = ROOT / "first.jsonl"
+    second = ROOT / "second.jsonl"
+    missing = ROOT / "missing.jsonl"
+    invalid = ROOT / "invalid.jsonl"
+    base = {
+        "record_id": "r1",
+        "terminal_strategy": "execute",
+        "ambiguity_types": ["object_reference"],
+        "capability_status": "capable",
+        "raw_output": "same",
+    }
+    rows = {
+        first: [{**base, "latency_ms": 1.0}],
+        second: [{**base, "latency_ms": 99.5}],
+        missing: [base],
+        invalid: [{**base, "latency_ms": "unknown"}],
+    }
+    monkeypatch.setattr(t39.p120, "load_jsonl", lambda path: rows[Path(path)])
+    assert t39._prediction_replay_content_sha256(first) == t39._prediction_replay_content_sha256(second)
+    assert t39._prediction_replay_content_sha256(first) != t39._prediction_replay_content_sha256(missing)
+    assert t39._prediction_replay_content_sha256(first) != t39._prediction_replay_content_sha256(invalid)
+
+
+def test_reproducibility_passes_timing_only_byte_differences(monkeypatch) -> None:
+    evidence_paths = []
+    evidences = {}
+    predictions = {}
+    raw_hashes = {}
+    for number in range(1, 6):
+        prediction = ROOT / f"R{number}.jsonl"
+        evidence = ROOT / f"R{number}.json"
+        raw_hashes[prediction] = f"raw-{number}"
+        predictions[prediction] = [
+            {
+                "record_id": "r1",
+                "terminal_strategy": "execute",
+                "ambiguity_types": ["object_reference"],
+                "capability_status": "capable",
+                "schema_valid": True,
+                "failed": False,
+                "error": None,
+                "raw_output": "same",
+                "latency_ms": float(number),
+            }
+        ]
+        evidences[evidence] = {
+            "status": "T39_EVIDENCE_ATLAS_COMPLETE",
+            "replicate_id": f"R{number}",
+            "prediction_sha256": {"direct_base_llm": raw_hashes[prediction]},
+            "prediction_paths": {"direct_base_llm": str(prediction)},
+            "runtime_provenance": {
+                "status": "COMPLETE",
+                "execution_contract_sha256": "a" * 64,
+                "records": {"direct_base_llm": [{"slurm": {"job_id": str(number)}}]},
+            },
+        }
+        evidence_paths.append((f"R{number}", evidence))
+
+    captured = {}
+    monkeypatch.setattr(t39, "_load_json", lambda path: evidences[Path(path)])
+    monkeypatch.setattr(t39.p120, "load_jsonl", lambda path: predictions[Path(path)])
+    monkeypatch.setattr(t39, "_sha256", lambda path: raw_hashes[Path(path)])
+    monkeypatch.setattr(t39, "_write_json", lambda _path, payload: captured.update(payload))
+    t39.run_reproducibility(SimpleNamespace(replica_evidence=evidence_paths, output=ROOT / "audit.json"))
+    audit = captured
+    assert audit["status"] == "VERIFY_PASSED"
+    assert audit["raw_byte_differences_are_timing_metadata_only"] is True
+    assert audit["replay_content_hash_drift"] == {}
+    assert set(audit["raw_prediction_byte_hash_differences"]) == {"R2", "R3", "R4", "R5"}

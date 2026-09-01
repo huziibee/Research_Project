@@ -53,6 +53,37 @@ def _sha256(path: Path) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
+def _replay_latency_marker(row: dict[str, Any]) -> dict[str, Any]:
+    """Keep latency-field validity in the replay identity, not its wall-clock value."""
+    if "latency_ms" not in row:
+        return {"state": "missing"}
+    value = row["latency_ms"]
+    if isinstance(value, (int, float)) and not isinstance(value, bool) and math.isfinite(value):
+        return {"state": "finite_numeric"}
+    return {"state": "invalid", "value": value}
+
+
+def _prediction_replay_content_sha256(path: Path) -> str:
+    """Hash ordered prediction content while normalising numeric timing telemetry only.
+
+    The raw file hash remains the forensic identity. This second identity is
+    deliberately narrow: changing row order, any prediction field, a raw model
+    output, or latency presence/validity changes this digest. Numeric latency
+    measurements are operational observations and are not model output.
+    """
+    digest = hashlib.sha256()
+    for row in p120.load_jsonl(path):
+        if not isinstance(row, dict):
+            raise ValueError("t39_prediction_row_not_object_for_replay_hash")
+        canonical_row = dict(row)
+        canonical_row["latency_ms"] = _replay_latency_marker(row)
+        digest.update(
+            json.dumps(canonical_row, sort_keys=True, separators=(",", ":"), ensure_ascii=False).encode("utf-8")
+        )
+        digest.update(b"\n")
+    return digest.hexdigest()
+
+
 def _not_computed(reason: str, **detail: Any) -> dict[str, Any]:
     """Use a structured unavailable value rather than a fabricated score."""
     return {"status": "NOT_COMPUTED", "reason": reason, **detail}
@@ -658,6 +689,7 @@ def _evidence_payload(
     problems: list[str] = []
     matrix: dict[str, dict[str, dict[str, Any]]] = {}
     hashes: dict[str, str] = {}
+    replay_content_hashes: dict[str, str] = {}
     paths: dict[str, str] = {}
     for system_id, path in prediction_args:
         if system_id in matrix or system_id in paths:
@@ -666,6 +698,7 @@ def _evidence_payload(
         try:
             matrix[system_id] = _load_prediction(path, system_id=system_id, expected_ids=ids)
             hashes[system_id] = _sha256(path)
+            replay_content_hashes[system_id] = _prediction_replay_content_sha256(path)
         except (OSError, ValueError, json.JSONDecodeError) as exc:
             if not allow_missing:
                 raise
@@ -721,6 +754,12 @@ def _evidence_payload(
         "analysis_policy_sha256": _sha256(analysis_policy_path),
         "prediction_paths": paths,
         "prediction_sha256": hashes,
+        "prediction_replay_content_sha256": replay_content_hashes,
+        "prediction_replay_content_hash_definition": {
+            "canonical_json": "sorted keys, compact separators, UTF-8, ordered JSONL rows",
+            "latency_ms": "finite numeric measurement normalised; missing or invalid latency remains distinct",
+            "purpose": "greedy model-output replay identity; raw prediction_sha256 remains the immutable byte-integrity identity",
+        },
         "runtime_provenance": {
             "status": "COMPLETE" if not runtime_problems else "NOT_COMPUTED",
             "paths": runtime_paths,
@@ -956,6 +995,8 @@ def _changed_prediction_records(reference_path: Path, candidate_path: Path) -> d
 def run_reproducibility(args: argparse.Namespace) -> None:
     replicas: dict[str, dict[str, Any]] = {}
     invalid: dict[str, str] = {}
+    raw_prediction_integrity_mismatches: dict[str, dict[str, dict[str, str]]] = {}
+    replay_content_hashes: dict[str, dict[str, str]] = {}
     for replica_id, path in args.replica_evidence:
         if replica_id in replicas or replica_id in invalid:
             raise SystemExit(f"t39_duplicate_replica:{replica_id}")
@@ -971,6 +1012,24 @@ def run_reproducibility(args: argparse.Namespace) -> None:
             contract_sha256 = runtime_provenance.get("execution_contract_sha256")
             if not isinstance(contract_sha256, str) or len(contract_sha256) != 64:
                 raise ValueError("runtime_execution_contract_sha256_invalid")
+            raw_hashes = payload.get("prediction_sha256")
+            prediction_paths = payload.get("prediction_paths")
+            if not isinstance(raw_hashes, dict) or not isinstance(prediction_paths, dict):
+                raise ValueError("prediction_hash_or_path_inventory_invalid")
+            if set(raw_hashes) != set(prediction_paths):
+                raise ValueError("prediction_hash_path_system_mismatch")
+            replay_content_hashes[replica_id] = {}
+            for system_id, prediction_path in sorted(prediction_paths.items()):
+                if not isinstance(prediction_path, str) or not isinstance(raw_hashes.get(system_id), str):
+                    raise ValueError(f"prediction_hash_or_path_invalid:{system_id}")
+                resolved_prediction_path = Path(prediction_path)
+                observed_raw_hash = _sha256(resolved_prediction_path)
+                if observed_raw_hash != raw_hashes[system_id]:
+                    raw_prediction_integrity_mismatches.setdefault(replica_id, {})[system_id] = {
+                        "evidence_raw_sha256": raw_hashes[system_id],
+                        "observed_raw_sha256": observed_raw_hash,
+                    }
+                replay_content_hashes[replica_id][system_id] = _prediction_replay_content_sha256(resolved_prediction_path)
             replicas[replica_id] = payload
         except (OSError, ValueError, json.JSONDecodeError) as exc:
             invalid[replica_id] = str(exc)
@@ -988,7 +1047,8 @@ def run_reproducibility(args: argparse.Namespace) -> None:
             "invalid_replicates": invalid,
         }
     else:
-        reference = replicas["R1"]["prediction_sha256"]
+        reference = replay_content_hashes["R1"]
+        reference_raw = replicas["R1"]["prediction_sha256"]
         execution_contracts = {
             replica_id: str(item["runtime_provenance"]["execution_contract_sha256"])
             for replica_id, item in sorted(replicas.items())
@@ -1001,16 +1061,28 @@ def run_reproducibility(args: argparse.Namespace) -> None:
                 if reference.get(system_id) != hashes.get(system_id)
             }
             for replica_id, item in replicas.items()
-            for hashes in [item["prediction_sha256"]]
+            for hashes in [replay_content_hashes[replica_id]]
             if hashes != reference
         }
+        raw_byte_differences = {
+            replica_id: {
+                system_id: {"R1": reference_raw.get(system_id), replica_id: hashes.get(system_id)}
+                for system_id in sorted(set(reference_raw) | set(hashes))
+                if reference_raw.get(system_id) != hashes.get(system_id)
+            }
+            for replica_id, item in replicas.items()
+            for hashes in [item["prediction_sha256"]]
+            if hashes != reference_raw
+        }
+        integrity_mismatch = bool(raw_prediction_integrity_mismatches)
         drift_report: dict[str, Any] = {
-            "status": "NO_DRIFT" if not differing and not contract_mismatch else "DRIFT_DETECTED",
+            "status": "NO_DRIFT" if not differing and not contract_mismatch and not integrity_mismatch else "DRIFT_DETECTED",
             "reference_replicate": "R1",
             "per_replica": {},
             "runtime_conditions": {replica_id: item.get("runtime_provenance") for replica_id, item in sorted(replicas.items())},
             "execution_contract_sha256": execution_contracts,
             "execution_contract_drift": contract_mismatch,
+            "raw_prediction_integrity_mismatches": raw_prediction_integrity_mismatches,
         }
         for replica_id, component_hashes in differing.items():
             component_drift: dict[str, Any] = {}
@@ -1027,21 +1099,25 @@ def run_reproducibility(args: argparse.Namespace) -> None:
                     component_drift[system_id] = _not_computed("prediction_drift_detail_unreadable", error=str(exc), prediction_hashes=hashes)
             drift_report["per_replica"][replica_id] = component_drift
         payload = {
-            "status": "VERIFY_PASSED" if not differing and not contract_mismatch else "VERIFY_FAILED",
+            "status": "VERIFY_PASSED" if not differing and not contract_mismatch and not integrity_mismatch else "VERIFY_FAILED",
             "scope": "non_protected_pilot120_v1_reproducibility_only",
             "valid_for_official_use": False,
             "must_not_influence_training_selection_or_tuning": True,
             "replica_evidence_paths": {replica_id: str(path) for replica_id, path in args.replica_evidence},
-            "replicate_prediction_sha256": {replica_id: item["prediction_sha256"] for replica_id, item in sorted(replicas.items())},
-            "identical_prediction_hashes_expected_under_greedy_decoding": True,
-            "prediction_hash_drift": differing,
+            "replicate_raw_prediction_sha256": {replica_id: item["prediction_sha256"] for replica_id, item in sorted(replicas.items())},
+            "replicate_prediction_replay_content_sha256": {replica_id: replay_content_hashes[replica_id] for replica_id in sorted(replicas)},
+            "identical_prediction_replay_content_hashes_expected_under_greedy_decoding": True,
+            "replay_content_hash_drift": differing,
+            "raw_prediction_byte_hash_differences": raw_byte_differences,
+            "raw_byte_differences_are_timing_metadata_only": bool(raw_byte_differences) and not differing and not integrity_mismatch,
             "execution_contract_sha256": execution_contracts,
             "execution_contract_drift": contract_mismatch,
+            "raw_prediction_integrity_mismatches": raw_prediction_integrity_mismatches,
             "drift_report": drift_report,
             "drift_interpretation": (
-                "No prediction or execution-contract drift: report execution reproducibility, not an average over independent stochastic samples."
-                if not differing and not contract_mismatch
-                else "Prediction or execution-contract drift detected: retain per-replicate artifacts and investigate runtime conditions; do not pool or select a best replay."
+                "Replay content and execution contract are identical. Raw byte hashes may differ only because numeric latency telemetry is deliberately excluded from the model-output replay identity; do not average greedy replays."
+                if not differing and not contract_mismatch and not integrity_mismatch
+                else "Replay-content, prediction-artifact integrity, or execution-contract drift detected: retain per-replicate artifacts and investigate runtime conditions; do not pool or select a best replay."
             ),
         }
     _write_json(args.output.resolve(), payload)
