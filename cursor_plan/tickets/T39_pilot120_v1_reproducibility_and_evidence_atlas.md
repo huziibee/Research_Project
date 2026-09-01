@@ -87,6 +87,19 @@ under execution contract
 R3 (`48693`--`48696`) is the active serial replica; R4 and R5 must remain new
 roots after their predecessor evidence job is terminal.
 
+R4 (`48701`--`48704`) is dependency-queued after R3 evidence. CPU-only
+dispatcher `48708`, recorded in `t39_r5_and_audit_dispatch_submission.tsv`,
+is dependency-queued after R3 evidence and carries the R4 evidence handoff.
+It will submit the new R5 root after R3 evidence, then submit the final audit
+only after R4 evidence is terminal. The dispatcher overlay is hash-verified:
+`t39_r5_and_audit_dispatch.sbatch`
+`1fb856de4eeb9e7d3a8f94105f919aef3f9b91fffbe36ad6475682b96d73fb6d`,
+its submitter
+`04236419ab66d0979c13d14ae616b4930d08d7799a64f04644168c4b3a06ae66`,
+and its audit submitter
+`8f0060971f1f260c986dad194a69732116fc92f8ac1825446e9f0b195215aa5f`.
+It changes no inference source, model, prompt, decoding or artifact bytes.
+
 R1/R2 raw prediction-file SHA-256 values differ because every saved row
 contains wall-clock `latency_ms`. The tested audit amendment
 `docs/reports/T39_REPRODUCIBILITY_AUDIT_AMENDMENT_20260901.md` preserves raw

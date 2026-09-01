@@ -21,7 +21,7 @@ example, `VERIFY_PASSED`) are diagnostic detail, not a substitute control state.
 |---|---|---|---|
 | T39 static execution contract | `PASS` for fresh GPU inference | `48620`; `/home-mscluster/mbangie/t28_r5_src/outputs/pilot_120/t39_20260901_6d71aff_gpu/t39_provenance_preflight.json` | The immutable GPU-gated archive binds frozen bytes; no CPU or <90-GiB runtime is eligible. |
 | T40 availability audit | `PASS` | `48621`; `/home-mscluster/mbangie/t28_r5_src/outputs/pilot_120/t39_20260901_6d71aff_gpu/t40_interpretation_requirements_audit.json` | Existing Pilot gold cannot support intent/CPC/candidate/resolution/wording/silent-resolution claims. |
-| T39 five-replay evidence and final audit | `RUNNING` | GPU preflight `48622`; R1 `48623`--`48626` and R2 `48627`, `48628`, `48630`, `48631` terminal with valid atlases; R3 `48693`--`48696` active | R4/R5 and the terminal audit remain required. Raw file hashes are integrity evidence; the replay-content audit normalises finite numeric latency telemetry only. |
+| T39 five-replay evidence and final audit | `RUNNING` | GPU preflight `48622`; R1 `48623`--`48626` and R2 `48627`, `48628`, `48630`, `48631` terminal with valid atlases; R3 `48693`--`48696` active; R4 `48701`--`48704` dependency-queued; CPU dispatcher `48708` | The dispatcher submits R5 after R3 evidence and final audit after R4 evidence. Raw file hashes are integrity evidence; the replay-content audit normalises finite numeric latency telemetry only. |
 
 ## Closure queue
 
