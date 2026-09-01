@@ -45,6 +45,25 @@ not replace, the final evidence atlas and reproducibility audit.
   the five-evidence final audit are submitted only as capacity opens. This
   changes scheduling, not systems, data, decoding, or protocol.
 
+## Attempt 3 submission — 2026-09-01
+
+- Immutable code commit: `78ce05d29f0dca2fb816e290b401ad0fd7743678`.
+- Immutable runtime root:
+  `/home-mscluster/mbangie/t12-hpc/code/pilot120-t39-78ce05d-runtime`.
+- Archive SHA-256: `a65be4e2e02f4ca8ed8896a297ab1907e7eb84ba9a7cd2daf4ce54b0b8678a41`.
+  Local archive inspection and remote extraction independently reproduced all
+  five evaluator hashes before submission.
+- Submitted stage: preflight `48572`; T40 `48573`; R1 base/adapter/manager/
+  evidence `48574`–`48577`; R2 base/adapter/manager/evidence
+  `48578`–`48581`. At submission inspection `48572` was `RUNNING`; every
+  downstream job was correctly dependency-pending. These are operational
+  statuses only, not result claims.
+- Terminal gate verification: `48572` completed `0:0` in 36 seconds with
+  `T39_PROVENANCE_PREFLIGHT_PASSED`; its artifact records all five expected
+  evaluator hashes, the fixed container, adapter identity and immutable commit.
+  `48573` completed `0:0`. R1 direct base (`48574`) then started; no GPU result
+  is claimed until its prediction and evidence artifacts pass their own gates.
+
 ## Authority and claim boundary
 
 The user authorised the fresh T39 submission and the cluster work needed to
