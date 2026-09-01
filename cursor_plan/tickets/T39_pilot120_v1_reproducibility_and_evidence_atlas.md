@@ -1,6 +1,6 @@
 # T39 - Pilot-120 v1 reproducibility and evidence atlas
 
-**Status:** APPROVED_EXECUTION_NON_OFFICIAL - ATTEMPT_5_INVALID_CPU_FALLBACK; FRESH_GPU_GATED_ATTEMPT_REQUIRED
+**Status:** APPROVED_EXECUTION_NON_OFFICIAL - ATTEMPT_6_GPU_GATED; R1/R2 VALID, R3 ACTIVE
 
 ## Goal
 
@@ -24,10 +24,14 @@ without modifying its data, systems, decoding, model selection, or policy.
 4. Produce per-replicate terminal, cost/safety, ambiguity, capability,
    operational, all-ten-pair disagreement, structural slice, context-ablation,
    and error-atlas artifacts. Small structural strata are count-only.
-5. Audit R1-R5 prediction hashes and execution-contract identity. Identical
-   hashes establish execution reproducibility; prediction or contract drift is
-   `VERIFY_FAILED` and must not be pooled or selected. A drift report lists
-   changed record IDs/fields, component hashes, and runtime evidence.
+5. Audit R1-R5 raw byte-integrity hashes, replay-content hashes and
+   execution-contract identity. The raw hash is forensic artifact identity;
+   the replay-content hash normalises only finite numeric `latency_ms` while
+   retaining latency presence/validity. Identical replay-content hashes
+   establish greedy execution reproducibility. Replay-content, raw-integrity,
+   or contract drift is `VERIFY_FAILED` and must not be pooled or selected. A
+   drift report lists changed record IDs/fields, component hashes, and runtime
+   evidence.
 
 ## Claim boundary
 
@@ -70,6 +74,25 @@ cancelled. No output is scientific evidence. The next immutable attempt adds a
 Blackwell/>=90-GiB container-side GPU admission gate, excludes the bad node,
 and makes runtime/evidence validation reject CPU fallback before any score can
 be emitted.
+
+Attempt 6 uses immutable GPU-gated commit
+`6d71affdb77200fdac57f60af71d6797e942b6bd` and output root
+`/home-mscluster/mbangie/t28_r5_src/outputs/pilot_120/t39_20260901_6d71aff_gpu`.
+Static preflight `48620`, T40 `48621`, and container-side Blackwell GPU
+preflight `48622` passed. R1 (`48623`--`48626`) and R2
+(`48627`, `48628`, `48630`, `48631`) each have a terminal
+`T39_EVIDENCE_ATLAS_COMPLETE` artifact with complete component GPU provenance
+under execution contract
+`0f414fc37af907a1e123397463646c85c9edf9db44d8308b079b1efd1974743f`.
+R3 (`48693`--`48696`) is the active serial replica; R4 and R5 must remain new
+roots after their predecessor evidence job is terminal.
+
+R1/R2 raw prediction-file SHA-256 values differ because every saved row
+contains wall-clock `latency_ms`. The tested audit amendment
+`docs/reports/T39_REPRODUCIBILITY_AUDIT_AMENDMENT_20260901.md` preserves raw
+byte-integrity checking while using a separate replay-content hash for greedy
+model-output reproducibility. It changes no inference condition or saved
+artifact.
 
 ## Acceptance criteria
 

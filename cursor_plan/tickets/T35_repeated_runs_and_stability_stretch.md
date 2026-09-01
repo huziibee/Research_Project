@@ -26,8 +26,11 @@ reproducibility, not independent stochastic performance.
 ## Required tasks
 
 1. Do not introduce sampling, temperatures, or seeds into the current Pilot.
-2. Confirm greedy replay prediction hashes remain identical; any drift is a
-   defect requiring runtime investigation.
+2. Confirm greedy replay-content hashes remain identical. Preserve raw
+   prediction-file SHA-256 for artifact integrity, but do not treat finite
+   numeric wall-clock `latency_ms` differences as model-output drift; any
+   replay-content, raw-integrity, or execution-contract drift requires runtime
+   investigation.
 3. Do not report mean, standard deviation, or confidence summaries over
    byte-identical reruns as statistical performance variability.
 4. Measure per-example interpretation agreement, route agreement, and safety-critical flips.
