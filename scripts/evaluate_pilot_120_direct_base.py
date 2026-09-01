@@ -282,6 +282,9 @@ def main() -> int:
     import torch
     from transformers import AutoModelForCausalLM, AutoTokenizer, BitsAndBytesConfig
 
+    if not torch.cuda.is_available():
+        raise SystemExit("pilot120_direct_base_cuda_required_but_unavailable")
+
     tok = AutoTokenizer.from_pretrained(
         args.base_model, revision=args.base_revision, local_files_only=True
     )
@@ -298,6 +301,8 @@ def main() -> int:
         quantization_config=bnb,
         device_map="auto",
     )
+    if not any(parameter.device.type == "cuda" for parameter in model.parameters()):
+        raise SystemExit("pilot120_direct_base_model_not_placed_on_cuda")
     if args.adapter is not None:
         from peft import PeftModel
 

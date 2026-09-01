@@ -114,8 +114,19 @@ not replace, the final evidence atlas and reproducibility audit.
   model snapshot tree SHA, selected-adapter tree SHA, container SHA, immutable
   code commit, and all five evaluator-frozen hashes. `48598` completed `0:0`
   and produced the T40 no-inference requirements audit.
-- R1 base `48599` is scheduler-pending for resources. No GPU prediction,
-  evidence-atlas metric, or reproducibility result is claimed at this point.
+- R1 base `48599` began on 2026-09-01, but this did **not** produce a valid
+  GPU replay. Its component runtime provenance records `cuda_available: false`
+  under `torch 2.11.0+cu130`; the allocated `mscluster111` host exposed an
+  8-GiB RTX 2060 rather than the required high-memory Blackwell device. The
+  evaluator consequently made no prediction row after model load and consumed
+  CPU only. After 55m09s it and all dependent R1/R2 jobs `48600`-`48606` were
+  cancelled. These jobs are diagnostic-only and are excluded from every
+  scientific result.
+- The replacement must use a fresh archive and output root, admit only
+  `mscluster110` or `mscluster112`, and pass a container-side CUDA, small
+  allocation, Blackwell, idle-GPU, and >=90,000-MiB VRAM gate before any
+  component can load a model. Runtime evidence and the evidence atlas now also
+  reject CPU or under-memory component provenance.
 
 ## Authority and claim boundary
 

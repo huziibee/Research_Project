@@ -8,8 +8,7 @@
 #SBATCH --mem=110G
 #SBATCH --exclusive
 #SBATCH --time=08:00:00
-#SBATCH --nodelist=mscluster111
-#SBATCH --exclude=mscluster106,mscluster107,mscluster108,mscluster109
+#SBATCH --nodelist=mscluster[110,112]
 #SBATCH --output=/home-mscluster/mbangie/t12-hpc/logs/p120-t39-manager-%j.out
 #SBATCH --error=/home-mscluster/mbangie/t12-hpc/logs/p120-t39-manager-%j.err
 

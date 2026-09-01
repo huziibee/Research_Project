@@ -44,14 +44,16 @@ preflight=$(submit "none" "${common_export}" "${T39_CODE_ROOT}/cluster/pilot120/
 printf 'stage\tjob_id\tdependency\npreflight\t%s\tnone\n' "${preflight}" > "${T39_OUTPUT_ROOT}/t39_submission_jobs.tsv"
 t40=$(submit "afterok:${preflight}" "${common_export}" "${T39_CODE_ROOT}/cluster/pilot120/t40_interpretation_audit.sbatch")
 printf 't40-interpretation-audit\t%s\tafterok:%s\n' "${t40}" "${preflight}" >> "${T39_OUTPUT_ROOT}/t39_submission_jobs.tsv"
+gpu_preflight=$(submit "afterok:${preflight}" "${common_export}" "${T39_CODE_ROOT}/cluster/pilot120/t39_gpu_runtime_preflight.sbatch")
+printf 'gpu-runtime-preflight\t%s\tafterok:%s\n' "${gpu_preflight}" "${preflight}" >> "${T39_OUTPUT_ROOT}/t39_submission_jobs.tsv"
 
-previous="${preflight}"
+previous="${gpu_preflight}"
 # The account permits ten queued jobs. Preflight, T40, and two serial replica
 # chains exactly fill that allowance. R3--R5 and the final audit are submitted
 # by the guarded continuation helpers after earlier evidence jobs are terminal.
 for replicate in R1 R2; do
   replicate_root="${T39_OUTPUT_ROOT}/${replicate}"
-  if [[ "${previous}" == "${preflight}" ]]; then
+  if [[ "${previous}" == "${gpu_preflight}" ]]; then
     base_dependency="afterok:${previous}"
     prior_label="afterok"
   else

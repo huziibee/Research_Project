@@ -197,6 +197,11 @@ def _load_runtime_provenance(path: Path, *, expected_component: str, expected_re
     contract_sha256 = contract.get("contract_sha256")
     if not isinstance(contract_sha256, str) or len(contract_sha256) != 64:
         raise ValueError("t39_runtime_execution_contract_sha256_invalid")
+    torch_runtime = ((payload.get("runtime") or {}).get("torch") or {})
+    if torch_runtime.get("cuda_available") is not True:
+        raise ValueError("t39_runtime_cuda_unavailable")
+    if int(torch_runtime.get("gpu_memory_total_mib") or 0) < 90000:
+        raise ValueError("t39_runtime_gpu_memory_below_minimum")
     return payload
 
 

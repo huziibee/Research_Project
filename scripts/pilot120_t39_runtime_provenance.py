@@ -15,6 +15,7 @@ from typing import Any
 
 BASE_MODEL = "Qwen/Qwen3-8B"
 BASE_REVISION = "b968826d9c46dd6066d109eabc6255188de91218"
+MINIMUM_GPU_MEMORY_MIB = 90000
 CRITICAL_CODE_PATHS = (
     "configs/evaluation/pilot_120_v1.json",
     "configs/evaluation/pilot120_early_analysis_policy_v1.json",
@@ -22,9 +23,11 @@ CRITICAL_CODE_PATHS = (
     "scripts/evaluate_pilot_120_direct_base.py",
     "scripts/evaluate_pilot_120_manager_systems.py",
     "scripts/pilot120_t39_evidence.py",
+    "scripts/pilot120_t39_gpu_preflight.py",
     "scripts/pilot120_t39_runtime_provenance.py",
     "src/ambiguity_manager/evaluation/pilot_120.py",
     "cluster/pilot120/t39_provenance_preflight.sbatch",
+    "cluster/pilot120/t39_gpu_runtime_preflight.sbatch",
     "cluster/pilot120/t39_direct_base.sbatch",
     "cluster/pilot120/t39_selected_adapter.sbatch",
     "cluster/pilot120/t39_manager_bundle.sbatch",
@@ -93,9 +96,27 @@ def _torch_payload() -> dict[str, Any]:
             "cuda_version": getattr(torch.version, "cuda", None),
             "cuda_available": cuda_available,
             "gpu_name": torch.cuda.get_device_name(0) if cuda_available else None,
+            "gpu_memory_total_mib": (
+                int(torch.cuda.get_device_properties(0).total_memory // (1024 * 1024))
+                if cuda_available
+                else None
+            ),
+            "gpu_compute_capability": (
+                list(torch.cuda.get_device_capability(0)) if cuda_available else None
+            ),
         }
     except Exception as exc:
         return {"status": "NOT_COMPUTED", "reason": f"torch_probe_failed:{type(exc).__name__}:{exc}"}
+
+
+def _require_compatible_cuda() -> dict[str, Any]:
+    """Refuse a silent CPU fallback or an undersized node before inference."""
+    payload = _torch_payload()
+    if payload.get("cuda_available") is not True:
+        raise ValueError("t39_cuda_required_but_unavailable")
+    if int(payload.get("gpu_memory_total_mib") or 0) < MINIMUM_GPU_MEMORY_MIB:
+        raise ValueError("t39_gpu_memory_below_minimum")
+    return payload
 
 
 def _capture_contract(args: argparse.Namespace) -> dict[str, Any]:
@@ -202,6 +223,7 @@ def main() -> int:
     args = parser.parse_args()
     result = args.run(args)
     if args.command == "verify-component":
+        compatible_cuda = _require_compatible_cuda()
         payload = {
             "status": "T39_RUNTIME_PROVENANCE_CAPTURED",
             "component": args.component,
@@ -217,7 +239,7 @@ def main() -> int:
                 "implementation": platform.python_implementation(),
                 "platform": platform.platform(),
                 "packages": {name: _version(name) for name in ("torch", "transformers", "peft", "accelerate", "bitsandbytes")},
-                "torch": _torch_payload(),
+                "torch": compatible_cuda,
                 "cuda_visible_devices": os.environ.get("CUDA_VISIBLE_DEVICES", "unknown"),
             },
         }

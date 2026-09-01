@@ -132,6 +132,19 @@ def test_t39_preflight_requires_a_matching_execution_contract(monkeypatch) -> No
         t39.run_preflight(args)
 
 
+def test_runtime_provenance_rejects_cpu_fallback(monkeypatch) -> None:
+    payload = {
+        "status": "T39_RUNTIME_PROVENANCE_CAPTURED",
+        "component": "direct_base",
+        "replicate_id": "R1",
+        "execution_contract": {"status": "T39_EXECUTION_CONTRACT_VERIFIED", "contract_sha256": "a" * 64},
+        "runtime": {"torch": {"cuda_available": False, "gpu_memory_total_mib": None}},
+    }
+    monkeypatch.setattr(t39, "_load_json", lambda _path: payload)
+    with pytest.raises(ValueError, match="t39_runtime_cuda_unavailable"):
+        t39._load_runtime_provenance(ROOT / "ignored-runtime.json", expected_component="direct_base", expected_replicate="R1")
+
+
 def test_runtime_contract_hasher_streams_large_files_without_read_bytes(monkeypatch) -> None:
     path = ROOT / "scripts/pilot120_t39_runtime_provenance.py"
     expected = hashlib.sha256(path.read_bytes()).hexdigest()

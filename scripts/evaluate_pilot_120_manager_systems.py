@@ -416,6 +416,9 @@ def _load_model(args: argparse.Namespace) -> tuple[Any, Any, str | None]:
     import torch
     from transformers import AutoModelForCausalLM, AutoTokenizer, BitsAndBytesConfig
 
+    if not torch.cuda.is_available():
+        raise SystemExit("pilot120_manager_cuda_required_but_unavailable")
+
     tokenizer = AutoTokenizer.from_pretrained(BASE_MODEL, revision=BASE_REVISION, local_files_only=True)
     model = AutoModelForCausalLM.from_pretrained(
         BASE_MODEL,
@@ -429,6 +432,8 @@ def _load_model(args: argparse.Namespace) -> tuple[Any, Any, str | None]:
         ),
         device_map="auto",
     )
+    if not any(parameter.device.type == "cuda" for parameter in model.parameters()):
+        raise SystemExit("pilot120_manager_model_not_placed_on_cuda")
     adapter_id = None
     if args.adapter:
         identity = json.loads(args.adapter_identity.read_text(encoding="utf-8"))
