@@ -1,5 +1,5 @@
 #!/bin/bash
-# Submit the approved 72-hour T39 chain. Run on the cluster only after an immutable code deployment.
+# Submit the scheduler-safe first stage of the approved 72-hour T39 chain.
 set -euo pipefail
 umask 077
 : "${T39_CODE_ROOT:?}"
@@ -44,8 +44,10 @@ t40=$(submit "afterok:${preflight}" "${common_export}" "${T39_CODE_ROOT}/cluster
 printf 't40-interpretation-audit\t%s\tafterok:%s\n' "${t40}" "${preflight}" >> "${T39_OUTPUT_ROOT}/t39_submission_jobs.tsv"
 
 previous="${preflight}"
-evidence_jobs=()
-for replicate in R1 R2 R3 R4 R5; do
+# The account permits ten queued jobs. Preflight, T40, and two serial replica
+# chains exactly fill that allowance. R3--R5 and the final audit are submitted
+# by the guarded continuation helpers after earlier evidence jobs are terminal.
+for replicate in R1 R2; do
   replicate_root="${T39_OUTPUT_ROOT}/${replicate}"
   if [[ "${previous}" == "${preflight}" ]]; then
     base_dependency="afterok:${previous}"
@@ -64,10 +66,6 @@ for replicate in R1 R2 R3 R4 R5; do
     "${replicate}" "${manager}" "${adapter}" \
     "${replicate}" "${evidence}" "${manager}" >> "${T39_OUTPUT_ROOT}/t39_submission_jobs.tsv"
   previous="${evidence}"
-  evidence_jobs+=("${evidence}")
 done
-
-evidence_dependency=$(IFS=:; printf '%s' "${evidence_jobs[*]}")
-audit=$(submit "afterany:${evidence_dependency}" "${common_export}" "${T39_CODE_ROOT}/cluster/pilot120/t39_reproducibility_audit.sbatch")
-printf 'reproducibility-audit\t%s\tafterany:all-replica-evidence\n' "${audit}" >> "${T39_OUTPUT_ROOT}/t39_submission_jobs.tsv"
-printf 'preflight=%s audit=%s output_root=%s\n' "${preflight}" "${audit}" "${T39_OUTPUT_ROOT}"
+printf 'staging-boundary\tnone\tR1-R2 only: account queue cap; R3-R5 require guarded continuation\n' >> "${T39_OUTPUT_ROOT}/t39_submission_jobs.tsv"
+printf 'preflight=%s staged_replicates=R1,R2 output_root=%s\n' "${preflight}" "${T39_OUTPUT_ROOT}"

@@ -4,6 +4,8 @@ import json
 from pathlib import Path
 from types import SimpleNamespace
 
+import pytest
+
 from scripts import pilot120_t39_evidence as t39
 from scripts.pilot120_t39_evidence import _evidence_payload, _metric_eligibility, _route_code, _route_code_second_pass, _strata
 
@@ -40,6 +42,30 @@ def test_interpretation_gold_is_missing_required_fields() -> None:
     assert "intent" not in fields
     assert "cpc" not in fields
     assert "candidate_set" not in fields
+
+
+def test_t39_preflight_verifies_every_dependency_checked_by_gpu_evaluators(monkeypatch) -> None:
+    manifest = t39._load_json(ROOT / "data/annotations/pilot_120_v1/frozen/FROZEN_MANIFEST.json")
+    paths, hashes = t39._verify_evaluator_frozen_dependencies(ROOT, manifest)
+    assert set(paths) == {
+        "source_canonical_jsonl",
+        "final_gold_jsonl",
+        "gold_policy",
+        "config_pilot_120_v1",
+        "subset_manifest",
+    }
+    assert hashes == {key: manifest["hashes"][key] for key in paths}
+
+    original_sha256 = t39._sha256
+
+    def altered_policy_hash(path: Path) -> str:
+        if path == paths["gold_policy"]:
+            return "0" * 64
+        return original_sha256(path)
+
+    monkeypatch.setattr(t39, "_sha256", altered_policy_hash)
+    with pytest.raises(ValueError, match="t39_frozen_dependency_hash_mismatch:gold_policy"):
+        t39._verify_evaluator_frozen_dependencies(ROOT, manifest)
 
 
 def test_evidence_payload_scores_all_five_systems_from_frozen_predictions(monkeypatch) -> None:

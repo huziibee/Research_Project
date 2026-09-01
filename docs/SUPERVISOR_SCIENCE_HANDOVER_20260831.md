@@ -1,9 +1,11 @@
-# Supervisor handover: Pilot-120 v1 early science state
+# Interim science brief: Pilot-120 v1 early state
 
 **Date:** 2026-08-31
-**Approved workstream:** T39 reproducibility/evidence atlas and T40
-interpretation-requirements audit. No full-1,000 or +80 extension work is
-requested or authorised here.
+**Status:** Interim only — not the final supervisor results document.
+**Current execution:** T39 reproducibility/evidence atlas and T40
+interpretation-requirements audit; the final document is gated on the
+post-T39 `NOT_COMPUTED` closure programme in
+`docs/reports/POST_T39_NONCOMPUTED_CLOSURE_PROGRAM.md`.
 
 ## Executive position
 
@@ -141,11 +143,12 @@ total is likewise consistent with its displayed confusion.
 
 ## Context: what is and is not shown
 
-The context-blind manager is a valid ablation: it rebuilds analysis after
-removing dialogue, scene, and capability context; it cannot reuse a
-full-context analysis cache. Its 23/120 route correctness and 0.3396 cost are
-worse than the full type/risk-aware manager's 33/120 and 0.2563. The direction
-is consistent with context helping.
+The context-blind manager is an all-context-removal comparison: it rebuilds
+analysis after removing dialogue, scene, and capability context; it cannot reuse
+a full-context analysis cache. Its 23/120 route correctness and 0.3396 cost are
+worse than the full type/risk-aware manager's 33/120 and 0.2563. This observed
+difference is compatible with value in the combined context bundle, not a
+component-specific or causal estimate.
 
 However, this is not a clean estimate of the separate value of scene versus
 dialogue versus capability: all three were removed simultaneously, only 44
@@ -189,10 +192,11 @@ results.
 - **Degree router** has an observed clarification-heavy route distribution and
   weak rejection performance in the saved matrix. This fixed-pipeline result
   does not identify the responsible stage.
-- **Full type/risk manager** has no saved schema or missing-row failure and
-  eliminates the measured unsafe executions, while executing only 1 of 76
+- **Full type/risk manager** has no saved schema or missing-row failure. In the
+  finite 120-row matrix, it has zero safety-critical execute-on-gold-rejection
+  errors among the 21 gold-rejection rows, while executing only 1 of 76
   gold-execute records. The evidence establishes an output distribution, not an
-  inferred explanation such as “conservatism”.
+  inferred explanation such as “conservatism” or a real-world safety claim.
 - **Context-blind manager** has the most clarification-heavy observed output.
   The full-versus-blind contrast removes dialogue, scene, and capability context
   together, so it cannot identify a source-specific or causal context effect.
@@ -208,21 +212,27 @@ reproducibility checks before drawing even that bounded conclusion.
 
 ## What is incomplete before report writing
 
-The early result package is enough to begin a bounded results/methods/
-limitations chapter now. Before quoting a comprehensive manager evaluation,
-the following remains incomplete:
+The early result package may be used only as an internal working draft for a
+bounded results/methods/limitations chapter. No final supervisor results
+document or table is produced until the T39+T40+T41+T42+T43+T44 closure gate in
+`docs/reports/POST_T39_NONCOMPUTED_CLOSURE_PROGRAM.md` is terminal. Before
+quoting a comprehensive manager evaluation, the following remains incomplete:
 
-1. `NOT_COMPUTED`: a no-new-inference, evidence-only slice report: depth,
+1. `NOT_COMPUTED` — **T39**: a no-new-inference, evidence-only slice report: depth,
    ambiguity type,
    capability, natural dialogue presence, and all base/adapter disagreements.
-2. `NOT_COMPUTED`: a paired full-context versus context-blind analysis if a
+2. `NOT_COMPUTED` — **T39/T43**: a paired full-context versus context-blind analysis if a
    formal context claim is desired; the present contrast is descriptive.
-3. `NOT_COMPUTED`: an interpretation evaluation dataset/artifact with gold intent, CPC,
+3. `NOT_COMPUTED` — **T40/T41**: an interpretation evaluation dataset/artifact with gold intent, CPC,
    candidates, resolution values, and clarification/rejection targets. Pilot
    terminal gold alone cannot prove interpretive quality.
-4. `NOT_COMPUTED`: any single-ambiguity claim requires a separate frozen study.
-5. `NOT_COMPUTED`: any official/generalised claim remains blocked by the protected protocol and
-   is outside this early report.
+4. `NOT_COMPUTED` — **T42**: any single-ambiguity claim requires a separate
+   frozen study and is limited to its pre-registered corpus/eligible strata.
+5. `NOT_COMPUTED` — **T43**: scene-only, dialogue-only, and capability-only
+   estimates require the separately frozen factorial study.
+6. `NOT_COMPUTED` — **T44**: only narrow held-out-corpus generalisation may be
+   assessed; official/protected generalisation remains blocked by its separate
+   protocol and is outside this early report.
 
 ## Recommended next decision
 
@@ -237,22 +247,20 @@ hash-bound predictions will create the descriptive error atlas, with
 `NOT_COMPUTED` for unavailable fields and count-only reporting for thin
 denominators. This requires no model/gold change, protected data, or tuning.
 
-**Consider 200 only if it answers a defined missing question.** An additional
-80 records are worth the cost only if they are independently frozen and
-stratified for single ambiguity or rare/high-cost cases. They should not be
-added simply to make the sample larger. Without that goal, 120 is sufficient
-for the current early-science report.
+**No 200/+80 or 1,000-record extension is part of this programme.** The former
+discussion of a possible 200-record extension is historical and not an
+alternative route to closing the T39–T44 evidence gaps or to producing the
+final supervisor document.
 
 ## Boundaries for approval
 
-- Decide separately whether to approve: (a) bounded report claims after the
-  cost reconciliation, (b) the CPU-only reconciliation/error atlas, and (c)
-  only the protocol design or also sampling/annotation/execution for an
-  extension to total N=200 (+80).
+- **Currently running:** only the fixed Pilot-120 T39/T40 batch, including its
+  CPU-only evidence work. **Approved after the T39/T40 terminal gate:** T41–T44
+  protocol and execution, each only after its own immutable-input and claim
+  gates pass. Their status is not a claim that their results already exist.
 - No Pilot-120 result may select, tune, retrain, or change the adapter.
-- No full-1,000 activity may begin without explicit supervisor authorisation.
-- A future 200-record extension needs an approved protocol before sampling,
-  annotation, or any job submission.
-- The approved T39/T40 jobs are the sole exception for this phase; any future
-  GPU/cluster job will be proposed with exact inputs, outputs, hypotheses, and
-  claim boundary before submission.
+- No full-1,000 or deferred +80 activity is part of the approved closure
+  programme.
+- Every T41–T44 cluster job must use its frozen input manifest and
+  pre-registered claim boundary; it must write `NOT_COMPUTED` rather than a
+  proxy if its own gates fail.

@@ -13,29 +13,41 @@ not replace, the final evidence atlas and reproducibility audit.
   byte-frozen Pilot source and gold JSONL files, so preflight correctly stopped
   the study. No T39 result, model prediction, or performance measure was
   produced from this attempt.
-- The dependent T40/R1/R2 jobs (`48486`–`48494`) remain Slurm pending with
-  failed-dependency states. They must not be treated as valid execution and
-  cannot be reused for the corrected protocol.
+- The dependent T40/R1/R2 jobs (`48486`–`48494`) were cancelled before running.
+  They must not be treated as valid execution and cannot be reused.
 
-## Corrected immutable deployment, ready but not submitted
+## Attempt 2: incomplete preflight coverage
 
-- Code commit: `56a2fa1573c9ef3a7f87d92f371f577f63f261db` on branch
-  `science/pilot120-t38`.
-- Immutable runtime root:
-  `/home-mscluster/mbangie/t12-hpc/code/pilot120-t39-56a2fa1573c9ef3a7f87d92f371f577f63f261db-runtime`.
-- Archive SHA-256:
-  `b9ee3138d49e186f6dc933a7cab9ca8a0498b8cb859f3d7a0354612baa477a72`.
-- The archive was locally checked to reproduce source hash
-  `f33b1e29f1e8aa256a475f07213aa07247def47d8e2148d54a472a40b71b05c9`
-  and gold hash
-  `5e23ad1a92ff1873c8f039a8ce560a111dd6fb6b8ae8c11d6cf34dbfa1c360db`.
-- All deployed Slurm shell files pass `bash -n`; preflight now writes an
-  explicit `VERIFY_FAILED` artifact if future container or frozen-provenance
-  validation fails.
+- Submitted jobs: `48498`–`48507` from immutable code commit
+  `56a2fa1573c9ef3a7f87d92f371f577f63f261db`.
+- `48498` preflight and `48499` T40 completed. T40's
+  `t40_interpretation_requirements_audit.json` is a valid requirements audit.
+- Every R1/R2 GPU component failed before inference. The original evaluator
+  correctly rejected `GOLD_POLICY.json`: observed
+  `c0f18b1b74ce735e820ed9080886b70ce4ab6157f6cebadcf5f77f2323929d30`,
+  expected `3c1f0a4d43c29996062a4a2ecd321e4023a38f5fad950801f96e07e23aac4a34`.
+  The CPU preflight had checked only source/gold, so it did not catch this
+  archive transformation. R1/R2 evidence sentinels are `NOT_COMPUTED`, not
+  scientific prediction artifacts.
 
-## Required authority before corrected submission
+## Attempt 3: required fresh resubmission
 
-The previous pending jobs occupy the cluster submission allowance. Cancel only
-`48486`–`48494` (all are dependency-blocked and have never run), then submit
-the unchanged approved T39/T40 protocol from the corrected immutable root. No
-other experiment, dataset, model, decoding, or tuning change is proposed.
+- The repaired preflight now checks the exact five dependencies checked by the
+  GPU evaluator: source, gold, `GOLD_POLICY.json`, configuration, and
+  `subset_manifest.json`. The missing subset manifest has been restored with
+  its authoritative CRLF bytes and expected SHA-256
+  `60c8247c867c27ea67c6bb28f1a566df94db839a72df8a1a8e80b85e5d9d6a69`.
+- The selective archive will preserve all five dependencies and local archive
+  verification must reproduce each hash before upload. A fresh output root is
+  mandatory; attempt-2 roots cannot be resumed.
+- The account's ten-job submit cap requires scheduler-safe staging: preflight,
+  T40, and serial R1/R2 are submitted first; guarded R3–R5 continuation and
+  the five-evidence final audit are submitted only as capacity opens. This
+  changes scheduling, not systems, data, decoding, or protocol.
+
+## Authority and claim boundary
+
+The user authorised the fresh T39 submission and the cluster work needed to
+unblock it. No other experiment, dataset, model, decoding, or tuning change is
+proposed. The final supervisor document remains gated on T39+T40+T41+T42+T43+
+T44 terminal artifacts.

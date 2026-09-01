@@ -1,6 +1,6 @@
 # T39 — Pilot-120 v1 reproducibility and evidence atlas
 
-**Status:** APPROVED_EXECUTION_NON_OFFICIAL — PAUSED_FOR_CORRECTED_RESUBMISSION
+**Status:** APPROVED_EXECUTION_NON_OFFICIAL — FRESH_ATTEMPT_3_REQUIRED
 
 ## Goal
 
@@ -38,13 +38,19 @@ changed decoding condition is part of this ticket.
 ## Current execution record
 
 Attempt `48485` failed at the CPU frozen-byte gate before any GPU inference;
-dependent jobs `48486`–`48494` are pending with failed dependencies and are not
-scientific artifacts. The corrected immutable deployment and exact recovery
-state are recorded in `docs/reports/T39_T40_EXECUTION_LOG_20260831.md`.
+dependent jobs `48486`–`48494` were cancelled and are not scientific artifacts.
+Attempt `48498`–`48507` exposed an incomplete preflight: GPU evaluators rejected
+a transformed frozen `GOLD_POLICY.json` before inference. Its T40 audit is
+valid, but R1/R2 are `NOT_COMPUTED` sentinels. Attempt 3 uses a new output root,
+a five-dependency preflight, byte-preserving archive, and scheduler-safe
+R1/R2-then-R3–R5 staging. The exact record is in
+`docs/reports/T39_T40_EXECUTION_LOG_20260831.md`.
 
 ## Acceptance criteria
 
-- [ ] Preflight validates the frozen source/gold/policy/base/adapter hashes.
+- [ ] Preflight validates every evaluator-frozen dependency (source, gold,
+  `GOLD_POLICY.json`, configuration, subset manifest), plus policy/base/adapter
+  identities.
 - [ ] Each valid component has 120 ordered schema-valid, nonfailed rows.
 - [ ] A metric family is scored only when its saved field is eligible on all 120
   rows; absent/invalid ambiguity, capability, latency, or terminal fields are

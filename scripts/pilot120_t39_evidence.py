@@ -104,6 +104,33 @@ def _load_analysis_policy(path: Path) -> dict[str, Any]:
     return policy
 
 
+def _evaluator_frozen_dependency_paths(root: Path) -> dict[str, Path]:
+    """Return exactly the five byte-hashed dependencies used by the GPU evaluators."""
+    paths = p120.default_paths(root)
+    config = _load_json(paths["config"])
+    return {
+        "source_canonical_jsonl": root / str(config["source_canonical_jsonl"]),
+        "final_gold_jsonl": root / str(config["gold_jsonl"]),
+        "gold_policy": paths["gold_policy"],
+        "config_pilot_120_v1": paths["config"],
+        "subset_manifest": paths["subset_manifest"],
+    }
+
+
+def _verify_evaluator_frozen_dependencies(root: Path, manifest: dict[str, Any]) -> tuple[dict[str, Path], dict[str, str]]:
+    """Fail before GPU allocation if any dependency checked by ``verify_freeze`` drifted."""
+    expected = manifest.get("hashes") or {}
+    paths = _evaluator_frozen_dependency_paths(root)
+    observed: dict[str, str] = {}
+    for key, path in paths.items():
+        if not path.is_file():
+            raise ValueError(f"t39_frozen_dependency_missing:{key}:{path}")
+        observed[key] = _sha256(path)
+        if observed[key] != expected.get(key):
+            raise ValueError(f"t39_frozen_dependency_hash_mismatch:{key}")
+    return paths, observed
+
+
 def _load_frozen(root: Path, policy_path: Path) -> tuple[list[dict[str, Any]], dict[str, dict[str, Any]], dict[str, Any], dict[str, Any]]:
     p120.assert_evaluation_only("t39_evidence")
     manifest = _load_json(root / "data/annotations/pilot_120_v1/frozen/FROZEN_MANIFEST.json")
@@ -111,13 +138,9 @@ def _load_frozen(root: Path, policy_path: Path) -> tuple[list[dict[str, Any]], d
         raise ValueError("t39_frozen_manifest_boundary_invalid")
     if manifest.get("gold_policy", {}).get("must_not_train_or_select") is not True:
         raise ValueError("t39_frozen_manifest_selection_boundary_invalid")
-    source_path = root / "data/annotations/pilot_120_v1/source_canonical.jsonl"
-    gold_path = root / "data/annotations/pilot_120_v1/pilot_120_final_gold.jsonl"
-    hashes = manifest.get("hashes") or {}
-    if _sha256(source_path) != hashes.get("source_canonical_jsonl"):
-        raise ValueError("t39_source_hash_mismatch")
-    if _sha256(gold_path) != hashes.get("final_gold_jsonl"):
-        raise ValueError("t39_gold_hash_mismatch")
+    dependency_paths, _observed_hashes = _verify_evaluator_frozen_dependencies(root, manifest)
+    source_path = dependency_paths["source_canonical_jsonl"]
+    gold_path = dependency_paths["final_gold_jsonl"]
     source = p120.load_jsonl(source_path)
     gold_rows = p120.load_jsonl(gold_path)
     ids = [str(row.get("record_id") or "") for row in source]
@@ -718,6 +741,7 @@ def _evidence_payload(
 def run_preflight(args: argparse.Namespace) -> None:
     root = args.root.resolve()
     source, _gold, manifest, policy = _load_frozen(root, args.policy.resolve())
+    _dependency_paths, dependency_hashes = _verify_evaluator_frozen_dependencies(root, manifest)
     analysis_policy = _load_analysis_policy(args.analysis_policy.resolve())
     identity = _load_json(args.adapter_identity.resolve())
     required = {
@@ -747,6 +771,7 @@ def run_preflight(args: argparse.Namespace) -> None:
         "freeze_manifest_sha256": _sha256(root / "data/annotations/pilot_120_v1/frozen/FROZEN_MANIFEST.json"),
         "source_sha256": manifest["hashes"]["source_canonical_jsonl"],
         "gold_sha256": manifest["hashes"]["final_gold_jsonl"],
+        "evaluator_frozen_dependency_sha256": dependency_hashes,
         "policy_sha256": _sha256(args.policy.resolve()),
         "analysis_policy_id": analysis_policy["policy_id"],
         "analysis_policy_sha256": _sha256(args.analysis_policy.resolve()),
