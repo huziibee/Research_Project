@@ -81,6 +81,21 @@ not replace, the final evidence atlas and reproducibility audit.
   reproducibility or system performance. A new output root, commit, archive,
   execution-contract preflight, and five fresh replay roots are required.
 
+## Attempt 4 stopped before a memory-safe contract hash
+
+- Commit `659fb34690b3db3ec407c641529603ca0636b270` added the execution
+  contract. Its archive (`4ebb42e694eec08884d883e767cf174d03822d6c8da5246ad21dd87bb668f245`)
+  and remote extraction reproduced all five evaluator-frozen bytes.
+- Before the preflight could complete, review of the running code identified
+  that the model-tree hash loaded an entire model shard with `read_bytes()`.
+  That is not safe under the declared 8-GiB preflight allocation. The entire
+  chain `48586`â€“`48595` was cancelled rather than treating a memory-unsafe
+  provenance check as valid. `48586` ran 3m24s and was cancelled; `48587`â€“`48595`
+  never started. No GPU inference or T40 artifact was produced.
+- The repair streams SHA-256 in bounded 8-MiB chunks and has a regression test
+  that rejects any return to whole-file `read_bytes()` hashing. It requires a
+  new commit, archive, code root and output root before another submission.
+
 ## Authority and claim boundary
 
 The user authorised the fresh T39 submission and the cluster work needed to

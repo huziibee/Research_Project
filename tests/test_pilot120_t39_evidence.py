@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import hashlib
 import json
 from pathlib import Path
 from types import SimpleNamespace
@@ -7,6 +8,7 @@ from types import SimpleNamespace
 import pytest
 
 from scripts import pilot120_t39_evidence as t39
+from scripts import pilot120_t39_runtime_provenance as runtime_provenance
 from scripts.pilot120_t39_evidence import _all_system_disagreements, _evidence_payload, _metric_eligibility, _route_code, _route_code_second_pass, _strata
 
 
@@ -128,6 +130,17 @@ def test_t39_preflight_requires_a_matching_execution_contract(monkeypatch) -> No
     contract["container"] = {"path": str(container_path.resolve()), "sha256": "0" * 64}
     with pytest.raises(SystemExit, match="execution_contract_container_invalid"):
         t39.run_preflight(args)
+
+
+def test_runtime_contract_hasher_streams_large_files_without_read_bytes(monkeypatch) -> None:
+    path = ROOT / "scripts/pilot120_t39_runtime_provenance.py"
+    expected = hashlib.sha256(path.read_bytes()).hexdigest()
+
+    def forbidden_read_bytes(_self):
+        raise AssertionError("runtime contract hashing must stream rather than read a whole model shard")
+
+    monkeypatch.setattr(Path, "read_bytes", forbidden_read_bytes)
+    assert runtime_provenance._sha256(path) == expected
 
 
 def test_evidence_payload_scores_all_five_systems_from_frozen_predictions(monkeypatch) -> None:

@@ -55,6 +55,12 @@ were cancelled; no output from them is scientific evidence. The next attempt
 must use a fresh output root and repaired immutable archive. The exact
 accounting is in `docs/reports/T39_T40_EXECUTION_LOG_20260831.md`.
 
+Attempt 4 from `659fb34690b3db3ec407c641529603ca0636b270` verified its archive
+and remote frozen bytes but was stopped before any GPU work: the new model-tree
+hasher used whole-file reads that were unsafe for the declared preflight memory
+limit. Jobs `48586`-`48595` were cancelled; the streaming-hash correction must
+be rearchived and run in another new root. No cancelled output is evidence.
+
 ## Acceptance criteria
 
 - [ ] Preflight validates every evaluator-frozen dependency (source, gold,

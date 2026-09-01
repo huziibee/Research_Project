@@ -37,7 +37,12 @@ CRITICAL_CODE_PATHS = (
 
 
 def _sha256(path: Path) -> str:
-    return hashlib.sha256(path.read_bytes()).hexdigest()
+    """Hash files in bounded memory, including multi-gigabyte model shards."""
+    digest = hashlib.sha256()
+    with path.open("rb") as handle:
+        while chunk := handle.read(8 * 1024 * 1024):
+            digest.update(chunk)
+    return digest.hexdigest()
 
 
 def _tree_sha256(path: Path) -> str:
