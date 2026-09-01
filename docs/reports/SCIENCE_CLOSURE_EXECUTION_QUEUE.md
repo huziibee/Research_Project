@@ -34,6 +34,19 @@ example, `VERIFY_PASSED`) are diagnostic detail, not a substitute control state.
 | Q43 | separate scene-only, dialogue-only and capability-only effects | CPU readiness verified; **inference not queued; results not computed** | T39 final audit; execution binding to unchanged T39 system/prompt/tokenizer/evaluator; runtime prompt/render/token attestation; frozen eight-condition manifest; paired multiplicity/support analysis plan | Input-byte verifier, condition manifest, paired results artifact, support/multiplicity audit | Cluster after its preflight passes |
 | Q44 | narrow family-disjoint held-out-corpus confirmation only | CPU readiness verified; **held-out study not queued; results not computed** | New licensable source; record/paraphrase/scenario-family exclusion audit against Pilot/T42/T41-new-source; double annotation/adjudication; held-out freeze | Licence/source/exclusion/frozen-gold manifests, annotation agreement, fixed-system confirmation artifact | Source and human-review lanes first; cluster only after the freeze |
 
+## CPU-only readiness evidence (2026-09-01)
+
+These local artifacts prove implementation readiness only; they do not close
+the corresponding scientific question.
+
+| Workstream | Artifact | SHA-256 | Verified status |
+|---|---|---|---|
+| T41 | `outputs/readiness_20260901/t41_readiness_contract.json` | `53a5775c5ce9b9e1e2b78c2cbe63162c17bce396a42f6e778d27fd4f2676fb21` | `T41_READINESS_CONTRACT_PASSED` |
+| T42 | `outputs/readiness_20260901/t42_readiness_scaffold.json` | `89354b10b9bca7fd8bd3183277ab9e2eda4b45c18404e88a10babad80e5a619a` | `T42_READINESS_SCAFFOLD_PASSED` |
+| T43 | `outputs/readiness_20260901/t43_factorial_manifest.json` | `01f1a0ca043d3edce653b67261c10068ee541035ee96b0d5cc18164e5c145b4f` | 960 fixed condition inputs; runtime attestation `NOT_COMPUTED` |
+| T43 | `outputs/readiness_20260901/t43_static_verification.json` | `2268203b4f9a61683e0cd3ce661784e0cb757e720968c5853ce34390f3c34a6b` | `T43_STATIC_MANIFEST_VERIFY_PASSED` |
+| T44 | `outputs/readiness_20260901/t44_pilot_reference_recovery.json` | `3f06d86aaac776c33d87d65aea13acb1748190f752460ab205e71a291afa19b0` | `PILOT120_REFERENCE_PROVENANCE_RECOVERED` |
+
 ## Explicit no-skip checklist
 
 - `NOT_COMPUTED` interpretation and wording metrics remain owned by Q41; they
