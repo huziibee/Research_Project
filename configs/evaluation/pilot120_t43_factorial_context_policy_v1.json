@@ -1,0 +1,101 @@
+{
+  "policy_id": "pilot120_t43_factorial_context_policy_v1",
+  "policy_version": "1.0.0",
+  "scope": "non_protected_pilot120_v1_cpu_only_factorial_context_preparation",
+  "valid_for_official_use": false,
+  "must_not_influence_training_selection_or_tuning": true,
+  "preparation_only": true,
+  "inference_permitted_by_this_policy": false,
+  "expected_frozen_source_sha256": "f33b1e29f1e8aa256a475f07213aa07247def47d8e2148d54a472a40b71b05c9",
+  "expected_record_count": 120,
+  "factors": [
+    {
+      "factor_id": "scene",
+      "source_field": "scene_context",
+      "removed_value": null,
+      "expected_naturally_present": 120
+    },
+    {
+      "factor_id": "dialogue",
+      "source_field": "dialogue_history",
+      "removed_value": [],
+      "expected_naturally_present": 44,
+      "effect_eligibility": "natural_nonempty_dialogue_history_only"
+    },
+    {
+      "factor_id": "capability",
+      "source_field": "capability_context",
+      "removed_value": null,
+      "expected_naturally_present": 120
+    }
+  ],
+  "conditions": [
+    {"condition_id": "S1_D1_C1", "scene_available": true, "dialogue_available": true, "capability_available": true},
+    {"condition_id": "S1_D1_C0", "scene_available": true, "dialogue_available": true, "capability_available": false},
+    {"condition_id": "S1_D0_C1", "scene_available": true, "dialogue_available": false, "capability_available": true},
+    {"condition_id": "S1_D0_C0", "scene_available": true, "dialogue_available": false, "capability_available": false},
+    {"condition_id": "S0_D1_C1", "scene_available": false, "dialogue_available": true, "capability_available": true},
+    {"condition_id": "S0_D1_C0", "scene_available": false, "dialogue_available": true, "capability_available": false},
+    {"condition_id": "S0_D0_C1", "scene_available": false, "dialogue_available": false, "capability_available": true},
+    {"condition_id": "S0_D0_C0", "scene_available": false, "dialogue_available": false, "capability_available": false}
+  ],
+  "fixed_non_context_fields": ["record_id", "command"],
+  "runtime_attestation_schema": {
+    "required_fields": [
+      "record_id",
+      "condition_id",
+      "input_payload_utf8_base64",
+      "input_payload_sha256",
+      "prompt_input_utf8_base64",
+      "prompt_input_sha256",
+      "rendered_input_utf8_base64",
+      "rendered_input_sha256",
+      "token_ids_json_utf8_base64",
+      "token_ids_sha256",
+      "prompt_token_count"
+    ],
+    "require_exact_manifest_input_payload_bytes": true,
+    "requires_frozen_t39_prompt_renderer_and_tokenizer_binding": true
+  },
+  "system_execution_binding": {
+    "status": "NOT_COMPUTED",
+    "reason": "This CPU-only manifest must be bound after a terminal T39 reproducibility audit to the unchanged manager implementation, T39 execution contract, prompt-renderer code hash, tokenizer snapshot hash, model revision, adapter identity, decode policy, and evaluator bytes."
+  },
+  "paired_analysis_preregistration": {
+    "unit_of_analysis": "record",
+    "main_effect_definition": "For a source, first form each of the four matched availability contrasts while holding the other two source flags fixed; average those four signed contrasts within each eligible record, then analyse one contrast value per record. Do not treat the four within-record contrasts as independent observations.",
+    "primary_outcomes": ["terminal_strategy_correct", "asymmetric_terminal_cost"],
+    "effect_direction": {
+      "terminal_strategy_correct": "available_minus_removed",
+      "asymmetric_terminal_cost": "available_minus_removed; negative favours available context"
+    },
+    "inference": {
+      "paired_record_bootstrap_replicates": 10000,
+      "bootstrap_seed": 20260901,
+      "confidence_level": 0.95,
+      "two_sided_alpha": 0.05,
+      "multiplicity": "Holm correction over the six confirmatory tests: three context sources by two primary outcomes."
+    },
+    "support_gates": {
+      "minimum_eligible_records_per_source": 15,
+      "minimum_nonzero_within_record_effects_for_inferential_test": 10,
+      "thin_strata_policy": "count_only_not_confirmatory",
+      "dialogue_effect_population": "only records with a naturally non-empty frozen dialogue_history; empty histories are never recoded as a dialogue-removal treatment."
+    },
+    "secondary_outputs": [
+      "condition_cell_denominators",
+      "all_pairwise_matched_condition contrasts",
+      "source-by-source interactions labelled secondary and multiplicity-adjusted separately if predeclared in a later frozen revision"
+    ]
+  },
+  "claim_boundary": "A passing T43 estimates source availability effects only for frozen Pilot-120 inputs, the frozen systems, and the frozen prompt/render/token contract. It does not establish generalisation, real-world safety, single-ambiguity performance, interpretation quality, or a reason to tune any system.",
+  "completion_gates": [
+    "terminal_t39_reproducibility_audit",
+    "terminal_t40_availability_audit",
+    "unchanged_system_and_execution_binding",
+    "static_manifest_and_source_byte_verification",
+    "runtime_prompt_render_token_attestation_verification",
+    "complete_eight_condition_predictions",
+    "paired_support_and_multiplicity_audit"
+  ]
+}
