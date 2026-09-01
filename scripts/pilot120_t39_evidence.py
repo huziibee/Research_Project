@@ -162,8 +162,6 @@ def _load_prediction(path: Path, *, system_id: str, expected_ids: list[str]) -> 
         raise ValueError(f"t39_prediction_denominator_or_order_invalid:{system_id}")
     if any(row.get("system_id") != system_id for row in rows):
         raise ValueError(f"t39_prediction_system_id_invalid:{system_id}")
-    if any(row.get("failed") is not False or row.get("schema_valid") is not True for row in rows):
-        raise ValueError(f"t39_prediction_schema_or_failure_invalid:{system_id}")
     return {str(row["record_id"]): row for row in rows}
 
 
@@ -193,6 +191,12 @@ def _load_runtime_provenance(path: Path, *, expected_component: str, expected_re
         raise ValueError(f"t39_runtime_component_invalid:{payload.get('component')}")
     if expected_replicate is not None and payload.get("replicate_id") != expected_replicate:
         raise ValueError(f"t39_runtime_replicate_invalid:{payload.get('replicate_id')}")
+    contract = payload.get("execution_contract")
+    if not isinstance(contract, dict) or contract.get("status") != "T39_EXECUTION_CONTRACT_VERIFIED":
+        raise ValueError("t39_runtime_execution_contract_invalid")
+    contract_sha256 = contract.get("contract_sha256")
+    if not isinstance(contract_sha256, str) or len(contract_sha256) != 64:
+        raise ValueError("t39_runtime_execution_contract_sha256_invalid")
     return payload
 
 
@@ -442,7 +446,12 @@ def _strata(source: list[dict[str, Any]], gold: dict[str, dict[str, Any]], *, ty
     return result
 
 
-def _error_atlas(ids: list[str], matrix: dict[str, dict[str, dict[str, Any]]], gold: dict[str, dict[str, Any]]) -> dict[str, Any]:
+def _error_atlas(
+    ids: list[str],
+    matrix: dict[str, dict[str, dict[str, Any]]],
+    gold: dict[str, dict[str, Any]],
+    eligibility: dict[str, dict[str, dict[str, Any]]],
+) -> dict[str, Any]:
     codebook = {
         "false_clarification": "Gold execute but system clarified.",
         "missed_clarification_unsafe_execution": "Gold clarify but system executed.",
@@ -450,13 +459,19 @@ def _error_atlas(ids: list[str], matrix: dict[str, dict[str, dict[str, Any]]], g
         "missed_rejection": "Gold rejection but system clarified.",
         "false_rejection": "System rejected a non-rejection gold route.",
         "incorrect_execution": "A superordinate flag for either unsafe execution category; never replaces the specific route code.",
-        "analysis_label_error": "Route error with an ambiguity-type or capability-label mismatch.",
-        "deterministic_router_error_given_available_labels_correct": "Manager route error while the available ambiguity/capability labels match; CPC/intent are not gold-scored here.",
+        "analysis_label_error": "Route error with an ambiguity-type or capability-label mismatch, only when both fields are eligible.",
+        "deterministic_router_route_error_with_saved_labels_matching": "Manager route error while saved ambiguity/capability labels match; it does not establish correct intent, CPC, risk, or internal analysis.",
         "schema_retry_issue": "A saved analysis required a retry; not itself a route error.",
         "context_sensitive_disagreement": "Full and all-context-blind manager routes differ; descriptive only, not a causal source attribution.",
     }
     by_system: dict[str, Any] = {}
     for system_id, rows in matrix.items():
+        if not _eligible(eligibility[system_id], "terminal_strategy"):
+            by_system[system_id] = _not_computed(
+                "terminal_strategy_not_eligible_for_route_error_taxonomy",
+                eligibility=eligibility[system_id]["terminal_strategy"],
+            )
+            continue
         error_rows: list[dict[str, Any]] = []
         retry_rows: list[str] = []
         for record_id in ids:
@@ -473,18 +488,25 @@ def _error_atlas(ids: list[str], matrix: dict[str, dict[str, dict[str, Any]]], g
                 continue
             ambiguity_match = set(prediction.get("ambiguity_types") or []) == set(target.get("ambiguity_types") or [])
             capability_match = prediction.get("capability_status") == target.get("capability_status")
-            observed_layer = (
-                "analysis_label_error"
-                if not ambiguity_match or not capability_match
-                else ("deterministic_router_error_given_available_labels_correct" if system_id in {"degree_based_router", "full_type_risk_aware_manager", "context_blind_manager"} else "not_identifiable_from_available_gold")
-            )
+            labels_eligible = _eligible(eligibility[system_id], "ambiguity_types") and _eligible(eligibility[system_id], "capability_status")
+            observed_layer = _not_computed("ambiguity_or_capability_label_not_eligible")
+            if labels_eligible:
+                observed_layer = (
+                    "analysis_label_error"
+                    if not ambiguity_match or not capability_match
+                    else (
+                        "deterministic_router_route_error_with_saved_labels_matching"
+                        if system_id in {"degree_based_router", "full_type_risk_aware_manager", "context_blind_manager"}
+                        else "not_identifiable_from_available_gold"
+                    )
+                )
             error_rows.append({
                 "record_id": record_id,
                 "gold_terminal": expected,
                 "predicted_terminal": actual,
                 "route_code_a": primary,
                 "route_code_b": second,
-                "deterministic_double_code_agree": primary == second,
+                "deterministic_rule_implementation_crosscheck_agree": primary == second,
                 "incorrect_execution": actual == "execute" and expected != "execute",
                 "observed_failure_layer": observed_layer,
                 "ambiguity_type_exact_match": ambiguity_match,
@@ -496,17 +518,27 @@ def _error_atlas(ids: list[str], matrix: dict[str, dict[str, dict[str, Any]]], g
             "n_error_rows": len(error_rows),
             "error_rows": error_rows,
             "analysis_retry_record_ids": retry_rows,
-            "deterministic_double_code_method": "two independent rule implementations; this is not a human semantic-review claim",
+            "deterministic_rule_implementation_crosscheck": "two rule-equivalent implementations; this is not blinded human double coding or a semantic-review claim",
         }
     context_sensitive: dict[str, Any] = _not_computed("full_or_context_blind_manager_unavailable")
-    if "full_type_risk_aware_manager" in matrix and "context_blind_manager" in matrix:
+    if (
+        "full_type_risk_aware_manager" in matrix
+        and "context_blind_manager" in matrix
+        and _eligible(eligibility["full_type_risk_aware_manager"], "terminal_strategy")
+        and _eligible(eligibility["context_blind_manager"], "terminal_strategy")
+    ):
         full, blind = matrix["full_type_risk_aware_manager"], matrix["context_blind_manager"]
         context_sensitive = {
             "status": "DESCRIPTIVE_ALL_CONTEXT_ABLATION_ONLY",
             "record_ids": [record_id for record_id in ids if full[record_id].get("terminal_strategy") != blind[record_id].get("terminal_strategy")],
             "not_a_scene_dialogue_or_capability_isolation": True,
         }
-    return {"codebook": codebook, "systems": by_system, "context_sensitive_disagreement": context_sensitive}
+    return {
+        "codebook": codebook,
+        "systems": by_system,
+        "context_sensitive_disagreement": context_sensitive,
+        "human_double_coding": _not_computed("requires_two_independent_human_coders_and_reconciliation_artifact"),
+    }
 
 
 def _percentile(values: list[float], percentile: float) -> float:
@@ -562,6 +594,49 @@ def _paired_base_adapter(
     }
 
 
+def _prediction_signature(row: dict[str, Any]) -> dict[str, Any]:
+    raw_output = row.get("raw_output")
+    return {
+        "terminal_strategy": row.get("terminal_strategy"),
+        "ambiguity_types": row.get("ambiguity_types"),
+        "capability_status": row.get("capability_status"),
+        "schema_valid": row.get("schema_valid"),
+        "failed": row.get("failed"),
+        "error": row.get("error"),
+        "raw_output_sha256": hashlib.sha256(str(raw_output or "").encode("utf-8")).hexdigest(),
+    }
+
+
+def _all_system_disagreements(ids: list[str], matrix: dict[str, dict[str, dict[str, Any]]]) -> dict[str, Any]:
+    """Preserve every pairwise saved-output disagreement without scoring it as gold truth."""
+    pairs: list[dict[str, Any]] = []
+    for left_id, right_id in itertools.combinations(sorted(matrix), 2):
+        records: list[dict[str, Any]] = []
+        for record_id in ids:
+            left = _prediction_signature(matrix[left_id][record_id])
+            right = _prediction_signature(matrix[right_id][record_id])
+            changed_fields = sorted(field for field in left if left[field] != right[field])
+            if changed_fields:
+                records.append({
+                    "record_id": record_id,
+                    "changed_prediction_fields": changed_fields,
+                    "left": left,
+                    "right": right,
+                })
+        pairs.append({
+            "left_system_id": left_id,
+            "right_system_id": right_id,
+            "n_disagreement_records": len(records),
+            "records": records,
+        })
+    return {
+        "status": "COMPLETE_SAVED_OUTPUT_PAIRWISE_LEDGER",
+        "comparison_scope": "terminal, ambiguity, capability, schema/failure/error flags, and raw-output SHA-256; this is a disagreement ledger, not a performance ranking",
+        "n_unordered_system_pairs": len(pairs),
+        "pairs": pairs,
+    }
+
+
 def _evidence_payload(
     *,
     root: Path,
@@ -597,6 +672,7 @@ def _evidence_payload(
     runtime_hashes: dict[str, list[str]] = {}
     runtime_payloads: dict[str, list[dict[str, Any]]] = {}
     runtime_problems: list[str] = []
+    runtime_contract_sha256: str | None = None
     for system_id, path in prediction_args:
         if system_id not in matrix:
             continue
@@ -614,6 +690,16 @@ def _evidence_payload(
             runtime_problems.append(f"{system_id}:{exc}")
     if require_runtime_provenance and runtime_problems:
         problems.append("runtime_provenance_invalid:" + ";".join(runtime_problems))
+    if require_runtime_provenance and not runtime_problems:
+        observed_contracts = {
+            str(payload["execution_contract"]["contract_sha256"])
+            for payloads in runtime_payloads.values()
+            for payload in payloads
+        }
+        if len(observed_contracts) != 1:
+            problems.append("runtime_execution_contract_mismatch:" + ",".join(sorted(observed_contracts)))
+        else:
+            runtime_contract_sha256 = observed_contracts.pop()
     common = {
         "scope": "non_protected_pilot120_v1_evidence_only",
         "valid_for_official_use": False,
@@ -636,6 +722,7 @@ def _evidence_payload(
             "sha256": runtime_hashes,
             "records": runtime_payloads,
             "problems": runtime_problems,
+            "execution_contract_sha256": runtime_contract_sha256,
             "required_for_this_artifact": require_runtime_provenance,
         },
         "not_computed": {
@@ -665,9 +752,24 @@ def _evidence_payload(
     slices: list[dict[str, Any]] = []
     for stratum in stratum_rows:
         record_ids = list(stratum["record_ids"])
+        slice_systems: dict[str, Any]
+        if stratum["count_only"]:
+            slice_systems = {
+                system_id: _not_computed(
+                    "structural_slice_below_pre_registered_support_threshold",
+                    n=len(record_ids),
+                    minimum_support_for_analytic_interpretation=stratum["minimum_support_for_analytic_interpretation"],
+                )
+                for system_id in matrix
+            }
+        else:
+            slice_systems = {
+                system_id: _system_metrics(record_ids, rows, gold, policy, eligibility[system_id])
+                for system_id, rows in matrix.items()
+            }
         slices.append({
             **{key: value for key, value in stratum.items() if key != "record_ids"},
-            "systems": {system_id: _system_metrics(record_ids, rows, gold, policy, eligibility[system_id]) for system_id, rows in matrix.items()},
+            "systems": slice_systems,
         })
     base_adapter_available = (
         "direct_base_llm" in matrix
@@ -675,20 +777,21 @@ def _evidence_payload(
         and _eligible(eligibility["direct_base_llm"], "terminal_strategy")
         and _eligible(eligibility["t28_selected_adapter_llm"], "terminal_strategy")
     )
+    all_system_disagreements = _all_system_disagreements(ids, matrix) if len(matrix) == len(SUBSTANTIVE_SYSTEMS) else _not_computed("all_substantive_systems_required_for_pairwise_disagreement_ledger", present_systems=sorted(matrix))
     base_adapter_disagreements: list[dict[str, Any]] = []
     if base_adapter_available:
         base, adapter = matrix["direct_base_llm"], matrix["t28_selected_adapter_llm"]
         for record_id in ids:
-            if base[record_id].get("terminal_strategy") != adapter[record_id].get("terminal_strategy"):
+            base_signature = _prediction_signature(base[record_id])
+            adapter_signature = _prediction_signature(adapter[record_id])
+            changed_fields = sorted(field for field in base_signature if base_signature[field] != adapter_signature[field])
+            if changed_fields:
                 base_adapter_disagreements.append({
                     "record_id": record_id,
                     "gold_terminal": gold[record_id]["terminal_strategy"],
-                    "base_terminal": base[record_id].get("terminal_strategy"),
-                    "adapter_terminal": adapter[record_id].get("terminal_strategy"),
-                    "base_ambiguity_types": base[record_id].get("ambiguity_types"),
-                    "adapter_ambiguity_types": adapter[record_id].get("ambiguity_types"),
-                    "base_capability_status": base[record_id].get("capability_status"),
-                    "adapter_capability_status": adapter[record_id].get("capability_status"),
+                    "changed_prediction_fields": changed_fields,
+                    "base": base_signature,
+                    "adapter": adapter_signature,
                 })
     context_ablation: dict[str, Any] = _not_computed("required_full_or_blind_terminal_prediction_missing_or_invalid")
     if (
@@ -721,6 +824,7 @@ def _evidence_payload(
         },
         "slices": slices,
         "base_adapter_disagreements": base_adapter_disagreements if base_adapter_available else _not_computed("base_or_adapter_terminal_prediction_missing_or_invalid"),
+        "all_system_disagreements": all_system_disagreements,
         "paired_base_adapter": (
             _paired_base_adapter(ids, matrix["direct_base_llm"], matrix["t28_selected_adapter_llm"], gold, policy, analysis_policy)
             if "direct_base_llm" in matrix
@@ -730,11 +834,7 @@ def _evidence_payload(
             else _not_computed("base_or_adapter_terminal_prediction_missing_or_invalid")
         ),
         "context_ablation": context_ablation,
-        "error_atlas": (
-            _error_atlas(ids, matrix, gold)
-            if all(_eligible(eligibility[system_id], "terminal_strategy") for system_id in matrix)
-            else _not_computed("terminal_strategy_not_eligible_for_all_systems", metric_eligibility=eligibility)
-        ),
+        "error_atlas": _error_atlas(ids, matrix, gold, eligibility),
     }
 
 
@@ -761,6 +861,28 @@ def run_preflight(args: argparse.Namespace) -> None:
         raise SystemExit("t39_code_commit_invalid")
     if len(container_sha256) != 64 or any(character not in "0123456789abcdef" for character in container_sha256.lower()):
         raise SystemExit("t39_container_sha256_invalid")
+    execution_contract_path = args.execution_contract.resolve()
+    execution_contract = _load_json(execution_contract_path)
+    if execution_contract.get("status") != "T39_EXECUTION_CONTRACT_CAPTURED":
+        raise SystemExit("t39_execution_contract_status_invalid")
+    if execution_contract.get("immutable_code_commit") != code_commit:
+        raise SystemExit("t39_execution_contract_code_commit_invalid")
+    if execution_contract.get("code_root") != str(root):
+        raise SystemExit("t39_execution_contract_code_root_invalid")
+    expected_container = {"path": str(args.container.resolve()), "sha256": container_sha256}
+    if execution_contract.get("container") != expected_container:
+        raise SystemExit("t39_execution_contract_container_invalid")
+    adapter_contract = execution_contract.get("adapter") or {}
+    if adapter_contract.get("identity_sha256") != _sha256(args.adapter_identity.resolve()):
+        raise SystemExit("t39_execution_contract_adapter_identity_invalid")
+    model_contract = execution_contract.get("model") or {}
+    if model_contract.get("id") != required["base_model"] or model_contract.get("revision") != required["base_revision"]:
+        raise SystemExit("t39_execution_contract_model_identity_invalid")
+    if not isinstance(model_contract.get("snapshot_tree_sha256"), str) or not isinstance(model_contract.get("config_sha256"), str):
+        raise SystemExit("t39_execution_contract_model_bytes_missing")
+    critical_code = execution_contract.get("critical_code_sha256")
+    if not isinstance(critical_code, dict) or not critical_code:
+        raise SystemExit("t39_execution_contract_critical_code_missing")
     payload = {
         "status": "T39_PROVENANCE_PREFLIGHT_PASSED",
         "scope": "non_protected_pilot120_v1_evidence_only",
@@ -779,6 +901,14 @@ def run_preflight(args: argparse.Namespace) -> None:
         "adapter_identity": required,
         "immutable_code_commit": code_commit,
         "container": {"path": str(args.container), "sha256": container_sha256},
+        "execution_contract": {
+            "path": str(execution_contract_path),
+            "sha256": _sha256(execution_contract_path),
+            "adapter_tree_sha256": adapter_contract.get("tree_sha256"),
+            "model_snapshot_tree_sha256": model_contract.get("snapshot_tree_sha256"),
+            "model_config_sha256": model_contract.get("config_sha256"),
+            "critical_code_sha256": critical_code,
+        },
         "decoding_claim": "greedy do_sample=False; replay is an execution-reproducibility audit, not independent stochastic sampling",
         "policy_id": policy["policy_id"],
     }
@@ -798,19 +928,6 @@ def run_evidence(args: argparse.Namespace) -> None:
     )
     _write_json(args.output.resolve(), payload)
     print(json.dumps({"status": payload["status"], "systems": sorted(payload.get("prediction_sha256", {}))}, sort_keys=True))
-
-
-def _prediction_signature(row: dict[str, Any]) -> dict[str, Any]:
-    raw_output = row.get("raw_output")
-    return {
-        "terminal_strategy": row.get("terminal_strategy"),
-        "ambiguity_types": row.get("ambiguity_types"),
-        "capability_status": row.get("capability_status"),
-        "schema_valid": row.get("schema_valid"),
-        "failed": row.get("failed"),
-        "error": row.get("error"),
-        "raw_output_sha256": hashlib.sha256(str(raw_output or "").encode("utf-8")).hexdigest(),
-    }
 
 
 def _changed_prediction_records(reference_path: Path, candidate_path: Path) -> dict[str, Any]:
@@ -841,6 +958,14 @@ def run_reproducibility(args: argparse.Namespace) -> None:
             payload = _load_json(path)
             if payload.get("status") != "T39_EVIDENCE_ATLAS_COMPLETE":
                 raise ValueError(f"unexpected_status:{payload.get('status')}")
+            if payload.get("replicate_id") != replica_id:
+                raise ValueError(f"replicate_identity_invalid:{payload.get('replicate_id')}")
+            runtime_provenance = payload.get("runtime_provenance") or {}
+            if runtime_provenance.get("status") != "COMPLETE":
+                raise ValueError(f"runtime_provenance_invalid:{runtime_provenance.get('status')}")
+            contract_sha256 = runtime_provenance.get("execution_contract_sha256")
+            if not isinstance(contract_sha256, str) or len(contract_sha256) != 64:
+                raise ValueError("runtime_execution_contract_sha256_invalid")
             replicas[replica_id] = payload
         except (OSError, ValueError, json.JSONDecodeError) as exc:
             invalid[replica_id] = str(exc)
@@ -853,11 +978,17 @@ def run_reproducibility(args: argparse.Namespace) -> None:
             "valid_for_official_use": False,
             "must_not_influence_training_selection_or_tuning": True,
             "reason": "replicate_evidence_incomplete",
+            "replica_evidence_paths": {replica_id: str(path) for replica_id, path in args.replica_evidence},
             "missing_replicates": missing,
             "invalid_replicates": invalid,
         }
     else:
         reference = replicas["R1"]["prediction_sha256"]
+        execution_contracts = {
+            replica_id: str(item["runtime_provenance"]["execution_contract_sha256"])
+            for replica_id, item in sorted(replicas.items())
+        }
+        contract_mismatch = len(set(execution_contracts.values())) != 1
         differing = {
             replica_id: {
                 system_id: {"R1": reference.get(system_id), replica_id: hashes.get(system_id)}
@@ -869,10 +1000,12 @@ def run_reproducibility(args: argparse.Namespace) -> None:
             if hashes != reference
         }
         drift_report: dict[str, Any] = {
-            "status": "NO_DRIFT" if not differing else "DRIFT_DETECTED",
+            "status": "NO_DRIFT" if not differing and not contract_mismatch else "DRIFT_DETECTED",
             "reference_replicate": "R1",
             "per_replica": {},
             "runtime_conditions": {replica_id: item.get("runtime_provenance") for replica_id, item in sorted(replicas.items())},
+            "execution_contract_sha256": execution_contracts,
+            "execution_contract_drift": contract_mismatch,
         }
         for replica_id, component_hashes in differing.items():
             component_drift: dict[str, Any] = {}
@@ -889,18 +1022,21 @@ def run_reproducibility(args: argparse.Namespace) -> None:
                     component_drift[system_id] = _not_computed("prediction_drift_detail_unreadable", error=str(exc), prediction_hashes=hashes)
             drift_report["per_replica"][replica_id] = component_drift
         payload = {
-            "status": "VERIFY_PASSED" if not differing else "VERIFY_FAILED",
+            "status": "VERIFY_PASSED" if not differing and not contract_mismatch else "VERIFY_FAILED",
             "scope": "non_protected_pilot120_v1_reproducibility_only",
             "valid_for_official_use": False,
             "must_not_influence_training_selection_or_tuning": True,
+            "replica_evidence_paths": {replica_id: str(path) for replica_id, path in args.replica_evidence},
             "replicate_prediction_sha256": {replica_id: item["prediction_sha256"] for replica_id, item in sorted(replicas.items())},
             "identical_prediction_hashes_expected_under_greedy_decoding": True,
             "prediction_hash_drift": differing,
+            "execution_contract_sha256": execution_contracts,
+            "execution_contract_drift": contract_mismatch,
             "drift_report": drift_report,
             "drift_interpretation": (
-                "No drift: report execution reproducibility, not an average over independent stochastic samples."
-                if not differing
-                else "Drift detected: retain per-replicate artifacts and investigate runtime conditions; do not pool or select a best replay."
+                "No prediction or execution-contract drift: report execution reproducibility, not an average over independent stochastic samples."
+                if not differing and not contract_mismatch
+                else "Prediction or execution-contract drift detected: retain per-replicate artifacts and investigate runtime conditions; do not pool or select a best replay."
             ),
         }
     _write_json(args.output.resolve(), payload)
@@ -951,6 +1087,7 @@ def main() -> int:
     preflight.add_argument("--code-commit", required=True)
     preflight.add_argument("--container", type=Path, required=True)
     preflight.add_argument("--container-sha256", required=True)
+    preflight.add_argument("--execution-contract", type=Path, required=True)
     preflight.add_argument("--output", type=Path, required=True)
     preflight.set_defaults(run=run_preflight)
     evidence = sub.add_parser("evidence")

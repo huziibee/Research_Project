@@ -1,5 +1,7 @@
 #!/bin/bash
-# Submit exactly one same-protocol resume for one incomplete T39 component.
+# Submit exactly one clean same-protocol recovery for a failed T39 replicate.
+# The whole five-system replica is regenerated below recovery_1: no component
+# prediction from the failed attempt is reused in the final R1--R5 audit.
 set -euo pipefail
 umask 077
 : "${T39_CODE_ROOT:?}"
@@ -15,17 +17,26 @@ umask 077
 : "${T39_ADAPTER_SCALE:?}"
 : "${T39_CODE_COMMIT:?}"
 : "${T39_CONTAINER_SHA256:?}"
+: "${T39_MODEL_SNAPSHOT:?}"
 
 case "${T39_REPLICATE}" in R1|R2|R3|R4|R5) ;; *) echo "invalid_replicate:${T39_REPLICATE}" >&2; exit 2 ;; esac
-case "${T39_COMPONENT}" in direct_base|selected_adapter|manager) ;; *) echo "invalid_component:${T39_COMPONENT}" >&2; exit 2 ;; esac
-
-replicate_root="${T39_OUTPUT_ROOT}/${T39_REPLICATE}"
-marker="${replicate_root}/t39_same_protocol_recovery.tsv"
-if [[ -e "${marker}" ]]; then
-  echo "t39_recovery_already_submitted:${marker}" >&2
+case "${T39_COMPONENT}" in direct_base|selected_adapter|manager|evidence) ;; *) echo "invalid_component:${T39_COMPONENT}" >&2; exit 2 ;; esac
+if [[ ! "${T39_AFTER_JOB}" =~ ^[0-9]+$ ]]; then
+  echo "t39_after_job_invalid" >&2
   exit 2
 fi
-mkdir -p "${replicate_root}"
+
+replicate_root="${T39_OUTPUT_ROOT}/${T39_REPLICATE}"
+recovery_root="${replicate_root}/recovery_1"
+marker="${replicate_root}/t39_same_protocol_recovery.tsv"
+if [[ -e "${marker}" || -e "${recovery_root}" ]]; then
+  echo "t39_recovery_already_submitted:${replicate_root}" >&2
+  exit 2
+fi
+if [[ ! -f "${T39_OUTPUT_ROOT}/t39_provenance_preflight.json" ]] || ! grep -q '"status": "T39_PROVENANCE_PREFLIGHT_PASSED"' "${T39_OUTPUT_ROOT}/t39_provenance_preflight.json"; then
+  echo "t39_preflight_not_passed_for_recovery" >&2
+  exit 2
+fi
 if [[ ! "${T39_CODE_COMMIT}" =~ ^[0-9a-fA-F]{40}$ || ! "${T39_CONTAINER_SHA256}" =~ ^[0-9a-fA-F]{64}$ ]]; then
   echo "t39_immutable_code_or_container_hash_invalid" >&2
   exit 2
@@ -33,22 +44,25 @@ fi
 
 policy="${T39_CODE_ROOT}/configs/evaluation/pilot120_early_analysis_policy_v1.json"
 analysis_policy="${T39_CODE_ROOT}/configs/evaluation/pilot120_t39_evidence_policy_v1.json"
-common_export="ALL,T39_CODE_ROOT=${T39_CODE_ROOT},T39_OUTPUT_ROOT=${T39_OUTPUT_ROOT},T39_TRAINING_SITE_PACKAGES=${T39_TRAINING_SITE_PACKAGES},T39_HF_HOME=${T39_HF_HOME},T39_CONTAINER=${T39_CONTAINER},T39_CONTAINER_SHA256=${T39_CONTAINER_SHA256},T39_CODE_COMMIT=${T39_CODE_COMMIT},T39_SELECTED_ADAPTER=${T39_SELECTED_ADAPTER},T39_ADAPTER_IDENTITY=${T39_ADAPTER_IDENTITY},T39_ADAPTER_SCALE=${T39_ADAPTER_SCALE},T39_EARLY_POLICY=${policy},T39_ANALYSIS_POLICY=${analysis_policy}"
-case "${T39_COMPONENT}" in
-  direct_base)
-    output="${replicate_root}/direct_base"
-    script="${T39_CODE_ROOT}/cluster/pilot120/t39_direct_base.sbatch"
-    ;;
-  selected_adapter)
-    output="${replicate_root}/selected_adapter"
-    script="${T39_CODE_ROOT}/cluster/pilot120/t39_selected_adapter.sbatch"
-    ;;
-  manager)
-    output="${replicate_root}/manager"
-    script="${T39_CODE_ROOT}/cluster/pilot120/t39_manager_bundle.sbatch"
-    ;;
-esac
+execution_contract="${T39_OUTPUT_ROOT}/t39_execution_contract.json"
+common_export="ALL,T39_CODE_ROOT=${T39_CODE_ROOT},T39_OUTPUT_ROOT=${T39_OUTPUT_ROOT},T39_TRAINING_SITE_PACKAGES=${T39_TRAINING_SITE_PACKAGES},T39_HF_HOME=${T39_HF_HOME},T39_CONTAINER=${T39_CONTAINER},T39_CONTAINER_SHA256=${T39_CONTAINER_SHA256},T39_CODE_COMMIT=${T39_CODE_COMMIT},T39_SELECTED_ADAPTER=${T39_SELECTED_ADAPTER},T39_ADAPTER_IDENTITY=${T39_ADAPTER_IDENTITY},T39_ADAPTER_SCALE=${T39_ADAPTER_SCALE},T39_MODEL_SNAPSHOT=${T39_MODEL_SNAPSHOT},T39_EXECUTION_CONTRACT=${execution_contract},T39_EARLY_POLICY=${policy},T39_ANALYSIS_POLICY=${analysis_policy}"
+submit() {
+  local dependency="$1"
+  local export_values="$2"
+  local script_path="$3"
+  sbatch --parsable --dependency="${dependency}" --export="${export_values}" "${script_path}"
+}
 
-job=$(sbatch --parsable --dependency="afterany:${T39_AFTER_JOB}" --export="${common_export},T39_REPLICATE=${T39_REPLICATE},T39_COMPONENT_OUTPUT=${output}" "${script}")
-printf 'replicate\tcomponent\tjob_id\tafter_job\n%s\t%s\t%s\t%s\n' "${T39_REPLICATE}" "${T39_COMPONENT}" "${job}" "${T39_AFTER_JOB}" > "${marker}"
-printf 'recovery_job=%s marker=%s\n' "${job}" "${marker}"
+mkdir -p "${recovery_root}"
+base=$(submit "afterany:${T39_AFTER_JOB}" "${common_export},T39_REPLICATE=${T39_REPLICATE},T39_COMPONENT_OUTPUT=${recovery_root}/direct_base" "${T39_CODE_ROOT}/cluster/pilot120/t39_direct_base.sbatch")
+adapter=$(submit "afterany:${base}" "${common_export},T39_REPLICATE=${T39_REPLICATE},T39_COMPONENT_OUTPUT=${recovery_root}/selected_adapter" "${T39_CODE_ROOT}/cluster/pilot120/t39_selected_adapter.sbatch")
+manager=$(submit "afterany:${adapter}" "${common_export},T39_REPLICATE=${T39_REPLICATE},T39_COMPONENT_OUTPUT=${recovery_root}/manager" "${T39_CODE_ROOT}/cluster/pilot120/t39_manager_bundle.sbatch")
+evidence=$(submit "afterany:${manager}" "${common_export},T39_REPLICATE=${T39_REPLICATE},T39_REPLICATE_ROOT=${recovery_root}" "${T39_CODE_ROOT}/cluster/pilot120/t39_replica_evidence.sbatch")
+printf 'replicate\tfailed_component\tafter_job\trecovery_root\tbase_job\tadapter_job\tmanager_job\tevidence_job\n%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\n' \
+  "${T39_REPLICATE}" "${T39_COMPONENT}" "${T39_AFTER_JOB}" "${recovery_root}" "${base}" "${adapter}" "${manager}" "${evidence}" > "${marker}"
+printf '%s-recovery-base\t%s\tafterany:%s\n%s-recovery-adapter\t%s\tafterany:%s\n%s-recovery-manager\t%s\tafterany:%s\n%s-recovery-evidence\t%s\tafterany:%s\n' \
+  "${T39_REPLICATE}" "${base}" "${T39_AFTER_JOB}" \
+  "${T39_REPLICATE}" "${adapter}" "${base}" \
+  "${T39_REPLICATE}" "${manager}" "${adapter}" \
+  "${T39_REPLICATE}" "${evidence}" "${manager}" >> "${T39_OUTPUT_ROOT}/t39_submission_jobs.tsv"
+printf 'recovery_replicate=%s evidence_job=%s evidence_path=%s/t39_evidence_atlas.json marker=%s\n' "${T39_REPLICATE}" "${evidence}" "${recovery_root}" "${marker}"

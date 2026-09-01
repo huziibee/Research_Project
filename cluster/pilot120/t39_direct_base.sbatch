@@ -23,12 +23,24 @@ umask 077
 : "${T39_REPLICATE:?}"
 : "${T39_CODE_COMMIT:?}"
 : "${T39_CONTAINER_SHA256:?}"
+: "${T39_SELECTED_ADAPTER:?}"
+: "${T39_ADAPTER_IDENTITY:?}"
+: "${T39_MODEL_SNAPSHOT:?}"
+: "${T39_EXECUTION_CONTRACT:?}"
 cd "${T39_CODE_ROOT}"
 
 /usr/bin/apptainer exec --nv --cleanenv \
   --env "PYTHONPATH=${T39_TRAINING_SITE_PACKAGES}:${T39_CODE_ROOT}/src,T39_CODE_ROOT=${T39_CODE_ROOT},T39_CODE_COMMIT=${T39_CODE_COMMIT},T39_CONTAINER=${T39_CONTAINER},T39_CONTAINER_SHA256=${T39_CONTAINER_SHA256},T39_SLURM_JOB_ID=${SLURM_JOB_ID:-unknown},T39_SLURMD_NODENAME=${SLURMD_NODENAME:-unknown}" \
   "${T39_CONTAINER}" \
   python3 scripts/pilot120_t39_runtime_provenance.py \
+  verify-component \
+  --root "${T39_CODE_ROOT}" \
+  --container "${T39_CONTAINER}" \
+  --adapter "${T39_SELECTED_ADAPTER}" \
+  --adapter-identity "${T39_ADAPTER_IDENTITY}" \
+  --model-snapshot "${T39_MODEL_SNAPSHOT}" \
+  --code-commit "${T39_CODE_COMMIT}" \
+  --contract "${T39_EXECUTION_CONTRACT}" \
   --component direct_base \
   --replicate-id "${T39_REPLICATE}" \
   --output "${T39_COMPONENT_OUTPUT}/runtime/t39_runtime_provenance.${SLURM_JOB_ID}.json"

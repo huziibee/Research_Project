@@ -42,6 +42,10 @@ cluster inference is submitted before T39's final audit is present.
 3. Use two annotators blinded to each other and to system identity/predictions;
    publish per-field agreement, adjudication decisions, unresolved cases, and
    an immutable annotation manifest.
+   Where T39's deterministic route taxonomy needs a semantic rather than a
+   saved-field claim, independently code the pre-registered taxonomy record
+   set with the same blinding and reconciliation. Until then, human taxonomy
+   double coding remains `NOT_COMPUTED`.
 4. Before scoring, freeze a measurement-output contract. A system without a
    required output field is `NOT_COMPUTED` for that field, not imputed from its
    terminal route. The contract cannot change a manager, adapter, prompt,

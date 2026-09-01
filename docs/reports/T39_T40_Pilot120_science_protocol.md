@@ -13,22 +13,26 @@ choice, or selection.
 
 The provenance gate verifies the frozen source and gold SHA-256 values,
 the early cost policy, T39 evidence-policy SHA-256, Qwen/Qwen3-8B revision,
-selected-adapter identity/hash, immutable code commit, container image, and
-runtime environment. Five
+selected-adapter identity/hash, immutable code commit, container image, model
+snapshot, and evaluator/launcher code bytes. These form one immutable execution
+contract that is re-verified before each GPU component. Five
 fresh, isolated replay roots run the direct base, selected adapter, degree
 router, full type/risk manager, and all-context-blind manager under existing
 greedy decoding (`do_sample=False`). The three constant policies are not
 re-inferred. Replicates are serialised to stay within the approved 72-hour
 window: each root has a two-hour base job, two-hour adapter job, and eight-hour
 manager job (60 hours total), reserving 12 hours for at most one
-same-protocol recovery. The preflight is `afterok`; the adapter, manager,
+same-protocol recovery. A recovery regenerates the whole five-system root in
+`recovery_1`; it never mixes an old component prediction with a new one. The
+preflight is `afterok`; the adapter, manager,
 per-replay sentinel, and subsequent independent root continue `afterany`.
 Every sentinel emits `VERIFY_PASSED`, `VERIFY_FAILED`, or `NOT_COMPUTED`.
 
 For every valid replay, T39 re-scores terminal accuracy/macro-F1/confusion,
 asymmetric terminal cost and safety errors, ambiguity micro/macro F1 and exact
 set accuracy, capability accuracy/macro-F1/per-class outcomes, and operational
-validity/latency. It produces paired base/adapter disagreement ledgers, a
+validity/latency. It produces paired base/adapter and all-ten-pair disagreement
+ledgers, a
 descriptive full-context versus all-context-blind comparison, structural slices,
 and a traceable route-error atlas. Type slices below 15 and type-pair slices
 below 10 are count-only.
@@ -48,15 +52,17 @@ capability-context length bins; and disagreements among the five substantive
 systems. The error atlas covers false clarification, missed clarification
 unsafe execution, missed rejection unsafe execution, missed rejection, false
 rejection, the superordinate incorrect-execution flag, analysis-label error,
-deterministic-router error given the available labels are correct, schema/retry
+deterministic-router route error with saved labels matching, schema/retry
 issues, and context-sensitive full-versus-blind disagreement. Every route error
-receives two independent deterministic code passes; this is explicitly not a
-human semantic-adjudication claim.
+receives two independent deterministic rule-implementation passes; this is
+explicitly not a human semantic-adjudication claim. A human double-coded
+taxonomy remains `NOT_COMPUTED` until the separately governed annotation study.
 
 ## Interpretation rules
 
-Equal R1--R5 hashes mean reproducible execution, not five independent
-performance samples. Hash drift is a runtime/reproducibility failure and will
+Equal R1--R5 hashes plus one common execution-contract hash mean reproducible
+execution, not five independent performance samples. Prediction or contract
+hash drift is a runtime/reproducibility failure and will
 not be averaged, pooled, or used to choose a best run. The all-context ablation
 removes dialogue, scene, and capability together: it cannot prove an isolated
 context-source or causal effect. Natural dialogue-present versus absent is

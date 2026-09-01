@@ -7,7 +7,7 @@ from types import SimpleNamespace
 import pytest
 
 from scripts import pilot120_t39_evidence as t39
-from scripts.pilot120_t39_evidence import _evidence_payload, _metric_eligibility, _route_code, _route_code_second_pass, _strata
+from scripts.pilot120_t39_evidence import _all_system_disagreements, _evidence_payload, _metric_eligibility, _route_code, _route_code_second_pass, _strata
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -68,6 +68,68 @@ def test_t39_preflight_verifies_every_dependency_checked_by_gpu_evaluators(monke
         t39._verify_evaluator_frozen_dependencies(ROOT, manifest)
 
 
+def test_t39_preflight_requires_a_matching_execution_contract(monkeypatch) -> None:
+    identity_path = ROOT / "data/annotations/pilot_120_v1/gold/CA-0007.json"
+    contract_path = ROOT / "data/annotations/pilot_120_v1/STATUS.json"
+    container_path = ROOT / "data/annotations/pilot_120_v1/SOURCE_PROVENANCE.json"
+    identity = {
+        "adapter_id": "t28-tc-full-v1-1500",
+        "adapter_scale": 0.18,
+        "base_model": "Qwen/Qwen3-8B",
+        "base_revision": "b968826d9c46dd6066d109eabc6255188de91218",
+        "selected_adapter": True,
+        "pilot120_used_for_selection": False,
+        "valid_for_official_use": False,
+    }
+    code_commit = "a" * 40
+    container_sha256 = "b" * 64
+    contract = {
+        "status": "T39_EXECUTION_CONTRACT_CAPTURED",
+        "immutable_code_commit": code_commit,
+        "code_root": str(ROOT.resolve()),
+        "container": {"path": str(container_path.resolve()), "sha256": container_sha256},
+        "adapter": {"identity_sha256": t39._sha256(identity_path), "tree_sha256": "c" * 64},
+        "model": {
+            "id": "Qwen/Qwen3-8B",
+            "revision": "b968826d9c46dd6066d109eabc6255188de91218",
+            "snapshot_tree_sha256": "d" * 64,
+            "config_sha256": "e" * 64,
+        },
+        "critical_code_sha256": {"scripts/pilot120_t39_evidence.py": "f" * 64},
+    }
+    original_load_json = t39._load_json
+
+    def fake_load_json(path: Path):
+        resolved = path.resolve()
+        if resolved == identity_path.resolve():
+            return identity
+        if resolved == contract_path.resolve():
+            return contract
+        return original_load_json(path)
+
+    captured = {}
+    monkeypatch.setattr(t39, "_load_json", fake_load_json)
+    monkeypatch.setattr(t39, "_write_json", lambda _path, payload: captured.update(payload))
+    args = SimpleNamespace(
+        root=ROOT,
+        policy=ROOT / "configs/evaluation/pilot120_early_analysis_policy_v1.json",
+        analysis_policy=ROOT / "configs/evaluation/pilot120_t39_evidence_policy_v1.json",
+        adapter_identity=identity_path,
+        code_commit=code_commit,
+        container=container_path,
+        container_sha256=container_sha256,
+        execution_contract=contract_path,
+        output=ROOT / "ignored.json",
+    )
+    t39.run_preflight(args)
+    assert captured["status"] == "T39_PROVENANCE_PREFLIGHT_PASSED"
+    assert captured["execution_contract"]["sha256"] == t39._sha256(contract_path)
+
+    contract["container"] = {"path": str(container_path.resolve()), "sha256": "0" * 64}
+    with pytest.raises(SystemExit, match="execution_contract_container_invalid"):
+        t39.run_preflight(args)
+
+
 def test_evidence_payload_scores_all_five_systems_from_frozen_predictions(monkeypatch) -> None:
     gold = [json.loads(line) for line in (ROOT / "data/annotations/pilot_120_v1/pilot_120_final_gold.jsonl").read_text(encoding="utf-8").splitlines() if line]
     by_id = {
@@ -110,6 +172,26 @@ def test_evidence_payload_scores_all_five_systems_from_frozen_predictions(monkey
     assert payload["status"] == "T39_EVIDENCE_ATLAS_COMPLETE"
     assert payload["systems"]["direct_base_llm"]["terminal_strategy"]["accuracy"] == 1.0
     assert payload["context_ablation"]["status"] == "DESCRIPTIVE_ALL_CONTEXT_ABLATION_ONLY"
+    assert payload["all_system_disagreements"]["n_unordered_system_pairs"] == 10
+    thin_type = next(slice_ for slice_ in payload["slices"] if slice_["family"] == "ambiguity_type" and slice_["count_only"])
+    assert all(system["status"] == "NOT_COMPUTED" for system in thin_type["systems"].values())
+
+
+def test_all_system_disagreement_ledger_covers_each_unordered_pair_and_field() -> None:
+    matrix = {
+        "a": {"r1": {"terminal_strategy": "execute", "ambiguity_types": ["x"], "capability_status": "capable", "schema_valid": True, "failed": False, "error": None, "raw_output": "same"}},
+        "b": {"r1": {"terminal_strategy": "clarify", "ambiguity_types": ["x"], "capability_status": "capable", "schema_valid": True, "failed": False, "error": None, "raw_output": "same"}},
+        "c": {"r1": {"terminal_strategy": "clarify", "ambiguity_types": ["y"], "capability_status": "unsafe", "schema_valid": True, "failed": False, "error": None, "raw_output": "different"}},
+    }
+    ledger = _all_system_disagreements(["r1"], matrix)
+    assert ledger["status"] == "COMPLETE_SAVED_OUTPUT_PAIRWISE_LEDGER"
+    assert ledger["n_unordered_system_pairs"] == 3
+    a_b = next(pair for pair in ledger["pairs"] if pair["left_system_id"] == "a" and pair["right_system_id"] == "b")
+    assert a_b["n_disagreement_records"] == 1
+    assert a_b["records"][0]["record_id"] == "r1"
+    assert a_b["records"][0]["changed_prediction_fields"] == ["terminal_strategy"]
+    assert a_b["records"][0]["left"]["terminal_strategy"] == "execute"
+    assert a_b["records"][0]["right"]["terminal_strategy"] == "clarify"
 
 
 def test_metric_eligibility_never_treats_missing_saved_fields_as_wrong_labels() -> None:
@@ -124,6 +206,16 @@ def test_metric_eligibility_never_treats_missing_saved_fields_as_wrong_labels() 
     assert eligibility["latency_ms"]["status"] == "NOT_COMPUTED"
 
 
+def test_prediction_loader_preserves_operational_failures_for_reporting(monkeypatch) -> None:
+    rows = [
+        {"record_id": "r1", "system_id": "direct_base_llm", "schema_valid": False, "failed": True, "error": "decode"},
+        {"record_id": "r2", "system_id": "direct_base_llm", "schema_valid": True, "failed": False, "error": None},
+    ]
+    monkeypatch.setattr(t39.p120, "load_jsonl", lambda _path: rows)
+    loaded = t39._load_prediction(ROOT / "placeholder.jsonl", system_id="direct_base_llm", expected_ids=["r1", "r2"])
+    assert loaded["r1"]["failed"] is True
+
+
 def test_reproducibility_drift_names_changed_records_and_runtime(monkeypatch) -> None:
     reference_prediction = ROOT / "reference.jsonl"
     changed_prediction = ROOT / "changed.jsonl"
@@ -134,9 +226,14 @@ def test_reproducibility_drift_names_changed_records_and_runtime(monkeypatch) ->
         prediction = changed_prediction if replicate == "R2" else reference_prediction
         evidences[str(evidence_path)] = {
             "status": "T39_EVIDENCE_ATLAS_COMPLETE",
+            "replicate_id": replicate,
             "prediction_sha256": {"direct_base_llm": "changed" if replicate == "R2" else "reference"},
             "prediction_paths": {"direct_base_llm": str(prediction)},
-            "runtime_provenance": {"status": "COMPLETE", "records": {"direct_base_llm": [{"slurm": {"job_id": replicate}}]}},
+            "runtime_provenance": {
+                "status": "COMPLETE",
+                "execution_contract_sha256": "a" * 64,
+                "records": {"direct_base_llm": [{"slurm": {"job_id": replicate}}]},
+            },
         }
         evidence_paths.append((replicate, evidence_path))
     predictions = {

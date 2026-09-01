@@ -225,8 +225,8 @@ def main() -> int:
     parser.add_argument("--adapter-scale", type=float, default=1.0)
     args = parser.parse_args()
 
-    if args.base_revision != BASE_REVISION:
-        raise SystemExit("refusing non-frozen base revision")
+    if args.base_model != BASE_MODEL or args.base_revision != BASE_REVISION:
+        raise SystemExit("refusing non-frozen base model or revision")
     adapter_identity: dict[str, Any] | None = None
     adapter_id: str | None = None
     if args.adapter is None:

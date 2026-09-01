@@ -64,6 +64,23 @@ not replace, the final evidence atlas and reproducibility audit.
   `48573` completed `0:0`. R1 direct base (`48574`) then started; no GPU result
   is claimed until its prediction and evidence artifacts pass their own gates.
 
+## Attempt 3 stopped before valid inference evidence
+
+- An independent protocol review found repairable defects before any complete
+  evidence atlas existed: only two of the ten all-system disagreement pairs
+  would have been emitted; count-only slices could still contain metrics;
+  operational failures were discarded before they could be counted; recovery
+  did not regenerate an evidence atlas; and the runtime provenance did not
+  verify a single immutable execution contract across the five roots.
+- The user-authorised stop cancelled `48574`â€“`48581`. Final Slurm accounting:
+  `48574` was `CANCELLED` after 4m32s (batch exit `0:15`); `48575`â€“`48581`
+  were cancelled before execution. No prediction, partial prediction, or
+  sentinel from these cancelled jobs is an input to any result.
+- `48572` remains a valid historical five-dependency preflight and `48573`
+  remains a valid no-inference T40 inventory, but neither establishes T39
+  reproducibility or system performance. A new output root, commit, archive,
+  execution-contract preflight, and five fresh replay roots are required.
+
 ## Authority and claim boundary
 
 The user authorised the fresh T39 submission and the cluster work needed to
