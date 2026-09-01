@@ -347,7 +347,7 @@ def test_reproducibility_passes_timing_only_byte_differences(monkeypatch) -> Non
     captured = {}
     monkeypatch.setattr(t39, "_load_json", lambda path: evidences[Path(path)])
     monkeypatch.setattr(t39.p120, "load_jsonl", lambda path: predictions[Path(path)])
-    monkeypatch.setattr(t39, "_sha256", lambda path: raw_hashes[Path(path)])
+    monkeypatch.setattr(t39, "_sha256", lambda path: raw_hashes.get(Path(path), "audit-code"))
     monkeypatch.setattr(t39, "_write_json", lambda _path, payload: captured.update(payload))
     t39.run_reproducibility(SimpleNamespace(replica_evidence=evidence_paths, output=ROOT / "audit.json"))
     audit = captured

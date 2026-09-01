@@ -1103,6 +1103,11 @@ def run_reproducibility(args: argparse.Namespace) -> None:
             "scope": "non_protected_pilot120_v1_reproducibility_only",
             "valid_for_official_use": False,
             "must_not_influence_training_selection_or_tuning": True,
+            "reproducibility_audit_code": {
+                "path": str(Path(__file__).resolve()),
+                "sha256": _sha256(Path(__file__).resolve()),
+                "role": "post-inference audit only; it did not generate, edit, or select a prediction",
+            },
             "replica_evidence_paths": {replica_id: str(path) for replica_id, path in args.replica_evidence},
             "replicate_raw_prediction_sha256": {replica_id: item["prediction_sha256"] for replica_id, item in sorted(replicas.items())},
             "replicate_prediction_replay_content_sha256": {replica_id: replay_content_hashes[replica_id] for replica_id in sorted(replicas)},
