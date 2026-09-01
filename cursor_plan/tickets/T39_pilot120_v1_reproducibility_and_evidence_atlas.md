@@ -1,6 +1,6 @@
 # T39 — Pilot-120 v1 reproducibility and evidence atlas
 
-**Status:** APPROVED_EXECUTION_NON_OFFICIAL — FRESH_ATTEMPT_3_REQUIRED
+**Status:** APPROVED_EXECUTION_NON_OFFICIAL — ATTEMPT_3_RUNNING
 
 ## Goal
 
@@ -45,6 +45,12 @@ valid, but R1/R2 are `NOT_COMPUTED` sentinels. Attempt 3 uses a new output root,
 a five-dependency preflight, byte-preserving archive, and scheduler-safe
 R1/R2-then-R3–R5 staging. The exact record is in
 `docs/reports/T39_T40_EXECUTION_LOG_20260831.md`.
+
+Attempt 3 is now running from commit
+`78ce05d29f0dca2fb816e290b401ad0fd7743678`: preflight `48572` passed and
+R1 base `48574` started. This changes no acceptance criterion; it is not a
+scientific result until all five replica artifacts and the final audit are
+terminal.
 
 ## Acceptance criteria
 
