@@ -15,6 +15,7 @@ set -euo pipefail
 umask 077
 : "${T39_INFERENCE_CODE_ROOT:?}"
 : "${T39_AUDIT_CODE_ROOT:?}"
+: "${T39_ORCHESTRATION_CODE_ROOT:?}"
 : "${T39_OUTPUT_ROOT:?}"
 : "${T39_R4_EVIDENCE_JOB:?}"
 : "${T39_TRAINING_SITE_PACKAGES:?}"
@@ -61,7 +62,7 @@ audit_submission=$(env \
   T39_OUTPUT_ROOT="${T39_OUTPUT_ROOT}" T39_TRAINING_SITE_PACKAGES="${T39_TRAINING_SITE_PACKAGES}" \
   T39_CONTAINER="${T39_CONTAINER}" \
   T39_EVIDENCE_JOB_IDS="48626:48631:48696:${T39_R4_EVIDENCE_JOB}:${r5_evidence}" \
-  bash "${T39_AUDIT_CODE_ROOT}/cluster/pilot120/submit_t39_reproducibility_audit.sh")
+  bash "${T39_ORCHESTRATION_CODE_ROOT}/cluster/pilot120/submit_t39_reproducibility_audit.sh")
 
 temporary="${result}.tmp"
 printf 'artifact\tvalue\nr5_submission\t%s\nr5_evidence_job\t%s\naudit_submission\t%s\n' \
