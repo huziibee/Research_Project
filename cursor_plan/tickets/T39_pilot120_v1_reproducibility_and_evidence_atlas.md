@@ -1,6 +1,6 @@
 # T39 - Pilot-120 v1 reproducibility and evidence atlas
 
-**Status:** APPROVED_EXECUTION_NON_OFFICIAL - ATTEMPT_3_CANCELLED_FOR_PROTOCOL_REPAIR
+**Status:** APPROVED_EXECUTION_NON_OFFICIAL - ATTEMPT_5_RUNNING_AFTER_VALID_PREFLIGHT
 
 ## Goal
 
@@ -60,6 +60,12 @@ and remote frozen bytes but was stopped before any GPU work: the new model-tree
 hasher used whole-file reads that were unsafe for the declared preflight memory
 limit. Jobs `48586`-`48595` were cancelled; the streaming-hash correction must
 be rearchived and run in another new root. No cancelled output is evidence.
+
+Attempt 5 from `7d645d643a3ec3594e116ebede7ab536a964d8b6` has a passed
+execution-contract preflight (`48597`) and completed T40 audit (`48598`);
+R1 base `48599` is resource-pending. The fresh root and all job IDs are logged
+in `docs/reports/T39_T40_EXECUTION_LOG_20260831.md`. There is still no GPU
+prediction result until a replica evidence atlas is terminal.
 
 ## Acceptance criteria
 

@@ -96,6 +96,27 @@ not replace, the final evidence atlas and reproducibility audit.
   that rejects any return to whole-file `read_bytes()` hashing. It requires a
   new commit, archive, code root and output root before another submission.
 
+## Attempt 5: valid execution-contract gate and T40 audit
+
+- Immutable code commit: `7d645d643a3ec3594e116ebede7ab536a964d8b6`.
+  The byte-verified archive SHA-256 is
+  `57d936324702424e8955eebcffce75b12e6f56449c6f863a222b4c6564af5df5`;
+  its remote extraction independently reproduced all five frozen evaluator
+  dependencies before submission.
+- Output root:
+  `/home-mscluster/mbangie/t28_r5_src/outputs/pilot_120/t39_20260901_7d645d6`.
+  Submitted jobs: preflight `48597`; T40 `48598`; R1 base/adapter/manager/
+  evidence `48599`â€“`48602`; R2 base/adapter/manager/evidence
+  `48603`â€“`48606`.
+- `48597` completed `0:0` in 1m14s with
+  `T39_PROVENANCE_PREFLIGHT_PASSED`. It records one execution-contract SHA
+  (`e1d19aa2306375fa1a97e7c44b540a30bfc883fe9b900bf75682beae64b583dc`),
+  model snapshot tree SHA, selected-adapter tree SHA, container SHA, immutable
+  code commit, and all five evaluator-frozen hashes. `48598` completed `0:0`
+  and produced the T40 no-inference requirements audit.
+- R1 base `48599` is scheduler-pending for resources. No GPU prediction,
+  evidence-atlas metric, or reproducibility result is claimed at this point.
+
 ## Authority and claim boundary
 
 The user authorised the fresh T39 submission and the cluster work needed to
