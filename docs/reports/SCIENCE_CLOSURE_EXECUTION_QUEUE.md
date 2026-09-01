@@ -4,8 +4,8 @@
 science claim before any final supervisor dossier is assembled. This is not a
 results document and does not convert a planned task into a completed result.
 
-**Last verified state:** 2026-09-01, Pilot-120 v1 T39 attempt 5 invalid CPU
-fallback; T45 complete locally.
+**Last verified state:** 2026-09-01, Pilot-120 v1 T39 attempt 6 is GPU-gated:
+R1 and R2 have valid evidence atlases, R3 is active; T45 is complete locally.
 
 ## Non-negotiable rule
 
@@ -19,15 +19,15 @@ example, `VERIFY_PASSED`) are diagnostic detail, not a substitute control state.
 
 | Gate | State | Evidence | Consequence |
 |---|---|---|---|
-| T39 static execution contract | `PASS`, superseded for fresh inference | `48597`; `/home-mscluster/mbangie/t28_r5_src/outputs/pilot_120/t39_20260901_7d645d6/t39_provenance_preflight.json` | Frozen bytes were bound, but a new contract is required because GPU-admission code changes. |
-| T40 availability audit | `PASS` | `48598`; `/home-mscluster/mbangie/t28_r5_src/outputs/pilot_120/t39_20260901_7d645d6/t40_interpretation_requirements_audit.json` | Existing Pilot gold cannot support intent/CPC/candidate/resolution/wording/silent-resolution claims. |
-| T39 five-replay evidence and final audit | `WAITING` | `48599` CPU fallback with zero rows; `48600`-`48606` cancelled | The entire invalid chain is excluded from all five replica outputs, atlases and final audit. A fresh archive/root must pass code/frozen and GPU runtime preflight first. |
+| T39 static execution contract | `PASS` for fresh GPU inference | `48620`; `/home-mscluster/mbangie/t28_r5_src/outputs/pilot_120/t39_20260901_6d71aff_gpu/t39_provenance_preflight.json` | The immutable GPU-gated archive binds frozen bytes; no CPU or <90-GiB runtime is eligible. |
+| T40 availability audit | `PASS` | `48621`; `/home-mscluster/mbangie/t28_r5_src/outputs/pilot_120/t39_20260901_6d71aff_gpu/t40_interpretation_requirements_audit.json` | Existing Pilot gold cannot support intent/CPC/candidate/resolution/wording/silent-resolution claims. |
+| T39 five-replay evidence and final audit | `RUNNING` | GPU preflight `48622`; R1 `48623`--`48626` and R2 `48627`, `48628`, `48630`, `48631` terminal with valid atlases; R3 `48693`--`48696` active | R4/R5 and the terminal audit remain required. Raw file hashes are integrity evidence; the replay-content audit normalises finite numeric latency telemetry only. |
 
 ## Closure queue
 
 | Queue ID | Closes | Current state | Prerequisites before completion work | Terminal evidence required | Earliest execution lane |
 |---|---|---|---|---|---|
-| Q39-A | fresh terminal/cost/safety, ambiguity/capability, operations, slices, all-system disagreements, descriptive all-context ablation, deterministic taxonomy, greedy replay reproducibility | `WAITING` for fresh GPU-gated attempt; no valid GPU prediction yet | R1-R5 fresh outputs, per-component CUDA/VRAM/node attestation, and one evidence atlas per replica; no CPU/under-memory runtime is eligible | Five `t39_evidence_atlas.json` files plus `t39_reproducibility_audit.json` | Cluster after the new immutable archive and GPU admission job are submitted |
+| Q39-A | fresh terminal/cost/safety, ambiguity/capability, operations, slices, all-system disagreements, descriptive all-context ablation, deterministic taxonomy, greedy replay reproducibility | `RUNNING`: R1/R2 valid, R3 active; no pooled result or reproducibility claim | R3-R5 fresh outputs, per-component CUDA/VRAM/node attestation, and one evidence atlas per replica; no CPU/under-memory runtime is eligible | Five `t39_evidence_atlas.json` files plus latency-aware `t39_reproducibility_audit.json` | Serial GPU continuation, then CPU audit |
 | Q45 / T45 | historical T31 direct-base cost reconciliation and evidence-only early-output slice/disagreement report | `PASS` (`VERIFY_PASSED`) CPU-only, non-official | Exact historical prediction/policy/source/gold bytes and all eight saved system outputs were recovered without inference | Byte/provenance reconciliation plus no-new-inference slice report; hashes recorded in T45 ticket | Complete; excluded from final scientific claims until the full dossier gate |
 | Q41 | interpretation/CPC/candidate exactness; resolution; clarification/rejection target and wording; silent-resolution value; human semantic taxonomy coding | Protocol-approved, **not queued and not complete** | T39 final audit; frozen sidecar schema; two independent blinded annotators; adjudication plan; measurement-output contract | Sidecar source/annotation/decision manifests, agreement/adjudication artifact, field-score artifact, claim-to-gold crosswalk | Human-review and CPU validation after the gate |
 | Q42 | single-ambiguity performance | Protocol-approved, **not queued and not complete** | A genuinely new source corpus; licence/source audit; immutable exclusion ledger; double annotation and adjudication; validator proving exactly one unresolved ambiguity instance of exactly one type and no secondary ambiguity | Frozen source/gold/protocol/exclusion manifests, validator result, fixed-system evaluation and support report | Corpus/annotation lane first; cluster inference only after freeze |

@@ -1,5 +1,6 @@
 #!/bin/bash
-# Final CPU-only R1--R5 hash audit; non-identical greedy replay hashes are a VERIFY_FAILED result.
+# Final CPU-only R1--R5 audit. Raw hashes prove artifact integrity; identical
+# latency-normalised replay-content hashes establish greedy reproducibility.
 #SBATCH --job-name=p120-t39-repro-audit
 #SBATCH --partition=bigbatch
 #SBATCH --nodes=1
@@ -16,7 +17,12 @@ umask 077
 : "${T39_TRAINING_SITE_PACKAGES:?}"
 : "${T39_CONTAINER:?}"
 : "${T39_OUTPUT_ROOT:?}"
-cd "${T39_CODE_ROOT}"
+T39_AUDIT_CODE_ROOT="${T39_AUDIT_CODE_ROOT:-${T39_CODE_ROOT}}"
+if [[ ! -f "${T39_AUDIT_CODE_ROOT}/scripts/pilot120_t39_evidence.py" ]]; then
+  echo "t39_audit_code_root_invalid:${T39_AUDIT_CODE_ROOT}" >&2
+  exit 2
+fi
+cd "${T39_AUDIT_CODE_ROOT}"
 
 r1_evidence="${T39_R1_EVIDENCE:-${T39_OUTPUT_ROOT}/R1/t39_evidence_atlas.json}"
 r2_evidence="${T39_R2_EVIDENCE:-${T39_OUTPUT_ROOT}/R2/t39_evidence_atlas.json}"
@@ -25,9 +31,9 @@ r4_evidence="${T39_R4_EVIDENCE:-${T39_OUTPUT_ROOT}/R4/t39_evidence_atlas.json}"
 r5_evidence="${T39_R5_EVIDENCE:-${T39_OUTPUT_ROOT}/R5/t39_evidence_atlas.json}"
 
 exec /usr/bin/apptainer exec --cleanenv \
-  --env "PYTHONPATH=${T39_TRAINING_SITE_PACKAGES}:${T39_CODE_ROOT}/src" \
+  --env "PYTHONPATH=${T39_TRAINING_SITE_PACKAGES}:${T39_AUDIT_CODE_ROOT}/src" \
   "${T39_CONTAINER}" \
-  python3 scripts/pilot120_t39_evidence.py \
+  python3 "${T39_AUDIT_CODE_ROOT}/scripts/pilot120_t39_evidence.py" \
   --root "${T39_CODE_ROOT}" \
   --policy "${T39_CODE_ROOT}/configs/evaluation/pilot120_early_analysis_policy_v1.json" \
   --analysis-policy "${T39_CODE_ROOT}/configs/evaluation/pilot120_t39_evidence_policy_v1.json" \

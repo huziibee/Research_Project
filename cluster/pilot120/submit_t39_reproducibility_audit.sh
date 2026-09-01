@@ -7,6 +7,7 @@ umask 077
 : "${T39_TRAINING_SITE_PACKAGES:?}"
 : "${T39_CONTAINER:?}"
 : "${T39_EVIDENCE_JOB_IDS:?}"
+T39_AUDIT_CODE_ROOT="${T39_AUDIT_CODE_ROOT:-${T39_CODE_ROOT}}"
 
 if [[ ! -d "${T39_OUTPUT_ROOT}" || ! -f "${T39_OUTPUT_ROOT}/t39_submission_jobs.tsv" ]]; then
   echo "t39_initial_staging_manifest_missing" >&2
@@ -57,7 +58,7 @@ r3_evidence=$(select_evidence R3)
 r4_evidence=$(select_evidence R4)
 r5_evidence=$(select_evidence R5)
 dependency=$(IFS=:; printf '%s' "${evidence_jobs[*]}")
-export_values="ALL,T39_CODE_ROOT=${T39_CODE_ROOT},T39_OUTPUT_ROOT=${T39_OUTPUT_ROOT},T39_TRAINING_SITE_PACKAGES=${T39_TRAINING_SITE_PACKAGES},T39_CONTAINER=${T39_CONTAINER},T39_R1_EVIDENCE=${r1_evidence},T39_R2_EVIDENCE=${r2_evidence},T39_R3_EVIDENCE=${r3_evidence},T39_R4_EVIDENCE=${r4_evidence},T39_R5_EVIDENCE=${r5_evidence}"
+export_values="ALL,T39_CODE_ROOT=${T39_CODE_ROOT},T39_AUDIT_CODE_ROOT=${T39_AUDIT_CODE_ROOT},T39_OUTPUT_ROOT=${T39_OUTPUT_ROOT},T39_TRAINING_SITE_PACKAGES=${T39_TRAINING_SITE_PACKAGES},T39_CONTAINER=${T39_CONTAINER},T39_R1_EVIDENCE=${r1_evidence},T39_R2_EVIDENCE=${r2_evidence},T39_R3_EVIDENCE=${r3_evidence},T39_R4_EVIDENCE=${r4_evidence},T39_R5_EVIDENCE=${r5_evidence}"
 audit=$(sbatch --parsable --dependency="afterany:${dependency}" --export="${export_values}" "${T39_CODE_ROOT}/cluster/pilot120/t39_reproducibility_audit.sbatch")
 printf 'reproducibility-audit\t%s\tafterany:%s\n' "${audit}" "${dependency}" >> "${T39_OUTPUT_ROOT}/t39_submission_jobs.tsv"
 printf 'audit_job\toutput_root\tr1_evidence\tr2_evidence\tr3_evidence\tr4_evidence\tr5_evidence\n%s\t%s\t%s\t%s\t%s\t%s\t%s\n' \
