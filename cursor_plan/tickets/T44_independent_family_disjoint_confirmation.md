@@ -1,6 +1,6 @@
 # T44 — Independent family-disjoint confirmation
 
-**Status:** APPROVED_POST_GATE_PROTOCOL_AND_EXECUTION
+**Status:** CPU_READINESS_VERIFIED; HELD-OUT STUDY NOT QUEUED; RESULTS NOT COMPUTED
 
 Create a held-out confirmation corpus with no record, paraphrase lineage or
 scenario-family overlap with Pilot-120, T42, or any future T41 new source
@@ -18,3 +18,16 @@ manifests; full denominator and metric-eligibility report; claim-to-artifact
 gate for only a narrow held-out-corpus generalisation (never real-world safety,
 general superiority, or protected/official completion) or explicit
 `NOT_COMPUTED`.
+
+## CPU-only readiness record (2026-09-01)
+
+`scripts/pilot120_t44_readiness.py` and its four versioned templates now build
+a hash-only Pilot reference and reject incomplete licence, provenance or
+three-axis exclusion evidence. The validator requires a reviewed result for
+each record/paraphrase-or-derivation/scenario-family comparison against Pilot,
+T41 new-source material and T42; an absent future corpus remains
+`NOT_COMPUTED`, never a silent no-overlap result.
+
+No new licensable corpus, frozen T41/T42 references, human review, annotation,
+adjudication or held-out inference artifact exists yet. The readiness control
+does not support a confirmation or generalisation claim.
