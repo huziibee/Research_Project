@@ -1,0 +1,200 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "t41_interpretation_sidecar_contract_v1",
+  "contract_id": "t41_interpretation_sidecar_contract_v1",
+  "version": "1.0.0",
+  "status": "READINESS_ONLY_NO_ANNOTATIONS",
+  "valid_for_official_use": false,
+  "scope": "post_t39_independent_human_interpretation_evaluation",
+  "boundary": {
+    "pilot120_unchanged": true,
+    "forbidden": [
+      "Pilot-120 labels or fields",
+      "manager, adapter, prompt, decoder, threshold, or model changes",
+      "training, selection, or tuning use",
+      "new inference during readiness work"
+    ],
+    "readiness_artifact_is_not_a_result": true
+  },
+  "sidecar_record_schema": {
+    "type": "object",
+    "additionalProperties": false,
+    "required": [
+      "record_id",
+      "source_study_id",
+      "study_split",
+      "source_lineage_id",
+      "scenario_family_id",
+      "source_fingerprint_sha256",
+      "input_fingerprint_sha256",
+      "annotation_status",
+      "gold"
+    ],
+    "properties": {
+      "record_id": {"type": "string", "minLength": 1},
+      "source_study_id": {"type": "string", "minLength": 1, "not": {"const": "pilot_120_v1"}},
+      "study_split": {"type": "string", "enum": ["development", "confirmation"]},
+      "source_lineage_id": {"type": "string", "minLength": 1},
+      "scenario_family_id": {"type": "string", "minLength": 1},
+      "source_fingerprint_sha256": {"$ref": "#/$defs/sha256"},
+      "input_fingerprint_sha256": {"$ref": "#/$defs/sha256"},
+      "annotation_status": {"type": "string", "enum": ["draft", "double_coded", "adjudicated"]},
+      "gold": {"$ref": "#/$defs/gold"}
+    }
+  },
+  "review_packet_schema": {
+    "type": "object",
+    "additionalProperties": false,
+    "required": [
+      "review_assignment_id",
+      "record_id",
+      "reviewer_pseudonym",
+      "blinding",
+      "schema_version",
+      "labels"
+    ],
+    "properties": {
+      "review_assignment_id": {"type": "string", "minLength": 1},
+      "record_id": {"type": "string", "minLength": 1},
+      "reviewer_pseudonym": {"type": "string", "minLength": 1},
+      "blinding": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["blind_to_system_identity", "blind_to_system_prediction", "blind_to_other_reviewer_labels"],
+        "properties": {
+          "blind_to_system_identity": {"const": true},
+          "blind_to_system_prediction": {"const": true},
+          "blind_to_other_reviewer_labels": {"const": true}
+        }
+      },
+      "schema_version": {"const": "1.0.0"},
+      "labels": {"$ref": "#/$defs/gold"}
+    }
+  },
+  "$defs": {
+    "sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "evidence_span": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["input_part", "start", "end", "text_sha256"],
+      "properties": {
+        "input_part": {"type": "string", "enum": ["command", "dialogue", "scene", "capability"]},
+        "start": {"type": "integer", "minimum": 0},
+        "end": {"type": "integer", "minimum": 1},
+        "text_sha256": {"$ref": "#/$defs/sha256"}
+      }
+    },
+    "intent": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["label", "evidence_spans"],
+      "properties": {
+        "label": {"type": "string", "minLength": 1},
+        "evidence_spans": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/evidence_span"}}
+      }
+    },
+    "cpc": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["slots", "critical_slots", "evidence_spans"],
+      "properties": {
+        "slots": {"type": "object"},
+        "critical_slots": {"type": "array", "items": {"type": "string"}},
+        "evidence_spans": {"type": "array", "items": {"$ref": "#/$defs/evidence_span"}}
+      }
+    },
+    "candidate": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["candidate_id", "canonical_interpretation", "cpc_slots", "admissible", "evidence_spans"],
+      "properties": {
+        "candidate_id": {"type": "string", "minLength": 1},
+        "canonical_interpretation": {"type": "string", "minLength": 1},
+        "cpc_slots": {"type": "object"},
+        "admissible": {"type": "boolean"},
+        "evidence_spans": {"type": "array", "items": {"$ref": "#/$defs/evidence_span"}}
+      }
+    },
+    "resolution": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["permitted", "values", "evidence_spans", "safety_rationale"],
+      "properties": {
+        "permitted": {"type": "boolean"},
+        "values": {"type": "object"},
+        "evidence_spans": {"type": "array", "items": {"$ref": "#/$defs/evidence_span"}},
+        "safety_rationale": {"type": "string"}
+      }
+    },
+    "response_target": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["required", "targets", "wording_criteria"],
+      "properties": {
+        "required": {"type": "boolean"},
+        "targets": {"type": "array", "items": {"type": "string"}},
+        "wording_criteria": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["must_convey", "must_not_convey", "acceptable_paraphrase"],
+          "properties": {
+            "must_convey": {"type": "array", "items": {"type": "string"}},
+            "must_not_convey": {"type": "array", "items": {"type": "string"}},
+            "acceptable_paraphrase": {"type": "boolean"}
+          }
+        }
+      }
+    },
+    "gold": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["intent", "cpc", "candidate_set", "resolution", "clarification", "rejection", "silent_resolution"],
+      "properties": {
+        "intent": {"$ref": "#/$defs/intent"},
+        "cpc": {"$ref": "#/$defs/cpc"},
+        "candidate_set": {"type": "array", "items": {"$ref": "#/$defs/candidate"}},
+        "resolution": {"$ref": "#/$defs/resolution"},
+        "clarification": {"$ref": "#/$defs/response_target"},
+        "rejection": {"$ref": "#/$defs/response_target"},
+        "silent_resolution": {"$ref": "#/$defs/resolution"}
+      }
+    }
+  },
+  "adjudication_contract": {
+    "required_reviewers": 2,
+    "reviewer_assignments_must_be_distinct": true,
+    "reviewers_blind_to": ["system identity", "system predictions", "each other's labels"],
+    "adjudicator_blind_to": ["system identity", "system predictions"],
+    "field_level_agreement_required": ["intent", "cpc", "candidate_set", "resolution", "clarification", "rejection", "silent_resolution"],
+    "adjudication_record_required_fields": ["record_id", "review_assignment_ids", "field_agreement", "adjudicated_gold", "adjudicator_pseudonym", "decision_rationale"],
+    "immutable_inputs_required": ["source manifest", "sidecar JSONL", "review-A JSONL", "review-B JSONL", "adjudication JSONL", "scoring contract"]
+  },
+  "scoring_contract": {
+    "only_adjudicated_records_are_eligible": true,
+    "claim_to_gold_coverage": {
+      "intent_exactness": ["gold.intent"],
+      "cpc_exactness_and_slot_prf": ["gold.cpc"],
+      "candidate_set_precision_recall_f1_and_exact_set": ["gold.candidate_set"],
+      "resolution_value_correctness": ["gold.resolution"],
+      "clarification_target_and_wording_correctness": ["gold.clarification"],
+      "rejection_target_and_wording_correctness": ["gold.rejection"],
+      "silent_resolution_value_correctness": ["gold.silent_resolution"]
+    },
+    "metric_rules": {
+      "intent_exactness": "exact canonical intent label equality",
+      "cpc": "exact canonical slot map plus per-slot precision, recall, and F1; report critical slots separately",
+      "candidate_set": "one-to-one matching against admissible gold candidates; report precision, recall, F1, and exact-set accuracy",
+      "resolution": "compare every selected slot value, permitted flag, supporting evidence, and safety rationale against adjudicated gold",
+      "clarification_and_rejection": "score decision, target set, and frozen semantic wording criteria separately; do not use literal-string equality as the wording metric",
+      "silent_resolution": "score only when a permitted value/evidence/safety target exists; route correctness alone is insufficient"
+    },
+    "not_computed_rule": "If a required adjudicated target or required system output is absent, emit NOT_COMPUTED with the missing field; never substitute terminal-route correctness.",
+    "prohibited_uses": ["model selection", "prompt tuning", "threshold tuning", "manager tuning", "adapter tuning"]
+  },
+  "current_state": {
+    "annotations_present": false,
+    "scores_present": false,
+    "all_interpretation_claims": "NOT_COMPUTED",
+    "blocker": "Independent licensed source material, two blinded review packets, adjudication, immutable manifests, and fixed-system output fields are absent."
+  }
+}

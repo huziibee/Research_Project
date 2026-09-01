@@ -1,0 +1,63 @@
+{
+  "manifest_id": "t42_single_ambiguity_study_scaffold_v1",
+  "version": "1.0.0",
+  "status": "READINESS_ONLY_NOT_FROZEN",
+  "valid_for_official_use": false,
+  "scope": "post_t39_independent_single_ambiguity_study",
+  "boundary": {
+    "not_a_pilot120_subset": true,
+    "not_the_deferred_plus_80_extension": true,
+    "no_source_records_or_annotations_in_this_artifact": true,
+    "no_inference": true,
+    "forbidden": ["manager changes", "adapter changes", "prompt changes", "decoder changes", "threshold changes", "model selection", "Pilot-120 data changes"]
+  },
+  "record_contract": {
+    "required_fields": [
+      "record_id",
+      "source_record_id",
+      "source_corpus_id",
+      "source_license_id",
+      "source_lineage_id",
+      "scenario_family_id",
+      "source_fingerprint_sha256",
+      "input_fingerprint_sha256",
+      "annotation_status",
+      "unresolved_ambiguity_instances",
+      "secondary_ambiguity_instances",
+      "eligibility_assertions",
+      "adjudication"
+    ],
+    "unresolved_ambiguity_instance_required_fields": ["ambiguity_instance_id", "ambiguity_type", "resolution_status", "evidence_spans"],
+    "exactly_one_rule": "unresolved_ambiguity_instances has length exactly one; its ambiguity_type is one non-empty scalar string and its resolution_status is unresolved",
+    "no_secondary_rule": "secondary_ambiguity_instances is an empty list and every eligibility assertion is true",
+    "adjudication_rule": "annotation_status is adjudicated; two distinct blind reviewer assignments and a final adjudication are required"
+  },
+  "eligibility_assertions_required": ["exactly_one_unresolved_ambiguity", "exactly_one_ambiguity_type", "no_secondary_ambiguity"],
+  "exclusion_ledger_contract": {
+    "required_comparators": ["pilot_120_v1", "t41_interpretation_sidecar", "t44_independent_confirmation"],
+    "required_row_fields": ["record_id", "source_lineage_id", "scenario_family_id", "input_fingerprint_sha256", "comparators"],
+    "pass_value": "no_overlap",
+    "failure_conditions": ["record_id overlap", "input fingerprint overlap", "source lineage overlap", "scenario family overlap"],
+    "future_source_rule": "T42 cannot freeze until T41 and T44 source ledgers are available and every comparator is no_overlap."
+  },
+  "frozen_manifest_requirements": {
+    "required_status": "T42_STUDY_FROZEN_MANIFEST",
+    "required_fields": ["freeze_id", "records_sha256", "record_ids", "source_audit_sha256", "exclusion_ledger_sha256", "protocol_sha256", "fixed_inference_configuration_sha256", "eligibility_validation_status"],
+    "required_validation_status": "T42_SINGLE_AMBIGUITY_ELIGIBILITY_PASSED",
+    "fixed_inference_configuration": "must name already-fixed system identities and byte hashes; it cannot be used to select or tune systems"
+  },
+  "analysis_contract": {
+    "metrics_only_after_freeze": true,
+    "eligible_strata": "report support-qualified strata and label smaller strata count-only",
+    "uncertainty_scope": "limited to this independently frozen corpus and eligible strata",
+    "safety_limitation": "single-ambiguity evidence does not establish compound-ambiguity, causal-context, or generalisation claims"
+  },
+  "current_state": {
+    "source_audit": "NOT_COMPUTED",
+    "eligibility_validation": "NOT_COMPUTED",
+    "exclusion_ledger": "NOT_COMPUTED",
+    "frozen_manifest": "NOT_COMPUTED",
+    "metrics": "NOT_COMPUTED",
+    "blocker": "No independently licensed source corpus, blind annotations/adjudication, or T41/T44 comparison ledgers have been supplied."
+  }
+}
