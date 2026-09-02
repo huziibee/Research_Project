@@ -4,8 +4,10 @@
 science claim before any final supervisor dossier is assembled. This is not a
 results document and does not convert a planned task into a completed result.
 
-**Last verified state:** 2026-09-01, Pilot-120 v1 T39 attempt 6 is GPU-gated:
-R1 and R2 have valid evidence atlases, R3 is active; T45 is complete locally.
+**Last verified state:** 2026-09-02. T39 attempt 6 has five valid fresh GPU
+replicas and a terminal `VERIFY_PASSED` reproducibility audit; T45 is complete
+locally. This establishes bounded Pilot-120 execution reproducibility, not an
+official or generalised result.
 
 ## Non-negotiable rule
 
@@ -21,13 +23,13 @@ example, `VERIFY_PASSED`) are diagnostic detail, not a substitute control state.
 |---|---|---|---|
 | T39 static execution contract | `PASS` for fresh GPU inference | `48620`; `/home-mscluster/mbangie/t28_r5_src/outputs/pilot_120/t39_20260901_6d71aff_gpu/t39_provenance_preflight.json` | The immutable GPU-gated archive binds frozen bytes; no CPU or <90-GiB runtime is eligible. |
 | T40 availability audit | `PASS` | `48621`; `/home-mscluster/mbangie/t28_r5_src/outputs/pilot_120/t39_20260901_6d71aff_gpu/t40_interpretation_requirements_audit.json` | Existing Pilot gold cannot support intent/CPC/candidate/resolution/wording/silent-resolution claims. |
-| T39 five-replay evidence and final audit | `RUNNING` | GPU preflight `48622`; R1 `48623`--`48626` and R2 `48627`, `48628`, `48630`, `48631` terminal with valid atlases; R3 `48693`--`48696` active; R4 `48701`--`48704` dependency-queued; CPU dispatcher `48708` | The dispatcher submits R5 after R3 evidence and final audit after R4 evidence. Raw file hashes are integrity evidence; the replay-content audit normalises finite numeric latency telemetry only. |
+| T39 five-replay evidence and final audit | `PASS` (`VERIFY_PASSED`) | Five evidence atlases R1--R5; valid job chains `48623`--`48626`, `48627`/`48628`/`48630`/`48631`, `48693`--`48696`, `48701`--`48704`, and `48730`--`48733`; final audit `48791`; `t39_reproducibility_audit.json` SHA-256 `b803771c0fcd4a22b3da344e2d0647ebc46fe2a5d6823a8116eb91978630f081` | All five roots share execution-contract `0f414fc37af907a1e123397463646c85c9edf9db44d8308b079b1efd1974743f`; raw-byte integrity passed and replay content is identical when only finite numeric latency telemetry is normalised. |
 
 ## Closure queue
 
 | Queue ID | Closes | Current state | Prerequisites before completion work | Terminal evidence required | Earliest execution lane |
 |---|---|---|---|---|---|
-| Q39-A | fresh terminal/cost/safety, ambiguity/capability, operations, slices, all-system disagreements, descriptive all-context ablation, deterministic taxonomy, greedy replay reproducibility | `RUNNING`: R1/R2 valid, R3 active; no pooled result or reproducibility claim | R3-R5 fresh outputs, per-component CUDA/VRAM/node attestation, and one evidence atlas per replica; no CPU/under-memory runtime is eligible | Five `t39_evidence_atlas.json` files plus latency-aware `t39_reproducibility_audit.json` | Serial GPU continuation, then CPU audit |
+| Q39-A | fresh terminal/cost/safety, ambiguity/capability, operations, slices, all-system disagreements, descriptive all-context ablation, deterministic taxonomy, greedy replay reproducibility | `PASS` (`VERIFY_PASSED`): five fresh, valid GPU replicas and final audit | No CPU/under-memory runtime is eligible; each accepted component has attested CUDA/VRAM/node provenance | Five `t39_evidence_atlas.json` files plus latency-aware `t39_reproducibility_audit.json` | Complete; results require bounded, non-official interpretation in the supervisor dossier |
 | Q45 / T45 | historical T31 direct-base cost reconciliation and evidence-only early-output slice/disagreement report | `PASS` (`VERIFY_PASSED`) CPU-only, non-official | Exact historical prediction/policy/source/gold bytes and all eight saved system outputs were recovered without inference | Byte/provenance reconciliation plus no-new-inference slice report; hashes recorded in T45 ticket | Complete; excluded from final scientific claims until the full dossier gate |
 | Q41 | interpretation/CPC/candidate exactness; resolution; clarification/rejection target and wording; silent-resolution value; human semantic taxonomy coding | CPU readiness verified; **human study not queued; results not computed** | T39 final audit; independent source/sidecar; two independent blinded annotators; adjudication; frozen fixed-system output contract | Sidecar source/annotation/decision manifests, agreement/adjudication artifact, field-score artifact, claim-to-gold crosswalk | Human-review and CPU validation after the gate |
 | Q42 | single-ambiguity performance | CPU readiness verified; **new-corpus study not queued; results not computed** | A genuinely new source corpus; licence/source audit; immutable exclusion ledger; double annotation and adjudication; validator proving exactly one unresolved ambiguity instance of exactly one type and no secondary ambiguity | Frozen source/gold/protocol/exclusion manifests, validator result, fixed-system evaluation and support report | Corpus/annotation lane first; cluster inference only after freeze |
@@ -70,10 +72,11 @@ the corresponding scientific question.
    exclusion-ledger tooling, manifest templates and precision calculations. T45
    was an explicit CPU-only no-new-inference reconciliation exception and cannot
    be used in the supervisor dossier outside the final gate.
-2. Once Q39's final audit and T40 are terminal, launch Q41 annotation/sidecar
-   validation and Q42 corpus construction in parallel.
+2. Q39's final audit and T40 are terminal. Q41 and Q42 still require independent
+   source material and blinded human review; these are not silently launched or
+   substituted with Pilot-120 proxy scores.
 3. Launch Q43 cluster inference only after its frozen condition/input verifier;
    launch Q44 inference only after family-disjoint source and gold freeze.
-4. Assemble the final supervisor dossier only when Q39-Q45 each has a linked
-   terminal artifact. Until then, this queue is the authoritative incomplete
-   work list.
+4. The supervisor dossier may now report Q39/T40/T45 evidence and must retain
+   Q41--Q44 as explicitly `NOT_COMPUTED` until their own required artifacts
+   exist. This queue remains the authoritative incomplete-work list.

@@ -1,6 +1,6 @@
 # T39 reproducibility audit amendment — timing telemetry
 
-Status: `PENDING_APPLY_AFTER_R5`  
+Status: `APPLIED_AND_VERIFY_PASSED` (final audit job `48791`)
 Scope: post-inference audit correction only; Pilot-120 v1 remains evaluation-only and non-official.
 
 ## Trigger and diagnosis
@@ -51,3 +51,13 @@ R1--R5.
 The final supervisor dossier must cite both raw-byte integrity and this
 replay-content reproducibility result. It must not state reproducibility until
 the five-replica audit is terminal.
+
+## Terminal application record
+
+The five-replica terminal audit completed on 2026-09-02 with
+`VERIFY_PASSED`. `t39_reproducibility_audit.json` has SHA-256
+`b803771c0fcd4a22b3da344e2d0647ebc46fe2a5d6823a8116eb91978630f081`.
+It found no raw-integrity mismatch, execution-contract drift, or replay-content
+drift. It confirms that raw prediction-byte hash differences are timing
+metadata only under the rule above; this is not a licence to ignore any other
+field difference.

@@ -132,5 +132,30 @@ not replace, the final evidence atlas and reproducibility audit.
 
 The user authorised the fresh T39 submission and the cluster work needed to
 unblock it. No other experiment, dataset, model, decoding, or tuning change is
-proposed. The final supervisor document remains gated on T39+T40+T41+T42+T43+
-T44 terminal artifacts.
+proposed. A supervisor dossier may report terminal T39/T40/T45 evidence, but
+must carry Q41--Q44 as explicit `NOT_COMPUTED` limitations until their separate
+source and human-review prerequisites produce terminal artifacts.
+
+## Attempt 6: terminal GPU-gated five-replay result (2026-09-02)
+
+- Immutable inference code remained
+  `6d71affdb77200fdac57f60af71d6797e942b6bd` under output root
+  `/home-mscluster/mbangie/t28_r5_src/outputs/pilot_120/t39_20260901_6d71aff_gpu`.
+  Static preflight `48620`, T40 `48621`, and GPU admission `48622` were
+  accepted before any valid inference.
+- R1--R5 component/evidence chains were all `COMPLETED` with exit `0:0`:
+  `48623`--`48626`, `48627`/`48628`/`48630`/`48631`, `48693`--`48696`,
+  `48701`--`48704`, and `48730`--`48733`. Accepted inference provenance is
+  Blackwell/97,249-MiB GPU on `mscluster110`; the former CPU/8-GiB attempt is
+  excluded.
+- Dispatcher `48708` completed `0:0` and submitted audit `48791` after all
+  five evidence jobs. Audit `48791` completed `0:0` in five seconds on
+  `mscluster45`, consuming exactly the five R1--R5 evidence artifacts.
+- Terminal `t39_reproducibility_audit.json` is `VERIFY_PASSED` (SHA-256
+  `b803771c0fcd4a22b3da344e2d0647ebc46fe2a5d6823a8116eb91978630f081`).
+  It validates one execution-contract SHA-256
+  `0f414fc37af907a1e123397463646c85c9edf9db44d8308b079b1efd1974743f`,
+  raw prediction integrity, and replay-content equality across all five
+  systems/replicas after normalising finite numeric latency only.
+- This is a bounded, non-official reproducibility result. It does not make
+  Q41--Q44 measures computed and does not authorise tuning or promotion.

@@ -1,6 +1,6 @@
 # T39 - Pilot-120 v1 reproducibility and evidence atlas
 
-**Status:** APPROVED_EXECUTION_NON_OFFICIAL - ATTEMPT_6_GPU_GATED; R1/R2 VALID, R3 ACTIVE
+**Status:** EXECUTION_COMPLETE_NON_OFFICIAL - `VERIFY_PASSED`; reporting synthesis pending
 
 ## Goal
 
@@ -107,21 +107,41 @@ byte-integrity checking while using a separate replay-content hash for greedy
 model-output reproducibility. It changes no inference condition or saved
 artifact.
 
+## Attempt 6 terminal result (2026-09-02)
+
+All five fresh GPU-gated replicas are terminal and valid: R1
+(`48623`--`48626`), R2 (`48627`, `48628`, `48630`, `48631`), R3
+(`48693`--`48696`), R4 (`48701`--`48704`), and R5
+(`48730`--`48733`). Their evidence jobs and every accepted inference component
+completed `0:0`; accepted inference provenance records Blackwell/97,249-MiB
+GPU execution on `mscluster110`. Earlier CPU/under-memory attempts remain
+excluded.
+
+Final CPU post-inference audit `48791` completed `0:0` on `mscluster45` and
+produced `t39_reproducibility_audit.json` (`VERIFY_PASSED`, SHA-256
+`b803771c0fcd4a22b3da344e2d0647ebc46fe2a5d6823a8116eb91978630f081`).
+It records one shared execution-contract SHA-256,
+`0f414fc37af907a1e123397463646c85c9edf9db44d8308b079b1efd1974743f`, no
+raw-integrity mismatch, and no replay-content drift across R1--R5. The five
+raw JSONL hashes differ only through measured latency telemetry; no average or
+best-replica selection is valid. The result remains evaluation-only and
+non-official. Supervisor reporting and reader review are still required.
+
 ## Acceptance criteria
 
-- [ ] Preflight validates every evaluator-frozen dependency (source, gold,
+- [x] Preflight validates every evaluator-frozen dependency (source, gold,
   `GOLD_POLICY.json`, configuration, subset manifest), plus policy/base/adapter
   identities and one immutable execution contract.
-- [ ] Each valid component has 120 ordered schema-valid, nonfailed rows.
-- [ ] A metric family is scored only when its saved field is eligible on all 120
+- [x] Each valid component has 120 ordered schema-valid, nonfailed rows.
+- [x] A metric family is scored only when its saved field is eligible on all 120
   rows; absent/invalid ambiguity, capability, latency, or terminal fields are
   structured `NOT_COMPUTED`, never treated as an incorrect label.
-- [ ] Each invalid component produces an explicit `VERIFY_FAILED` or
+- [x] Each invalid component produces an explicit `VERIFY_FAILED` or
   `NOT_COMPUTED` artifact; it is never omitted or silently passed.
-- [ ] Slice support below 15 for types or 10 for type pairs is count-only.
-- [ ] All ten unordered pairs among the five substantive systems have a saved
+- [x] Slice support below 15 for types or 10 for type pairs is count-only.
+- [x] All ten unordered pairs among the five substantive systems have a saved
   field-level disagreement ledger.
-- [ ] Recovery, if used, is a single regenerated five-system root whose
+- [x] Recovery, if used, is a single regenerated five-system root whose
   selected evidence path is recorded in the final reproducibility artifact.
-- [ ] Context comparison is labelled all-context descriptive only.
+- [x] Context comparison is labelled all-context descriptive only.
 - [ ] Final report records exact job IDs, paths, hashes, and remaining limits.
