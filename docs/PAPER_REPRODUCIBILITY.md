@@ -31,6 +31,13 @@ archive join. The [archive index](../research/pilot120/README.md) gives SHA-256
 for every preserved ZIP. The intervention guide gives member-level hashes and
 its checker recomputes the 37-row ledger.
 
+The later proposed **Figure 6 decision flow** is documented in the
+[prospective text-only experiment](experiments/FIGURE_SIX_FLOW_V1.md).
+Job 61088 is queued after ABLE IX; it is not evidence for a result in the
+inspected draft. Its ambiguity, task-frame, and route scores require a
+verified completed output before they can be cited. Independent gold for all
+five decision gates is still absent.
+
 ## Figure inventory from that draft
 
 Exact local draft PNG bytes have been preserved under
