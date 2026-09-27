@@ -24,6 +24,9 @@ umask 077
 
 test -d "${REC_TECH_ORIGINAL_EXP}"
 test -f "${REC_TECH_CODE}/scripts/recovery_technical_rerun_v1.py"
+test -f "${REC_TECH_CODE}/pyproject.toml"
+test -f "${REC_TECH_CODE}/configs/annotation/route_precedence_v1.json"
+test -f "${REC_TECH_CODE}/configs/model/t27c_constrained_decoding_v1.json"
 test -f "${GFV2_CONTAINER}"
 test -d "${GFV2_HF_HOME}"
 test -d "${GFV2_TRAINING_SITE_PACKAGES}"
@@ -48,6 +51,14 @@ qwen() {
 echo '=== FROZEN ORIGINAL PREFLIGHT ==='
 qwen scripts/recovery_technical_rerun_v1.py \
   --original-exp "${REC_TECH_ORIGINAL_EXP}" --out "${REC_TECH_OUT}"
+echo '=== ROUTER AND CONSTRAINT CONFIG PREFLIGHT ==='
+qwen - <<'PY'
+from ambiguity_manager.systems.manager import GoalFirstManagerV2
+from ambiguity_manager.model.task_constrained_decoding import load_constraint_config
+GoalFirstManagerV2()
+load_constraint_config()
+print('ROUTER_CONFIG_OK', flush=True)
+PY
 echo '=== GPU PREFLIGHT ==='
 qwen - <<'PY'
 import torch

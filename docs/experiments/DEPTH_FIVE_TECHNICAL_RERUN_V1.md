@@ -1,11 +1,11 @@
 # Depth-five seed-0 analysis failure: technical rerun v1
 
-**Status:** submitted as Slurm **60920** on 2026-09-27 after both local and
-cluster exact-hash CPU preflights. At the submission check it was PENDING
-(`QOSMaxJobsPerUserLimit`), not a completed result. The frozen experiment and
-its original 26-row scores remain unchanged. This versioned run is a
-technical sensitivity check, not a replacement for the primary 13/22 and
-16/26 seed-0 recovery counts or a matched-depth causal comparison.
+**Status:** Slurm **60920** failed because its staged code omitted
+`pyproject.toml`. The corrected separate staging and output, Slurm **60943**,
+completed on 2026-09-27 with exit `0:0`. The frozen experiment and its
+original 26-row scores remain unchanged. This versioned run is a technical
+sensitivity check, not a replacement for the primary 13/22 and 16/26 seed-0
+recovery counts or a matched-depth causal comparison.
 
 ## Exact diagnosis
 
@@ -113,4 +113,57 @@ from `afterany:60861` to `afterany:60861,afterany:60920`. Its verified Slurm
 state is `PENDING Dependency` with both conditions unfulfilled; 60863–60865
 retain their original downstream chain. If 60920 fails, `afterany` still
 releases 60862 once 60861 has ended, so the other experiment is not stranded.
-Do not describe either pending job or absent rerun artifacts as complete.
+The preceding queue note records the state at submission time. Its pending
+status was superseded by the completion record below.
+
+## Completed technical sensitivity rerun
+
+Job 60920 passed the frozen-input and GPU preflights but failed before any
+case completed. Its staged code lacked `pyproject.toml`, which
+`ProjectPaths.from_repo_root()` requires before loading the routing config.
+The failed output directory contains only `original_failed_rows.jsonl`; its
+Slurm log and directory are retained. The launcher now checks the repository
+marker and both needed configs and instantiates the router before GPU loading.
+
+The corrected job used separate code and output directories:
+
+```text
+/home-mscluster/mbangie/t12-hpc/code/pilot120_recovery_technical_rerun_v2-20260927
+/home-mscluster/mbangie/t12-hpc/results/pilot120_recovery_technical_rerun_v2-20260927
+/home-mscluster/mbangie/t12-hpc/logs/p120-rec-tech-v1-60943.out
+```
+
+The staged `pyproject.toml` SHA-256 is
+`66c58d0d027e5e7e7c9f328e5bd21379047cfdf0dda7954185548565cabdefc0`;
+the corrected `technical_rerun.sbatch` SHA-256 is
+`88898d51927cb8d7ab5f4e0e2542faa7cb2a889b3531c394999f672072369227`.
+The exact-hash original-input preflight and router/constraint-config preflight
+passed. Slurm job **60943** completed in 00:08:55 with exit `0:0`.
+
+| Record | Rerun terminal route | Clarify depth | Failed |
+| --- | --- | ---: | --- |
+| CA-0702 | execute | 1 | false |
+| CA-0733 | execute | 3 | false |
+| CA-0778 | execute | 3 | false |
+
+`answered_failed_step_reruns.jsonl` has exactly three rows, with SHA-256
+`59fe378fc253627ab014cef7177071e7e7c42392362a467b00665e76ddfc692a`.
+`technical_rerun_report.json` has SHA-256
+`4f58647960b8f9f9dc681405e4ba5b787406ce99d29640f41560b1b4f11dd1c2`.
+`original_failed_rows.jsonl` has SHA-256
+`d93f35c0e847e0cbb23359795102c19ca220f3e1bd487a03f2cbcc965dc04f1a`.
+The user ran `sha256sum -c SHA256_FINAL.txt` in the completed output directory;
+all three files returned `OK`. To repeat that verification:
+
+```sh
+cd /home-mscluster/mbangie/t12-hpc/results/pilot120_recovery_technical_rerun_v2-20260927
+wc -l answered_failed_step_reruns.jsonl
+sha256sum -c SHA256_FINAL.txt
+```
+
+These three fresh-seed paths reached a valid terminal route after increasing
+the constrained-final cap from 1024 to 4096. They do not prove that the cap
+alone caused the change, because stochastic generation could succeed on an
+earlier retry. Keep the original failed rows in all primary denominators.
+The other ABLE IX jobs (60862-60865) were subsequently cancelled at the
+user's direction to prioritize this run; they are not completed results.
