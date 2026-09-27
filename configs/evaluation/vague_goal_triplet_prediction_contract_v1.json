@@ -1,0 +1,31 @@
+{
+  "schema_version": "v1",
+  "status": "DRAFT_PRE_INFERENCE",
+  "study": "VAGUE textual-scene-context goal-triplet ablation",
+  "claim_boundary": "exploratory weak-source-label goal-triplet recovery only; not CPC, ambiguity resolution, route correctness, or hidden intent",
+  "prediction_jsonl_required_fields": {
+    "record_id": "prepared opaque/source record identifier",
+    "condition": ["command_only", "command_plus_textual_caption"],
+    "source_fingerprint_sha256": "must exactly match prepared input",
+    "goal_triplet": {
+      "subject": "required string",
+      "action": "required string",
+      "object": "required string"
+    }
+  },
+  "validation": {
+    "expected_rows": 3354,
+    "one_prediction_per_record_condition": true,
+    "require_exact_goal_triplet_keys": true,
+    "normalization": "casefold and whitespace collapse only; no post-hoc synonym mapping"
+  },
+  "execution_manifest_required_before_inference": [
+    "system_name",
+    "model_revision",
+    "prompt_template_sha256",
+    "decoder_parameters",
+    "prepared_input_sha256",
+    "run_command",
+    "output_sha256"
+  ]
+}

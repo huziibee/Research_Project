@@ -16,9 +16,11 @@ def category(path: str) -> str | None:
     normalized = path.replace("\\", "/")
     if normalized.startswith("data/raw/") and normalized != "data/raw/.gitkeep":
         return "upstream_raw_or_gitlink"
-    if normalized.startswith("data/annotations/"):
+    if normalized.startswith("data/annotations/") and normalized != "data/annotations/.gitkeep":
         return "annotation_or_derived_text"
-    if normalized.startswith("data/development/") or normalized.startswith("data/processed/"):
+    if normalized.startswith("data/development/") and normalized != "data/development/.gitkeep":
+        return "derived_dataset"
+    if normalized.startswith("data/processed/") and normalized != "data/processed/.gitkeep":
         return "derived_dataset"
     if normalized.startswith("outputs/") and normalized != "outputs/.gitkeep":
         return "generated_output"

@@ -7,25 +7,40 @@ def main():
     prefix=["apptainer","exec","--nv",container,"python3"] if container else ["python"]
     extra_args=shlex.split(os.environ.get("A01_VLLM_EXTRA_ARGS", ""))
     cmd=prefix+["-m","vllm.entrypoints.openai.api_server","--model",a.model,"--revision",a.revision,"--port",str(a.port),"--max-model-len",os.environ.get("A01_MAX_MODEL_LEN","8192"),"--max-num-seqs","1","--tensor-parallel-size","1","--gpu-memory-utilization","0.90",*extra_args]
-    with open(a.log,"a",encoding="utf-8") as log: proc=subprocess.Popen(cmd,stdout=log,stderr=subprocess.STDOUT,start_new_session=True)
-    ready=False
     readiness_timeout=int(os.environ.get("A02_READY_TIMEOUT_SECONDS", "900"))
-    readiness_started=time.monotonic()
-    for _ in range(max(1, readiness_timeout // 2)):
-        if proc.poll() is not None: break
-        try:
-            with urllib.request.urlopen(f"http://127.0.0.1:{a.port}/v1/models",timeout=2): ready=True; break
-        except Exception: time.sleep(2)
-    readiness_seconds=time.monotonic()-readiness_started
-    if not ready:
-        print(f"SERVER_NOT_READY after {readiness_seconds:.1f}s; terminating model server", flush=True)
+    attempts=int(os.environ.get("A02_READY_ATTEMPTS", "3"))
+    stall_timeout=int(os.environ.get("A02_LOG_STALL_SECONDS", "600"))
+    ready=False
+    for attempt in range(1, attempts+1):
+        with open(a.log,"a",encoding="utf-8") as log:
+            log.write(f"\nSERVER_START_ATTEMPT {attempt}/{attempts} {time.time()}\n")
+            log.flush()
+            proc=subprocess.Popen(cmd,stdout=log,stderr=subprocess.STDOUT,start_new_session=True)
+        readiness_started=time.monotonic()
+        last_growth=readiness_started
+        log_size=os.path.getsize(a.log)
+        while time.monotonic()-readiness_started < readiness_timeout:
+            if proc.poll() is not None: break
+            try:
+                with urllib.request.urlopen(f"http://127.0.0.1:{a.port}/v1/models",timeout=2): ready=True; break
+            except Exception: pass
+            time.sleep(2)
+            new_size=os.path.getsize(a.log)
+            if new_size != log_size:
+                log_size=new_size
+                last_growth=time.monotonic()
+            if time.monotonic()-last_growth >= stall_timeout:
+                print(f"SERVER_LOG_STALLED attempt={attempt} seconds={stall_timeout}", flush=True)
+                break
+        if ready: break
+        print(f"SERVER_NOT_READY attempt={attempt}/{attempts} after {time.monotonic()-readiness_started:.1f}s; terminating model server", flush=True)
         if proc.poll() is None: os.killpg(proc.pid,signal.SIGTERM)
         try: proc.wait(timeout=120)
         except subprocess.TimeoutExpired:
             if proc.poll() is None: os.killpg(proc.pid,signal.SIGKILL)
             proc.wait(timeout=30)
-        raise SystemExit(f"server failed readiness check after {readiness_seconds:.1f}s")
-    print(f"SERVER_READY after {readiness_seconds:.1f}s", flush=True)
+    if not ready: raise SystemExit(f"server failed readiness check after {attempts} attempts")
+    print(f"SERVER_READY attempt={attempt} after {time.monotonic()-readiness_started:.1f}s", flush=True)
     try: code=subprocess.call(prefix+[a.runner,*a.runner_args])
     finally:
         if proc.poll() is None:

@@ -1,0 +1,42 @@
+{
+  "binding_id": "vague_goal_triplet_gemma_glm_canary_v1",
+  "status": "FROZEN_FOR_CANARY_ONLY",
+  "study_id": "vague_goal_intent_context_ablation_v1",
+  "claim_boundary": "target-free, exploratory weak-source-label base-model canary; neither a T39/T41 rerun nor an adapter result",
+  "input_packet": {
+    "path": "outputs/vague_inference_packet_20260908.jsonl",
+    "sha256": "d841229fdbef02385d69782f3135f124559f48199b691ab4727db6b03b1537e4",
+    "records": 3354,
+    "canary_records": 4
+  },
+  "prompt": {
+    "path": "configs/evaluation/vague_goal_triplet_prompt_v1.txt",
+    "sha256": "c2de8803cc665f87a8646dc34767acfbbf551199f5618315cc2298ff01881faa"
+  },
+  "decoder_parameters": {
+    "temperature": 0.0,
+    "top_p": 1.0,
+    "seed": 20260908,
+    "max_tokens": 96,
+    "technical_retries": 2
+  },
+  "systems": {
+    "gemma4_base": {
+      "repository": "google/gemma-4-26B-A4B-it",
+      "revision": "4d7ae4984b7db7de8f8457170b3f1a419ee76d52",
+      "local_path": "/home-mscluster/mbangie/models/dual_llm_benchmark_v1/gemma-4-26b-a4b-it",
+      "adapter": null
+    },
+    "glm47_base": {
+      "repository": "zai-org/GLM-4.7-Flash",
+      "revision": "7dd20894a642a0aa287e9827cb1a1f7f91386b67",
+      "local_path": "/home-mscluster/mbangie/models/dual_llm_benchmark_v1/glm-4.7-flash-bf16",
+      "adapter": null
+    }
+  },
+  "runtime": {
+    "container": "/home-mscluster/mbangie/t12-hpc/containers/vllm-openai-v0.20.1.sif",
+    "batch_script_sha256": "ec5b657df626fa999af21bdf99fbd49d490d7d6060971568504296bb827e1c24"
+  },
+  "full_run_authorization": "PENDING_CANARY_TECHNICAL_VALIDATION"
+}

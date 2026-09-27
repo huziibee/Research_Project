@@ -29,15 +29,16 @@ release. Do not silently substitute it for the locally hashed study artifact.
 
 ## Git-based sources
 
-The historical Git links are pinned in the repository tree, and `.gitmodules`
-supplies their source URLs. After reviewing each source's terms, retrieve only
-the sources needed for the study:
+After reviewing each source's terms, clone the required repositories into
+`data/raw/` and check out the exact Git commit listed above. For example:
 
 ```sh
-git submodule update --init -- data/raw/AmbiK data/raw/CLARA-Dataset data/raw/ClariQ
+mkdir -p data/raw
+git clone https://github.com/cog-model/AmbiK-dataset.git data/raw/AmbiK
+git -C data/raw/AmbiK checkout 9d4f60d4224b4183cd35d11233d8114aeaefc2f6
 ```
 
-This command does not fetch the other dataset formats. Obtain the Hugging Face
+This example does not fetch the other dataset formats. Obtain the Hugging Face
 and OSF material from the linked source pages, place it at the expected path,
 and compare its SHA-256 or source manifest to the pinned record. The saved
 Arrow layout for IndirectRequests may require an explicit export step; a

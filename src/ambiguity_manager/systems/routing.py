@@ -134,11 +134,219 @@ def _multi_step_clarify_only(
   )
 
 
+POLICY_T39_CONSERVATIVE = "t39_conservative"
+POLICY_GOAL_FIRST_V1 = "goal_first_v1"
+POLICY_GOAL_FIRST_V2 = "goal_first_v2"
+POLICY_GOAL_FIRST_V2_GOAL_LICENSED = "goal_first_v2_goal_licensed"
+_ACTIONABLE_SPEECH_ACTS = frozenset(
+  {
+    "directive_command",
+    "indirect_request",
+    "conditional_directive",
+    "permission_request",
+  }
+)
+_QUESTION_SHAPED_ACTS = frozenset({"information_question", "other_non_actionable"})
+_KNOWN_POLICIES = {
+  POLICY_T39_CONSERVATIVE,
+  POLICY_GOAL_FIRST_V1,
+  POLICY_GOAL_FIRST_V2,
+  POLICY_GOAL_FIRST_V2_GOAL_LICENSED,
+}
+
+
+def _pilot_capability_label(analysis: StructuredAnalysis) -> str | None:
+  for finding in analysis.findings:
+    text = str(finding)
+    if text.startswith("pilot_capability_status:"):
+      return text.split(":", 1)[1].strip()
+  return None
+
+
 class DeterministicRouter:
-  def __init__(self, precedence: dict[str, Any] | None = None) -> None:
+  def __init__(
+    self,
+    precedence: dict[str, Any] | None = None,
+    *,
+    policy: str = POLICY_T39_CONSERVATIVE,
+  ) -> None:
+    if policy not in _KNOWN_POLICIES:
+      raise SystemsContractError(f"unknown_router_policy:{policy}")
     self.precedence = precedence or load_route_precedence()
+    self.policy = policy
 
   def route(self, analysis: StructuredAnalysis) -> RouterDecision:
+    if self.policy == POLICY_GOAL_FIRST_V1:
+      return self._route_goal_first(analysis)
+    if self.policy == POLICY_GOAL_FIRST_V2:
+      return self._route_goal_first_v2(analysis)
+    if self.policy == POLICY_GOAL_FIRST_V2_GOAL_LICENSED:
+      return self._route_goal_first_v2(analysis, allow_question_with_goal=True)
+    return self._route_conservative(analysis)
+
+  def _route_goal_first(self, analysis: StructuredAnalysis) -> RouterDecision:
+    """Execute when the task is understood and safe enough to act.
+
+    Ambiguity presence alone does not block execute. Gold Pilot-120 execute
+    labels are mostly context-licensed actions, not zero-ambiguity commands.
+    Frozen T39 still uses t39_conservative.
+    """
+    considered: list[str] = ["goal_first_v1"]
+    risk = _effective_risk(analysis)
+    capability = _effective_capability(analysis)
+    targets = _clarification_targets(analysis)
+    unresolved = _unresolved_critical(analysis)
+
+    considered.append("known_unsafe_or_prohibited")
+    if _is_prohibited(analysis) or (
+      risk == RiskLevel.HIGH and "unsafe" in " ".join(analysis.findings).lower()
+    ):
+      return RouterDecision(
+        recommended_strategy=RouteLabel.FACE_PRESERVING_REJECTION,
+        strategy_sequence=[],
+        matched_rule_id="known_unsafe_or_prohibited",
+        considered_rules=considered,
+        rejection_reason="unsafe_or_prohibited_action",
+      )
+
+    considered.append("known_incapable")
+    if capability == CapabilityStatus.INCAPABLE:
+      return RouterDecision(
+        recommended_strategy=RouteLabel.FACE_PRESERVING_REJECTION,
+        strategy_sequence=[],
+        matched_rule_id="known_incapable",
+        considered_rules=considered,
+        rejection_reason="known_incapability",
+      )
+
+    considered.append("context_licensed_execute")
+    if (
+      capability == CapabilityStatus.CAPABLE
+      and risk in (RiskLevel.NONE, RiskLevel.LOW)
+      and (analysis.speech_act or "") in _ACTIONABLE_SPEECH_ACTS
+    ):
+      return RouterDecision(
+        recommended_strategy=RouteLabel.EXECUTE,
+        strategy_sequence=[],
+        matched_rule_id="context_licensed_execute",
+        considered_rules=considered,
+        notes=["goal_first_v1_execute_despite_remaining_ambiguity"],
+      )
+
+    considered.append("default_clarify")
+    return RouterDecision(
+      recommended_strategy=RouteLabel.CLARIFY,
+      strategy_sequence=[],
+      matched_rule_id="default_clarify",
+      considered_rules=considered,
+      clarification_targets=targets or unresolved or ["intent"],
+      notes=["goal_first_v1_insufficient_licence_to_execute"],
+    )
+
+  def _speech_act_allows_execute(
+    self, analysis: StructuredAnalysis, *, allow_question_with_goal: bool
+  ) -> bool:
+    if (analysis.speech_act or "") in _ACTIONABLE_SPEECH_ACTS:
+      return True
+    if not allow_question_with_goal:
+      return False
+    summary = (analysis.intent_summary or "").strip()
+    if not summary or "?" in summary:
+      return False
+    return (analysis.speech_act or "") in _QUESTION_SHAPED_ACTS
+
+  def _route_goal_first_v2(
+    self, analysis: StructuredAnalysis, *, allow_question_with_goal: bool = False
+  ) -> RouterDecision:
+    """Act when the job is understood and safe; do not require zero ambiguity.
+
+    Frozen T39 still uses t39_conservative. v1 already executes capable+low-risk
+    actionable speech acts. v2 also executes verified-enough conditionals and
+    refuses unauthorised/unsafe capability instead of asking again.
+    """
+    considered: list[str] = ["goal_first_v2"]
+    risk = _effective_risk(analysis)
+    capability = _effective_capability(analysis)
+    targets = _clarification_targets(analysis)
+    unresolved = _unresolved_critical(analysis)
+    findings = " ".join(analysis.findings).lower()
+    pilot = _pilot_capability_label(analysis)
+
+    considered.append("known_unsafe_or_prohibited")
+    # Unauthorized alone is not enough to refuse at low/none risk: Pilot-120
+    # gold treats many low-risk unauthorized model bits as ask/execute, while
+    # true bans still refuse via prohibited findings, unsafe pilot, or elevated
+    # risk. Keep refusing unauthorized when risk is medium/high/unknown.
+    unauthorized_elevated = pilot == "unauthorized" and risk not in (
+      RiskLevel.NONE,
+      RiskLevel.LOW,
+    )
+    if (
+      _is_prohibited(analysis)
+      or (risk == RiskLevel.HIGH and "unsafe" in findings)
+      or pilot == "unsafe"
+      or unauthorized_elevated
+    ):
+      return RouterDecision(
+        recommended_strategy=RouteLabel.FACE_PRESERVING_REJECTION,
+        strategy_sequence=[],
+        matched_rule_id="known_unsafe_or_prohibited",
+        considered_rules=considered,
+        rejection_reason="unsafe_or_prohibited_action",
+      )
+
+    considered.append("known_incapable")
+    if capability == CapabilityStatus.INCAPABLE or pilot == "incapable":
+      return RouterDecision(
+        recommended_strategy=RouteLabel.FACE_PRESERVING_REJECTION,
+        strategy_sequence=[],
+        matched_rule_id="known_incapable",
+        considered_rules=considered,
+        rejection_reason="known_incapability",
+      )
+
+    considered.append("unknown_capability_high_risk")
+    if capability in (None, CapabilityStatus.UNKNOWN) and risk in (
+      RiskLevel.MEDIUM,
+      RiskLevel.HIGH,
+      RiskLevel.UNKNOWN,
+    ):
+      return RouterDecision(
+        recommended_strategy=RouteLabel.FACE_PRESERVING_REJECTION,
+        strategy_sequence=[],
+        matched_rule_id="unknown_capability_high_risk",
+        considered_rules=considered,
+        rejection_reason="unknown_capability_unsafe_to_act",
+      )
+
+    considered.append("context_licensed_execute")
+    capable_enough = capability in (CapabilityStatus.CAPABLE, CapabilityStatus.CONDITIONAL)
+    safe_enough = risk in (RiskLevel.NONE, RiskLevel.LOW)
+    if capable_enough and safe_enough and self._speech_act_allows_execute(
+      analysis, allow_question_with_goal=allow_question_with_goal
+    ):
+      notes = ["goal_first_v2_execute_despite_remaining_ambiguity"]
+      if allow_question_with_goal and (analysis.speech_act or "") not in _ACTIONABLE_SPEECH_ACTS:
+        notes.append("goal_licensed_despite_question_shaped_speech_act")
+      return RouterDecision(
+        recommended_strategy=RouteLabel.EXECUTE,
+        strategy_sequence=[],
+        matched_rule_id="context_licensed_execute",
+        considered_rules=considered,
+        notes=notes,
+      )
+
+    considered.append("default_clarify")
+    return RouterDecision(
+      recommended_strategy=RouteLabel.CLARIFY,
+      strategy_sequence=[],
+      matched_rule_id="default_clarify",
+      considered_rules=considered,
+      clarification_targets=targets or unresolved or ["intent"],
+      notes=["goal_first_v2_insufficient_licence_to_execute"],
+    )
+
+  def _route_conservative(self, analysis: StructuredAnalysis) -> RouterDecision:
     considered: list[str] = []
     unresolved = _unresolved_critical(analysis)
     risk = _effective_risk(analysis)

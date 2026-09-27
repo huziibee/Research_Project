@@ -14,7 +14,7 @@ from ambiguity_manager.systems.errors import ProviderUnavailableError
 from ambiguity_manager.systems.providers import StructuredAnalysisProvider
 from ambiguity_manager.systems.response_generation import generate_clarification, generate_rejection
 from ambiguity_manager.systems.routing import DeterministicRouter, apply_router_decision
-from ambiguity_manager.systems.safety import SafetyEnforcer
+from ambiguity_manager.systems.safety import SafetyEnforcer, load_safety_policy
 from ambiguity_manager.systems.uncertainty import UncertaintyDiagnostics, compute_uncertainty_diagnostics
 
 
@@ -95,8 +95,13 @@ class FullManager:
 
     clarification_question = None
     rejection_text = None
+    scene_for_clarify = getattr(system_input, "scene_context", None)
     if decision.recommended_strategy == RouteLabel.CLARIFY:
-      clarification_question = generate_clarification(analysis, decision.clarification_targets)
+      clarification_question = generate_clarification(
+        analysis,
+        decision.clarification_targets,
+        scene_context=scene_for_clarify,
+      )
       analysis.clarification_question = clarification_question
     elif decision.recommended_strategy == RouteLabel.FACE_PRESERVING_REJECTION:
       rejection_text = generate_rejection(
@@ -104,7 +109,11 @@ class FullManager:
       )
     elif decision.recommended_strategy == RouteLabel.MULTI_STEP:
       if RouteLabel.CLARIFY in decision.strategy_sequence:
-        clarification_question = generate_clarification(analysis, decision.clarification_targets)
+        clarification_question = generate_clarification(
+          analysis,
+          decision.clarification_targets,
+          scene_context=scene_for_clarify,
+        )
         analysis.clarification_question = clarification_question
 
     response_text = clarification_question or rejection_text
@@ -144,3 +153,37 @@ class FullManager:
     )
     result = self.safety.apply_to_result(result, enforcement)
     return result
+
+
+@dataclass
+class GoalFirstManager(FullManager):
+  """Future manager: do the task when capable and low-risk, even if some ambiguity remains.
+
+  Frozen T39 still uses FullManager / t39_conservative. This class is a new system.
+  """
+
+  system_id: str = "goal_first_manager_v1"
+  system_version: str = "1.0.0"
+  router: DeterministicRouter = field(
+    default_factory=lambda: DeterministicRouter(policy="goal_first_v1")
+  )
+
+
+@dataclass
+class GoalFirstManagerV2(FullManager):
+  """Separately versioned manager: fill goal+CPC, then act unless unsafe/incapable.
+
+  Frozen T39 still uses FullManager / t39_conservative. Safety records findings
+  but does not fail-closed-reject a context-licensed execute.
+  """
+
+  system_id: str = "goal_first_manager_v2"
+  system_version: str = "2.0.0"
+  router: DeterministicRouter = field(
+    default_factory=lambda: DeterministicRouter(policy="goal_first_v2")
+  )
+  safety: SafetyEnforcer = field(
+    default_factory=lambda: SafetyEnforcer(
+      policy={**load_safety_policy(), "enforcement_mode": "record_findings"}
+    )
+  )

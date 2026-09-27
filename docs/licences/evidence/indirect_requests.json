@@ -1,10 +1,23 @@
 {
   "dataset_id": "indirect_requests",
   "retrieved_at": "2026-07-28T00:00:00Z",
-  "official_urls": ["https://huggingface.co/datasets/msamogh/indirect-requests", "https://github.com/google-research-datasets/dstc8-schema-guided-dialogue"],
+  "rechecked_at": "2026-09-11T00:00:00Z",
+  "official_urls": [
+    "https://huggingface.co/datasets/msamogh/indirect-requests",
+    "https://github.com/google-research-datasets/dstc8-schema-guided-dialogue"
+  ],
   "local_artifact": "data/raw/IndirectRequests/{train,validation,test}/*.arrow",
-  "local_artifact_sha256s": ["b4a43371c025b21bdccac460c53c9fd63bb2bf6c588d53b8a2de822eb4c0adc9", "3376a4c83fc266f9c62d235855df85d74aac0dedd31b1274ffeca81e22bd01b", "ee93197e8a7fed4e139efdedbd59a73118e7deab91e4d397539c70f7d4345456"],
-  "finding": "The official dataset card exposes conflicting Apache-2.0 and MIT metadata. The dataset is based on SGD, whose official repository states CC BY-SA 4.0. Exact inherited-content compatibility and the exact artifact terms remain unresolved.",
-  "permitted_quotation": "The official card describes IndirectRequests as an LLM-generated task-oriented dialogue dataset; the official SGD repository states SGD and SGD-X are CC BY-SA 4.0.",
-  "retrieval_instructions": "Open the dataset card at revision 5b9d22a and the official SGD repository; preserve both metadata blocks and inspect all data files."
+  "local_artifact_sha256s": [
+    "b4a43371c025b21bdccac460c53c9fd63bb2bf6c588d53b8a2de822eb4c0adc9",
+    "3376a4c83fc266f9c62d235855df85d74aac0dedd31b1274ffeca81e22bd01b",
+    "ee93197e8a7fed4e139efdedbd59a73118e7deab91e4d397539c70f7d4345456"
+  ],
+  "finding": "2026-09-11 web audit reconfirmed the conflict: the Hugging Face README still contains two YAML frontmatters, one with license: apache-2.0 and another with license: mit. HF API cardData.license currently reports apache-2.0, but the raw README conflict remains. Schema-Guided Dialogue dependency is pinned as CC BY-SA 4.0 via the official Google Research repository LICENSE.txt. ShareAlike on inherited dialogue material keeps exact-artifact IndirectRequests training/redistribution rights unresolved.",
+  "permitted_quotation": "HF README dual frontmatter: apache-2.0 and mit. SGD README: datasets released under CC BY-SA 4.0.",
+  "sgd_dependency_licence": {
+    "identifier": "CC-BY-SA-4.0",
+    "url": "https://github.com/google-research-datasets/dstc8-schema-guided-dialogue/blob/master/LICENSE.txt",
+    "status": "verified_20260911"
+  },
+  "retrieval_instructions": "Do not collapse apache/mit conflict without author clarification. Record any author reply under docs/licences/evidence/ and only then update the register."
 }

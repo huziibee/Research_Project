@@ -116,8 +116,14 @@ def build_prompt(rec: dict[str, Any]) -> str:
     return (
         "You are evaluating a robot command under the compound-ambiguity v7 protocol.\n"
         "Return ONLY one JSON object with keys:\n"
-        '  terminal_strategy: one of execute | clarify | face_preserving_rejection\n'
-        "  ambiguity_types: array of allowed labels (may be empty)\n"
+        "  terminal_strategy: one of execute | clarify | face_preserving_rejection\n"
+        "  ambiguity_types: array using ONLY these Pilot-17 labels (may be empty): "
+        + ", ".join(AMBIGUITY_TYPES)
+        + "\n"
+        "  Include every type that is present; omit absent types. Typical size 2-4.\n"
+        "  Emit action_order ONLY when two+ actions have genuinely unclear sequence.\n"
+        "  Prefer pragmatic for permission/capability questions whose real job is an action.\n"
+        "  Prefer fuzzy_temporal for shortly/soon/later without a licensed clock.\n"
         "  capability_status: one of capable | conditionally_capable | incapable | unauthorized | unsafe\n"
         "You may reason carefully first. After any reasoning, you MUST finish with one JSON object "
         "using exactly these keys. Do not end the response before that JSON object.\n\n"
@@ -176,20 +182,70 @@ def normalise_prediction(obj: dict[str, Any] | None) -> tuple[dict[str, Any] | N
 
 
 def selected_adapter_identity(
-    identity: Mapping[str, Any], *, adapter_scale: float
+    identity: Mapping[str, Any],
+    *,
+    adapter_scale: float,
+    allow_unofficial: bool = False,
 ) -> str:
-    """Return an exact selected-adapter identity, including its inference scale."""
+    """Return adapter identity for PEFT load, including its inference scale.
+
+    Official selected adapters must set selected_adapter=true. Unofficial
+    research adapters may load only when allow_unofficial=True; they still
+    must match the frozen base model / revision, and never claim
+    valid_for_official_use.
+    """
+    if identity.get("valid_for_official_use") is True and identity.get("selected_adapter") is not True:
+        raise ValueError("pilot_adapter_official_flag_without_selected")
     if identity.get("selected_adapter") is not True:
-        raise ValueError("pilot_adapter_requires_selected_t28_adapter")
-    if identity.get("base_model") != BASE_MODEL or identity.get("base_revision") != BASE_REVISION:
+        if not allow_unofficial:
+            raise ValueError("pilot_adapter_requires_selected_t28_adapter")
+        if identity.get("valid_for_official_use") is True:
+            raise ValueError("refusing_unofficial_load_marked_official")
+
+    base = identity.get("base_model")
+    rev = identity.get("base_revision")
+    if isinstance(base, str) and "@" in base and not rev:
+        base, rev = base.rsplit("@", 1)
+    if base != BASE_MODEL or rev != BASE_REVISION:
         raise ValueError("pilot_adapter_base_identity_mismatch")
+
     adapter_id = str(identity.get("adapter_id") or "").strip()
     if not adapter_id:
         raise ValueError("pilot_adapter_identity_missing_adapter_id")
-    expected_scale = float(identity.get("adapter_scale", 1.0))
-    if expected_scale <= 0 or abs(expected_scale - adapter_scale) > 1e-12:
-        raise ValueError("pilot_adapter_scale_identity_mismatch")
+
+    if "adapter_scale" in identity:
+        expected_scale = float(identity["adapter_scale"])
+        if expected_scale <= 0 or abs(expected_scale - adapter_scale) > 1e-12:
+            raise ValueError("pilot_adapter_scale_identity_mismatch")
+    elif not allow_unofficial:
+        raise ValueError("pilot_adapter_identity_missing_adapter_scale")
     return adapter_id
+
+
+def sampling_generate_kwargs(temperature: float) -> dict[str, Any]:
+    """Greedy at temperature 0; sample with the given temperature otherwise."""
+    if float(temperature) <= 0:
+        return {"do_sample": False}
+    return {"do_sample": True, "temperature": float(temperature)}
+
+
+def set_run_seed(seed: int | None) -> None:
+    """Pin CPU/GPU RNG when a slice seed is supplied. No-op when seed is None."""
+    if seed is None:
+        return
+    try:
+        from transformers import set_seed as _set_seed
+
+        _set_seed(int(seed))
+    except Exception:
+        import random
+
+        import torch
+
+        random.seed(int(seed))
+        torch.manual_seed(int(seed))
+        if torch.cuda.is_available():
+            torch.cuda.manual_seed_all(int(seed))
 
 
 def apply_adapter_scale(model: Any, scale: float) -> int:
@@ -223,7 +279,18 @@ def main() -> int:
     parser.add_argument("--adapter", type=Path)
     parser.add_argument("--adapter-identity", type=Path)
     parser.add_argument("--adapter-scale", type=float, default=1.0)
+    parser.add_argument(
+        "--allow-unofficial-adapter",
+        action="store_true",
+        help="Allow PEFT load when selected_adapter is false (still unofficial).",
+    )
+    parser.add_argument("--limit", type=int, default=0, help="If >0, only the first N source rows.")
+    parser.add_argument("--temperature", type=float, default=0.0)
+    parser.add_argument("--seed", type=int, default=None)
     args = parser.parse_args()
+    if float(args.temperature) < 0:
+        raise SystemExit("temperature_must_be_nonnegative")
+    set_run_seed(args.seed)
 
     if args.base_model != BASE_MODEL or args.base_revision != BASE_REVISION:
         raise SystemExit("refusing non-frozen base model or revision")
@@ -242,7 +309,9 @@ def main() -> int:
         adapter_identity = json.loads(args.adapter_identity.read_text(encoding="utf-8"))
         try:
             adapter_id = selected_adapter_identity(
-                adapter_identity, adapter_scale=float(args.adapter_scale)
+                adapter_identity,
+                adapter_scale=float(args.adapter_scale),
+                allow_unofficial=bool(args.allow_unofficial_adapter),
             )
         except ValueError as exc:
             raise SystemExit(str(exc)) from exc
@@ -250,6 +319,8 @@ def main() -> int:
     freeze_check = verify_freeze(root)
     source_rows = p120.load_jsonl(root / "data/annotations/pilot_120_v1/source_canonical.jsonl")
     ids = [r["record_id"] for r in source_rows]
+    if args.limit and args.limit > 0:
+        ids = ids[: int(args.limit)]
 
     out = args.output_dir
     out.mkdir(parents=True, exist_ok=True)
@@ -269,6 +340,9 @@ def main() -> int:
             "freeze": freeze_check,
             "n_expected": len(ids),
             "n_done_at_start": len(done),
+            "temperature": float(args.temperature),
+            "do_sample": float(args.temperature) > 0,
+            "seed": args.seed,
             "evaluation_only": True,
             "must_not_train_or_select": True,
             "pilot120_used_for_training_or_selection": False,
@@ -330,7 +404,7 @@ def main() -> int:
                 out_ids = model.generate(
                     **inputs,
                     max_new_tokens=args.max_new_tokens,
-                    do_sample=False,
+                    **sampling_generate_kwargs(args.temperature),
                     pad_token_id=tok.eos_token_id,
                 )
             gen = out_ids[0][inputs["input_ids"].shape[-1] :]

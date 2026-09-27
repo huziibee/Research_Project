@@ -8,5 +8,5 @@
 - Raw/transformed records: not publicly redistributed unless explicitly granted. Derived labels and adapter-weight release require explicit answers.
 - Questions: does CC BY-NC 4.0 apply to the exact v2 artifact; what attribution/notice/share-alike terms apply; may derived labels, supervisor copies, and adapter weights be released?
 - Requested attribution: provide exact CoDraw and CoDraw-iCR wording.
-- Response status: not sent; awaiting human-authorized contact.
-- Evidence storage: `docs/licences/evidence/codraw_icr_v2.json`; register entry `#codraw_icr_v2`.
+- Response status: **resolved via OSF primary evidence 2026-09-11** (exact TSV hash match + `license.txt` CC BY-NC 4.0). Author email no longer required for NC academic use of this artifact; keep packet on file if commercial release is ever requested.
+- Evidence storage: `docs/licences/evidence/codraw_icr_v2.json`, `docs/licences/evidence/codraw_icr_osf_license.txt`; register entry `#codraw_icr_v2` now **verified**.

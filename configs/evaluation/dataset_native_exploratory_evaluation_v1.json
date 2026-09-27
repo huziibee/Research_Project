@@ -1,0 +1,83 @@
+{
+  "protocol_id": "dataset_native_exploratory_evaluation_v1",
+  "version": "1.0.0",
+  "status": "DRAFT_PRE_INFERENCE",
+  "claim_boundary": "exploratory source-development evaluation only; no protected, official, generalisation, or T39/T41 reinterpretation claim",
+  "frozen_artifacts": {
+    "t39_t41": "read_only",
+    "interpretation_manager_v2_sha256": "f8213e7b32ac0afc4f4d3982617e2e8da52456694cda796d975aedec27f8051f",
+    "cpc_policy_sha256": "6f2a7f3c33ef5cba21622ac697ff72a200a15fd5e7e018303fbd3e643374e9d5"
+  },
+  "systems": {
+    "direct_base_llm": "candidate; exact model/revision/prompt/decoder binding not yet frozen for this protocol",
+    "selected_t28_adapter": "candidate; evaluate only with its existing immutable revision and adapter hash",
+    "legacy_managers": "candidate baselines; do not represent them as interpretation_manager_v2",
+    "interpretation_manager_v2": "candidate repair; synthetic-only until a separate system/prompt/render/token binding is frozen"
+  },
+  "datasets": {
+    "ambik": {
+      "path": "data/interim/ambik/ambik_canonical.jsonl",
+      "question": "Can a system detect the source-mapped ambiguity type and request the relevant clarification?",
+      "conditions": ["source_native_context"],
+      "metrics": {
+        "ambiguity_presence_and_type": "EXPLORATORY_WEAK_SOURCE_LABEL",
+        "clarification_target": "EXPLORATORY_WEAK_SOURCE_LABEL",
+        "intent_goal": "NOT_COMPUTED"
+      },
+      "required_nonempty_fields": ["scene_context", "ambiguity_types", "gold_clarification_question", "resolved_interpretation"]
+    },
+    "indirect_requests": {
+      "path": "data/interim/indirect_requests/indirect_requests_canonical.jsonl",
+      "question": "Can a system recover a pragmatic indirect request and its available argument slots?",
+      "conditions": ["command_plus_source_textual_context"],
+      "metrics": {
+        "pragmatic_ambiguity": "EXPLORATORY_WEAK_SOURCE_LABEL",
+        "intent_goal": "NOT_COMPUTED_FOR_AMBIGUOUS_ROWS",
+        "available_slots": "EXPLORATORY_WEAK_SOURCE_LABEL"
+      },
+      "required_nonempty_fields": ["scene_context"]
+    },
+    "vague": {
+      "path": "data/interim/vague/vague_canonical.jsonl",
+      "question": "Does the textual image caption improve recovery of the intended goal from an indirect command?",
+      "conditions": ["command_only", "command_plus_textual_caption"],
+      "metrics": {
+        "intent_goal_tuple": "REQUIRES_NEW_DETERMINISTIC_GOAL_INTENT_SCORER",
+        "cpc_slots": "EXPLORATORY_WEAK_SOURCE_LABEL",
+        "selected_interpretation": "REQUIRES_FROZEN_PREDICTION_TO_GOLD_BINDING",
+        "paired_caption_benefit": "REQUIRES_PAIRED_PRE_REGISTERED_ANALYSIS"
+      },
+      "required_nonempty_fields": ["scene_context", "intent", "slots", "resolved_interpretation", "candidate_interpretations"]
+    },
+    "clara": {
+      "path": "data/interim/clara/clara_canonical.jsonl",
+      "question": "Can a system use textual scene and capability context for source-native routing/capability decisions?",
+      "conditions": ["full_context", "pre_registered_context_ablation"],
+      "metrics": {
+        "routing_and_capability": "EXPLORATORY_WEAK_SOURCE_LABEL",
+        "intent_goal": "NOT_COMPUTED"
+      },
+      "required_nonempty_fields": ["scene_context", "capability_context"]
+    },
+    "codraw_icr_v2": {
+      "path": "data/interim/codraw_icr_v2/codraw_icr_v2_canonical.jsonl",
+      "question": "Can a system ask a source-native clarification question for a drawing instruction?",
+      "conditions": ["source_native_text"],
+      "metrics": {
+        "clarification_target": "REQUIRES_FROZEN_SEMANTIC_SCORER",
+        "intent_goal": "NOT_COMPUTED"
+      },
+      "required_nonempty_fields": ["gold_clarification_question"]
+    },
+    "clariq": {
+      "path": "data/interim/clariq/clariq_canonical.jsonl",
+      "question": "Can a system generate a useful clarification in the source style?",
+      "conditions": ["source_native_text"],
+      "metrics": {
+        "clarification_target": "REQUIRES_FROZEN_SEMANTIC_SCORER",
+        "robot_routing_or_safety": "NOT_COMPUTED"
+      },
+      "required_nonempty_fields": ["gold_clarification_question"]
+    }
+  }
+}

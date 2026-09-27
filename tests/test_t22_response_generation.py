@@ -76,6 +76,25 @@ class T22ResponseGenerationTests(unittest.TestCase):
         self.assertEqual(clarification_a, clarification_b)
         self.assertEqual(rejection_a, rejection_b)
 
+    def test_intent_summary_or_is_used_when_candidates_empty(self) -> None:
+        analysis = StructuredAnalysis(
+            intent_summary=(
+                "Add either 20 millilitres or 60 millilitres of liquid soap "
+                "to the dispenser using the dosing cup."
+            ),
+        )
+        text = generate_clarification(analysis, ["quantity", "tool", "recipient"])
+        self.assertIn("20 millilitres", text)
+        self.assertIn("60 millilitres", text)
+        self.assertNotIn("could you clarify:", text.casefold())
+
+    def test_parenthetical_or_in_intent_summary(self) -> None:
+        analysis = StructuredAnalysis(
+            intent_summary="Deliver one of the two pending serving trays (grey or amber)."
+        )
+        text = generate_clarification(analysis, ["spatial_relation"])
+        self.assertEqual(text, "Do you mean grey or amber?")
+
 
 if __name__ == "__main__":
     unittest.main()

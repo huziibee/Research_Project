@@ -15,11 +15,10 @@ and provenance records. It does not implement robot motion or hardware control.
 | Check what can enter a public release | `docs/PUBLIC_RELEASE_AUDIT.md` and `configs/licences/dataset_licence_register.json` |
 | Find historical execution decisions | `cursor_plan/README.md` and `handover/` |
 
-The present checkout is a research working tree, **not a verified public
-release**. Its history includes upstream dataset payloads and a Python virtual
-environment under `data/raw`, and the science branch contains derived Pilot-120
-text. Removing a file in a new commit does not remove it from Git history. See
-the release audit before publishing or mirroring this history.
+The current Git history includes upstream dataset payloads and derived
+Pilot-120 text. The latest tree keeps those local inputs out of the tracked
+release files, but a fresh clone still receives the older Git objects. See the
+release audit for the exact boundary before mirroring the repository.
 
 ## Install and check the code
 
@@ -62,11 +61,8 @@ cluster/container dependencies described in `docs/RESEARCH_WORKFLOWS.md`.
 | `outputs/` | Generated results and large archives, normally ignored by Git |
 | `cursor_plan/`, `handover/` | Historical decisions and operational handovers |
 
-External data is acquired from its original provider. `git submodule update`
-can fetch the Git-based sources recorded in `.gitmodules`; it does not fetch the
-Hugging Face or OSF sources, and it does not grant reuse or redistribution
-permission. Exact source versions, local paths, hashes, and rights status are in
-`docs/DATASETS.md`.
+External data is acquired from its original provider. Exact source versions,
+local paths, hashes, and rights status are in `docs/DATASETS.md`.
 
 ## Running research workflows
 

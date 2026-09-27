@@ -38,7 +38,9 @@ from evaluate_pilot_120_direct_base import (  # noqa: E402
     CAPABILITIES,
     apply_adapter_scale,
     extract_json,
+    sampling_generate_kwargs,
     selected_adapter_identity,
+    set_run_seed,
     verify_freeze,
 )
 
@@ -279,6 +281,7 @@ class TransformerAnalysisProvider:
     constrained_final_max_new_tokens: int
     provider_id: str
     provider_version: str = "pilot120-manager-r1"
+    temperature: float = 0.0
     metadata_by_input_hash: dict[str, dict[str, Any]] = field(default_factory=dict)
     raw_by_input_hash: dict[str, str] = field(default_factory=dict)
     attempts_by_input_hash: dict[str, list[dict[str, Any]]] = field(default_factory=dict)
@@ -292,7 +295,7 @@ class TransformerAnalysisProvider:
             output_ids = self.model.generate(
                 **inputs,
                 max_new_tokens=max_new_tokens,
-                do_sample=False,
+                **sampling_generate_kwargs(self.temperature),
                 pad_token_id=self.tokenizer.eos_token_id,
             )
         generated = output_ids[0][inputs["input_ids"].shape[-1] :]
@@ -308,7 +311,7 @@ class TransformerAnalysisProvider:
             prompt=_constrained_analysis_prompt(system_input),
             json_schema=MANAGER_ANALYSIS_JSON_SCHEMA,
             max_new_tokens=self.constrained_final_max_new_tokens,
-            generation_config={"do_sample": False},
+            generation_config=sampling_generate_kwargs(self.temperature),
         )
         return str(generated["raw_text"]), {
             "transport_status": generated["transport_status"],
@@ -437,7 +440,11 @@ def _load_model(args: argparse.Namespace) -> tuple[Any, Any, str | None]:
     adapter_id = None
     if args.adapter:
         identity = json.loads(args.adapter_identity.read_text(encoding="utf-8"))
-        adapter_id = selected_adapter_identity(identity, adapter_scale=args.adapter_scale)
+        adapter_id = selected_adapter_identity(
+            identity,
+            adapter_scale=args.adapter_scale,
+            allow_unofficial=bool(getattr(args, "allow_unofficial_adapter", False)),
+        )
         from peft import PeftModel
         model = PeftModel.from_pretrained(model, str(args.adapter), local_files_only=True)
         apply_adapter_scale(model, args.adapter_scale)
@@ -456,7 +463,17 @@ def main() -> int:
     parser.add_argument("--adapter", type=Path)
     parser.add_argument("--adapter-identity", type=Path)
     parser.add_argument("--adapter-scale", type=float, default=1.0)
+    parser.add_argument(
+        "--allow-unofficial-adapter",
+        action="store_true",
+        help="Allow PEFT load when selected_adapter is false (still unofficial).",
+    )
+    parser.add_argument("--temperature", type=float, default=0.0)
+    parser.add_argument("--seed", type=int, default=None)
     args = parser.parse_args()
+    if float(args.temperature) < 0:
+        raise SystemExit("temperature_must_be_nonnegative")
+    set_run_seed(args.seed)
     if bool(args.adapter) != bool(args.adapter_identity):
         raise SystemExit("adapter_and_adapter_identity_must_be_supplied_together")
     if (
@@ -526,11 +543,13 @@ def main() -> int:
         model, tokenizer, adapter_id = _load_model(args)
         full_provider = TransformerAnalysisProvider(
             model, tokenizer, args.max_new_tokens, args.retry_max_new_tokens,
-            args.constrained_final_max_new_tokens, "pilot120_full_context"
+            args.constrained_final_max_new_tokens, "pilot120_full_context",
+            temperature=float(args.temperature),
         )
         blind_provider = TransformerAnalysisProvider(
             model, tokenizer, args.max_new_tokens, args.retry_max_new_tokens,
-            args.constrained_final_max_new_tokens, "pilot120_context_blind"
+            args.constrained_final_max_new_tokens, "pilot120_context_blind",
+            temperature=float(args.temperature),
         )
         systems["context_blind_manager"] = ContextBlindManagerSystem(analysis_provider=blind_provider)
     manifest = {
@@ -542,6 +561,9 @@ def main() -> int:
         "adapter_scale": args.adapter_scale,
         "base_model": BASE_MODEL,
         "base_revision": BASE_REVISION,
+        "temperature": float(args.temperature),
+        "do_sample": float(args.temperature) > 0,
+        "seed": args.seed,
         "max_new_tokens": args.max_new_tokens,
         "retry_max_new_tokens": args.retry_max_new_tokens,
         "constrained_final_max_new_tokens": args.constrained_final_max_new_tokens,
