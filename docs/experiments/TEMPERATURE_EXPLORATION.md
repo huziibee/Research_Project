@@ -28,6 +28,14 @@ is an automatic text-overlap screen, **not** official two-judge intent.
 
 The later five-temperature, five-seed ABLE IX queue is described by
 [`cluster/pilot120_t03_gf_ablation_20260923/`](../../cluster/pilot120_t03_gf_ablation_20260923/).
-Its jobs were still running or dependency-queued at the 2026-09-27 check.
-Check Slurm and final row-level artifacts before writing a completed ABLE IX
-result; do not treat these five older seed-0 streams as the finished study.
+The original jobs 60861-60865 were cancelled to prioritize the separate
+three-case technical rerun. The [resume launcher](../../cluster/pilot120_t03_gf_ablation_20260923/resume_cancelled_able_ix_20260927.sh)
+checked the surviving seed-0 and partial seed-1 JSONL rows and submitted
+replacement jobs 60972 (T0.0), 60973 (T0.3), 60974 (T0.5), 60975 (T0.7),
+and 60976 (T1.0) on 2026-09-27. Each later job depends on successful
+completion of its predecessor. The versioned cluster submission ledger is
+`/home-mscluster/mbangie/t12-hpc/results/able_ix_five_seed-20260923/resubmission_20260927_161438.tsv`.
+At the submission check, 60972 was running and the remaining four jobs were
+pending; no five-seed result was complete. Check Slurm and all row-level
+artifacts before reporting an ABLE IX result. The older seed-0 streams alone
+are not the finished study.
