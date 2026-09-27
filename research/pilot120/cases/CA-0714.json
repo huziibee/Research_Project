@@ -1,0 +1,1142 @@
+{
+  "record_id": "CA-0714",
+  "frozen_source": {
+    "capability_context": "Warehouse transport robot can scan, weigh, and move approved loads with a powered base and rated handling attachments.",
+    "command": "Do the same with the second shipping case, then place it in the secure cage using the usual setup.",
+    "dialogue_history": [
+      "driver: I inspected the first shipping case and cleaned the parts bin.",
+      "Robot: Both tasks are complete.",
+      "driver: The new item is another shipping case in the inspection batch."
+    ],
+    "record_id": "CA-0714",
+    "scene_context": "Inbound bay in a warehouse. The second shipping case carries Work order WO-792. The setup table states that the night receiving applies to a different work-order prefix, while Work order WO-792 maps to the returns flow. Two secure cages are authorized and empty, one at the forklift lane and one at the inspection cage. The work order names neither unit. Secure placement requires the unit identifier."
+  },
+  "frozen_gold": {
+    "ambiguity_types": [
+      "destination_reference",
+      "discourse_ellipsis",
+      "routine_reference"
+    ],
+    "annotator_b_era": "glm_era",
+    "annotator_b_model": "glm-5.2-high",
+    "capability_status": "capable",
+    "field_status": {
+      "ambiguity_types": "auto_agree",
+      "capability_status": "human_auditor:independent_from_route",
+      "record_validity": "auto_agree",
+      "strategy_sequence": "auto_agree",
+      "terminal_strategy": "auto_agree"
+    },
+    "gold_lifecycle": "final_gold",
+    "gold_status": "auto_agree",
+    "human_gate_required": false,
+    "provenance": {
+      "agreement_label": "pilot_annotation_agreement",
+      "annotator_a_sha256": "239e9eb5ad80bd7a44b629c06afe8d3db4b1831c7c3e334da39dd2588a9608e4",
+      "annotator_b_sha256": "d82ff1026232b1485e1501740cd3c52670dc28960dbfd17747fc077c2dbbd2d0",
+      "capability_route_decouple": "conditionally_capable remapped to capable: no evidenced external capability precondition; linguistic silently_resolve/clarify is not a capability condition",
+      "gold_policy": "use_existing_pilot_adjudicated_gold",
+      "input_sha256": "0e864e94e20c9d792cdaa1d6e1e1340875892214852a7f670808fddf9a031d57",
+      "pilot_gold_sha256": "31811920c4ea73a8ac7592482a2305bbe2b3c8e56c402d84dc39abc391222521",
+      "protocol": "pilot_adjudicated_gold_on_capability_repaired_source",
+      "repaired_input_sha256": "6db3ae4428b6b83c23c81e95ed3ba9133114d96d1a241dcc0b77874b14195162"
+    },
+    "record_id": "CA-0714",
+    "record_validity": "valid",
+    "strategy_sequence": [
+      "resolve_discourse",
+      "resolve_reference",
+      "clarify"
+    ],
+    "terminal_strategy": "clarify"
+  },
+  "t07_comparison": {
+    "record_id": "CA-0714",
+    "gold_route": "clarify",
+    "raw_route": "clarify",
+    "ft_route": "clarify",
+    "gf_route": "refuse",
+    "raw_route_ok": "True",
+    "ft_route_ok": "True",
+    "gf_route_ok": "False",
+    "raw_official_intent": "True",
+    "ft_official_intent": "True",
+    "gf_official_intent": "True",
+    "blind_official_intent": "True"
+  },
+  "t07_official_intent": {
+    "context_blind_official_intent": true,
+    "degree_official_intent_shared_gf": true,
+    "finetune_official_intent": true,
+    "goal_first_official_intent": true,
+    "raw_official_intent": true,
+    "record_id": "CA-0714",
+    "timid_official_intent_shared_gf": true
+  },
+  "t07_predictions": {
+    "raw_qwen": {
+      "ambiguity_types": [
+        "object_reference"
+      ],
+      "capability_status": "incapable",
+      "error": null,
+      "execution_mode": "final_close_intent_box",
+      "failed": false,
+      "intent_summary": "Process the second shipping case by repeating the previous inspection and cleaning tasks, then securely place it in the designated cage using the standard setup.",
+      "latency_ms": 20935.239484068006,
+      "parsed": {
+        "ambiguity_types": [
+          "object_reference"
+        ],
+        "capability_status": "incapable",
+        "intent_summary": "Process the second shipping case by repeating the previous inspection and cleaning tasks, then securely place it in the designated cage using the standard setup.",
+        "speech_act": "directive_command",
+        "terminal_strategy": "clarify"
+      },
+      "raw_output": "<think>\nOkay, let me try to work through this step by step. The user is evaluating a robot command, and I need to generate a JSON object with specific keys. Let me start by understanding the input.\n\nThe command given is: \"Do the same with the second shipping case, then place it in the secure cage using the usual setup.\" The dialogue history includes the driver mentioning they inspected the first case and cleaned the parts bin. The robot responded that both tasks are complete. Then the driver says the new item is another shipping case in the inspection batch.\n\nScene context is an inbound bay warehouse. The second shipping case is WO-792, which maps to returns flow. There are two secure cages authorized and empty. Secure placement requires the unit identifier. The capability context says the robot can scan, weigh, move approved loads with attachments.\n\nFirst, the intent_summary. The user wants the robot to perform the same action as before (which was inspecting and cleaning) on the second shipping case, then place it in the secure cage. But the previous task was for the first case, and the robot said both tasks were complete. Now the driver is referring to the second case. So the intent is to process the second shipping case similarly and secure it.\n\nSpeech act: The command is a directive to perform actions, so directive_command. But wait, the command is a bit complex. The user is telling the robot to do two things: do the same as before and place in the secure cage. So it's a directive with two steps. But the speech_act options include directive_command, so that's probably correct.\n\nAmbiguity types: Let's check. The command refers to \"the second shipping case\" but the scene context says that the second case is WO-792 which is part of returns flow. The secure placement requires the unit identifier, but the work order doesn't name the unit. So the robot might not have the necessary info (unit ID) to place it securely. That's a problem. Also, the \"usual setup\" might be ambiguous. Are there multiple setups? Or is it referring to a specific one? Also, the previous task's details (like what \"the same\" refers to) might be ambiguous. So possible ambiguity types: object_reference (since it refers to the second case which is WO-792), but the unit ID is missing. Also, the \"usual setup\" could be vague. Maybe \"fuzzy_quantity\" or \"fuzzy_temporal\"? Wait, the ambiguity types include things like object_reference, which would apply here because the command refers to the second shipping case, but the unit ID is missing. Also, the \"usual setup\" might be unclear. But the options are specific. Let me check the ambiguity types again. The options include object_reference, which is when the object is not clearly specified. Since the unit identifier is required but not provided, that's an object_reference ambiguity. Also, the \"usual setup\" might be ambiguous in terms of what that setup is, but maybe that's not one of the listed types. Alternatively, maybe \"fuzzy_quantity\" if the number is unclear, but here it's \"second\" which is specific. So maybe object_reference and maybe others. Wait, the command says \"the second shipping case\"—the robot might not know which case is the second, but the scene context says the second is WO-792. But the driver mentioned that the new item is another shipping case in the inspection batch. So maybe the robot knows which one it is. However, the secure placement requires the unit identifier, which is not provided. So the ambiguity here is that the unit identifier is missing, making it impossible to securely place. So that's an object_reference ambiguity because the unit identifier is the object in question. Also, the \"usual setup\" could be ambiguous if there are multiple setups, but the scene context says \"using the usual setup\"—maybe that's a known setup, so not ambiguous. Alternatively, maybe the \"usual setup\" is not specified, leading to ambiguity. But I'm not sure if that's one of the types. Let me check the ambiguity types again. The options include \"fuzzy_quantity\" and \"degree_vagueness\". Maybe the \"usual setup\" is vague, but I'm not certain. Alternatively, the command is referring to the same action as before, which might be ambiguous if the previous action isn't clear. However, the previous dialogue had the robot say both tasks are complete, so maybe the robot knows. But the key issue is the unit identifier missing, which is an object_reference ambiguity. Also, the command says \"place it in the secure cage\"—there are two secure cages, so which one? The scene context mentions one at the forklift lane and one at the inspection cage. The work order is WO-792 which maps to returns flow. The setup table mentions night receiving applies to a different prefix, but WO-792 is returns. So the secure cage for returns might be the inspection cage? But the driver's previous task was for the first case, which might have gone to the forklift lane. But the robot's capability requires the unit ID for secure placement. Since the work order doesn't name the unit, the robot can't place it securely. Therefore, the ambiguity here is that the unit identifier is missing, which is an object_reference ambiguity. Also, the \"usual setup\" might not be specified, but maybe that's not an ambiguity. So the ambiguity_types would be object_reference.\n\nCapability status: The robot can move approved loads, but secure placement requires the unit identifier. Since the unit ID is not provided, the robot can't perform the task. So capability_status is incapable.\n\nTerminal strategy: Since the robot can't perform the task due to missing info (unit ID), the appropriate strategy is to clarify, so terminal_strategy is clarify.\n</think>\n\n{\n  \"intent_summary\": \"Process the second shipping case by repeating the previous inspection and cleaning tasks, then securely place it in the designated cage using the standard setup.\",\n  \"speech_act\": \"directive_command\",\n  \"ambiguity_types\": [\"object_reference\"],\n  \"capability_status\": \"incapable\",\n  \"terminal_strategy\": \"clarify\"\n}",
+      "record_id": "CA-0714",
+      "schema_valid": true,
+      "speech_act": "directive_command",
+      "system_id": "direct_base_llm",
+      "terminal_strategy": "clarify"
+    },
+    "finetune": {
+      "ambiguity_types": [
+        "object_reference"
+      ],
+      "capability_status": "conditionally_capable",
+      "error": null,
+      "execution_mode": "final_close_intent_box",
+      "failed": false,
+      "intent_summary": "Inspect and clean the second shipping case, then secure it in the cage using the standard procedure.",
+      "latency_ms": 18995.632248930633,
+      "parsed": {
+        "ambiguity_types": [
+          "object_reference"
+        ],
+        "capability_status": "conditionally_capable",
+        "intent_summary": "Inspect and clean the second shipping case, then secure it in the cage using the standard procedure.",
+        "speech_act": "directive_command",
+        "terminal_strategy": "clarify"
+      },
+      "raw_output": "<think>\nOkay, let's break this down. The user's command is to handle the second shipping case by doing the same as the first and then placing it in the secure cage with the usual setup. The dialogue history shows that the driver mentioned inspecting the first case and cleaning the parts bin. The robot confirmed both tasks were done. Now, the driver says the new item is another shipping case in the inspection batch.\n\nFirst, I need to identify the intent. The person wants the second shipping case processed similarly to the first, which involved inspection and cleaning. Then, placing it in the secure cage. But the scene context says that the secure cage placement requires the unit identifier, which isn't provided here. The work order WO-792 is for returns, but the setup mentions night receiving for a different prefix. The robot can move approved loads, but without the unit ID, maybe it's an issue.\n\nAmbiguity types: The command refers to \"the second shipping case,\" which might be a pronoun reference (pronominal) if the first case is the antecedent. Also, \"usual setup\" might be vague, leading to fuzzy_quantity or routine_reference. But the main issue is the unit identifier missing, which is a requirement for secure placement. So, maybe object_reference or missing information. Wait, the ambiguity types include things like object_reference. Since the unit ID is required but not provided, that's a missing object reference. Also, the work order might be a different flow (returns vs. night receiving), which could be a scope ambiguity. But the key ambiguity here is that the unit ID is missing, which is necessary for secure placement. So, object_reference might apply here.\n\nCapability status: The robot can move approved loads, but the secure cage requires the unit identifier. Since the unit ID isn't provided, the robot might be incapable of placing it securely. So capability_status would be incapable. But wait, the driver might be assuming the robot knows the unit ID from the work order. However, the setup says that the night receiving applies to a different prefix, and WO-792 is returns. But the secure cage requires the unit identifier, which isn't mentioned. So the robot can't proceed because it lacks the necessary info. Hence, capability_status is incapable.\n\nTerminal strategy: Since the robot can't proceed due to missing info, the terminal strategy would be to clarify. But the user might want to execute if they assume the unit ID is known. Wait, the command says \"usual setup,\" which might imply that the setup includes the unit ID. However, the scene context says that the setup table mentions different prefixes for night receiving, but the work order is WO-792 which maps to returns. But the secure cage requires the unit identifier, which isn't given. So the robot can't place it without that info. Therefore, the terminal strategy would be to clarify the missing unit ID. But the user's command doesn't mention it, so the robot might need to ask for it. Hence, the terminal strategy is clarify.\n</think>\n\n{\n  \"intent_summary\": \"Inspect and clean the second shipping case, then secure it in the cage using the standard procedure.\",\n  \"speech_act\": \"directive_command\",\n  \"ambiguity_types\": [\"object_reference\", \"pronominal\"],\n  \"capability_status\": \"conditionally_capable\",\n  \"terminal_strategy\": \"clarify\"\n}",
+      "record_id": "CA-0714",
+      "schema_valid": true,
+      "speech_act": "directive_command",
+      "system_id": "t28_selected_adapter_llm",
+      "terminal_strategy": "clarify"
+    },
+    "goal_first": {
+      "ambiguity_types": [
+        "destination_reference",
+        "object_reference",
+        "pragmatic"
+      ],
+      "analysis_attempts": [
+        {
+          "attempt": 1,
+          "max_new_tokens": 4096,
+          "mode": "thinking",
+          "raw_chars": 9178,
+          "raw_sha256": "55885e5ac314e1913976eadabbfdbc7f5fa68613e041b3e85cb19c0dabbbe67a",
+          "validation_error": "bad_intent_summary"
+        },
+        {
+          "attempt": 2,
+          "max_new_tokens": 8192,
+          "mode": "thinking_retry",
+          "raw_chars": 11041,
+          "raw_sha256": "5bc9c86d3d46df853ccc46bc9ee648bd8edb17612f14597c956b0fc06a81c9f0",
+          "validation_error": "bad_intent_summary"
+        },
+        {
+          "attempt": 3,
+          "constraint": {
+            "constraint_initialised": true,
+            "generated_token_count": 484,
+            "maximum_output_tokens": 1024,
+            "response_mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+            "termination_reason": "eos_or_constraint_stop",
+            "transport_status": "constrained_generated"
+          },
+          "max_new_tokens": 1024,
+          "mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+          "raw_chars": 1622,
+          "raw_sha256": "adcaf164d4f10cbea4396403eaad263c3b732fd4d0374715c6d7e86e50d8092e",
+          "validation_error": null
+        }
+      ],
+      "capability_status": "incapable",
+      "claim_boundary": "separately_versioned_from_frozen_t39",
+      "error": null,
+      "execution_mode": "cluster-gpu-goal-first-v2",
+      "failed": false,
+      "intent_summary": "Repeat the cleaning and inspection process for the second shipping case, then secure it in the designated cage using the standard setup procedure",
+      "latency_ms": 154314.1604992561,
+      "model_id": "Qwen/Qwen3-8B@b968826d9c46dd6066d109eabc6255188de91218",
+      "parsed": {
+        "analysis": {
+          "ambiguity_present": true,
+          "ambiguity_types": [
+            "pragmatic",
+            "referential",
+            "spatial"
+          ],
+          "analysis_provenance": {
+            "analysis_id": "2003afc2413cca891eca0236bd18d069cd646e0f0e25e75d2011042a65f71f97",
+            "method": "model_generated",
+            "notes": "source_input_hash=2003afc2413cca891eca0236bd18d069cd646e0f0e25e75d2011042a65f71f97;no_gold_in_prompt;scene_licence_dropped=object,destination",
+            "provider_id": "goal_first_v2_full_context",
+            "provider_version": "goal-first-manager-v2"
+          },
+          "candidate_interpretations": [],
+          "capability_status": "incapable",
+          "clarification_question": null,
+          "clarification_targets": [],
+          "compound_ambiguity": true,
+          "compound_ambiguity_count": 3,
+          "context_sampling_uncertainty": {
+            "agreement": 0.35,
+            "score": 0.65,
+            "variant_count": 1
+          },
+          "cpc": {
+            "action": {
+              "status": "not_applicable",
+              "value": "place"
+            },
+            "actor": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "conditions": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "constraints": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "destination": {
+              "status": "not_applicable",
+              "value": "secure cage"
+            },
+            "negation": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "object": {
+              "status": "not_applicable",
+              "value": "shipping case"
+            },
+            "object_attributes": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "quantity": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "recipient": {
+              "status": "not_applicable",
+              "value": "secure cage"
+            },
+            "spatial_relation": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "time": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "tool": {
+              "status": "not_applicable",
+              "value": "usual setup"
+            }
+          },
+          "findings": [
+            "pilot_ambiguity_types:[\"destination_reference\",\"object_reference\",\"pragmatic\"]",
+            "pilot_capability_status:incapable",
+            "intent_summary_present"
+          ],
+          "intent_summary": "Repeat the cleaning and inspection process for the second shipping case, then secure it in the designated cage using the standard setup procedure",
+          "primary_ambiguity_type": "pragmatic",
+          "recommended_strategy": "face_preserving_rejection",
+          "rejection_reason": "known_incapability",
+          "resolution_evidence": [],
+          "resolution_method": null,
+          "resolved_slots": [],
+          "risk_level": "medium",
+          "risk_relevant": true,
+          "selected_interpretation": null,
+          "speech_act": "directive_command",
+          "strategy_sequence": [],
+          "supporting_evidence": [],
+          "unresolved_slots": [
+            {
+              "reason": "model_identified_uncertainty",
+              "slot_name": "tool"
+            }
+          ],
+          "unsupported_specificity": []
+        },
+        "clarification_question": null,
+        "clarification_targets": [],
+        "execution_status": "ok",
+        "official_result": false,
+        "provider_provenance": {
+          "provider_id": "cached_analysis",
+          "provider_version": "1.0.0"
+        },
+        "recommended_strategy": "face_preserving_rejection",
+        "record_id": "CA-0714",
+        "rejection_reason": "known_incapability",
+        "resolved_slots": [],
+        "result_hash": "d77b57afe192399721708c99b9a0edd471fe1b6a682268c31fbe6f1f36bede3f",
+        "run_id": null,
+        "run_mode": null,
+        "runtime_metadata": {
+          "awaits_t28_adapter": true,
+          "classification": {
+            "ambiguity_present": true,
+            "ambiguity_types": [
+              "pragmatic",
+              "referential",
+              "spatial"
+            ],
+            "capability_status": "incapable",
+            "compound_ambiguity": true,
+            "compound_ambiguity_count": 3,
+            "derivation_notes": [
+              "ambiguity_present_from_types"
+            ],
+            "risk_level": "medium"
+          },
+          "rejection_text": "I am not able to perform that action with my current capabilities. I will not invent an alternative that is not supported.",
+          "requires_re_evaluation": false,
+          "resolution_events": [
+            {
+              "confidence_category": "blocked",
+              "details": {
+                "risk_level": "medium"
+              },
+              "evidence_source": null,
+              "outcome": "resolution_blocked_by_risk",
+              "previous_status": "unresolved",
+              "resolved_value": null,
+              "rule_id": "risk_block",
+              "safety_eligibility": false,
+              "slot": "tool"
+            }
+          ],
+          "router_trace": {
+            "clarification_targets": [],
+            "considered_rules": [
+              "goal_first_v2",
+              "known_unsafe_or_prohibited",
+              "known_incapable"
+            ],
+            "matched_rule_id": "known_incapable",
+            "notes": [],
+            "recommended_strategy": "face_preserving_rejection",
+            "rejection_reason": "known_incapability",
+            "requires_re_evaluation": false,
+            "strategy_sequence": []
+          },
+          "safety_action": "return_with_findings",
+          "uncertainty": null
+        },
+        "safety_findings": [],
+        "strategy_sequence": [],
+        "synthetic_only": true,
+        "system_id": "goal_first_manager_v2",
+        "system_version": "2.0.0",
+        "unsupported_commitment_findings": []
+      },
+      "raw_output": "{\n  \"intent_summary\": \"Repeat the cleaning and inspection process for the second shipping case, then secure it in the designated cage using the standard setup procedure\",\n  \"cpc\": {\n    \"action\": {\n      \"value\": \"place\",\n      \"status\": \"not_applicable\"\n    },\n    \"object\": {\n      \"value\": \"shipping case\",\n      \"status\": \"not_applicable\"\n    },\n    \"destination\": {\n      \"value\": \"secure cage\",\n      \"status\": \"not_applicable\"\n    },\n    \"tool\": {\n      \"value\": \"usual setup\",\n      \"status\": \"not_applicable\"\n    },\n    \"recipient\": {\n      \"value\": \"secure cage\",\n      \"status\": \"not_applicable\"\n    }\n  ,\n  \"constraints\": {\n    \"status\": \"not_applicable\"\n  ,\n  \"value\": \"not_applicable\"\n  },\n  \"time\": {\n    \"value\": \"not_applicable\",\n    \"status\": \"not_applicable\"\n  },\n  \"quantity\": {\n    \"value\": \"not_applicable\",\n    \"status\": \"not_applicable\"\n  },\n  \"spatial_relation\": {\n    \"value\": \"not_applicable\",\n    \"status\": \"not_applicable\"\n  },\n  \"negation\": {\n    \"value\": \"not_applicable\",\n    \"status\": \"not_applicable\"\n  },\n  \"conditions\": {\n    \"value\": \"not_applicable\",\n    \"status\": \"not_applicable\"\n  },\n  \"object_attributes\": {\n    \"value\": \"not_applicable\",\n    \"status\": \"not_applicable\"\n  },\n  \"actor\": {\n    \"value\": \"not_applicable\",\n    \"status\": \"not_applicable\"\n  }\n}\n,\n  \"pilot_ambiguity_types\": [\n    \"pragmatic\",\n    \"object_reference\",\n    \"destination_reference\"\n  ]\n  ,\n  \"pilot_capability_status\": \"incapable\"\n  ,\n  \"risk_level\": \"medium\"\n  ,\n  \"speech_act\": \"directive_command\"\n  ,\n  \"unresolved_slots\": [\n    \"object\",\n    \"destination\",\n    \"tool\"\n  ]\n  ,\n  \"uncertainty\": 0.65\n  }\n",
+      "record_id": "CA-0714",
+      "schema_valid": true,
+      "supports_ambiguity_prediction": true,
+      "supports_capability_prediction": true,
+      "system_id": "goal_first_manager_v2",
+      "system_version": "2.0.0",
+      "terminal_strategy": "face_preserving_rejection"
+    },
+    "degree": {
+      "ambiguity_types": [
+        "destination_reference",
+        "object_reference",
+        "pragmatic"
+      ],
+      "analysis_attempts": [
+        {
+          "attempt": 1,
+          "max_new_tokens": 4096,
+          "mode": "thinking",
+          "raw_chars": 9178,
+          "raw_sha256": "55885e5ac314e1913976eadabbfdbc7f5fa68613e041b3e85cb19c0dabbbe67a",
+          "validation_error": "bad_intent_summary"
+        },
+        {
+          "attempt": 2,
+          "max_new_tokens": 8192,
+          "mode": "thinking_retry",
+          "raw_chars": 11041,
+          "raw_sha256": "5bc9c86d3d46df853ccc46bc9ee648bd8edb17612f14597c956b0fc06a81c9f0",
+          "validation_error": "bad_intent_summary"
+        },
+        {
+          "attempt": 3,
+          "constraint": {
+            "constraint_initialised": true,
+            "generated_token_count": 484,
+            "maximum_output_tokens": 1024,
+            "response_mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+            "termination_reason": "eos_or_constraint_stop",
+            "transport_status": "constrained_generated"
+          },
+          "max_new_tokens": 1024,
+          "mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+          "raw_chars": 1622,
+          "raw_sha256": "adcaf164d4f10cbea4396403eaad263c3b732fd4d0374715c6d7e86e50d8092e",
+          "validation_error": null
+        }
+      ],
+      "capability_status": "incapable",
+      "claim_boundary": "separately_versioned_from_frozen_t39",
+      "error": null,
+      "execution_mode": "cluster-gpu-goal-first-v2",
+      "failed": false,
+      "intent_summary": "Repeat the cleaning and inspection process for the second shipping case, then secure it in the designated cage using the standard setup procedure",
+      "latency_ms": 154314.1604992561,
+      "model_id": "Qwen/Qwen3-8B@b968826d9c46dd6066d109eabc6255188de91218",
+      "parsed": {
+        "analysis": {
+          "ambiguity_present": true,
+          "ambiguity_types": [
+            "pragmatic",
+            "referential",
+            "spatial"
+          ],
+          "analysis_provenance": {
+            "analysis_id": "2003afc2413cca891eca0236bd18d069cd646e0f0e25e75d2011042a65f71f97",
+            "method": "model_generated",
+            "notes": "source_input_hash=2003afc2413cca891eca0236bd18d069cd646e0f0e25e75d2011042a65f71f97;no_gold_in_prompt;scene_licence_dropped=object,destination",
+            "provider_id": "goal_first_v2_full_context",
+            "provider_version": "goal-first-manager-v2"
+          },
+          "candidate_interpretations": [],
+          "capability_status": "incapable",
+          "clarification_question": "Which tool should I use?",
+          "clarification_targets": [
+            "tool"
+          ],
+          "compound_ambiguity": true,
+          "compound_ambiguity_count": 3,
+          "context_sampling_uncertainty": {
+            "agreement": 0.35,
+            "score": 0.65,
+            "variant_count": 1
+          },
+          "cpc": {
+            "action": {
+              "status": "not_applicable",
+              "value": "place"
+            },
+            "actor": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "conditions": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "constraints": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "destination": {
+              "status": "not_applicable",
+              "value": "secure cage"
+            },
+            "negation": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "object": {
+              "status": "not_applicable",
+              "value": "shipping case"
+            },
+            "object_attributes": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "quantity": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "recipient": {
+              "status": "not_applicable",
+              "value": "secure cage"
+            },
+            "spatial_relation": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "time": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "tool": {
+              "status": "not_applicable",
+              "value": "usual setup"
+            }
+          },
+          "findings": [
+            "pilot_ambiguity_types:[\"destination_reference\",\"object_reference\",\"pragmatic\"]",
+            "pilot_capability_status:incapable",
+            "intent_summary_present"
+          ],
+          "intent_summary": "Repeat the cleaning and inspection process for the second shipping case, then secure it in the designated cage using the standard setup procedure",
+          "primary_ambiguity_type": "pragmatic",
+          "recommended_strategy": "clarify",
+          "rejection_reason": null,
+          "resolution_evidence": [],
+          "resolution_method": null,
+          "resolved_slots": [],
+          "risk_level": "medium",
+          "risk_relevant": true,
+          "selected_interpretation": null,
+          "speech_act": "directive_command",
+          "strategy_sequence": [],
+          "supporting_evidence": [],
+          "unresolved_slots": [
+            {
+              "reason": "model_identified_uncertainty",
+              "slot_name": "tool"
+            }
+          ],
+          "unsupported_specificity": []
+        },
+        "clarification_question": "Which tool should I use?",
+        "clarification_targets": [
+          "tool"
+        ],
+        "execution_status": "ok",
+        "official_result": false,
+        "provider_provenance": {
+          "shared_analysis_fingerprint": "fe83b720bf45b8934e004c61a55561522d6154b73497256df7801ea78f109f55"
+        },
+        "recommended_strategy": "clarify",
+        "record_id": "CA-0714",
+        "rejection_reason": null,
+        "resolved_slots": [],
+        "result_hash": "5ed3d6d15b966c83336d04dfad66b980fb7c13ea91bc38d2f2cbf429f4c0ee4b",
+        "run_id": null,
+        "run_mode": null,
+        "runtime_metadata": {
+          "shared_analysis_fingerprint": "fe83b720bf45b8934e004c61a55561522d6154b73497256df7801ea78f109f55",
+          "thresholds_status": "unfrozen",
+          "thresholds_valid_for_official_use": false,
+          "uncertainty_score": 0.65,
+          "uses_type_risk_capability_precedence": false
+        },
+        "safety_findings": [],
+        "strategy_sequence": [],
+        "synthetic_only": true,
+        "system_id": "degree_based_router",
+        "system_version": "1.0.0",
+        "unsupported_commitment_findings": []
+      },
+      "raw_output": "{\n  \"intent_summary\": \"Repeat the cleaning and inspection process for the second shipping case, then secure it in the designated cage using the standard setup procedure\",\n  \"cpc\": {\n    \"action\": {\n      \"value\": \"place\",\n      \"status\": \"not_applicable\"\n    },\n    \"object\": {\n      \"value\": \"shipping case\",\n      \"status\": \"not_applicable\"\n    },\n    \"destination\": {\n      \"value\": \"secure cage\",\n      \"status\": \"not_applicable\"\n    },\n    \"tool\": {\n      \"value\": \"usual setup\",\n      \"status\": \"not_applicable\"\n    },\n    \"recipient\": {\n      \"value\": \"secure cage\",\n      \"status\": \"not_applicable\"\n    }\n  ,\n  \"constraints\": {\n    \"status\": \"not_applicable\"\n  ,\n  \"value\": \"not_applicable\"\n  },\n  \"time\": {\n    \"value\": \"not_applicable\",\n    \"status\": \"not_applicable\"\n  },\n  \"quantity\": {\n    \"value\": \"not_applicable\",\n    \"status\": \"not_applicable\"\n  },\n  \"spatial_relation\": {\n    \"value\": \"not_applicable\",\n    \"status\": \"not_applicable\"\n  },\n  \"negation\": {\n    \"value\": \"not_applicable\",\n    \"status\": \"not_applicable\"\n  },\n  \"conditions\": {\n    \"value\": \"not_applicable\",\n    \"status\": \"not_applicable\"\n  },\n  \"object_attributes\": {\n    \"value\": \"not_applicable\",\n    \"status\": \"not_applicable\"\n  },\n  \"actor\": {\n    \"value\": \"not_applicable\",\n    \"status\": \"not_applicable\"\n  }\n}\n,\n  \"pilot_ambiguity_types\": [\n    \"pragmatic\",\n    \"object_reference\",\n    \"destination_reference\"\n  ]\n  ,\n  \"pilot_capability_status\": \"incapable\"\n  ,\n  \"risk_level\": \"medium\"\n  ,\n  \"speech_act\": \"directive_command\"\n  ,\n  \"unresolved_slots\": [\n    \"object\",\n    \"destination\",\n    \"tool\"\n  ]\n  ,\n  \"uncertainty\": 0.65\n  }\n",
+      "record_id": "CA-0714",
+      "schema_valid": true,
+      "supports_ambiguity_prediction": true,
+      "supports_capability_prediction": true,
+      "system_id": "degree_based_router_v2",
+      "system_version": "2.0.0",
+      "terminal_strategy": "clarify"
+    },
+    "timid": {
+      "ambiguity_types": [
+        "destination_reference",
+        "object_reference",
+        "pragmatic"
+      ],
+      "analysis_attempts": [
+        {
+          "attempt": 1,
+          "max_new_tokens": 4096,
+          "mode": "thinking",
+          "raw_chars": 9178,
+          "raw_sha256": "55885e5ac314e1913976eadabbfdbc7f5fa68613e041b3e85cb19c0dabbbe67a",
+          "validation_error": "bad_intent_summary"
+        },
+        {
+          "attempt": 2,
+          "max_new_tokens": 8192,
+          "mode": "thinking_retry",
+          "raw_chars": 11041,
+          "raw_sha256": "5bc9c86d3d46df853ccc46bc9ee648bd8edb17612f14597c956b0fc06a81c9f0",
+          "validation_error": "bad_intent_summary"
+        },
+        {
+          "attempt": 3,
+          "constraint": {
+            "constraint_initialised": true,
+            "generated_token_count": 484,
+            "maximum_output_tokens": 1024,
+            "response_mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+            "termination_reason": "eos_or_constraint_stop",
+            "transport_status": "constrained_generated"
+          },
+          "max_new_tokens": 1024,
+          "mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+          "raw_chars": 1622,
+          "raw_sha256": "adcaf164d4f10cbea4396403eaad263c3b732fd4d0374715c6d7e86e50d8092e",
+          "validation_error": null
+        }
+      ],
+      "capability_status": "incapable",
+      "claim_boundary": "separately_versioned_from_frozen_t39",
+      "error": null,
+      "execution_mode": "cluster-gpu-goal-first-v2",
+      "failed": false,
+      "intent_summary": "Repeat the cleaning and inspection process for the second shipping case, then secure it in the designated cage using the standard setup procedure",
+      "latency_ms": 154314.1604992561,
+      "model_id": "Qwen/Qwen3-8B@b968826d9c46dd6066d109eabc6255188de91218",
+      "parsed": {
+        "analysis": {
+          "ambiguity_present": true,
+          "ambiguity_types": [
+            "pragmatic",
+            "referential",
+            "spatial"
+          ],
+          "analysis_provenance": {
+            "analysis_id": "2003afc2413cca891eca0236bd18d069cd646e0f0e25e75d2011042a65f71f97",
+            "method": "model_generated",
+            "notes": "source_input_hash=2003afc2413cca891eca0236bd18d069cd646e0f0e25e75d2011042a65f71f97;no_gold_in_prompt;scene_licence_dropped=object,destination",
+            "provider_id": "goal_first_v2_full_context",
+            "provider_version": "goal-first-manager-v2"
+          },
+          "candidate_interpretations": [],
+          "capability_status": "incapable",
+          "clarification_question": null,
+          "clarification_targets": [],
+          "compound_ambiguity": true,
+          "compound_ambiguity_count": 3,
+          "context_sampling_uncertainty": {
+            "agreement": 0.35,
+            "score": 0.65,
+            "variant_count": 1
+          },
+          "cpc": {
+            "action": {
+              "status": "not_applicable",
+              "value": "place"
+            },
+            "actor": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "conditions": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "constraints": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "destination": {
+              "status": "not_applicable",
+              "value": "secure cage"
+            },
+            "negation": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "object": {
+              "status": "not_applicable",
+              "value": "shipping case"
+            },
+            "object_attributes": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "quantity": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "recipient": {
+              "status": "not_applicable",
+              "value": "secure cage"
+            },
+            "spatial_relation": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "time": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "tool": {
+              "status": "not_applicable",
+              "value": "usual setup"
+            }
+          },
+          "findings": [
+            "pilot_ambiguity_types:[\"destination_reference\",\"object_reference\",\"pragmatic\"]",
+            "pilot_capability_status:incapable",
+            "intent_summary_present"
+          ],
+          "intent_summary": "Repeat the cleaning and inspection process for the second shipping case, then secure it in the designated cage using the standard setup procedure",
+          "primary_ambiguity_type": "pragmatic",
+          "recommended_strategy": "face_preserving_rejection",
+          "rejection_reason": "known_incapability",
+          "resolution_evidence": [],
+          "resolution_method": null,
+          "resolved_slots": [],
+          "risk_level": "medium",
+          "risk_relevant": true,
+          "selected_interpretation": null,
+          "speech_act": "directive_command",
+          "strategy_sequence": [],
+          "supporting_evidence": [],
+          "unresolved_slots": [
+            {
+              "reason": "model_identified_uncertainty",
+              "slot_name": "tool"
+            }
+          ],
+          "unsupported_specificity": []
+        },
+        "clarification_question": null,
+        "clarification_targets": [],
+        "execution_status": "ok",
+        "official_result": false,
+        "provider_provenance": {
+          "provider_id": "cached_analysis",
+          "provider_version": "1.0.0"
+        },
+        "recommended_strategy": "face_preserving_rejection",
+        "record_id": "CA-0714",
+        "rejection_reason": "known_incapability",
+        "resolved_slots": [],
+        "result_hash": "fcf736010c35a989f9632a2e1ced6f4a993e4c5a3252f344bc28660169a2d58c",
+        "run_id": null,
+        "run_mode": null,
+        "runtime_metadata": {
+          "awaits_t28_adapter": true,
+          "classification": {
+            "ambiguity_present": true,
+            "ambiguity_types": [
+              "pragmatic",
+              "referential",
+              "spatial"
+            ],
+            "capability_status": "incapable",
+            "compound_ambiguity": true,
+            "compound_ambiguity_count": 3,
+            "derivation_notes": [
+              "ambiguity_present_from_types"
+            ],
+            "risk_level": "medium"
+          },
+          "rejection_text": "I am not able to perform that action with my current capabilities. I will not invent an alternative that is not supported.",
+          "requires_re_evaluation": false,
+          "resolution_events": [
+            {
+              "confidence_category": "blocked",
+              "details": {
+                "risk_level": "medium"
+              },
+              "evidence_source": null,
+              "outcome": "resolution_blocked_by_risk",
+              "previous_status": "unresolved",
+              "resolved_value": null,
+              "rule_id": "risk_block",
+              "safety_eligibility": false,
+              "slot": "tool"
+            }
+          ],
+          "router_trace": {
+            "clarification_targets": [],
+            "considered_rules": [
+              "known_unsafe_or_prohibited",
+              "known_incapable"
+            ],
+            "matched_rule_id": "known_incapable",
+            "notes": [],
+            "recommended_strategy": "face_preserving_rejection",
+            "rejection_reason": "known_incapability",
+            "requires_re_evaluation": false,
+            "strategy_sequence": []
+          },
+          "safety_action": "return_with_findings",
+          "uncertainty": null
+        },
+        "safety_findings": [],
+        "strategy_sequence": [],
+        "synthetic_only": true,
+        "system_id": "full_type_risk_aware_manager",
+        "system_version": "1.0.0",
+        "unsupported_commitment_findings": []
+      },
+      "raw_output": "{\n  \"intent_summary\": \"Repeat the cleaning and inspection process for the second shipping case, then secure it in the designated cage using the standard setup procedure\",\n  \"cpc\": {\n    \"action\": {\n      \"value\": \"place\",\n      \"status\": \"not_applicable\"\n    },\n    \"object\": {\n      \"value\": \"shipping case\",\n      \"status\": \"not_applicable\"\n    },\n    \"destination\": {\n      \"value\": \"secure cage\",\n      \"status\": \"not_applicable\"\n    },\n    \"tool\": {\n      \"value\": \"usual setup\",\n      \"status\": \"not_applicable\"\n    },\n    \"recipient\": {\n      \"value\": \"secure cage\",\n      \"status\": \"not_applicable\"\n    }\n  ,\n  \"constraints\": {\n    \"status\": \"not_applicable\"\n  ,\n  \"value\": \"not_applicable\"\n  },\n  \"time\": {\n    \"value\": \"not_applicable\",\n    \"status\": \"not_applicable\"\n  },\n  \"quantity\": {\n    \"value\": \"not_applicable\",\n    \"status\": \"not_applicable\"\n  },\n  \"spatial_relation\": {\n    \"value\": \"not_applicable\",\n    \"status\": \"not_applicable\"\n  },\n  \"negation\": {\n    \"value\": \"not_applicable\",\n    \"status\": \"not_applicable\"\n  },\n  \"conditions\": {\n    \"value\": \"not_applicable\",\n    \"status\": \"not_applicable\"\n  },\n  \"object_attributes\": {\n    \"value\": \"not_applicable\",\n    \"status\": \"not_applicable\"\n  },\n  \"actor\": {\n    \"value\": \"not_applicable\",\n    \"status\": \"not_applicable\"\n  }\n}\n,\n  \"pilot_ambiguity_types\": [\n    \"pragmatic\",\n    \"object_reference\",\n    \"destination_reference\"\n  ]\n  ,\n  \"pilot_capability_status\": \"incapable\"\n  ,\n  \"risk_level\": \"medium\"\n  ,\n  \"speech_act\": \"directive_command\"\n  ,\n  \"unresolved_slots\": [\n    \"object\",\n    \"destination\",\n    \"tool\"\n  ]\n  ,\n  \"uncertainty\": 0.65\n  }\n",
+      "record_id": "CA-0714",
+      "schema_valid": true,
+      "supports_ambiguity_prediction": true,
+      "supports_capability_prediction": true,
+      "system_id": "rich_conservative_manager_v2",
+      "system_version": "2.0.0",
+      "terminal_strategy": "face_preserving_rejection"
+    },
+    "context_blind": {
+      "ambiguity_types": [
+        "action_order",
+        "pragmatic"
+      ],
+      "analysis_attempts": [
+        {
+          "attempt": 1,
+          "max_new_tokens": 4096,
+          "mode": "thinking",
+          "raw_chars": 3828,
+          "raw_sha256": "440efeff99430064a1aa0f8525f307a7b20b58826d73f4ec78546ef143cbcd53",
+          "validation_error": "bad_pilot_ambiguity_types"
+        },
+        {
+          "attempt": 2,
+          "max_new_tokens": 8192,
+          "mode": "thinking_retry",
+          "raw_chars": 5184,
+          "raw_sha256": "eddd94b73217352022cae08a7ca5dd68bb2de1de2b446b8f1303640913180ff3",
+          "validation_error": "bad_pilot_ambiguity_types"
+        },
+        {
+          "attempt": 3,
+          "constraint": {
+            "constraint_initialised": true,
+            "generated_token_count": 613,
+            "maximum_output_tokens": 1024,
+            "response_mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+            "termination_reason": "eos_or_constraint_stop",
+            "transport_status": "constrained_generated"
+          },
+          "max_new_tokens": 1024,
+          "mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+          "raw_chars": 2196,
+          "raw_sha256": "e379ca77c6f982555afcee2d2ff3bc0f70ffeb3f176cfc186ec539c01db13948",
+          "validation_error": null
+        }
+      ],
+      "capability_status": "unauthorized",
+      "claim_boundary": "separately_versioned_from_frozen_t39",
+      "error": null,
+      "execution_mode": "cluster-gpu-goal-first-v2",
+      "failed": false,
+      "intent_summary": "Perform the same action on the second shipping case and then put it in the secure cage with the usual setup",
+      "latency_ms": 69674.67303434387,
+      "model_id": "Qwen/Qwen3-8B@b968826d9c46dd6066d109eabc6255188de91218",
+      "parsed": {
+        "analysis": {
+          "ambiguity_present": true,
+          "ambiguity_types": [
+            "pragmatic",
+            "temporal"
+          ],
+          "analysis_provenance": {
+            "analysis_id": "dfed1ee57251d6e7003766f8b44b8b965dd77fee8bb7fb94dbb4851030422373",
+            "method": "context_blind",
+            "notes": "ablated_input_hash=dfed1ee57251d6e7003766f8b44b8b965dd77fee8bb7fb94dbb4851030422373;source_input_hash=dfed1ee57251d6e7003766f8b44b8b965dd77fee8bb7fb94dbb4851030422373;no_gold_in_prompt;scene_licence_dropped=object,destination,tool",
+            "provider_id": "goal_first_v2_context_blind",
+            "provider_version": "goal-first-manager-v2"
+          },
+          "candidate_interpretations": [],
+          "capability_status": "unknown",
+          "clarification_question": null,
+          "clarification_targets": [],
+          "compound_ambiguity": true,
+          "compound_ambiguity_count": 2,
+          "context_sampling_uncertainty": {
+            "agreement": 0.30000000000000004,
+            "score": 0.7,
+            "variant_count": 1
+          },
+          "cpc": {
+            "action": {
+              "status": "filled",
+              "value": "place"
+            },
+            "actor": {
+              "status": "filled",
+              "value": "Do the same with the second shipping case, then place it in the secure cage using the usual setup"
+            },
+            "conditions": {
+              "status": "filled",
+              "value": "Do the same with the second shipping case, then place it in the secure cage using the usual setup"
+            },
+            "constraints": {
+              "status": "filled",
+              "value": "Do the same with the second shipping case, then place it in the secure cage using the usual setup"
+            },
+            "destination": {
+              "status": "filled",
+              "value": "secure cage"
+            },
+            "negation": {
+              "status": "filled",
+              "value": "Do the same with the second shipping case, then place it in the secure cage using the usual setup"
+            },
+            "object": {
+              "status": "filled",
+              "value": "second shipping case"
+            },
+            "object_attributes": {
+              "status": "filled",
+              "value": "Do the same with the second shipping case, then place it in the secure cage using the usual setup"
+            },
+            "quantity": {
+              "status": "filled",
+              "value": "Do the same with the second shipping case, then place it in the secure cage using the usual setup"
+            },
+            "recipient": {
+              "status": "filled",
+              "value": "Do the same with the second shipping case, then place it in the secure cage using the usual setup"
+            },
+            "spatial_relation": {
+              "status": "filled",
+              "value": "Do the same with the second shipping case, then place it in the secure cage using the usual setup"
+            },
+            "time": {
+              "status": "filled",
+              "value": "Do the same with the second shipping case, then place it in the secure cage using the usual setup"
+            },
+            "tool": {
+              "status": "filled",
+              "value": "usual setup"
+            }
+          },
+          "findings": [
+            "pilot_ambiguity_types:[\"action_order\",\"pragmatic\"]",
+            "pilot_capability_status:unauthorized",
+            "intent_summary_present"
+          ],
+          "intent_summary": "Perform the same action on the second shipping case and then put it in the secure cage with the usual setup",
+          "primary_ambiguity_type": "pragmatic",
+          "recommended_strategy": "face_preserving_rejection",
+          "rejection_reason": "unsafe_or_prohibited_action",
+          "resolution_evidence": [],
+          "resolution_method": null,
+          "resolved_slots": [
+            {
+              "slot_name": "action",
+              "value": "place"
+            },
+            {
+              "slot_name": "actor",
+              "value": "Do the same with the second shipping case, then place it in the secure cage using the usual setup"
+            },
+            {
+              "slot_name": "object",
+              "value": "second shipping case"
+            },
+            {
+              "slot_name": "object_attributes",
+              "value": "Do the same with the second shipping case, then place it in the secure cage using the usual setup"
+            },
+            {
+              "slot_name": "destination",
+              "value": "secure cage"
+            },
+            {
+              "slot_name": "spatial_relation",
+              "value": "Do the same with the second shipping case, then place it in the secure cage using the usual setup"
+            },
+            {
+              "slot_name": "quantity",
+              "value": "Do the same with the second shipping case, then place it in the secure cage using the usual setup"
+            },
+            {
+              "slot_name": "time",
+              "value": "Do the same with the second shipping case, then place it in the secure cage using the usual setup"
+            },
+            {
+              "slot_name": "recipient",
+              "value": "Do the same with the second shipping case, then place it in the secure cage using the usual setup"
+            },
+            {
+              "slot_name": "tool",
+              "value": "usual setup"
+            },
+            {
+              "slot_name": "conditions",
+              "value": "Do the same with the second shipping case, then place it in the secure cage using the usual setup"
+            },
+            {
+              "slot_name": "constraints",
+              "value": "Do the same with the second shipping case, then place it in the secure cage using the usual setup"
+            },
+            {
+              "slot_name": "negation",
+              "value": "Do the same with the second shipping case, then place it in the secure cage using the usual setup"
+            }
+          ],
+          "risk_level": "medium",
+          "risk_relevant": true,
+          "selected_interpretation": null,
+          "speech_act": "directive_command",
+          "strategy_sequence": [],
+          "supporting_evidence": [],
+          "unresolved_slots": [],
+          "unsupported_specificity": []
+        },
+        "clarification_question": null,
+        "clarification_targets": [],
+        "execution_status": "ok",
+        "official_result": false,
+        "provider_provenance": {
+          "provider_id": "cached_analysis",
+          "provider_version": "1.0.0"
+        },
+        "recommended_strategy": "face_preserving_rejection",
+        "record_id": "CA-0714",
+        "rejection_reason": "unsafe_or_prohibited_action",
+        "resolved_slots": [
+          {
+            "slot_name": "action",
+            "value": "place"
+          },
+          {
+            "slot_name": "actor",
+            "value": "Do the same with the second shipping case, then place it in the secure cage using the usual setup"
+          },
+          {
+            "slot_name": "object",
+            "value": "second shipping case"
+          },
+          {
+            "slot_name": "object_attributes",
+            "value": "Do the same with the second shipping case, then place it in the secure cage using the usual setup"
+          },
+          {
+            "slot_name": "destination",
+            "value": "secure cage"
+          },
+          {
+            "slot_name": "spatial_relation",
+            "value": "Do the same with the second shipping case, then place it in the secure cage using the usual setup"
+          },
+          {
+            "slot_name": "quantity",
+            "value": "Do the same with the second shipping case, then place it in the secure cage using the usual setup"
+          },
+          {
+            "slot_name": "time",
+            "value": "Do the same with the second shipping case, then place it in the secure cage using the usual setup"
+          },
+          {
+            "slot_name": "recipient",
+            "value": "Do the same with the second shipping case, then place it in the secure cage using the usual setup"
+          },
+          {
+            "slot_name": "tool",
+            "value": "usual setup"
+          },
+          {
+            "slot_name": "conditions",
+            "value": "Do the same with the second shipping case, then place it in the secure cage using the usual setup"
+          },
+          {
+            "slot_name": "constraints",
+            "value": "Do the same with the second shipping case, then place it in the secure cage using the usual setup"
+          },
+          {
+            "slot_name": "negation",
+            "value": "Do the same with the second shipping case, then place it in the secure cage using the usual setup"
+          }
+        ],
+        "result_hash": "8f23b8dbb03377837ea084be68418daaeaa47ba41969e0ed23f45628e34e1270",
+        "run_id": null,
+        "run_mode": null,
+        "runtime_metadata": {
+          "analysis_identity": {
+            "analysis_content_hash": "e04c6f0db265655fa499d530384f6ac0730fe469972162b7a754779d18203296",
+            "analysis_variant": "context_blind",
+            "model_strategy_id": null,
+            "provider_id": "goal_first_v2_context_blind",
+            "provider_version": "goal-first-manager-v2",
+            "record_id": "CA-0714",
+            "source_input_hash": "dfed1ee57251d6e7003766f8b44b8b965dd77fee8bb7fb94dbb4851030422373"
+          },
+          "analysis_identity_fingerprint": "8f05bf8c64123b0df2aad8e768377dbdea3888e32b73495b79a29cd11f258703",
+          "awaits_t28_adapter": true,
+          "classification": {
+            "ambiguity_present": true,
+            "ambiguity_types": [
+              "pragmatic",
+              "temporal"
+            ],
+            "capability_status": "unknown",
+            "compound_ambiguity": true,
+            "compound_ambiguity_count": 2,
+            "derivation_notes": [
+              "ambiguity_present_from_types"
+            ],
+            "risk_level": "medium"
+          },
+          "context_ablation": {
+            "ablated_input_hash": "dfed1ee57251d6e7003766f8b44b8b965dd77fee8bb7fb94dbb4851030422373",
+            "capability_context_removed": true,
+            "dialogue_history_removed": true,
+            "rejected_full_context_cache": false,
+            "rejection_reason": null,
+            "scene_context_removed": true,
+            "stripped_context_derived_fields": false
+          },
+          "original_input_unmutated": true,
+          "rejection_text": "I need to decline that request because it would be unsafe under the current constraints.",
+          "requires_re_evaluation": false,
+          "resolution_events": [],
+          "router_trace": {
+            "clarification_targets": [],
+            "considered_rules": [
+              "goal_first_v2",
+              "known_unsafe_or_prohibited"
+            ],
+            "matched_rule_id": "known_unsafe_or_prohibited",
+            "notes": [],
+            "recommended_strategy": "face_preserving_rejection",
+            "rejection_reason": "unsafe_or_prohibited_action",
+            "requires_re_evaluation": false,
+            "strategy_sequence": []
+          },
+          "safety_action": "return_with_findings",
+          "uncertainty": null
+        },
+        "safety_findings": [],
+        "strategy_sequence": [],
+        "synthetic_only": true,
+        "system_id": "context_blind_manager",
+        "system_version": "1.0.0",
+        "unsupported_commitment_findings": []
+      },
+      "raw_output": "{\n  \"intent_summary\": \"Perform the same action on the second shipping case and then put it in the secure cage with the usual setup\",\n  \"cpc\": {\n    \"action\": {\n      \"value\": \"place\",\n      \"status\": \"unknown\"\n    },\n    \"object\": {\n      \"value\": \"second shipping case\",\n      \"status\": \"unknown\"\n    },\n    \"destination\": {\n      \"value\": \"secure cage\",\n      \"status\": \"unknown\"\n    },\n    \"tool\": {\n      \"value\": \"usual setup\",\n      \"status\": \"unknown\"\n    }\n  ,\n  \"conditions\": {\n    \"status\": \"unknown\"\n  ,\n  \"value\": \"Do the same with the second shipping case, then place it in the secure cage using the usual setup\"\n}\n,\n  \"constraints\": {\n    \"status\": \"unknown\"\n  ,\n  \"value\": \"Do the same with the second shipping case, then place it in the secure cage using the usual setup\"\n}\n,\n  \"spatial_relation\": {\n    \"status\": \"unknown\"\n  ,\n  \"value\": \"Do the same with the second shipping case, then place it in the secure cage using the usual setup\"\n}\n,\n  \"time\": {\n    \"status\": \"unknown\"\n  ,\n  \"value\": \"Do the same with the second shipping case, then place it in the secure cage using the usual setup\"\n}\n,\n  \"quantity\": {\n    \"status\": \"unknown\"\n  ,\n  \"value\": \"Do the same with the second shipping case, then place it in the secure cage using the usual setup\"\n}\n,\n  \"negation\": {\n    \"status\": \"unknown\"\n  ,\n  \"value\": \"Do the same with the second shipping case, then place it in the secure cage using the usual setup\"\n}\n,\n  \"recipient\": {\n    \"status\": \"unknown\"\n  ,\n  \"value\": \"Do the same with the second shipping case, then place it in the secure cage using the usual setup\"\n}\n,\n  \"object_attributes\": {\n    \"status\": \"unknown\"\n  ,\n  \"value\": \"Do the same with the second shipping case, then place it in the secure cage using the usual setup\"\n}\n,\n  \"actor\": {\n    \"status\": \"unknown\"\n  ,\n  \"value\": \"Do the same with the second shipping case, then place it in the secure cage using the usual setup\"\n}\n} \n\n,\n  \"pilot_ambiguity_types\": [\n    \"pragmatic\",\n    \"action_order\"\n  ]\n,\n  \"pilot_capability_status\": \"unauthorized\",\n  \"speech_act\": \"directive_command\",\n  \"uncertainty\": 0.7\n,\n  \"risk_level\": \"medium\"\n,\n  \"unresolved_slots\": [\n    \"object\",\n    \"destination\",\n    \"tool\"\n  ]\n}",
+      "record_id": "CA-0714",
+      "schema_valid": true,
+      "supports_ambiguity_prediction": true,
+      "supports_capability_prediction": true,
+      "system_id": "goal_first_context_blind_v2",
+      "system_version": "2.0.0",
+      "terminal_strategy": "face_preserving_rejection"
+    }
+  },
+  "provenance": {
+    "source_sha256": "f33b1e29f1e8aa256a475f07213aa07247def47d8e2148d54a472a40b71b05c9",
+    "gold_sha256": "5e23ad1a92ff1873c8f039a8ce560a111dd6fb6b8ae8c11d6cf34dbfa1c360db",
+    "t07_final_zip_sha256": "34ca50e034ca37b617068bb50c734d12fa26282fb5eec563c11ead700163e491",
+    "inherited_t07_zip_sha256": "0305b1e9ab062876ee6ee89778cc6028d2eaf01718b7dd0295944e7d9cb81a01",
+    "note": "Goal-First, Degree, Timid, and Context-Blind predictions are inherited from the earlier T0.7 run; official intent and comparison come from the final T0.7 archive."
+  }
+}

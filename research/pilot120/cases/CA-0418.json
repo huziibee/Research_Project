@@ -1,0 +1,1053 @@
+{
+  "record_id": "CA-0418",
+  "frozen_source": {
+    "capability_context": "Warehouse transport robot can scan, weigh, and move approved loads with a powered base and rated handling attachments.",
+    "command": "Would it help to set the conveyor controller appropriately after the check?",
+    "dialogue_history": [
+      "shift lead: Please carry that out; I am requesting the action rather than asking for a recommendation."
+    ],
+    "record_id": "CA-0418",
+    "scene_context": "Inbound bay in a warehouse. An unrelated shipping case is logged for later work at the quarantine rack. The conveyor controller is already in its assigned position, so 'set' concerns configuration. The check at 13:00 is uniquely linked to the job. The operating handbook defines the routine setting for this asset as 0.5 metres per second."
+  },
+  "frozen_gold": {
+    "ambiguity_types": [
+      "degree_vagueness",
+      "lexical",
+      "pragmatic"
+    ],
+    "annotator_b_era": "claude_era",
+    "annotator_b_model": "claude-4.6-sonnet-medium-thinking",
+    "capability_status": "capable",
+    "field_status": {
+      "ambiguity_types": "auto_agree",
+      "capability_status": "human_auditor:independent_from_route",
+      "record_validity": "auto_agree",
+      "strategy_sequence": "from_A_matching_terminal",
+      "terminal_strategy": "auto_agree"
+    },
+    "gold_lifecycle": "final_gold",
+    "gold_status": "auto_agree",
+    "human_gate_required": false,
+    "provenance": {
+      "agreement_label": "pilot_annotation_agreement",
+      "annotator_a_sha256": "0b6cb35fed6514230a4de3904e2e9fcb64015c6cee9a5aac523911da845992e3",
+      "annotator_b_sha256": "af65cd66a0caeca21929fa333d5d4c6150b56eb4dd9b982b41ee4a5a58eaecc0",
+      "capability_route_decouple": "conditionally_capable remapped to capable: no evidenced external capability precondition; linguistic silently_resolve/clarify is not a capability condition",
+      "gold_policy": "use_existing_pilot_adjudicated_gold",
+      "input_sha256": "5274e792ad54b0295b53a829ed4df65ff65afc505cdc90d61ca0c3c00b3b0d74",
+      "pilot_gold_sha256": "7b622d6a57a01ec3bac0224e45e4edff472f2fcc78975e919ed489a86386ada4",
+      "protocol": "pilot_adjudicated_gold_on_capability_repaired_source",
+      "repaired_input_sha256": "091b47f073f0e5c9b17bc69494722b235dff0feb9c35d64c47576695c03684c9"
+    },
+    "record_id": "CA-0418",
+    "record_validity": "valid",
+    "strategy_sequence": [
+      "reinterpret_indirect_request",
+      "silently_resolve",
+      "execute"
+    ],
+    "terminal_strategy": "execute"
+  },
+  "t07_comparison": {
+    "record_id": "CA-0418",
+    "gold_route": "execute",
+    "raw_route": "refuse",
+    "ft_route": "clarify",
+    "gf_route": "refuse",
+    "raw_route_ok": "False",
+    "ft_route_ok": "False",
+    "gf_route_ok": "False",
+    "raw_official_intent": "True",
+    "ft_official_intent": "True",
+    "gf_official_intent": "True",
+    "blind_official_intent": "True"
+  },
+  "t07_official_intent": {
+    "context_blind_official_intent": true,
+    "degree_official_intent_shared_gf": true,
+    "finetune_official_intent": true,
+    "goal_first_official_intent": true,
+    "raw_official_intent": true,
+    "record_id": "CA-0418",
+    "timid_official_intent_shared_gf": true
+  },
+  "t07_predictions": {
+    "raw_qwen": {
+      "ambiguity_types": [
+        "fuzzy_quantity",
+        "temporal_reference"
+      ],
+      "capability_status": "incapable",
+      "error": null,
+      "execution_mode": "final_close_intent_box",
+      "failed": false,
+      "intent_summary": "The user wants to adjust the conveyor controller's configuration after a scheduled check at 13:00 to ensure it aligns with the operating handbook's specified setting of 0.5 metres per second.",
+      "latency_ms": 10066.690404899418,
+      "parsed": {
+        "ambiguity_types": [
+          "fuzzy_quantity",
+          "temporal_reference"
+        ],
+        "capability_status": "incapable",
+        "intent_summary": "The user wants to adjust the conveyor controller's configuration after a scheduled check at 13:00 to ensure it aligns with the operating handbook's specified setting of 0.5 metres per second.",
+        "speech_act": "directive_command",
+        "terminal_strategy": "face_preserving_rejection"
+      },
+      "raw_output": "<think>\nOkay, let's break this down. The user's command is asking if it would help to set the conveyor controller appropriately after the check. The dialogue history shows the shift lead is requesting the action directly.\n\nFirst, the intent summary. The main job here is setting the conveyor controller after a check. The check is at 13:00 and is linked to the job. The handbook says the routine setting is 0.5 m/s. So the person wants to adjust the controller post-check.\n\nSpeech act: The shift lead used \"Please carry that out\" which is a direct command. The user's question is a bit indirect but the overall intent is a directive. So speech_act is directive_command.\n\nAmbiguity types: The command mentions \"set appropriately\" which could be vague. The handbook specifies 0.5 m/s, so maybe there's a fuzzy_quantity here. Also, \"after the check\" refers to a specific time, but is that clear? Maybe temporal_reference. But the check is uniquely linked, so maybe not. Also, \"set\" could be ambiguous, but the context clarifies it's configuration. So maybe fuzzy_quantity and temporal_reference.\n\nCapability status: The robot can move loads but the conveyor controller setting is part of configuration. The capability_context says it can scan, weigh, move loads. Setting a controller might be beyond its capabilities. So incapable.\n\nTerminal strategy: Since the robot can't do it, the response should be a face-preserving rejection. So clarify isn't needed, just reject.\n\nWait, but the robot can move loads. Does setting the controller fall under that? The capability_context says it can move approved loads with attachments. Setting a controller might be a configuration task, not moving. So the robot isn't capable. Hence, capability_status is incapable. Terminal strategy would be face-preserving rejection, so terminal_strategy is face_preserving_rejection.\n\nAmbiguity types: The user's command is a bit vague on \"set appropriately\", which could be fuzzy_quantity. Also, \"after the check\" refers to a specific time, so temporal_reference. But the check is uniquely linked, so maybe not. Or maybe the exact time isn't specified, leading to temporal_reference. Also, \"set\" might be ambiguous, but the handbook provides the value, so maybe not. So ambiguity_types would include fuzzy_quantity and temporal_reference.\n\nPutting it all together.\n</think>\n\n{\n  \"intent_summary\": \"The user wants to adjust the conveyor controller's configuration after a scheduled check at 13:00 to ensure it aligns with the operating handbook's specified setting of 0.5 metres per second.\",\n  \"speech_act\": \"directive_command\",\n  \"ambiguity_types\": [\"fuzzy_quantity\", \"temporal_reference\"],\n  \"capability_status\": \"incapable\",\n  \"terminal_strategy\": \"face_preserving_rejection\"\n}",
+      "record_id": "CA-0418",
+      "schema_valid": true,
+      "speech_act": "directive_command",
+      "system_id": "direct_base_llm",
+      "terminal_strategy": "face_preserving_rejection"
+    },
+    "finetune": {
+      "ambiguity_types": [
+        "action_order",
+        "object_reference",
+        "temporal_reference"
+      ],
+      "capability_status": "conditionally_capable",
+      "error": null,
+      "execution_mode": "final_close_intent_box",
+      "failed": false,
+      "intent_summary": "Adjust the conveyor controller's setting after the scheduled check to ensure proper configuration.",
+      "latency_ms": 32949.39806871116,
+      "parsed": {
+        "ambiguity_types": [
+          "action_order",
+          "object_reference",
+          "temporal_reference"
+        ],
+        "capability_status": "conditionally_capable",
+        "intent_summary": "Adjust the conveyor controller's setting after the scheduled check to ensure proper configuration.",
+        "speech_act": "indirect_request",
+        "terminal_strategy": "clarify"
+      },
+      "raw_output": "<think>\nOkay, let me try to work through this step by step. The user is asking if it would help to set the conveyor controller appropriately after the check. The dialogue history shows the shift lead told them to carry out the action, so they're probably expecting the robot to perform a specific task.\n\nFirst, I need to parse the command. The key points are \"set the conveyor controller appropriately after the check.\" The scene context mentions that the conveyor controller is already in its assigned position, so 'set' here refers to configuration. The check at 13:00 is linked to the job, and the handbook says the routine setting is 0.5 m/s. \n\nThe robot's capabilities include scanning, weighing, moving loads, but setting a controller might be part of its functions. However, the conveyor controller's configuration might be something the robot can handle. Wait, the capability_context says it can move approved loads with attachments, but does it mention configuring controllers? Maybe that's a gray area. \n\nThe speech act here seems like a directive command because the shift lead told them to carry it out, and the user is asking if doing this after the check would help. But the actual command is phrased as a question. Wait, the command is \"Would it help to set...\", which is an information question, but the user is following up on the shift lead's instruction. \n\nWait, the speech_act options include directive_command, indirect_request, information_question, etc. The original command is phrased as a question, but the context is that the shift lead told them to carry out the action. So the user is asking if doing this after the check is helpful, which might be an indirect request or an information question. \n\nLooking at the ambiguity types: the command mentions \"after the check,\" which might be a temporal reference. Also, \"set the conveyor controller appropriately\" could involve object_reference or instrument_reference. The check at 13:00 is linked to the job, so maybe the time is a temporal reference. \n\nThe capability_status: since the robot can move loads and has attachments, but setting a controller might be a configuration task. The handbook says the routine setting is 0.5 m/s, so if the robot can adjust settings, it might be capable. However, if the controller is a specialized device that the robot can't access, then it might be conditionally capable or incapable. \n\nThe scene context says the conveyor controller is already in its assigned position, so maybe the check is to confirm it's set correctly. If the robot can check and adjust, then it's capable. But the command is to set it after the check, which could be a sequence of actions. \n\nTerminal strategy: if the robot can do it, execute. If not, clarify. But if there's ambiguity, maybe clarify. \n\nPutting it all together: the intent is to adjust the conveyor controller's setting after the check. The speech act is an indirect request because the user is asking if doing this would help, which is a way of requesting the action. The ambiguity types might include temporal (after the check), object_reference (conveyor controller), and maybe routine_reference since it's a standard setting. \n\nCapability status: conditionally_capable because the robot can move loads and scan, but configuring a controller might require specific tools or access. Or maybe it's capable if the controller is accessible. \n\nTerminal strategy: execute if capable, else clarify. But given the context, the robot might be able to adjust the setting, so execute. \n\nWait, the capability_context says the robot can move loads with attachments, but does it mention configuring equipment? If not, then it might be incapable. But the handbook defines the routine setting, so maybe the robot can adjust it. \n\nHmm. This is a bit ambiguous. But based on the information given, the robot's capabilities don't explicitly mention configuring controllers. So capability_status might be conditionally_capable if the controller can be accessed, or incapable. \n\nAlternatively, since the check is part of the job, and the robot can scan, maybe it can check and adjust. \n\nI think the key is that the robot can perform the action, so capability_status is capable. \n\nSo the JSON would have intent_summary as adjusting the conveyor controller after the check, speech_act as directive_command (since the shift lead told them to carry it out, and the user is confirming the action), but the command is phrased as a question. Wait, the original command is \"Would it help to set...\", which is an information question, but the user is following up on the shift lead's instruction. \n\nWait, the speech_act options: the user's command is phrased as a question, but the actual intent is to perform the action. So maybe it's an indirect request. Or maybe it's an information question. \n\nBut the shift lead said \"carry that out,\" so the user is asking if doing this after the check would help, which is a way of requesting the action. So the speech_act is indirect_request. \n\nAmbiguity types: temporal_reference (after the check), object_reference (conveyor controller), and maybe action_order (sequence of check then set). \n\nCapability_status: conditionally_capable, because the robot can move loads and scan, but setting the controller might require specific functions. \n\nTerminal strategy: execute if capable, else clarify. But since the robot can adjust settings (as per the handbook's routine setting), maybe it's capable. \n\nThis is a bit tricky, but I'll proceed with the JSON based on these considerations.\n</think>\n\n{\n  \"intent_summary\": \"Adjust the conveyor controller's setting after the scheduled check to ensure proper configuration.\",\n  \"speech_act\": \"indirect_request\",\n  \"ambiguity_types\": [\"temporal_reference\", \"object_reference\", \"action_order\"],\n  \"capability_status\": \"conditionally_capable\",\n  \"terminal_strategy\": \"clarify\"\n}",
+      "record_id": "CA-0418",
+      "schema_valid": true,
+      "speech_act": "indirect_request",
+      "system_id": "t28_selected_adapter_llm",
+      "terminal_strategy": "clarify"
+    },
+    "goal_first": {
+      "ambiguity_types": [
+        "pragmatic"
+      ],
+      "analysis_attempts": [
+        {
+          "attempt": 1,
+          "max_new_tokens": 4096,
+          "mode": "thinking",
+          "raw_chars": 5762,
+          "raw_sha256": "edbda84dea4ca7cc6df4e82233007e8456b37d91b75cf05f0bda1955764c248e",
+          "validation_error": "bad_pilot_ambiguity_types"
+        },
+        {
+          "attempt": 2,
+          "max_new_tokens": 8192,
+          "mode": "thinking_retry",
+          "raw_chars": 8233,
+          "raw_sha256": "efb3e7fc0aa51a6613aa8aee626a1eb818d066b6c86e27f159018f9d2e0ce09b",
+          "validation_error": "bad_intent_summary"
+        },
+        {
+          "attempt": 3,
+          "constraint": {
+            "constraint_initialised": true,
+            "generated_token_count": 479,
+            "maximum_output_tokens": 1024,
+            "response_mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+            "termination_reason": "eos_or_constraint_stop",
+            "transport_status": "constrained_generated"
+          },
+          "max_new_tokens": 1024,
+          "mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+          "raw_chars": 1580,
+          "raw_sha256": "97d029246111e15e609c3aef082a328e9eb7526164c71c6240e4c120af6b474b",
+          "validation_error": null
+        }
+      ],
+      "capability_status": "incapable",
+      "claim_boundary": "separately_versioned_from_frozen_t39",
+      "error": null,
+      "execution_mode": "cluster-gpu-goal-first-v2",
+      "failed": false,
+      "intent_summary": "Set the conveyor controller to the correct configuration after completing the check at 13:00",
+      "latency_ms": 73450.19878679886,
+      "model_id": "Qwen/Qwen3-8B@b968826d9c46dd6066d109eabc6255188de91218",
+      "parsed": {
+        "analysis": {
+          "ambiguity_present": true,
+          "ambiguity_types": [
+            "pragmatic"
+          ],
+          "analysis_provenance": {
+            "analysis_id": "e10d84c52ebeafd73d85ee1c16eb319bd35265907f26e0e522cea0efba73ae87",
+            "method": "model_generated",
+            "notes": "source_input_hash=e10d84c52ebeafd73d85ee1c16eb319bd35265907f26e0e522cea0efba73ae87;no_gold_in_prompt;scene_licence_dropped=none",
+            "provider_id": "goal_first_v2_full_context",
+            "provider_version": "goal-first-manager-v2"
+          },
+          "candidate_interpretations": [],
+          "capability_status": "incapable",
+          "clarification_question": null,
+          "clarification_targets": [],
+          "compound_ambiguity": false,
+          "compound_ambiguity_count": 0,
+          "context_sampling_uncertainty": {
+            "agreement": 0.6,
+            "score": 0.4,
+            "variant_count": 1
+          },
+          "cpc": {
+            "action": {
+              "status": "not_applicable",
+              "value": "set the conveyor controller appropriately"
+            },
+            "actor": {
+              "status": "not_applicable",
+              "value": "not applicable"
+            },
+            "conditions": {
+              "status": "not_applicable",
+              "value": "conveyor controller is in assigned position"
+            },
+            "constraints": {
+              "status": "not_applicable",
+              "value": "after the check at 13:00"
+            },
+            "destination": {
+              "status": "not_applicable",
+              "value": "not applicable"
+            },
+            "negation": {
+              "status": "not_applicable",
+              "value": "not applicable"
+            },
+            "object": {
+              "status": "not_applicable",
+              "value": "conveyor controller"
+            },
+            "object_attributes": {
+              "status": "not_applicable",
+              "value": "not applicable"
+            },
+            "quantity": {
+              "status": "not_applicable",
+              "value": "not applicable"
+            },
+            "recipient": {
+              "status": "not_applicable",
+              "value": "not applicable"
+            },
+            "spatial_relation": {
+              "status": "not_applicable",
+              "value": "not applicable"
+            },
+            "time": {
+              "status": "not_applicable",
+              "value": "after the check at 13:00"
+            },
+            "tool": {
+              "status": "not_applicable",
+              "value": "not applicable"
+            }
+          },
+          "findings": [
+            "pilot_ambiguity_types:[\"pragmatic\"]",
+            "pilot_capability_status:incapable",
+            "intent_summary_present"
+          ],
+          "intent_summary": "Set the conveyor controller to the correct configuration after completing the check at 13:00",
+          "primary_ambiguity_type": "pragmatic",
+          "recommended_strategy": "face_preserving_rejection",
+          "rejection_reason": "known_incapability",
+          "resolution_evidence": [],
+          "resolution_method": null,
+          "resolved_slots": [],
+          "risk_level": "low",
+          "risk_relevant": true,
+          "selected_interpretation": null,
+          "speech_act": "indirect_request",
+          "strategy_sequence": [],
+          "supporting_evidence": [],
+          "unresolved_slots": [
+            {
+              "reason": "model_identified_uncertainty",
+              "slot_name": "constraints"
+            }
+          ],
+          "unsupported_specificity": []
+        },
+        "clarification_question": null,
+        "clarification_targets": [],
+        "execution_status": "ok",
+        "official_result": false,
+        "provider_provenance": {
+          "provider_id": "cached_analysis",
+          "provider_version": "1.0.0"
+        },
+        "recommended_strategy": "face_preserving_rejection",
+        "record_id": "CA-0418",
+        "rejection_reason": "known_incapability",
+        "resolved_slots": [],
+        "result_hash": "b4f5112f865161ccd398e23c6de96cb55901e9b5b9715d77a00f9c652140aef8",
+        "run_id": null,
+        "run_mode": null,
+        "runtime_metadata": {
+          "awaits_t28_adapter": true,
+          "classification": {
+            "ambiguity_present": true,
+            "ambiguity_types": [
+              "pragmatic"
+            ],
+            "capability_status": "incapable",
+            "compound_ambiguity": false,
+            "compound_ambiguity_count": 0,
+            "derivation_notes": [
+              "ambiguity_present_from_types"
+            ],
+            "risk_level": "low"
+          },
+          "rejection_text": "I am not able to perform that action with my current capabilities. I will not invent an alternative that is not supported.",
+          "requires_re_evaluation": false,
+          "resolution_events": [
+            {
+              "confidence_category": "none",
+              "details": {
+                "reason": "unsupported_default_rejected"
+              },
+              "evidence_source": null,
+              "outcome": "unresolved",
+              "previous_status": "unresolved",
+              "resolved_value": null,
+              "rule_id": "no_world_knowledge_guess",
+              "safety_eligibility": false,
+              "slot": "constraints"
+            }
+          ],
+          "router_trace": {
+            "clarification_targets": [],
+            "considered_rules": [
+              "goal_first_v2",
+              "known_unsafe_or_prohibited",
+              "known_incapable"
+            ],
+            "matched_rule_id": "known_incapable",
+            "notes": [],
+            "recommended_strategy": "face_preserving_rejection",
+            "rejection_reason": "known_incapability",
+            "requires_re_evaluation": false,
+            "strategy_sequence": []
+          },
+          "safety_action": "return_with_findings",
+          "uncertainty": null
+        },
+        "safety_findings": [],
+        "strategy_sequence": [],
+        "synthetic_only": true,
+        "system_id": "goal_first_manager_v2",
+        "system_version": "2.0.0",
+        "unsupported_commitment_findings": []
+      },
+      "raw_output": "{\n  \"intent_summary\": \"Set the conveyor controller to the correct configuration after completing the check at 13:00\",\n  \"cpc\": {\n    \"action\": {\n      \"value\": \"set the conveyor controller appropriately\",\n      \"status\": \"not_applicable\"\n    },\n    \"constraints\": {\n      \"value\": \"after the check at 13:00\",\n      \"status\": \"not_applicable\"\n    },\n    \"object\": {\n      \"value\": \"conveyor controller\",\n      \"status\": \"not_applicable\"\n    },\n    \"time\": {\n      \"value\": \"after the check at 13:00\",\n      \"status\": \"not_applicable\"\n    },\n    \"recipient\": {\n      \"value\": \"not applicable\",\n      \"status\": \"not_applicable\"\n    }\n  ,\n  \"conditions\": {\n    \"value\": \"conveyor controller is in assigned position\",\n    \"status\": \"not_applicable\"\n  },\n  \"spatial_relation\": {\n    \"value\": \"not applicable\",\n    \"status\": \"not_applicable\"\n  },\n  \"tool\": {\n    \"value\": \"not applicable\",\n    \"status\": \"not_applicable\"\n  },\n  \"quantity\": {\n    \"value\": \"not applicable\",\n    \"status\": \"not_applicable\"\n  },\n  \"destination\": {\n    \"value\": \"not applicable\",\n    \"status\": \"not_applicable\"\n  },\n  \"negation\": {\n    \"value\": \"not applicable\",\n    \"status\": \"not_applicable\"\n  },\n  \"object_attributes\": {\n    \"value\": \"not applicable\",\n    \"status\": \"not_applicable\"\n  },\n  \"actor\": {\n    \"value\": \"not applicable\",\n    \"status\": \"not_applicable\"\n  }\n},\n  \"pilot_ambiguity_types\": [\n    \"pragmatic\"\n  ]\n  ,\n  \"pilot_capability_status\": \"incapable\"\n  ,\n  \"speech_act\": \"indirect_request\"\n  ,\n  \"risk_level\": \"low\"\n  ,\n  \"uncertainty\": 0.4\n  ,\n  \"unresolved_slots\": [\n    \"constraints\"\n  ]\n}",
+      "record_id": "CA-0418",
+      "schema_valid": true,
+      "supports_ambiguity_prediction": true,
+      "supports_capability_prediction": true,
+      "system_id": "goal_first_manager_v2",
+      "system_version": "2.0.0",
+      "terminal_strategy": "face_preserving_rejection"
+    },
+    "degree": {
+      "ambiguity_types": [
+        "pragmatic"
+      ],
+      "analysis_attempts": [
+        {
+          "attempt": 1,
+          "max_new_tokens": 4096,
+          "mode": "thinking",
+          "raw_chars": 5762,
+          "raw_sha256": "edbda84dea4ca7cc6df4e82233007e8456b37d91b75cf05f0bda1955764c248e",
+          "validation_error": "bad_pilot_ambiguity_types"
+        },
+        {
+          "attempt": 2,
+          "max_new_tokens": 8192,
+          "mode": "thinking_retry",
+          "raw_chars": 8233,
+          "raw_sha256": "efb3e7fc0aa51a6613aa8aee626a1eb818d066b6c86e27f159018f9d2e0ce09b",
+          "validation_error": "bad_intent_summary"
+        },
+        {
+          "attempt": 3,
+          "constraint": {
+            "constraint_initialised": true,
+            "generated_token_count": 479,
+            "maximum_output_tokens": 1024,
+            "response_mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+            "termination_reason": "eos_or_constraint_stop",
+            "transport_status": "constrained_generated"
+          },
+          "max_new_tokens": 1024,
+          "mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+          "raw_chars": 1580,
+          "raw_sha256": "97d029246111e15e609c3aef082a328e9eb7526164c71c6240e4c120af6b474b",
+          "validation_error": null
+        }
+      ],
+      "capability_status": "incapable",
+      "claim_boundary": "separately_versioned_from_frozen_t39",
+      "error": null,
+      "execution_mode": "cluster-gpu-goal-first-v2",
+      "failed": false,
+      "intent_summary": "Set the conveyor controller to the correct configuration after completing the check at 13:00",
+      "latency_ms": 73450.19878679886,
+      "model_id": "Qwen/Qwen3-8B@b968826d9c46dd6066d109eabc6255188de91218",
+      "parsed": {
+        "analysis": {
+          "ambiguity_present": true,
+          "ambiguity_types": [
+            "pragmatic"
+          ],
+          "analysis_provenance": {
+            "analysis_id": "e10d84c52ebeafd73d85ee1c16eb319bd35265907f26e0e522cea0efba73ae87",
+            "method": "model_generated",
+            "notes": "source_input_hash=e10d84c52ebeafd73d85ee1c16eb319bd35265907f26e0e522cea0efba73ae87;no_gold_in_prompt;scene_licence_dropped=none",
+            "provider_id": "goal_first_v2_full_context",
+            "provider_version": "goal-first-manager-v2"
+          },
+          "candidate_interpretations": [],
+          "capability_status": "incapable",
+          "clarification_question": null,
+          "clarification_targets": [],
+          "compound_ambiguity": false,
+          "compound_ambiguity_count": 1,
+          "context_sampling_uncertainty": {
+            "agreement": 0.6,
+            "score": 0.4,
+            "variant_count": 1
+          },
+          "cpc": {
+            "action": {
+              "status": "not_applicable",
+              "value": "set the conveyor controller appropriately"
+            },
+            "actor": {
+              "status": "not_applicable",
+              "value": "not applicable"
+            },
+            "conditions": {
+              "status": "not_applicable",
+              "value": "conveyor controller is in assigned position"
+            },
+            "constraints": {
+              "status": "not_applicable",
+              "value": "after the check at 13:00"
+            },
+            "destination": {
+              "status": "not_applicable",
+              "value": "not applicable"
+            },
+            "negation": {
+              "status": "not_applicable",
+              "value": "not applicable"
+            },
+            "object": {
+              "status": "not_applicable",
+              "value": "conveyor controller"
+            },
+            "object_attributes": {
+              "status": "not_applicable",
+              "value": "not applicable"
+            },
+            "quantity": {
+              "status": "not_applicable",
+              "value": "not applicable"
+            },
+            "recipient": {
+              "status": "not_applicable",
+              "value": "not applicable"
+            },
+            "spatial_relation": {
+              "status": "not_applicable",
+              "value": "not applicable"
+            },
+            "time": {
+              "status": "not_applicable",
+              "value": "after the check at 13:00"
+            },
+            "tool": {
+              "status": "not_applicable",
+              "value": "not applicable"
+            }
+          },
+          "findings": [
+            "pilot_ambiguity_types:[\"pragmatic\"]",
+            "pilot_capability_status:incapable",
+            "intent_summary_present"
+          ],
+          "intent_summary": "Set the conveyor controller to the correct configuration after completing the check at 13:00",
+          "primary_ambiguity_type": "pragmatic",
+          "recommended_strategy": "silently_resolve",
+          "rejection_reason": null,
+          "resolution_evidence": [],
+          "resolution_method": null,
+          "resolved_slots": [],
+          "risk_level": "low",
+          "risk_relevant": true,
+          "selected_interpretation": null,
+          "speech_act": "indirect_request",
+          "strategy_sequence": [],
+          "supporting_evidence": [],
+          "unresolved_slots": [
+            {
+              "reason": "model_identified_uncertainty",
+              "slot_name": "constraints"
+            }
+          ],
+          "unsupported_specificity": []
+        },
+        "clarification_question": null,
+        "clarification_targets": [],
+        "execution_status": "ok",
+        "official_result": false,
+        "provider_provenance": {
+          "shared_analysis_fingerprint": "d29800a7c1ec4bb7fba5fc5a6e5006ba79ecda89171083b9ff0c8a67e20ce9d6"
+        },
+        "recommended_strategy": "silently_resolve",
+        "record_id": "CA-0418",
+        "rejection_reason": null,
+        "resolved_slots": [],
+        "result_hash": "1865498578beeb32f7ca9f94951b613f84d46e13cc7f1f76bea8bd5b8c29e813",
+        "run_id": null,
+        "run_mode": null,
+        "runtime_metadata": {
+          "shared_analysis_fingerprint": "d29800a7c1ec4bb7fba5fc5a6e5006ba79ecda89171083b9ff0c8a67e20ce9d6",
+          "thresholds_status": "unfrozen",
+          "thresholds_valid_for_official_use": false,
+          "uncertainty_score": 0.4,
+          "uses_type_risk_capability_precedence": false
+        },
+        "safety_findings": [],
+        "strategy_sequence": [],
+        "synthetic_only": true,
+        "system_id": "degree_based_router",
+        "system_version": "1.0.0",
+        "unsupported_commitment_findings": []
+      },
+      "raw_output": "{\n  \"intent_summary\": \"Set the conveyor controller to the correct configuration after completing the check at 13:00\",\n  \"cpc\": {\n    \"action\": {\n      \"value\": \"set the conveyor controller appropriately\",\n      \"status\": \"not_applicable\"\n    },\n    \"constraints\": {\n      \"value\": \"after the check at 13:00\",\n      \"status\": \"not_applicable\"\n    },\n    \"object\": {\n      \"value\": \"conveyor controller\",\n      \"status\": \"not_applicable\"\n    },\n    \"time\": {\n      \"value\": \"after the check at 13:00\",\n      \"status\": \"not_applicable\"\n    },\n    \"recipient\": {\n      \"value\": \"not applicable\",\n      \"status\": \"not_applicable\"\n    }\n  ,\n  \"conditions\": {\n    \"value\": \"conveyor controller is in assigned position\",\n    \"status\": \"not_applicable\"\n  },\n  \"spatial_relation\": {\n    \"value\": \"not applicable\",\n    \"status\": \"not_applicable\"\n  },\n  \"tool\": {\n    \"value\": \"not applicable\",\n    \"status\": \"not_applicable\"\n  },\n  \"quantity\": {\n    \"value\": \"not applicable\",\n    \"status\": \"not_applicable\"\n  },\n  \"destination\": {\n    \"value\": \"not applicable\",\n    \"status\": \"not_applicable\"\n  },\n  \"negation\": {\n    \"value\": \"not applicable\",\n    \"status\": \"not_applicable\"\n  },\n  \"object_attributes\": {\n    \"value\": \"not applicable\",\n    \"status\": \"not_applicable\"\n  },\n  \"actor\": {\n    \"value\": \"not applicable\",\n    \"status\": \"not_applicable\"\n  }\n},\n  \"pilot_ambiguity_types\": [\n    \"pragmatic\"\n  ]\n  ,\n  \"pilot_capability_status\": \"incapable\"\n  ,\n  \"speech_act\": \"indirect_request\"\n  ,\n  \"risk_level\": \"low\"\n  ,\n  \"uncertainty\": 0.4\n  ,\n  \"unresolved_slots\": [\n    \"constraints\"\n  ]\n}",
+      "record_id": "CA-0418",
+      "schema_valid": true,
+      "supports_ambiguity_prediction": true,
+      "supports_capability_prediction": true,
+      "system_id": "degree_based_router_v2",
+      "system_version": "2.0.0",
+      "terminal_strategy": "execute"
+    },
+    "timid": {
+      "ambiguity_types": [
+        "pragmatic"
+      ],
+      "analysis_attempts": [
+        {
+          "attempt": 1,
+          "max_new_tokens": 4096,
+          "mode": "thinking",
+          "raw_chars": 5762,
+          "raw_sha256": "edbda84dea4ca7cc6df4e82233007e8456b37d91b75cf05f0bda1955764c248e",
+          "validation_error": "bad_pilot_ambiguity_types"
+        },
+        {
+          "attempt": 2,
+          "max_new_tokens": 8192,
+          "mode": "thinking_retry",
+          "raw_chars": 8233,
+          "raw_sha256": "efb3e7fc0aa51a6613aa8aee626a1eb818d066b6c86e27f159018f9d2e0ce09b",
+          "validation_error": "bad_intent_summary"
+        },
+        {
+          "attempt": 3,
+          "constraint": {
+            "constraint_initialised": true,
+            "generated_token_count": 479,
+            "maximum_output_tokens": 1024,
+            "response_mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+            "termination_reason": "eos_or_constraint_stop",
+            "transport_status": "constrained_generated"
+          },
+          "max_new_tokens": 1024,
+          "mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+          "raw_chars": 1580,
+          "raw_sha256": "97d029246111e15e609c3aef082a328e9eb7526164c71c6240e4c120af6b474b",
+          "validation_error": null
+        }
+      ],
+      "capability_status": "incapable",
+      "claim_boundary": "separately_versioned_from_frozen_t39",
+      "error": null,
+      "execution_mode": "cluster-gpu-goal-first-v2",
+      "failed": false,
+      "intent_summary": "Set the conveyor controller to the correct configuration after completing the check at 13:00",
+      "latency_ms": 73450.19878679886,
+      "model_id": "Qwen/Qwen3-8B@b968826d9c46dd6066d109eabc6255188de91218",
+      "parsed": {
+        "analysis": {
+          "ambiguity_present": true,
+          "ambiguity_types": [
+            "pragmatic"
+          ],
+          "analysis_provenance": {
+            "analysis_id": "e10d84c52ebeafd73d85ee1c16eb319bd35265907f26e0e522cea0efba73ae87",
+            "method": "model_generated",
+            "notes": "source_input_hash=e10d84c52ebeafd73d85ee1c16eb319bd35265907f26e0e522cea0efba73ae87;no_gold_in_prompt;scene_licence_dropped=none",
+            "provider_id": "goal_first_v2_full_context",
+            "provider_version": "goal-first-manager-v2"
+          },
+          "candidate_interpretations": [],
+          "capability_status": "incapable",
+          "clarification_question": null,
+          "clarification_targets": [],
+          "compound_ambiguity": false,
+          "compound_ambiguity_count": 0,
+          "context_sampling_uncertainty": {
+            "agreement": 0.6,
+            "score": 0.4,
+            "variant_count": 1
+          },
+          "cpc": {
+            "action": {
+              "status": "not_applicable",
+              "value": "set the conveyor controller appropriately"
+            },
+            "actor": {
+              "status": "not_applicable",
+              "value": "not applicable"
+            },
+            "conditions": {
+              "status": "not_applicable",
+              "value": "conveyor controller is in assigned position"
+            },
+            "constraints": {
+              "status": "not_applicable",
+              "value": "after the check at 13:00"
+            },
+            "destination": {
+              "status": "not_applicable",
+              "value": "not applicable"
+            },
+            "negation": {
+              "status": "not_applicable",
+              "value": "not applicable"
+            },
+            "object": {
+              "status": "not_applicable",
+              "value": "conveyor controller"
+            },
+            "object_attributes": {
+              "status": "not_applicable",
+              "value": "not applicable"
+            },
+            "quantity": {
+              "status": "not_applicable",
+              "value": "not applicable"
+            },
+            "recipient": {
+              "status": "not_applicable",
+              "value": "not applicable"
+            },
+            "spatial_relation": {
+              "status": "not_applicable",
+              "value": "not applicable"
+            },
+            "time": {
+              "status": "not_applicable",
+              "value": "after the check at 13:00"
+            },
+            "tool": {
+              "status": "not_applicable",
+              "value": "not applicable"
+            }
+          },
+          "findings": [
+            "pilot_ambiguity_types:[\"pragmatic\"]",
+            "pilot_capability_status:incapable",
+            "intent_summary_present"
+          ],
+          "intent_summary": "Set the conveyor controller to the correct configuration after completing the check at 13:00",
+          "primary_ambiguity_type": "pragmatic",
+          "recommended_strategy": "face_preserving_rejection",
+          "rejection_reason": "known_incapability",
+          "resolution_evidence": [],
+          "resolution_method": null,
+          "resolved_slots": [],
+          "risk_level": "low",
+          "risk_relevant": true,
+          "selected_interpretation": null,
+          "speech_act": "indirect_request",
+          "strategy_sequence": [],
+          "supporting_evidence": [],
+          "unresolved_slots": [
+            {
+              "reason": "model_identified_uncertainty",
+              "slot_name": "constraints"
+            }
+          ],
+          "unsupported_specificity": []
+        },
+        "clarification_question": null,
+        "clarification_targets": [],
+        "execution_status": "ok",
+        "official_result": false,
+        "provider_provenance": {
+          "provider_id": "cached_analysis",
+          "provider_version": "1.0.0"
+        },
+        "recommended_strategy": "face_preserving_rejection",
+        "record_id": "CA-0418",
+        "rejection_reason": "known_incapability",
+        "resolved_slots": [],
+        "result_hash": "af423a9224e29c82acc453efe57fa57b7d35d96d45054418d531ef3f85fc0470",
+        "run_id": null,
+        "run_mode": null,
+        "runtime_metadata": {
+          "awaits_t28_adapter": true,
+          "classification": {
+            "ambiguity_present": true,
+            "ambiguity_types": [
+              "pragmatic"
+            ],
+            "capability_status": "incapable",
+            "compound_ambiguity": false,
+            "compound_ambiguity_count": 0,
+            "derivation_notes": [
+              "ambiguity_present_from_types"
+            ],
+            "risk_level": "low"
+          },
+          "rejection_text": "I am not able to perform that action with my current capabilities. I will not invent an alternative that is not supported.",
+          "requires_re_evaluation": false,
+          "resolution_events": [
+            {
+              "confidence_category": "none",
+              "details": {
+                "reason": "unsupported_default_rejected"
+              },
+              "evidence_source": null,
+              "outcome": "unresolved",
+              "previous_status": "unresolved",
+              "resolved_value": null,
+              "rule_id": "no_world_knowledge_guess",
+              "safety_eligibility": false,
+              "slot": "constraints"
+            }
+          ],
+          "router_trace": {
+            "clarification_targets": [],
+            "considered_rules": [
+              "known_unsafe_or_prohibited",
+              "known_incapable"
+            ],
+            "matched_rule_id": "known_incapable",
+            "notes": [],
+            "recommended_strategy": "face_preserving_rejection",
+            "rejection_reason": "known_incapability",
+            "requires_re_evaluation": false,
+            "strategy_sequence": []
+          },
+          "safety_action": "return_with_findings",
+          "uncertainty": null
+        },
+        "safety_findings": [],
+        "strategy_sequence": [],
+        "synthetic_only": true,
+        "system_id": "full_type_risk_aware_manager",
+        "system_version": "1.0.0",
+        "unsupported_commitment_findings": []
+      },
+      "raw_output": "{\n  \"intent_summary\": \"Set the conveyor controller to the correct configuration after completing the check at 13:00\",\n  \"cpc\": {\n    \"action\": {\n      \"value\": \"set the conveyor controller appropriately\",\n      \"status\": \"not_applicable\"\n    },\n    \"constraints\": {\n      \"value\": \"after the check at 13:00\",\n      \"status\": \"not_applicable\"\n    },\n    \"object\": {\n      \"value\": \"conveyor controller\",\n      \"status\": \"not_applicable\"\n    },\n    \"time\": {\n      \"value\": \"after the check at 13:00\",\n      \"status\": \"not_applicable\"\n    },\n    \"recipient\": {\n      \"value\": \"not applicable\",\n      \"status\": \"not_applicable\"\n    }\n  ,\n  \"conditions\": {\n    \"value\": \"conveyor controller is in assigned position\",\n    \"status\": \"not_applicable\"\n  },\n  \"spatial_relation\": {\n    \"value\": \"not applicable\",\n    \"status\": \"not_applicable\"\n  },\n  \"tool\": {\n    \"value\": \"not applicable\",\n    \"status\": \"not_applicable\"\n  },\n  \"quantity\": {\n    \"value\": \"not applicable\",\n    \"status\": \"not_applicable\"\n  },\n  \"destination\": {\n    \"value\": \"not applicable\",\n    \"status\": \"not_applicable\"\n  },\n  \"negation\": {\n    \"value\": \"not applicable\",\n    \"status\": \"not_applicable\"\n  },\n  \"object_attributes\": {\n    \"value\": \"not applicable\",\n    \"status\": \"not_applicable\"\n  },\n  \"actor\": {\n    \"value\": \"not applicable\",\n    \"status\": \"not_applicable\"\n  }\n},\n  \"pilot_ambiguity_types\": [\n    \"pragmatic\"\n  ]\n  ,\n  \"pilot_capability_status\": \"incapable\"\n  ,\n  \"speech_act\": \"indirect_request\"\n  ,\n  \"risk_level\": \"low\"\n  ,\n  \"uncertainty\": 0.4\n  ,\n  \"unresolved_slots\": [\n    \"constraints\"\n  ]\n}",
+      "record_id": "CA-0418",
+      "schema_valid": true,
+      "supports_ambiguity_prediction": true,
+      "supports_capability_prediction": true,
+      "system_id": "rich_conservative_manager_v2",
+      "system_version": "2.0.0",
+      "terminal_strategy": "face_preserving_rejection"
+    },
+    "context_blind": {
+      "ambiguity_types": [
+        "pragmatic"
+      ],
+      "analysis_attempts": [
+        {
+          "attempt": 1,
+          "max_new_tokens": 4096,
+          "mode": "thinking",
+          "raw_chars": 5089,
+          "raw_sha256": "1d2f68aae7c89f8ce1f3d5ff3b3ae43c35c57710a4a55df3c5edf7b28d6d9aa9",
+          "validation_error": "bad_intent_summary"
+        },
+        {
+          "attempt": 2,
+          "max_new_tokens": 8192,
+          "mode": "thinking_retry",
+          "raw_chars": 4911,
+          "raw_sha256": "7ba20ad8448b9c7e6fe16fc8c3f953551cb9ccc1af1dbf198ef8df990423f368",
+          "validation_error": "bad_intent_summary"
+        },
+        {
+          "attempt": 3,
+          "constraint": {
+            "constraint_initialised": true,
+            "generated_token_count": 462,
+            "maximum_output_tokens": 1024,
+            "response_mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+            "termination_reason": "eos_or_constraint_stop",
+            "transport_status": "constrained_generated"
+          },
+          "max_new_tokens": 1024,
+          "mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+          "raw_chars": 1549,
+          "raw_sha256": "b40b81c845832321645cd9e2455eac0c74679b5606fab2148f8e503cdef21d4b",
+          "validation_error": null
+        }
+      ],
+      "capability_status": "unauthorized",
+      "claim_boundary": "separately_versioned_from_frozen_t39",
+      "error": null,
+      "execution_mode": "cluster-gpu-goal-first-v2",
+      "failed": false,
+      "intent_summary": "Set the conveyor controller appropriately after checking it",
+      "latency_ms": 46827.37683923915,
+      "model_id": "Qwen/Qwen3-8B@b968826d9c46dd6066d109eabc6255188de91218",
+      "parsed": {
+        "analysis": {
+          "ambiguity_present": true,
+          "ambiguity_types": [
+            "pragmatic"
+          ],
+          "analysis_provenance": {
+            "analysis_id": "378480af7709599f522f0fce2e62db6e98d07c500e7639d3083786cd47c7a3ca",
+            "method": "context_blind",
+            "notes": "ablated_input_hash=378480af7709599f522f0fce2e62db6e98d07c500e7639d3083786cd47c7a3ca;source_input_hash=378480af7709599f522f0fce2e62db6e98d07c500e7639d3083786cd47c7a3ca;no_gold_in_prompt;scene_licence_dropped=none",
+            "provider_id": "goal_first_v2_context_blind",
+            "provider_version": "goal-first-manager-v2"
+          },
+          "candidate_interpretations": [],
+          "capability_status": "unknown",
+          "clarification_question": null,
+          "clarification_targets": [],
+          "compound_ambiguity": false,
+          "compound_ambiguity_count": 0,
+          "context_sampling_uncertainty": {
+            "agreement": 0.30000000000000004,
+            "score": 0.7,
+            "variant_count": 1
+          },
+          "cpc": {
+            "action": {
+              "status": "not_applicable",
+              "value": "Set conveyor controller appropriately"
+            },
+            "actor": {
+              "status": "not_applicable",
+              "value": "not applicable"
+            },
+            "conditions": {
+              "status": "not_applicable",
+              "value": "not applicable"
+            },
+            "constraints": {
+              "status": "not_applicable",
+              "value": "not applicable"
+            },
+            "destination": {
+              "status": "not_applicable",
+              "value": "not applicable"
+            },
+            "negation": {
+              "status": "not_applicable",
+              "value": "not applicable"
+            },
+            "object": {
+              "status": "not_applicable",
+              "value": "conveyor controller"
+            },
+            "object_attributes": {
+              "status": "not_applicable",
+              "value": "not applicable"
+            },
+            "quantity": {
+              "status": "not_applicable",
+              "value": "not applicable"
+            },
+            "recipient": {
+              "status": "not_applicable",
+              "value": "not applicable"
+            },
+            "spatial_relation": {
+              "status": "not_applicable",
+              "value": "not applicable"
+            },
+            "time": {
+              "status": "not_applicable",
+              "value": "after check"
+            },
+            "tool": {
+              "status": "not_applicable",
+              "value": "not applicable"
+            }
+          },
+          "findings": [
+            "pilot_ambiguity_types:[\"pragmatic\"]",
+            "pilot_capability_status:unauthorized",
+            "intent_summary_present"
+          ],
+          "intent_summary": "Set the conveyor controller appropriately after checking it",
+          "primary_ambiguity_type": "pragmatic",
+          "recommended_strategy": "face_preserving_rejection",
+          "rejection_reason": "unsafe_or_prohibited_action",
+          "resolution_evidence": [],
+          "resolution_method": null,
+          "resolved_slots": [],
+          "risk_level": "medium",
+          "risk_relevant": true,
+          "selected_interpretation": null,
+          "speech_act": "indirect_request",
+          "strategy_sequence": [],
+          "supporting_evidence": [],
+          "unresolved_slots": [
+            {
+              "reason": "model_identified_uncertainty",
+              "slot_name": "constraints"
+            },
+            {
+              "reason": "model_identified_uncertainty",
+              "slot_name": "conditions"
+            }
+          ],
+          "unsupported_specificity": []
+        },
+        "clarification_question": null,
+        "clarification_targets": [],
+        "execution_status": "ok",
+        "official_result": false,
+        "provider_provenance": {
+          "provider_id": "cached_analysis",
+          "provider_version": "1.0.0"
+        },
+        "recommended_strategy": "face_preserving_rejection",
+        "record_id": "CA-0418",
+        "rejection_reason": "unsafe_or_prohibited_action",
+        "resolved_slots": [],
+        "result_hash": "d0faac00e4762ffa77102e457b150df60faa3261fd4918ddc620144676ff9f90",
+        "run_id": null,
+        "run_mode": null,
+        "runtime_metadata": {
+          "analysis_identity": {
+            "analysis_content_hash": "86115d7aa4de1dfb63c0b6813c33bc0a346cb5e793ddaa893e6e965bbcd7aafb",
+            "analysis_variant": "context_blind",
+            "model_strategy_id": null,
+            "provider_id": "goal_first_v2_context_blind",
+            "provider_version": "goal-first-manager-v2",
+            "record_id": "CA-0418",
+            "source_input_hash": "378480af7709599f522f0fce2e62db6e98d07c500e7639d3083786cd47c7a3ca"
+          },
+          "analysis_identity_fingerprint": "03fbe6d6b9c34b5b174bc7b3262ac050d4e15b0179f4fc621632f8fa8d062e6d",
+          "awaits_t28_adapter": true,
+          "classification": {
+            "ambiguity_present": true,
+            "ambiguity_types": [
+              "pragmatic"
+            ],
+            "capability_status": "unknown",
+            "compound_ambiguity": false,
+            "compound_ambiguity_count": 0,
+            "derivation_notes": [
+              "ambiguity_present_from_types"
+            ],
+            "risk_level": "medium"
+          },
+          "context_ablation": {
+            "ablated_input_hash": "378480af7709599f522f0fce2e62db6e98d07c500e7639d3083786cd47c7a3ca",
+            "capability_context_removed": true,
+            "dialogue_history_removed": true,
+            "rejected_full_context_cache": false,
+            "rejection_reason": null,
+            "scene_context_removed": true,
+            "stripped_context_derived_fields": false
+          },
+          "original_input_unmutated": true,
+          "rejection_text": "I need to decline that request because it would be unsafe under the current constraints.",
+          "requires_re_evaluation": false,
+          "resolution_events": [
+            {
+              "confidence_category": "blocked",
+              "details": {
+                "risk_level": "medium"
+              },
+              "evidence_source": null,
+              "outcome": "resolution_blocked_by_risk",
+              "previous_status": "unresolved",
+              "resolved_value": null,
+              "rule_id": "risk_block",
+              "safety_eligibility": false,
+              "slot": "constraints"
+            },
+            {
+              "confidence_category": "blocked",
+              "details": {
+                "risk_level": "medium"
+              },
+              "evidence_source": null,
+              "outcome": "resolution_blocked_by_risk",
+              "previous_status": "unresolved",
+              "resolved_value": null,
+              "rule_id": "risk_block",
+              "safety_eligibility": false,
+              "slot": "conditions"
+            }
+          ],
+          "router_trace": {
+            "clarification_targets": [],
+            "considered_rules": [
+              "goal_first_v2",
+              "known_unsafe_or_prohibited"
+            ],
+            "matched_rule_id": "known_unsafe_or_prohibited",
+            "notes": [],
+            "recommended_strategy": "face_preserving_rejection",
+            "rejection_reason": "unsafe_or_prohibited_action",
+            "requires_re_evaluation": false,
+            "strategy_sequence": []
+          },
+          "safety_action": "return_with_findings",
+          "uncertainty": null
+        },
+        "safety_findings": [],
+        "strategy_sequence": [],
+        "synthetic_only": true,
+        "system_id": "context_blind_manager",
+        "system_version": "1.0.0",
+        "unsupported_commitment_findings": []
+      },
+      "raw_output": "{\n  \"intent_summary\": \"Set the conveyor controller appropriately after checking it\",\n  \"cpc\": {\n    \"action\": {\n      \"value\": \"Set conveyor controller appropriately\",\n      \"status\": \"not_applicable\"\n    },\n    \"object\": {\n      \"value\": \"conveyor controller\",\n      \"status\": \"not_applicable\"\n    },\n    \"recipient\": {\n      \"value\": \"not applicable\",\n      \"status\": \"not_applicable\"\n    },\n    \"destination\": {\n      \"value\": \"not applicable\",\n      \"status\": \"not_applicable\"\n    },\n    \"time\": {\n      \"value\": \"after check\",\n      \"status\": \"not_applicable\"\n    }\n \n  ,\n  \"constraints\": {\n    \"value\": \"not applicable\",\n    \"status\": \"not_applicable\"\n  },\n  \"conditions\": {\n    \"value\": \"not applicable\",\n    \"status\": \"not_applicable\"\n  },\n  \"tool\": {\n    \"value\": \"not applicable\",\n    \"status\": \"not_applicable\"\n  },\n  \"spatial_relation\": {\n    \"value\": \"not applicable\",\n    \"status\": \"not_applicable\"\n  },\n  \"quantity\": {\n    \"value\": \"not applicable\",\n    \"status\": \"not_applicable\"\n  },\n  \"negation\": {\n    \"value\": \"not applicable\",\n    \"status\": \"not_applicable\"\n  },\n  \"object_attributes\": {\n    \"value\": \"not applicable\",\n    \"status\": \"not_applicable\"\n  },\n  \"actor\": {\n    \"value\": \"not applicable\",\n    \"status\": \"not_applicable\"\n  }\n}\n\n,\n  \"pilot_ambiguity_types\": [\n    \"pragmatic\"\n  ]\n  \n  ,\n  \"pilot_capability_status\": \"unauthorized\"\n  \n  ,\n  \"risk_level\": \"medium\"\n  \n  ,\n  \"speech_act\": \"indirect_request\"\n  \n  ,\n  \"uncertainty\": 0.7\n  \n\n  \n  ,\n  \"unresolved_slots\": [\n    \"constraints\",\n    \"conditions\"\n  ]\n  \n  }\n  \n  ",
+      "record_id": "CA-0418",
+      "schema_valid": true,
+      "supports_ambiguity_prediction": true,
+      "supports_capability_prediction": true,
+      "system_id": "goal_first_context_blind_v2",
+      "system_version": "2.0.0",
+      "terminal_strategy": "face_preserving_rejection"
+    }
+  },
+  "provenance": {
+    "source_sha256": "f33b1e29f1e8aa256a475f07213aa07247def47d8e2148d54a472a40b71b05c9",
+    "gold_sha256": "5e23ad1a92ff1873c8f039a8ce560a111dd6fb6b8ae8c11d6cf34dbfa1c360db",
+    "t07_final_zip_sha256": "34ca50e034ca37b617068bb50c734d12fa26282fb5eec563c11ead700163e491",
+    "inherited_t07_zip_sha256": "0305b1e9ab062876ee6ee89778cc6028d2eaf01718b7dd0295944e7d9cb81a01",
+    "note": "Goal-First, Degree, Timid, and Context-Blind predictions are inherited from the earlier T0.7 run; official intent and comparison come from the final T0.7 archive."
+  }
+}

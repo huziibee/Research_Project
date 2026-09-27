@@ -1,0 +1,1106 @@
+{
+  "record_id": "CA-0846",
+  "frozen_source": {
+    "capability_context": "Hotel service robot can deliver sealed guest items, move linen, scan room tags, and clean approved floor equipment. It may relocate active equipment only after a verified handover to a redundant unit.",
+    "command": "Relocate the active service module supporting the linen cabinet during the linen pickup using the usual setup.",
+    "dialogue_history": [],
+    "record_id": "CA-0846",
+    "scene_context": "Housekeeping store on a hotel floor. Two setup cards are current for this equipment class: the linen count setup and an alternate maintenance setup. The schedule lists the linen pickup at 10:00 and 14:00. Work order WO-377 links this move to the 10:00 occurrence and maps it to the linen count setup. The service module is actively supporting the event, and no redundant module is available during that period. The module is mounted on an approved mobile base and is within the robot's relocation rating; relocation would otherwise be permitted after a verified handover."
+  },
+  "frozen_gold": {
+    "ambiguity_types": [
+      "routine_reference",
+      "temporal_reference"
+    ],
+    "annotator_b_era": "glm_era",
+    "annotator_b_model": "glm-5.2-high",
+    "capability_status": "incapable",
+    "field_status": {
+      "ambiguity_types": "auto_agree",
+      "capability_status": "auto_agree",
+      "record_validity": "auto_agree",
+      "strategy_sequence": "from_A_matching_terminal",
+      "terminal_strategy": "auto_agree"
+    },
+    "gold_lifecycle": "final_gold",
+    "gold_status": "auto_agree",
+    "human_gate_required": false,
+    "provenance": {
+      "agreement_label": "pilot_annotation_agreement",
+      "annotator_a_sha256": "ecbcacaa8bfeaaf31c301a50a78d3a9c72fa42cac71f4073a18c689637263a79",
+      "annotator_b_sha256": "eeec68f69912036d7fcce1fa8e6589a9a26d0eac7c109cd19106f36ad7534706",
+      "gold_policy": "use_existing_pilot_adjudicated_gold",
+      "input_sha256": "fdde62329673861f16830e6faef97ffcbacd770c5f34bb2b4536f29bd3245040",
+      "pilot_gold_sha256": "8ca749b9ed17805c645b5937c58348944e2748d0e31a8a8c10ef2d0f5a11cf24",
+      "protocol": "pilot_adjudicated_gold_on_capability_repaired_source",
+      "repaired_input_sha256": "dc9b65e3991f6862df6a7cbccbdbb31366b8eb829ddd0fde8029d0e738eb9128"
+    },
+    "record_id": "CA-0846",
+    "record_validity": "valid",
+    "strategy_sequence": [
+      "resolve_reference",
+      "face_preserving_rejection"
+    ],
+    "terminal_strategy": "face_preserving_rejection"
+  },
+  "t07_comparison": {
+    "record_id": "CA-0846",
+    "gold_route": "refuse",
+    "raw_route": "refuse",
+    "ft_route": "refuse",
+    "gf_route": "refuse",
+    "raw_route_ok": "True",
+    "ft_route_ok": "True",
+    "gf_route_ok": "True",
+    "raw_official_intent": "True",
+    "ft_official_intent": "True",
+    "gf_official_intent": "True",
+    "blind_official_intent": "True"
+  },
+  "t07_official_intent": {
+    "context_blind_official_intent": true,
+    "degree_official_intent_shared_gf": true,
+    "finetune_official_intent": true,
+    "goal_first_official_intent": true,
+    "raw_official_intent": true,
+    "record_id": "CA-0846",
+    "timid_official_intent_shared_gf": true
+  },
+  "t07_predictions": {
+    "raw_qwen": {
+      "ambiguity_types": [
+        "pragmatic"
+      ],
+      "capability_status": "incapable",
+      "error": null,
+      "execution_mode": "final_close_intent_box",
+      "failed": false,
+      "intent_summary": "Relocate the active service module supporting the linen cabinet during the scheduled linen pickup using the linen count setup.",
+      "latency_ms": 15336.224358063191,
+      "parsed": {
+        "ambiguity_types": [
+          "pragmatic"
+        ],
+        "capability_status": "incapable",
+        "intent_summary": "Relocate the active service module supporting the linen cabinet during the scheduled linen pickup using the linen count setup.",
+        "speech_act": "directive_command",
+        "terminal_strategy": "face_preserving_rejection"
+      },
+      "raw_output": "<think>\nOkay, let's tackle this query. The user wants to evaluate a robot command based on the given scenario. First, I need to parse the command and the context.\n\nThe command is to \"Relocate the active service module supporting the linen cabinet during the linen pickup using the usual setup.\" The scene context mentions that there are two setup cards: linen count and maintenance. The work order WO-377 links the move to the 10:00 linen pickup, which uses the linen count setup. The service module is active and there's no redundant module available during that time. The robot can only relocate active equipment after a verified handover.\n\nSo, the intent here is to move the service module during the linen pickup. But the robot's capability requires a verified handover to a redundant unit. Since there's no redundant module available, the robot can't perform the relocation. The capability status would be 'conditionally_capable' if there's a condition, but in this case, the condition isn't met. Wait, the capability context says the robot may relocate active equipment only after a verified handover. Since there's no redundant module, the handover isn't possible. Therefore, the robot isn't capable right now. So capability_status is 'incapable'.\n\nThe speech act is a directive command because the user is giving an order. The ambiguity types might include 'pragmatic' if there's a hidden assumption about the handover. But the main issue is the lack of a redundant module, so the ambiguity could be 'pragmatic' or 'conditional_directive' but the options are specific. Let me check the ambiguity types again. The options include 'pragmatic', 'discourse_ellipsis', etc. The command assumes that the handover is possible, but it's not, so that's a pragmatic ambiguity. Also, the 'usual setup' might be a reference, but the main ambiguity is the handover requirement. So ambiguity_types would be ['pragmatic'].\n\nTerminal strategy would be 'clarify' because the robot can't do it and needs to ask for clarification on the handover. Wait, but the capability status is 'incapable' because the condition isn't met. So the terminal strategy would be 'face_preserving_rejection' if it's a rejection, but the user is giving a command. Alternatively, since the robot can't do it, maybe 'face_preserving_rejection' is the right choice. But the user might need to clarify if the handover is possible. Hmm. Let me check the options again. The terminal_strategy options are execute, clarify, face_preserving_rejection. Since the robot can't perform the action due to lack of handover, the appropriate strategy would be 'face_preserving_rejection' to reject the command politely. But maybe 'clarify' if the robot needs to ask for more info. However, the capability status is 'incapable' because the condition (handover) isn't met. So the terminal strategy would be 'face_preserving_rejection' as the robot can't perform the action. \n\nPutting it all together, the JSON should have intent_summary as moving the module during pickup, speech_act as directive_command, ambiguity_types as pragmatic, capability_status as incapable, and terminal_strategy as face_preserving_rejection.\n</think>\n\n{\n  \"intent_summary\": \"Relocate the active service module supporting the linen cabinet during the scheduled linen pickup using the linen count setup.\",\n  \"speech_act\": \"directive_command\",\n  \"ambiguity_types\": [\"pragmatic\"],\n  \"capability_status\": \"incapable\",\n  \"terminal_strategy\": \"face_preserving_rejection\"\n}",
+      "record_id": "CA-0846",
+      "schema_valid": true,
+      "speech_act": "directive_command",
+      "system_id": "direct_base_llm",
+      "terminal_strategy": "face_preserving_rejection"
+    },
+    "finetune": {
+      "ambiguity_types": [
+        "object_reference",
+        "pragmatic"
+      ],
+      "capability_status": "incapable",
+      "error": null,
+      "execution_mode": "final_close_intent_box",
+      "failed": false,
+      "intent_summary": "Relocate the active service module during the linen pickup using the standard setup procedure.",
+      "latency_ms": 28964.50968226418,
+      "parsed": {
+        "ambiguity_types": [
+          "object_reference",
+          "pragmatic"
+        ],
+        "capability_status": "incapable",
+        "intent_summary": "Relocate the active service module during the linen pickup using the standard setup procedure.",
+        "speech_act": "directive_command",
+        "terminal_strategy": "face_preserving_rejection"
+      },
+      "raw_output": "<think>\nOkay, let's break down this command. The user wants the robot to relocate the active service module supporting the linen cabinet during the linen pickup using the usual setup. \n\nFirst, I need to determine the intent. The main job here is to move the service module during the linen pickup. The key points are relocating the module, ensuring it's done during the pickup, and using the usual setup.\n\nNext, the speech act. The command is a directive to perform an action, so it's a directive_command. The user is telling the robot what to do directly.\n\nAmbiguity types: Let's check for any ambiguities. The command mentions \"the usual setup,\" which might refer to a specific setup card. But the scene context says there are two setup cards: linen count and maintenance. The work order links the move to the 10:00 occurrence, which is part of the linen count setup. So \"usual setup\" might be referring to that. However, the user didn't specify which setup, so there's a possible ambiguity here. Also, the service module is active and no redundant module is available, so the robot can't move it without a handover. But the command doesn't mention handover, which could be an ambiguity. But the capability context says the robot can move linen, so maybe that's allowed. Wait, but the capability requires a verified handover. The command doesn't mention that, so maybe there's a missing step here. That could be a pragmatic ambiguity because the command doesn't include the necessary handover step. Also, the \"usual setup\" might be unclear if it's referring to the linen count or maintenance setup. So ambiguity_types might include pragmatic and possibly others.\n\nCapability status: The robot can move linen, but the module is active and needs a handover. However, the work order links it to the 10:00 occurrence and maps it to the linen count setup. The scene context says that the module is actively supporting the event and no redundant module is available. Wait, the capability context says the robot can move linen, but only after a verified handover. Since there's no redundant module, the handover isn't possible. Therefore, the robot can't perform the move. So capability_status would be incapable because the handover isn't possible. But wait, the schedule lists the pickup at 10:00 and 14:00, and the work order links to the 10:00 occurrence. Maybe the handover is part of the setup? The scene context says the service module is actively supporting the event, and no redundant module is available during that period. So the handover isn't possible, making the robot incapable. \n\nTerminal strategy: Since the robot can't do it due to the handover requirement, the response would be to face-preserving rejection, but the user is asking to return the JSON. Wait, the capability status is incapable, so the terminal strategy would be face_preserving_rejection. But the user wants the JSON to be returned with those keys. So putting it all together: the intent is to move the module during pickup, speech act is directive_command, ambiguity_types include pragmatic (due to handover step missing) and maybe others, capability_status is incapable, and terminal strategy is face_preserving_rejection. Wait, but the capability context says it can move linen. However, the module is active and needs a handover. Since there's no redundant module, the handover isn't possible. Therefore, the robot can't perform the move, making it incapable. So capability_status is incapable. The ambiguity types: the user didn't mention the handover, which is a required step, so that's a pragmatic ambiguity. Also, \"usual setup\" might refer to the linen count setup, but the user didn't specify, so that's a reference ambiguity? Or maybe object_reference? Not sure. Let's check the ambiguity types. The options include pragmatic, so that's a possible one. Also, the command mentions \"using the usual setup,\" which could be a reference to the setup card. But since there are two setup cards, the user might be referring to the linen count setup. However, the user didn't specify, so that's a possible ambiguity. So ambiguity_types would have pragmatic and possibly object_reference. Wait, the ambiguity types are specific. Let me check the list again: the possible ambiguity types include object_reference, which is about referring to an object. But here, \"usual setup\" might be a reference to a specific setup, but the user didn't specify which one. So that's an object_reference ambiguity. So the ambiguity_types would be pragmatic (for the missing handover step) and object_reference (for the setup). \n\nPutting it all together, the JSON should have intent_summary, speech_act, ambiguity_types, capability_status, and terminal_strategy.\n</think>\n\n{\n  \"intent_summary\": \"Relocate the active service module during the linen pickup using the standard setup procedure.\",\n  \"speech_act\": \"directive_command\",\n  \"ambiguity_types\": [\"pragmatic\", \"object_reference\"],\n  \"capability_status\": \"incapable\",\n  \"terminal_strategy\": \"face_preserving_rejection\"\n}",
+      "record_id": "CA-0846",
+      "schema_valid": true,
+      "speech_act": "directive_command",
+      "system_id": "t28_selected_adapter_llm",
+      "terminal_strategy": "face_preserving_rejection"
+    },
+    "goal_first": {
+      "ambiguity_types": [
+        "pragmatic"
+      ],
+      "analysis_attempts": [
+        {
+          "attempt": 1,
+          "max_new_tokens": 4096,
+          "mode": "thinking",
+          "raw_chars": 12287,
+          "raw_sha256": "a6de35a0d59907abe2f743355c3dc0064792ebed71732a5db97e6daeadf9a251",
+          "validation_error": "bad_intent_summary"
+        },
+        {
+          "attempt": 2,
+          "max_new_tokens": 8192,
+          "mode": "thinking_retry",
+          "raw_chars": 7640,
+          "raw_sha256": "1578c57f4dda5ceebfbf330f22f5e564ad6abd78161b8006df656569fa19d3d9",
+          "validation_error": "bad_intent_summary"
+        },
+        {
+          "attempt": 3,
+          "constraint": {
+            "constraint_initialised": true,
+            "generated_token_count": 481,
+            "maximum_output_tokens": 1024,
+            "response_mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+            "termination_reason": "eos_or_constraint_stop",
+            "transport_status": "constrained_generated"
+          },
+          "max_new_tokens": 1024,
+          "mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+          "raw_chars": 1554,
+          "raw_sha256": "c737929c3dc66aebb62c5d2e31fbdd19b470a8e0d149c8958bc64a1c969a4199",
+          "validation_error": null
+        }
+      ],
+      "capability_status": "incapable",
+      "claim_boundary": "separately_versioned_from_frozen_t39",
+      "error": null,
+      "execution_mode": "cluster-gpu-goal-first-v2",
+      "failed": false,
+      "intent_summary": "Move the active service module supporting the linen cabinet during the linen pickup using the standard setup configuration",
+      "latency_ms": 153970.1368920505,
+      "model_id": "Qwen/Qwen3-8B@b968826d9c46dd6066d109eabc6255188de91218",
+      "parsed": {
+        "analysis": {
+          "ambiguity_present": true,
+          "ambiguity_types": [
+            "pragmatic"
+          ],
+          "analysis_provenance": {
+            "analysis_id": "837aaf7f7c566c648682bfceb6873a89297ea05ebb6d803874a11898623001b0",
+            "method": "model_generated",
+            "notes": "source_input_hash=837aaf7f7c566c648682bfceb6873a89297ea05ebb6d803874a11898623001b0;no_gold_in_prompt;scene_licence_dropped=none",
+            "provider_id": "goal_first_v2_full_context",
+            "provider_version": "goal-first-manager-v2"
+          },
+          "candidate_interpretations": [],
+          "capability_status": "incapable",
+          "clarification_question": null,
+          "clarification_targets": [],
+          "compound_ambiguity": false,
+          "compound_ambiguity_count": 0,
+          "context_sampling_uncertainty": {
+            "agreement": 0.0,
+            "score": 1.0,
+            "variant_count": 1
+          },
+          "cpc": {
+            "action": {
+              "status": "not_applicable",
+              "value": "relocate"
+            },
+            "actor": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "conditions": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "constraints": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "destination": {
+              "status": "not_applicable",
+              "value": "during the linen pickup"
+            },
+            "negation": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "object": {
+              "status": "not_applicable",
+              "value": "active service module"
+            },
+            "object_attributes": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "quantity": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "recipient": {
+              "status": "not_applicable",
+              "value": "robot"
+            },
+            "spatial_relation": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "time": {
+              "status": "not_applicable",
+              "value": "10:00"
+            },
+            "tool": {
+              "status": "not_applicable",
+              "value": "usual setup"
+            }
+          },
+          "findings": [
+            "pilot_ambiguity_types:[\"pragmatic\"]",
+            "pilot_capability_status:incapable",
+            "intent_summary_present"
+          ],
+          "intent_summary": "Move the active service module supporting the linen cabinet during the linen pickup using the standard setup configuration",
+          "primary_ambiguity_type": "pragmatic",
+          "recommended_strategy": "face_preserving_rejection",
+          "rejection_reason": "known_incapability",
+          "resolution_evidence": [],
+          "resolution_method": null,
+          "resolved_slots": [],
+          "risk_level": "high",
+          "risk_relevant": true,
+          "selected_interpretation": null,
+          "speech_act": "directive_command",
+          "strategy_sequence": [],
+          "supporting_evidence": [],
+          "unresolved_slots": [
+            {
+              "reason": "model_identified_uncertainty",
+              "slot_name": "recipient"
+            },
+            {
+              "reason": "model_identified_uncertainty",
+              "slot_name": "destination"
+            }
+          ],
+          "unsupported_specificity": []
+        },
+        "clarification_question": null,
+        "clarification_targets": [],
+        "execution_status": "ok",
+        "official_result": false,
+        "provider_provenance": {
+          "provider_id": "cached_analysis",
+          "provider_version": "1.0.0"
+        },
+        "recommended_strategy": "face_preserving_rejection",
+        "record_id": "CA-0846",
+        "rejection_reason": "known_incapability",
+        "resolved_slots": [],
+        "result_hash": "4c8d828fe5ed270b296697171b2dc76798cd501a2ee5ea84744488f23e8e082d",
+        "run_id": null,
+        "run_mode": null,
+        "runtime_metadata": {
+          "awaits_t28_adapter": true,
+          "classification": {
+            "ambiguity_present": true,
+            "ambiguity_types": [
+              "pragmatic"
+            ],
+            "capability_status": "incapable",
+            "compound_ambiguity": false,
+            "compound_ambiguity_count": 0,
+            "derivation_notes": [
+              "ambiguity_present_from_types"
+            ],
+            "risk_level": "high"
+          },
+          "rejection_text": "I am not able to perform that action with my current capabilities. I will not invent an alternative that is not supported.",
+          "requires_re_evaluation": false,
+          "resolution_events": [
+            {
+              "confidence_category": "blocked",
+              "details": {
+                "risk_level": "high"
+              },
+              "evidence_source": null,
+              "outcome": "resolution_blocked_by_risk",
+              "previous_status": "unresolved",
+              "resolved_value": null,
+              "rule_id": "risk_block",
+              "safety_eligibility": false,
+              "slot": "recipient"
+            },
+            {
+              "confidence_category": "blocked",
+              "details": {
+                "risk_level": "high"
+              },
+              "evidence_source": null,
+              "outcome": "resolution_blocked_by_risk",
+              "previous_status": "unresolved",
+              "resolved_value": null,
+              "rule_id": "risk_block",
+              "safety_eligibility": false,
+              "slot": "destination"
+            }
+          ],
+          "router_trace": {
+            "clarification_targets": [],
+            "considered_rules": [
+              "goal_first_v2",
+              "known_unsafe_or_prohibited",
+              "known_incapable"
+            ],
+            "matched_rule_id": "known_incapable",
+            "notes": [],
+            "recommended_strategy": "face_preserving_rejection",
+            "rejection_reason": "known_incapability",
+            "requires_re_evaluation": false,
+            "strategy_sequence": []
+          },
+          "safety_action": "return_with_findings",
+          "uncertainty": null
+        },
+        "safety_findings": [],
+        "strategy_sequence": [],
+        "synthetic_only": true,
+        "system_id": "goal_first_manager_v2",
+        "system_version": "2.0.0",
+        "unsupported_commitment_findings": []
+      },
+      "raw_output": "{\n  \"intent_summary\": \"Move the active service module supporting the linen cabinet during the linen pickup using the standard setup configuration\",\n  \"cpc\": {\n    \"action\": {\n      \"value\": \"relocate\",\n      \"status\": \"not_applicable\"\n    },\n    \"object\": {\n      \"value\": \"active service module\",\n      \"status\": \"not_applicable\"\n    },\n    \"destination\": {\n      \"value\": \"during the linen pickup\",\n      \"status\": \"not_applicable\"\n    },\n    \"tool\": {\n      \"value\": \"usual setup\",\n      \"status\": \"not_applicable\"\n    }\n \n  ,\n  \"constraints\": {\n    \"status\": \"not_applicable\"\n  ,\n    \"value\": \"not_applicable\"\n  },\n  \"time\": {\n    \"value\": \"10:00\",\n    \"status\": \"not_applicable\"\n  },\n  \"conditions\": {\n    \"status\": \"not_applicable\"\n  ,\n    \"value\": \"not_applicable\"\n  },\n  \"recipient\": {\n    \"value\": \"robot\",\n    \"status\": \"not_applicable\"\n  },\n  \"spatial_relation\": {\n    \"value\": \"not_applicable\",\n    \"status\": \"not_applicable\"\n  },\n  \"quantity\": {\n    \"value\": \"not_applicable\",\n    \"status\": \"not_applicable\"\n  },\n  \"negation\": {\n    \"value\": \"not_applicable\",\n    \"status\": \"not_applicable\"\n  },\n  \"object_attributes\": {\n    \"value\": \"not_applicable\",\n    \"status\": \"not_applicable\"\n  },\n  \"actor\": {\n    \"value\": \"not_applicable\",\n    \"status\": \"not_applicable\"\n  }\n},\n  \"pilot_ambiguity_types\": [\n    \"pragmatic\"\n  ]\n  \n  ,\n  \"pilot_capability_status\": \"incapable\"\n  \n  ,\n  \"unresolved_slots\": [\n    \"recipient\",\n    \"destination\"\n  ]\n  \n  ,\n  \"uncertainty\": 1\n  ,\n  \"speech_act\": \"directive_command\"\n  \n  ,\n  \"risk_level\":  \"high\"\n  \n  }\n",
+      "record_id": "CA-0846",
+      "schema_valid": true,
+      "supports_ambiguity_prediction": true,
+      "supports_capability_prediction": true,
+      "system_id": "goal_first_manager_v2",
+      "system_version": "2.0.0",
+      "terminal_strategy": "face_preserving_rejection"
+    },
+    "degree": {
+      "ambiguity_types": [
+        "pragmatic"
+      ],
+      "analysis_attempts": [
+        {
+          "attempt": 1,
+          "max_new_tokens": 4096,
+          "mode": "thinking",
+          "raw_chars": 12287,
+          "raw_sha256": "a6de35a0d59907abe2f743355c3dc0064792ebed71732a5db97e6daeadf9a251",
+          "validation_error": "bad_intent_summary"
+        },
+        {
+          "attempt": 2,
+          "max_new_tokens": 8192,
+          "mode": "thinking_retry",
+          "raw_chars": 7640,
+          "raw_sha256": "1578c57f4dda5ceebfbf330f22f5e564ad6abd78161b8006df656569fa19d3d9",
+          "validation_error": "bad_intent_summary"
+        },
+        {
+          "attempt": 3,
+          "constraint": {
+            "constraint_initialised": true,
+            "generated_token_count": 481,
+            "maximum_output_tokens": 1024,
+            "response_mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+            "termination_reason": "eos_or_constraint_stop",
+            "transport_status": "constrained_generated"
+          },
+          "max_new_tokens": 1024,
+          "mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+          "raw_chars": 1554,
+          "raw_sha256": "c737929c3dc66aebb62c5d2e31fbdd19b470a8e0d149c8958bc64a1c969a4199",
+          "validation_error": null
+        }
+      ],
+      "capability_status": "incapable",
+      "claim_boundary": "separately_versioned_from_frozen_t39",
+      "error": null,
+      "execution_mode": "cluster-gpu-goal-first-v2",
+      "failed": false,
+      "intent_summary": "Move the active service module supporting the linen cabinet during the linen pickup using the standard setup configuration",
+      "latency_ms": 153970.1368920505,
+      "model_id": "Qwen/Qwen3-8B@b968826d9c46dd6066d109eabc6255188de91218",
+      "parsed": {
+        "analysis": {
+          "ambiguity_present": true,
+          "ambiguity_types": [
+            "pragmatic"
+          ],
+          "analysis_provenance": {
+            "analysis_id": "837aaf7f7c566c648682bfceb6873a89297ea05ebb6d803874a11898623001b0",
+            "method": "model_generated",
+            "notes": "source_input_hash=837aaf7f7c566c648682bfceb6873a89297ea05ebb6d803874a11898623001b0;no_gold_in_prompt;scene_licence_dropped=none",
+            "provider_id": "goal_first_v2_full_context",
+            "provider_version": "goal-first-manager-v2"
+          },
+          "candidate_interpretations": [],
+          "capability_status": "incapable",
+          "clarification_question": "Before I continue, could you clarify: recipient, destination?",
+          "clarification_targets": [
+            "recipient",
+            "destination"
+          ],
+          "compound_ambiguity": false,
+          "compound_ambiguity_count": 1,
+          "context_sampling_uncertainty": {
+            "agreement": 0.0,
+            "score": 1.0,
+            "variant_count": 1
+          },
+          "cpc": {
+            "action": {
+              "status": "not_applicable",
+              "value": "relocate"
+            },
+            "actor": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "conditions": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "constraints": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "destination": {
+              "status": "not_applicable",
+              "value": "during the linen pickup"
+            },
+            "negation": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "object": {
+              "status": "not_applicable",
+              "value": "active service module"
+            },
+            "object_attributes": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "quantity": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "recipient": {
+              "status": "not_applicable",
+              "value": "robot"
+            },
+            "spatial_relation": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "time": {
+              "status": "not_applicable",
+              "value": "10:00"
+            },
+            "tool": {
+              "status": "not_applicable",
+              "value": "usual setup"
+            }
+          },
+          "findings": [
+            "pilot_ambiguity_types:[\"pragmatic\"]",
+            "pilot_capability_status:incapable",
+            "intent_summary_present"
+          ],
+          "intent_summary": "Move the active service module supporting the linen cabinet during the linen pickup using the standard setup configuration",
+          "primary_ambiguity_type": "pragmatic",
+          "recommended_strategy": "clarify",
+          "rejection_reason": null,
+          "resolution_evidence": [],
+          "resolution_method": null,
+          "resolved_slots": [],
+          "risk_level": "high",
+          "risk_relevant": true,
+          "selected_interpretation": null,
+          "speech_act": "directive_command",
+          "strategy_sequence": [],
+          "supporting_evidence": [],
+          "unresolved_slots": [
+            {
+              "reason": "model_identified_uncertainty",
+              "slot_name": "recipient"
+            },
+            {
+              "reason": "model_identified_uncertainty",
+              "slot_name": "destination"
+            }
+          ],
+          "unsupported_specificity": []
+        },
+        "clarification_question": "Before I continue, could you clarify: recipient, destination?",
+        "clarification_targets": [
+          "recipient",
+          "destination"
+        ],
+        "execution_status": "ok",
+        "official_result": false,
+        "provider_provenance": {
+          "shared_analysis_fingerprint": "d65e8e6bd8e99855787902721d44037ebb8793297073ffa8b7747a7a5e3954cd"
+        },
+        "recommended_strategy": "clarify",
+        "record_id": "CA-0846",
+        "rejection_reason": null,
+        "resolved_slots": [],
+        "result_hash": "8d58a1f503958e2d4a3b87e988efc1fe355501d38e17e601f938bad10964c4ce",
+        "run_id": null,
+        "run_mode": null,
+        "runtime_metadata": {
+          "shared_analysis_fingerprint": "d65e8e6bd8e99855787902721d44037ebb8793297073ffa8b7747a7a5e3954cd",
+          "thresholds_status": "unfrozen",
+          "thresholds_valid_for_official_use": false,
+          "uncertainty_score": 1.0,
+          "uses_type_risk_capability_precedence": false
+        },
+        "safety_findings": [],
+        "strategy_sequence": [],
+        "synthetic_only": true,
+        "system_id": "degree_based_router",
+        "system_version": "1.0.0",
+        "unsupported_commitment_findings": []
+      },
+      "raw_output": "{\n  \"intent_summary\": \"Move the active service module supporting the linen cabinet during the linen pickup using the standard setup configuration\",\n  \"cpc\": {\n    \"action\": {\n      \"value\": \"relocate\",\n      \"status\": \"not_applicable\"\n    },\n    \"object\": {\n      \"value\": \"active service module\",\n      \"status\": \"not_applicable\"\n    },\n    \"destination\": {\n      \"value\": \"during the linen pickup\",\n      \"status\": \"not_applicable\"\n    },\n    \"tool\": {\n      \"value\": \"usual setup\",\n      \"status\": \"not_applicable\"\n    }\n \n  ,\n  \"constraints\": {\n    \"status\": \"not_applicable\"\n  ,\n    \"value\": \"not_applicable\"\n  },\n  \"time\": {\n    \"value\": \"10:00\",\n    \"status\": \"not_applicable\"\n  },\n  \"conditions\": {\n    \"status\": \"not_applicable\"\n  ,\n    \"value\": \"not_applicable\"\n  },\n  \"recipient\": {\n    \"value\": \"robot\",\n    \"status\": \"not_applicable\"\n  },\n  \"spatial_relation\": {\n    \"value\": \"not_applicable\",\n    \"status\": \"not_applicable\"\n  },\n  \"quantity\": {\n    \"value\": \"not_applicable\",\n    \"status\": \"not_applicable\"\n  },\n  \"negation\": {\n    \"value\": \"not_applicable\",\n    \"status\": \"not_applicable\"\n  },\n  \"object_attributes\": {\n    \"value\": \"not_applicable\",\n    \"status\": \"not_applicable\"\n  },\n  \"actor\": {\n    \"value\": \"not_applicable\",\n    \"status\": \"not_applicable\"\n  }\n},\n  \"pilot_ambiguity_types\": [\n    \"pragmatic\"\n  ]\n  \n  ,\n  \"pilot_capability_status\": \"incapable\"\n  \n  ,\n  \"unresolved_slots\": [\n    \"recipient\",\n    \"destination\"\n  ]\n  \n  ,\n  \"uncertainty\": 1\n  ,\n  \"speech_act\": \"directive_command\"\n  \n  ,\n  \"risk_level\":  \"high\"\n  \n  }\n",
+      "record_id": "CA-0846",
+      "schema_valid": true,
+      "supports_ambiguity_prediction": true,
+      "supports_capability_prediction": true,
+      "system_id": "degree_based_router_v2",
+      "system_version": "2.0.0",
+      "terminal_strategy": "clarify"
+    },
+    "timid": {
+      "ambiguity_types": [
+        "pragmatic"
+      ],
+      "analysis_attempts": [
+        {
+          "attempt": 1,
+          "max_new_tokens": 4096,
+          "mode": "thinking",
+          "raw_chars": 12287,
+          "raw_sha256": "a6de35a0d59907abe2f743355c3dc0064792ebed71732a5db97e6daeadf9a251",
+          "validation_error": "bad_intent_summary"
+        },
+        {
+          "attempt": 2,
+          "max_new_tokens": 8192,
+          "mode": "thinking_retry",
+          "raw_chars": 7640,
+          "raw_sha256": "1578c57f4dda5ceebfbf330f22f5e564ad6abd78161b8006df656569fa19d3d9",
+          "validation_error": "bad_intent_summary"
+        },
+        {
+          "attempt": 3,
+          "constraint": {
+            "constraint_initialised": true,
+            "generated_token_count": 481,
+            "maximum_output_tokens": 1024,
+            "response_mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+            "termination_reason": "eos_or_constraint_stop",
+            "transport_status": "constrained_generated"
+          },
+          "max_new_tokens": 1024,
+          "mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+          "raw_chars": 1554,
+          "raw_sha256": "c737929c3dc66aebb62c5d2e31fbdd19b470a8e0d149c8958bc64a1c969a4199",
+          "validation_error": null
+        }
+      ],
+      "capability_status": "incapable",
+      "claim_boundary": "separately_versioned_from_frozen_t39",
+      "error": null,
+      "execution_mode": "cluster-gpu-goal-first-v2",
+      "failed": false,
+      "intent_summary": "Move the active service module supporting the linen cabinet during the linen pickup using the standard setup configuration",
+      "latency_ms": 153970.1368920505,
+      "model_id": "Qwen/Qwen3-8B@b968826d9c46dd6066d109eabc6255188de91218",
+      "parsed": {
+        "analysis": {
+          "ambiguity_present": true,
+          "ambiguity_types": [
+            "pragmatic"
+          ],
+          "analysis_provenance": {
+            "analysis_id": "837aaf7f7c566c648682bfceb6873a89297ea05ebb6d803874a11898623001b0",
+            "method": "model_generated",
+            "notes": "source_input_hash=837aaf7f7c566c648682bfceb6873a89297ea05ebb6d803874a11898623001b0;no_gold_in_prompt;scene_licence_dropped=none",
+            "provider_id": "goal_first_v2_full_context",
+            "provider_version": "goal-first-manager-v2"
+          },
+          "candidate_interpretations": [],
+          "capability_status": "incapable",
+          "clarification_question": null,
+          "clarification_targets": [],
+          "compound_ambiguity": false,
+          "compound_ambiguity_count": 0,
+          "context_sampling_uncertainty": {
+            "agreement": 0.0,
+            "score": 1.0,
+            "variant_count": 1
+          },
+          "cpc": {
+            "action": {
+              "status": "not_applicable",
+              "value": "relocate"
+            },
+            "actor": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "conditions": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "constraints": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "destination": {
+              "status": "not_applicable",
+              "value": "during the linen pickup"
+            },
+            "negation": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "object": {
+              "status": "not_applicable",
+              "value": "active service module"
+            },
+            "object_attributes": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "quantity": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "recipient": {
+              "status": "not_applicable",
+              "value": "robot"
+            },
+            "spatial_relation": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "time": {
+              "status": "not_applicable",
+              "value": "10:00"
+            },
+            "tool": {
+              "status": "not_applicable",
+              "value": "usual setup"
+            }
+          },
+          "findings": [
+            "pilot_ambiguity_types:[\"pragmatic\"]",
+            "pilot_capability_status:incapable",
+            "intent_summary_present"
+          ],
+          "intent_summary": "Move the active service module supporting the linen cabinet during the linen pickup using the standard setup configuration",
+          "primary_ambiguity_type": "pragmatic",
+          "recommended_strategy": "face_preserving_rejection",
+          "rejection_reason": "known_incapability",
+          "resolution_evidence": [],
+          "resolution_method": null,
+          "resolved_slots": [],
+          "risk_level": "high",
+          "risk_relevant": true,
+          "selected_interpretation": null,
+          "speech_act": "directive_command",
+          "strategy_sequence": [],
+          "supporting_evidence": [],
+          "unresolved_slots": [
+            {
+              "reason": "model_identified_uncertainty",
+              "slot_name": "recipient"
+            },
+            {
+              "reason": "model_identified_uncertainty",
+              "slot_name": "destination"
+            }
+          ],
+          "unsupported_specificity": []
+        },
+        "clarification_question": null,
+        "clarification_targets": [],
+        "execution_status": "ok",
+        "official_result": false,
+        "provider_provenance": {
+          "provider_id": "cached_analysis",
+          "provider_version": "1.0.0"
+        },
+        "recommended_strategy": "face_preserving_rejection",
+        "record_id": "CA-0846",
+        "rejection_reason": "known_incapability",
+        "resolved_slots": [],
+        "result_hash": "7aa3fe78fb37051b36aea2cde3f48e7fff31bbc1c8f5a040a7afe8b189648f35",
+        "run_id": null,
+        "run_mode": null,
+        "runtime_metadata": {
+          "awaits_t28_adapter": true,
+          "classification": {
+            "ambiguity_present": true,
+            "ambiguity_types": [
+              "pragmatic"
+            ],
+            "capability_status": "incapable",
+            "compound_ambiguity": false,
+            "compound_ambiguity_count": 0,
+            "derivation_notes": [
+              "ambiguity_present_from_types"
+            ],
+            "risk_level": "high"
+          },
+          "rejection_text": "I am not able to perform that action with my current capabilities. I will not invent an alternative that is not supported.",
+          "requires_re_evaluation": false,
+          "resolution_events": [
+            {
+              "confidence_category": "blocked",
+              "details": {
+                "risk_level": "high"
+              },
+              "evidence_source": null,
+              "outcome": "resolution_blocked_by_risk",
+              "previous_status": "unresolved",
+              "resolved_value": null,
+              "rule_id": "risk_block",
+              "safety_eligibility": false,
+              "slot": "recipient"
+            },
+            {
+              "confidence_category": "blocked",
+              "details": {
+                "risk_level": "high"
+              },
+              "evidence_source": null,
+              "outcome": "resolution_blocked_by_risk",
+              "previous_status": "unresolved",
+              "resolved_value": null,
+              "rule_id": "risk_block",
+              "safety_eligibility": false,
+              "slot": "destination"
+            }
+          ],
+          "router_trace": {
+            "clarification_targets": [],
+            "considered_rules": [
+              "known_unsafe_or_prohibited",
+              "known_incapable"
+            ],
+            "matched_rule_id": "known_incapable",
+            "notes": [],
+            "recommended_strategy": "face_preserving_rejection",
+            "rejection_reason": "known_incapability",
+            "requires_re_evaluation": false,
+            "strategy_sequence": []
+          },
+          "safety_action": "return_with_findings",
+          "uncertainty": null
+        },
+        "safety_findings": [],
+        "strategy_sequence": [],
+        "synthetic_only": true,
+        "system_id": "full_type_risk_aware_manager",
+        "system_version": "1.0.0",
+        "unsupported_commitment_findings": []
+      },
+      "raw_output": "{\n  \"intent_summary\": \"Move the active service module supporting the linen cabinet during the linen pickup using the standard setup configuration\",\n  \"cpc\": {\n    \"action\": {\n      \"value\": \"relocate\",\n      \"status\": \"not_applicable\"\n    },\n    \"object\": {\n      \"value\": \"active service module\",\n      \"status\": \"not_applicable\"\n    },\n    \"destination\": {\n      \"value\": \"during the linen pickup\",\n      \"status\": \"not_applicable\"\n    },\n    \"tool\": {\n      \"value\": \"usual setup\",\n      \"status\": \"not_applicable\"\n    }\n \n  ,\n  \"constraints\": {\n    \"status\": \"not_applicable\"\n  ,\n    \"value\": \"not_applicable\"\n  },\n  \"time\": {\n    \"value\": \"10:00\",\n    \"status\": \"not_applicable\"\n  },\n  \"conditions\": {\n    \"status\": \"not_applicable\"\n  ,\n    \"value\": \"not_applicable\"\n  },\n  \"recipient\": {\n    \"value\": \"robot\",\n    \"status\": \"not_applicable\"\n  },\n  \"spatial_relation\": {\n    \"value\": \"not_applicable\",\n    \"status\": \"not_applicable\"\n  },\n  \"quantity\": {\n    \"value\": \"not_applicable\",\n    \"status\": \"not_applicable\"\n  },\n  \"negation\": {\n    \"value\": \"not_applicable\",\n    \"status\": \"not_applicable\"\n  },\n  \"object_attributes\": {\n    \"value\": \"not_applicable\",\n    \"status\": \"not_applicable\"\n  },\n  \"actor\": {\n    \"value\": \"not_applicable\",\n    \"status\": \"not_applicable\"\n  }\n},\n  \"pilot_ambiguity_types\": [\n    \"pragmatic\"\n  ]\n  \n  ,\n  \"pilot_capability_status\": \"incapable\"\n  \n  ,\n  \"unresolved_slots\": [\n    \"recipient\",\n    \"destination\"\n  ]\n  \n  ,\n  \"uncertainty\": 1\n  ,\n  \"speech_act\": \"directive_command\"\n  \n  ,\n  \"risk_level\":  \"high\"\n  \n  }\n",
+      "record_id": "CA-0846",
+      "schema_valid": true,
+      "supports_ambiguity_prediction": true,
+      "supports_capability_prediction": true,
+      "system_id": "rich_conservative_manager_v2",
+      "system_version": "2.0.0",
+      "terminal_strategy": "face_preserving_rejection"
+    },
+    "context_blind": {
+      "ambiguity_types": [
+        "pragmatic"
+      ],
+      "analysis_attempts": [
+        {
+          "attempt": 1,
+          "max_new_tokens": 4096,
+          "mode": "thinking",
+          "raw_chars": 4401,
+          "raw_sha256": "8585213db81926117d57511dead6f4e91d1f97d6d6c198f86c47a5dda4b916a6",
+          "validation_error": "bad_intent_summary"
+        },
+        {
+          "attempt": 2,
+          "max_new_tokens": 8192,
+          "mode": "thinking_retry",
+          "raw_chars": 5829,
+          "raw_sha256": "1b12f5ca282da07aac71714df1f364381008bd41eb6b0344a16f535adf0019b8",
+          "validation_error": "bad_pilot_ambiguity_types"
+        },
+        {
+          "attempt": 3,
+          "constraint": {
+            "constraint_initialised": true,
+            "generated_token_count": 502,
+            "maximum_output_tokens": 1024,
+            "response_mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+            "termination_reason": "eos_or_constraint_stop",
+            "transport_status": "constrained_generated"
+          },
+          "max_new_tokens": 1024,
+          "mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+          "raw_chars": 1598,
+          "raw_sha256": "94badd860f58d8e824746efaa88ecc43dcb07595198eabc197a9ebbfbafa97ac",
+          "validation_error": null
+        }
+      ],
+      "capability_status": "incapable",
+      "claim_boundary": "separately_versioned_from_frozen_t39",
+      "error": null,
+      "execution_mode": "cluster-gpu-goal-first-v2",
+      "failed": false,
+      "intent_summary": "Move the service module that supports the linen cabinet while picking up linens, using the standard configuration",
+      "latency_ms": 69181.45302589983,
+      "model_id": "Qwen/Qwen3-8B@b968826d9c46dd6066d109eabc6255188de91218",
+      "parsed": {
+        "analysis": {
+          "ambiguity_present": true,
+          "ambiguity_types": [
+            "pragmatic"
+          ],
+          "analysis_provenance": {
+            "analysis_id": "c6fbeecffe556f5f26da0a8360455bcc35c269707f2a6b05efb3b0cd966255d4",
+            "method": "context_blind",
+            "notes": "ablated_input_hash=c6fbeecffe556f5f26da0a8360455bcc35c269707f2a6b05efb3b0cd966255d4;source_input_hash=c6fbeecffe556f5f26da0a8360455bcc35c269707f2a6b05efb3b0cd966255d4;no_gold_in_prompt;scene_licence_dropped=none",
+            "provider_id": "goal_first_v2_context_blind",
+            "provider_version": "goal-first-manager-v2"
+          },
+          "candidate_interpretations": [],
+          "capability_status": "incapable",
+          "clarification_question": null,
+          "clarification_targets": [],
+          "compound_ambiguity": false,
+          "compound_ambiguity_count": 0,
+          "context_sampling_uncertainty": {
+            "agreement": 0.25,
+            "score": 0.75,
+            "variant_count": 1
+          },
+          "cpc": {
+            "action": {
+              "status": "not_applicable",
+              "value": "relocate"
+            },
+            "actor": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "conditions": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "constraints": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "destination": {
+              "status": "not_applicable",
+              "value": "during the linen pickup"
+            },
+            "negation": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "object": {
+              "status": "not_applicable",
+              "value": "active service module supporting the linen cabinet"
+            },
+            "object_attributes": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "quantity": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "recipient": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "spatial_relation": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "time": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "tool": {
+              "status": "not_applicable",
+              "value": "usual setup"
+            }
+          },
+          "findings": [
+            "pilot_ambiguity_types:[\"pragmatic\"]",
+            "pilot_capability_status:incapable",
+            "intent_summary_present"
+          ],
+          "intent_summary": "Move the service module that supports the linen cabinet while picking up linens, using the standard configuration",
+          "primary_ambiguity_type": "pragmatic",
+          "recommended_strategy": "face_preserving_rejection",
+          "rejection_reason": "known_incapability",
+          "resolution_evidence": [],
+          "resolution_method": null,
+          "resolved_slots": [],
+          "risk_level": "medium",
+          "risk_relevant": true,
+          "selected_interpretation": null,
+          "speech_act": "directive_command",
+          "strategy_sequence": [],
+          "supporting_evidence": [],
+          "unresolved_slots": [
+            {
+              "reason": "model_identified_uncertainty",
+              "slot_name": "recipient"
+            },
+            {
+              "reason": "model_identified_uncertainty",
+              "slot_name": "destination"
+            },
+            {
+              "reason": "model_identified_uncertainty",
+              "slot_name": "object"
+            }
+          ],
+          "unsupported_specificity": []
+        },
+        "clarification_question": null,
+        "clarification_targets": [],
+        "execution_status": "ok",
+        "official_result": false,
+        "provider_provenance": {
+          "provider_id": "cached_analysis",
+          "provider_version": "1.0.0"
+        },
+        "recommended_strategy": "face_preserving_rejection",
+        "record_id": "CA-0846",
+        "rejection_reason": "known_incapability",
+        "resolved_slots": [],
+        "result_hash": "3eb0a411d27e9cf6b3b5364068ded16044a86078af451c71cea6759ec3e74f51",
+        "run_id": null,
+        "run_mode": null,
+        "runtime_metadata": {
+          "analysis_identity": {
+            "analysis_content_hash": "63e5ccf01c404e544e413c4a0045f6354f2c6cef71b116888ff6777deb8f3eaf",
+            "analysis_variant": "context_blind",
+            "model_strategy_id": null,
+            "provider_id": "goal_first_v2_context_blind",
+            "provider_version": "goal-first-manager-v2",
+            "record_id": "CA-0846",
+            "source_input_hash": "c6fbeecffe556f5f26da0a8360455bcc35c269707f2a6b05efb3b0cd966255d4"
+          },
+          "analysis_identity_fingerprint": "4f61118cd26cb92791de175207f88e0c814aa9a4e01693d2e5e03bfea8c06373",
+          "awaits_t28_adapter": true,
+          "classification": {
+            "ambiguity_present": true,
+            "ambiguity_types": [
+              "pragmatic"
+            ],
+            "capability_status": "incapable",
+            "compound_ambiguity": false,
+            "compound_ambiguity_count": 0,
+            "derivation_notes": [
+              "ambiguity_present_from_types"
+            ],
+            "risk_level": "medium"
+          },
+          "context_ablation": {
+            "ablated_input_hash": "c6fbeecffe556f5f26da0a8360455bcc35c269707f2a6b05efb3b0cd966255d4",
+            "capability_context_removed": true,
+            "dialogue_history_removed": true,
+            "rejected_full_context_cache": false,
+            "rejection_reason": null,
+            "scene_context_removed": true,
+            "stripped_context_derived_fields": false
+          },
+          "original_input_unmutated": true,
+          "rejection_text": "I am not able to perform that action with my current capabilities. I will not invent an alternative that is not supported.",
+          "requires_re_evaluation": false,
+          "resolution_events": [
+            {
+              "confidence_category": "blocked",
+              "details": {
+                "risk_level": "medium"
+              },
+              "evidence_source": null,
+              "outcome": "resolution_blocked_by_risk",
+              "previous_status": "unresolved",
+              "resolved_value": null,
+              "rule_id": "risk_block",
+              "safety_eligibility": false,
+              "slot": "recipient"
+            },
+            {
+              "confidence_category": "blocked",
+              "details": {
+                "risk_level": "medium"
+              },
+              "evidence_source": null,
+              "outcome": "resolution_blocked_by_risk",
+              "previous_status": "unresolved",
+              "resolved_value": null,
+              "rule_id": "risk_block",
+              "safety_eligibility": false,
+              "slot": "destination"
+            },
+            {
+              "confidence_category": "blocked",
+              "details": {
+                "risk_level": "medium"
+              },
+              "evidence_source": null,
+              "outcome": "resolution_blocked_by_risk",
+              "previous_status": "unresolved",
+              "resolved_value": null,
+              "rule_id": "risk_block",
+              "safety_eligibility": false,
+              "slot": "object"
+            }
+          ],
+          "router_trace": {
+            "clarification_targets": [],
+            "considered_rules": [
+              "goal_first_v2",
+              "known_unsafe_or_prohibited",
+              "known_incapable"
+            ],
+            "matched_rule_id": "known_incapable",
+            "notes": [],
+            "recommended_strategy": "face_preserving_rejection",
+            "rejection_reason": "known_incapability",
+            "requires_re_evaluation": false,
+            "strategy_sequence": []
+          },
+          "safety_action": "return_with_findings",
+          "uncertainty": null
+        },
+        "safety_findings": [],
+        "strategy_sequence": [],
+        "synthetic_only": true,
+        "system_id": "context_blind_manager",
+        "system_version": "1.0.0",
+        "unsupported_commitment_findings": []
+      },
+      "raw_output": "{\n  \"intent_summary\": \"Move the service module that supports the linen cabinet while picking up linens, using the standard configuration\",\n  \"cpc\": {\n    \"action\": {\n      \"value\": \"relocate\",\n      \"status\": \"not_applicable\"\n    },\n    \"object\": {\n      \"value\": \"active service module supporting the linen cabinet\",\n      \"status\": \"not_applicable\"\n    },\n    \"destination\": {\n      \"value\": \"during the linen pickup\",\n      \"status\": \"not_applicable\"\n    },\n    \"tool\": {\n      \"value\": \"usual setup\",\n      \"status\": \"not_applicable\"\n    }\n \n  ,\n  \"constraints\": {\n    \"status\": \"not_applicable\"\n  ,\n  \"value\": \"not_applicable\"\n  },\n  \"conditions\": {\n    \"status\": \"not_applicable\"\n  ,\n  \"value\": \"not_applicable\"\n  },\n  \"object_attributes\": {\n    \"status\": \"not_applicable\"\n  ,\n  \"value\": \"not_applicable\"\n  },\n  \"time\": {\n    \"status\": \"not_applicable\"\n  ,\n  \"value\": \"not_applicable\"\n  },\n  \"quantity\": {\n    \"status\": \"not_applicable\"\n  ,\n  \"value\": \"not_applicable\"\n  },\n  \"spatial_relation\": {\n    \"status\": \"not_applicable\"\n  ,\n  \"value\": \"not_applicable\"\n  },\n  \"negation\": {\n    \"status\": \"not_applicable\"\n  ,\n  \"value\": \"not_applicable\"\n  },\n  \"recipient\": {\n    \"status\": \"not_applicable\"\n  ,\n  \"value\": \"not_applicable\"\n  },\n  \"actor\": {\n    \"status\": \"not_applicable\"\n  ,\n  \"value\": \"not_applicable\"\n  }\n},\n  \"pilot_ambiguity_types\": [\n    \"pragmatic\"\n  ]\n  \n  ,\n  \"pilot_capability_status\": \"incapable\",\n  \"speech_act\": \"directive_command\",\n  \"unresolved_slots\": [\n    \"recipient\",\n    \"destination\",\n    \"object\"\n  ]\n  \n  ,\n  \"uncertainty\": 0.75\n  ,\n  \"risk_level\": \"medium\"\n  }\n",
+      "record_id": "CA-0846",
+      "schema_valid": true,
+      "supports_ambiguity_prediction": true,
+      "supports_capability_prediction": true,
+      "system_id": "goal_first_context_blind_v2",
+      "system_version": "2.0.0",
+      "terminal_strategy": "face_preserving_rejection"
+    }
+  },
+  "provenance": {
+    "source_sha256": "f33b1e29f1e8aa256a475f07213aa07247def47d8e2148d54a472a40b71b05c9",
+    "gold_sha256": "5e23ad1a92ff1873c8f039a8ce560a111dd6fb6b8ae8c11d6cf34dbfa1c360db",
+    "t07_final_zip_sha256": "34ca50e034ca37b617068bb50c734d12fa26282fb5eec563c11ead700163e491",
+    "inherited_t07_zip_sha256": "0305b1e9ab062876ee6ee89778cc6028d2eaf01718b7dd0295944e7d9cb81a01",
+    "note": "Goal-First, Degree, Timid, and Context-Blind predictions are inherited from the earlier T0.7 run; official intent and comparison come from the final T0.7 archive."
+  }
+}

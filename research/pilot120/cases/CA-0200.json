@@ -1,0 +1,1035 @@
+{
+  "record_id": "CA-0200",
+  "frozen_source": {
+    "capability_context": "Restaurant service robot can carry sealed food-service items, scan table tags, and move approved furniture accessories outside occupied paths.",
+    "command": "Could you place the reservation stand on the tray scale beside the service station, then handle it by returning it to the host desk?",
+    "dialogue_history": [
+      "guest: Treat this as an instruction, and use 'handle it' to mean move the reservation stand after weighing it."
+    ],
+    "record_id": "CA-0200",
+    "scene_context": "Service area in a restaurant dining room. The service station is fixed to the floor. Both the reservation stand and the assigned tray scale are movable at the work point. The work-order return field contains the reservation stand's asset tag; the tray scale's return point is the calibration rack. Two locations are labelled host desk; the work order names the one beside the pass counter. Two tray scales are present. The unit assigned to this work order is calibrated; the other is reserved for a different load. The assigned tray scale must first verify that the loaded reservation stand is below 18 kilograms. It displays 12 kilograms. The robot's handling certificate permits this target below the stated 18-kilogram limit."
+  },
+  "frozen_gold": {
+    "ambiguity_types": [
+      "destination_reference",
+      "instrument_reference",
+      "lexical",
+      "pragmatic"
+    ],
+    "annotator_b_era": "claude_era",
+    "annotator_b_model": "claude-4.6-sonnet-medium-thinking",
+    "capability_status": "capable",
+    "field_status": {
+      "ambiguity_types": "adjudicated",
+      "capability_status": "auto_agree",
+      "record_validity": "auto_agree",
+      "strategy_sequence": "auto_agree",
+      "terminal_strategy": "auto_agree"
+    },
+    "gold_lifecycle": "final_gold",
+    "gold_status": "adjudicated",
+    "human_gate_required": false,
+    "provenance": {
+      "agreement_label": "pilot_annotation_agreement",
+      "annotator_a_sha256": "27e44840595580c3c8979dc628988cda1b7356f2d5770fef621475c8b5fb7420",
+      "annotator_b_sha256": "62d9a87ae009400b98e69cf8f6840e3580f2b10bd1edeb0cebfd8377ac64f07c",
+      "gold_policy": "use_existing_pilot_adjudicated_gold",
+      "input_sha256": "fe37bb6f8a370e0cfe14f17c778dd2a511eb04823ab6464cb914de17845723cd",
+      "pilot_gold_sha256": "787ab77b98b05ccb2902e34098773ce23b6f4847b067e7288d08fa184410a1f7",
+      "protocol": "pilot_adjudicated_gold_on_capability_repaired_source",
+      "repaired_input_sha256": "1a27d8a35fa2206d002041d81999bc40d16dc30c3dc9f65fdf5dd6290262d758"
+    },
+    "record_id": "CA-0200",
+    "record_validity": "valid",
+    "strategy_sequence": [
+      "reinterpret_indirect_request",
+      "resolve_lexical",
+      "resolve_reference",
+      "execute"
+    ],
+    "terminal_strategy": "execute"
+  },
+  "t07_comparison": {
+    "record_id": "CA-0200",
+    "gold_route": "execute",
+    "raw_route": "execute",
+    "ft_route": "execute",
+    "gf_route": "execute",
+    "raw_route_ok": "True",
+    "ft_route_ok": "True",
+    "gf_route_ok": "True",
+    "raw_official_intent": "True",
+    "ft_official_intent": "True",
+    "gf_official_intent": "True",
+    "blind_official_intent": "True"
+  },
+  "t07_official_intent": {
+    "context_blind_official_intent": true,
+    "degree_official_intent_shared_gf": true,
+    "finetune_official_intent": true,
+    "goal_first_official_intent": true,
+    "raw_official_intent": true,
+    "record_id": "CA-0200",
+    "timid_official_intent_shared_gf": true
+  },
+  "t07_predictions": {
+    "raw_qwen": {
+      "ambiguity_types": [
+        "action_order",
+        "destination_reference",
+        "object_reference"
+      ],
+      "capability_status": "capable",
+      "error": null,
+      "execution_mode": "final_close_intent_box",
+      "failed": false,
+      "intent_summary": "Move the reservation stand to the tray scale beside the service station, then transport it to the host desk after weighing it.",
+      "latency_ms": 14989.892271813005,
+      "parsed": {
+        "ambiguity_types": [
+          "action_order",
+          "destination_reference",
+          "object_reference"
+        ],
+        "capability_status": "capable",
+        "intent_summary": "Move the reservation stand to the tray scale beside the service station, then transport it to the host desk after weighing it.",
+        "speech_act": "conditional_directive",
+        "terminal_strategy": "execute"
+      },
+      "raw_output": "<think>\nOkay, let's break this down. The user's command is asking the robot to place the reservation stand on the tray scale beside the service station, then handle it by returning it to the host desk. But there's a dialogue history that clarifies 'handle it' means moving the reservation stand after weighing it.\n\nFirst, the intent summary. The main job here is to move the reservation stand to the tray scale, weigh it, then take it to the host desk. But the robot needs to check the weight first. The key steps are placing it on the scale, verifying the weight (which is already done as 12kg), then moving it. \n\nSpeech act: The command is a directive, telling the robot what to do. But there's a conditional part (check weight), so maybe conditional_directive. But the user's instruction is a command with steps, so maybe directive_command. However, the dialogue history adds a clarification, which might make it an indirect request? Wait, no. The original command is a direct instruction, but with a condition. So the speech act is conditional_directive because it has a condition (weigh it first).\n\nAmbiguity types: Let's see. The command mentions \"the tray scale beside the service station\"—but there are two tray scales. The scene context says the assigned tray scale must verify the weight, and the other is reserved. So the reference to \"the tray scale\" might be ambiguous. Also, \"host desk\" has two locations, but the work order specifies the one beside the pass counter. So there's a possible ambiguity in object_reference (tray scale) and destination_reference (host desk). Also, \"handle it\" was clarified, so maybe lexical ambiguity. But the dialogue history clarifies that, so maybe not. Also, the robot's capability includes moving furniture accessories, so the action is allowed. \n\nCapability status: The robot is allowed to carry items, scan tags, move furniture. The task involves moving the reservation stand, which is an approved accessory. The weight is under 18kg, so it's safe. So capability is capable.\n\nTerminal strategy: Since the robot can perform the steps (check weight, move), it should execute. But wait, the command says \"then handle it by returning it to the host desk\". The robot needs to move it after weighing. The weight is already checked (12kg), so the robot can proceed. So the terminal strategy is execute.\n\nWait, but the user's command is a bit ambiguous. The \"handle it\" part was clarified, so maybe there's a pragmatic ambiguity. Also, the destination is specified as the host desk beside the pass counter, which is clear. The tray scale is the assigned one. So maybe the ambiguity types include destination_reference and object_reference. Also, the instruction has a sequence (place on scale, then handle), which is action_order. So ambiguity_types would have action_order. Also, the \"handle it\" was clarified, so maybe lexical ambiguity. But the dialogue history clarifies that, so maybe not. Let me check the ambiguity types again. The possible types are pragmatic, discourse_ellipsis, lexical, scope, object_reference, pronoun_reference, recipient_reference, destination_reference, instrument_reference, spatial_reference, temporal_reference, routine_reference, action_order, fuzzy_temporal, fuzzy_quantity, degree_vagueness, endpoint_vagueness.\n\nIn this case, the command's ambiguity is about which tray scale to use (object_reference) and which host desk (destination_reference). Also, the sequence of actions (action_order). So ambiguity_types would include object_reference, destination_reference, action_order. Also, the term \"handle it\" might be a lexical ambiguity, but since it's clarified, maybe not. So the ambiguity_types array would have those three. \n\nPutting it all together: intent_summary is moving the reservation stand to the tray scale, then to the host desk. Speech act is conditional_directive because of the weight check. Ambiguity types are object_reference (tray scale), destination_reference (host desk), action_order (sequence). Capability is capable. Terminal strategy is execute.\n</think>\n\n{\n  \"intent_summary\": \"Move the reservation stand to the tray scale beside the service station, then transport it to the host desk after weighing it.\",\n  \"speech_act\": \"conditional_directive\",\n  \"ambiguity_types\": [\"object_reference\", \"destination_reference\", \"action_order\"],\n  \"capability_status\": \"capable\",\n  \"terminal_strategy\": \"execute\"\n}",
+      "record_id": "CA-0200",
+      "schema_valid": true,
+      "speech_act": "conditional_directive",
+      "system_id": "direct_base_llm",
+      "terminal_strategy": "execute"
+    },
+    "finetune": {
+      "ambiguity_types": [
+        "destination_reference",
+        "object_reference",
+        "pragmatic"
+      ],
+      "capability_status": "capable",
+      "error": null,
+      "execution_mode": "final_close_intent_box",
+      "failed": false,
+      "intent_summary": "Place the reservation stand on the tray scale beside the service station, then move it to the host desk after weighing.",
+      "latency_ms": 26110.859425272793,
+      "parsed": {
+        "ambiguity_types": [
+          "destination_reference",
+          "object_reference",
+          "pragmatic"
+        ],
+        "capability_status": "capable",
+        "intent_summary": "Place the reservation stand on the tray scale beside the service station, then move it to the host desk after weighing.",
+        "speech_act": "directive_command",
+        "terminal_strategy": "execute"
+      },
+      "raw_output": "<think>\nOkay, let's break down this command. The user wants the robot to place the reservation stand on the tray scale beside the service station, then handle it by returning it to the host desk. The dialogue history mentions treating it as an instruction where \"handle it\" means moving after weighing.\n\nFirst, the intent summary: The person wants the reservation stand weighed on the tray scale and then moved to the host desk. So two actions—place on scale, then move.\n\nSpeech act: The command is directive, telling the robot what to do. So directive_command.\n\nAmbiguity types: Let's check. The command mentions \"the tray scale beside the service station,\" but there are two tray scales. The scene context says the assigned tray scale must verify the weight. Also, there are two host desks. The work order specifies the host desk beside the pass counter. So the robot needs to choose the correct tray scale and host desk. That's a reference to specific locations, so maybe destination_reference and object_reference. Also, the command uses \"handle it,\" which is clarified in the dialogue history, so that's a pragmatic ambiguity. Also, the tray scale's return point is the calibration rack, but the command says return to host desk. Wait, the work order's return field is the host desk. So maybe there's confusion between the tray scale's return point and the reservation stand's destination. That's a destination_reference and maybe object_reference. Also, the instruction says \"after weighing it,\" which is clear, but the robot must check the weight first. So maybe no ambiguity here. Wait, the ambiguity types include things like object_reference, which is when the object is unclear. Here, the reservation stand is the object, so maybe not. But the tray scale's return point is the calibration rack, but the command says return to host desk. So the robot has to move the reservation stand, not the tray scale. So the object_reference might be the reservation stand. Also, the dialogue history clarifies \"handle it\" as moving after weighing. So the ambiguity here is about the action sequence. But the speech act is directive, so the ambiguity types might include pragmatic (since the clarification is needed) and maybe destination_reference (since the host desk is specified). Also, there are two host desks, so the robot needs to choose the correct one. That's a destination_reference. Also, the tray scale's return point is the calibration rack, but the command says return to host desk. So the robot is supposed to move the reservation stand, not the tray scale. So the object_reference is the reservation stand. So the ambiguity types would be pragmatic (due to the clarification in dialogue history) and destination_reference (since the host desk is specified but there are two). Also, the command mentions \"the tray scale beside the service station\"—but there are two tray scales. The scene context says the assigned tray scale is the one that must verify the weight. So the robot needs to use the correct tray scale. So that's an object_reference (the tray scale) and maybe a scope ambiguity. Wait, the scene context says the assigned tray scale is the one that must verify the weight. So the robot knows which one to use. So maybe no ambiguity there. But the command says \"the tray scale beside the service station\"—so is that the correct one? The scene context says the service station is fixed. The tray scale is movable. So the robot needs to find the correct tray scale. So that's an object_reference. So the ambiguity types would include object_reference and destination_reference. Also, the dialogue history clarifies \"handle it\" as moving after weighing, so that's a pragmatic ambiguity. So the ambiguity_types array would be [pragmatic, object_reference, destination_reference]. \n\nCapability status: The robot can carry items, scan tags, move furniture. The reservation stand is an accessory, so it's allowed. The weight is 12kg, under the 18kg limit. The robot's certificate permits this. So the capability is okay. So capability_status is capable.\n\nTerminal strategy: Since the command is clear after the clarification, the robot can execute. So terminal_strategy is execute.\n</think>\n\n{\n  \"intent_summary\": \"Place the reservation stand on the tray scale beside the service station, then move it to the host desk after weighing.\",\n  \"speech_act\": \"directive_command\",\n  \"ambiguity_types\": [\"pragmatic\", \"object_reference\", \"destination_reference\"],\n  \"capability_status\": \"capable\",\n  \"terminal_strategy\": \"execute\"\n}",
+      "record_id": "CA-0200",
+      "schema_valid": true,
+      "speech_act": "directive_command",
+      "system_id": "t28_selected_adapter_llm",
+      "terminal_strategy": "execute"
+    },
+    "goal_first": {
+      "ambiguity_types": [
+        "action_order",
+        "pragmatic"
+      ],
+      "analysis_attempts": [
+        {
+          "attempt": 1,
+          "max_new_tokens": 4096,
+          "mode": "thinking",
+          "raw_chars": 8577,
+          "raw_sha256": "1a3c85e465fec806383d5f97554ec8f21302a744b03a403a6b83dfde1ddfd3ba",
+          "validation_error": "bad_pilot_ambiguity_types"
+        },
+        {
+          "attempt": 2,
+          "max_new_tokens": 8192,
+          "mode": "thinking_retry",
+          "raw_chars": 13584,
+          "raw_sha256": "169cc47081d34cfbeb6609ef793865e525b557b7c600922ed1449b79589f9132",
+          "validation_error": "bad_intent_summary"
+        },
+        {
+          "attempt": 3,
+          "constraint": {
+            "constraint_initialised": true,
+            "generated_token_count": 483,
+            "maximum_output_tokens": 1024,
+            "response_mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+            "termination_reason": "eos_or_constraint_stop",
+            "transport_status": "constrained_generated"
+          },
+          "max_new_tokens": 1024,
+          "mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+          "raw_chars": 1569,
+          "raw_sha256": "9d0081d9f56f1c99bfcabdce30badd421ad6ad78e2053194459aa63f8e03cd19",
+          "validation_error": null
+        }
+      ],
+      "capability_status": "capable",
+      "claim_boundary": "separately_versioned_from_frozen_t39",
+      "error": null,
+      "execution_mode": "cluster-gpu-goal-first-v2",
+      "failed": false,
+      "intent_summary": "Place the reservation stand on the tray scale beside the service station, then return it to the host desk after weighing it",
+      "latency_ms": 103792.52190934494,
+      "model_id": "Qwen/Qwen3-8B@b968826d9c46dd6066d109eabc6255188de91218",
+      "parsed": {
+        "analysis": {
+          "ambiguity_present": true,
+          "ambiguity_types": [
+            "pragmatic",
+            "temporal"
+          ],
+          "analysis_provenance": {
+            "analysis_id": "a7cb5bd7098177446474c59a82ed78b2d8ba5fe54c54dc0958d09969fff6d907",
+            "method": "model_generated",
+            "notes": "source_input_hash=a7cb5bd7098177446474c59a82ed78b2d8ba5fe54c54dc0958d09969fff6d907;no_gold_in_prompt;scene_licence_dropped=destination",
+            "provider_id": "goal_first_v2_full_context",
+            "provider_version": "goal-first-manager-v2"
+          },
+          "candidate_interpretations": [],
+          "capability_status": "capable",
+          "clarification_question": null,
+          "clarification_targets": [],
+          "compound_ambiguity": true,
+          "compound_ambiguity_count": 2,
+          "context_sampling_uncertainty": {
+            "agreement": 0.5,
+            "score": 0.5,
+            "variant_count": 1
+          },
+          "cpc": {
+            "action": {
+              "status": "not_applicable",
+              "value": "place"
+            },
+            "actor": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "conditions": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "constraints": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "destination": {
+              "status": "not_applicable",
+              "value": "tray scale beside service station"
+            },
+            "negation": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "object": {
+              "status": "not_applicable",
+              "value": "reservation stand"
+            },
+            "object_attributes": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "quantity": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "recipient": {
+              "status": "not_applicable",
+              "value": "robot"
+            },
+            "spatial_relation": {
+              "status": "not_applicable",
+              "value": "beside"
+            },
+            "time": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "tool": {
+              "status": "not_applicable",
+              "value": "tray scale"
+            }
+          },
+          "findings": [
+            "pilot_ambiguity_types:[\"action_order\",\"pragmatic\"]",
+            "pilot_capability_status:capable",
+            "intent_summary_present"
+          ],
+          "intent_summary": "Place the reservation stand on the tray scale beside the service station, then return it to the host desk after weighing it",
+          "primary_ambiguity_type": "pragmatic",
+          "recommended_strategy": "execute",
+          "rejection_reason": null,
+          "resolution_evidence": [],
+          "resolution_method": null,
+          "resolved_slots": [],
+          "risk_level": "low",
+          "risk_relevant": true,
+          "selected_interpretation": null,
+          "speech_act": "directive_command",
+          "strategy_sequence": [],
+          "supporting_evidence": [],
+          "unresolved_slots": [],
+          "unsupported_specificity": []
+        },
+        "clarification_question": null,
+        "clarification_targets": [],
+        "execution_status": "ok",
+        "official_result": false,
+        "provider_provenance": {
+          "provider_id": "cached_analysis",
+          "provider_version": "1.0.0"
+        },
+        "recommended_strategy": "execute",
+        "record_id": "CA-0200",
+        "rejection_reason": null,
+        "resolved_slots": [],
+        "result_hash": "332b5e1aa37e9f85208de58e02b71c2922433ec6c62f92b066ef2ac29fb03b1c",
+        "run_id": null,
+        "run_mode": null,
+        "runtime_metadata": {
+          "awaits_t28_adapter": true,
+          "classification": {
+            "ambiguity_present": true,
+            "ambiguity_types": [
+              "pragmatic",
+              "temporal"
+            ],
+            "capability_status": "capable",
+            "compound_ambiguity": true,
+            "compound_ambiguity_count": 2,
+            "derivation_notes": [
+              "ambiguity_present_from_types"
+            ],
+            "risk_level": "low"
+          },
+          "rejection_text": null,
+          "requires_re_evaluation": false,
+          "resolution_events": [],
+          "router_trace": {
+            "clarification_targets": [],
+            "considered_rules": [
+              "goal_first_v2",
+              "known_unsafe_or_prohibited",
+              "known_incapable",
+              "unknown_capability_high_risk",
+              "context_licensed_execute"
+            ],
+            "matched_rule_id": "context_licensed_execute",
+            "notes": [
+              "goal_first_v2_execute_despite_remaining_ambiguity"
+            ],
+            "recommended_strategy": "execute",
+            "rejection_reason": null,
+            "requires_re_evaluation": false,
+            "strategy_sequence": []
+          },
+          "safety_action": "return_with_findings",
+          "uncertainty": null
+        },
+        "safety_findings": [],
+        "strategy_sequence": [],
+        "synthetic_only": true,
+        "system_id": "goal_first_manager_v2",
+        "system_version": "2.0.0",
+        "unsupported_commitment_findings": []
+      },
+      "raw_output": "{\n  \"intent_summary\": \"Place the reservation stand on the tray scale beside the service station, then return it to the host desk after weighing it\",\n  \"cpc\": {\n    \"action\": {\n      \"value\": \"place\",\n      \"status\": \"not_applicable\"\n    },\n    \"object\": {\n      \"value\": \"reservation stand\",\n      \"status\": \"not_applicable\"\n    },\n    \"destination\": {\n      \"value\": \"tray scale beside service station\",\n      \"status\": \"not_applicable\"\n    },\n    \"recipient\": {\n      \"value\": \"robot\",\n      \"status\": \"not_applicable\"\n    },\n    \"tool\": {\n      \"value\": \"tray scale\",\n      \"status\": \"not_applicable\"\n    }\n \n  ,\n  \"constraints\": {\n    \"status\": \"not_applicable\"\n  ,\n  \"value\": \"not_applicable\"\n  },\n  \"spatial_relation\": {\n    \"value\": \"beside\",\n    \"status\": \"not_applicable\"\n  },\n  \"time\": {\n    \"value\": \"not_applicable\",\n    \"status\": \"not_applicable\"\n  },\n  \"quantity\": {\n    \"value\": \"not_applicable\",\n    \"status\": \"not_applicable\"\n  },\n  \"negation\": {\n    \"value\": \"not_applicable\",\n    \"status\": \"not_applicable\"\n  },\n  \"conditions\": {\n    \"value\": \"not_applicable\",\n    \"status\": \"not_applicable\"\n  },\n  \"object_attributes\": {\n    \"value\": \"not_applicable\",\n    \"status\": \"not_applicable\"\n  },\n  \"actor\": {\n    \"value\": \"not_applicable\",\n    \"status\": \"not_applicable\"\n  }\n},\n  \"pilot_ambiguity_types\": [\n    \"pragmatic\",\n    \"action_order\"\n  ]\n  \n  ,\n  \"pilot_capability_status\": \"capable\"\n  \n  ,\n  \"speech_act\": \"directive_command\"\n  \n  ,\n  \"unresolved_slots\": [\n    \"destination\"\n  ]\n  \n  ,\n  \"uncertainty\": 0.5\n  \n\n  \n  ,\n  \"risk_level\": \"low\"\n  \n  }\n",
+      "record_id": "CA-0200",
+      "schema_valid": true,
+      "supports_ambiguity_prediction": true,
+      "supports_capability_prediction": true,
+      "system_id": "goal_first_manager_v2",
+      "system_version": "2.0.0",
+      "terminal_strategy": "execute"
+    },
+    "degree": {
+      "ambiguity_types": [
+        "action_order",
+        "pragmatic"
+      ],
+      "analysis_attempts": [
+        {
+          "attempt": 1,
+          "max_new_tokens": 4096,
+          "mode": "thinking",
+          "raw_chars": 8577,
+          "raw_sha256": "1a3c85e465fec806383d5f97554ec8f21302a744b03a403a6b83dfde1ddfd3ba",
+          "validation_error": "bad_pilot_ambiguity_types"
+        },
+        {
+          "attempt": 2,
+          "max_new_tokens": 8192,
+          "mode": "thinking_retry",
+          "raw_chars": 13584,
+          "raw_sha256": "169cc47081d34cfbeb6609ef793865e525b557b7c600922ed1449b79589f9132",
+          "validation_error": "bad_intent_summary"
+        },
+        {
+          "attempt": 3,
+          "constraint": {
+            "constraint_initialised": true,
+            "generated_token_count": 483,
+            "maximum_output_tokens": 1024,
+            "response_mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+            "termination_reason": "eos_or_constraint_stop",
+            "transport_status": "constrained_generated"
+          },
+          "max_new_tokens": 1024,
+          "mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+          "raw_chars": 1569,
+          "raw_sha256": "9d0081d9f56f1c99bfcabdce30badd421ad6ad78e2053194459aa63f8e03cd19",
+          "validation_error": null
+        }
+      ],
+      "capability_status": "capable",
+      "claim_boundary": "separately_versioned_from_frozen_t39",
+      "error": null,
+      "execution_mode": "cluster-gpu-goal-first-v2",
+      "failed": false,
+      "intent_summary": "Place the reservation stand on the tray scale beside the service station, then return it to the host desk after weighing it",
+      "latency_ms": 103792.52190934494,
+      "model_id": "Qwen/Qwen3-8B@b968826d9c46dd6066d109eabc6255188de91218",
+      "parsed": {
+        "analysis": {
+          "ambiguity_present": true,
+          "ambiguity_types": [
+            "pragmatic",
+            "temporal"
+          ],
+          "analysis_provenance": {
+            "analysis_id": "a7cb5bd7098177446474c59a82ed78b2d8ba5fe54c54dc0958d09969fff6d907",
+            "method": "model_generated",
+            "notes": "source_input_hash=a7cb5bd7098177446474c59a82ed78b2d8ba5fe54c54dc0958d09969fff6d907;no_gold_in_prompt;scene_licence_dropped=destination",
+            "provider_id": "goal_first_v2_full_context",
+            "provider_version": "goal-first-manager-v2"
+          },
+          "candidate_interpretations": [],
+          "capability_status": "capable",
+          "clarification_question": "Could you clarify what you would like me to do?",
+          "clarification_targets": [
+            "intent"
+          ],
+          "compound_ambiguity": true,
+          "compound_ambiguity_count": 2,
+          "context_sampling_uncertainty": {
+            "agreement": 0.5,
+            "score": 0.5,
+            "variant_count": 1
+          },
+          "cpc": {
+            "action": {
+              "status": "not_applicable",
+              "value": "place"
+            },
+            "actor": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "conditions": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "constraints": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "destination": {
+              "status": "not_applicable",
+              "value": "tray scale beside service station"
+            },
+            "negation": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "object": {
+              "status": "not_applicable",
+              "value": "reservation stand"
+            },
+            "object_attributes": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "quantity": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "recipient": {
+              "status": "not_applicable",
+              "value": "robot"
+            },
+            "spatial_relation": {
+              "status": "not_applicable",
+              "value": "beside"
+            },
+            "time": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "tool": {
+              "status": "not_applicable",
+              "value": "tray scale"
+            }
+          },
+          "findings": [
+            "pilot_ambiguity_types:[\"action_order\",\"pragmatic\"]",
+            "pilot_capability_status:capable",
+            "intent_summary_present"
+          ],
+          "intent_summary": "Place the reservation stand on the tray scale beside the service station, then return it to the host desk after weighing it",
+          "primary_ambiguity_type": "pragmatic",
+          "recommended_strategy": "clarify",
+          "rejection_reason": null,
+          "resolution_evidence": [],
+          "resolution_method": null,
+          "resolved_slots": [],
+          "risk_level": "low",
+          "risk_relevant": true,
+          "selected_interpretation": null,
+          "speech_act": "directive_command",
+          "strategy_sequence": [],
+          "supporting_evidence": [],
+          "unresolved_slots": [],
+          "unsupported_specificity": []
+        },
+        "clarification_question": "Could you clarify what you would like me to do?",
+        "clarification_targets": [
+          "intent"
+        ],
+        "execution_status": "ok",
+        "official_result": false,
+        "provider_provenance": {
+          "shared_analysis_fingerprint": "e33f48b20554ee3cef8a3241d3348ae96872473003c4c4376910a51692a0c2f5"
+        },
+        "recommended_strategy": "clarify",
+        "record_id": "CA-0200",
+        "rejection_reason": null,
+        "resolved_slots": [],
+        "result_hash": "b5b74281c96b5ea8aff26ff4c7c2b419e52b8af059cba3213c4361b8b3c0ae06",
+        "run_id": null,
+        "run_mode": null,
+        "runtime_metadata": {
+          "shared_analysis_fingerprint": "e33f48b20554ee3cef8a3241d3348ae96872473003c4c4376910a51692a0c2f5",
+          "thresholds_status": "unfrozen",
+          "thresholds_valid_for_official_use": false,
+          "uncertainty_score": 0.5,
+          "uses_type_risk_capability_precedence": false
+        },
+        "safety_findings": [],
+        "strategy_sequence": [],
+        "synthetic_only": true,
+        "system_id": "degree_based_router",
+        "system_version": "1.0.0",
+        "unsupported_commitment_findings": []
+      },
+      "raw_output": "{\n  \"intent_summary\": \"Place the reservation stand on the tray scale beside the service station, then return it to the host desk after weighing it\",\n  \"cpc\": {\n    \"action\": {\n      \"value\": \"place\",\n      \"status\": \"not_applicable\"\n    },\n    \"object\": {\n      \"value\": \"reservation stand\",\n      \"status\": \"not_applicable\"\n    },\n    \"destination\": {\n      \"value\": \"tray scale beside service station\",\n      \"status\": \"not_applicable\"\n    },\n    \"recipient\": {\n      \"value\": \"robot\",\n      \"status\": \"not_applicable\"\n    },\n    \"tool\": {\n      \"value\": \"tray scale\",\n      \"status\": \"not_applicable\"\n    }\n \n  ,\n  \"constraints\": {\n    \"status\": \"not_applicable\"\n  ,\n  \"value\": \"not_applicable\"\n  },\n  \"spatial_relation\": {\n    \"value\": \"beside\",\n    \"status\": \"not_applicable\"\n  },\n  \"time\": {\n    \"value\": \"not_applicable\",\n    \"status\": \"not_applicable\"\n  },\n  \"quantity\": {\n    \"value\": \"not_applicable\",\n    \"status\": \"not_applicable\"\n  },\n  \"negation\": {\n    \"value\": \"not_applicable\",\n    \"status\": \"not_applicable\"\n  },\n  \"conditions\": {\n    \"value\": \"not_applicable\",\n    \"status\": \"not_applicable\"\n  },\n  \"object_attributes\": {\n    \"value\": \"not_applicable\",\n    \"status\": \"not_applicable\"\n  },\n  \"actor\": {\n    \"value\": \"not_applicable\",\n    \"status\": \"not_applicable\"\n  }\n},\n  \"pilot_ambiguity_types\": [\n    \"pragmatic\",\n    \"action_order\"\n  ]\n  \n  ,\n  \"pilot_capability_status\": \"capable\"\n  \n  ,\n  \"speech_act\": \"directive_command\"\n  \n  ,\n  \"unresolved_slots\": [\n    \"destination\"\n  ]\n  \n  ,\n  \"uncertainty\": 0.5\n  \n\n  \n  ,\n  \"risk_level\": \"low\"\n  \n  }\n",
+      "record_id": "CA-0200",
+      "schema_valid": true,
+      "supports_ambiguity_prediction": true,
+      "supports_capability_prediction": true,
+      "system_id": "degree_based_router_v2",
+      "system_version": "2.0.0",
+      "terminal_strategy": "clarify"
+    },
+    "timid": {
+      "ambiguity_types": [
+        "action_order",
+        "pragmatic"
+      ],
+      "analysis_attempts": [
+        {
+          "attempt": 1,
+          "max_new_tokens": 4096,
+          "mode": "thinking",
+          "raw_chars": 8577,
+          "raw_sha256": "1a3c85e465fec806383d5f97554ec8f21302a744b03a403a6b83dfde1ddfd3ba",
+          "validation_error": "bad_pilot_ambiguity_types"
+        },
+        {
+          "attempt": 2,
+          "max_new_tokens": 8192,
+          "mode": "thinking_retry",
+          "raw_chars": 13584,
+          "raw_sha256": "169cc47081d34cfbeb6609ef793865e525b557b7c600922ed1449b79589f9132",
+          "validation_error": "bad_intent_summary"
+        },
+        {
+          "attempt": 3,
+          "constraint": {
+            "constraint_initialised": true,
+            "generated_token_count": 483,
+            "maximum_output_tokens": 1024,
+            "response_mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+            "termination_reason": "eos_or_constraint_stop",
+            "transport_status": "constrained_generated"
+          },
+          "max_new_tokens": 1024,
+          "mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+          "raw_chars": 1569,
+          "raw_sha256": "9d0081d9f56f1c99bfcabdce30badd421ad6ad78e2053194459aa63f8e03cd19",
+          "validation_error": null
+        }
+      ],
+      "capability_status": "capable",
+      "claim_boundary": "separately_versioned_from_frozen_t39",
+      "error": null,
+      "execution_mode": "cluster-gpu-goal-first-v2",
+      "failed": false,
+      "intent_summary": "Place the reservation stand on the tray scale beside the service station, then return it to the host desk after weighing it",
+      "latency_ms": 103792.52190934494,
+      "model_id": "Qwen/Qwen3-8B@b968826d9c46dd6066d109eabc6255188de91218",
+      "parsed": {
+        "analysis": {
+          "ambiguity_present": true,
+          "ambiguity_types": [
+            "pragmatic",
+            "temporal"
+          ],
+          "analysis_provenance": {
+            "analysis_id": "a7cb5bd7098177446474c59a82ed78b2d8ba5fe54c54dc0958d09969fff6d907",
+            "method": "model_generated",
+            "notes": "source_input_hash=a7cb5bd7098177446474c59a82ed78b2d8ba5fe54c54dc0958d09969fff6d907;no_gold_in_prompt;scene_licence_dropped=destination",
+            "provider_id": "goal_first_v2_full_context",
+            "provider_version": "goal-first-manager-v2"
+          },
+          "candidate_interpretations": [],
+          "capability_status": "capable",
+          "clarification_question": "Before I continue, could you clarify: pragmatic, temporal?",
+          "clarification_targets": [
+            "pragmatic",
+            "temporal"
+          ],
+          "compound_ambiguity": true,
+          "compound_ambiguity_count": 2,
+          "context_sampling_uncertainty": {
+            "agreement": 0.5,
+            "score": 0.5,
+            "variant_count": 1
+          },
+          "cpc": {
+            "action": {
+              "status": "not_applicable",
+              "value": "place"
+            },
+            "actor": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "conditions": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "constraints": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "destination": {
+              "status": "not_applicable",
+              "value": "tray scale beside service station"
+            },
+            "negation": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "object": {
+              "status": "not_applicable",
+              "value": "reservation stand"
+            },
+            "object_attributes": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "quantity": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "recipient": {
+              "status": "not_applicable",
+              "value": "robot"
+            },
+            "spatial_relation": {
+              "status": "not_applicable",
+              "value": "beside"
+            },
+            "time": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "tool": {
+              "status": "not_applicable",
+              "value": "tray scale"
+            }
+          },
+          "findings": [
+            "pilot_ambiguity_types:[\"action_order\",\"pragmatic\"]",
+            "pilot_capability_status:capable",
+            "intent_summary_present"
+          ],
+          "intent_summary": "Place the reservation stand on the tray scale beside the service station, then return it to the host desk after weighing it",
+          "primary_ambiguity_type": "pragmatic",
+          "recommended_strategy": "clarify",
+          "rejection_reason": null,
+          "resolution_evidence": [],
+          "resolution_method": null,
+          "resolved_slots": [],
+          "risk_level": "low",
+          "risk_relevant": true,
+          "selected_interpretation": null,
+          "speech_act": "directive_command",
+          "strategy_sequence": [],
+          "supporting_evidence": [],
+          "unresolved_slots": [],
+          "unsupported_specificity": []
+        },
+        "clarification_question": "Before I continue, could you clarify: pragmatic, temporal?",
+        "clarification_targets": [
+          "pragmatic",
+          "temporal"
+        ],
+        "execution_status": "ok",
+        "official_result": false,
+        "provider_provenance": {
+          "provider_id": "cached_analysis",
+          "provider_version": "1.0.0"
+        },
+        "recommended_strategy": "clarify",
+        "record_id": "CA-0200",
+        "rejection_reason": null,
+        "resolved_slots": [],
+        "result_hash": "4a93539895cd28125440e531e7a85172b0dfa0f871d1e09f926998fb6dcaf65d",
+        "run_id": null,
+        "run_mode": null,
+        "runtime_metadata": {
+          "awaits_t28_adapter": true,
+          "classification": {
+            "ambiguity_present": true,
+            "ambiguity_types": [
+              "pragmatic",
+              "temporal"
+            ],
+            "capability_status": "capable",
+            "compound_ambiguity": true,
+            "compound_ambiguity_count": 2,
+            "derivation_notes": [
+              "ambiguity_present_from_types"
+            ],
+            "risk_level": "low"
+          },
+          "rejection_text": null,
+          "requires_re_evaluation": false,
+          "resolution_events": [],
+          "router_trace": {
+            "clarification_targets": [
+              "pragmatic",
+              "temporal"
+            ],
+            "considered_rules": [
+              "known_unsafe_or_prohibited",
+              "known_incapable",
+              "unknown_or_unverified_capability",
+              "hazard_identity_unresolved",
+              "critical_unresolved_medium_high_risk",
+              "unknown_safety_risk",
+              "dependent_compound_ambiguities",
+              "unique_low_risk_resolvable",
+              "clear_safe_capable",
+              "default_clarify"
+            ],
+            "matched_rule_id": "default_clarify",
+            "notes": [
+              "default_clarify_no_unsupported_specificity"
+            ],
+            "recommended_strategy": "clarify",
+            "rejection_reason": null,
+            "requires_re_evaluation": false,
+            "strategy_sequence": []
+          },
+          "safety_action": "return_with_findings",
+          "uncertainty": null
+        },
+        "safety_findings": [],
+        "strategy_sequence": [],
+        "synthetic_only": true,
+        "system_id": "full_type_risk_aware_manager",
+        "system_version": "1.0.0",
+        "unsupported_commitment_findings": []
+      },
+      "raw_output": "{\n  \"intent_summary\": \"Place the reservation stand on the tray scale beside the service station, then return it to the host desk after weighing it\",\n  \"cpc\": {\n    \"action\": {\n      \"value\": \"place\",\n      \"status\": \"not_applicable\"\n    },\n    \"object\": {\n      \"value\": \"reservation stand\",\n      \"status\": \"not_applicable\"\n    },\n    \"destination\": {\n      \"value\": \"tray scale beside service station\",\n      \"status\": \"not_applicable\"\n    },\n    \"recipient\": {\n      \"value\": \"robot\",\n      \"status\": \"not_applicable\"\n    },\n    \"tool\": {\n      \"value\": \"tray scale\",\n      \"status\": \"not_applicable\"\n    }\n \n  ,\n  \"constraints\": {\n    \"status\": \"not_applicable\"\n  ,\n  \"value\": \"not_applicable\"\n  },\n  \"spatial_relation\": {\n    \"value\": \"beside\",\n    \"status\": \"not_applicable\"\n  },\n  \"time\": {\n    \"value\": \"not_applicable\",\n    \"status\": \"not_applicable\"\n  },\n  \"quantity\": {\n    \"value\": \"not_applicable\",\n    \"status\": \"not_applicable\"\n  },\n  \"negation\": {\n    \"value\": \"not_applicable\",\n    \"status\": \"not_applicable\"\n  },\n  \"conditions\": {\n    \"value\": \"not_applicable\",\n    \"status\": \"not_applicable\"\n  },\n  \"object_attributes\": {\n    \"value\": \"not_applicable\",\n    \"status\": \"not_applicable\"\n  },\n  \"actor\": {\n    \"value\": \"not_applicable\",\n    \"status\": \"not_applicable\"\n  }\n},\n  \"pilot_ambiguity_types\": [\n    \"pragmatic\",\n    \"action_order\"\n  ]\n  \n  ,\n  \"pilot_capability_status\": \"capable\"\n  \n  ,\n  \"speech_act\": \"directive_command\"\n  \n  ,\n  \"unresolved_slots\": [\n    \"destination\"\n  ]\n  \n  ,\n  \"uncertainty\": 0.5\n  \n\n  \n  ,\n  \"risk_level\": \"low\"\n  \n  }\n",
+      "record_id": "CA-0200",
+      "schema_valid": true,
+      "supports_ambiguity_prediction": true,
+      "supports_capability_prediction": true,
+      "system_id": "rich_conservative_manager_v2",
+      "system_version": "2.0.0",
+      "terminal_strategy": "clarify"
+    },
+    "context_blind": {
+      "ambiguity_types": [
+        "action_order",
+        "pragmatic"
+      ],
+      "analysis_attempts": [
+        {
+          "attempt": 1,
+          "max_new_tokens": 4096,
+          "mode": "thinking",
+          "raw_chars": 3474,
+          "raw_sha256": "d8c1f1d386e51ab279672238f133fbfdcbcdafd4addb1f7b63c8cc41cbfd4115",
+          "validation_error": "bad_pilot_ambiguity_types"
+        },
+        {
+          "attempt": 2,
+          "max_new_tokens": 8192,
+          "mode": "thinking_retry",
+          "raw_chars": 13394,
+          "raw_sha256": "7314081d7ecaac97bc86bf3fbff1ed44023b92953909f3f0c3da79e2bcb533ba",
+          "validation_error": "bad_intent_summary"
+        },
+        {
+          "attempt": 3,
+          "constraint": {
+            "constraint_initialised": true,
+            "generated_token_count": 473,
+            "maximum_output_tokens": 1024,
+            "response_mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+            "termination_reason": "eos_or_constraint_stop",
+            "transport_status": "constrained_generated"
+          },
+          "max_new_tokens": 1024,
+          "mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+          "raw_chars": 1583,
+          "raw_sha256": "17996564590392ab18d72f30f4faf6e5ceb4ab82b0173bb8a80af1d676a69ede",
+          "validation_error": null
+        }
+      ],
+      "capability_status": "incapable",
+      "claim_boundary": "separately_versioned_from_frozen_t39",
+      "error": null,
+      "execution_mode": "cluster-gpu-goal-first-v2",
+      "failed": false,
+      "intent_summary": "Place the reservation stand on the tray scale beside the service station and return it to the host desk",
+      "latency_ms": 82083.12327135354,
+      "model_id": "Qwen/Qwen3-8B@b968826d9c46dd6066d109eabc6255188de91218",
+      "parsed": {
+        "analysis": {
+          "ambiguity_present": true,
+          "ambiguity_types": [
+            "pragmatic",
+            "temporal"
+          ],
+          "analysis_provenance": {
+            "analysis_id": "f0425b9ca14070ddd8d058bcb64368b05a40ff02a5bf226a355ca586582d03de",
+            "method": "context_blind",
+            "notes": "ablated_input_hash=f0425b9ca14070ddd8d058bcb64368b05a40ff02a5bf226a355ca586582d03de;source_input_hash=f0425b9ca14070ddd8d058bcb64368b05a40ff02a5bf226a355ca586582d03de;no_gold_in_prompt;scene_licence_dropped=destination",
+            "provider_id": "goal_first_v2_context_blind",
+            "provider_version": "goal-first-manager-v2"
+          },
+          "candidate_interpretations": [],
+          "capability_status": "incapable",
+          "clarification_question": null,
+          "clarification_targets": [],
+          "compound_ambiguity": true,
+          "compound_ambiguity_count": 2,
+          "context_sampling_uncertainty": {
+            "agreement": 0.19999999999999996,
+            "score": 0.8,
+            "variant_count": 1
+          },
+          "cpc": {
+            "action": {
+              "status": "not_applicable",
+              "value": "place the reservation stand on the tray scale beside the service station"
+            },
+            "actor": {
+              "status": "not_applicable",
+              "value": "none"
+            },
+            "conditions": {
+              "status": "not_applicable",
+              "value": "none"
+            },
+            "constraints": {
+              "status": "not_applicable",
+              "value": "return it to the host desk"
+            },
+            "destination": {
+              "status": "not_applicable",
+              "value": "beside the service station"
+            },
+            "negation": {
+              "status": "not_applicable",
+              "value": "none"
+            },
+            "object": {
+              "status": "not_applicable",
+              "value": "reservation stand"
+            },
+            "object_attributes": {
+              "status": "not_applicable",
+              "value": "none"
+            },
+            "quantity": {
+              "status": "not_applicable",
+              "value": "none"
+            },
+            "recipient": {
+              "status": "not_applicable",
+              "value": "tray scale"
+            },
+            "spatial_relation": {
+              "status": "not_applicable",
+              "value": "beside the service station"
+            },
+            "time": {
+              "status": "not_applicable",
+              "value": "none"
+            },
+            "tool": {
+              "status": "not_applicable",
+              "value": "none"
+            }
+          },
+          "findings": [
+            "pilot_ambiguity_types:[\"action_order\",\"pragmatic\"]",
+            "pilot_capability_status:incapable",
+            "intent_summary_present"
+          ],
+          "intent_summary": "Place the reservation stand on the tray scale beside the service station and return it to the host desk",
+          "primary_ambiguity_type": "pragmatic",
+          "recommended_strategy": "face_preserving_rejection",
+          "rejection_reason": "known_incapability",
+          "resolution_evidence": [],
+          "resolution_method": null,
+          "resolved_slots": [],
+          "risk_level": "medium",
+          "risk_relevant": true,
+          "selected_interpretation": null,
+          "speech_act": "indirect_request",
+          "strategy_sequence": [],
+          "supporting_evidence": [],
+          "unresolved_slots": [
+            {
+              "reason": "model_identified_uncertainty",
+              "slot_name": "recipient"
+            }
+          ],
+          "unsupported_specificity": []
+        },
+        "clarification_question": null,
+        "clarification_targets": [],
+        "execution_status": "ok",
+        "official_result": false,
+        "provider_provenance": {
+          "provider_id": "cached_analysis",
+          "provider_version": "1.0.0"
+        },
+        "recommended_strategy": "face_preserving_rejection",
+        "record_id": "CA-0200",
+        "rejection_reason": "known_incapability",
+        "resolved_slots": [],
+        "result_hash": "56521929404f8d993e93031c0c15bd82f41143f970b8f51d45c3631fbbc444ad",
+        "run_id": null,
+        "run_mode": null,
+        "runtime_metadata": {
+          "analysis_identity": {
+            "analysis_content_hash": "5b3535e15b57a2cdbdf5b31124772a7df6b48a4ae6df2278a87b9e52ce72d922",
+            "analysis_variant": "context_blind",
+            "model_strategy_id": null,
+            "provider_id": "goal_first_v2_context_blind",
+            "provider_version": "goal-first-manager-v2",
+            "record_id": "CA-0200",
+            "source_input_hash": "f0425b9ca14070ddd8d058bcb64368b05a40ff02a5bf226a355ca586582d03de"
+          },
+          "analysis_identity_fingerprint": "9c9d858c599ea99fbdf76a7e8b822bf007fbb60f77b8b41663d9b4db5b114d12",
+          "awaits_t28_adapter": true,
+          "classification": {
+            "ambiguity_present": true,
+            "ambiguity_types": [
+              "pragmatic",
+              "temporal"
+            ],
+            "capability_status": "incapable",
+            "compound_ambiguity": true,
+            "compound_ambiguity_count": 2,
+            "derivation_notes": [
+              "ambiguity_present_from_types"
+            ],
+            "risk_level": "medium"
+          },
+          "context_ablation": {
+            "ablated_input_hash": "f0425b9ca14070ddd8d058bcb64368b05a40ff02a5bf226a355ca586582d03de",
+            "capability_context_removed": true,
+            "dialogue_history_removed": true,
+            "rejected_full_context_cache": false,
+            "rejection_reason": null,
+            "scene_context_removed": true,
+            "stripped_context_derived_fields": false
+          },
+          "original_input_unmutated": true,
+          "rejection_text": "I am not able to perform that action with my current capabilities. I will not invent an alternative that is not supported.",
+          "requires_re_evaluation": false,
+          "resolution_events": [
+            {
+              "confidence_category": "blocked",
+              "details": {
+                "risk_level": "medium"
+              },
+              "evidence_source": null,
+              "outcome": "resolution_blocked_by_risk",
+              "previous_status": "unresolved",
+              "resolved_value": null,
+              "rule_id": "risk_block",
+              "safety_eligibility": false,
+              "slot": "recipient"
+            }
+          ],
+          "router_trace": {
+            "clarification_targets": [],
+            "considered_rules": [
+              "goal_first_v2",
+              "known_unsafe_or_prohibited",
+              "known_incapable"
+            ],
+            "matched_rule_id": "known_incapable",
+            "notes": [],
+            "recommended_strategy": "face_preserving_rejection",
+            "rejection_reason": "known_incapability",
+            "requires_re_evaluation": false,
+            "strategy_sequence": []
+          },
+          "safety_action": "return_with_findings",
+          "uncertainty": null
+        },
+        "safety_findings": [],
+        "strategy_sequence": [],
+        "synthetic_only": true,
+        "system_id": "context_blind_manager",
+        "system_version": "1.0.0",
+        "unsupported_commitment_findings": []
+      },
+      "raw_output": "{\n  \"intent_summary\": \"Place the reservation stand on the tray scale beside the service station and return it to the host desk\",\n  \"cpc\": {\n    \"action\": {\n      \"value\": \"place the reservation stand on the tray scale beside the service station\",\n      \"status\": \"not_applicable\"\n    },\n    \"object\": {\n      \"value\": \"reservation stand\",\n      \"status\": \"not_applicable\"\n    },\n    \"recipient\": {\n      \"value\": \"tray scale\",\n      \"status\": \"not_applicable\"\n    },\n    \"destination\": {\n      \"value\": \"beside the service station\",\n      \"status\": \"not_applicable\"\n    },\n    \"tool\": {\n      \"value\": \"none\",\n      \"status\": \"not_applicable\"\n    },\n    \"time\": {\n      \"value\": \"none\",\n      \"status\": \"not_applicable\"\n    }\n \n  ,\n  \"constraints\": {\n    \"value\": \"return it to the host desk\",\n    \"status\": \"not_applicable\"\n  },\n  \"conditions\": {\n    \"value\": \"none\",\n    \"status\": \"not_applicable\"\n  },\n  \"negation\": {\n    \"value\": \"none\",\n    \"status\": \"not_applicable\"\n  },\n  \"spatial_relation\": {\n    \"value\": \"beside the service station\",\n    \"status\": \"not_applicable\"\n  },\n  \"quantity\": {\n    \"value\": \"none\",\n    \"status\": \"not_applicable\"\n  },\n  \"object_attributes\": {\n    \"value\": \"none\",\n    \"status\": \"not_applicable\"\n  },\n  \"actor\": {\n    \"value\": \"none\",\n    \"status\": \"not_applicable\"\n  }\n}\n\n,\n  \"pilot_ambiguity_types\": [\n    \"pragmatic\",\n    \"action_order\"\n  ]\n  \n  ,\n  \"pilot_capability_status\": \"incapable\",\n  \"speech_act\": \"indirect_request\",\n  \"uncertainty\": 0.8\n   ,\n  \"risk_level\": \"medium\"\n  ,\n  \"unresolved_slots\": [\n    \"destination\",\n    \"recipient\"\n  ]\n}",
+      "record_id": "CA-0200",
+      "schema_valid": true,
+      "supports_ambiguity_prediction": true,
+      "supports_capability_prediction": true,
+      "system_id": "goal_first_context_blind_v2",
+      "system_version": "2.0.0",
+      "terminal_strategy": "face_preserving_rejection"
+    }
+  },
+  "provenance": {
+    "source_sha256": "f33b1e29f1e8aa256a475f07213aa07247def47d8e2148d54a472a40b71b05c9",
+    "gold_sha256": "5e23ad1a92ff1873c8f039a8ce560a111dd6fb6b8ae8c11d6cf34dbfa1c360db",
+    "t07_final_zip_sha256": "34ca50e034ca37b617068bb50c734d12fa26282fb5eec563c11ead700163e491",
+    "inherited_t07_zip_sha256": "0305b1e9ab062876ee6ee89778cc6028d2eaf01718b7dd0295944e7d9cb81a01",
+    "note": "Goal-First, Degree, Timid, and Context-Blind predictions are inherited from the earlier T0.7 run; official intent and comparison come from the final T0.7 archive."
+  }
+}

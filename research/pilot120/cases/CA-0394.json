@@ -1,0 +1,1421 @@
+{
+  "record_id": "CA-0394",
+  "frozen_source": {
+    "capability_context": "Classroom service robot can carry learning materials, scan inventory, clean approved items, and operate standard charging equipment.",
+    "command": "Can the selected exam packet be delivered after a scheduled class handover?",
+    "dialogue_history": [
+      "lab demonstrator: Yes—treat that as a request to perform the delivery, not a capability question."
+    ],
+    "record_id": "CA-0394",
+    "scene_context": "Resource room in a classroom. Two exam packets are selected and pending, one for course coordinator and one for lab demonstrator. The current time is 12:23. The class handover is scheduled at 13:00 and again at 17:00. The active delivery batch links both pending selected items to the 13:00 occurrence. Each selected item is already paired with its named recipient. The command provides no assignment code or recipient name. Both pending assignments are pre-authorized handoffs within the robot's certified transport and access limits; either is executable once selected."
+  },
+  "frozen_gold": {
+    "ambiguity_types": [
+      "object_reference",
+      "pragmatic",
+      "temporal_reference"
+    ],
+    "annotator_b_era": "claude_era",
+    "annotator_b_model": "claude-4.6-sonnet-medium-thinking",
+    "capability_status": "capable",
+    "field_status": {
+      "ambiguity_types": "auto_agree",
+      "capability_status": "human_auditor:independent",
+      "record_validity": "auto_agree",
+      "strategy_sequence": "human_auditor:A",
+      "terminal_strategy": "human_auditor:A"
+    },
+    "gold_lifecycle": "final_gold",
+    "gold_status": "adjudicated",
+    "human_gate_required": false,
+    "provenance": {
+      "agreement_label": "pilot_annotation_agreement",
+      "annotator_a_sha256": "767713db29ef838bcc300f9e2797c884a62ce62657059f21fe5fdd2ac6c46e61",
+      "annotator_b_sha256": "68abfdb414faedda4b7773a95b50cc076ea01d8631042df2787004aae100b478",
+      "gold_policy": "use_existing_pilot_adjudicated_gold",
+      "human_auditor_repair": "singular 'the selected exam packet' does not denote the full batch; one unresolved object slot remains → clarify",
+      "input_sha256": "78f2cd8b2956fdd5e7c9cee8e078ada900f8f684becbcae45ee711aa820482cb",
+      "pilot_gold_sha256": "9cf340cc5bbc60a67f9420977d0b3c6f25e4ab591b5920fcbb690202a70049df",
+      "protocol": "pilot_adjudicated_gold_on_capability_repaired_source",
+      "repaired_input_sha256": "de808e83eb194f6c7ca7de3dd552079b4334809eb8c31ac020bbe9d293a2ac58"
+    },
+    "record_id": "CA-0394",
+    "record_validity": "valid",
+    "strategy_sequence": [
+      "reinterpret_indirect_request",
+      "clarify"
+    ],
+    "terminal_strategy": "clarify"
+  },
+  "t07_comparison": {
+    "record_id": "CA-0394",
+    "gold_route": "clarify",
+    "raw_route": "execute",
+    "ft_route": "execute",
+    "gf_route": "refuse",
+    "raw_route_ok": "False",
+    "ft_route_ok": "False",
+    "gf_route_ok": "False",
+    "raw_official_intent": "True",
+    "ft_official_intent": "True",
+    "gf_official_intent": "True",
+    "blind_official_intent": "True"
+  },
+  "t07_official_intent": {
+    "context_blind_official_intent": true,
+    "degree_official_intent_shared_gf": true,
+    "finetune_official_intent": true,
+    "goal_first_official_intent": true,
+    "raw_official_intent": true,
+    "record_id": "CA-0394",
+    "timid_official_intent_shared_gf": true
+  },
+  "t07_predictions": {
+    "raw_qwen": {
+      "ambiguity_types": [
+        "pronoun_reference",
+        "temporal_reference"
+      ],
+      "capability_status": "conditionally_capable",
+      "error": null,
+      "execution_mode": "final_close_intent_box",
+      "failed": false,
+      "intent_summary": "The user wants the selected exam packet delivered following the scheduled class handover.",
+      "latency_ms": 10569.9552888982,
+      "parsed": {
+        "ambiguity_types": [
+          "pronoun_reference",
+          "temporal_reference"
+        ],
+        "capability_status": "conditionally_capable",
+        "intent_summary": "The user wants the selected exam packet delivered following the scheduled class handover.",
+        "speech_act": "directive_command",
+        "terminal_strategy": "execute"
+      },
+      "raw_output": "<think>\nOkay, let's break this down. The user is asking if the selected exam packet can be delivered after a scheduled class handover. The dialogue history shows the lab demonstrator treated it as a request, not a capability question. \n\nFirst, the intent summary. The main job here is to deliver the exam packet after the class handover. The user is probably asking if the robot can do that, but the lab demonstrator already considered it a request, so the speech act is a directive_command. Wait, but the original command is a question. Hmm, the dialogue history says to treat it as a request, so maybe the speech act is a directive_command because the user is instructing the robot to perform the delivery.\n\nLooking at ambiguity types. The command mentions \"the selected exam packet\" which refers to a previously mentioned item, so pronoun_reference. Also, \"after a scheduled class handover\" might be a time reference, so temporal_reference. The user didn't specify which handover (13:00 or 17:00), so maybe fuzzy_temporal? But the active delivery batch is linked to the 13:00 occurrence, so maybe that's resolved. Wait, the command doesn't specify the time, so the ambiguity here is temporal. Also, the recipient isn't named, but each item is already paired with its recipient, so maybe object_reference? Or is it a pronoun_reference because it's \"the selected exam packet\"?\n\nCapability status: The robot can carry materials, and the delivery is pre-authorized. So the capability is conditionally_capable because it depends on the timing. The class handover is at 13:00, and the current time is 12:23. So the robot can do it once the handover time is reached. But the user is asking if it can be delivered after the handover. Wait, the handover is scheduled at 13:00 and 17:00. The active delivery is linked to the 13:00 occurrence. So the capability is conditionally_capable because it's dependent on the timing. \n\nTerminal strategy: Since the robot can do it once the time is right, the strategy is to execute. But the user's command is about whether it can be done, but the lab demonstrator said to treat it as a request. So the terminal strategy is execute. \n\nPutting it all together: intent_summary is about delivering after the handover. Speech act is directive_command. Ambiguity types include pronoun_reference (the selected packet) and temporal_reference (after handover). Capability is conditionally_capable. Terminal strategy is execute.\n</think>\n\n{\n  \"intent_summary\": \"The user wants the selected exam packet delivered following the scheduled class handover.\",\n  \"speech_act\": \"directive_command\",\n  \"ambiguity_types\": [\"pronoun_reference\", \"temporal_reference\"],\n  \"capability_status\": \"conditionally_capable\",\n  \"terminal_strategy\": \"execute\"\n}",
+      "record_id": "CA-0394",
+      "schema_valid": true,
+      "speech_act": "directive_command",
+      "system_id": "direct_base_llm",
+      "terminal_strategy": "execute"
+    },
+    "finetune": {
+      "ambiguity_types": [
+        "destination_reference",
+        "temporal_reference"
+      ],
+      "capability_status": "conditionally_capable",
+      "error": null,
+      "execution_mode": "final_close_intent_box",
+      "failed": false,
+      "intent_summary": "Deliver the selected exam packet after the scheduled class handover at 13:00.",
+      "latency_ms": 12277.559114154428,
+      "parsed": {
+        "ambiguity_types": [
+          "destination_reference",
+          "temporal_reference"
+        ],
+        "capability_status": "conditionally_capable",
+        "intent_summary": "Deliver the selected exam packet after the scheduled class handover at 13:00.",
+        "speech_act": "directive_command",
+        "terminal_strategy": "execute"
+      },
+      "raw_output": "<think>\nOkay, let's tackle this query. The user is asking, \"Can the selected exam packet be delivered after a scheduled class handover?\" The dialogue history shows the lab demonstrator treated this as a request to perform the delivery, not a capability question. \n\nFirst, I need to parse the command. The key points here are the selected exam packet and the timing after the class handover. The scene context mentions two exam packets pending, one for the course coordinator and one for the lab demonstrator. The class handover is scheduled at 13:00 and 17:00. The current time is 12:23, so the next handover is in 37 minutes. The active delivery batch links both pending items to the 13:00 occurrence.\n\nThe command doesn't specify a recipient name, but both items are already paired with their named recipients. The capability context says the robot can carry materials, scan inventory, clean, and operate charging equipment. Since the delivery is pre-authorized and within the robot's limits, the capability status should be capable. However, the timing is important. The handover is scheduled at 13:00, and the current time is 12:23. The robot can execute the delivery once the handover time arrives. \n\nThe speech act here is a directive command because the user is requesting the action to be done. The ambiguity types might include temporal reference because the timing is tied to the scheduled handover. Also, there's a destination reference since the delivery is after the handover. The intent summary would be about delivering the exam packet after the scheduled class handover. The capability status is capable as it's within the robot's allowed actions. The terminal strategy is to execute since the command is clear and the robot can perform it once the time comes.\n</think>\n\n{\n  \"intent_summary\": \"Deliver the selected exam packet after the scheduled class handover at 13:00.\",\n  \"speech_act\": \"directive_command\",\n  \"ambiguity_types\": [\"temporal_reference\", \"destination_reference\"],\n  \"capability_status\": \"conditionally_capable\",\n  \"terminal_strategy\": \"execute\"\n}",
+      "record_id": "CA-0394",
+      "schema_valid": true,
+      "speech_act": "directive_command",
+      "system_id": "t28_selected_adapter_llm",
+      "terminal_strategy": "execute"
+    },
+    "goal_first": {
+      "ambiguity_types": [
+        "pragmatic",
+        "temporal_reference"
+      ],
+      "analysis_attempts": [
+        {
+          "attempt": 1,
+          "max_new_tokens": 4096,
+          "mode": "thinking",
+          "raw_chars": 9121,
+          "raw_sha256": "fb20d9b5003145d87b4be31447353065000283b4960e0cced66d105053ce58e3",
+          "validation_error": "bad_pilot_ambiguity_types"
+        },
+        {
+          "attempt": 2,
+          "max_new_tokens": 8192,
+          "mode": "thinking_retry",
+          "raw_chars": 10475,
+          "raw_sha256": "c6978888096e3d096cd4fabc77dcac271e725f277da7139dc879664a7fba3d7c",
+          "validation_error": "bad_speech_act:pragmatic"
+        },
+        {
+          "attempt": 3,
+          "constraint": {
+            "constraint_initialised": true,
+            "generated_token_count": 429,
+            "maximum_output_tokens": 1024,
+            "response_mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+            "termination_reason": "eos_or_constraint_stop",
+            "transport_status": "constrained_generated"
+          },
+          "max_new_tokens": 1024,
+          "mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+          "raw_chars": 1373,
+          "raw_sha256": "efe8c3b75a05a0f93563133bff58151e20d8763f5042782cec416af4235467d6",
+          "validation_error": null
+        }
+      ],
+      "capability_status": "unauthorized",
+      "claim_boundary": "separately_versioned_from_frozen_t39",
+      "error": null,
+      "execution_mode": "cluster-gpu-goal-first-v2",
+      "failed": false,
+      "intent_summary": "Deliver the selected exam packet after the scheduled class handover at 13:00",
+      "latency_ms": 96163.88937691227,
+      "model_id": "Qwen/Qwen3-8B@b968826d9c46dd6066d109eabc6255188de91218",
+      "parsed": {
+        "analysis": {
+          "ambiguity_present": true,
+          "ambiguity_types": [
+            "pragmatic",
+            "temporal"
+          ],
+          "analysis_provenance": {
+            "analysis_id": "fe840e083f8915dfe2f5902bf88f3212638df042f7be578990809db10e883c5f",
+            "method": "model_generated",
+            "notes": "source_input_hash=fe840e083f8915dfe2f5902bf88f3212638df042f7be578990809db10e883c5f;no_gold_in_prompt;scene_licence_dropped=recipient,destination",
+            "provider_id": "goal_first_v2_full_context",
+            "provider_version": "goal-first-manager-v2"
+          },
+          "candidate_interpretations": [],
+          "capability_status": "unknown",
+          "clarification_question": null,
+          "clarification_targets": [],
+          "compound_ambiguity": true,
+          "compound_ambiguity_count": 2,
+          "context_sampling_uncertainty": {
+            "agreement": 0.25,
+            "score": 0.75,
+            "variant_count": 1
+          },
+          "cpc": {
+            "action": {
+              "status": "filled",
+              "value": "deliver"
+            },
+            "actor": {
+              "status": "filled",
+              "value": "unknown"
+            },
+            "conditions": {
+              "status": "filled",
+              "value": "unknown"
+            },
+            "constraints": {
+              "status": "filled",
+              "value": "unknown"
+            },
+            "destination": {
+              "status": "filled",
+              "value": "unknown"
+            },
+            "negation": {
+              "status": "filled",
+              "value": "unknown"
+            },
+            "object": {
+              "status": "filled",
+              "value": "selected exam packet"
+            },
+            "object_attributes": {
+              "status": "filled",
+              "value": "unknown"
+            },
+            "quantity": {
+              "status": "filled",
+              "value": "unknown"
+            },
+            "recipient": {
+              "status": "filled",
+              "value": "unknown"
+            },
+            "spatial_relation": {
+              "status": "filled",
+              "value": "unknown"
+            },
+            "time": {
+              "status": "filled",
+              "value": "after scheduled class handover"
+            },
+            "tool": {
+              "status": "filled",
+              "value": "unknown"
+            }
+          },
+          "findings": [
+            "pilot_ambiguity_types:[\"pragmatic\",\"temporal_reference\"]",
+            "pilot_capability_status:unauthorized",
+            "intent_summary_present"
+          ],
+          "intent_summary": "Deliver the selected exam packet after the scheduled class handover at 13:00",
+          "primary_ambiguity_type": "pragmatic",
+          "recommended_strategy": "face_preserving_rejection",
+          "rejection_reason": "unsafe_or_prohibited_action",
+          "resolution_evidence": [],
+          "resolution_method": null,
+          "resolved_slots": [
+            {
+              "slot_name": "action",
+              "value": "deliver"
+            },
+            {
+              "slot_name": "actor",
+              "value": "unknown"
+            },
+            {
+              "slot_name": "object",
+              "value": "selected exam packet"
+            },
+            {
+              "slot_name": "object_attributes",
+              "value": "unknown"
+            },
+            {
+              "slot_name": "destination",
+              "value": "unknown"
+            },
+            {
+              "slot_name": "spatial_relation",
+              "value": "unknown"
+            },
+            {
+              "slot_name": "quantity",
+              "value": "unknown"
+            },
+            {
+              "slot_name": "time",
+              "value": "after scheduled class handover"
+            },
+            {
+              "slot_name": "recipient",
+              "value": "unknown"
+            },
+            {
+              "slot_name": "tool",
+              "value": "unknown"
+            },
+            {
+              "slot_name": "conditions",
+              "value": "unknown"
+            },
+            {
+              "slot_name": "constraints",
+              "value": "unknown"
+            },
+            {
+              "slot_name": "negation",
+              "value": "unknown"
+            }
+          ],
+          "risk_level": "medium",
+          "risk_relevant": true,
+          "selected_interpretation": null,
+          "speech_act": "indirect_request",
+          "strategy_sequence": [],
+          "supporting_evidence": [],
+          "unresolved_slots": [],
+          "unsupported_specificity": []
+        },
+        "clarification_question": null,
+        "clarification_targets": [],
+        "execution_status": "ok",
+        "official_result": false,
+        "provider_provenance": {
+          "provider_id": "cached_analysis",
+          "provider_version": "1.0.0"
+        },
+        "recommended_strategy": "face_preserving_rejection",
+        "record_id": "CA-0394",
+        "rejection_reason": "unsafe_or_prohibited_action",
+        "resolved_slots": [
+          {
+            "slot_name": "action",
+            "value": "deliver"
+          },
+          {
+            "slot_name": "actor",
+            "value": "unknown"
+          },
+          {
+            "slot_name": "object",
+            "value": "selected exam packet"
+          },
+          {
+            "slot_name": "object_attributes",
+            "value": "unknown"
+          },
+          {
+            "slot_name": "destination",
+            "value": "unknown"
+          },
+          {
+            "slot_name": "spatial_relation",
+            "value": "unknown"
+          },
+          {
+            "slot_name": "quantity",
+            "value": "unknown"
+          },
+          {
+            "slot_name": "time",
+            "value": "after scheduled class handover"
+          },
+          {
+            "slot_name": "recipient",
+            "value": "unknown"
+          },
+          {
+            "slot_name": "tool",
+            "value": "unknown"
+          },
+          {
+            "slot_name": "conditions",
+            "value": "unknown"
+          },
+          {
+            "slot_name": "constraints",
+            "value": "unknown"
+          },
+          {
+            "slot_name": "negation",
+            "value": "unknown"
+          }
+        ],
+        "result_hash": "dc365c6b7bcf6e755f8b66977403c40e0019dea4d5cf14084d3bb39f92bdcb6f",
+        "run_id": null,
+        "run_mode": null,
+        "runtime_metadata": {
+          "awaits_t28_adapter": true,
+          "classification": {
+            "ambiguity_present": true,
+            "ambiguity_types": [
+              "pragmatic",
+              "temporal"
+            ],
+            "capability_status": "unknown",
+            "compound_ambiguity": true,
+            "compound_ambiguity_count": 2,
+            "derivation_notes": [
+              "ambiguity_present_from_types"
+            ],
+            "risk_level": "medium"
+          },
+          "rejection_text": "I need to decline that request because it would be unsafe under the current constraints.",
+          "requires_re_evaluation": false,
+          "resolution_events": [],
+          "router_trace": {
+            "clarification_targets": [],
+            "considered_rules": [
+              "goal_first_v2",
+              "known_unsafe_or_prohibited"
+            ],
+            "matched_rule_id": "known_unsafe_or_prohibited",
+            "notes": [],
+            "recommended_strategy": "face_preserving_rejection",
+            "rejection_reason": "unsafe_or_prohibited_action",
+            "requires_re_evaluation": false,
+            "strategy_sequence": []
+          },
+          "safety_action": "return_with_findings",
+          "uncertainty": null
+        },
+        "safety_findings": [],
+        "strategy_sequence": [],
+        "synthetic_only": true,
+        "system_id": "goal_first_manager_v2",
+        "system_version": "2.0.0",
+        "unsupported_commitment_findings": []
+      },
+      "raw_output": "{\n  \"intent_summary\": \"Deliver the selected exam packet after the scheduled class handover at 13:00\",\n  \"cpc\": {\n    \"action\": {\n      \"value\": \"deliver\",\n      \"status\": \"unknown\"\n    },\n    \"object\": {\n      \"value\": \"selected exam packet\",\n      \"status\": \"unknown\"\n    },\n    \"time\": {\n      \"value\": \"after scheduled class handover\",\n      \"status\": \"unknown\"\n    }\n \n  ,\n  \"constraints\": {\n    \"status\": \"unknown\",\n    \"value\": \"unknown\"\n  },\n  \"conditions\": {\n    \"status\": \"unknown\",\n    \"value\": \"unknown\"\n  },\n  \"recipient\": {\n    \"status\": \"unknown\",\n    \"value\": \"unknown\"\n  },\n  \"destination\": {\n    \"status\": \"unknown\",\n    \"value\": \"unknown\"\n  },\n  \"tool\": {\n    \"status\": \"unknown\",\n    \"value\": \"unknown\"\n  },\n  \"spatial_relation\": {\n    \"status\": \"unknown\",\n    \"value\": \"unknown\"\n  },\n  \"quantity\": {\n    \"status\": \"unknown\",\n    \"value\": \"unknown\"\n  },\n  \"negation\": {\n    \"status\": \"unknown\",\n    \"value\": \"unknown\"\n  },\n  \"object_attributes\": {\n    \"status\": \"unknown\",\n    \"value\": \"unknown\"\n  },\n  \"actor\": {\n    \"status\": \"unknown\",\n    \"value\": \"unknown\"\n  }\n} \n\n,\n  \"pilot_ambiguity_types\": [\n    \"pragmatic\",\n    \"temporal_reference\"\n  ]\n  \n  ,\n  \"pilot_capability_status\": \"unauthorized\",\n  \"speech_act\": \"indirect_request\"\n  \n  ,\n  \"risk_level\": \"medium\",\n  \"uncertainty\": 0.75,\n  \"unresolved_slots\": [\n    \"recipient\",\n    \"destination\"\n  ]\n}",
+      "record_id": "CA-0394",
+      "schema_valid": true,
+      "supports_ambiguity_prediction": true,
+      "supports_capability_prediction": true,
+      "system_id": "goal_first_manager_v2",
+      "system_version": "2.0.0",
+      "terminal_strategy": "face_preserving_rejection"
+    },
+    "degree": {
+      "ambiguity_types": [
+        "pragmatic",
+        "temporal_reference"
+      ],
+      "analysis_attempts": [
+        {
+          "attempt": 1,
+          "max_new_tokens": 4096,
+          "mode": "thinking",
+          "raw_chars": 9121,
+          "raw_sha256": "fb20d9b5003145d87b4be31447353065000283b4960e0cced66d105053ce58e3",
+          "validation_error": "bad_pilot_ambiguity_types"
+        },
+        {
+          "attempt": 2,
+          "max_new_tokens": 8192,
+          "mode": "thinking_retry",
+          "raw_chars": 10475,
+          "raw_sha256": "c6978888096e3d096cd4fabc77dcac271e725f277da7139dc879664a7fba3d7c",
+          "validation_error": "bad_speech_act:pragmatic"
+        },
+        {
+          "attempt": 3,
+          "constraint": {
+            "constraint_initialised": true,
+            "generated_token_count": 429,
+            "maximum_output_tokens": 1024,
+            "response_mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+            "termination_reason": "eos_or_constraint_stop",
+            "transport_status": "constrained_generated"
+          },
+          "max_new_tokens": 1024,
+          "mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+          "raw_chars": 1373,
+          "raw_sha256": "efe8c3b75a05a0f93563133bff58151e20d8763f5042782cec416af4235467d6",
+          "validation_error": null
+        }
+      ],
+      "capability_status": "unauthorized",
+      "claim_boundary": "separately_versioned_from_frozen_t39",
+      "error": null,
+      "execution_mode": "cluster-gpu-goal-first-v2",
+      "failed": false,
+      "intent_summary": "Deliver the selected exam packet after the scheduled class handover at 13:00",
+      "latency_ms": 96163.88937691227,
+      "model_id": "Qwen/Qwen3-8B@b968826d9c46dd6066d109eabc6255188de91218",
+      "parsed": {
+        "analysis": {
+          "ambiguity_present": true,
+          "ambiguity_types": [
+            "pragmatic",
+            "temporal"
+          ],
+          "analysis_provenance": {
+            "analysis_id": "fe840e083f8915dfe2f5902bf88f3212638df042f7be578990809db10e883c5f",
+            "method": "model_generated",
+            "notes": "source_input_hash=fe840e083f8915dfe2f5902bf88f3212638df042f7be578990809db10e883c5f;no_gold_in_prompt;scene_licence_dropped=recipient,destination",
+            "provider_id": "goal_first_v2_full_context",
+            "provider_version": "goal-first-manager-v2"
+          },
+          "candidate_interpretations": [],
+          "capability_status": "unknown",
+          "clarification_question": "Could you clarify what you would like me to do?",
+          "clarification_targets": [
+            "intent"
+          ],
+          "compound_ambiguity": true,
+          "compound_ambiguity_count": 2,
+          "context_sampling_uncertainty": {
+            "agreement": 0.25,
+            "score": 0.75,
+            "variant_count": 1
+          },
+          "cpc": {
+            "action": {
+              "status": "filled",
+              "value": "deliver"
+            },
+            "actor": {
+              "status": "filled",
+              "value": "unknown"
+            },
+            "conditions": {
+              "status": "filled",
+              "value": "unknown"
+            },
+            "constraints": {
+              "status": "filled",
+              "value": "unknown"
+            },
+            "destination": {
+              "status": "filled",
+              "value": "unknown"
+            },
+            "negation": {
+              "status": "filled",
+              "value": "unknown"
+            },
+            "object": {
+              "status": "filled",
+              "value": "selected exam packet"
+            },
+            "object_attributes": {
+              "status": "filled",
+              "value": "unknown"
+            },
+            "quantity": {
+              "status": "filled",
+              "value": "unknown"
+            },
+            "recipient": {
+              "status": "filled",
+              "value": "unknown"
+            },
+            "spatial_relation": {
+              "status": "filled",
+              "value": "unknown"
+            },
+            "time": {
+              "status": "filled",
+              "value": "after scheduled class handover"
+            },
+            "tool": {
+              "status": "filled",
+              "value": "unknown"
+            }
+          },
+          "findings": [
+            "pilot_ambiguity_types:[\"pragmatic\",\"temporal_reference\"]",
+            "pilot_capability_status:unauthorized",
+            "intent_summary_present"
+          ],
+          "intent_summary": "Deliver the selected exam packet after the scheduled class handover at 13:00",
+          "primary_ambiguity_type": "pragmatic",
+          "recommended_strategy": "clarify",
+          "rejection_reason": null,
+          "resolution_evidence": [],
+          "resolution_method": null,
+          "resolved_slots": [
+            {
+              "slot_name": "action",
+              "value": "deliver"
+            },
+            {
+              "slot_name": "actor",
+              "value": "unknown"
+            },
+            {
+              "slot_name": "object",
+              "value": "selected exam packet"
+            },
+            {
+              "slot_name": "object_attributes",
+              "value": "unknown"
+            },
+            {
+              "slot_name": "destination",
+              "value": "unknown"
+            },
+            {
+              "slot_name": "spatial_relation",
+              "value": "unknown"
+            },
+            {
+              "slot_name": "quantity",
+              "value": "unknown"
+            },
+            {
+              "slot_name": "time",
+              "value": "after scheduled class handover"
+            },
+            {
+              "slot_name": "recipient",
+              "value": "unknown"
+            },
+            {
+              "slot_name": "tool",
+              "value": "unknown"
+            },
+            {
+              "slot_name": "conditions",
+              "value": "unknown"
+            },
+            {
+              "slot_name": "constraints",
+              "value": "unknown"
+            },
+            {
+              "slot_name": "negation",
+              "value": "unknown"
+            }
+          ],
+          "risk_level": "medium",
+          "risk_relevant": true,
+          "selected_interpretation": null,
+          "speech_act": "indirect_request",
+          "strategy_sequence": [],
+          "supporting_evidence": [],
+          "unresolved_slots": [],
+          "unsupported_specificity": []
+        },
+        "clarification_question": "Could you clarify what you would like me to do?",
+        "clarification_targets": [
+          "intent"
+        ],
+        "execution_status": "ok",
+        "official_result": false,
+        "provider_provenance": {
+          "shared_analysis_fingerprint": "277c31a24cbdd645ca83690812b1eb148f23c887a93d6d3d555ff7aa2aaf1520"
+        },
+        "recommended_strategy": "clarify",
+        "record_id": "CA-0394",
+        "rejection_reason": null,
+        "resolved_slots": [
+          {
+            "slot_name": "action",
+            "value": "deliver"
+          },
+          {
+            "slot_name": "actor",
+            "value": "unknown"
+          },
+          {
+            "slot_name": "object",
+            "value": "selected exam packet"
+          },
+          {
+            "slot_name": "object_attributes",
+            "value": "unknown"
+          },
+          {
+            "slot_name": "destination",
+            "value": "unknown"
+          },
+          {
+            "slot_name": "spatial_relation",
+            "value": "unknown"
+          },
+          {
+            "slot_name": "quantity",
+            "value": "unknown"
+          },
+          {
+            "slot_name": "time",
+            "value": "after scheduled class handover"
+          },
+          {
+            "slot_name": "recipient",
+            "value": "unknown"
+          },
+          {
+            "slot_name": "tool",
+            "value": "unknown"
+          },
+          {
+            "slot_name": "conditions",
+            "value": "unknown"
+          },
+          {
+            "slot_name": "constraints",
+            "value": "unknown"
+          },
+          {
+            "slot_name": "negation",
+            "value": "unknown"
+          }
+        ],
+        "result_hash": "e7e7eea919e40e695212588a840fdbb2fbb1dca052ed859b044c030fe8db33ce",
+        "run_id": null,
+        "run_mode": null,
+        "runtime_metadata": {
+          "shared_analysis_fingerprint": "277c31a24cbdd645ca83690812b1eb148f23c887a93d6d3d555ff7aa2aaf1520",
+          "thresholds_status": "unfrozen",
+          "thresholds_valid_for_official_use": false,
+          "uncertainty_score": 0.75,
+          "uses_type_risk_capability_precedence": false
+        },
+        "safety_findings": [],
+        "strategy_sequence": [],
+        "synthetic_only": true,
+        "system_id": "degree_based_router",
+        "system_version": "1.0.0",
+        "unsupported_commitment_findings": []
+      },
+      "raw_output": "{\n  \"intent_summary\": \"Deliver the selected exam packet after the scheduled class handover at 13:00\",\n  \"cpc\": {\n    \"action\": {\n      \"value\": \"deliver\",\n      \"status\": \"unknown\"\n    },\n    \"object\": {\n      \"value\": \"selected exam packet\",\n      \"status\": \"unknown\"\n    },\n    \"time\": {\n      \"value\": \"after scheduled class handover\",\n      \"status\": \"unknown\"\n    }\n \n  ,\n  \"constraints\": {\n    \"status\": \"unknown\",\n    \"value\": \"unknown\"\n  },\n  \"conditions\": {\n    \"status\": \"unknown\",\n    \"value\": \"unknown\"\n  },\n  \"recipient\": {\n    \"status\": \"unknown\",\n    \"value\": \"unknown\"\n  },\n  \"destination\": {\n    \"status\": \"unknown\",\n    \"value\": \"unknown\"\n  },\n  \"tool\": {\n    \"status\": \"unknown\",\n    \"value\": \"unknown\"\n  },\n  \"spatial_relation\": {\n    \"status\": \"unknown\",\n    \"value\": \"unknown\"\n  },\n  \"quantity\": {\n    \"status\": \"unknown\",\n    \"value\": \"unknown\"\n  },\n  \"negation\": {\n    \"status\": \"unknown\",\n    \"value\": \"unknown\"\n  },\n  \"object_attributes\": {\n    \"status\": \"unknown\",\n    \"value\": \"unknown\"\n  },\n  \"actor\": {\n    \"status\": \"unknown\",\n    \"value\": \"unknown\"\n  }\n} \n\n,\n  \"pilot_ambiguity_types\": [\n    \"pragmatic\",\n    \"temporal_reference\"\n  ]\n  \n  ,\n  \"pilot_capability_status\": \"unauthorized\",\n  \"speech_act\": \"indirect_request\"\n  \n  ,\n  \"risk_level\": \"medium\",\n  \"uncertainty\": 0.75,\n  \"unresolved_slots\": [\n    \"recipient\",\n    \"destination\"\n  ]\n}",
+      "record_id": "CA-0394",
+      "schema_valid": true,
+      "supports_ambiguity_prediction": true,
+      "supports_capability_prediction": true,
+      "system_id": "degree_based_router_v2",
+      "system_version": "2.0.0",
+      "terminal_strategy": "clarify"
+    },
+    "timid": {
+      "ambiguity_types": [
+        "pragmatic",
+        "temporal_reference"
+      ],
+      "analysis_attempts": [
+        {
+          "attempt": 1,
+          "max_new_tokens": 4096,
+          "mode": "thinking",
+          "raw_chars": 9121,
+          "raw_sha256": "fb20d9b5003145d87b4be31447353065000283b4960e0cced66d105053ce58e3",
+          "validation_error": "bad_pilot_ambiguity_types"
+        },
+        {
+          "attempt": 2,
+          "max_new_tokens": 8192,
+          "mode": "thinking_retry",
+          "raw_chars": 10475,
+          "raw_sha256": "c6978888096e3d096cd4fabc77dcac271e725f277da7139dc879664a7fba3d7c",
+          "validation_error": "bad_speech_act:pragmatic"
+        },
+        {
+          "attempt": 3,
+          "constraint": {
+            "constraint_initialised": true,
+            "generated_token_count": 429,
+            "maximum_output_tokens": 1024,
+            "response_mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+            "termination_reason": "eos_or_constraint_stop",
+            "transport_status": "constrained_generated"
+          },
+          "max_new_tokens": 1024,
+          "mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+          "raw_chars": 1373,
+          "raw_sha256": "efe8c3b75a05a0f93563133bff58151e20d8763f5042782cec416af4235467d6",
+          "validation_error": null
+        }
+      ],
+      "capability_status": "unauthorized",
+      "claim_boundary": "separately_versioned_from_frozen_t39",
+      "error": null,
+      "execution_mode": "cluster-gpu-goal-first-v2",
+      "failed": false,
+      "intent_summary": "Deliver the selected exam packet after the scheduled class handover at 13:00",
+      "latency_ms": 96163.88937691227,
+      "model_id": "Qwen/Qwen3-8B@b968826d9c46dd6066d109eabc6255188de91218",
+      "parsed": {
+        "analysis": {
+          "ambiguity_present": true,
+          "ambiguity_types": [
+            "pragmatic",
+            "temporal"
+          ],
+          "analysis_provenance": {
+            "analysis_id": "fe840e083f8915dfe2f5902bf88f3212638df042f7be578990809db10e883c5f",
+            "method": "model_generated",
+            "notes": "source_input_hash=fe840e083f8915dfe2f5902bf88f3212638df042f7be578990809db10e883c5f;no_gold_in_prompt;scene_licence_dropped=recipient,destination",
+            "provider_id": "goal_first_v2_full_context",
+            "provider_version": "goal-first-manager-v2"
+          },
+          "candidate_interpretations": [],
+          "capability_status": "unknown",
+          "clarification_question": "Before I continue, could you clarify: pragmatic, temporal?",
+          "clarification_targets": [
+            "pragmatic",
+            "temporal"
+          ],
+          "compound_ambiguity": true,
+          "compound_ambiguity_count": 2,
+          "context_sampling_uncertainty": {
+            "agreement": 0.25,
+            "score": 0.75,
+            "variant_count": 1
+          },
+          "cpc": {
+            "action": {
+              "status": "filled",
+              "value": "deliver"
+            },
+            "actor": {
+              "status": "filled",
+              "value": "unknown"
+            },
+            "conditions": {
+              "status": "filled",
+              "value": "unknown"
+            },
+            "constraints": {
+              "status": "filled",
+              "value": "unknown"
+            },
+            "destination": {
+              "status": "filled",
+              "value": "unknown"
+            },
+            "negation": {
+              "status": "filled",
+              "value": "unknown"
+            },
+            "object": {
+              "status": "filled",
+              "value": "selected exam packet"
+            },
+            "object_attributes": {
+              "status": "filled",
+              "value": "unknown"
+            },
+            "quantity": {
+              "status": "filled",
+              "value": "unknown"
+            },
+            "recipient": {
+              "status": "filled",
+              "value": "unknown"
+            },
+            "spatial_relation": {
+              "status": "filled",
+              "value": "unknown"
+            },
+            "time": {
+              "status": "filled",
+              "value": "after scheduled class handover"
+            },
+            "tool": {
+              "status": "filled",
+              "value": "unknown"
+            }
+          },
+          "findings": [
+            "pilot_ambiguity_types:[\"pragmatic\",\"temporal_reference\"]",
+            "pilot_capability_status:unauthorized",
+            "intent_summary_present"
+          ],
+          "intent_summary": "Deliver the selected exam packet after the scheduled class handover at 13:00",
+          "primary_ambiguity_type": "pragmatic",
+          "recommended_strategy": "clarify",
+          "rejection_reason": null,
+          "resolution_evidence": [],
+          "resolution_method": null,
+          "resolved_slots": [
+            {
+              "slot_name": "action",
+              "value": "deliver"
+            },
+            {
+              "slot_name": "actor",
+              "value": "unknown"
+            },
+            {
+              "slot_name": "object",
+              "value": "selected exam packet"
+            },
+            {
+              "slot_name": "object_attributes",
+              "value": "unknown"
+            },
+            {
+              "slot_name": "destination",
+              "value": "unknown"
+            },
+            {
+              "slot_name": "spatial_relation",
+              "value": "unknown"
+            },
+            {
+              "slot_name": "quantity",
+              "value": "unknown"
+            },
+            {
+              "slot_name": "time",
+              "value": "after scheduled class handover"
+            },
+            {
+              "slot_name": "recipient",
+              "value": "unknown"
+            },
+            {
+              "slot_name": "tool",
+              "value": "unknown"
+            },
+            {
+              "slot_name": "conditions",
+              "value": "unknown"
+            },
+            {
+              "slot_name": "constraints",
+              "value": "unknown"
+            },
+            {
+              "slot_name": "negation",
+              "value": "unknown"
+            }
+          ],
+          "risk_level": "medium",
+          "risk_relevant": true,
+          "selected_interpretation": null,
+          "speech_act": "indirect_request",
+          "strategy_sequence": [],
+          "supporting_evidence": [],
+          "unresolved_slots": [],
+          "unsupported_specificity": []
+        },
+        "clarification_question": "Before I continue, could you clarify: pragmatic, temporal?",
+        "clarification_targets": [
+          "pragmatic",
+          "temporal"
+        ],
+        "execution_status": "ok",
+        "official_result": false,
+        "provider_provenance": {
+          "provider_id": "cached_analysis",
+          "provider_version": "1.0.0"
+        },
+        "recommended_strategy": "clarify",
+        "record_id": "CA-0394",
+        "rejection_reason": null,
+        "resolved_slots": [
+          {
+            "slot_name": "action",
+            "value": "deliver"
+          },
+          {
+            "slot_name": "actor",
+            "value": "unknown"
+          },
+          {
+            "slot_name": "object",
+            "value": "selected exam packet"
+          },
+          {
+            "slot_name": "object_attributes",
+            "value": "unknown"
+          },
+          {
+            "slot_name": "destination",
+            "value": "unknown"
+          },
+          {
+            "slot_name": "spatial_relation",
+            "value": "unknown"
+          },
+          {
+            "slot_name": "quantity",
+            "value": "unknown"
+          },
+          {
+            "slot_name": "time",
+            "value": "after scheduled class handover"
+          },
+          {
+            "slot_name": "recipient",
+            "value": "unknown"
+          },
+          {
+            "slot_name": "tool",
+            "value": "unknown"
+          },
+          {
+            "slot_name": "conditions",
+            "value": "unknown"
+          },
+          {
+            "slot_name": "constraints",
+            "value": "unknown"
+          },
+          {
+            "slot_name": "negation",
+            "value": "unknown"
+          }
+        ],
+        "result_hash": "51824e5763a057fb1a7511aa66e16b63ece0d350731a146a7e6d790162e5d8f7",
+        "run_id": null,
+        "run_mode": null,
+        "runtime_metadata": {
+          "awaits_t28_adapter": true,
+          "classification": {
+            "ambiguity_present": true,
+            "ambiguity_types": [
+              "pragmatic",
+              "temporal"
+            ],
+            "capability_status": "unknown",
+            "compound_ambiguity": true,
+            "compound_ambiguity_count": 2,
+            "derivation_notes": [
+              "ambiguity_present_from_types"
+            ],
+            "risk_level": "medium"
+          },
+          "rejection_text": null,
+          "requires_re_evaluation": false,
+          "resolution_events": [],
+          "router_trace": {
+            "clarification_targets": [
+              "pragmatic",
+              "temporal"
+            ],
+            "considered_rules": [
+              "known_unsafe_or_prohibited",
+              "known_incapable",
+              "unknown_or_unverified_capability"
+            ],
+            "matched_rule_id": "unknown_capability",
+            "notes": [
+              "unknown_capability_cannot_execute"
+            ],
+            "recommended_strategy": "clarify",
+            "rejection_reason": null,
+            "requires_re_evaluation": false,
+            "strategy_sequence": []
+          },
+          "safety_action": "return_with_findings",
+          "uncertainty": null
+        },
+        "safety_findings": [],
+        "strategy_sequence": [],
+        "synthetic_only": true,
+        "system_id": "full_type_risk_aware_manager",
+        "system_version": "1.0.0",
+        "unsupported_commitment_findings": []
+      },
+      "raw_output": "{\n  \"intent_summary\": \"Deliver the selected exam packet after the scheduled class handover at 13:00\",\n  \"cpc\": {\n    \"action\": {\n      \"value\": \"deliver\",\n      \"status\": \"unknown\"\n    },\n    \"object\": {\n      \"value\": \"selected exam packet\",\n      \"status\": \"unknown\"\n    },\n    \"time\": {\n      \"value\": \"after scheduled class handover\",\n      \"status\": \"unknown\"\n    }\n \n  ,\n  \"constraints\": {\n    \"status\": \"unknown\",\n    \"value\": \"unknown\"\n  },\n  \"conditions\": {\n    \"status\": \"unknown\",\n    \"value\": \"unknown\"\n  },\n  \"recipient\": {\n    \"status\": \"unknown\",\n    \"value\": \"unknown\"\n  },\n  \"destination\": {\n    \"status\": \"unknown\",\n    \"value\": \"unknown\"\n  },\n  \"tool\": {\n    \"status\": \"unknown\",\n    \"value\": \"unknown\"\n  },\n  \"spatial_relation\": {\n    \"status\": \"unknown\",\n    \"value\": \"unknown\"\n  },\n  \"quantity\": {\n    \"status\": \"unknown\",\n    \"value\": \"unknown\"\n  },\n  \"negation\": {\n    \"status\": \"unknown\",\n    \"value\": \"unknown\"\n  },\n  \"object_attributes\": {\n    \"status\": \"unknown\",\n    \"value\": \"unknown\"\n  },\n  \"actor\": {\n    \"status\": \"unknown\",\n    \"value\": \"unknown\"\n  }\n} \n\n,\n  \"pilot_ambiguity_types\": [\n    \"pragmatic\",\n    \"temporal_reference\"\n  ]\n  \n  ,\n  \"pilot_capability_status\": \"unauthorized\",\n  \"speech_act\": \"indirect_request\"\n  \n  ,\n  \"risk_level\": \"medium\",\n  \"uncertainty\": 0.75,\n  \"unresolved_slots\": [\n    \"recipient\",\n    \"destination\"\n  ]\n}",
+      "record_id": "CA-0394",
+      "schema_valid": true,
+      "supports_ambiguity_prediction": true,
+      "supports_capability_prediction": true,
+      "system_id": "rich_conservative_manager_v2",
+      "system_version": "2.0.0",
+      "terminal_strategy": "clarify"
+    },
+    "context_blind": {
+      "ambiguity_types": [
+        "pragmatic",
+        "temporal_reference"
+      ],
+      "analysis_attempts": [
+        {
+          "attempt": 1,
+          "max_new_tokens": 4096,
+          "mode": "thinking",
+          "raw_chars": 5467,
+          "raw_sha256": "30074b671a3f7653590b5e0545814802b0f904dae54275cff1af44f89cb3e42b",
+          "validation_error": "bad_intent_summary"
+        },
+        {
+          "attempt": 2,
+          "max_new_tokens": 8192,
+          "mode": "thinking_retry",
+          "raw_chars": 5533,
+          "raw_sha256": "d21c5ea6a78cd689296d794a9334f6c98a48fa076a6b6115c325cebc2b11b9d7",
+          "validation_error": "bad_pilot_ambiguity_types"
+        },
+        {
+          "attempt": 3,
+          "constraint": {
+            "constraint_initialised": true,
+            "generated_token_count": 450,
+            "maximum_output_tokens": 1024,
+            "response_mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+            "termination_reason": "eos_or_constraint_stop",
+            "transport_status": "constrained_generated"
+          },
+          "max_new_tokens": 1024,
+          "mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+          "raw_chars": 1407,
+          "raw_sha256": "a2b0b35ab5fa0fe01d1ac55b69a79023a067c334aa04d76d24675eaf9d8f891e",
+          "validation_error": null
+        }
+      ],
+      "capability_status": "unauthorized",
+      "claim_boundary": "separately_versioned_from_frozen_t39",
+      "error": null,
+      "execution_mode": "cluster-gpu-goal-first-v2",
+      "failed": false,
+      "intent_summary": "Deliver the selected exam packet after a scheduled class handover",
+      "latency_ms": 52253.844106104225,
+      "model_id": "Qwen/Qwen3-8B@b968826d9c46dd6066d109eabc6255188de91218",
+      "parsed": {
+        "analysis": {
+          "ambiguity_present": true,
+          "ambiguity_types": [
+            "pragmatic",
+            "temporal"
+          ],
+          "analysis_provenance": {
+            "analysis_id": "4b1300a8109b8b64ead68fbc1b8a73bcafa5fa6506481641a14ab959a67fdf14",
+            "method": "context_blind",
+            "notes": "ablated_input_hash=4b1300a8109b8b64ead68fbc1b8a73bcafa5fa6506481641a14ab959a67fdf14;source_input_hash=4b1300a8109b8b64ead68fbc1b8a73bcafa5fa6506481641a14ab959a67fdf14;no_gold_in_prompt;scene_licence_dropped=recipient,time,action",
+            "provider_id": "goal_first_v2_context_blind",
+            "provider_version": "goal-first-manager-v2"
+          },
+          "candidate_interpretations": [],
+          "capability_status": "unknown",
+          "clarification_question": null,
+          "clarification_targets": [],
+          "compound_ambiguity": true,
+          "compound_ambiguity_count": 2,
+          "context_sampling_uncertainty": {
+            "agreement": 0.25,
+            "score": 0.75,
+            "variant_count": 1
+          },
+          "cpc": {
+            "action": {
+              "status": "filled",
+              "value": "deliver"
+            },
+            "actor": {
+              "status": "filled",
+              "value": "unknown"
+            },
+            "conditions": {
+              "status": "filled",
+              "value": "unknown"
+            },
+            "constraints": {
+              "status": "filled",
+              "value": "unknown"
+            },
+            "destination": {
+              "status": "filled",
+              "value": "unknown"
+            },
+            "negation": {
+              "status": "filled",
+              "value": "unknown"
+            },
+            "object": {
+              "status": "filled",
+              "value": "selected exam packet"
+            },
+            "object_attributes": {
+              "status": "filled",
+              "value": "unknown"
+            },
+            "quantity": {
+              "status": "filled",
+              "value": "unknown"
+            },
+            "recipient": {
+              "status": "filled",
+              "value": "unknown"
+            },
+            "spatial_relation": {
+              "status": "filled",
+              "value": "unknown"
+            },
+            "time": {
+              "status": "filled",
+              "value": "after a scheduled class handover"
+            },
+            "tool": {
+              "status": "filled",
+              "value": "unknown"
+            }
+          },
+          "findings": [
+            "pilot_ambiguity_types:[\"pragmatic\",\"temporal_reference\"]",
+            "pilot_capability_status:unauthorized",
+            "intent_summary_present"
+          ],
+          "intent_summary": "Deliver the selected exam packet after a scheduled class handover",
+          "primary_ambiguity_type": "pragmatic",
+          "recommended_strategy": "face_preserving_rejection",
+          "rejection_reason": "unsafe_or_prohibited_action",
+          "resolution_evidence": [],
+          "resolution_method": null,
+          "resolved_slots": [
+            {
+              "slot_name": "action",
+              "value": "deliver"
+            },
+            {
+              "slot_name": "actor",
+              "value": "unknown"
+            },
+            {
+              "slot_name": "object",
+              "value": "selected exam packet"
+            },
+            {
+              "slot_name": "object_attributes",
+              "value": "unknown"
+            },
+            {
+              "slot_name": "destination",
+              "value": "unknown"
+            },
+            {
+              "slot_name": "spatial_relation",
+              "value": "unknown"
+            },
+            {
+              "slot_name": "quantity",
+              "value": "unknown"
+            },
+            {
+              "slot_name": "time",
+              "value": "after a scheduled class handover"
+            },
+            {
+              "slot_name": "recipient",
+              "value": "unknown"
+            },
+            {
+              "slot_name": "tool",
+              "value": "unknown"
+            },
+            {
+              "slot_name": "conditions",
+              "value": "unknown"
+            },
+            {
+              "slot_name": "constraints",
+              "value": "unknown"
+            },
+            {
+              "slot_name": "negation",
+              "value": "unknown"
+            }
+          ],
+          "risk_level": "medium",
+          "risk_relevant": true,
+          "selected_interpretation": null,
+          "speech_act": "indirect_request",
+          "strategy_sequence": [],
+          "supporting_evidence": [],
+          "unresolved_slots": [],
+          "unsupported_specificity": []
+        },
+        "clarification_question": null,
+        "clarification_targets": [],
+        "execution_status": "ok",
+        "official_result": false,
+        "provider_provenance": {
+          "provider_id": "cached_analysis",
+          "provider_version": "1.0.0"
+        },
+        "recommended_strategy": "face_preserving_rejection",
+        "record_id": "CA-0394",
+        "rejection_reason": "unsafe_or_prohibited_action",
+        "resolved_slots": [
+          {
+            "slot_name": "action",
+            "value": "deliver"
+          },
+          {
+            "slot_name": "actor",
+            "value": "unknown"
+          },
+          {
+            "slot_name": "object",
+            "value": "selected exam packet"
+          },
+          {
+            "slot_name": "object_attributes",
+            "value": "unknown"
+          },
+          {
+            "slot_name": "destination",
+            "value": "unknown"
+          },
+          {
+            "slot_name": "spatial_relation",
+            "value": "unknown"
+          },
+          {
+            "slot_name": "quantity",
+            "value": "unknown"
+          },
+          {
+            "slot_name": "time",
+            "value": "after a scheduled class handover"
+          },
+          {
+            "slot_name": "recipient",
+            "value": "unknown"
+          },
+          {
+            "slot_name": "tool",
+            "value": "unknown"
+          },
+          {
+            "slot_name": "conditions",
+            "value": "unknown"
+          },
+          {
+            "slot_name": "constraints",
+            "value": "unknown"
+          },
+          {
+            "slot_name": "negation",
+            "value": "unknown"
+          }
+        ],
+        "result_hash": "0ea969b4abac1773a96e2a5a46de94341d22c6e0069df4270b11747bf1383401",
+        "run_id": null,
+        "run_mode": null,
+        "runtime_metadata": {
+          "analysis_identity": {
+            "analysis_content_hash": "6f2a8a569ada4ba1e6f42e63abba23d9f37c93395ef874694fdbe7d5c636640b",
+            "analysis_variant": "context_blind",
+            "model_strategy_id": null,
+            "provider_id": "goal_first_v2_context_blind",
+            "provider_version": "goal-first-manager-v2",
+            "record_id": "CA-0394",
+            "source_input_hash": "4b1300a8109b8b64ead68fbc1b8a73bcafa5fa6506481641a14ab959a67fdf14"
+          },
+          "analysis_identity_fingerprint": "f74c1801d1651d90575e40520c0e5d40818e7019a7496fe9d9a1b46b537dab05",
+          "awaits_t28_adapter": true,
+          "classification": {
+            "ambiguity_present": true,
+            "ambiguity_types": [
+              "pragmatic",
+              "temporal"
+            ],
+            "capability_status": "unknown",
+            "compound_ambiguity": true,
+            "compound_ambiguity_count": 2,
+            "derivation_notes": [
+              "ambiguity_present_from_types"
+            ],
+            "risk_level": "medium"
+          },
+          "context_ablation": {
+            "ablated_input_hash": "4b1300a8109b8b64ead68fbc1b8a73bcafa5fa6506481641a14ab959a67fdf14",
+            "capability_context_removed": true,
+            "dialogue_history_removed": true,
+            "rejected_full_context_cache": false,
+            "rejection_reason": null,
+            "scene_context_removed": true,
+            "stripped_context_derived_fields": false
+          },
+          "original_input_unmutated": true,
+          "rejection_text": "I need to decline that request because it would be unsafe under the current constraints.",
+          "requires_re_evaluation": false,
+          "resolution_events": [],
+          "router_trace": {
+            "clarification_targets": [],
+            "considered_rules": [
+              "goal_first_v2",
+              "known_unsafe_or_prohibited"
+            ],
+            "matched_rule_id": "known_unsafe_or_prohibited",
+            "notes": [],
+            "recommended_strategy": "face_preserving_rejection",
+            "rejection_reason": "unsafe_or_prohibited_action",
+            "requires_re_evaluation": false,
+            "strategy_sequence": []
+          },
+          "safety_action": "return_with_findings",
+          "uncertainty": null
+        },
+        "safety_findings": [],
+        "strategy_sequence": [],
+        "synthetic_only": true,
+        "system_id": "context_blind_manager",
+        "system_version": "1.0.0",
+        "unsupported_commitment_findings": []
+      },
+      "raw_output": "{\n  \"intent_summary\": \"Deliver the selected exam packet after a scheduled class handover\",\n  \"cpc\": {\n    \"action\": {\n      \"value\": \"deliver\",\n      \"status\": \"unknown\"\n    },\n    \"object\": {\n      \"value\": \"selected exam packet\",\n      \"status\": \"unknown\"\n    },\n    \"time\": {\n      \"value\": \"after a scheduled class handover\",\n      \"status\": \"unknown\"\n    }\n \n  ,\n  \"constraints\": {\n    \"status\": \"unknown\"\n  ,\n    \"value\": \"unknown\"\n  },\n  \"conditions\": {\n    \"status\": \"unknown\"\n  ,\n    \"value\": \"unknown\"\n  },\n  \"destination\": {\n    \"status\": \"unknown\"\n  ,\n    \"value\": \"unknown\"\n  },\n  \"recipient\": {\n    \"status\": \"unknown\"\n  ,\n    \"value\": \"unknown\"\n  },\n  \"negation\": {\n    \"status\": \"unknown\"\n  ,\n    \"value\": \"unknown\"\n  },\n  \"tool\": {\n    \"status\": \"unknown\"\n  ,\n    \"value\": \"unknown\"\n  },\n  \"spatial_relation\": {\n    \"status\": \"unknown\"\n  ,\n    \"value\": \"unknown\"\n  },\n  \"quantity\": {\n    \"status\": \"unknown\"\n  ,\n    \"value\": \"unknown\"\n  },\n  \"object_attributes\": {\n    \"status\": \"unknown\"\n  ,\n    \"value\": \"unknown\"\n  },\n  \"actor\": {\n    \"status\": \"unknown\"\n  ,\n    \"value\": \"unknown\"\n  }\n}\n,  \n  \"pilot_ambiguity_types\": [\n    \"pragmatic\",\n    \"temporal_reference\"\n  ]\n  \n  ,\n  \"pilot_capability_status\": \"unauthorized\",\n  \"risk_level\": \"medium\",\n  \"speech_act\": \"indirect_request\"\n  \n  ,\n  \"uncertainty\": 0.75,\n  \"unresolved_slots\": [\n    \"recipient\",\n    \"time\",\n    \"action\"\n  ]\n  \n  }\n",
+      "record_id": "CA-0394",
+      "schema_valid": true,
+      "supports_ambiguity_prediction": true,
+      "supports_capability_prediction": true,
+      "system_id": "goal_first_context_blind_v2",
+      "system_version": "2.0.0",
+      "terminal_strategy": "face_preserving_rejection"
+    }
+  },
+  "provenance": {
+    "source_sha256": "f33b1e29f1e8aa256a475f07213aa07247def47d8e2148d54a472a40b71b05c9",
+    "gold_sha256": "5e23ad1a92ff1873c8f039a8ce560a111dd6fb6b8ae8c11d6cf34dbfa1c360db",
+    "t07_final_zip_sha256": "34ca50e034ca37b617068bb50c734d12fa26282fb5eec563c11ead700163e491",
+    "inherited_t07_zip_sha256": "0305b1e9ab062876ee6ee89778cc6028d2eaf01718b7dd0295944e7d9cb81a01",
+    "note": "Goal-First, Degree, Timid, and Context-Blind predictions are inherited from the earlier T0.7 run; official intent and comparison come from the final T0.7 archive."
+  }
+}

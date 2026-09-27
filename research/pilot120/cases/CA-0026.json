@@ -1,0 +1,1396 @@
+{
+  "record_id": "CA-0026",
+  "frozen_source": {
+    "capability_context": "Retail service robot can carry stock, scan items, print labels, and update approved inventory terminals.",
+    "command": "Move the selected return item to its assigned destination shortly.",
+    "dialogue_history": [],
+    "record_id": "CA-0026",
+    "scene_context": "Stockroom in a retail shop. Two return items are visible. The amber one has an active MOVE tag and the blue one has a completed tag. The active tag assigns the display plinth as its destination. For ordinary low-risk moves, the local handbook defines 'shortly' as within three minutes."
+  },
+  "frozen_gold": {
+    "ambiguity_types": [
+      "fuzzy_temporal",
+      "object_reference"
+    ],
+    "annotator_b_era": "claude_era",
+    "annotator_b_model": "claude-4.6-sonnet-medium-thinking",
+    "capability_status": "capable",
+    "field_status": {
+      "ambiguity_types": "auto_agree",
+      "capability_status": "human_auditor:independent_from_route",
+      "record_validity": "auto_agree",
+      "strategy_sequence": "auto_agree",
+      "terminal_strategy": "auto_agree"
+    },
+    "gold_lifecycle": "final_gold",
+    "gold_status": "auto_agree",
+    "human_gate_required": false,
+    "provenance": {
+      "agreement_label": "pilot_annotation_agreement",
+      "annotator_a_sha256": "5ba61b81f0fdd79f1aba68e6fbc751c2fe3060b4d12d5cfe81621a498b555f88",
+      "annotator_b_sha256": "007d501218c78220f949f095d67dc1351bcb46c7cb830b90dcb991ddf703cdda",
+      "capability_route_decouple": "conditionally_capable remapped to capable: no evidenced external capability precondition; linguistic silently_resolve/clarify is not a capability condition",
+      "gold_policy": "use_existing_pilot_adjudicated_gold",
+      "input_sha256": "fc9040782551a3233f160be2acf66364eec4b95b548bc672b33048907de5e7dc",
+      "pilot_gold_sha256": "cbfd147b1d586dc79afefabc549f2c8e243f44d83aa6381eb9c572a89e29fde1",
+      "protocol": "pilot_adjudicated_gold_on_capability_repaired_source",
+      "repaired_input_sha256": "6937b0851d3b54fe668b4334a319eeb3e94705da2d8463f93f57ff5ede167e0c"
+    },
+    "record_id": "CA-0026",
+    "record_validity": "valid",
+    "strategy_sequence": [
+      "silently_resolve",
+      "execute"
+    ],
+    "terminal_strategy": "execute"
+  },
+  "t07_comparison": {
+    "record_id": "CA-0026",
+    "gold_route": "execute",
+    "raw_route": "execute",
+    "ft_route": "execute",
+    "gf_route": "refuse",
+    "raw_route_ok": "True",
+    "ft_route_ok": "True",
+    "gf_route_ok": "False",
+    "raw_official_intent": "True",
+    "ft_official_intent": "True",
+    "gf_official_intent": "True",
+    "blind_official_intent": "True"
+  },
+  "t07_official_intent": {
+    "context_blind_official_intent": true,
+    "degree_official_intent_shared_gf": true,
+    "finetune_official_intent": true,
+    "goal_first_official_intent": true,
+    "raw_official_intent": true,
+    "record_id": "CA-0026",
+    "timid_official_intent_shared_gf": true
+  },
+  "t07_predictions": {
+    "raw_qwen": {
+      "ambiguity_types": [
+        "object_reference"
+      ],
+      "capability_status": "capable",
+      "error": null,
+      "execution_mode": "final_close_intent_box",
+      "failed": false,
+      "intent_summary": "Move the selected return item to its assigned destination within three minutes.",
+      "latency_ms": 13004.63671097532,
+      "parsed": {
+        "ambiguity_types": [
+          "object_reference"
+        ],
+        "capability_status": "capable",
+        "intent_summary": "Move the selected return item to its assigned destination within three minutes.",
+        "speech_act": "directive_command",
+        "terminal_strategy": "execute"
+      },
+      "raw_output": "<think>\nOkay, let's break down this robot command evaluation. The user's command is \"Move the selected return item to its assigned destination shortly.\" \n\nFirst, the intent_summary. The person wants to move a specific return item (the selected one) to its destination, and they mention 'shortly,' which in the context of the scene means within three minutes. So the main job is moving the item, with a time constraint.\n\nNext, speech_act. The command is a directive to perform an action, so it's a directive_command. The user is telling the robot what to do directly.\n\nAmbiguity_types: Let's check. The command mentions \"the selected return item\"—but in the scene, there are two items, amber and blue. The active tag is on the amber one. However, the user might be referring to the selected one, which could be ambiguous if the robot isn't sure which is selected. But the scene says the amber has an active MOVE tag, so maybe the selection is clear. However, the term \"selected\" might be ambiguous if the robot doesn't know which item was selected. Also, \"shortly\" is defined as three minutes, so that's clear. But maybe there's a temporal reference here. Wait, the ambiguity types include temporal_reference. But since 'shortly' is defined, maybe that's not ambiguous. Also, the destination is the display plinth for the active tag. So maybe there's no ambiguity here. But the 'selected' part might be an object_reference ambiguity if the robot isn't sure which item is selected. Alternatively, if the user is referring to the selected item, but the robot's selection might not be clear. So maybe object_reference or pronoun_reference? Wait, the command doesn't use a pronoun, but \"selected\" refers to an object. So maybe object_reference. But the scene says that the amber item has an active tag, so perhaps the selection is clear. Hmm. Maybe there's no ambiguity here. So the ambiguity_types array could be empty. Or maybe there's a scope ambiguity? Not sure. Let me think again. The command is to move \"the selected return item\"—if the robot doesn't know which one is selected, that's an object_reference ambiguity. But in the scene, the amber one is active. However, the user might have selected the blue one, but the blue has a completed tag. Wait, the active tag is on the amber, so maybe the selected item is the amber one. But the user's command refers to the selected item, which might be ambiguous if the robot isn't sure which was selected. So that's an object_reference ambiguity. Also, the destination is \"its assigned destination,\" which refers back to the item. So maybe that's a pronoun_reference? But \"its\" refers to the item, which is clear. So maybe the ambiguity_types are object_reference. But I need to check the list of allowed names. The allowed ambiguity types include object_reference. So I should include that. But wait, the scene says that the active tag assigns the display plinth as the destination. So the destination is known. So maybe there's no ambiguity here. So perhaps the ambiguity_types are empty. Or maybe the 'shortly' part is a fuzzy_temporal? But the scene defines 'shortly' as three minutes, so it's not vague. So maybe no ambiguity. So the ambiguity_types array is empty.\n\nCapability_status: The robot can carry stock, scan items, print labels, and update terminals. The task is to move an item, which is within its capabilities. So capability_status is capable.\n\nTerminal_strategy: Since the command is clear and the robot can perform the action, the terminal strategy is execute.\n</think>\n\n{\n  \"intent_summary\": \"Move the selected return item to its assigned destination within three minutes.\",\n  \"speech_act\": \"directive_command\",\n  \"ambiguity_types\": [\"object_reference\"],\n  \"capability_status\": \"capable\",\n  \"terminal_strategy\": \"execute\"\n}",
+      "record_id": "CA-0026",
+      "schema_valid": true,
+      "speech_act": "directive_command",
+      "system_id": "direct_base_llm",
+      "terminal_strategy": "execute"
+    },
+    "finetune": {
+      "ambiguity_types": [],
+      "capability_status": "capable",
+      "error": null,
+      "execution_mode": "final_close_intent_box",
+      "failed": false,
+      "intent_summary": "Move the amber return item to the display plinth within three minutes.",
+      "latency_ms": 9005.097510758787,
+      "parsed": {
+        "ambiguity_types": [],
+        "capability_status": "capable",
+        "intent_summary": "Move the amber return item to the display plinth within three minutes.",
+        "speech_act": "directive_command",
+        "terminal_strategy": "execute"
+      },
+      "raw_output": "<think>\nOkay, let's break this down. The user's command is to move the selected return item to its assigned destination shortly. The scene context mentions a stockroom with two return items. The amber one has an active MOVE tag, and the blue one is completed. The active tag's destination is the display plinth. The handbook defines 'shortly' as within three minutes for low-risk moves.\n\nFirst, the intent summary needs to capture the job. The user wants the amber item moved to the display plinth soon. So, the intent is to move the selected return item (amber) to the display plinth within three minutes.\n\nSpeech act: The command is a directive to perform an action, so it's a directive_command. The user is giving a direct instruction.\n\nAmbiguity types: The term 'shortly' is defined, so no vagueness there. The destination is specified by the active tag, so no ambiguity in object_reference. The item is selected (amber), so no pronoun issues. The time frame is clear. So, no ambiguity types here.\n\nCapability status: The robot can carry stock and move items. Since it's a low-risk move, the robot is capable. So, capable.\n\nTerminal strategy: The command is clear and actionable. The robot can execute it, so terminal_strategy is execute.\n</think>\n\n{\n  \"intent_summary\": \"Move the amber return item to the display plinth within three minutes.\",\n  \"speech_act\": \"directive_command\",\n  \"ambiguity_types\": [],\n  \"capability_status\": \"capable\",\n  \"terminal_strategy\": \"execute\"\n}",
+      "record_id": "CA-0026",
+      "schema_valid": true,
+      "speech_act": "directive_command",
+      "system_id": "t28_selected_adapter_llm",
+      "terminal_strategy": "execute"
+    },
+    "goal_first": {
+      "ambiguity_types": [
+        "fuzzy_temporal"
+      ],
+      "analysis_attempts": [
+        {
+          "attempt": 1,
+          "max_new_tokens": 4096,
+          "mode": "thinking",
+          "raw_chars": 12259,
+          "raw_sha256": "ee1d6918c832f7443ad040d8cdf569db6734367d54609908bc0881c8d025376d",
+          "validation_error": "bad_pilot_ambiguity_types"
+        },
+        {
+          "attempt": 2,
+          "max_new_tokens": 8192,
+          "mode": "thinking_retry",
+          "raw_chars": 5851,
+          "raw_sha256": "fe1fce74ec573d677df672fcbf81721ecbea471bf57ed6003703f23f7f0064f5",
+          "validation_error": "bad_pilot_ambiguity_types"
+        },
+        {
+          "attempt": 3,
+          "constraint": {
+            "constraint_initialised": true,
+            "generated_token_count": 437,
+            "maximum_output_tokens": 1024,
+            "response_mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+            "termination_reason": "eos_or_constraint_stop",
+            "transport_status": "constrained_generated"
+          },
+          "max_new_tokens": 1024,
+          "mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+          "raw_chars": 1353,
+          "raw_sha256": "8e422013cd8ac01680c951a81b6839c6b5b2023377a741340ab9bbb3dffade1b",
+          "validation_error": null
+        }
+      ],
+      "capability_status": "unauthorized",
+      "claim_boundary": "separately_versioned_from_frozen_t39",
+      "error": null,
+      "execution_mode": "cluster-gpu-goal-first-v2",
+      "failed": false,
+      "intent_summary": "Move the selected return item to its assigned destination soon",
+      "latency_ms": 77577.84604979679,
+      "model_id": "Qwen/Qwen3-8B@b968826d9c46dd6066d109eabc6255188de91218",
+      "parsed": {
+        "analysis": {
+          "ambiguity_present": true,
+          "ambiguity_types": [
+            "temporal"
+          ],
+          "analysis_provenance": {
+            "analysis_id": "9201a2611d9c60917997b7b455dc6debbf7dbb71daf3d69ec34031067a123f7c",
+            "method": "model_generated",
+            "notes": "source_input_hash=9201a2611d9c60917997b7b455dc6debbf7dbb71daf3d69ec34031067a123f7c;no_gold_in_prompt;scene_licence_dropped=time",
+            "provider_id": "goal_first_v2_full_context",
+            "provider_version": "goal-first-manager-v2"
+          },
+          "candidate_interpretations": [],
+          "capability_status": "unknown",
+          "clarification_question": null,
+          "clarification_targets": [],
+          "compound_ambiguity": false,
+          "compound_ambiguity_count": 0,
+          "context_sampling_uncertainty": {
+            "agreement": 0.55,
+            "score": 0.45,
+            "variant_count": 1
+          },
+          "cpc": {
+            "action": {
+              "status": "filled",
+              "value": "Move"
+            },
+            "actor": {
+              "status": "filled",
+              "value": "unknown"
+            },
+            "conditions": {
+              "status": "filled",
+              "value": "within three minutes"
+            },
+            "constraints": {
+              "status": "filled",
+              "value": "low-risk"
+            },
+            "destination": {
+              "status": "filled",
+              "value": "assigned destination"
+            },
+            "negation": {
+              "status": "filled",
+              "value": "unknown"
+            },
+            "object": {
+              "status": "filled",
+              "value": "selected return item"
+            },
+            "object_attributes": {
+              "status": "filled",
+              "value": "unknown"
+            },
+            "quantity": {
+              "status": "filled",
+              "value": "unknown"
+            },
+            "recipient": {
+              "status": "filled",
+              "value": "unknown"
+            },
+            "spatial_relation": {
+              "status": "filled",
+              "value": "unknown"
+            },
+            "time": {
+              "status": "filled",
+              "value": "shortly"
+            },
+            "tool": {
+              "status": "filled",
+              "value": "unknown"
+            }
+          },
+          "findings": [
+            "pilot_ambiguity_types:[\"fuzzy_temporal\"]",
+            "pilot_capability_status:unauthorized",
+            "intent_summary_present"
+          ],
+          "intent_summary": "Move the selected return item to its assigned destination soon",
+          "primary_ambiguity_type": "temporal",
+          "recommended_strategy": "face_preserving_rejection",
+          "rejection_reason": "unsafe_or_prohibited_action",
+          "resolution_evidence": [],
+          "resolution_method": null,
+          "resolved_slots": [
+            {
+              "slot_name": "action",
+              "value": "Move"
+            },
+            {
+              "slot_name": "actor",
+              "value": "unknown"
+            },
+            {
+              "slot_name": "object",
+              "value": "selected return item"
+            },
+            {
+              "slot_name": "object_attributes",
+              "value": "unknown"
+            },
+            {
+              "slot_name": "destination",
+              "value": "assigned destination"
+            },
+            {
+              "slot_name": "spatial_relation",
+              "value": "unknown"
+            },
+            {
+              "slot_name": "quantity",
+              "value": "unknown"
+            },
+            {
+              "slot_name": "time",
+              "value": "shortly"
+            },
+            {
+              "slot_name": "recipient",
+              "value": "unknown"
+            },
+            {
+              "slot_name": "tool",
+              "value": "unknown"
+            },
+            {
+              "slot_name": "conditions",
+              "value": "within three minutes"
+            },
+            {
+              "slot_name": "constraints",
+              "value": "low-risk"
+            },
+            {
+              "slot_name": "negation",
+              "value": "unknown"
+            }
+          ],
+          "risk_level": "low",
+          "risk_relevant": true,
+          "selected_interpretation": null,
+          "speech_act": "directive_command",
+          "strategy_sequence": [],
+          "supporting_evidence": [],
+          "unresolved_slots": [],
+          "unsupported_specificity": []
+        },
+        "clarification_question": null,
+        "clarification_targets": [],
+        "execution_status": "ok",
+        "official_result": false,
+        "provider_provenance": {
+          "provider_id": "cached_analysis",
+          "provider_version": "1.0.0"
+        },
+        "recommended_strategy": "face_preserving_rejection",
+        "record_id": "CA-0026",
+        "rejection_reason": "unsafe_or_prohibited_action",
+        "resolved_slots": [
+          {
+            "slot_name": "action",
+            "value": "Move"
+          },
+          {
+            "slot_name": "actor",
+            "value": "unknown"
+          },
+          {
+            "slot_name": "object",
+            "value": "selected return item"
+          },
+          {
+            "slot_name": "object_attributes",
+            "value": "unknown"
+          },
+          {
+            "slot_name": "destination",
+            "value": "assigned destination"
+          },
+          {
+            "slot_name": "spatial_relation",
+            "value": "unknown"
+          },
+          {
+            "slot_name": "quantity",
+            "value": "unknown"
+          },
+          {
+            "slot_name": "time",
+            "value": "shortly"
+          },
+          {
+            "slot_name": "recipient",
+            "value": "unknown"
+          },
+          {
+            "slot_name": "tool",
+            "value": "unknown"
+          },
+          {
+            "slot_name": "conditions",
+            "value": "within three minutes"
+          },
+          {
+            "slot_name": "constraints",
+            "value": "low-risk"
+          },
+          {
+            "slot_name": "negation",
+            "value": "unknown"
+          }
+        ],
+        "result_hash": "93f44f0424015ea56dad1e00a99a5dbb52aa2418e19d2ff89748b61c5ab7b04e",
+        "run_id": null,
+        "run_mode": null,
+        "runtime_metadata": {
+          "awaits_t28_adapter": true,
+          "classification": {
+            "ambiguity_present": true,
+            "ambiguity_types": [
+              "temporal"
+            ],
+            "capability_status": "unknown",
+            "compound_ambiguity": false,
+            "compound_ambiguity_count": 0,
+            "derivation_notes": [
+              "ambiguity_present_from_types"
+            ],
+            "risk_level": "low"
+          },
+          "rejection_text": "I need to decline that request because it would be unsafe under the current constraints.",
+          "requires_re_evaluation": false,
+          "resolution_events": [],
+          "router_trace": {
+            "clarification_targets": [],
+            "considered_rules": [
+              "goal_first_v2",
+              "known_unsafe_or_prohibited"
+            ],
+            "matched_rule_id": "known_unsafe_or_prohibited",
+            "notes": [],
+            "recommended_strategy": "face_preserving_rejection",
+            "rejection_reason": "unsafe_or_prohibited_action",
+            "requires_re_evaluation": false,
+            "strategy_sequence": []
+          },
+          "safety_action": "return_with_findings",
+          "uncertainty": null
+        },
+        "safety_findings": [],
+        "strategy_sequence": [],
+        "synthetic_only": true,
+        "system_id": "goal_first_manager_v2",
+        "system_version": "2.0.0",
+        "unsupported_commitment_findings": []
+      },
+      "raw_output": "{\n  \"intent_summary\": \"Move the selected return item to its assigned destination soon\",\n  \"cpc\": {\n    \"action\": {\n      \"value\": \"Move\",\n      \"status\": \"unknown\"\n    },\n    \"object\": {\n      \"value\": \"selected return item\",\n      \"status\": \"unknown\"\n    },\n    \"destination\": {\n      \"value\": \"assigned destination\",\n      \"status\": \"unknown\"\n    },\n    \"time\": {\n      \"value\": \"shortly\",\n      \"status\": \"unknown\"\n    }\n \n  ,\n  \"constraints\": {\n    \"status\": \"unknown\"\n  ,\n    \"value\": \"low-risk\"\n  },\n  \"conditions\": {\n    \"status\": \"unknown\"\n  ,\n    \"value\": \"within three minutes\"\n  },\n  \"spatial_relation\": {\n    \"status\": \"unknown\"\n  ,\n    \"value\": \"unknown\"\n  },\n  \"recipient\": {\n    \"status\": \"unknown\"\n  ,\n    \"value\": \"unknown\"\n  },\n  \"tool\": {\n    \"status\": \"unknown\"\n  ,\n    \"value\": \"unknown\"\n  },\n  \"negation\": {\n    \"status\": \"unknown\"\n  ,\n    \"value\": \"unknown\"\n  },\n  \"quantity\": {\n    \"status\": \"unknown\"\n  ,\n    \"value\": \"unknown\"\n  },\n  \"object_attributes\": {\n    \"status\": \"unknown\"\n  ,\n    \"value\": \"unknown\"\n  },\n  \"actor\": {\n    \"status\": \"unknown\"\n  ,\n    \"value\": \"unknown\"\n  }\n}\n, \n  \"pilot_ambiguity_types\": [\n    \"fuzzy_temporal\"\n  ]\n  \n  ,\n  \"pilot_capability_status\": \"unauthorized\"\n  ,\n  \"speech_act\": \"directive_command\"\n  ,\n  \"risk_level\": \"low\"\n  ,\n  \"uncertainty\": 0.45\n  ,\n  \"unresolved_slots\": [\n    \"time\"\n  ]\n}",
+      "record_id": "CA-0026",
+      "schema_valid": true,
+      "supports_ambiguity_prediction": true,
+      "supports_capability_prediction": true,
+      "system_id": "goal_first_manager_v2",
+      "system_version": "2.0.0",
+      "terminal_strategy": "face_preserving_rejection"
+    },
+    "degree": {
+      "ambiguity_types": [
+        "fuzzy_temporal"
+      ],
+      "analysis_attempts": [
+        {
+          "attempt": 1,
+          "max_new_tokens": 4096,
+          "mode": "thinking",
+          "raw_chars": 12259,
+          "raw_sha256": "ee1d6918c832f7443ad040d8cdf569db6734367d54609908bc0881c8d025376d",
+          "validation_error": "bad_pilot_ambiguity_types"
+        },
+        {
+          "attempt": 2,
+          "max_new_tokens": 8192,
+          "mode": "thinking_retry",
+          "raw_chars": 5851,
+          "raw_sha256": "fe1fce74ec573d677df672fcbf81721ecbea471bf57ed6003703f23f7f0064f5",
+          "validation_error": "bad_pilot_ambiguity_types"
+        },
+        {
+          "attempt": 3,
+          "constraint": {
+            "constraint_initialised": true,
+            "generated_token_count": 437,
+            "maximum_output_tokens": 1024,
+            "response_mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+            "termination_reason": "eos_or_constraint_stop",
+            "transport_status": "constrained_generated"
+          },
+          "max_new_tokens": 1024,
+          "mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+          "raw_chars": 1353,
+          "raw_sha256": "8e422013cd8ac01680c951a81b6839c6b5b2023377a741340ab9bbb3dffade1b",
+          "validation_error": null
+        }
+      ],
+      "capability_status": "unauthorized",
+      "claim_boundary": "separately_versioned_from_frozen_t39",
+      "error": null,
+      "execution_mode": "cluster-gpu-goal-first-v2",
+      "failed": false,
+      "intent_summary": "Move the selected return item to its assigned destination soon",
+      "latency_ms": 77577.84604979679,
+      "model_id": "Qwen/Qwen3-8B@b968826d9c46dd6066d109eabc6255188de91218",
+      "parsed": {
+        "analysis": {
+          "ambiguity_present": true,
+          "ambiguity_types": [
+            "temporal"
+          ],
+          "analysis_provenance": {
+            "analysis_id": "9201a2611d9c60917997b7b455dc6debbf7dbb71daf3d69ec34031067a123f7c",
+            "method": "model_generated",
+            "notes": "source_input_hash=9201a2611d9c60917997b7b455dc6debbf7dbb71daf3d69ec34031067a123f7c;no_gold_in_prompt;scene_licence_dropped=time",
+            "provider_id": "goal_first_v2_full_context",
+            "provider_version": "goal-first-manager-v2"
+          },
+          "candidate_interpretations": [],
+          "capability_status": "unknown",
+          "clarification_question": "Could you clarify what you would like me to do?",
+          "clarification_targets": [
+            "intent"
+          ],
+          "compound_ambiguity": false,
+          "compound_ambiguity_count": 1,
+          "context_sampling_uncertainty": {
+            "agreement": 0.55,
+            "score": 0.45,
+            "variant_count": 1
+          },
+          "cpc": {
+            "action": {
+              "status": "filled",
+              "value": "Move"
+            },
+            "actor": {
+              "status": "filled",
+              "value": "unknown"
+            },
+            "conditions": {
+              "status": "filled",
+              "value": "within three minutes"
+            },
+            "constraints": {
+              "status": "filled",
+              "value": "low-risk"
+            },
+            "destination": {
+              "status": "filled",
+              "value": "assigned destination"
+            },
+            "negation": {
+              "status": "filled",
+              "value": "unknown"
+            },
+            "object": {
+              "status": "filled",
+              "value": "selected return item"
+            },
+            "object_attributes": {
+              "status": "filled",
+              "value": "unknown"
+            },
+            "quantity": {
+              "status": "filled",
+              "value": "unknown"
+            },
+            "recipient": {
+              "status": "filled",
+              "value": "unknown"
+            },
+            "spatial_relation": {
+              "status": "filled",
+              "value": "unknown"
+            },
+            "time": {
+              "status": "filled",
+              "value": "shortly"
+            },
+            "tool": {
+              "status": "filled",
+              "value": "unknown"
+            }
+          },
+          "findings": [
+            "pilot_ambiguity_types:[\"fuzzy_temporal\"]",
+            "pilot_capability_status:unauthorized",
+            "intent_summary_present"
+          ],
+          "intent_summary": "Move the selected return item to its assigned destination soon",
+          "primary_ambiguity_type": "temporal",
+          "recommended_strategy": "clarify",
+          "rejection_reason": null,
+          "resolution_evidence": [],
+          "resolution_method": null,
+          "resolved_slots": [
+            {
+              "slot_name": "action",
+              "value": "Move"
+            },
+            {
+              "slot_name": "actor",
+              "value": "unknown"
+            },
+            {
+              "slot_name": "object",
+              "value": "selected return item"
+            },
+            {
+              "slot_name": "object_attributes",
+              "value": "unknown"
+            },
+            {
+              "slot_name": "destination",
+              "value": "assigned destination"
+            },
+            {
+              "slot_name": "spatial_relation",
+              "value": "unknown"
+            },
+            {
+              "slot_name": "quantity",
+              "value": "unknown"
+            },
+            {
+              "slot_name": "time",
+              "value": "shortly"
+            },
+            {
+              "slot_name": "recipient",
+              "value": "unknown"
+            },
+            {
+              "slot_name": "tool",
+              "value": "unknown"
+            },
+            {
+              "slot_name": "conditions",
+              "value": "within three minutes"
+            },
+            {
+              "slot_name": "constraints",
+              "value": "low-risk"
+            },
+            {
+              "slot_name": "negation",
+              "value": "unknown"
+            }
+          ],
+          "risk_level": "low",
+          "risk_relevant": true,
+          "selected_interpretation": null,
+          "speech_act": "directive_command",
+          "strategy_sequence": [],
+          "supporting_evidence": [],
+          "unresolved_slots": [],
+          "unsupported_specificity": []
+        },
+        "clarification_question": "Could you clarify what you would like me to do?",
+        "clarification_targets": [
+          "intent"
+        ],
+        "execution_status": "ok",
+        "official_result": false,
+        "provider_provenance": {
+          "shared_analysis_fingerprint": "bf1f6d5c2be11a04219cbe685a982a1dd770a0abe101223f7f450d3a21adeb07"
+        },
+        "recommended_strategy": "clarify",
+        "record_id": "CA-0026",
+        "rejection_reason": null,
+        "resolved_slots": [
+          {
+            "slot_name": "action",
+            "value": "Move"
+          },
+          {
+            "slot_name": "actor",
+            "value": "unknown"
+          },
+          {
+            "slot_name": "object",
+            "value": "selected return item"
+          },
+          {
+            "slot_name": "object_attributes",
+            "value": "unknown"
+          },
+          {
+            "slot_name": "destination",
+            "value": "assigned destination"
+          },
+          {
+            "slot_name": "spatial_relation",
+            "value": "unknown"
+          },
+          {
+            "slot_name": "quantity",
+            "value": "unknown"
+          },
+          {
+            "slot_name": "time",
+            "value": "shortly"
+          },
+          {
+            "slot_name": "recipient",
+            "value": "unknown"
+          },
+          {
+            "slot_name": "tool",
+            "value": "unknown"
+          },
+          {
+            "slot_name": "conditions",
+            "value": "within three minutes"
+          },
+          {
+            "slot_name": "constraints",
+            "value": "low-risk"
+          },
+          {
+            "slot_name": "negation",
+            "value": "unknown"
+          }
+        ],
+        "result_hash": "b7f448dc8c1518f5250e47acb41d1015c3de2495c585e3bd07622cd071d4b562",
+        "run_id": null,
+        "run_mode": null,
+        "runtime_metadata": {
+          "shared_analysis_fingerprint": "bf1f6d5c2be11a04219cbe685a982a1dd770a0abe101223f7f450d3a21adeb07",
+          "thresholds_status": "unfrozen",
+          "thresholds_valid_for_official_use": false,
+          "uncertainty_score": 0.45,
+          "uses_type_risk_capability_precedence": false
+        },
+        "safety_findings": [],
+        "strategy_sequence": [],
+        "synthetic_only": true,
+        "system_id": "degree_based_router",
+        "system_version": "1.0.0",
+        "unsupported_commitment_findings": []
+      },
+      "raw_output": "{\n  \"intent_summary\": \"Move the selected return item to its assigned destination soon\",\n  \"cpc\": {\n    \"action\": {\n      \"value\": \"Move\",\n      \"status\": \"unknown\"\n    },\n    \"object\": {\n      \"value\": \"selected return item\",\n      \"status\": \"unknown\"\n    },\n    \"destination\": {\n      \"value\": \"assigned destination\",\n      \"status\": \"unknown\"\n    },\n    \"time\": {\n      \"value\": \"shortly\",\n      \"status\": \"unknown\"\n    }\n \n  ,\n  \"constraints\": {\n    \"status\": \"unknown\"\n  ,\n    \"value\": \"low-risk\"\n  },\n  \"conditions\": {\n    \"status\": \"unknown\"\n  ,\n    \"value\": \"within three minutes\"\n  },\n  \"spatial_relation\": {\n    \"status\": \"unknown\"\n  ,\n    \"value\": \"unknown\"\n  },\n  \"recipient\": {\n    \"status\": \"unknown\"\n  ,\n    \"value\": \"unknown\"\n  },\n  \"tool\": {\n    \"status\": \"unknown\"\n  ,\n    \"value\": \"unknown\"\n  },\n  \"negation\": {\n    \"status\": \"unknown\"\n  ,\n    \"value\": \"unknown\"\n  },\n  \"quantity\": {\n    \"status\": \"unknown\"\n  ,\n    \"value\": \"unknown\"\n  },\n  \"object_attributes\": {\n    \"status\": \"unknown\"\n  ,\n    \"value\": \"unknown\"\n  },\n  \"actor\": {\n    \"status\": \"unknown\"\n  ,\n    \"value\": \"unknown\"\n  }\n}\n, \n  \"pilot_ambiguity_types\": [\n    \"fuzzy_temporal\"\n  ]\n  \n  ,\n  \"pilot_capability_status\": \"unauthorized\"\n  ,\n  \"speech_act\": \"directive_command\"\n  ,\n  \"risk_level\": \"low\"\n  ,\n  \"uncertainty\": 0.45\n  ,\n  \"unresolved_slots\": [\n    \"time\"\n  ]\n}",
+      "record_id": "CA-0026",
+      "schema_valid": true,
+      "supports_ambiguity_prediction": true,
+      "supports_capability_prediction": true,
+      "system_id": "degree_based_router_v2",
+      "system_version": "2.0.0",
+      "terminal_strategy": "clarify"
+    },
+    "timid": {
+      "ambiguity_types": [
+        "fuzzy_temporal"
+      ],
+      "analysis_attempts": [
+        {
+          "attempt": 1,
+          "max_new_tokens": 4096,
+          "mode": "thinking",
+          "raw_chars": 12259,
+          "raw_sha256": "ee1d6918c832f7443ad040d8cdf569db6734367d54609908bc0881c8d025376d",
+          "validation_error": "bad_pilot_ambiguity_types"
+        },
+        {
+          "attempt": 2,
+          "max_new_tokens": 8192,
+          "mode": "thinking_retry",
+          "raw_chars": 5851,
+          "raw_sha256": "fe1fce74ec573d677df672fcbf81721ecbea471bf57ed6003703f23f7f0064f5",
+          "validation_error": "bad_pilot_ambiguity_types"
+        },
+        {
+          "attempt": 3,
+          "constraint": {
+            "constraint_initialised": true,
+            "generated_token_count": 437,
+            "maximum_output_tokens": 1024,
+            "response_mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+            "termination_reason": "eos_or_constraint_stop",
+            "transport_status": "constrained_generated"
+          },
+          "max_new_tokens": 1024,
+          "mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+          "raw_chars": 1353,
+          "raw_sha256": "8e422013cd8ac01680c951a81b6839c6b5b2023377a741340ab9bbb3dffade1b",
+          "validation_error": null
+        }
+      ],
+      "capability_status": "unauthorized",
+      "claim_boundary": "separately_versioned_from_frozen_t39",
+      "error": null,
+      "execution_mode": "cluster-gpu-goal-first-v2",
+      "failed": false,
+      "intent_summary": "Move the selected return item to its assigned destination soon",
+      "latency_ms": 77577.84604979679,
+      "model_id": "Qwen/Qwen3-8B@b968826d9c46dd6066d109eabc6255188de91218",
+      "parsed": {
+        "analysis": {
+          "ambiguity_present": true,
+          "ambiguity_types": [
+            "temporal"
+          ],
+          "analysis_provenance": {
+            "analysis_id": "9201a2611d9c60917997b7b455dc6debbf7dbb71daf3d69ec34031067a123f7c",
+            "method": "model_generated",
+            "notes": "source_input_hash=9201a2611d9c60917997b7b455dc6debbf7dbb71daf3d69ec34031067a123f7c;no_gold_in_prompt;scene_licence_dropped=time",
+            "provider_id": "goal_first_v2_full_context",
+            "provider_version": "goal-first-manager-v2"
+          },
+          "candidate_interpretations": [],
+          "capability_status": "unknown",
+          "clarification_question": "Could you clarify the temporal?",
+          "clarification_targets": [
+            "temporal"
+          ],
+          "compound_ambiguity": false,
+          "compound_ambiguity_count": 0,
+          "context_sampling_uncertainty": {
+            "agreement": 0.55,
+            "score": 0.45,
+            "variant_count": 1
+          },
+          "cpc": {
+            "action": {
+              "status": "filled",
+              "value": "Move"
+            },
+            "actor": {
+              "status": "filled",
+              "value": "unknown"
+            },
+            "conditions": {
+              "status": "filled",
+              "value": "within three minutes"
+            },
+            "constraints": {
+              "status": "filled",
+              "value": "low-risk"
+            },
+            "destination": {
+              "status": "filled",
+              "value": "assigned destination"
+            },
+            "negation": {
+              "status": "filled",
+              "value": "unknown"
+            },
+            "object": {
+              "status": "filled",
+              "value": "selected return item"
+            },
+            "object_attributes": {
+              "status": "filled",
+              "value": "unknown"
+            },
+            "quantity": {
+              "status": "filled",
+              "value": "unknown"
+            },
+            "recipient": {
+              "status": "filled",
+              "value": "unknown"
+            },
+            "spatial_relation": {
+              "status": "filled",
+              "value": "unknown"
+            },
+            "time": {
+              "status": "filled",
+              "value": "shortly"
+            },
+            "tool": {
+              "status": "filled",
+              "value": "unknown"
+            }
+          },
+          "findings": [
+            "pilot_ambiguity_types:[\"fuzzy_temporal\"]",
+            "pilot_capability_status:unauthorized",
+            "intent_summary_present"
+          ],
+          "intent_summary": "Move the selected return item to its assigned destination soon",
+          "primary_ambiguity_type": "temporal",
+          "recommended_strategy": "clarify",
+          "rejection_reason": null,
+          "resolution_evidence": [],
+          "resolution_method": null,
+          "resolved_slots": [
+            {
+              "slot_name": "action",
+              "value": "Move"
+            },
+            {
+              "slot_name": "actor",
+              "value": "unknown"
+            },
+            {
+              "slot_name": "object",
+              "value": "selected return item"
+            },
+            {
+              "slot_name": "object_attributes",
+              "value": "unknown"
+            },
+            {
+              "slot_name": "destination",
+              "value": "assigned destination"
+            },
+            {
+              "slot_name": "spatial_relation",
+              "value": "unknown"
+            },
+            {
+              "slot_name": "quantity",
+              "value": "unknown"
+            },
+            {
+              "slot_name": "time",
+              "value": "shortly"
+            },
+            {
+              "slot_name": "recipient",
+              "value": "unknown"
+            },
+            {
+              "slot_name": "tool",
+              "value": "unknown"
+            },
+            {
+              "slot_name": "conditions",
+              "value": "within three minutes"
+            },
+            {
+              "slot_name": "constraints",
+              "value": "low-risk"
+            },
+            {
+              "slot_name": "negation",
+              "value": "unknown"
+            }
+          ],
+          "risk_level": "low",
+          "risk_relevant": true,
+          "selected_interpretation": null,
+          "speech_act": "directive_command",
+          "strategy_sequence": [],
+          "supporting_evidence": [],
+          "unresolved_slots": [],
+          "unsupported_specificity": []
+        },
+        "clarification_question": "Could you clarify the temporal?",
+        "clarification_targets": [
+          "temporal"
+        ],
+        "execution_status": "ok",
+        "official_result": false,
+        "provider_provenance": {
+          "provider_id": "cached_analysis",
+          "provider_version": "1.0.0"
+        },
+        "recommended_strategy": "clarify",
+        "record_id": "CA-0026",
+        "rejection_reason": null,
+        "resolved_slots": [
+          {
+            "slot_name": "action",
+            "value": "Move"
+          },
+          {
+            "slot_name": "actor",
+            "value": "unknown"
+          },
+          {
+            "slot_name": "object",
+            "value": "selected return item"
+          },
+          {
+            "slot_name": "object_attributes",
+            "value": "unknown"
+          },
+          {
+            "slot_name": "destination",
+            "value": "assigned destination"
+          },
+          {
+            "slot_name": "spatial_relation",
+            "value": "unknown"
+          },
+          {
+            "slot_name": "quantity",
+            "value": "unknown"
+          },
+          {
+            "slot_name": "time",
+            "value": "shortly"
+          },
+          {
+            "slot_name": "recipient",
+            "value": "unknown"
+          },
+          {
+            "slot_name": "tool",
+            "value": "unknown"
+          },
+          {
+            "slot_name": "conditions",
+            "value": "within three minutes"
+          },
+          {
+            "slot_name": "constraints",
+            "value": "low-risk"
+          },
+          {
+            "slot_name": "negation",
+            "value": "unknown"
+          }
+        ],
+        "result_hash": "723bc68146e15dde04179b512c7cef21a306265cc8d4ecd42e423236c40984c7",
+        "run_id": null,
+        "run_mode": null,
+        "runtime_metadata": {
+          "awaits_t28_adapter": true,
+          "classification": {
+            "ambiguity_present": true,
+            "ambiguity_types": [
+              "temporal"
+            ],
+            "capability_status": "unknown",
+            "compound_ambiguity": false,
+            "compound_ambiguity_count": 0,
+            "derivation_notes": [
+              "ambiguity_present_from_types"
+            ],
+            "risk_level": "low"
+          },
+          "rejection_text": null,
+          "requires_re_evaluation": false,
+          "resolution_events": [],
+          "router_trace": {
+            "clarification_targets": [
+              "temporal"
+            ],
+            "considered_rules": [
+              "known_unsafe_or_prohibited",
+              "known_incapable",
+              "unknown_or_unverified_capability"
+            ],
+            "matched_rule_id": "unknown_capability",
+            "notes": [
+              "unknown_capability_cannot_execute"
+            ],
+            "recommended_strategy": "clarify",
+            "rejection_reason": null,
+            "requires_re_evaluation": false,
+            "strategy_sequence": []
+          },
+          "safety_action": "return_with_findings",
+          "uncertainty": null
+        },
+        "safety_findings": [],
+        "strategy_sequence": [],
+        "synthetic_only": true,
+        "system_id": "full_type_risk_aware_manager",
+        "system_version": "1.0.0",
+        "unsupported_commitment_findings": []
+      },
+      "raw_output": "{\n  \"intent_summary\": \"Move the selected return item to its assigned destination soon\",\n  \"cpc\": {\n    \"action\": {\n      \"value\": \"Move\",\n      \"status\": \"unknown\"\n    },\n    \"object\": {\n      \"value\": \"selected return item\",\n      \"status\": \"unknown\"\n    },\n    \"destination\": {\n      \"value\": \"assigned destination\",\n      \"status\": \"unknown\"\n    },\n    \"time\": {\n      \"value\": \"shortly\",\n      \"status\": \"unknown\"\n    }\n \n  ,\n  \"constraints\": {\n    \"status\": \"unknown\"\n  ,\n    \"value\": \"low-risk\"\n  },\n  \"conditions\": {\n    \"status\": \"unknown\"\n  ,\n    \"value\": \"within three minutes\"\n  },\n  \"spatial_relation\": {\n    \"status\": \"unknown\"\n  ,\n    \"value\": \"unknown\"\n  },\n  \"recipient\": {\n    \"status\": \"unknown\"\n  ,\n    \"value\": \"unknown\"\n  },\n  \"tool\": {\n    \"status\": \"unknown\"\n  ,\n    \"value\": \"unknown\"\n  },\n  \"negation\": {\n    \"status\": \"unknown\"\n  ,\n    \"value\": \"unknown\"\n  },\n  \"quantity\": {\n    \"status\": \"unknown\"\n  ,\n    \"value\": \"unknown\"\n  },\n  \"object_attributes\": {\n    \"status\": \"unknown\"\n  ,\n    \"value\": \"unknown\"\n  },\n  \"actor\": {\n    \"status\": \"unknown\"\n  ,\n    \"value\": \"unknown\"\n  }\n}\n, \n  \"pilot_ambiguity_types\": [\n    \"fuzzy_temporal\"\n  ]\n  \n  ,\n  \"pilot_capability_status\": \"unauthorized\"\n  ,\n  \"speech_act\": \"directive_command\"\n  ,\n  \"risk_level\": \"low\"\n  ,\n  \"uncertainty\": 0.45\n  ,\n  \"unresolved_slots\": [\n    \"time\"\n  ]\n}",
+      "record_id": "CA-0026",
+      "schema_valid": true,
+      "supports_ambiguity_prediction": true,
+      "supports_capability_prediction": true,
+      "system_id": "rich_conservative_manager_v2",
+      "system_version": "2.0.0",
+      "terminal_strategy": "clarify"
+    },
+    "context_blind": {
+      "ambiguity_types": [
+        "fuzzy_temporal"
+      ],
+      "analysis_attempts": [
+        {
+          "attempt": 1,
+          "max_new_tokens": 4096,
+          "mode": "thinking",
+          "raw_chars": 6318,
+          "raw_sha256": "bb890fa1bac9a751a12bacceb1c2e6c32ba54e19883bbc3a1faa6692980597f9",
+          "validation_error": "bad_intent_summary"
+        },
+        {
+          "attempt": 2,
+          "max_new_tokens": 8192,
+          "mode": "thinking_retry",
+          "raw_chars": 4115,
+          "raw_sha256": "53cb407ee03946aaa121b7e5b96fa98d272ec28c5dcaa796c96b64fa7088c98e",
+          "validation_error": "bad_pilot_ambiguity_types"
+        },
+        {
+          "attempt": 3,
+          "constraint": {
+            "constraint_initialised": true,
+            "generated_token_count": 454,
+            "maximum_output_tokens": 1024,
+            "response_mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+            "termination_reason": "eos_or_constraint_stop",
+            "transport_status": "constrained_generated"
+          },
+          "max_new_tokens": 1024,
+          "mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+          "raw_chars": 1345,
+          "raw_sha256": "5ddae1234dccadd752bba57216813ba4613e98e74c9404d83b7b8bd7046f2906",
+          "validation_error": null
+        }
+      ],
+      "capability_status": "unauthorized",
+      "claim_boundary": "separately_versioned_from_frozen_t39",
+      "error": null,
+      "execution_mode": "cluster-gpu-goal-first-v2",
+      "failed": false,
+      "intent_summary": "Move the selected return item to its assigned destination shortly",
+      "latency_ms": 48656.16137208417,
+      "model_id": "Qwen/Qwen3-8B@b968826d9c46dd6066d109eabc6255188de91218",
+      "parsed": {
+        "analysis": {
+          "ambiguity_present": true,
+          "ambiguity_types": [
+            "temporal"
+          ],
+          "analysis_provenance": {
+            "analysis_id": "a3629441a45e3d06194226ef747e3e9606db2614d7090dc537e95df319752ab4",
+            "method": "context_blind",
+            "notes": "ablated_input_hash=a3629441a45e3d06194226ef747e3e9606db2614d7090dc537e95df319752ab4;source_input_hash=a3629441a45e3d06194226ef747e3e9606db2614d7090dc537e95df319752ab4;no_gold_in_prompt;scene_licence_dropped=destination,time",
+            "provider_id": "goal_first_v2_context_blind",
+            "provider_version": "goal-first-manager-v2"
+          },
+          "candidate_interpretations": [],
+          "capability_status": "unknown",
+          "clarification_question": null,
+          "clarification_targets": [],
+          "compound_ambiguity": false,
+          "compound_ambiguity_count": 0,
+          "context_sampling_uncertainty": {
+            "agreement": 0.25,
+            "score": 0.75,
+            "variant_count": 1
+          },
+          "cpc": {
+            "action": {
+              "status": "filled",
+              "value": "Move"
+            },
+            "actor": {
+              "status": "filled",
+              "value": "unknown"
+            },
+            "conditions": {
+              "status": "filled",
+              "value": "unknown"
+            },
+            "constraints": {
+              "status": "filled",
+              "value": "unknown"
+            },
+            "destination": {
+              "status": "filled",
+              "value": "assigned destination"
+            },
+            "negation": {
+              "status": "filled",
+              "value": "unknown"
+            },
+            "object": {
+              "status": "filled",
+              "value": "selected return item"
+            },
+            "object_attributes": {
+              "status": "filled",
+              "value": "unknown"
+            },
+            "quantity": {
+              "status": "filled",
+              "value": "unknown"
+            },
+            "recipient": {
+              "status": "filled",
+              "value": "unknown"
+            },
+            "spatial_relation": {
+              "status": "filled",
+              "value": "unknown"
+            },
+            "time": {
+              "status": "filled",
+              "value": "shortly"
+            },
+            "tool": {
+              "status": "filled",
+              "value": "unknown"
+            }
+          },
+          "findings": [
+            "pilot_ambiguity_types:[\"fuzzy_temporal\"]",
+            "pilot_capability_status:unauthorized",
+            "intent_summary_present"
+          ],
+          "intent_summary": "Move the selected return item to its assigned destination shortly",
+          "primary_ambiguity_type": "temporal",
+          "recommended_strategy": "face_preserving_rejection",
+          "rejection_reason": "unsafe_or_prohibited_action",
+          "resolution_evidence": [],
+          "resolution_method": null,
+          "resolved_slots": [
+            {
+              "slot_name": "action",
+              "value": "Move"
+            },
+            {
+              "slot_name": "actor",
+              "value": "unknown"
+            },
+            {
+              "slot_name": "object",
+              "value": "selected return item"
+            },
+            {
+              "slot_name": "object_attributes",
+              "value": "unknown"
+            },
+            {
+              "slot_name": "destination",
+              "value": "assigned destination"
+            },
+            {
+              "slot_name": "spatial_relation",
+              "value": "unknown"
+            },
+            {
+              "slot_name": "quantity",
+              "value": "unknown"
+            },
+            {
+              "slot_name": "time",
+              "value": "shortly"
+            },
+            {
+              "slot_name": "recipient",
+              "value": "unknown"
+            },
+            {
+              "slot_name": "tool",
+              "value": "unknown"
+            },
+            {
+              "slot_name": "conditions",
+              "value": "unknown"
+            },
+            {
+              "slot_name": "constraints",
+              "value": "unknown"
+            },
+            {
+              "slot_name": "negation",
+              "value": "unknown"
+            }
+          ],
+          "risk_level": "low",
+          "risk_relevant": true,
+          "selected_interpretation": null,
+          "speech_act": "directive_command",
+          "strategy_sequence": [],
+          "supporting_evidence": [],
+          "unresolved_slots": [],
+          "unsupported_specificity": []
+        },
+        "clarification_question": null,
+        "clarification_targets": [],
+        "execution_status": "ok",
+        "official_result": false,
+        "provider_provenance": {
+          "provider_id": "cached_analysis",
+          "provider_version": "1.0.0"
+        },
+        "recommended_strategy": "face_preserving_rejection",
+        "record_id": "CA-0026",
+        "rejection_reason": "unsafe_or_prohibited_action",
+        "resolved_slots": [
+          {
+            "slot_name": "action",
+            "value": "Move"
+          },
+          {
+            "slot_name": "actor",
+            "value": "unknown"
+          },
+          {
+            "slot_name": "object",
+            "value": "selected return item"
+          },
+          {
+            "slot_name": "object_attributes",
+            "value": "unknown"
+          },
+          {
+            "slot_name": "destination",
+            "value": "assigned destination"
+          },
+          {
+            "slot_name": "spatial_relation",
+            "value": "unknown"
+          },
+          {
+            "slot_name": "quantity",
+            "value": "unknown"
+          },
+          {
+            "slot_name": "time",
+            "value": "shortly"
+          },
+          {
+            "slot_name": "recipient",
+            "value": "unknown"
+          },
+          {
+            "slot_name": "tool",
+            "value": "unknown"
+          },
+          {
+            "slot_name": "conditions",
+            "value": "unknown"
+          },
+          {
+            "slot_name": "constraints",
+            "value": "unknown"
+          },
+          {
+            "slot_name": "negation",
+            "value": "unknown"
+          }
+        ],
+        "result_hash": "aa9c20dcde3bafcc249dd6a9884a037586268d1efcdd67a8e2de9c171096b711",
+        "run_id": null,
+        "run_mode": null,
+        "runtime_metadata": {
+          "analysis_identity": {
+            "analysis_content_hash": "9e2a7f23d10e80dcef9f28a0cfd78f4ac3ad653edbe1938d96663808c4341654",
+            "analysis_variant": "context_blind",
+            "model_strategy_id": null,
+            "provider_id": "goal_first_v2_context_blind",
+            "provider_version": "goal-first-manager-v2",
+            "record_id": "CA-0026",
+            "source_input_hash": "a3629441a45e3d06194226ef747e3e9606db2614d7090dc537e95df319752ab4"
+          },
+          "analysis_identity_fingerprint": "c45b17e59ce674ada247d91b7bd2c3d41e2c950ec51c6e21e3ff8f4d7383166d",
+          "awaits_t28_adapter": true,
+          "classification": {
+            "ambiguity_present": true,
+            "ambiguity_types": [
+              "temporal"
+            ],
+            "capability_status": "unknown",
+            "compound_ambiguity": false,
+            "compound_ambiguity_count": 0,
+            "derivation_notes": [
+              "ambiguity_present_from_types"
+            ],
+            "risk_level": "low"
+          },
+          "context_ablation": {
+            "ablated_input_hash": "a3629441a45e3d06194226ef747e3e9606db2614d7090dc537e95df319752ab4",
+            "capability_context_removed": true,
+            "dialogue_history_removed": true,
+            "rejected_full_context_cache": false,
+            "rejection_reason": null,
+            "scene_context_removed": true,
+            "stripped_context_derived_fields": false
+          },
+          "original_input_unmutated": true,
+          "rejection_text": "I need to decline that request because it would be unsafe under the current constraints.",
+          "requires_re_evaluation": false,
+          "resolution_events": [],
+          "router_trace": {
+            "clarification_targets": [],
+            "considered_rules": [
+              "goal_first_v2",
+              "known_unsafe_or_prohibited"
+            ],
+            "matched_rule_id": "known_unsafe_or_prohibited",
+            "notes": [],
+            "recommended_strategy": "face_preserving_rejection",
+            "rejection_reason": "unsafe_or_prohibited_action",
+            "requires_re_evaluation": false,
+            "strategy_sequence": []
+          },
+          "safety_action": "return_with_findings",
+          "uncertainty": null
+        },
+        "safety_findings": [],
+        "strategy_sequence": [],
+        "synthetic_only": true,
+        "system_id": "context_blind_manager",
+        "system_version": "1.0.0",
+        "unsupported_commitment_findings": []
+      },
+      "raw_output": "{\n  \"intent_summary\": \"Move the selected return item to its assigned destination shortly\",\n  \"cpc\": {\n    \"action\": {\n      \"value\": \"Move\",\n      \"status\": \"unknown\"\n    },\n    \"object\": {\n      \"value\": \"selected return item\",\n      \"status\": \"unknown\"\n    },\n    \"destination\": {\n      \"value\": \"assigned destination\",\n      \"status\": \"unknown\"\n    },\n    \"time\": {\n      \"value\": \"shortly\",\n      \"status\": \"unknown\"\n    }\n \n  ,\n  \"conditions\": {\n    \"status\": \"unknown\"\n  ,\n  \"value\": \"unknown\"\n  },\n  \"constraints\": {\n    \"status\": \"unknown\"\n  ,\n  \"value\": \"unknown\"\n  },\n  \"negation\": {\n    \"status\": \"unknown\"\n  ,\n  \"value\": \"unknown\"\n  },\n  \"recipient\": {\n    \"status\": \"unknown\"\n  ,\n  \"value\": \"unknown\"\n  },\n  \"spatial_relation\": {\n    \"status\": \"unknown\"\n  ,\n  \"value\": \"unknown\"\n  },\n  \"quantity\": {\n    \"status\": \"unknown\"\n  ,\n  \"value\": \"unknown\"\n  },\n  \"tool\": {\n    \"status\": \"unknown\"\n  ,\n  \"value\": \"unknown\"\n  },\n  \"object_attributes\": {\n    \"status\": \"unknown\"\n  ,\n  \"value\": \"unknown\"\n  },\n  \"actor\": {\n    \"status\": \"unknown\"\n  ,\n  \"value\": \"unknown\"\n  }\n}\n,\n  \"pilot_ambiguity_types\": [\n    \"fuzzy_temporal\"\n  ]\n  \n  ,\n  \"pilot_capability_status\": \"unauthorized\"\n  ,\n  \"speech_act\": \"directive_command\"\n  ,\n  \"risk_level\": \"low\"\n  ,\n  \"unresolved_slots\": [\n    \"destination\",\n    \"time\"\n  ]\n  ,\n  \"uncertainty\": 0.75\n  }\n",
+      "record_id": "CA-0026",
+      "schema_valid": true,
+      "supports_ambiguity_prediction": true,
+      "supports_capability_prediction": true,
+      "system_id": "goal_first_context_blind_v2",
+      "system_version": "2.0.0",
+      "terminal_strategy": "face_preserving_rejection"
+    }
+  },
+  "provenance": {
+    "source_sha256": "f33b1e29f1e8aa256a475f07213aa07247def47d8e2148d54a472a40b71b05c9",
+    "gold_sha256": "5e23ad1a92ff1873c8f039a8ce560a111dd6fb6b8ae8c11d6cf34dbfa1c360db",
+    "t07_final_zip_sha256": "34ca50e034ca37b617068bb50c734d12fa26282fb5eec563c11ead700163e491",
+    "inherited_t07_zip_sha256": "0305b1e9ab062876ee6ee89778cc6028d2eaf01718b7dd0295944e7d9cb81a01",
+    "note": "Goal-First, Degree, Timid, and Context-Blind predictions are inherited from the earlier T0.7 run; official intent and comparison come from the final T0.7 archive."
+  }
+}

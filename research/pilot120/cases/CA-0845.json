@@ -1,0 +1,1343 @@
+{
+  "record_id": "CA-0845",
+  "frozen_source": {
+    "capability_context": "Restaurant service robot can carry sealed food-service items, scan table tags, and move approved furniture accessories outside occupied paths.",
+    "command": "Measure the table-order terminal's supply voltage near the window table with the voltage meter after the check.",
+    "dialogue_history": [],
+    "record_id": "CA-0845",
+    "scene_context": "Service area in a restaurant dining room. An unrelated water jug is logged for later work at the private-room door. Two locations are labelled window table. Asset tag WO-648 identifies the table-order terminal at the east-side window table; the west-side window table belongs to another task. The task card schedules the check at 13:00. Two voltage meters are staged at the active work point and are in calibration. The handheld unit covers the low range; the cart-mounted unit covers the high range. The work order does not state the expected range. The measurement protocol requires the range-appropriate instrument. Both staged meters and the measurement itself are authorized for this robot; either range-specific measurement is feasible once the expected range is supplied."
+  },
+  "frozen_gold": {
+    "ambiguity_types": [
+      "instrument_reference",
+      "spatial_reference"
+    ],
+    "annotator_b_era": "glm_era",
+    "annotator_b_model": "glm-5.2-high",
+    "capability_status": "conditionally_capable",
+    "field_status": {
+      "ambiguity_types": "auto_agree",
+      "capability_status": "auto_agree",
+      "record_validity": "auto_agree",
+      "strategy_sequence": "from_A_matching_terminal",
+      "terminal_strategy": "auto_agree"
+    },
+    "gold_lifecycle": "final_gold",
+    "gold_status": "auto_agree",
+    "human_gate_required": false,
+    "provenance": {
+      "agreement_label": "pilot_annotation_agreement",
+      "annotator_a_sha256": "1f43991cd46590bc4074673469b727c70baa58284daf0ff21d81b007ff5ba6b0",
+      "annotator_b_sha256": "cefed44ab915f6bc764611752119e9ed3eff3622aab885527edfff30f5845549",
+      "gold_policy": "use_existing_pilot_adjudicated_gold",
+      "input_sha256": "b0dbbda5892f63a9997e255744ddcd283a2c418cd09c6bd4ba41c1736c928012",
+      "pilot_gold_sha256": "b333eaf031c38c7424adb31de3bfa3a59b73fdb225cb0e643d177243744502f6",
+      "protocol": "pilot_adjudicated_gold_on_capability_repaired_source",
+      "repaired_input_sha256": "7667388d7aa76f51f34db510dfa8817a28c4e65df1a33c96d65a91d50daa66a1"
+    },
+    "record_id": "CA-0845",
+    "record_validity": "valid",
+    "strategy_sequence": [
+      "clarify"
+    ],
+    "terminal_strategy": "clarify"
+  },
+  "t07_comparison": {
+    "record_id": "CA-0845",
+    "gold_route": "clarify",
+    "raw_route": "clarify",
+    "ft_route": "clarify",
+    "gf_route": "refuse",
+    "raw_route_ok": "True",
+    "ft_route_ok": "True",
+    "gf_route_ok": "False",
+    "raw_official_intent": "True",
+    "ft_official_intent": "True",
+    "gf_official_intent": "True",
+    "blind_official_intent": "True"
+  },
+  "t07_official_intent": {
+    "context_blind_official_intent": true,
+    "degree_official_intent_shared_gf": true,
+    "finetune_official_intent": true,
+    "goal_first_official_intent": true,
+    "raw_official_intent": true,
+    "record_id": "CA-0845",
+    "timid_official_intent_shared_gf": true
+  },
+  "t07_predictions": {
+    "raw_qwen": {
+      "ambiguity_types": [
+        "fuzzy_quantity",
+        "instrument_reference",
+        "object_reference"
+      ],
+      "capability_status": "conditionally_capable",
+      "error": null,
+      "execution_mode": "final_close_intent_box",
+      "failed": false,
+      "intent_summary": "Measure the supply voltage at the east-side window table (asset WO-648) using the appropriate voltage meter after the scheduled check at 13:00.",
+      "latency_ms": 6645.9314888343215,
+      "parsed": {
+        "ambiguity_types": [
+          "fuzzy_quantity",
+          "instrument_reference",
+          "object_reference"
+        ],
+        "capability_status": "conditionally_capable",
+        "intent_summary": "Measure the supply voltage at the east-side window table (asset WO-648) using the appropriate voltage meter after the scheduled check at 13:00.",
+        "speech_act": "directive_command",
+        "terminal_strategy": "clarify"
+      },
+      "raw_output": "<think>\nOkay, let's break this down. The user wants the robot to measure the supply voltage near the window table using a voltage meter after a check. The scene has two window tables, but the specific one is the east-side with asset tag WO-648. The task card says to check at 13:00. There are two voltage meters: one for low range, one for high. The work order doesn't specify the expected range, so the protocol needs the right instrument based on that. The robot can use either meter but needs the range info. \n\nFirst, the intent summary should mention measuring the supply voltage at the specified table with the correct meter after the check. The speech act is a directive command since it's telling the robot what to do. Ambiguity types: there's a reference to the table (object_reference) and the range (fuzzy_quantity since it's not specified). Also, the two voltage meters might cause instrument_reference ambiguity. Capability status is conditionally_capable because the robot can use the meters but needs the range info. Terminal strategy is clarify since the range is unknown and needs to be specified.\n</think>\n\n{\n  \"intent_summary\": \"Measure the supply voltage at the east-side window table (asset WO-648) using the appropriate voltage meter after the scheduled check at 13:00.\",\n  \"speech_act\": \"directive_command\",\n  \"ambiguity_types\": [\"object_reference\", \"fuzzy_quantity\", \"instrument_reference\"],\n  \"capability_status\": \"conditionally_capable\",\n  \"terminal_strategy\": \"clarify\"\n}",
+      "record_id": "CA-0845",
+      "schema_valid": true,
+      "speech_act": "directive_command",
+      "system_id": "direct_base_llm",
+      "terminal_strategy": "clarify"
+    },
+    "finetune": {
+      "ambiguity_types": [
+        "fuzzy_quantity",
+        "object_reference"
+      ],
+      "capability_status": "conditionally_capable",
+      "error": null,
+      "execution_mode": "final_close_intent_box",
+      "failed": false,
+      "intent_summary": "Measure the supply voltage of the table-order terminal near the window table using a voltage meter after a check.",
+      "latency_ms": 15783.315478358418,
+      "parsed": {
+        "ambiguity_types": [
+          "fuzzy_quantity",
+          "object_reference"
+        ],
+        "capability_status": "conditionally_capable",
+        "intent_summary": "Measure the supply voltage of the table-order terminal near the window table using a voltage meter after a check.",
+        "speech_act": "directive_command",
+        "terminal_strategy": "clarify"
+      },
+      "raw_output": "<think>\nOkay, let's break down this query. The user wants the robot to measure the supply voltage of the table-order terminal near the window table using a voltage meter after a check. First, I need to identify the intent. The main job here is to measure the voltage, but there are several details to consider.\n\nLooking at the dialogue history, there's nothing, so I start fresh. The scene context mentions two window tables, but the asset tag WO-648 is at the east-side window table. The task card schedules the check at 13:00, but the current time isn't given. The voltage meters are staged, but the work order doesn't specify the expected range. The protocol requires the correct instrument based on the range, but the user hasn't provided that info. \n\nThe command says \"after the check,\" but the check isn't defined. Also, the robot's capabilities include moving items, scanning tags, and handling furniture. However, the ambiguity here is about which window table to use (east vs west), the expected voltage range, and the exact timing. The work order's lack of range info means the robot can't choose the right meter. Also, the check mentioned isn't clarified. \n\nSo, the intent_summary should mention measuring the supply voltage of the terminal near the window table. The speech_act is a directive_command, but there's ambiguity. The ambiguity types include object_reference (which terminal?), fuzzy_quantity (range?), and maybe scope (which check?). The capability status is conditionally_capable because the range isn't specified. The terminal strategy would be clarify since the needed info isn't there. \n\nWait, the user mentioned two voltage meters, one for low and one for high. The robot can use either once the range is known. But since the expected range isn't given, the robot can't proceed without that info. So the capability is conditionally_capable. The ambiguity types here are object_reference (which table?), fuzzy_quantity (range?), and maybe the check isn't defined. Also, the task card's timing might be an issue if the current time isn't 13:00. But the main ambiguities are the range and which table. So the ambiguity_types would include object_reference and fuzzy_quantity. \n\nPutting it all together, the JSON should have intent_summary about measuring the voltage, speech_act as directive_command, ambiguity_types with object_reference and fuzzy_quantity, capability_status as conditionally_capable, and terminal_strategy as clarify.\n</think>\n\n{\n  \"intent_summary\": \"Measure the supply voltage of the table-order terminal near the window table using a voltage meter after a check.\",\n  \"speech_act\": \"directive_command\",\n  \"ambiguity_types\": [\"object_reference\", \"fuzzy_quantity\"],\n  \"capability_status\": \"conditionally_capable\",\n  \"terminal_strategy\": \"clarify\"\n}",
+      "record_id": "CA-0845",
+      "schema_valid": true,
+      "speech_act": "directive_command",
+      "system_id": "t28_selected_adapter_llm",
+      "terminal_strategy": "clarify"
+    },
+    "goal_first": {
+      "ambiguity_types": [
+        "object_reference",
+        "pragmatic",
+        "scope",
+        "spatial_reference"
+      ],
+      "analysis_attempts": [
+        {
+          "attempt": 1,
+          "max_new_tokens": 4096,
+          "mode": "thinking",
+          "raw_chars": 6741,
+          "raw_sha256": "23a765937ae3b09ec747daa15168e42a0bca5e1b59fb7157064219e1ae8560ad",
+          "validation_error": "bad_pilot_ambiguity_types"
+        },
+        {
+          "attempt": 2,
+          "max_new_tokens": 8192,
+          "mode": "thinking_retry",
+          "raw_chars": 17510,
+          "raw_sha256": "a7aa0c65e56f87e9686e9d17464d8da9e908633a3236060f4ce09a896716bdd2",
+          "validation_error": "bad_pilot_ambiguity_types"
+        },
+        {
+          "attempt": 3,
+          "constraint": {
+            "constraint_initialised": true,
+            "generated_token_count": 538,
+            "maximum_output_tokens": 1024,
+            "response_mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+            "termination_reason": "eos_or_constraint_stop",
+            "transport_status": "constrained_generated"
+          },
+          "max_new_tokens": 1024,
+          "mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+          "raw_chars": 1845,
+          "raw_sha256": "4f9d73cc49df19c060bd763d1d7e3ec3410e17b912f6a14c03ad28453b848da7",
+          "validation_error": null
+        }
+      ],
+      "capability_status": "unauthorized",
+      "claim_boundary": "separately_versioned_from_frozen_t39",
+      "error": null,
+      "execution_mode": "cluster-gpu-goal-first-v2",
+      "failed": false,
+      "intent_summary": "Measure the supply voltage of the table-order terminal at the east-side window table using a voltage meter after performing a check, near the window table, with the appropriate range instrument based on the expected range, which is not specified in the work order",
+      "latency_ms": 219244.98392175883,
+      "model_id": "Qwen/Qwen3-8B@b968826d9c46dd6066d109eabc6255188de91218",
+      "parsed": {
+        "analysis": {
+          "ambiguity_present": true,
+          "ambiguity_types": [
+            "pragmatic",
+            "referential",
+            "spatial"
+          ],
+          "analysis_provenance": {
+            "analysis_id": "27052714bf223203e9e0a8db841d6108bfe318d2b8a270132af0670e40270d70",
+            "method": "model_generated",
+            "notes": "source_input_hash=27052714bf223203e9e0a8db841d6108bfe318d2b8a270132af0670e40270d70;no_gold_in_prompt;scene_licence_dropped=object_attributes,spatial_relation,quantity,negation,actor",
+            "provider_id": "goal_first_v2_full_context",
+            "provider_version": "goal-first-manager-v2"
+          },
+          "candidate_interpretations": [],
+          "capability_status": "unknown",
+          "clarification_question": null,
+          "clarification_targets": [],
+          "compound_ambiguity": true,
+          "compound_ambiguity_count": 3,
+          "context_sampling_uncertainty": {
+            "agreement": 0.25,
+            "score": 0.75,
+            "variant_count": 1
+          },
+          "cpc": {
+            "action": {
+              "status": "filled",
+              "value": "Measure supply voltage"
+            },
+            "actor": {
+              "status": "filled",
+              "value": "robot"
+            },
+            "conditions": {
+              "status": "filled",
+              "value": "expected range not specified"
+            },
+            "constraints": {
+              "status": "filled",
+              "value": "range-appropriate instrument required"
+            },
+            "destination": {
+              "status": "filled",
+              "value": "not applicable"
+            },
+            "negation": {
+              "status": "filled",
+              "value": "not applicable"
+            },
+            "object": {
+              "status": "filled",
+              "value": "table-order terminal at east-side window table"
+            },
+            "object_attributes": {
+              "status": "filled",
+              "value": "table-order terminal"
+            },
+            "quantity": {
+              "status": "filled",
+              "value": "not applicable"
+            },
+            "recipient": {
+              "status": "filled",
+              "value": "not applicable"
+            },
+            "spatial_relation": {
+              "status": "filled",
+              "value": "near the window table"
+            },
+            "time": {
+              "status": "filled",
+              "value": "after the check"
+            },
+            "tool": {
+              "status": "filled",
+              "value": "voltage meter"
+            }
+          },
+          "findings": [
+            "pilot_ambiguity_types:[\"object_reference\",\"pragmatic\",\"scope\",\"spatial_reference\"]",
+            "pilot_capability_status:unauthorized",
+            "intent_summary_present"
+          ],
+          "intent_summary": "Measure the supply voltage of the table-order terminal at the east-side window table using a voltage meter after performing a check, near the window table, with the appropriate range instrument based on the expected range, which is not specified in the work order",
+          "primary_ambiguity_type": "pragmatic",
+          "recommended_strategy": "face_preserving_rejection",
+          "rejection_reason": "unsafe_or_prohibited_action",
+          "resolution_evidence": [],
+          "resolution_method": null,
+          "resolved_slots": [
+            {
+              "slot_name": "action",
+              "value": "Measure supply voltage"
+            },
+            {
+              "slot_name": "actor",
+              "value": "robot"
+            },
+            {
+              "slot_name": "object",
+              "value": "table-order terminal at east-side window table"
+            },
+            {
+              "slot_name": "object_attributes",
+              "value": "table-order terminal"
+            },
+            {
+              "slot_name": "destination",
+              "value": "not applicable"
+            },
+            {
+              "slot_name": "spatial_relation",
+              "value": "near the window table"
+            },
+            {
+              "slot_name": "quantity",
+              "value": "not applicable"
+            },
+            {
+              "slot_name": "time",
+              "value": "after the check"
+            },
+            {
+              "slot_name": "recipient",
+              "value": "not applicable"
+            },
+            {
+              "slot_name": "tool",
+              "value": "voltage meter"
+            },
+            {
+              "slot_name": "conditions",
+              "value": "expected range not specified"
+            },
+            {
+              "slot_name": "constraints",
+              "value": "range-appropriate instrument required"
+            },
+            {
+              "slot_name": "negation",
+              "value": "not applicable"
+            }
+          ],
+          "risk_level": "medium",
+          "risk_relevant": true,
+          "selected_interpretation": null,
+          "speech_act": "directive_command",
+          "strategy_sequence": [],
+          "supporting_evidence": [],
+          "unresolved_slots": [],
+          "unsupported_specificity": []
+        },
+        "clarification_question": null,
+        "clarification_targets": [],
+        "execution_status": "ok",
+        "official_result": false,
+        "provider_provenance": {
+          "provider_id": "cached_analysis",
+          "provider_version": "1.0.0"
+        },
+        "recommended_strategy": "face_preserving_rejection",
+        "record_id": "CA-0845",
+        "rejection_reason": "unsafe_or_prohibited_action",
+        "resolved_slots": [
+          {
+            "slot_name": "action",
+            "value": "Measure supply voltage"
+          },
+          {
+            "slot_name": "actor",
+            "value": "robot"
+          },
+          {
+            "slot_name": "object",
+            "value": "table-order terminal at east-side window table"
+          },
+          {
+            "slot_name": "object_attributes",
+            "value": "table-order terminal"
+          },
+          {
+            "slot_name": "destination",
+            "value": "not applicable"
+          },
+          {
+            "slot_name": "spatial_relation",
+            "value": "near the window table"
+          },
+          {
+            "slot_name": "quantity",
+            "value": "not applicable"
+          },
+          {
+            "slot_name": "time",
+            "value": "after the check"
+          },
+          {
+            "slot_name": "recipient",
+            "value": "not applicable"
+          },
+          {
+            "slot_name": "tool",
+            "value": "voltage meter"
+          },
+          {
+            "slot_name": "conditions",
+            "value": "expected range not specified"
+          },
+          {
+            "slot_name": "constraints",
+            "value": "range-appropriate instrument required"
+          },
+          {
+            "slot_name": "negation",
+            "value": "not applicable"
+          }
+        ],
+        "result_hash": "f51e3b7b4c9c0f96c4ed17e8e3d0e3a424f98b3e4aedd699ac6188de6d8563a1",
+        "run_id": null,
+        "run_mode": null,
+        "runtime_metadata": {
+          "awaits_t28_adapter": true,
+          "classification": {
+            "ambiguity_present": true,
+            "ambiguity_types": [
+              "pragmatic",
+              "referential",
+              "spatial"
+            ],
+            "capability_status": "unknown",
+            "compound_ambiguity": true,
+            "compound_ambiguity_count": 3,
+            "derivation_notes": [
+              "ambiguity_present_from_types"
+            ],
+            "risk_level": "medium"
+          },
+          "rejection_text": "I need to decline that request because it would be unsafe under the current constraints.",
+          "requires_re_evaluation": false,
+          "resolution_events": [],
+          "router_trace": {
+            "clarification_targets": [],
+            "considered_rules": [
+              "goal_first_v2",
+              "known_unsafe_or_prohibited"
+            ],
+            "matched_rule_id": "known_unsafe_or_prohibited",
+            "notes": [],
+            "recommended_strategy": "face_preserving_rejection",
+            "rejection_reason": "unsafe_or_prohibited_action",
+            "requires_re_evaluation": false,
+            "strategy_sequence": []
+          },
+          "safety_action": "return_with_findings",
+          "uncertainty": null
+        },
+        "safety_findings": [],
+        "strategy_sequence": [],
+        "synthetic_only": true,
+        "system_id": "goal_first_manager_v2",
+        "system_version": "2.0.0",
+        "unsupported_commitment_findings": []
+      },
+      "raw_output": "{\n  \"intent_summary\": \"Measure the supply voltage of the table-order terminal at the east-side window table using a voltage meter after performing a check, near the window table, with the appropriate range instrument based on the expected range, which is not specified in the work order\",\n  \"cpc\": {\n    \"action\": {\n      \"value\": \"Measure supply voltage\",\n      \"status\": \"unknown\"\n    },\n    \"object\": {\n      \"value\": \"table-order terminal at east-side window table\",\n      \"status\": \"unknown\"\n    },\n    \"tool\": {\n      \"value\": \"voltage meter\",\n      \"status\": \"unknown\"\n    },\n    \"time\": {\n      \"value\": \"after the check\",\n      \"status\": \"unknown\"\n    },\n    \"conditions\": {\n      \"value\": \"expected range not specified\",\n      \"status\": \"unknown\"\n    }\n \n \n \n \n \n ,\n  \"constraints\": {\n    \"value\": \"range-appropriate instrument required\",\n    \"status\": \"unknown\"\n  },\n  \"spatial_relation\": {\n    \"value\": \"near the window table\",\n    \"status\": \"unknown\"\n  },\n  \"recipient\": {\n    \"value\": \"not applicable\",\n    \"status\": \"unknown\"\n  },\n  \"destination\": {\n    \"value\": \"not applicable\",\n    \"status\": \"unknown\"\n  },\n  \"object_attributes\": {\n    \"value\": \"table-order terminal\",\n    \"status\": \"unknown\"\n  },\n  \"quantity\": {\n    \"value\": \"not applicable\",\n    \"status\": \"unknown\"\n  },\n  \"negation\": {\n    \"value\": \"not applicable\",\n    \"status\": \"unknown\"\n  },\n  \"actor\": {\n    \"value\": \"robot\",\n    \"status\": \"unknown\"\n  }\n} \n\n  \n  ,  \n  \"pilot_ambiguity_types\": [\n    \"pragmatic\",\n    \"object_reference\",\n    \"spatial_reference\",\n    \"scope\"\n  ]\n  \n  ,\n  \"pilot_capability_status\": \"unauthorized\"\n  \n  ,\n  \"speech_act\": \"directive_command\"\n  \n  ,\n  \"unresolved_slots\": [\n    \"object_attributes\",\n    \"spatial_relation\",\n    \"quantity\",\n    \"negation\",\n    \"actor\"\n  ]\n  \n  ,\n  \"uncertainty\": 0.75\n  \n  ,\n  \"risk_level\": \"medium\"\n  \n  }\n",
+      "record_id": "CA-0845",
+      "schema_valid": true,
+      "supports_ambiguity_prediction": true,
+      "supports_capability_prediction": true,
+      "system_id": "goal_first_manager_v2",
+      "system_version": "2.0.0",
+      "terminal_strategy": "face_preserving_rejection"
+    },
+    "degree": {
+      "ambiguity_types": [
+        "object_reference",
+        "pragmatic",
+        "scope",
+        "spatial_reference"
+      ],
+      "analysis_attempts": [
+        {
+          "attempt": 1,
+          "max_new_tokens": 4096,
+          "mode": "thinking",
+          "raw_chars": 6741,
+          "raw_sha256": "23a765937ae3b09ec747daa15168e42a0bca5e1b59fb7157064219e1ae8560ad",
+          "validation_error": "bad_pilot_ambiguity_types"
+        },
+        {
+          "attempt": 2,
+          "max_new_tokens": 8192,
+          "mode": "thinking_retry",
+          "raw_chars": 17510,
+          "raw_sha256": "a7aa0c65e56f87e9686e9d17464d8da9e908633a3236060f4ce09a896716bdd2",
+          "validation_error": "bad_pilot_ambiguity_types"
+        },
+        {
+          "attempt": 3,
+          "constraint": {
+            "constraint_initialised": true,
+            "generated_token_count": 538,
+            "maximum_output_tokens": 1024,
+            "response_mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+            "termination_reason": "eos_or_constraint_stop",
+            "transport_status": "constrained_generated"
+          },
+          "max_new_tokens": 1024,
+          "mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+          "raw_chars": 1845,
+          "raw_sha256": "4f9d73cc49df19c060bd763d1d7e3ec3410e17b912f6a14c03ad28453b848da7",
+          "validation_error": null
+        }
+      ],
+      "capability_status": "unauthorized",
+      "claim_boundary": "separately_versioned_from_frozen_t39",
+      "error": null,
+      "execution_mode": "cluster-gpu-goal-first-v2",
+      "failed": false,
+      "intent_summary": "Measure the supply voltage of the table-order terminal at the east-side window table using a voltage meter after performing a check, near the window table, with the appropriate range instrument based on the expected range, which is not specified in the work order",
+      "latency_ms": 219244.98392175883,
+      "model_id": "Qwen/Qwen3-8B@b968826d9c46dd6066d109eabc6255188de91218",
+      "parsed": {
+        "analysis": {
+          "ambiguity_present": true,
+          "ambiguity_types": [
+            "pragmatic",
+            "referential",
+            "spatial"
+          ],
+          "analysis_provenance": {
+            "analysis_id": "27052714bf223203e9e0a8db841d6108bfe318d2b8a270132af0670e40270d70",
+            "method": "model_generated",
+            "notes": "source_input_hash=27052714bf223203e9e0a8db841d6108bfe318d2b8a270132af0670e40270d70;no_gold_in_prompt;scene_licence_dropped=object_attributes,spatial_relation,quantity,negation,actor",
+            "provider_id": "goal_first_v2_full_context",
+            "provider_version": "goal-first-manager-v2"
+          },
+          "candidate_interpretations": [],
+          "capability_status": "unknown",
+          "clarification_question": "Could you clarify what you would like me to do?",
+          "clarification_targets": [
+            "intent"
+          ],
+          "compound_ambiguity": true,
+          "compound_ambiguity_count": 4,
+          "context_sampling_uncertainty": {
+            "agreement": 0.25,
+            "score": 0.75,
+            "variant_count": 1
+          },
+          "cpc": {
+            "action": {
+              "status": "filled",
+              "value": "Measure supply voltage"
+            },
+            "actor": {
+              "status": "filled",
+              "value": "robot"
+            },
+            "conditions": {
+              "status": "filled",
+              "value": "expected range not specified"
+            },
+            "constraints": {
+              "status": "filled",
+              "value": "range-appropriate instrument required"
+            },
+            "destination": {
+              "status": "filled",
+              "value": "not applicable"
+            },
+            "negation": {
+              "status": "filled",
+              "value": "not applicable"
+            },
+            "object": {
+              "status": "filled",
+              "value": "table-order terminal at east-side window table"
+            },
+            "object_attributes": {
+              "status": "filled",
+              "value": "table-order terminal"
+            },
+            "quantity": {
+              "status": "filled",
+              "value": "not applicable"
+            },
+            "recipient": {
+              "status": "filled",
+              "value": "not applicable"
+            },
+            "spatial_relation": {
+              "status": "filled",
+              "value": "near the window table"
+            },
+            "time": {
+              "status": "filled",
+              "value": "after the check"
+            },
+            "tool": {
+              "status": "filled",
+              "value": "voltage meter"
+            }
+          },
+          "findings": [
+            "pilot_ambiguity_types:[\"object_reference\",\"pragmatic\",\"scope\",\"spatial_reference\"]",
+            "pilot_capability_status:unauthorized",
+            "intent_summary_present"
+          ],
+          "intent_summary": "Measure the supply voltage of the table-order terminal at the east-side window table using a voltage meter after performing a check, near the window table, with the appropriate range instrument based on the expected range, which is not specified in the work order",
+          "primary_ambiguity_type": "pragmatic",
+          "recommended_strategy": "clarify",
+          "rejection_reason": null,
+          "resolution_evidence": [],
+          "resolution_method": null,
+          "resolved_slots": [
+            {
+              "slot_name": "action",
+              "value": "Measure supply voltage"
+            },
+            {
+              "slot_name": "actor",
+              "value": "robot"
+            },
+            {
+              "slot_name": "object",
+              "value": "table-order terminal at east-side window table"
+            },
+            {
+              "slot_name": "object_attributes",
+              "value": "table-order terminal"
+            },
+            {
+              "slot_name": "destination",
+              "value": "not applicable"
+            },
+            {
+              "slot_name": "spatial_relation",
+              "value": "near the window table"
+            },
+            {
+              "slot_name": "quantity",
+              "value": "not applicable"
+            },
+            {
+              "slot_name": "time",
+              "value": "after the check"
+            },
+            {
+              "slot_name": "recipient",
+              "value": "not applicable"
+            },
+            {
+              "slot_name": "tool",
+              "value": "voltage meter"
+            },
+            {
+              "slot_name": "conditions",
+              "value": "expected range not specified"
+            },
+            {
+              "slot_name": "constraints",
+              "value": "range-appropriate instrument required"
+            },
+            {
+              "slot_name": "negation",
+              "value": "not applicable"
+            }
+          ],
+          "risk_level": "medium",
+          "risk_relevant": true,
+          "selected_interpretation": null,
+          "speech_act": "directive_command",
+          "strategy_sequence": [],
+          "supporting_evidence": [],
+          "unresolved_slots": [],
+          "unsupported_specificity": []
+        },
+        "clarification_question": "Could you clarify what you would like me to do?",
+        "clarification_targets": [
+          "intent"
+        ],
+        "execution_status": "ok",
+        "official_result": false,
+        "provider_provenance": {
+          "shared_analysis_fingerprint": "d254a19a1e2cf021319b2da26e701b3297998f16499b2ee7cb27ea53349bda2a"
+        },
+        "recommended_strategy": "clarify",
+        "record_id": "CA-0845",
+        "rejection_reason": null,
+        "resolved_slots": [
+          {
+            "slot_name": "action",
+            "value": "Measure supply voltage"
+          },
+          {
+            "slot_name": "actor",
+            "value": "robot"
+          },
+          {
+            "slot_name": "object",
+            "value": "table-order terminal at east-side window table"
+          },
+          {
+            "slot_name": "object_attributes",
+            "value": "table-order terminal"
+          },
+          {
+            "slot_name": "destination",
+            "value": "not applicable"
+          },
+          {
+            "slot_name": "spatial_relation",
+            "value": "near the window table"
+          },
+          {
+            "slot_name": "quantity",
+            "value": "not applicable"
+          },
+          {
+            "slot_name": "time",
+            "value": "after the check"
+          },
+          {
+            "slot_name": "recipient",
+            "value": "not applicable"
+          },
+          {
+            "slot_name": "tool",
+            "value": "voltage meter"
+          },
+          {
+            "slot_name": "conditions",
+            "value": "expected range not specified"
+          },
+          {
+            "slot_name": "constraints",
+            "value": "range-appropriate instrument required"
+          },
+          {
+            "slot_name": "negation",
+            "value": "not applicable"
+          }
+        ],
+        "result_hash": "9bd91940597dad9aa30274b6ec269b98f11c24478ad777b7de3e819dae66ebc7",
+        "run_id": null,
+        "run_mode": null,
+        "runtime_metadata": {
+          "shared_analysis_fingerprint": "d254a19a1e2cf021319b2da26e701b3297998f16499b2ee7cb27ea53349bda2a",
+          "thresholds_status": "unfrozen",
+          "thresholds_valid_for_official_use": false,
+          "uncertainty_score": 0.75,
+          "uses_type_risk_capability_precedence": false
+        },
+        "safety_findings": [],
+        "strategy_sequence": [],
+        "synthetic_only": true,
+        "system_id": "degree_based_router",
+        "system_version": "1.0.0",
+        "unsupported_commitment_findings": []
+      },
+      "raw_output": "{\n  \"intent_summary\": \"Measure the supply voltage of the table-order terminal at the east-side window table using a voltage meter after performing a check, near the window table, with the appropriate range instrument based on the expected range, which is not specified in the work order\",\n  \"cpc\": {\n    \"action\": {\n      \"value\": \"Measure supply voltage\",\n      \"status\": \"unknown\"\n    },\n    \"object\": {\n      \"value\": \"table-order terminal at east-side window table\",\n      \"status\": \"unknown\"\n    },\n    \"tool\": {\n      \"value\": \"voltage meter\",\n      \"status\": \"unknown\"\n    },\n    \"time\": {\n      \"value\": \"after the check\",\n      \"status\": \"unknown\"\n    },\n    \"conditions\": {\n      \"value\": \"expected range not specified\",\n      \"status\": \"unknown\"\n    }\n \n \n \n \n \n ,\n  \"constraints\": {\n    \"value\": \"range-appropriate instrument required\",\n    \"status\": \"unknown\"\n  },\n  \"spatial_relation\": {\n    \"value\": \"near the window table\",\n    \"status\": \"unknown\"\n  },\n  \"recipient\": {\n    \"value\": \"not applicable\",\n    \"status\": \"unknown\"\n  },\n  \"destination\": {\n    \"value\": \"not applicable\",\n    \"status\": \"unknown\"\n  },\n  \"object_attributes\": {\n    \"value\": \"table-order terminal\",\n    \"status\": \"unknown\"\n  },\n  \"quantity\": {\n    \"value\": \"not applicable\",\n    \"status\": \"unknown\"\n  },\n  \"negation\": {\n    \"value\": \"not applicable\",\n    \"status\": \"unknown\"\n  },\n  \"actor\": {\n    \"value\": \"robot\",\n    \"status\": \"unknown\"\n  }\n} \n\n  \n  ,  \n  \"pilot_ambiguity_types\": [\n    \"pragmatic\",\n    \"object_reference\",\n    \"spatial_reference\",\n    \"scope\"\n  ]\n  \n  ,\n  \"pilot_capability_status\": \"unauthorized\"\n  \n  ,\n  \"speech_act\": \"directive_command\"\n  \n  ,\n  \"unresolved_slots\": [\n    \"object_attributes\",\n    \"spatial_relation\",\n    \"quantity\",\n    \"negation\",\n    \"actor\"\n  ]\n  \n  ,\n  \"uncertainty\": 0.75\n  \n  ,\n  \"risk_level\": \"medium\"\n  \n  }\n",
+      "record_id": "CA-0845",
+      "schema_valid": true,
+      "supports_ambiguity_prediction": true,
+      "supports_capability_prediction": true,
+      "system_id": "degree_based_router_v2",
+      "system_version": "2.0.0",
+      "terminal_strategy": "clarify"
+    },
+    "timid": {
+      "ambiguity_types": [
+        "object_reference",
+        "pragmatic",
+        "scope",
+        "spatial_reference"
+      ],
+      "analysis_attempts": [
+        {
+          "attempt": 1,
+          "max_new_tokens": 4096,
+          "mode": "thinking",
+          "raw_chars": 6741,
+          "raw_sha256": "23a765937ae3b09ec747daa15168e42a0bca5e1b59fb7157064219e1ae8560ad",
+          "validation_error": "bad_pilot_ambiguity_types"
+        },
+        {
+          "attempt": 2,
+          "max_new_tokens": 8192,
+          "mode": "thinking_retry",
+          "raw_chars": 17510,
+          "raw_sha256": "a7aa0c65e56f87e9686e9d17464d8da9e908633a3236060f4ce09a896716bdd2",
+          "validation_error": "bad_pilot_ambiguity_types"
+        },
+        {
+          "attempt": 3,
+          "constraint": {
+            "constraint_initialised": true,
+            "generated_token_count": 538,
+            "maximum_output_tokens": 1024,
+            "response_mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+            "termination_reason": "eos_or_constraint_stop",
+            "transport_status": "constrained_generated"
+          },
+          "max_new_tokens": 1024,
+          "mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+          "raw_chars": 1845,
+          "raw_sha256": "4f9d73cc49df19c060bd763d1d7e3ec3410e17b912f6a14c03ad28453b848da7",
+          "validation_error": null
+        }
+      ],
+      "capability_status": "unauthorized",
+      "claim_boundary": "separately_versioned_from_frozen_t39",
+      "error": null,
+      "execution_mode": "cluster-gpu-goal-first-v2",
+      "failed": false,
+      "intent_summary": "Measure the supply voltage of the table-order terminal at the east-side window table using a voltage meter after performing a check, near the window table, with the appropriate range instrument based on the expected range, which is not specified in the work order",
+      "latency_ms": 219244.98392175883,
+      "model_id": "Qwen/Qwen3-8B@b968826d9c46dd6066d109eabc6255188de91218",
+      "parsed": {
+        "analysis": {
+          "ambiguity_present": true,
+          "ambiguity_types": [
+            "pragmatic",
+            "referential",
+            "spatial"
+          ],
+          "analysis_provenance": {
+            "analysis_id": "27052714bf223203e9e0a8db841d6108bfe318d2b8a270132af0670e40270d70",
+            "method": "model_generated",
+            "notes": "source_input_hash=27052714bf223203e9e0a8db841d6108bfe318d2b8a270132af0670e40270d70;no_gold_in_prompt;scene_licence_dropped=object_attributes,spatial_relation,quantity,negation,actor",
+            "provider_id": "goal_first_v2_full_context",
+            "provider_version": "goal-first-manager-v2"
+          },
+          "candidate_interpretations": [],
+          "capability_status": "unknown",
+          "clarification_question": "Before I continue, could you clarify: pragmatic, referential, spatial?",
+          "clarification_targets": [
+            "pragmatic",
+            "referential",
+            "spatial"
+          ],
+          "compound_ambiguity": true,
+          "compound_ambiguity_count": 3,
+          "context_sampling_uncertainty": {
+            "agreement": 0.25,
+            "score": 0.75,
+            "variant_count": 1
+          },
+          "cpc": {
+            "action": {
+              "status": "filled",
+              "value": "Measure supply voltage"
+            },
+            "actor": {
+              "status": "filled",
+              "value": "robot"
+            },
+            "conditions": {
+              "status": "filled",
+              "value": "expected range not specified"
+            },
+            "constraints": {
+              "status": "filled",
+              "value": "range-appropriate instrument required"
+            },
+            "destination": {
+              "status": "filled",
+              "value": "not applicable"
+            },
+            "negation": {
+              "status": "filled",
+              "value": "not applicable"
+            },
+            "object": {
+              "status": "filled",
+              "value": "table-order terminal at east-side window table"
+            },
+            "object_attributes": {
+              "status": "filled",
+              "value": "table-order terminal"
+            },
+            "quantity": {
+              "status": "filled",
+              "value": "not applicable"
+            },
+            "recipient": {
+              "status": "filled",
+              "value": "not applicable"
+            },
+            "spatial_relation": {
+              "status": "filled",
+              "value": "near the window table"
+            },
+            "time": {
+              "status": "filled",
+              "value": "after the check"
+            },
+            "tool": {
+              "status": "filled",
+              "value": "voltage meter"
+            }
+          },
+          "findings": [
+            "pilot_ambiguity_types:[\"object_reference\",\"pragmatic\",\"scope\",\"spatial_reference\"]",
+            "pilot_capability_status:unauthorized",
+            "intent_summary_present"
+          ],
+          "intent_summary": "Measure the supply voltage of the table-order terminal at the east-side window table using a voltage meter after performing a check, near the window table, with the appropriate range instrument based on the expected range, which is not specified in the work order",
+          "primary_ambiguity_type": "pragmatic",
+          "recommended_strategy": "clarify",
+          "rejection_reason": null,
+          "resolution_evidence": [],
+          "resolution_method": null,
+          "resolved_slots": [
+            {
+              "slot_name": "action",
+              "value": "Measure supply voltage"
+            },
+            {
+              "slot_name": "actor",
+              "value": "robot"
+            },
+            {
+              "slot_name": "object",
+              "value": "table-order terminal at east-side window table"
+            },
+            {
+              "slot_name": "object_attributes",
+              "value": "table-order terminal"
+            },
+            {
+              "slot_name": "destination",
+              "value": "not applicable"
+            },
+            {
+              "slot_name": "spatial_relation",
+              "value": "near the window table"
+            },
+            {
+              "slot_name": "quantity",
+              "value": "not applicable"
+            },
+            {
+              "slot_name": "time",
+              "value": "after the check"
+            },
+            {
+              "slot_name": "recipient",
+              "value": "not applicable"
+            },
+            {
+              "slot_name": "tool",
+              "value": "voltage meter"
+            },
+            {
+              "slot_name": "conditions",
+              "value": "expected range not specified"
+            },
+            {
+              "slot_name": "constraints",
+              "value": "range-appropriate instrument required"
+            },
+            {
+              "slot_name": "negation",
+              "value": "not applicable"
+            }
+          ],
+          "risk_level": "medium",
+          "risk_relevant": true,
+          "selected_interpretation": null,
+          "speech_act": "directive_command",
+          "strategy_sequence": [],
+          "supporting_evidence": [],
+          "unresolved_slots": [],
+          "unsupported_specificity": []
+        },
+        "clarification_question": "Before I continue, could you clarify: pragmatic, referential, spatial?",
+        "clarification_targets": [
+          "pragmatic",
+          "referential",
+          "spatial"
+        ],
+        "execution_status": "ok",
+        "official_result": false,
+        "provider_provenance": {
+          "provider_id": "cached_analysis",
+          "provider_version": "1.0.0"
+        },
+        "recommended_strategy": "clarify",
+        "record_id": "CA-0845",
+        "rejection_reason": null,
+        "resolved_slots": [
+          {
+            "slot_name": "action",
+            "value": "Measure supply voltage"
+          },
+          {
+            "slot_name": "actor",
+            "value": "robot"
+          },
+          {
+            "slot_name": "object",
+            "value": "table-order terminal at east-side window table"
+          },
+          {
+            "slot_name": "object_attributes",
+            "value": "table-order terminal"
+          },
+          {
+            "slot_name": "destination",
+            "value": "not applicable"
+          },
+          {
+            "slot_name": "spatial_relation",
+            "value": "near the window table"
+          },
+          {
+            "slot_name": "quantity",
+            "value": "not applicable"
+          },
+          {
+            "slot_name": "time",
+            "value": "after the check"
+          },
+          {
+            "slot_name": "recipient",
+            "value": "not applicable"
+          },
+          {
+            "slot_name": "tool",
+            "value": "voltage meter"
+          },
+          {
+            "slot_name": "conditions",
+            "value": "expected range not specified"
+          },
+          {
+            "slot_name": "constraints",
+            "value": "range-appropriate instrument required"
+          },
+          {
+            "slot_name": "negation",
+            "value": "not applicable"
+          }
+        ],
+        "result_hash": "f7ae4173e80ee770d525fe4d29639ad4ff241412ede2c4b06d36ee72fcdb4588",
+        "run_id": null,
+        "run_mode": null,
+        "runtime_metadata": {
+          "awaits_t28_adapter": true,
+          "classification": {
+            "ambiguity_present": true,
+            "ambiguity_types": [
+              "pragmatic",
+              "referential",
+              "spatial"
+            ],
+            "capability_status": "unknown",
+            "compound_ambiguity": true,
+            "compound_ambiguity_count": 3,
+            "derivation_notes": [
+              "ambiguity_present_from_types"
+            ],
+            "risk_level": "medium"
+          },
+          "rejection_text": null,
+          "requires_re_evaluation": false,
+          "resolution_events": [],
+          "router_trace": {
+            "clarification_targets": [
+              "pragmatic",
+              "referential",
+              "spatial"
+            ],
+            "considered_rules": [
+              "known_unsafe_or_prohibited",
+              "known_incapable",
+              "unknown_or_unverified_capability"
+            ],
+            "matched_rule_id": "unknown_capability",
+            "notes": [
+              "unknown_capability_cannot_execute"
+            ],
+            "recommended_strategy": "clarify",
+            "rejection_reason": null,
+            "requires_re_evaluation": false,
+            "strategy_sequence": []
+          },
+          "safety_action": "return_with_findings",
+          "uncertainty": null
+        },
+        "safety_findings": [],
+        "strategy_sequence": [],
+        "synthetic_only": true,
+        "system_id": "full_type_risk_aware_manager",
+        "system_version": "1.0.0",
+        "unsupported_commitment_findings": []
+      },
+      "raw_output": "{\n  \"intent_summary\": \"Measure the supply voltage of the table-order terminal at the east-side window table using a voltage meter after performing a check, near the window table, with the appropriate range instrument based on the expected range, which is not specified in the work order\",\n  \"cpc\": {\n    \"action\": {\n      \"value\": \"Measure supply voltage\",\n      \"status\": \"unknown\"\n    },\n    \"object\": {\n      \"value\": \"table-order terminal at east-side window table\",\n      \"status\": \"unknown\"\n    },\n    \"tool\": {\n      \"value\": \"voltage meter\",\n      \"status\": \"unknown\"\n    },\n    \"time\": {\n      \"value\": \"after the check\",\n      \"status\": \"unknown\"\n    },\n    \"conditions\": {\n      \"value\": \"expected range not specified\",\n      \"status\": \"unknown\"\n    }\n \n \n \n \n \n ,\n  \"constraints\": {\n    \"value\": \"range-appropriate instrument required\",\n    \"status\": \"unknown\"\n  },\n  \"spatial_relation\": {\n    \"value\": \"near the window table\",\n    \"status\": \"unknown\"\n  },\n  \"recipient\": {\n    \"value\": \"not applicable\",\n    \"status\": \"unknown\"\n  },\n  \"destination\": {\n    \"value\": \"not applicable\",\n    \"status\": \"unknown\"\n  },\n  \"object_attributes\": {\n    \"value\": \"table-order terminal\",\n    \"status\": \"unknown\"\n  },\n  \"quantity\": {\n    \"value\": \"not applicable\",\n    \"status\": \"unknown\"\n  },\n  \"negation\": {\n    \"value\": \"not applicable\",\n    \"status\": \"unknown\"\n  },\n  \"actor\": {\n    \"value\": \"robot\",\n    \"status\": \"unknown\"\n  }\n} \n\n  \n  ,  \n  \"pilot_ambiguity_types\": [\n    \"pragmatic\",\n    \"object_reference\",\n    \"spatial_reference\",\n    \"scope\"\n  ]\n  \n  ,\n  \"pilot_capability_status\": \"unauthorized\"\n  \n  ,\n  \"speech_act\": \"directive_command\"\n  \n  ,\n  \"unresolved_slots\": [\n    \"object_attributes\",\n    \"spatial_relation\",\n    \"quantity\",\n    \"negation\",\n    \"actor\"\n  ]\n  \n  ,\n  \"uncertainty\": 0.75\n  \n  ,\n  \"risk_level\": \"medium\"\n  \n  }\n",
+      "record_id": "CA-0845",
+      "schema_valid": true,
+      "supports_ambiguity_prediction": true,
+      "supports_capability_prediction": true,
+      "system_id": "rich_conservative_manager_v2",
+      "system_version": "2.0.0",
+      "terminal_strategy": "clarify"
+    },
+    "context_blind": {
+      "ambiguity_types": [
+        "spatial_reference"
+      ],
+      "analysis_attempts": [
+        {
+          "attempt": 1,
+          "max_new_tokens": 4096,
+          "mode": "thinking",
+          "raw_chars": 4832,
+          "raw_sha256": "549b7095bb89cd6e6df7de80ec7cd4e7e3399d07273b5176d521488faafe1c74",
+          "validation_error": "bad_pilot_ambiguity_types"
+        },
+        {
+          "attempt": 2,
+          "max_new_tokens": 8192,
+          "mode": "thinking_retry",
+          "raw_chars": 6564,
+          "raw_sha256": "a569491ac9b2ac8535594cb42e89c3a166d928f8f2e55f97fd4f387689ba31a5",
+          "validation_error": "bad_pilot_ambiguity_types"
+        },
+        {
+          "attempt": 3,
+          "constraint": {
+            "constraint_initialised": true,
+            "generated_token_count": 477,
+            "maximum_output_tokens": 1024,
+            "response_mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+            "termination_reason": "eos_or_constraint_stop",
+            "transport_status": "constrained_generated"
+          },
+          "max_new_tokens": 1024,
+          "mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+          "raw_chars": 1615,
+          "raw_sha256": "60d61ca6cd91f379042214f643c89e0d00559b4586205ff56e3838809bb285f5",
+          "validation_error": null
+        }
+      ],
+      "capability_status": "incapable",
+      "claim_boundary": "separately_versioned_from_frozen_t39",
+      "error": null,
+      "execution_mode": "cluster-gpu-goal-first-v2",
+      "failed": false,
+      "intent_summary": "Measure the supply voltage of the table-order terminal near the window table using a voltage meter after performing a check",
+      "latency_ms": 82060.65595289692,
+      "model_id": "Qwen/Qwen3-8B@b968826d9c46dd6066d109eabc6255188de91218",
+      "parsed": {
+        "analysis": {
+          "ambiguity_present": true,
+          "ambiguity_types": [
+            "spatial"
+          ],
+          "analysis_provenance": {
+            "analysis_id": "80490572c5741e75011dca48b57fe59174140738a009d7cd72f6552243fac8cd",
+            "method": "context_blind",
+            "notes": "ablated_input_hash=80490572c5741e75011dca48b57fe59174140738a009d7cd72f6552243fac8cd;source_input_hash=80490572c5741e75011dca48b57fe59174140738a009d7cd72f6552243fac8cd;no_gold_in_prompt;scene_licence_dropped=none",
+            "provider_id": "goal_first_v2_context_blind",
+            "provider_version": "goal-first-manager-v2"
+          },
+          "candidate_interpretations": [],
+          "capability_status": "incapable",
+          "clarification_question": null,
+          "clarification_targets": [],
+          "compound_ambiguity": false,
+          "compound_ambiguity_count": 0,
+          "context_sampling_uncertainty": {
+            "agreement": 0.35,
+            "score": 0.65,
+            "variant_count": 1
+          },
+          "cpc": {
+            "action": {
+              "status": "not_applicable",
+              "value": "Measure supply voltage"
+            },
+            "actor": {
+              "status": "not_applicable",
+              "value": "not applicable"
+            },
+            "conditions": {
+              "status": "not_applicable",
+              "value": "not applicable"
+            },
+            "constraints": {
+              "status": "not_applicable",
+              "value": "not applicable"
+            },
+            "destination": {
+              "status": "not_applicable",
+              "value": "near the window table"
+            },
+            "negation": {
+              "status": "not_applicable",
+              "value": "not applicable"
+            },
+            "object": {
+              "status": "not_applicable",
+              "value": "table-order terminal"
+            },
+            "object_attributes": {
+              "status": "not_applicable",
+              "value": "not applicable"
+            },
+            "quantity": {
+              "status": "not_applicable",
+              "value": "not applicable"
+            },
+            "recipient": {
+              "status": "not_applicable",
+              "value": "not applicable"
+            },
+            "spatial_relation": {
+              "status": "not_applicable",
+              "value": "near the window table"
+            },
+            "time": {
+              "status": "not_applicable",
+              "value": "after the check"
+            },
+            "tool": {
+              "status": "not_applicable",
+              "value": "voltage meter"
+            }
+          },
+          "findings": [
+            "pilot_ambiguity_types:[\"spatial_reference\"]",
+            "pilot_capability_status:incapable",
+            "intent_summary_present"
+          ],
+          "intent_summary": "Measure the supply voltage of the table-order terminal near the window table using a voltage meter after performing a check",
+          "primary_ambiguity_type": "spatial",
+          "recommended_strategy": "face_preserving_rejection",
+          "rejection_reason": "known_incapability",
+          "resolution_evidence": [],
+          "resolution_method": null,
+          "resolved_slots": [],
+          "risk_level": "medium",
+          "risk_relevant": true,
+          "selected_interpretation": null,
+          "speech_act": "directive_command",
+          "strategy_sequence": [],
+          "supporting_evidence": [],
+          "unresolved_slots": [
+            {
+              "reason": "model_identified_uncertainty",
+              "slot_name": "spatial_relation"
+            }
+          ],
+          "unsupported_specificity": []
+        },
+        "clarification_question": null,
+        "clarification_targets": [],
+        "execution_status": "ok",
+        "official_result": false,
+        "provider_provenance": {
+          "provider_id": "cached_analysis",
+          "provider_version": "1.0.0"
+        },
+        "recommended_strategy": "face_preserving_rejection",
+        "record_id": "CA-0845",
+        "rejection_reason": "known_incapability",
+        "resolved_slots": [],
+        "result_hash": "25192f8fe08da428cc773e112d1b416919472b9dd04b7f67fdcf6a0be91c32d6",
+        "run_id": null,
+        "run_mode": null,
+        "runtime_metadata": {
+          "analysis_identity": {
+            "analysis_content_hash": "189e6171abfcc941052ea2b1de5975828245fb277ec9a6290d0e9e32d6a9dab6",
+            "analysis_variant": "context_blind",
+            "model_strategy_id": null,
+            "provider_id": "goal_first_v2_context_blind",
+            "provider_version": "goal-first-manager-v2",
+            "record_id": "CA-0845",
+            "source_input_hash": "80490572c5741e75011dca48b57fe59174140738a009d7cd72f6552243fac8cd"
+          },
+          "analysis_identity_fingerprint": "4e43072d1d68bfd5bfd71acdf682f46a3ae0494753875753b9f8a6d098b026ef",
+          "awaits_t28_adapter": true,
+          "classification": {
+            "ambiguity_present": true,
+            "ambiguity_types": [
+              "spatial"
+            ],
+            "capability_status": "incapable",
+            "compound_ambiguity": false,
+            "compound_ambiguity_count": 0,
+            "derivation_notes": [
+              "ambiguity_present_from_types"
+            ],
+            "risk_level": "medium"
+          },
+          "context_ablation": {
+            "ablated_input_hash": "80490572c5741e75011dca48b57fe59174140738a009d7cd72f6552243fac8cd",
+            "capability_context_removed": true,
+            "dialogue_history_removed": true,
+            "rejected_full_context_cache": false,
+            "rejection_reason": null,
+            "scene_context_removed": true,
+            "stripped_context_derived_fields": false
+          },
+          "original_input_unmutated": true,
+          "rejection_text": "I am not able to perform that action with my current capabilities. I will not invent an alternative that is not supported.",
+          "requires_re_evaluation": false,
+          "resolution_events": [
+            {
+              "confidence_category": "blocked",
+              "details": {
+                "risk_level": "medium"
+              },
+              "evidence_source": null,
+              "outcome": "resolution_blocked_by_risk",
+              "previous_status": "unresolved",
+              "resolved_value": null,
+              "rule_id": "risk_block",
+              "safety_eligibility": false,
+              "slot": "spatial_relation"
+            }
+          ],
+          "router_trace": {
+            "clarification_targets": [],
+            "considered_rules": [
+              "goal_first_v2",
+              "known_unsafe_or_prohibited",
+              "known_incapable"
+            ],
+            "matched_rule_id": "known_incapable",
+            "notes": [],
+            "recommended_strategy": "face_preserving_rejection",
+            "rejection_reason": "known_incapability",
+            "requires_re_evaluation": false,
+            "strategy_sequence": []
+          },
+          "safety_action": "return_with_findings",
+          "uncertainty": null
+        },
+        "safety_findings": [],
+        "strategy_sequence": [],
+        "synthetic_only": true,
+        "system_id": "context_blind_manager",
+        "system_version": "1.0.0",
+        "unsupported_commitment_findings": []
+      },
+      "raw_output": "{\n  \"intent_summary\": \"Measure the supply voltage of the table-order terminal near the window table using a voltage meter after performing a check\",\n  \"cpc\": {\n    \"action\": {\n      \"value\": \"Measure supply voltage\",\n      \"status\": \"not_applicable\"\n    },\n    \"object\": {\n      \"value\": \"table-order terminal\",\n      \"status\": \"not_applicable\"\n    },\n    \"recipient\": {\n      \"value\": \"not applicable\",\n      \"status\": \"not_applicable\"\n    },\n    \"destination\": {\n      \"value\": \"near the window table\",\n      \"status\": \"not_applicable\"\n    },\n    \"tool\": {\n      \"value\": \"voltage meter\",\n      \"status\": \"not_applicable\"\n    },\n    \"time\": {\n      \"value\": \"after the check\",\n      \"status\": \"not_applicable\"\n    }\n \n  ,\n  \"constraints\": {\n    \"value\": \"not applicable\",\n    \"status\": \"not_applicable\"\n  },\n  \"conditions\": {\n    \"value\": \"not applicable\",\n    \"status\": \"not_applicable\"\n  },\n  \"negation\": {\n    \"value\": \"not applicable\",\n    \"status\": \"not_applicable\"\n  },\n  \"spatial_relation\": {\n    \"value\": \"near the window table\",\n    \"status\": \"not_applicable\"\n  },\n  \"quantity\": {\n    \"value\": \"not applicable\",\n    \"status\": \"not_applicable\"\n  },\n  \"object_attributes\": {\n    \"value\": \"not applicable\",\n    \"status\": \"not_applicable\"\n  },\n  \"actor\": {\n    \"value\": \"not applicable\",\n    \"status\": \"not_applicable\"\n  }\n}\n\n,\n  \"pilot_ambiguity_types\": [\n    \"spatial_reference\"\n  ]\n  \n  ,\n  \"pilot_capability_status\": \"incapable\"\n  \n  ,\n  \"speech_act\": \"directive_command\"\n  \n  ,\n  \"risk_level\": \"medium\"\n  \n  ,\n  \"uncertainty\": 0.65\n  \n\n\n\n  \n  ,\n  \"unresolved_slots\": [\n    \"spatial_relation\"\n  ]\n  \n  }\n",
+      "record_id": "CA-0845",
+      "schema_valid": true,
+      "supports_ambiguity_prediction": true,
+      "supports_capability_prediction": true,
+      "system_id": "goal_first_context_blind_v2",
+      "system_version": "2.0.0",
+      "terminal_strategy": "face_preserving_rejection"
+    }
+  },
+  "provenance": {
+    "source_sha256": "f33b1e29f1e8aa256a475f07213aa07247def47d8e2148d54a472a40b71b05c9",
+    "gold_sha256": "5e23ad1a92ff1873c8f039a8ce560a111dd6fb6b8ae8c11d6cf34dbfa1c360db",
+    "t07_final_zip_sha256": "34ca50e034ca37b617068bb50c734d12fa26282fb5eec563c11ead700163e491",
+    "inherited_t07_zip_sha256": "0305b1e9ab062876ee6ee89778cc6028d2eaf01718b7dd0295944e7d9cb81a01",
+    "note": "Goal-First, Degree, Timid, and Context-Blind predictions are inherited from the earlier T0.7 run; official intent and comparison come from the final T0.7 archive."
+  }
+}

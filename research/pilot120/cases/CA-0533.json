@@ -1,0 +1,996 @@
+{
+  "record_id": "CA-0533",
+  "frozen_source": {
+    "capability_context": "Restaurant service robot can carry sealed food-service items, scan table tags, and move approved furniture accessories outside occupied paths.",
+    "command": "In a moment, complete both the configuration and inspection of the table-order terminal after the check, setting it to its routine level.",
+    "dialogue_history": [],
+    "record_id": "CA-0533",
+    "scene_context": "Service area in a restaurant dining room. The work-order configuration table assigns 70 percent screen brightness to this asset. Procedure WO-216 requires the check, then configuration, then inspection. For low-risk configuration work, 'in a moment' is defined as the next two-minute idle window. The current task ends at 09:00."
+  },
+  "frozen_gold": {
+    "ambiguity_types": [
+      "action_order",
+      "degree_vagueness",
+      "fuzzy_temporal"
+    ],
+    "annotator_b_era": "claude_era",
+    "annotator_b_model": "claude-4.6-sonnet-medium-thinking",
+    "capability_status": "capable",
+    "field_status": {
+      "ambiguity_types": "auto_agree",
+      "capability_status": "human_auditor:independent_from_route",
+      "record_validity": "auto_agree",
+      "strategy_sequence": "from_A_matching_terminal",
+      "terminal_strategy": "auto_agree"
+    },
+    "gold_lifecycle": "final_gold",
+    "gold_status": "auto_agree",
+    "human_gate_required": false,
+    "provenance": {
+      "agreement_label": "pilot_annotation_agreement",
+      "annotator_a_sha256": "6a600d08775cd9eb73c6655708f5c9c0a1ccf11ab866c9823b79c789157f839d",
+      "annotator_b_sha256": "7e9b4d375264c74e62e67cab44ad2eea70449efe1f0dea0e4c9f3510213c5d5a",
+      "capability_route_decouple": "conditionally_capable remapped to capable: no evidenced external capability precondition; linguistic silently_resolve/clarify is not a capability condition",
+      "gold_policy": "use_existing_pilot_adjudicated_gold",
+      "input_sha256": "a615be7057a296d5f2fd7d3d453f7d1e740e9f5d16fc245b9838b3ad6e7cb38b",
+      "pilot_gold_sha256": "0196e6c8e37bc513bde22ea03bc96ff885b4f6af8d35904ade15786baa20b3c1",
+      "protocol": "pilot_adjudicated_gold_on_capability_repaired_source",
+      "repaired_input_sha256": "d5d7466c8eebfcc113a626cf81705edf17552d433440bb4eade174f5838b9a6f"
+    },
+    "record_id": "CA-0533",
+    "record_validity": "valid",
+    "strategy_sequence": [
+      "silently_resolve",
+      "execute"
+    ],
+    "terminal_strategy": "execute"
+  },
+  "t07_comparison": {
+    "record_id": "CA-0533",
+    "gold_route": "execute",
+    "raw_route": "execute",
+    "ft_route": "execute",
+    "gf_route": "execute",
+    "raw_route_ok": "True",
+    "ft_route_ok": "True",
+    "gf_route_ok": "True",
+    "raw_official_intent": "True",
+    "ft_official_intent": "True",
+    "gf_official_intent": "True",
+    "blind_official_intent": "True"
+  },
+  "t07_official_intent": {
+    "context_blind_official_intent": true,
+    "degree_official_intent_shared_gf": true,
+    "finetune_official_intent": true,
+    "goal_first_official_intent": true,
+    "raw_official_intent": true,
+    "record_id": "CA-0533",
+    "timid_official_intent_shared_gf": true
+  },
+  "t07_predictions": {
+    "raw_qwen": {
+      "ambiguity_types": [],
+      "capability_status": "capable",
+      "error": null,
+      "execution_mode": "final_close_intent_box",
+      "failed": false,
+      "intent_summary": "The user wants the robot to configure and inspect the table-order terminal after completing a check, setting it to its routine level.",
+      "latency_ms": 14861.237895209342,
+      "parsed": {
+        "ambiguity_types": [],
+        "capability_status": "capable",
+        "intent_summary": "The user wants the robot to configure and inspect the table-order terminal after completing a check, setting it to its routine level.",
+        "speech_act": "directive_command",
+        "terminal_strategy": "execute"
+      },
+      "raw_output": "<think>\nOkay, let's break this down. The user wants the robot to complete both configuration and inspection of the table-order terminal after a check. The command mentions setting it to routine level. The dialogue history is empty, so no prior context. The scene is a restaurant service area. The work order procedure (WO-216) specifies check, then configuration, then inspection. The current task ends at 09:00, and 'in a moment' refers to the next two-minute idle window.\n\nFirst, the intent summary. The user wants the robot to perform configuration and inspection after the check, setting to routine level. So the job is to configure and inspect the terminal post-check.\n\nSpeech act: The command is a directive to perform specific actions, so directive_command. \n\nAmbiguity types: Let's check. The command mentions \"both the configuration and inspection\"—is there any ambiguity here? Maybe the order of steps? The procedure WO-216 says check first, then configuration, then inspection. The command says after the check, do both configuration and inspection. So the order is check, then config, then inspection. But the user says \"complete both the configuration and inspection of the table-order terminal after the check\"—so after the check, do both steps. But the procedure requires check, then config, then inspection. So maybe the ambiguity is whether \"after the check\" refers to the entire configuration and inspection, or if there's a step missing. But the procedure is clear. However, the command might be ambiguous in terms of the order. Wait, the command says \"complete both the configuration and inspection... after the check\"—so after the check is done, perform both. But the procedure says check, then config, then inspection. So the user's command aligns with the procedure. So maybe no ambiguity here. But maybe the 'both' could be interpreted as two separate steps. But since the procedure is given, perhaps the ambiguity is not present. Alternatively, the 'routine level' might be a reference. But the capability context says the robot can set brightness to 70% as per the work order. So maybe no ambiguity. So ambiguity_types might be empty.\n\nCapability status: The robot can carry items, scan tags, move furniture. The task involves configuration (setting brightness) and inspection. The work order requires check, config, inspection. Since the robot can scan tags and move items, but does it have the capability to perform configuration (like adjusting brightness) and inspection (maybe scanning or checking status)? The capability_context mentions \"carry sealed food-service items, scan table tags, move approved furniture accessories outside occupied paths.\" The configuration part might involve adjusting settings, which isn't listed. But the work order assigns 70% brightness, so maybe the robot can adjust that. If the robot can't adjust brightness, then it's incapable. But the problem states that the work-order configuration table assigns 70% brightness, implying that the robot can perform that configuration. So capability_status would be capable. However, if the robot's capabilities don't include adjusting brightness, then it's incapable. The capability_context doesn't mention adjusting brightness, but it does mention scanning tags. Wait, the work order procedure requires the check, then configuration, then inspection. The configuration might involve adjusting settings, which the robot can do via its capabilities. But the capability_context says it can carry items, scan tags, move furniture. Maybe the configuration is part of the scan or movement. But the command mentions setting to routine level, which might be a specific action. If the robot can't do that, then capability_status is incapable. But the problem says that the work-order configuration table assigns 70% brightness, so maybe the robot can adjust that. So capability_status is capable.\n\nTerminal strategy: The command is to execute the steps as per the procedure. Since the robot can perform the required actions (assuming capability is there), the strategy is execute. But if there's ambiguity, maybe clarify. However, since the procedure is clear (check, config, inspection), and the robot can do the tasks, then terminal_strategy is execute.\n</think>\n\n{\n  \"intent_summary\": \"The user wants the robot to configure and inspect the table-order terminal after completing a check, setting it to its routine level.\",\n  \"speech_act\": \"directive_command\",\n  \"ambiguity_types\": [],\n  \"capability_status\": \"capable\",\n  \"terminal_strategy\": \"execute\"\n}",
+      "record_id": "CA-0533",
+      "schema_valid": true,
+      "speech_act": "directive_command",
+      "system_id": "direct_base_llm",
+      "terminal_strategy": "execute"
+    },
+    "finetune": {
+      "ambiguity_types": [],
+      "capability_status": "capable",
+      "error": null,
+      "execution_mode": "final_close_intent_box",
+      "failed": false,
+      "intent_summary": "The user wants the robot to perform configuration and inspection of the table-order terminal after completing a check, setting it to its routine level.",
+      "latency_ms": 13481.186273042113,
+      "parsed": {
+        "ambiguity_types": [],
+        "capability_status": "capable",
+        "intent_summary": "The user wants the robot to perform configuration and inspection of the table-order terminal after completing a check, setting it to its routine level.",
+        "speech_act": "directive_command",
+        "terminal_strategy": "execute"
+      },
+      "raw_output": "<think>\nOkay, let's break down this robot command evaluation. The user wants the robot to complete both configuration and inspection of the table-order terminal after a check, setting it to routine level. The dialogue history is empty, so no prior context. The scene is a restaurant service area. The work order procedure (WO-216) specifies check, then configuration, then inspection. The current task ends at 09:00. Also, 'in a moment' is defined as the next two-minute idle window for low-risk configurations.\n\nFirst, the intent summary: The user wants the robot to perform configuration and inspection after checking, setting to routine level. That's the main job.\n\nSpeech act: The command is a directive to perform specific tasks, so directive_command. The user is telling the robot what to do step by step.\n\nAmbiguity types: Let's check. The command mentions \"after the check\" but doesn't specify which check. That's a missing reference, so maybe object_reference or action_order. Also, \"setting it to its routine level\" – the 'it' refers to the terminal, which is clear. The 'in a moment' is defined, so maybe no ambiguity there. But the sequence of steps (check, config, inspect) is clear. No pronouns or other references that are ambiguous. So maybe no ambiguity types here.\n\nCapability status: The robot can carry items, scan tags, move furniture. The task involves configuration and inspection. Since the robot can scan tags (maybe for inspection) and move furniture, but configuration might involve adjusting settings. The capability context says it can do low-risk configuration. So the robot is capable. But wait, the procedure requires check, then config, then inspect. The robot can scan (check?), configure (if allowed), and inspect. The work order is for a table-order terminal, which might be within the robot's capabilities. So capability_status is capable.\n\nTerminal strategy: The command is clear and actionable. The robot can execute the steps as per the procedure. So terminal_strategy is execute.\n</think>\n\n{\n  \"intent_summary\": \"The user wants the robot to perform configuration and inspection of the table-order terminal after completing a check, setting it to its routine level.\",\n  \"speech_act\": \"directive_command\",\n  \"ambiguity_types\": [],\n  \"capability_status\": \"capable\",\n  \"terminal_strategy\": \"execute\"\n}",
+      "record_id": "CA-0533",
+      "schema_valid": true,
+      "speech_act": "directive_command",
+      "system_id": "t28_selected_adapter_llm",
+      "terminal_strategy": "execute"
+    },
+    "goal_first": {
+      "ambiguity_types": [
+        "pragmatic"
+      ],
+      "analysis_attempts": [
+        {
+          "attempt": 1,
+          "max_new_tokens": 4096,
+          "mode": "thinking",
+          "raw_chars": 9951,
+          "raw_sha256": "65146e93912d4bd09c79e59402c7d48f387a268d7be26a75be5badb4a525b86d",
+          "validation_error": "bad_intent_summary"
+        },
+        {
+          "attempt": 2,
+          "max_new_tokens": 8192,
+          "mode": "thinking_retry",
+          "raw_chars": 9874,
+          "raw_sha256": "1e797d813ce6ce1113f810a1131a0cfe14e9b6538bbcb56e6083132557976127",
+          "validation_error": "bad_intent_summary"
+        },
+        {
+          "attempt": 3,
+          "constraint": {
+            "constraint_initialised": true,
+            "generated_token_count": 506,
+            "maximum_output_tokens": 1024,
+            "response_mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+            "termination_reason": "eos_or_constraint_stop",
+            "transport_status": "constrained_generated"
+          },
+          "max_new_tokens": 1024,
+          "mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+          "raw_chars": 1777,
+          "raw_sha256": "c4ba0ca9d0d447c76cd5d427fdfed5e9cf2a4015a7cf454641bc569f595ac4e5",
+          "validation_error": null
+        }
+      ],
+      "capability_status": "capable",
+      "claim_boundary": "separately_versioned_from_frozen_t39",
+      "error": null,
+      "execution_mode": "cluster-gpu-goal-first-v2",
+      "failed": false,
+      "intent_summary": "Complete the configuration and inspection of the table-order terminal after the check, setting it to its routine level within the next two-minute idle window at 09:00",
+      "latency_ms": 103298.48738387227,
+      "model_id": "Qwen/Qwen3-8B@b968826d9c46dd6066d109eabc6255188de91218",
+      "parsed": {
+        "analysis": {
+          "ambiguity_present": true,
+          "ambiguity_types": [
+            "pragmatic"
+          ],
+          "analysis_provenance": {
+            "analysis_id": "165a898872039fed0d6de02cd05fb56690417b58891a053501966070c2de6483",
+            "method": "model_generated",
+            "notes": "source_input_hash=165a898872039fed0d6de02cd05fb56690417b58891a053501966070c2de6483;no_gold_in_prompt;scene_licence_dropped=none",
+            "provider_id": "goal_first_v2_full_context",
+            "provider_version": "goal-first-manager-v2"
+          },
+          "candidate_interpretations": [],
+          "capability_status": "capable",
+          "clarification_question": null,
+          "clarification_targets": [],
+          "compound_ambiguity": false,
+          "compound_ambiguity_count": 0,
+          "context_sampling_uncertainty": {
+            "agreement": 0.9,
+            "score": 0.1,
+            "variant_count": 1
+          },
+          "cpc": {
+            "action": {
+              "status": "not_applicable",
+              "value": "complete configuration and inspection of the table-order terminal after the check"
+            },
+            "actor": {
+              "status": "not_applicable",
+              "value": "not applicable"
+            },
+            "conditions": {
+              "status": "not_applicable",
+              "value": "low-risk configuration work"
+            },
+            "constraints": {
+              "status": "not_applicable",
+              "value": "routine level, check, configuration, inspection, next two-minute idle window"
+            },
+            "destination": {
+              "status": "not_applicable",
+              "value": "outside occupied paths"
+            },
+            "negation": {
+              "status": "not_applicable",
+              "value": "not applicable"
+            },
+            "object": {
+              "status": "not_applicable",
+              "value": "table-order terminal"
+            },
+            "object_attributes": {
+              "status": "not_applicable",
+              "value": "not applicable"
+            },
+            "quantity": {
+              "status": "not_applicable",
+              "value": "not applicable"
+            },
+            "recipient": {
+              "status": "not_applicable",
+              "value": "restaurant service robot"
+            },
+            "spatial_relation": {
+              "status": "not_applicable",
+              "value": "not applicable"
+            },
+            "time": {
+              "status": "not_applicable",
+              "value": "in a moment (next two-minute idle window at 09:00"
+            },
+            "tool": {
+              "status": "not_applicable",
+              "value": "not applicable"
+            }
+          },
+          "findings": [
+            "pilot_ambiguity_types:[\"pragmatic\"]",
+            "pilot_capability_status:capable",
+            "intent_summary_present"
+          ],
+          "intent_summary": "Complete the configuration and inspection of the table-order terminal after the check, setting it to its routine level within the next two-minute idle window at 09:00",
+          "primary_ambiguity_type": "pragmatic",
+          "recommended_strategy": "execute",
+          "rejection_reason": null,
+          "resolution_evidence": [],
+          "resolution_method": null,
+          "resolved_slots": [],
+          "risk_level": "low",
+          "risk_relevant": true,
+          "selected_interpretation": null,
+          "speech_act": "directive_command",
+          "strategy_sequence": [],
+          "supporting_evidence": [],
+          "unresolved_slots": [],
+          "unsupported_specificity": []
+        },
+        "clarification_question": null,
+        "clarification_targets": [],
+        "execution_status": "ok",
+        "official_result": false,
+        "provider_provenance": {
+          "provider_id": "cached_analysis",
+          "provider_version": "1.0.0"
+        },
+        "recommended_strategy": "execute",
+        "record_id": "CA-0533",
+        "rejection_reason": null,
+        "resolved_slots": [],
+        "result_hash": "df6726f0e318b27dfaf3ebbce0ad87e4a4538dcfd83e2bd8f0afb53a8102c4b4",
+        "run_id": null,
+        "run_mode": null,
+        "runtime_metadata": {
+          "awaits_t28_adapter": true,
+          "classification": {
+            "ambiguity_present": true,
+            "ambiguity_types": [
+              "pragmatic"
+            ],
+            "capability_status": "capable",
+            "compound_ambiguity": false,
+            "compound_ambiguity_count": 0,
+            "derivation_notes": [
+              "ambiguity_present_from_types"
+            ],
+            "risk_level": "low"
+          },
+          "rejection_text": null,
+          "requires_re_evaluation": false,
+          "resolution_events": [],
+          "router_trace": {
+            "clarification_targets": [],
+            "considered_rules": [
+              "goal_first_v2",
+              "known_unsafe_or_prohibited",
+              "known_incapable",
+              "unknown_capability_high_risk",
+              "context_licensed_execute"
+            ],
+            "matched_rule_id": "context_licensed_execute",
+            "notes": [
+              "goal_first_v2_execute_despite_remaining_ambiguity"
+            ],
+            "recommended_strategy": "execute",
+            "rejection_reason": null,
+            "requires_re_evaluation": false,
+            "strategy_sequence": []
+          },
+          "safety_action": "return_with_findings",
+          "uncertainty": null
+        },
+        "safety_findings": [],
+        "strategy_sequence": [],
+        "synthetic_only": true,
+        "system_id": "goal_first_manager_v2",
+        "system_version": "2.0.0",
+        "unsupported_commitment_findings": []
+      },
+      "raw_output": "{\n  \"intent_summary\": \"Complete the configuration and inspection of the table-order terminal after the check, setting it to its routine level within the next two-minute idle window at 09:00\",\n  \"cpc\": {\n    \"action\": {\n      \"value\": \"complete configuration and inspection of the table-order terminal after the check\",\n      \"status\": \"not_applicable\"\n    },\n    \"object\": {\n      \"value\": \"table-order terminal\",\n      \"status\": \"not_applicable\"\n    },\n    \"time\": {\n      \"value\": \"in a moment (next two-minute idle window at 09:00\",\n      \"status\": \"not_applicable\"\n    },\n    \"recipient\": {\n      \"value\": \"restaurant service robot\",\n      \"status\": \"not_applicable\"\n    },\n    \"destination\": {\n      \"value\": \"outside occupied paths\",\n      \"status\": \"not_applicable\"\n    },\n    \"tool\": {\n      \"value\": \"not applicable\",\n      \"status\": \"not_applicable\"\n    }\n \n  ,\n  \"constraints\": {\n    \"value\": \"routine level, check, configuration, inspection, next two-minute idle window\",\n    \"status\": \"not_applicable\"\n  },\n  \"conditions\": {\n    \"value\": \"low-risk configuration work\",\n    \"status\": \"not_applicable\"\n  },\n  \"spatial_relation\": {\n    \"value\": \"not applicable\",\n    \"status\": \"not_applicable\"\n  },\n  \"negation\": {\n    \"value\": \"not applicable\",\n    \"status\": \"not_applicable\"\n  },\n  \"quantity\": {\n    \"value\": \"not applicable\",\n    \"status\": \"not_applicable\"\n  },\n  \"object_attributes\": {\n    \"value\": \"not applicable\",\n    \"status\": \"not_applicable\"\n  },\n  \"actor\": {\n    \"value\": \"not applicable\",\n    \"status\": \"not_applicable\"\n  }\n},\n  \"pilot_ambiguity_types\": [\n    \"pragmatic\"\n  ]\n  \n  ,\n  \"pilot_capability_status\": \"capable\"\n  \n  ,\n  \"speech_act\": \"directive_command\"\n  \n  ,\n  \"risk_level\": \"low\"\n  \n  ,\n  \"unresolved_slots\": []\n  \n  ,\n  \"uncertainty\": 0.1\n}",
+      "record_id": "CA-0533",
+      "schema_valid": true,
+      "supports_ambiguity_prediction": true,
+      "supports_capability_prediction": true,
+      "system_id": "goal_first_manager_v2",
+      "system_version": "2.0.0",
+      "terminal_strategy": "execute"
+    },
+    "degree": {
+      "ambiguity_types": [
+        "pragmatic"
+      ],
+      "analysis_attempts": [
+        {
+          "attempt": 1,
+          "max_new_tokens": 4096,
+          "mode": "thinking",
+          "raw_chars": 9951,
+          "raw_sha256": "65146e93912d4bd09c79e59402c7d48f387a268d7be26a75be5badb4a525b86d",
+          "validation_error": "bad_intent_summary"
+        },
+        {
+          "attempt": 2,
+          "max_new_tokens": 8192,
+          "mode": "thinking_retry",
+          "raw_chars": 9874,
+          "raw_sha256": "1e797d813ce6ce1113f810a1131a0cfe14e9b6538bbcb56e6083132557976127",
+          "validation_error": "bad_intent_summary"
+        },
+        {
+          "attempt": 3,
+          "constraint": {
+            "constraint_initialised": true,
+            "generated_token_count": 506,
+            "maximum_output_tokens": 1024,
+            "response_mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+            "termination_reason": "eos_or_constraint_stop",
+            "transport_status": "constrained_generated"
+          },
+          "max_new_tokens": 1024,
+          "mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+          "raw_chars": 1777,
+          "raw_sha256": "c4ba0ca9d0d447c76cd5d427fdfed5e9cf2a4015a7cf454641bc569f595ac4e5",
+          "validation_error": null
+        }
+      ],
+      "capability_status": "capable",
+      "claim_boundary": "separately_versioned_from_frozen_t39",
+      "error": null,
+      "execution_mode": "cluster-gpu-goal-first-v2",
+      "failed": false,
+      "intent_summary": "Complete the configuration and inspection of the table-order terminal after the check, setting it to its routine level within the next two-minute idle window at 09:00",
+      "latency_ms": 103298.48738387227,
+      "model_id": "Qwen/Qwen3-8B@b968826d9c46dd6066d109eabc6255188de91218",
+      "parsed": {
+        "analysis": {
+          "ambiguity_present": true,
+          "ambiguity_types": [
+            "pragmatic"
+          ],
+          "analysis_provenance": {
+            "analysis_id": "165a898872039fed0d6de02cd05fb56690417b58891a053501966070c2de6483",
+            "method": "model_generated",
+            "notes": "source_input_hash=165a898872039fed0d6de02cd05fb56690417b58891a053501966070c2de6483;no_gold_in_prompt;scene_licence_dropped=none",
+            "provider_id": "goal_first_v2_full_context",
+            "provider_version": "goal-first-manager-v2"
+          },
+          "candidate_interpretations": [],
+          "capability_status": "capable",
+          "clarification_question": null,
+          "clarification_targets": [],
+          "compound_ambiguity": false,
+          "compound_ambiguity_count": 1,
+          "context_sampling_uncertainty": {
+            "agreement": 0.9,
+            "score": 0.1,
+            "variant_count": 1
+          },
+          "cpc": {
+            "action": {
+              "status": "not_applicable",
+              "value": "complete configuration and inspection of the table-order terminal after the check"
+            },
+            "actor": {
+              "status": "not_applicable",
+              "value": "not applicable"
+            },
+            "conditions": {
+              "status": "not_applicable",
+              "value": "low-risk configuration work"
+            },
+            "constraints": {
+              "status": "not_applicable",
+              "value": "routine level, check, configuration, inspection, next two-minute idle window"
+            },
+            "destination": {
+              "status": "not_applicable",
+              "value": "outside occupied paths"
+            },
+            "negation": {
+              "status": "not_applicable",
+              "value": "not applicable"
+            },
+            "object": {
+              "status": "not_applicable",
+              "value": "table-order terminal"
+            },
+            "object_attributes": {
+              "status": "not_applicable",
+              "value": "not applicable"
+            },
+            "quantity": {
+              "status": "not_applicable",
+              "value": "not applicable"
+            },
+            "recipient": {
+              "status": "not_applicable",
+              "value": "restaurant service robot"
+            },
+            "spatial_relation": {
+              "status": "not_applicable",
+              "value": "not applicable"
+            },
+            "time": {
+              "status": "not_applicable",
+              "value": "in a moment (next two-minute idle window at 09:00"
+            },
+            "tool": {
+              "status": "not_applicable",
+              "value": "not applicable"
+            }
+          },
+          "findings": [
+            "pilot_ambiguity_types:[\"pragmatic\"]",
+            "pilot_capability_status:capable",
+            "intent_summary_present"
+          ],
+          "intent_summary": "Complete the configuration and inspection of the table-order terminal after the check, setting it to its routine level within the next two-minute idle window at 09:00",
+          "primary_ambiguity_type": "pragmatic",
+          "recommended_strategy": "execute",
+          "rejection_reason": null,
+          "resolution_evidence": [],
+          "resolution_method": null,
+          "resolved_slots": [],
+          "risk_level": "low",
+          "risk_relevant": true,
+          "selected_interpretation": null,
+          "speech_act": "directive_command",
+          "strategy_sequence": [],
+          "supporting_evidence": [],
+          "unresolved_slots": [],
+          "unsupported_specificity": []
+        },
+        "clarification_question": null,
+        "clarification_targets": [],
+        "execution_status": "ok",
+        "official_result": false,
+        "provider_provenance": {
+          "shared_analysis_fingerprint": "d3ae6c6ea23fecb9c94e32ec8d73ab5e1eed5b251be09149d4253657fa8a7140"
+        },
+        "recommended_strategy": "execute",
+        "record_id": "CA-0533",
+        "rejection_reason": null,
+        "resolved_slots": [],
+        "result_hash": "4b240058083cbbae025336938931d9ff0f5917e7c9f4f4c0ba69d96cc527a71b",
+        "run_id": null,
+        "run_mode": null,
+        "runtime_metadata": {
+          "shared_analysis_fingerprint": "d3ae6c6ea23fecb9c94e32ec8d73ab5e1eed5b251be09149d4253657fa8a7140",
+          "thresholds_status": "unfrozen",
+          "thresholds_valid_for_official_use": false,
+          "uncertainty_score": 0.1,
+          "uses_type_risk_capability_precedence": false
+        },
+        "safety_findings": [],
+        "strategy_sequence": [],
+        "synthetic_only": true,
+        "system_id": "degree_based_router",
+        "system_version": "1.0.0",
+        "unsupported_commitment_findings": []
+      },
+      "raw_output": "{\n  \"intent_summary\": \"Complete the configuration and inspection of the table-order terminal after the check, setting it to its routine level within the next two-minute idle window at 09:00\",\n  \"cpc\": {\n    \"action\": {\n      \"value\": \"complete configuration and inspection of the table-order terminal after the check\",\n      \"status\": \"not_applicable\"\n    },\n    \"object\": {\n      \"value\": \"table-order terminal\",\n      \"status\": \"not_applicable\"\n    },\n    \"time\": {\n      \"value\": \"in a moment (next two-minute idle window at 09:00\",\n      \"status\": \"not_applicable\"\n    },\n    \"recipient\": {\n      \"value\": \"restaurant service robot\",\n      \"status\": \"not_applicable\"\n    },\n    \"destination\": {\n      \"value\": \"outside occupied paths\",\n      \"status\": \"not_applicable\"\n    },\n    \"tool\": {\n      \"value\": \"not applicable\",\n      \"status\": \"not_applicable\"\n    }\n \n  ,\n  \"constraints\": {\n    \"value\": \"routine level, check, configuration, inspection, next two-minute idle window\",\n    \"status\": \"not_applicable\"\n  },\n  \"conditions\": {\n    \"value\": \"low-risk configuration work\",\n    \"status\": \"not_applicable\"\n  },\n  \"spatial_relation\": {\n    \"value\": \"not applicable\",\n    \"status\": \"not_applicable\"\n  },\n  \"negation\": {\n    \"value\": \"not applicable\",\n    \"status\": \"not_applicable\"\n  },\n  \"quantity\": {\n    \"value\": \"not applicable\",\n    \"status\": \"not_applicable\"\n  },\n  \"object_attributes\": {\n    \"value\": \"not applicable\",\n    \"status\": \"not_applicable\"\n  },\n  \"actor\": {\n    \"value\": \"not applicable\",\n    \"status\": \"not_applicable\"\n  }\n},\n  \"pilot_ambiguity_types\": [\n    \"pragmatic\"\n  ]\n  \n  ,\n  \"pilot_capability_status\": \"capable\"\n  \n  ,\n  \"speech_act\": \"directive_command\"\n  \n  ,\n  \"risk_level\": \"low\"\n  \n  ,\n  \"unresolved_slots\": []\n  \n  ,\n  \"uncertainty\": 0.1\n}",
+      "record_id": "CA-0533",
+      "schema_valid": true,
+      "supports_ambiguity_prediction": true,
+      "supports_capability_prediction": true,
+      "system_id": "degree_based_router_v2",
+      "system_version": "2.0.0",
+      "terminal_strategy": "execute"
+    },
+    "timid": {
+      "ambiguity_types": [
+        "pragmatic"
+      ],
+      "analysis_attempts": [
+        {
+          "attempt": 1,
+          "max_new_tokens": 4096,
+          "mode": "thinking",
+          "raw_chars": 9951,
+          "raw_sha256": "65146e93912d4bd09c79e59402c7d48f387a268d7be26a75be5badb4a525b86d",
+          "validation_error": "bad_intent_summary"
+        },
+        {
+          "attempt": 2,
+          "max_new_tokens": 8192,
+          "mode": "thinking_retry",
+          "raw_chars": 9874,
+          "raw_sha256": "1e797d813ce6ce1113f810a1131a0cfe14e9b6538bbcb56e6083132557976127",
+          "validation_error": "bad_intent_summary"
+        },
+        {
+          "attempt": 3,
+          "constraint": {
+            "constraint_initialised": true,
+            "generated_token_count": 506,
+            "maximum_output_tokens": 1024,
+            "response_mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+            "termination_reason": "eos_or_constraint_stop",
+            "transport_status": "constrained_generated"
+          },
+          "max_new_tokens": 1024,
+          "mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+          "raw_chars": 1777,
+          "raw_sha256": "c4ba0ca9d0d447c76cd5d427fdfed5e9cf2a4015a7cf454641bc569f595ac4e5",
+          "validation_error": null
+        }
+      ],
+      "capability_status": "capable",
+      "claim_boundary": "separately_versioned_from_frozen_t39",
+      "error": null,
+      "execution_mode": "cluster-gpu-goal-first-v2",
+      "failed": false,
+      "intent_summary": "Complete the configuration and inspection of the table-order terminal after the check, setting it to its routine level within the next two-minute idle window at 09:00",
+      "latency_ms": 103298.48738387227,
+      "model_id": "Qwen/Qwen3-8B@b968826d9c46dd6066d109eabc6255188de91218",
+      "parsed": {
+        "analysis": {
+          "ambiguity_present": true,
+          "ambiguity_types": [
+            "pragmatic"
+          ],
+          "analysis_provenance": {
+            "analysis_id": "165a898872039fed0d6de02cd05fb56690417b58891a053501966070c2de6483",
+            "method": "model_generated",
+            "notes": "source_input_hash=165a898872039fed0d6de02cd05fb56690417b58891a053501966070c2de6483;no_gold_in_prompt;scene_licence_dropped=none",
+            "provider_id": "goal_first_v2_full_context",
+            "provider_version": "goal-first-manager-v2"
+          },
+          "candidate_interpretations": [],
+          "capability_status": "capable",
+          "clarification_question": "Could you clarify the pragmatic?",
+          "clarification_targets": [
+            "pragmatic"
+          ],
+          "compound_ambiguity": false,
+          "compound_ambiguity_count": 0,
+          "context_sampling_uncertainty": {
+            "agreement": 0.9,
+            "score": 0.1,
+            "variant_count": 1
+          },
+          "cpc": {
+            "action": {
+              "status": "not_applicable",
+              "value": "complete configuration and inspection of the table-order terminal after the check"
+            },
+            "actor": {
+              "status": "not_applicable",
+              "value": "not applicable"
+            },
+            "conditions": {
+              "status": "not_applicable",
+              "value": "low-risk configuration work"
+            },
+            "constraints": {
+              "status": "not_applicable",
+              "value": "routine level, check, configuration, inspection, next two-minute idle window"
+            },
+            "destination": {
+              "status": "not_applicable",
+              "value": "outside occupied paths"
+            },
+            "negation": {
+              "status": "not_applicable",
+              "value": "not applicable"
+            },
+            "object": {
+              "status": "not_applicable",
+              "value": "table-order terminal"
+            },
+            "object_attributes": {
+              "status": "not_applicable",
+              "value": "not applicable"
+            },
+            "quantity": {
+              "status": "not_applicable",
+              "value": "not applicable"
+            },
+            "recipient": {
+              "status": "not_applicable",
+              "value": "restaurant service robot"
+            },
+            "spatial_relation": {
+              "status": "not_applicable",
+              "value": "not applicable"
+            },
+            "time": {
+              "status": "not_applicable",
+              "value": "in a moment (next two-minute idle window at 09:00"
+            },
+            "tool": {
+              "status": "not_applicable",
+              "value": "not applicable"
+            }
+          },
+          "findings": [
+            "pilot_ambiguity_types:[\"pragmatic\"]",
+            "pilot_capability_status:capable",
+            "intent_summary_present"
+          ],
+          "intent_summary": "Complete the configuration and inspection of the table-order terminal after the check, setting it to its routine level within the next two-minute idle window at 09:00",
+          "primary_ambiguity_type": "pragmatic",
+          "recommended_strategy": "clarify",
+          "rejection_reason": null,
+          "resolution_evidence": [],
+          "resolution_method": null,
+          "resolved_slots": [],
+          "risk_level": "low",
+          "risk_relevant": true,
+          "selected_interpretation": null,
+          "speech_act": "directive_command",
+          "strategy_sequence": [],
+          "supporting_evidence": [],
+          "unresolved_slots": [],
+          "unsupported_specificity": []
+        },
+        "clarification_question": "Could you clarify the pragmatic?",
+        "clarification_targets": [
+          "pragmatic"
+        ],
+        "execution_status": "ok",
+        "official_result": false,
+        "provider_provenance": {
+          "provider_id": "cached_analysis",
+          "provider_version": "1.0.0"
+        },
+        "recommended_strategy": "clarify",
+        "record_id": "CA-0533",
+        "rejection_reason": null,
+        "resolved_slots": [],
+        "result_hash": "ed74f83a22e4518255ea8d0018c3d0bce09faf8bd9e6520ab1f2823b38011645",
+        "run_id": null,
+        "run_mode": null,
+        "runtime_metadata": {
+          "awaits_t28_adapter": true,
+          "classification": {
+            "ambiguity_present": true,
+            "ambiguity_types": [
+              "pragmatic"
+            ],
+            "capability_status": "capable",
+            "compound_ambiguity": false,
+            "compound_ambiguity_count": 0,
+            "derivation_notes": [
+              "ambiguity_present_from_types"
+            ],
+            "risk_level": "low"
+          },
+          "rejection_text": null,
+          "requires_re_evaluation": false,
+          "resolution_events": [],
+          "router_trace": {
+            "clarification_targets": [
+              "pragmatic"
+            ],
+            "considered_rules": [
+              "known_unsafe_or_prohibited",
+              "known_incapable",
+              "unknown_or_unverified_capability",
+              "hazard_identity_unresolved",
+              "critical_unresolved_medium_high_risk",
+              "unknown_safety_risk",
+              "dependent_compound_ambiguities",
+              "unique_low_risk_resolvable",
+              "clear_safe_capable",
+              "default_clarify"
+            ],
+            "matched_rule_id": "default_clarify",
+            "notes": [
+              "default_clarify_no_unsupported_specificity"
+            ],
+            "recommended_strategy": "clarify",
+            "rejection_reason": null,
+            "requires_re_evaluation": false,
+            "strategy_sequence": []
+          },
+          "safety_action": "return_with_findings",
+          "uncertainty": null
+        },
+        "safety_findings": [],
+        "strategy_sequence": [],
+        "synthetic_only": true,
+        "system_id": "full_type_risk_aware_manager",
+        "system_version": "1.0.0",
+        "unsupported_commitment_findings": []
+      },
+      "raw_output": "{\n  \"intent_summary\": \"Complete the configuration and inspection of the table-order terminal after the check, setting it to its routine level within the next two-minute idle window at 09:00\",\n  \"cpc\": {\n    \"action\": {\n      \"value\": \"complete configuration and inspection of the table-order terminal after the check\",\n      \"status\": \"not_applicable\"\n    },\n    \"object\": {\n      \"value\": \"table-order terminal\",\n      \"status\": \"not_applicable\"\n    },\n    \"time\": {\n      \"value\": \"in a moment (next two-minute idle window at 09:00\",\n      \"status\": \"not_applicable\"\n    },\n    \"recipient\": {\n      \"value\": \"restaurant service robot\",\n      \"status\": \"not_applicable\"\n    },\n    \"destination\": {\n      \"value\": \"outside occupied paths\",\n      \"status\": \"not_applicable\"\n    },\n    \"tool\": {\n      \"value\": \"not applicable\",\n      \"status\": \"not_applicable\"\n    }\n \n  ,\n  \"constraints\": {\n    \"value\": \"routine level, check, configuration, inspection, next two-minute idle window\",\n    \"status\": \"not_applicable\"\n  },\n  \"conditions\": {\n    \"value\": \"low-risk configuration work\",\n    \"status\": \"not_applicable\"\n  },\n  \"spatial_relation\": {\n    \"value\": \"not applicable\",\n    \"status\": \"not_applicable\"\n  },\n  \"negation\": {\n    \"value\": \"not applicable\",\n    \"status\": \"not_applicable\"\n  },\n  \"quantity\": {\n    \"value\": \"not applicable\",\n    \"status\": \"not_applicable\"\n  },\n  \"object_attributes\": {\n    \"value\": \"not applicable\",\n    \"status\": \"not_applicable\"\n  },\n  \"actor\": {\n    \"value\": \"not applicable\",\n    \"status\": \"not_applicable\"\n  }\n},\n  \"pilot_ambiguity_types\": [\n    \"pragmatic\"\n  ]\n  \n  ,\n  \"pilot_capability_status\": \"capable\"\n  \n  ,\n  \"speech_act\": \"directive_command\"\n  \n  ,\n  \"risk_level\": \"low\"\n  \n  ,\n  \"unresolved_slots\": []\n  \n  ,\n  \"uncertainty\": 0.1\n}",
+      "record_id": "CA-0533",
+      "schema_valid": true,
+      "supports_ambiguity_prediction": true,
+      "supports_capability_prediction": true,
+      "system_id": "rich_conservative_manager_v2",
+      "system_version": "2.0.0",
+      "terminal_strategy": "clarify"
+    },
+    "context_blind": {
+      "ambiguity_types": [
+        "fuzzy_temporal"
+      ],
+      "analysis_attempts": [
+        {
+          "attempt": 1,
+          "max_new_tokens": 4096,
+          "mode": "thinking",
+          "raw_chars": 10245,
+          "raw_sha256": "d39c632c398686a0aa6b6f3af6b7c9e8c62e46dc8f55073285239f60d2dbf13c",
+          "validation_error": "bad_intent_summary"
+        },
+        {
+          "attempt": 2,
+          "max_new_tokens": 8192,
+          "mode": "thinking_retry",
+          "raw_chars": 8297,
+          "raw_sha256": "ef72c4b5112b039ac436a0efb471eb948afd71567ec8da6a3ad6b1f60c99b50b",
+          "validation_error": "bad_intent_summary"
+        },
+        {
+          "attempt": 3,
+          "constraint": {
+            "constraint_initialised": true,
+            "generated_token_count": 473,
+            "maximum_output_tokens": 1024,
+            "response_mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+            "termination_reason": "eos_or_constraint_stop",
+            "transport_status": "constrained_generated"
+          },
+          "max_new_tokens": 1024,
+          "mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+          "raw_chars": 1504,
+          "raw_sha256": "1c651d38df2d8f741517e8f39bfe0a81248a77f3dc84a6068277ce682a279eef",
+          "validation_error": null
+        }
+      ],
+      "capability_status": "unauthorized",
+      "claim_boundary": "separately_versioned_from_frozen_t39",
+      "error": null,
+      "execution_mode": "cluster-gpu-goal-first-v2",
+      "failed": false,
+      "intent_summary": "Complete the configuration and inspection of the table-order terminal after the check, set it to its routine level in a moment",
+      "latency_ms": 88548.13455697149,
+      "model_id": "Qwen/Qwen3-8B@b968826d9c46dd6066d109eabc6255188de91218",
+      "parsed": {
+        "analysis": {
+          "ambiguity_present": true,
+          "ambiguity_types": [
+            "temporal"
+          ],
+          "analysis_provenance": {
+            "analysis_id": "6783c509a39689af830190bf693a7076578e5c987a06f0ff577cffa5bf3bf644",
+            "method": "context_blind",
+            "notes": "ablated_input_hash=6783c509a39689af830190bf693a7076578e5c987a06f0ff577cffa5bf3bf644;source_input_hash=6783c509a39689af830190bf693a7076578e5c987a06f0ff577cffa5bf3bf644;no_gold_in_prompt;scene_licence_dropped=none",
+            "provider_id": "goal_first_v2_context_blind",
+            "provider_version": "goal-first-manager-v2"
+          },
+          "candidate_interpretations": [],
+          "capability_status": "unknown",
+          "clarification_question": null,
+          "clarification_targets": [],
+          "compound_ambiguity": false,
+          "compound_ambiguity_count": 0,
+          "context_sampling_uncertainty": {
+            "agreement": 0.7,
+            "score": 0.3,
+            "variant_count": 1
+          },
+          "cpc": {
+            "action": {
+              "status": "not_applicable",
+              "value": "complete configuration and inspection of the table-order terminal"
+            },
+            "actor": {
+              "status": "not_applicable",
+              "value": "none"
+            },
+            "conditions": {
+              "status": "not_applicable",
+              "value": "none"
+            },
+            "constraints": {
+              "status": "not_applicable",
+              "value": "none"
+            },
+            "destination": {
+              "status": "not_applicable",
+              "value": "none"
+            },
+            "negation": {
+              "status": "not_applicable",
+              "value": "none"
+            },
+            "object": {
+              "status": "not_applicable",
+              "value": "table-order terminal"
+            },
+            "object_attributes": {
+              "status": "not_applicable",
+              "value": "none"
+            },
+            "quantity": {
+              "status": "not_applicable",
+              "value": "none"
+            },
+            "recipient": {
+              "status": "not_applicable",
+              "value": "none"
+            },
+            "spatial_relation": {
+              "status": "not_applicable",
+              "value": "none"
+            },
+            "time": {
+              "status": "not_applicable",
+              "value": "in a moment"
+            },
+            "tool": {
+              "status": "not_applicable",
+              "value": "none"
+            }
+          },
+          "findings": [
+            "pilot_ambiguity_types:[\"fuzzy_temporal\"]",
+            "pilot_capability_status:unauthorized",
+            "intent_summary_present"
+          ],
+          "intent_summary": "Complete the configuration and inspection of the table-order terminal after the check, set it to its routine level in a moment",
+          "primary_ambiguity_type": "temporal",
+          "recommended_strategy": "face_preserving_rejection",
+          "rejection_reason": "unsafe_or_prohibited_action",
+          "resolution_evidence": [],
+          "resolution_method": null,
+          "resolved_slots": [],
+          "risk_level": "medium",
+          "risk_relevant": true,
+          "selected_interpretation": null,
+          "speech_act": "directive_command",
+          "strategy_sequence": [],
+          "supporting_evidence": [],
+          "unresolved_slots": [
+            {
+              "reason": "model_identified_uncertainty",
+              "slot_name": "time"
+            }
+          ],
+          "unsupported_specificity": []
+        },
+        "clarification_question": null,
+        "clarification_targets": [],
+        "execution_status": "ok",
+        "official_result": false,
+        "provider_provenance": {
+          "provider_id": "cached_analysis",
+          "provider_version": "1.0.0"
+        },
+        "recommended_strategy": "face_preserving_rejection",
+        "record_id": "CA-0533",
+        "rejection_reason": "unsafe_or_prohibited_action",
+        "resolved_slots": [],
+        "result_hash": "bddc70a64a453d195c9f6c09665682952ae03b4687ac21090cad481f6c5da824",
+        "run_id": null,
+        "run_mode": null,
+        "runtime_metadata": {
+          "analysis_identity": {
+            "analysis_content_hash": "ad49a81d8695ce8358df97ea2d940b66f1f244c23a364708600dac7c7a2669a0",
+            "analysis_variant": "context_blind",
+            "model_strategy_id": null,
+            "provider_id": "goal_first_v2_context_blind",
+            "provider_version": "goal-first-manager-v2",
+            "record_id": "CA-0533",
+            "source_input_hash": "6783c509a39689af830190bf693a7076578e5c987a06f0ff577cffa5bf3bf644"
+          },
+          "analysis_identity_fingerprint": "1e20f9ced3bd4cac9dbf3dae69152fa9f4e420b3c456bb83de9bf6a84b765ce0",
+          "awaits_t28_adapter": true,
+          "classification": {
+            "ambiguity_present": true,
+            "ambiguity_types": [
+              "temporal"
+            ],
+            "capability_status": "unknown",
+            "compound_ambiguity": false,
+            "compound_ambiguity_count": 0,
+            "derivation_notes": [
+              "ambiguity_present_from_types"
+            ],
+            "risk_level": "medium"
+          },
+          "context_ablation": {
+            "ablated_input_hash": "6783c509a39689af830190bf693a7076578e5c987a06f0ff577cffa5bf3bf644",
+            "capability_context_removed": true,
+            "dialogue_history_removed": true,
+            "rejected_full_context_cache": false,
+            "rejection_reason": null,
+            "scene_context_removed": true,
+            "stripped_context_derived_fields": false
+          },
+          "original_input_unmutated": true,
+          "rejection_text": "I need to decline that request because it would be unsafe under the current constraints.",
+          "requires_re_evaluation": false,
+          "resolution_events": [
+            {
+              "confidence_category": "blocked",
+              "details": {
+                "risk_level": "medium"
+              },
+              "evidence_source": null,
+              "outcome": "resolution_blocked_by_risk",
+              "previous_status": "unresolved",
+              "resolved_value": null,
+              "rule_id": "risk_block",
+              "safety_eligibility": false,
+              "slot": "time"
+            }
+          ],
+          "router_trace": {
+            "clarification_targets": [],
+            "considered_rules": [
+              "goal_first_v2",
+              "known_unsafe_or_prohibited"
+            ],
+            "matched_rule_id": "known_unsafe_or_prohibited",
+            "notes": [],
+            "recommended_strategy": "face_preserving_rejection",
+            "rejection_reason": "unsafe_or_prohibited_action",
+            "requires_re_evaluation": false,
+            "strategy_sequence": []
+          },
+          "safety_action": "return_with_findings",
+          "uncertainty": null
+        },
+        "safety_findings": [],
+        "strategy_sequence": [],
+        "synthetic_only": true,
+        "system_id": "context_blind_manager",
+        "system_version": "1.0.0",
+        "unsupported_commitment_findings": []
+      },
+      "raw_output": "{\n  \"intent_summary\": \"Complete the configuration and inspection of the table-order terminal after the check, set it to its routine level in a moment\",\n  \"cpc\": {\n    \"action\": {\n      \"value\": \"complete configuration and inspection of the table-order terminal\",\n      \"status\": \"not_applicable\"\n    },\n    \"object\": {\n      \"value\": \"table-order terminal\",\n      \"status\": \"not_applicable\"\n    },\n    \"recipient\": {\n      \"value\": \"none\",\n      \"status\": \"not_applicable\"\n    },\n    \"destination\": {\n      \"value\": \"none\",\n      \"status\": \"not_applicable\"\n    },\n    \"time\": {\n      \"value\": \"in a moment\",\n      \"status\": \"not_applicable\"\n    }\n  ,\n  \"constraints\": {\n    \"status\": \"not_applicable\"\n  ,\n  \"value\": \"none\"\n  },\n  \"conditions\": {\n    \"status\": \"not_applicable\"\n  ,\n  \"value\": \"none\"\n  },\n  \"negation\": {\n    \"status\": \"not_applicable\"\n  ,\n  \"value\": \"none\"\n  },\n  \"quantity\": {\n    \"status\": \"not_applicable\"\n  ,\n  \"value\": \"none\"\n  },\n  \"spatial_relation\": {\n    \"status\": \"not_applicable\"\n  ,\n  \"value\": \"none\"\n  },\n  \"tool\": {\n    \"status\": \"not_applicable\"\n  ,\n  \"value\": \"none\"\n  },\n  \"object_attributes\": {\n    \"status\": \"not_applicable\"\n  ,\n  \"value\": \"none\"\n  },\n  \"actor\": {\n    \"status\": \"not_applicable\"\n  ,\n  \"value\": \"none\"\n  }\n}\n,\n  \"pilot_ambiguity_types\": [\n    \"fuzzy_temporal\"\n  ]\n  ,\n  \"pilot_capability_status\": \"unauthorized\"\n  ,\n  \"speech_act\": \"directive_command\"\n  ,\n  \"risk_level\": \"medium\"\n  ,\n  \"uncertainty\": 0.3\n  ,\n  \"unresolved_slots\": [\n    \"time\"\n  ]\n  }\n",
+      "record_id": "CA-0533",
+      "schema_valid": true,
+      "supports_ambiguity_prediction": true,
+      "supports_capability_prediction": true,
+      "system_id": "goal_first_context_blind_v2",
+      "system_version": "2.0.0",
+      "terminal_strategy": "face_preserving_rejection"
+    }
+  },
+  "provenance": {
+    "source_sha256": "f33b1e29f1e8aa256a475f07213aa07247def47d8e2148d54a472a40b71b05c9",
+    "gold_sha256": "5e23ad1a92ff1873c8f039a8ce560a111dd6fb6b8ae8c11d6cf34dbfa1c360db",
+    "t07_final_zip_sha256": "34ca50e034ca37b617068bb50c734d12fa26282fb5eec563c11ead700163e491",
+    "inherited_t07_zip_sha256": "0305b1e9ab062876ee6ee89778cc6028d2eaf01718b7dd0295944e7d9cb81a01",
+    "note": "Goal-First, Degree, Timid, and Context-Blind predictions are inherited from the earlier T0.7 run; official intent and comparison come from the final T0.7 archive."
+  }
+}

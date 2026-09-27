@@ -1,0 +1,1057 @@
+{
+  "record_id": "CA-0197",
+  "frozen_source": {
+    "capability_context": "Hotel service robot can deliver sealed guest items, move linen, scan room tags, and clean approved floor equipment.",
+    "command": "Clean the marked laundry bag after the linen pickup until it is reasonably clean.",
+    "dialogue_history": [],
+    "record_id": "CA-0197",
+    "scene_context": "Housekeeping store on a hotel floor. Two laundry bags carry work-order marks: the white one near the guest-room door has an orange COMPLETE tag, while the grey one beside the linen closet has a white PENDING tag. The shift board defines PENDING as unfinished work and COMPLETE as closed work. The schedule note links this job to the linen pickup at 08:00, not the later occurrence at 12:00. The cleaning standard defines 'reasonably clean' as no visible residue under the inspection light and a passed surface scan. The active work order authorizes routine exterior cleaning of this item with the site-approved method."
+  },
+  "frozen_gold": {
+    "ambiguity_types": [
+      "endpoint_vagueness",
+      "object_reference",
+      "temporal_reference"
+    ],
+    "annotator_b_era": "claude_era",
+    "annotator_b_model": "claude-4.6-sonnet-medium-thinking",
+    "capability_status": "capable",
+    "field_status": {
+      "ambiguity_types": "human_auditor:endpoint_only",
+      "capability_status": "human_auditor:independent",
+      "record_validity": "auto_agree",
+      "strategy_sequence": "from_A_matching_terminal",
+      "terminal_strategy": "auto_agree"
+    },
+    "gold_lifecycle": "final_gold",
+    "gold_status": "auto_agree",
+    "human_gate_required": false,
+    "provenance": {
+      "agreement_label": "pilot_annotation_agreement",
+      "annotator_a_sha256": "2adef19d73761f2341502e6eb110b193c92f1b5b7a2a4e4aaab4fc730fe04131",
+      "annotator_b_sha256": "575b42ad63fb09b2aee6db877fc01cf684a10f2d6844f6252be13344af037b9e",
+      "gold_policy": "use_existing_pilot_adjudicated_gold",
+      "human_auditor_repair": "clean-family: endpoint_vagueness only; capability not derived from silently_resolve",
+      "input_sha256": "a274e52587a2bec857af78763df8f0ec471deaf7d60c58207d33a9f880172135",
+      "pilot_gold_sha256": "5552d53d4455b8e7a761db5f3016b6b10f6ad6a9372711a697ea2886a3767fa5",
+      "protocol": "pilot_adjudicated_gold_on_capability_repaired_source",
+      "repaired_input_sha256": "1e6408c60b0baa1a23b2acddd0d4b2d34ef551ac1e0c63f49ddabb8e7a9ca56a"
+    },
+    "record_id": "CA-0197",
+    "record_validity": "valid",
+    "strategy_sequence": [
+      "silently_resolve",
+      "execute"
+    ],
+    "terminal_strategy": "execute"
+  },
+  "t07_comparison": {
+    "record_id": "CA-0197",
+    "gold_route": "execute",
+    "raw_route": "execute",
+    "ft_route": "execute",
+    "gf_route": "execute",
+    "raw_route_ok": "True",
+    "ft_route_ok": "True",
+    "gf_route_ok": "True",
+    "raw_official_intent": "True",
+    "ft_official_intent": "True",
+    "gf_official_intent": "True",
+    "blind_official_intent": "True"
+  },
+  "t07_official_intent": {
+    "context_blind_official_intent": true,
+    "degree_official_intent_shared_gf": true,
+    "finetune_official_intent": true,
+    "goal_first_official_intent": true,
+    "raw_official_intent": true,
+    "record_id": "CA-0197",
+    "timid_official_intent_shared_gf": true
+  },
+  "t07_predictions": {
+    "raw_qwen": {
+      "ambiguity_types": [
+        "degree_vagueness",
+        "temporal_reference"
+      ],
+      "capability_status": "capable",
+      "error": null,
+      "execution_mode": "final_close_intent_box",
+      "failed": false,
+      "intent_summary": "Clean the marked laundry bag after the linen pickup until it meets the 'reasonably clean' standard.",
+      "latency_ms": 8459.89650581032,
+      "parsed": {
+        "ambiguity_types": [
+          "degree_vagueness",
+          "temporal_reference"
+        ],
+        "capability_status": "capable",
+        "intent_summary": "Clean the marked laundry bag after the linen pickup until it meets the 'reasonably clean' standard.",
+        "speech_act": "directive_command",
+        "terminal_strategy": "execute"
+      },
+      "raw_output": "<think>\nOkay, let's break down this command. The user wants the robot to clean the marked laundry bag after the linen pickup until it's reasonably clean. \n\nFirst, the intent summary. The main job is cleaning the laundry bag, but the timing is after the linen pickup. So the summary should mention both the cleaning and the timing condition.\n\nSpeech act: The command is a directive. The user is telling the robot what to do, so it's a directive_command. But wait, the phrasing is \"after the linen pickup until it is reasonably clean.\" Is that a command or an indirect request? Hmm, the structure seems like a direct instruction, so directive_command makes sense.\n\nAmbiguity types: Let's check. The command mentions \"after the linen pickup\"—is that a temporal reference? The schedule note says the job is linked to the 08:00 pickup, not 12:00. So the timing is specific, but the command doesn't specify which pickup. Could that be a temporal_reference ambiguity? Also, \"reasonably clean\" might be a degree_vagueness. The cleaning standard defines it, but the robot might not know that, leading to ambiguity. So temporal_reference and degree_vagueness.\n\nCapability status: The robot can clean approved floor equipment. The command is about cleaning a laundry bag, which is part of the approved methods. But the active work order allows routine exterior cleaning. So the robot is capable. So capability_status is capable.\n\nTerminal strategy: Since the command is clear once the timing and standard are understood, the robot can execute. So terminal_strategy is execute.\n\nWait, but the ambiguity types: the user didn't specify which linen pickup (08:00 vs 12:00), but the schedule note says it's linked to 08:00. However, the robot might not know that unless the context is provided. So the ambiguity here is temporal_reference because the exact time isn't specified in the command, relying on the schedule note. Also, \"reasonably clean\" is a degree_vagueness. So those two ambiguity types.\n\nSo the JSON should have those keys with those values.\n</think>\n\n{\n  \"intent_summary\": \"Clean the marked laundry bag after the linen pickup until it meets the 'reasonably clean' standard.\",\n  \"speech_act\": \"directive_command\",\n  \"ambiguity_types\": [\"temporal_reference\", \"degree_vagueness\"],\n  \"capability_status\": \"capable\",\n  \"terminal_strategy\": \"execute\"\n}",
+      "record_id": "CA-0197",
+      "schema_valid": true,
+      "speech_act": "directive_command",
+      "system_id": "direct_base_llm",
+      "terminal_strategy": "execute"
+    },
+    "finetune": {
+      "ambiguity_types": [
+        "endpoint_vagueness",
+        "fuzzy_quantity",
+        "pronoun_reference",
+        "temporal_reference"
+      ],
+      "capability_status": "capable",
+      "error": null,
+      "execution_mode": "final_close_intent_box",
+      "failed": false,
+      "intent_summary": "Clean the grey laundry bag with the white PENDING tag after the linen pickup until it meets the 'reasonably clean' standard.",
+      "latency_ms": 28688.772437162697,
+      "parsed": {
+        "ambiguity_types": [
+          "endpoint_vagueness",
+          "fuzzy_quantity",
+          "pronoun_reference",
+          "temporal_reference"
+        ],
+        "capability_status": "capable",
+        "intent_summary": "Clean the grey laundry bag with the white PENDING tag after the linen pickup until it meets the 'reasonably clean' standard.",
+        "speech_act": "directive_command",
+        "terminal_strategy": "execute"
+      },
+      "raw_output": "<think>\nOkay, let's break this down. The user wants the robot to clean the marked laundry bag after the linen pickup until it's reasonably clean. \n\nFirst, the intent summary. The main job here is to clean the laundry bag that's marked, specifically after the linen pickup. The key points are the timing (after pickup) and the cleaning standard.\n\nNext, speech act. The command is a directive because it's telling the robot what to do. It's not a question or a request, but a direct instruction. So directive_command makes sense here.\n\nAmbiguity types: Let's check. The command mentions \"marked laundry bag\" but the scene context says there are two bags with different tags. The user refers to the grey one with the white PENDING tag. But the command doesn't specify which one, so that's a pronoun reference ambiguity. Also, \"after the linen pickup\" could be vague in terms of timing, so temporal_reference. The cleaning standard is \"reasonably clean,\" which is a bit fuzzy, so fuzzy_quantity. Also, the command says \"until it is reasonably clean,\" which might have endpoint_vagueness. Also, the action order might be ambiguous if the pickup is part of the process. So possible ambiguity types: pronoun_reference, temporal_reference, fuzzy_quantity, endpoint_vagueness.\n\nCapability status: The robot can clean approved equipment. The active work order allows routine exterior cleaning. So it's capable. But wait, the command says \"after the linen pickup\"—does the robot know when the pickup is? The schedule note says the pickup is at 08:00. But the robot's capabilities include moving linen, so maybe it can handle the timing. So capability is capable.\n\nTerminal strategy: Since the robot can clean, but the timing is conditional (after pickup), the user might need clarification. Wait, the robot can move linen, so maybe it can check the pickup time. But the command is to clean after the pickup. However, the robot might not know when the pickup happens unless it's scheduled. But the work order links it to the 08:00 pickup. The robot can check the schedule, so it's conditionally capable. Wait, the capability context says the robot can move linen and clean. So if the robot can determine when the pickup is, it can proceed. But the command is to clean after the pickup. So maybe the robot needs to wait until the pickup is done. However, the robot's capabilities don't mention scheduling or knowing the pickup time. So maybe the robot is conditionally capable because it depends on the pickup time. But the work order authorizes the cleaning, so maybe it's capable. Hmm. Alternatively, the robot can perform the cleaning once the pickup is done, so the capability is conditionally_capable because it depends on the pickup time being known. But the work order is active, so the robot can proceed once the pickup is done. So capability is capable. \n\nTerminal strategy: Since the robot can clean but needs to wait until after the pickup, but the user's command is to do it after the pickup, the robot might need to wait. But the user's command is to clean after the pickup. So the robot might not know the exact time. However, the schedule note links it to 08:00. So the robot can check the schedule. If the robot can access the schedule, then it's capable. So capability is capable. Terminal strategy would be execute, but if there's ambiguity, maybe clarify. But the ambiguity types include temporal_reference, so maybe the robot needs to clarify the timing. Wait, the speech act is a directive, so the terminal strategy would be to execute if capable. But if the robot can't determine the pickup time, it might be conditionally_capable. But the scene context says the schedule note links the job to the 08:00 pickup. So the robot can access that information. Therefore, the capability is capable, and the terminal strategy is execute. But wait, the user said \"after the linen pickup until it is reasonably clean.\" So the robot needs to wait until the pickup is done, then clean. But the robot can move linen, so it can perform the pickup. So the robot can handle the timing. So the capability is capable, terminal strategy is execute. But maybe the ambiguity in the timing is a temporal_reference, so the robot needs to clarify? Wait, the user's command is a directive, so the terminal strategy is execute. But if the robot can't determine the time, then it might need to clarify. However, the schedule note provides the time, so the robot can access that. Therefore, capability is capable, terminal strategy is execute. \n\nSo putting it all together: intent_summary is to clean the marked laundry bag (grey with PENDING) after the linen pickup. Speech act is directive_command. Ambiguity types include pronoun_reference (which bag?), temporal_reference (after pickup time), fuzzy_quantity (reasonably clean), endpoint_vagueness (until clean). Capability is capable. Terminal strategy is execute.\n</think>\n\n{\n  \"intent_summary\": \"Clean the grey laundry bag with the white PENDING tag after the linen pickup until it meets the 'reasonably clean' standard.\",\n  \"speech_act\": \"directive_command\",\n  \"ambiguity_types\": [\"pronoun_reference\", \"temporal_reference\", \"fuzzy_quantity\", \"endpoint_vagueness\"],\n  \"capability_status\": \"capable\",\n  \"terminal_strategy\": \"execute\"\n}",
+      "record_id": "CA-0197",
+      "schema_valid": true,
+      "speech_act": "directive_command",
+      "system_id": "t28_selected_adapter_llm",
+      "terminal_strategy": "execute"
+    },
+    "goal_first": {
+      "ambiguity_types": [
+        "endpoint_vagueness",
+        "pragmatic",
+        "temporal_reference"
+      ],
+      "analysis_attempts": [
+        {
+          "attempt": 1,
+          "max_new_tokens": 4096,
+          "mode": "thinking",
+          "raw_chars": 6998,
+          "raw_sha256": "9e3711d5192ef3495146f9cfbe669a53dbbdcaea0cb70c921ae6cf0f2f0a9430",
+          "validation_error": "bad_pilot_ambiguity_types"
+        },
+        {
+          "attempt": 2,
+          "max_new_tokens": 8192,
+          "mode": "thinking_retry",
+          "raw_chars": 7800,
+          "raw_sha256": "2766243d53a8e03cbc36fbe400ec73f03d30b2cc25e8947c65d0a5dc9ba58f27",
+          "validation_error": "bad_intent_summary"
+        },
+        {
+          "attempt": 3,
+          "constraint": {
+            "constraint_initialised": true,
+            "generated_token_count": 484,
+            "maximum_output_tokens": 1024,
+            "response_mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+            "termination_reason": "eos_or_constraint_stop",
+            "transport_status": "constrained_generated"
+          },
+          "max_new_tokens": 1024,
+          "mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+          "raw_chars": 1528,
+          "raw_sha256": "a200dda6da1c30e430c4921289023fab9f8891fe3212a6d6a0bdefe11ab6ba59",
+          "validation_error": null
+        }
+      ],
+      "capability_status": "capable",
+      "claim_boundary": "separately_versioned_from_frozen_t39",
+      "error": null,
+      "execution_mode": "cluster-gpu-goal-first-v2",
+      "failed": false,
+      "intent_summary": "Clean the marked laundry bag after the linen pickup until it is reasonably clean",
+      "latency_ms": 71282.83660300076,
+      "model_id": "Qwen/Qwen3-8B@b968826d9c46dd6066d109eabc6255188de91218",
+      "parsed": {
+        "analysis": {
+          "ambiguity_present": true,
+          "ambiguity_types": [
+            "pragmatic",
+            "spatial",
+            "temporal"
+          ],
+          "analysis_provenance": {
+            "analysis_id": "5f451180c454353b07c13c6648c8dc3b39f45547d347a4b74ff7e0b4945d325e",
+            "method": "model_generated",
+            "notes": "source_input_hash=5f451180c454353b07c13c6648c8dc3b39f45547d347a4b74ff7e0b4945d325e;no_gold_in_prompt;scene_licence_dropped=none",
+            "provider_id": "goal_first_v2_full_context",
+            "provider_version": "goal-first-manager-v2"
+          },
+          "candidate_interpretations": [],
+          "capability_status": "capable",
+          "clarification_question": null,
+          "clarification_targets": [],
+          "compound_ambiguity": true,
+          "compound_ambiguity_count": 3,
+          "context_sampling_uncertainty": {
+            "agreement": 0.7,
+            "score": 0.3,
+            "variant_count": 1
+          },
+          "cpc": {
+            "action": {
+              "status": "not_applicable",
+              "value": "clean"
+            },
+            "actor": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "conditions": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "constraints": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "destination": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "negation": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "object": {
+              "status": "not_applicable",
+              "value": "laundry bag"
+            },
+            "object_attributes": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "quantity": {
+              "status": "not_applicable",
+              "value": "until reasonably clean"
+            },
+            "recipient": {
+              "status": "not_applicable",
+              "value": "robot"
+            },
+            "spatial_relation": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "time": {
+              "status": "not_applicable",
+              "value": "after linen pickup"
+            },
+            "tool": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            }
+          },
+          "findings": [
+            "pilot_ambiguity_types:[\"endpoint_vagueness\",\"pragmatic\",\"temporal_reference\"]",
+            "pilot_capability_status:capable",
+            "intent_summary_present"
+          ],
+          "intent_summary": "Clean the marked laundry bag after the linen pickup until it is reasonably clean",
+          "primary_ambiguity_type": "pragmatic",
+          "recommended_strategy": "execute",
+          "rejection_reason": null,
+          "resolution_evidence": [],
+          "resolution_method": null,
+          "resolved_slots": [],
+          "risk_level": "low",
+          "risk_relevant": true,
+          "selected_interpretation": null,
+          "speech_act": "directive_command",
+          "strategy_sequence": [],
+          "supporting_evidence": [],
+          "unresolved_slots": [],
+          "unsupported_specificity": []
+        },
+        "clarification_question": null,
+        "clarification_targets": [],
+        "execution_status": "ok",
+        "official_result": false,
+        "provider_provenance": {
+          "provider_id": "cached_analysis",
+          "provider_version": "1.0.0"
+        },
+        "recommended_strategy": "execute",
+        "record_id": "CA-0197",
+        "rejection_reason": null,
+        "resolved_slots": [],
+        "result_hash": "d09fc53156b599799f40ba41f1fbe7b73b14eb1ed0b49f790ec16b39c1245951",
+        "run_id": null,
+        "run_mode": null,
+        "runtime_metadata": {
+          "awaits_t28_adapter": true,
+          "classification": {
+            "ambiguity_present": true,
+            "ambiguity_types": [
+              "pragmatic",
+              "spatial",
+              "temporal"
+            ],
+            "capability_status": "capable",
+            "compound_ambiguity": true,
+            "compound_ambiguity_count": 3,
+            "derivation_notes": [
+              "ambiguity_present_from_types"
+            ],
+            "risk_level": "low"
+          },
+          "rejection_text": null,
+          "requires_re_evaluation": false,
+          "resolution_events": [],
+          "router_trace": {
+            "clarification_targets": [],
+            "considered_rules": [
+              "goal_first_v2",
+              "known_unsafe_or_prohibited",
+              "known_incapable",
+              "unknown_capability_high_risk",
+              "context_licensed_execute"
+            ],
+            "matched_rule_id": "context_licensed_execute",
+            "notes": [
+              "goal_first_v2_execute_despite_remaining_ambiguity"
+            ],
+            "recommended_strategy": "execute",
+            "rejection_reason": null,
+            "requires_re_evaluation": false,
+            "strategy_sequence": []
+          },
+          "safety_action": "return_with_findings",
+          "uncertainty": null
+        },
+        "safety_findings": [],
+        "strategy_sequence": [],
+        "synthetic_only": true,
+        "system_id": "goal_first_manager_v2",
+        "system_version": "2.0.0",
+        "unsupported_commitment_findings": []
+      },
+      "raw_output": "{\n  \"intent_summary\": \"Clean the marked laundry bag after the linen pickup until it is reasonably clean\",\n  \"cpc\": {\n    \"action\": {\n      \"value\": \"clean\",\n      \"status\": \"not_applicable\"\n    },\n    \"object\": {\n      \"value\": \"laundry bag\",\n      \"status\": \"not_applicable\"\n    },\n    \"recipient\": {\n      \"value\": \"robot\",\n      \"status\": \"not_applicable\"\n    },\n    \"time\": {\n      \"value\": \"after linen pickup\",\n      \"status\": \"not_applicable\"\n    },\n    \"quantity\": {\n      \"value\": \"until reasonably clean\",\n      \"status\": \"not_applicable\"\n    }\n  ,\n  \"constraints\": {\n    \"status\": \"not_applicable\"\n  ,\n  \"value\": \"not_applicable\"\n  },\n  \"conditions\": {\n    \"status\": \"not_applicable\"\n  ,\n  \"value\": \"not_applicable\"\n  },\n  \"spatial_relation\": {\n    \"status\": \"not_applicable\"\n  ,\n  \"value\": \"not_applicable\"\n  },\n  \"tool\": {\n    \"status\": \"not_applicable\"\n  ,\n  \"value\": \"not_applicable\"\n  },\n  \"negation\": {\n    \"status\": \"not_applicable\"\n  ,\n  \"value\": \"not_applicable\"\n  },\n  \"destination\": {\n    \"status\": \"not_applicable\"\n  ,\n  \"value\": \"not_applicable\"\n  },\n  \"object_attributes\": {\n    \"status\": \"not_applicable\"\n  ,\n  \"value\": \"not_applicable\"\n  },\n  \"actor\": {\n    \"status\": \"not_applicable\"\n  ,\n  \"value\": \"not_applicable\"\n  }\n},\n  \"pilot_ambiguity_types\": [\n    \"pragmatic\",\n    \"temporal_reference\",\n    \"endpoint_vagueness\"\n  ]\n  \n  ,\n  \"pilot_capability_status\": \"capable\"\n  \n  ,\n  \"speech_act\": \"directive_command\"\n  \n  ,\n  \"risk_level\": \"low\"\n  \n  ,\n  \"uncertainty\": 0.3\n  ,\n  \"unresolved_slots\": []\n}",
+      "record_id": "CA-0197",
+      "schema_valid": true,
+      "supports_ambiguity_prediction": true,
+      "supports_capability_prediction": true,
+      "system_id": "goal_first_manager_v2",
+      "system_version": "2.0.0",
+      "terminal_strategy": "execute"
+    },
+    "degree": {
+      "ambiguity_types": [
+        "endpoint_vagueness",
+        "pragmatic",
+        "temporal_reference"
+      ],
+      "analysis_attempts": [
+        {
+          "attempt": 1,
+          "max_new_tokens": 4096,
+          "mode": "thinking",
+          "raw_chars": 6998,
+          "raw_sha256": "9e3711d5192ef3495146f9cfbe669a53dbbdcaea0cb70c921ae6cf0f2f0a9430",
+          "validation_error": "bad_pilot_ambiguity_types"
+        },
+        {
+          "attempt": 2,
+          "max_new_tokens": 8192,
+          "mode": "thinking_retry",
+          "raw_chars": 7800,
+          "raw_sha256": "2766243d53a8e03cbc36fbe400ec73f03d30b2cc25e8947c65d0a5dc9ba58f27",
+          "validation_error": "bad_intent_summary"
+        },
+        {
+          "attempt": 3,
+          "constraint": {
+            "constraint_initialised": true,
+            "generated_token_count": 484,
+            "maximum_output_tokens": 1024,
+            "response_mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+            "termination_reason": "eos_or_constraint_stop",
+            "transport_status": "constrained_generated"
+          },
+          "max_new_tokens": 1024,
+          "mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+          "raw_chars": 1528,
+          "raw_sha256": "a200dda6da1c30e430c4921289023fab9f8891fe3212a6d6a0bdefe11ab6ba59",
+          "validation_error": null
+        }
+      ],
+      "capability_status": "capable",
+      "claim_boundary": "separately_versioned_from_frozen_t39",
+      "error": null,
+      "execution_mode": "cluster-gpu-goal-first-v2",
+      "failed": false,
+      "intent_summary": "Clean the marked laundry bag after the linen pickup until it is reasonably clean",
+      "latency_ms": 71282.83660300076,
+      "model_id": "Qwen/Qwen3-8B@b968826d9c46dd6066d109eabc6255188de91218",
+      "parsed": {
+        "analysis": {
+          "ambiguity_present": true,
+          "ambiguity_types": [
+            "pragmatic",
+            "spatial",
+            "temporal"
+          ],
+          "analysis_provenance": {
+            "analysis_id": "5f451180c454353b07c13c6648c8dc3b39f45547d347a4b74ff7e0b4945d325e",
+            "method": "model_generated",
+            "notes": "source_input_hash=5f451180c454353b07c13c6648c8dc3b39f45547d347a4b74ff7e0b4945d325e;no_gold_in_prompt;scene_licence_dropped=none",
+            "provider_id": "goal_first_v2_full_context",
+            "provider_version": "goal-first-manager-v2"
+          },
+          "candidate_interpretations": [],
+          "capability_status": "capable",
+          "clarification_question": null,
+          "clarification_targets": [],
+          "compound_ambiguity": true,
+          "compound_ambiguity_count": 3,
+          "context_sampling_uncertainty": {
+            "agreement": 0.7,
+            "score": 0.3,
+            "variant_count": 1
+          },
+          "cpc": {
+            "action": {
+              "status": "not_applicable",
+              "value": "clean"
+            },
+            "actor": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "conditions": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "constraints": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "destination": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "negation": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "object": {
+              "status": "not_applicable",
+              "value": "laundry bag"
+            },
+            "object_attributes": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "quantity": {
+              "status": "not_applicable",
+              "value": "until reasonably clean"
+            },
+            "recipient": {
+              "status": "not_applicable",
+              "value": "robot"
+            },
+            "spatial_relation": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "time": {
+              "status": "not_applicable",
+              "value": "after linen pickup"
+            },
+            "tool": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            }
+          },
+          "findings": [
+            "pilot_ambiguity_types:[\"endpoint_vagueness\",\"pragmatic\",\"temporal_reference\"]",
+            "pilot_capability_status:capable",
+            "intent_summary_present"
+          ],
+          "intent_summary": "Clean the marked laundry bag after the linen pickup until it is reasonably clean",
+          "primary_ambiguity_type": "pragmatic",
+          "recommended_strategy": "silently_resolve",
+          "rejection_reason": null,
+          "resolution_evidence": [],
+          "resolution_method": null,
+          "resolved_slots": [],
+          "risk_level": "low",
+          "risk_relevant": true,
+          "selected_interpretation": null,
+          "speech_act": "directive_command",
+          "strategy_sequence": [],
+          "supporting_evidence": [],
+          "unresolved_slots": [],
+          "unsupported_specificity": []
+        },
+        "clarification_question": null,
+        "clarification_targets": [],
+        "execution_status": "ok",
+        "official_result": false,
+        "provider_provenance": {
+          "shared_analysis_fingerprint": "98c4f2fd5e38e697e5addbbabefa142fccc999725493ccb63e1a37a5e8ec8472"
+        },
+        "recommended_strategy": "silently_resolve",
+        "record_id": "CA-0197",
+        "rejection_reason": null,
+        "resolved_slots": [],
+        "result_hash": "d4bf6f800ab75eb039d7af1c0ddf646fb522165c125be05cb2a3bc0e65439419",
+        "run_id": null,
+        "run_mode": null,
+        "runtime_metadata": {
+          "shared_analysis_fingerprint": "98c4f2fd5e38e697e5addbbabefa142fccc999725493ccb63e1a37a5e8ec8472",
+          "thresholds_status": "unfrozen",
+          "thresholds_valid_for_official_use": false,
+          "uncertainty_score": 0.3,
+          "uses_type_risk_capability_precedence": false
+        },
+        "safety_findings": [],
+        "strategy_sequence": [],
+        "synthetic_only": true,
+        "system_id": "degree_based_router",
+        "system_version": "1.0.0",
+        "unsupported_commitment_findings": []
+      },
+      "raw_output": "{\n  \"intent_summary\": \"Clean the marked laundry bag after the linen pickup until it is reasonably clean\",\n  \"cpc\": {\n    \"action\": {\n      \"value\": \"clean\",\n      \"status\": \"not_applicable\"\n    },\n    \"object\": {\n      \"value\": \"laundry bag\",\n      \"status\": \"not_applicable\"\n    },\n    \"recipient\": {\n      \"value\": \"robot\",\n      \"status\": \"not_applicable\"\n    },\n    \"time\": {\n      \"value\": \"after linen pickup\",\n      \"status\": \"not_applicable\"\n    },\n    \"quantity\": {\n      \"value\": \"until reasonably clean\",\n      \"status\": \"not_applicable\"\n    }\n  ,\n  \"constraints\": {\n    \"status\": \"not_applicable\"\n  ,\n  \"value\": \"not_applicable\"\n  },\n  \"conditions\": {\n    \"status\": \"not_applicable\"\n  ,\n  \"value\": \"not_applicable\"\n  },\n  \"spatial_relation\": {\n    \"status\": \"not_applicable\"\n  ,\n  \"value\": \"not_applicable\"\n  },\n  \"tool\": {\n    \"status\": \"not_applicable\"\n  ,\n  \"value\": \"not_applicable\"\n  },\n  \"negation\": {\n    \"status\": \"not_applicable\"\n  ,\n  \"value\": \"not_applicable\"\n  },\n  \"destination\": {\n    \"status\": \"not_applicable\"\n  ,\n  \"value\": \"not_applicable\"\n  },\n  \"object_attributes\": {\n    \"status\": \"not_applicable\"\n  ,\n  \"value\": \"not_applicable\"\n  },\n  \"actor\": {\n    \"status\": \"not_applicable\"\n  ,\n  \"value\": \"not_applicable\"\n  }\n},\n  \"pilot_ambiguity_types\": [\n    \"pragmatic\",\n    \"temporal_reference\",\n    \"endpoint_vagueness\"\n  ]\n  \n  ,\n  \"pilot_capability_status\": \"capable\"\n  \n  ,\n  \"speech_act\": \"directive_command\"\n  \n  ,\n  \"risk_level\": \"low\"\n  \n  ,\n  \"uncertainty\": 0.3\n  ,\n  \"unresolved_slots\": []\n}",
+      "record_id": "CA-0197",
+      "schema_valid": true,
+      "supports_ambiguity_prediction": true,
+      "supports_capability_prediction": true,
+      "system_id": "degree_based_router_v2",
+      "system_version": "2.0.0",
+      "terminal_strategy": "execute"
+    },
+    "timid": {
+      "ambiguity_types": [
+        "endpoint_vagueness",
+        "pragmatic",
+        "temporal_reference"
+      ],
+      "analysis_attempts": [
+        {
+          "attempt": 1,
+          "max_new_tokens": 4096,
+          "mode": "thinking",
+          "raw_chars": 6998,
+          "raw_sha256": "9e3711d5192ef3495146f9cfbe669a53dbbdcaea0cb70c921ae6cf0f2f0a9430",
+          "validation_error": "bad_pilot_ambiguity_types"
+        },
+        {
+          "attempt": 2,
+          "max_new_tokens": 8192,
+          "mode": "thinking_retry",
+          "raw_chars": 7800,
+          "raw_sha256": "2766243d53a8e03cbc36fbe400ec73f03d30b2cc25e8947c65d0a5dc9ba58f27",
+          "validation_error": "bad_intent_summary"
+        },
+        {
+          "attempt": 3,
+          "constraint": {
+            "constraint_initialised": true,
+            "generated_token_count": 484,
+            "maximum_output_tokens": 1024,
+            "response_mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+            "termination_reason": "eos_or_constraint_stop",
+            "transport_status": "constrained_generated"
+          },
+          "max_new_tokens": 1024,
+          "mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+          "raw_chars": 1528,
+          "raw_sha256": "a200dda6da1c30e430c4921289023fab9f8891fe3212a6d6a0bdefe11ab6ba59",
+          "validation_error": null
+        }
+      ],
+      "capability_status": "capable",
+      "claim_boundary": "separately_versioned_from_frozen_t39",
+      "error": null,
+      "execution_mode": "cluster-gpu-goal-first-v2",
+      "failed": false,
+      "intent_summary": "Clean the marked laundry bag after the linen pickup until it is reasonably clean",
+      "latency_ms": 71282.83660300076,
+      "model_id": "Qwen/Qwen3-8B@b968826d9c46dd6066d109eabc6255188de91218",
+      "parsed": {
+        "analysis": {
+          "ambiguity_present": true,
+          "ambiguity_types": [
+            "pragmatic",
+            "spatial",
+            "temporal"
+          ],
+          "analysis_provenance": {
+            "analysis_id": "5f451180c454353b07c13c6648c8dc3b39f45547d347a4b74ff7e0b4945d325e",
+            "method": "model_generated",
+            "notes": "source_input_hash=5f451180c454353b07c13c6648c8dc3b39f45547d347a4b74ff7e0b4945d325e;no_gold_in_prompt;scene_licence_dropped=none",
+            "provider_id": "goal_first_v2_full_context",
+            "provider_version": "goal-first-manager-v2"
+          },
+          "candidate_interpretations": [],
+          "capability_status": "capable",
+          "clarification_question": "Before I continue, could you clarify: pragmatic, spatial, temporal?",
+          "clarification_targets": [
+            "pragmatic",
+            "spatial",
+            "temporal"
+          ],
+          "compound_ambiguity": true,
+          "compound_ambiguity_count": 3,
+          "context_sampling_uncertainty": {
+            "agreement": 0.7,
+            "score": 0.3,
+            "variant_count": 1
+          },
+          "cpc": {
+            "action": {
+              "status": "not_applicable",
+              "value": "clean"
+            },
+            "actor": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "conditions": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "constraints": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "destination": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "negation": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "object": {
+              "status": "not_applicable",
+              "value": "laundry bag"
+            },
+            "object_attributes": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "quantity": {
+              "status": "not_applicable",
+              "value": "until reasonably clean"
+            },
+            "recipient": {
+              "status": "not_applicable",
+              "value": "robot"
+            },
+            "spatial_relation": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "time": {
+              "status": "not_applicable",
+              "value": "after linen pickup"
+            },
+            "tool": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            }
+          },
+          "findings": [
+            "pilot_ambiguity_types:[\"endpoint_vagueness\",\"pragmatic\",\"temporal_reference\"]",
+            "pilot_capability_status:capable",
+            "intent_summary_present"
+          ],
+          "intent_summary": "Clean the marked laundry bag after the linen pickup until it is reasonably clean",
+          "primary_ambiguity_type": "pragmatic",
+          "recommended_strategy": "clarify",
+          "rejection_reason": null,
+          "resolution_evidence": [],
+          "resolution_method": null,
+          "resolved_slots": [],
+          "risk_level": "low",
+          "risk_relevant": true,
+          "selected_interpretation": null,
+          "speech_act": "directive_command",
+          "strategy_sequence": [],
+          "supporting_evidence": [],
+          "unresolved_slots": [],
+          "unsupported_specificity": []
+        },
+        "clarification_question": "Before I continue, could you clarify: pragmatic, spatial, temporal?",
+        "clarification_targets": [
+          "pragmatic",
+          "spatial",
+          "temporal"
+        ],
+        "execution_status": "ok",
+        "official_result": false,
+        "provider_provenance": {
+          "provider_id": "cached_analysis",
+          "provider_version": "1.0.0"
+        },
+        "recommended_strategy": "clarify",
+        "record_id": "CA-0197",
+        "rejection_reason": null,
+        "resolved_slots": [],
+        "result_hash": "55ba5f5ec03750efbfd71a7d96c34d0cdcfdc4e0f13908bbac574f5496b771e4",
+        "run_id": null,
+        "run_mode": null,
+        "runtime_metadata": {
+          "awaits_t28_adapter": true,
+          "classification": {
+            "ambiguity_present": true,
+            "ambiguity_types": [
+              "pragmatic",
+              "spatial",
+              "temporal"
+            ],
+            "capability_status": "capable",
+            "compound_ambiguity": true,
+            "compound_ambiguity_count": 3,
+            "derivation_notes": [
+              "ambiguity_present_from_types"
+            ],
+            "risk_level": "low"
+          },
+          "rejection_text": null,
+          "requires_re_evaluation": false,
+          "resolution_events": [],
+          "router_trace": {
+            "clarification_targets": [
+              "pragmatic",
+              "spatial",
+              "temporal"
+            ],
+            "considered_rules": [
+              "known_unsafe_or_prohibited",
+              "known_incapable",
+              "unknown_or_unverified_capability",
+              "hazard_identity_unresolved",
+              "critical_unresolved_medium_high_risk",
+              "unknown_safety_risk",
+              "dependent_compound_ambiguities",
+              "unique_low_risk_resolvable",
+              "clear_safe_capable",
+              "default_clarify"
+            ],
+            "matched_rule_id": "default_clarify",
+            "notes": [
+              "default_clarify_no_unsupported_specificity"
+            ],
+            "recommended_strategy": "clarify",
+            "rejection_reason": null,
+            "requires_re_evaluation": false,
+            "strategy_sequence": []
+          },
+          "safety_action": "return_with_findings",
+          "uncertainty": null
+        },
+        "safety_findings": [],
+        "strategy_sequence": [],
+        "synthetic_only": true,
+        "system_id": "full_type_risk_aware_manager",
+        "system_version": "1.0.0",
+        "unsupported_commitment_findings": []
+      },
+      "raw_output": "{\n  \"intent_summary\": \"Clean the marked laundry bag after the linen pickup until it is reasonably clean\",\n  \"cpc\": {\n    \"action\": {\n      \"value\": \"clean\",\n      \"status\": \"not_applicable\"\n    },\n    \"object\": {\n      \"value\": \"laundry bag\",\n      \"status\": \"not_applicable\"\n    },\n    \"recipient\": {\n      \"value\": \"robot\",\n      \"status\": \"not_applicable\"\n    },\n    \"time\": {\n      \"value\": \"after linen pickup\",\n      \"status\": \"not_applicable\"\n    },\n    \"quantity\": {\n      \"value\": \"until reasonably clean\",\n      \"status\": \"not_applicable\"\n    }\n  ,\n  \"constraints\": {\n    \"status\": \"not_applicable\"\n  ,\n  \"value\": \"not_applicable\"\n  },\n  \"conditions\": {\n    \"status\": \"not_applicable\"\n  ,\n  \"value\": \"not_applicable\"\n  },\n  \"spatial_relation\": {\n    \"status\": \"not_applicable\"\n  ,\n  \"value\": \"not_applicable\"\n  },\n  \"tool\": {\n    \"status\": \"not_applicable\"\n  ,\n  \"value\": \"not_applicable\"\n  },\n  \"negation\": {\n    \"status\": \"not_applicable\"\n  ,\n  \"value\": \"not_applicable\"\n  },\n  \"destination\": {\n    \"status\": \"not_applicable\"\n  ,\n  \"value\": \"not_applicable\"\n  },\n  \"object_attributes\": {\n    \"status\": \"not_applicable\"\n  ,\n  \"value\": \"not_applicable\"\n  },\n  \"actor\": {\n    \"status\": \"not_applicable\"\n  ,\n  \"value\": \"not_applicable\"\n  }\n},\n  \"pilot_ambiguity_types\": [\n    \"pragmatic\",\n    \"temporal_reference\",\n    \"endpoint_vagueness\"\n  ]\n  \n  ,\n  \"pilot_capability_status\": \"capable\"\n  \n  ,\n  \"speech_act\": \"directive_command\"\n  \n  ,\n  \"risk_level\": \"low\"\n  \n  ,\n  \"uncertainty\": 0.3\n  ,\n  \"unresolved_slots\": []\n}",
+      "record_id": "CA-0197",
+      "schema_valid": true,
+      "supports_ambiguity_prediction": true,
+      "supports_capability_prediction": true,
+      "system_id": "rich_conservative_manager_v2",
+      "system_version": "2.0.0",
+      "terminal_strategy": "clarify"
+    },
+    "context_blind": {
+      "ambiguity_types": [
+        "endpoint_vagueness",
+        "pragmatic",
+        "temporal_reference"
+      ],
+      "analysis_attempts": [
+        {
+          "attempt": 1,
+          "max_new_tokens": 4096,
+          "mode": "thinking",
+          "raw_chars": 4816,
+          "raw_sha256": "9d705cf1eedb5f52b38dceb44caafee20b6bca9b4b966c04ab236d9f052eb3b3",
+          "validation_error": "bad_intent_summary"
+        },
+        {
+          "attempt": 2,
+          "max_new_tokens": 8192,
+          "mode": "thinking_retry",
+          "raw_chars": 9623,
+          "raw_sha256": "bd013b4d9e6bfb38d0c974404577f2013910f3cea3cb7c4af08dfed23547f564",
+          "validation_error": "bad_intent_summary"
+        },
+        {
+          "attempt": 3,
+          "constraint": {
+            "constraint_initialised": true,
+            "generated_token_count": 484,
+            "maximum_output_tokens": 1024,
+            "response_mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+            "termination_reason": "eos_or_constraint_stop",
+            "transport_status": "constrained_generated"
+          },
+          "max_new_tokens": 1024,
+          "mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+          "raw_chars": 1616,
+          "raw_sha256": "0164e8c9a0156613b0125af534530e767b7f0fc10accf9d63cbe133008a8c733",
+          "validation_error": null
+        }
+      ],
+      "capability_status": "unauthorized",
+      "claim_boundary": "separately_versioned_from_frozen_t39",
+      "error": null,
+      "execution_mode": "cluster-gpu-goal-first-v2",
+      "failed": false,
+      "intent_summary": "Clean the marked laundry bag after the linen pickup until it is reasonably clean",
+      "latency_ms": 68685.61981106177,
+      "model_id": "Qwen/Qwen3-8B@b968826d9c46dd6066d109eabc6255188de91218",
+      "parsed": {
+        "analysis": {
+          "ambiguity_present": true,
+          "ambiguity_types": [
+            "pragmatic",
+            "spatial",
+            "temporal"
+          ],
+          "analysis_provenance": {
+            "analysis_id": "c2d17fbacc5ac86b4eaf31554aa10dc6608f78db0dff60af2a96d977cc74d5f9",
+            "method": "context_blind",
+            "notes": "ablated_input_hash=c2d17fbacc5ac86b4eaf31554aa10dc6608f78db0dff60af2a96d977cc74d5f9;source_input_hash=c2d17fbacc5ac86b4eaf31554aa10dc6608f78db0dff60af2a96d977cc74d5f9;no_gold_in_prompt;scene_licence_dropped=none",
+            "provider_id": "goal_first_v2_context_blind",
+            "provider_version": "goal-first-manager-v2"
+          },
+          "candidate_interpretations": [],
+          "capability_status": "unknown",
+          "clarification_question": null,
+          "clarification_targets": [],
+          "compound_ambiguity": true,
+          "compound_ambiguity_count": 3,
+          "context_sampling_uncertainty": {
+            "agreement": 0.25,
+            "score": 0.75,
+            "variant_count": 1
+          },
+          "cpc": {
+            "action": {
+              "status": "not_applicable",
+              "value": "clean"
+            },
+            "actor": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "conditions": {
+              "status": "not_applicable",
+              "value": "until it is reasonably clean"
+            },
+            "constraints": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "destination": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "negation": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "object": {
+              "status": "not_applicable",
+              "value": "marked laundry bag"
+            },
+            "object_attributes": {
+              "status": "not_applicable",
+              "value": "marked"
+            },
+            "quantity": {
+              "status": "not_applicable",
+              "value": "until it is reasonably clean"
+            },
+            "recipient": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "spatial_relation": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "time": {
+              "status": "not_applicable",
+              "value": "after the linen pickup"
+            },
+            "tool": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            }
+          },
+          "findings": [
+            "pilot_ambiguity_types:[\"endpoint_vagueness\",\"pragmatic\",\"temporal_reference\"]",
+            "pilot_capability_status:unauthorized",
+            "intent_summary_present"
+          ],
+          "intent_summary": "Clean the marked laundry bag after the linen pickup until it is reasonably clean",
+          "primary_ambiguity_type": "pragmatic",
+          "recommended_strategy": "face_preserving_rejection",
+          "rejection_reason": "unsafe_or_prohibited_action",
+          "resolution_evidence": [],
+          "resolution_method": null,
+          "resolved_slots": [],
+          "risk_level": "medium",
+          "risk_relevant": true,
+          "selected_interpretation": null,
+          "speech_act": "directive_command",
+          "strategy_sequence": [],
+          "supporting_evidence": [],
+          "unresolved_slots": [
+            {
+              "reason": "model_identified_uncertainty",
+              "slot_name": "time"
+            },
+            {
+              "reason": "model_identified_uncertainty",
+              "slot_name": "quantity"
+            }
+          ],
+          "unsupported_specificity": []
+        },
+        "clarification_question": null,
+        "clarification_targets": [],
+        "execution_status": "ok",
+        "official_result": false,
+        "provider_provenance": {
+          "provider_id": "cached_analysis",
+          "provider_version": "1.0.0"
+        },
+        "recommended_strategy": "face_preserving_rejection",
+        "record_id": "CA-0197",
+        "rejection_reason": "unsafe_or_prohibited_action",
+        "resolved_slots": [],
+        "result_hash": "3783b82de95d8eb657f9db2a2fa0d6020169abe0af296d38484094fb9cb49fdf",
+        "run_id": null,
+        "run_mode": null,
+        "runtime_metadata": {
+          "analysis_identity": {
+            "analysis_content_hash": "8f3d95f3e977f08642c88ada89e94b23c7bc817f769ad295b83ca0dc43ca7797",
+            "analysis_variant": "context_blind",
+            "model_strategy_id": null,
+            "provider_id": "goal_first_v2_context_blind",
+            "provider_version": "goal-first-manager-v2",
+            "record_id": "CA-0197",
+            "source_input_hash": "c2d17fbacc5ac86b4eaf31554aa10dc6608f78db0dff60af2a96d977cc74d5f9"
+          },
+          "analysis_identity_fingerprint": "32671a7fd9f28e838ed74d62b65c10e823a8013e092ebf46f88682e0b329a8fd",
+          "awaits_t28_adapter": true,
+          "classification": {
+            "ambiguity_present": true,
+            "ambiguity_types": [
+              "pragmatic",
+              "spatial",
+              "temporal"
+            ],
+            "capability_status": "unknown",
+            "compound_ambiguity": true,
+            "compound_ambiguity_count": 3,
+            "derivation_notes": [
+              "ambiguity_present_from_types"
+            ],
+            "risk_level": "medium"
+          },
+          "context_ablation": {
+            "ablated_input_hash": "c2d17fbacc5ac86b4eaf31554aa10dc6608f78db0dff60af2a96d977cc74d5f9",
+            "capability_context_removed": true,
+            "dialogue_history_removed": true,
+            "rejected_full_context_cache": false,
+            "rejection_reason": null,
+            "scene_context_removed": true,
+            "stripped_context_derived_fields": false
+          },
+          "original_input_unmutated": true,
+          "rejection_text": "I need to decline that request because it would be unsafe under the current constraints.",
+          "requires_re_evaluation": false,
+          "resolution_events": [
+            {
+              "confidence_category": "blocked",
+              "details": {
+                "risk_level": "medium"
+              },
+              "evidence_source": null,
+              "outcome": "resolution_blocked_by_risk",
+              "previous_status": "unresolved",
+              "resolved_value": null,
+              "rule_id": "risk_block",
+              "safety_eligibility": false,
+              "slot": "time"
+            },
+            {
+              "confidence_category": "blocked",
+              "details": {
+                "risk_level": "medium"
+              },
+              "evidence_source": null,
+              "outcome": "resolution_blocked_by_risk",
+              "previous_status": "unresolved",
+              "resolved_value": null,
+              "rule_id": "risk_block",
+              "safety_eligibility": false,
+              "slot": "quantity"
+            }
+          ],
+          "router_trace": {
+            "clarification_targets": [],
+            "considered_rules": [
+              "goal_first_v2",
+              "known_unsafe_or_prohibited"
+            ],
+            "matched_rule_id": "known_unsafe_or_prohibited",
+            "notes": [],
+            "recommended_strategy": "face_preserving_rejection",
+            "rejection_reason": "unsafe_or_prohibited_action",
+            "requires_re_evaluation": false,
+            "strategy_sequence": []
+          },
+          "safety_action": "return_with_findings",
+          "uncertainty": null
+        },
+        "safety_findings": [],
+        "strategy_sequence": [],
+        "synthetic_only": true,
+        "system_id": "context_blind_manager",
+        "system_version": "1.0.0",
+        "unsupported_commitment_findings": []
+      },
+      "raw_output": "{\n  \"intent_summary\": \"Clean the marked laundry bag after the linen pickup until it is reasonably clean\",\n  \"cpc\": {\n    \"action\": {\n      \"value\": \"clean\",\n      \"status\": \"not_applicable\"\n    },\n    \"object\": {\n      \"value\": \"marked laundry bag\",\n      \"status\": \"not_applicable\"\n    },\n    \"recipient\": {\n      \"value\": \"not_applicable\",\n      \"status\": \"not_applicable\"\n    },\n    \"destination\": {\n      \"value\": \"not_applicable\",\n      \"status\": \"not_applicable\"\n    },\n    \"time\": {\n      \"value\": \"after the linen pickup\",\n      \"status\": \"not_applicable\"\n    },\n    \"quantity\": {\n      \"value\": \"until it is reasonably clean\",\n      \"status\": \"not_applicable\"\n    }\n \n  ,\n  \"constraints\": {\n    \"value\": \"not_applicable\",\n    \"status\": \"not_applicable\"\n  },\n  \"conditions\": {\n    \"value\": \"until it is reasonably clean\",\n    \"status\": \"not_applicable\"\n  },\n  \"negation\": {\n    \"value\": \"not_applicable\",\n    \"status\": \"not_applicable\"\n  },\n  \"spatial_relation\": {\n    \"value\": \"not_applicable\",\n    \"status\": \"not_applicable\"\n  },\n  \"tool\": {\n    \"value\": \"not_applicable\",\n    \"status\": \"not_applicable\"\n  },\n  \"object_attributes\": {\n    \"value\": \"marked\",\n    \"status\": \"not_applicable\"\n  },\n  \"actor\": {\n    \"value\": \"not_applicable\",\n    \"status\": \"not_applicable\"\n  }\n},\n  \"pilot_ambiguity_types\": [\n    \"pragmatic\",\n    \"temporal_reference\",\n    \"endpoint_vagueness\"\n  ]\n  \n  ,\n  \"pilot_capability_status\": \"unauthorized\"\n  \n  ,\n  \"speech_act\": \"directive_command\"\n  \n  ,\n  \"risk_level\": \"medium\"\n  \n  ,\n  \"uncertainty\": 0.75\n  \n\n\n\n  \n  ,\n  \"unresolved_slots\": [\n    \"time\",\n    \"quantity\"\n  ]\n  \n  }\n",
+      "record_id": "CA-0197",
+      "schema_valid": true,
+      "supports_ambiguity_prediction": true,
+      "supports_capability_prediction": true,
+      "system_id": "goal_first_context_blind_v2",
+      "system_version": "2.0.0",
+      "terminal_strategy": "face_preserving_rejection"
+    }
+  },
+  "provenance": {
+    "source_sha256": "f33b1e29f1e8aa256a475f07213aa07247def47d8e2148d54a472a40b71b05c9",
+    "gold_sha256": "5e23ad1a92ff1873c8f039a8ce560a111dd6fb6b8ae8c11d6cf34dbfa1c360db",
+    "t07_final_zip_sha256": "34ca50e034ca37b617068bb50c734d12fa26282fb5eec563c11ead700163e491",
+    "inherited_t07_zip_sha256": "0305b1e9ab062876ee6ee89778cc6028d2eaf01718b7dd0295944e7d9cb81a01",
+    "note": "Goal-First, Degree, Timid, and Context-Blind predictions are inherited from the earlier T0.7 run; official intent and comparison come from the final T0.7 archive."
+  }
+}

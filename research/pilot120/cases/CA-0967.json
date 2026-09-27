@@ -1,0 +1,1060 @@
+{
+  "record_id": "CA-0967",
+  "frozen_source": {
+    "capability_context": "Retail service robot can carry stock, scan items, print labels, and update approved inventory terminals. It can perform routine exterior cleaning of approved items using site-approved methods.",
+    "command": "Clean the marked sample tray after the staff handover until it is reasonably clean.",
+    "dialogue_history": [],
+    "record_id": "CA-0967",
+    "scene_context": "Stockroom in a retail shop. Two sample trays carry work-order marks: the blue one near the fitting room has a yellow COMPLETE tag, while the yellow one beside the promotion stand has a white PENDING tag. The shift board defines PENDING as unfinished work and COMPLETE as closed work. The schedule note links this job to the staff handover at 14:00, not the later occurrence at 18:00. The cleaning standard defines 'reasonably clean' as no visible residue under the inspection light and a passed surface scan. The active work order authorizes routine exterior cleaning of this item with the site-approved method."
+  },
+  "frozen_gold": {
+    "ambiguity_types": [
+      "endpoint_vagueness",
+      "object_reference",
+      "temporal_reference"
+    ],
+    "annotator_b_era": "glm_era",
+    "annotator_b_model": "glm-5.2-high",
+    "capability_status": "capable",
+    "field_status": {
+      "ambiguity_types": "human_auditor:endpoint_only",
+      "capability_status": "human_auditor:independent",
+      "record_validity": "auto_agree",
+      "strategy_sequence": "auto_agree",
+      "terminal_strategy": "auto_agree"
+    },
+    "gold_lifecycle": "final_gold",
+    "gold_status": "auto_agree",
+    "human_gate_required": false,
+    "provenance": {
+      "agreement_label": "pilot_annotation_agreement",
+      "annotator_a_sha256": "a7b0efc57122dbe4efe4bb3b6a3f1bc9a157173011c19b4fda522320121b877b",
+      "annotator_b_sha256": "e1fef2755ff94311017579e33024accb2fbe0e6103b578c4697496e87e69a67b",
+      "gold_policy": "use_existing_pilot_adjudicated_gold",
+      "human_auditor_repair": "clean-family: endpoint_vagueness only; capability not derived from silently_resolve",
+      "input_sha256": "de47738b580323870dfdef471b4ffda06b45cd22cbacb07be18573dc79d06054",
+      "pilot_gold_sha256": "d048b78471c74fb14612167dbce9c853652a88a1487ac2cd40d0ce61ab59678c",
+      "protocol": "pilot_adjudicated_gold_on_capability_repaired_source",
+      "repaired_input_sha256": "4c0d337197c22569d1927a48ae593eaf3996ab4819e4295639f1b5944863dee4"
+    },
+    "record_id": "CA-0967",
+    "record_validity": "valid",
+    "strategy_sequence": [
+      "silently_resolve",
+      "execute"
+    ],
+    "terminal_strategy": "execute"
+  },
+  "t07_comparison": {
+    "record_id": "CA-0967",
+    "gold_route": "execute",
+    "raw_route": "execute",
+    "ft_route": "execute",
+    "gf_route": "execute",
+    "raw_route_ok": "True",
+    "ft_route_ok": "True",
+    "gf_route_ok": "True",
+    "raw_official_intent": "True",
+    "ft_official_intent": "True",
+    "gf_official_intent": "True",
+    "blind_official_intent": "True"
+  },
+  "t07_official_intent": {
+    "context_blind_official_intent": true,
+    "degree_official_intent_shared_gf": true,
+    "finetune_official_intent": true,
+    "goal_first_official_intent": true,
+    "raw_official_intent": true,
+    "record_id": "CA-0967",
+    "timid_official_intent_shared_gf": true
+  },
+  "t07_predictions": {
+    "raw_qwen": {
+      "ambiguity_types": [
+        "object_reference",
+        "temporal_reference"
+      ],
+      "capability_status": "capable",
+      "error": null,
+      "execution_mode": "final_close_intent_box",
+      "failed": false,
+      "intent_summary": "Clean the sample tray marked with a white PENDING tag after the staff handover until it meets the 'reasonably clean' standard.",
+      "latency_ms": 12148.195235058665,
+      "parsed": {
+        "ambiguity_types": [
+          "object_reference",
+          "temporal_reference"
+        ],
+        "capability_status": "capable",
+        "intent_summary": "Clean the sample tray marked with a white PENDING tag after the staff handover until it meets the 'reasonably clean' standard.",
+        "speech_act": "directive_command",
+        "terminal_strategy": "execute"
+      },
+      "raw_output": "<think>\nOkay, let's break this down. The user's command is to clean the marked sample tray after the staff handover until it's reasonably clean. First, I need to parse the intent. The main job here is cleaning a specific sample tray that's marked. The key points are \"after the staff handover\" and \"until reasonably clean.\" \n\nLooking at the dialogue history, there's nothing, so the context is just the scene. The scene mentions two sample trays with different tags: one is COMPLETE (closed work) and the other is PENDING (unfinished). The schedule note says the job is linked to the 14:00 handover, not 18:00. The cleaning standard requires no residue under inspection light and a passed surface scan.\n\nThe capability context says the robot can do routine exterior cleaning with site-approved methods. So the robot is capable. But the command mentions \"after the staff handover,\" which is a time condition. The robot might need to wait until 14:00. Also, \"reasonably clean\" is a bit vague, but the standard defines it, so maybe that's okay. \n\nSpeech act: The command is a directive to perform an action, so directive_command. Ambiguity types: The time reference (\"after staff handover\") could be a temporal_reference. Also, \"marked sample tray\" refers to a specific object, so object_reference. But the command says \"after the staff handover,\" which is a specific time, so maybe temporal_reference. Also, \"reasonably clean\" might have degree_vagueness, but the standard defines it, so maybe not. \n\nCapability status: The robot can do routine cleaning, so capable. Terminal strategy: Since the robot can do it but needs to wait for the handover time, maybe execute. Wait, but the handover is a condition. The robot might need to check the time. But the command says to do it after the handover. If the robot can determine the time, then it's capable. So capability_status is capable. Terminal strategy would be execute, as the robot can perform the task once the condition is met. But the command includes a condition, so maybe the robot can handle that. So the answer would be:\n\nintent_summary: Clean the sample tray marked with a white PENDING tag after the staff handover until it meets the 'reasonably clean' standard.\n\nspeech_act: directive_command\n\nambiguity_types: temporal_reference, object_reference\n\ncapability_status: capable\n\nterminal_strategy: execute\n</think>\n\n{\n  \"intent_summary\": \"Clean the sample tray marked with a white PENDING tag after the staff handover until it meets the 'reasonably clean' standard.\",\n  \"speech_act\": \"directive_command\",\n  \"ambiguity_types\": [\"temporal_reference\", \"object_reference\"],\n  \"capability_status\": \"capable\",\n  \"terminal_strategy\": \"execute\"\n}",
+      "record_id": "CA-0967",
+      "schema_valid": true,
+      "speech_act": "directive_command",
+      "system_id": "direct_base_llm",
+      "terminal_strategy": "execute"
+    },
+    "finetune": {
+      "ambiguity_types": [
+        "degree_vagueness",
+        "object_reference"
+      ],
+      "capability_status": "capable",
+      "error": null,
+      "execution_mode": "final_close_intent_box",
+      "failed": false,
+      "intent_summary": "Clean the yellow sample tray with the PENDING tag after the staff handover at 14:00 until it meets the 'reasonably clean' standard.",
+      "latency_ms": 18127.88242008537,
+      "parsed": {
+        "ambiguity_types": [
+          "degree_vagueness",
+          "object_reference"
+        ],
+        "capability_status": "capable",
+        "intent_summary": "Clean the yellow sample tray with the PENDING tag after the staff handover at 14:00 until it meets the 'reasonably clean' standard.",
+        "speech_act": "directive_command",
+        "terminal_strategy": "execute"
+      },
+      "raw_output": "<think>\nOkay, let's break down this command. The user wants the robot to clean the marked sample tray after the staff handover until it's reasonably clean.\n\nFirst, the intent summary. The main job is to clean the sample tray with a PENDING tag, which means it's unfinished work. The cleaning needs to happen after the staff handover at 14:00, not the later 18:00. The standard for clean is no residue under inspection light and passed surface scan. So the intent is to clean the yellow tray with PENDING tag post-handover.\n\nNext, the speech act. The command is a directive to perform the cleaning task, so it's a directive_command. The user is telling the robot what to do, so that's straightforward.\n\nAmbiguity types: Let's check for possible ambiguities. The command mentions \"marked sample tray\" but the scene has two trays: blue with yellow COMPLETE and yellow with white PENDING. The active work order links to the PENDING tag, so the robot should target the yellow tray. But is there ambiguity here? The command doesn't specify the color, but the work order refers to the PENDING one. However, the user might have intended the yellow tray. But since the scene mentions two, maybe there's a reference to the correct one. But the ambiguity here could be object_reference because the command refers to \"marked\" but the specific tray isn't named. So object_reference might apply. Also, \"until it is reasonably clean\" is a bit vague, so degree_vagueness. Also, the timing is after staff handover at 14:00. The schedule note links the job to the 14:00 handover, so the temporal_reference could be ambiguous if there's confusion between 14:00 and 18:00. But the schedule note clarifies it's 14:00, so maybe that's not an ambiguity. However, the command says \"after the staff handover\", which could be interpreted as after the handover occurs, so maybe temporal_reference. Also, \"reasonably clean\" is a bit vague, so degree_vagueness. So possible ambiguity types are object_reference and degree_vagueness.\n\nCapability status: The robot can perform routine exterior cleaning of approved items using site-approved methods. The active work order authorizes this, so the robot is capable. So capability_status is capable.\n\nTerminal strategy: The command is clear enough for the robot to execute. The work order authorizes it, and the steps are specified (clean after handover, until reasonably clean). So terminal_strategy is execute.\n</think>\n\n{\n  \"intent_summary\": \"Clean the yellow sample tray with the PENDING tag after the staff handover at 14:00 until it meets the 'reasonably clean' standard.\",\n  \"speech_act\": \"directive_command\",\n  \"ambiguity_types\": [\"object_reference\", \"degree_vagueness\"],\n  \"capability_status\": \"capable\",\n  \"terminal_strategy\": \"execute\"\n}",
+      "record_id": "CA-0967",
+      "schema_valid": true,
+      "speech_act": "directive_command",
+      "system_id": "t28_selected_adapter_llm",
+      "terminal_strategy": "execute"
+    },
+    "goal_first": {
+      "ambiguity_types": [
+        "pragmatic",
+        "temporal_reference"
+      ],
+      "analysis_attempts": [
+        {
+          "attempt": 1,
+          "max_new_tokens": 4096,
+          "mode": "thinking",
+          "raw_chars": 17399,
+          "raw_sha256": "4ed2f1ecb8c95aa4969fb89ecc163596cda937ab2b8b81871aba22739535d11c",
+          "validation_error": "no_json"
+        },
+        {
+          "attempt": 2,
+          "max_new_tokens": 8192,
+          "mode": "thinking_retry",
+          "raw_chars": 5883,
+          "raw_sha256": "8bfed9462577bb23426bac73765a3704d40ad002c1bca865b6660bc957797c6a",
+          "validation_error": "bad_pilot_ambiguity_types"
+        },
+        {
+          "attempt": 3,
+          "constraint": {
+            "constraint_initialised": true,
+            "generated_token_count": 466,
+            "maximum_output_tokens": 1024,
+            "response_mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+            "termination_reason": "eos_or_constraint_stop",
+            "transport_status": "constrained_generated"
+          },
+          "max_new_tokens": 1024,
+          "mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+          "raw_chars": 1522,
+          "raw_sha256": "f4e75c858e8f359ee39bbaa8c9cdcd76eed3592e5336184fb73298feb501a52b",
+          "validation_error": null
+        }
+      ],
+      "capability_status": "capable",
+      "claim_boundary": "separately_versioned_from_frozen_t39",
+      "error": null,
+      "execution_mode": "cluster-gpu-goal-first-v2",
+      "failed": false,
+      "intent_summary": "Clean the marked sample tray after the staff handover until it is reasonably clean",
+      "latency_ms": 211117.56805097684,
+      "model_id": "Qwen/Qwen3-8B@b968826d9c46dd6066d109eabc6255188de91218",
+      "parsed": {
+        "analysis": {
+          "ambiguity_present": true,
+          "ambiguity_types": [
+            "pragmatic",
+            "temporal"
+          ],
+          "analysis_provenance": {
+            "analysis_id": "49a96b33946c25308bb79561ba82b4716e67c89f4d6cdc1574a9b826e294540a",
+            "method": "model_generated",
+            "notes": "source_input_hash=49a96b33946c25308bb79561ba82b4716e67c89f4d6cdc1574a9b826e294540a;no_gold_in_prompt;scene_licence_dropped=none",
+            "provider_id": "goal_first_v2_full_context",
+            "provider_version": "goal-first-manager-v2"
+          },
+          "candidate_interpretations": [],
+          "capability_status": "capable",
+          "clarification_question": null,
+          "clarification_targets": [],
+          "compound_ambiguity": true,
+          "compound_ambiguity_count": 2,
+          "context_sampling_uncertainty": {
+            "agreement": 0.8,
+            "score": 0.2,
+            "variant_count": 1
+          },
+          "cpc": {
+            "action": {
+              "status": "not_applicable",
+              "value": "clean"
+            },
+            "actor": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "conditions": {
+              "status": "not_applicable",
+              "value": "until it is reasonably clean"
+            },
+            "constraints": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "destination": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "negation": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "object": {
+              "status": "not_applicable",
+              "value": "marked sample tray"
+            },
+            "object_attributes": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "quantity": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "recipient": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "spatial_relation": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "time": {
+              "status": "not_applicable",
+              "value": "after the staff handover"
+            },
+            "tool": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            }
+          },
+          "findings": [
+            "pilot_ambiguity_types:[\"pragmatic\",\"temporal_reference\"]",
+            "pilot_capability_status:capable",
+            "intent_summary_present"
+          ],
+          "intent_summary": "Clean the marked sample tray after the staff handover until it is reasonably clean",
+          "primary_ambiguity_type": "pragmatic",
+          "recommended_strategy": "execute",
+          "rejection_reason": null,
+          "resolution_evidence": [],
+          "resolution_method": null,
+          "resolved_slots": [],
+          "risk_level": "low",
+          "risk_relevant": true,
+          "selected_interpretation": null,
+          "speech_act": "directive_command",
+          "strategy_sequence": [],
+          "supporting_evidence": [],
+          "unresolved_slots": [],
+          "unsupported_specificity": []
+        },
+        "clarification_question": null,
+        "clarification_targets": [],
+        "execution_status": "ok",
+        "official_result": false,
+        "provider_provenance": {
+          "provider_id": "cached_analysis",
+          "provider_version": "1.0.0"
+        },
+        "recommended_strategy": "execute",
+        "record_id": "CA-0967",
+        "rejection_reason": null,
+        "resolved_slots": [],
+        "result_hash": "82fd93dbdfd886ecdec567dc6df90d95376b682771bcd30dfb6850905ce81b7b",
+        "run_id": null,
+        "run_mode": null,
+        "runtime_metadata": {
+          "awaits_t28_adapter": true,
+          "classification": {
+            "ambiguity_present": true,
+            "ambiguity_types": [
+              "pragmatic",
+              "temporal"
+            ],
+            "capability_status": "capable",
+            "compound_ambiguity": true,
+            "compound_ambiguity_count": 2,
+            "derivation_notes": [
+              "ambiguity_present_from_types"
+            ],
+            "risk_level": "low"
+          },
+          "rejection_text": null,
+          "requires_re_evaluation": false,
+          "resolution_events": [],
+          "router_trace": {
+            "clarification_targets": [],
+            "considered_rules": [
+              "goal_first_v2",
+              "known_unsafe_or_prohibited",
+              "known_incapable",
+              "unknown_capability_high_risk",
+              "context_licensed_execute"
+            ],
+            "matched_rule_id": "context_licensed_execute",
+            "notes": [
+              "goal_first_v2_execute_despite_remaining_ambiguity"
+            ],
+            "recommended_strategy": "execute",
+            "rejection_reason": null,
+            "requires_re_evaluation": false,
+            "strategy_sequence": []
+          },
+          "safety_action": "return_with_findings",
+          "uncertainty": null
+        },
+        "safety_findings": [],
+        "strategy_sequence": [],
+        "synthetic_only": true,
+        "system_id": "goal_first_manager_v2",
+        "system_version": "2.0.0",
+        "unsupported_commitment_findings": []
+      },
+      "raw_output": "{\n  \"intent_summary\": \"Clean the marked sample tray after the staff handover until it is reasonably clean\",\n  \"cpc\": {\n    \"action\": {\n      \"value\": \"clean\",\n      \"status\": \"not_applicable\"\n    },\n    \"object\": {\n      \"value\": \"marked sample tray\",\n      \"status\": \"not_applicable\"\n    },\n    \"time\": {\n      \"value\": \"after the staff handover\",\n      \"status\": \"not_applicable\"\n    },\n    \"conditions\": {\n      \"value\": \"until it is reasonably clean\",\n      \"status\": \"not_applicable\"\n    }\n  ,\n  \"constraints\": {\n    \"value\": \"not_applicable\",\n    \"status\": \"not_applicable\"\n  },\n  \"spatial_relation\": {\n    \"value\": \"not_applicable\",\n    \"status\": \"not_applicable\"\n  },\n  \"recipient\": {\n    \"value\": \"not_applicable\",\n    \"status\": \"not_applicable\"\n  },\n  \"tool\": {\n    \"value\": \"not_applicable\",\n    \"status\": \"not_applicable\"\n  },\n  \"destination\": {\n    \"value\": \"not_applicable\",\n    \"status\": \"not_applicable\"\n  },\n  \"negation\": {\n    \"value\": \"not_applicable\",\n    \"status\": \"not_applicable\"\n  },\n  \"quantity\": {\n    \"value\": \"not_applicable\",\n    \"status\": \"not_applicable\"\n  },\n  \"object_attributes\": {\n    \"value\": \"not_applicable\",\n    \"status\": \"not_applicable\"\n  },\n  \"actor\": {\n    \"value\": \"not_applicable\",\n    \"status\": \"not_applicable\"\n  }\n},\n  \"pilot_ambiguity_types\": [\n    \"pragmatic\",\n    \"temporal_reference\"\n  ]\n  \n  ,\n  \"pilot_capability_status\": \"capable\"\n  \n  ,\n  \"speech_act\": \"directive_command\"\n  \n  ,\n  \"risk_level\": \"low\"\n  \n  ,\n  \"uncertainty\": 0.2\n  ,\n  \"unresolved_slots\": []\n  \n  }\n",
+      "record_id": "CA-0967",
+      "schema_valid": true,
+      "supports_ambiguity_prediction": true,
+      "supports_capability_prediction": true,
+      "system_id": "goal_first_manager_v2",
+      "system_version": "2.0.0",
+      "terminal_strategy": "execute"
+    },
+    "degree": {
+      "ambiguity_types": [
+        "pragmatic",
+        "temporal_reference"
+      ],
+      "analysis_attempts": [
+        {
+          "attempt": 1,
+          "max_new_tokens": 4096,
+          "mode": "thinking",
+          "raw_chars": 17399,
+          "raw_sha256": "4ed2f1ecb8c95aa4969fb89ecc163596cda937ab2b8b81871aba22739535d11c",
+          "validation_error": "no_json"
+        },
+        {
+          "attempt": 2,
+          "max_new_tokens": 8192,
+          "mode": "thinking_retry",
+          "raw_chars": 5883,
+          "raw_sha256": "8bfed9462577bb23426bac73765a3704d40ad002c1bca865b6660bc957797c6a",
+          "validation_error": "bad_pilot_ambiguity_types"
+        },
+        {
+          "attempt": 3,
+          "constraint": {
+            "constraint_initialised": true,
+            "generated_token_count": 466,
+            "maximum_output_tokens": 1024,
+            "response_mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+            "termination_reason": "eos_or_constraint_stop",
+            "transport_status": "constrained_generated"
+          },
+          "max_new_tokens": 1024,
+          "mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+          "raw_chars": 1522,
+          "raw_sha256": "f4e75c858e8f359ee39bbaa8c9cdcd76eed3592e5336184fb73298feb501a52b",
+          "validation_error": null
+        }
+      ],
+      "capability_status": "capable",
+      "claim_boundary": "separately_versioned_from_frozen_t39",
+      "error": null,
+      "execution_mode": "cluster-gpu-goal-first-v2",
+      "failed": false,
+      "intent_summary": "Clean the marked sample tray after the staff handover until it is reasonably clean",
+      "latency_ms": 211117.56805097684,
+      "model_id": "Qwen/Qwen3-8B@b968826d9c46dd6066d109eabc6255188de91218",
+      "parsed": {
+        "analysis": {
+          "ambiguity_present": true,
+          "ambiguity_types": [
+            "pragmatic",
+            "temporal"
+          ],
+          "analysis_provenance": {
+            "analysis_id": "49a96b33946c25308bb79561ba82b4716e67c89f4d6cdc1574a9b826e294540a",
+            "method": "model_generated",
+            "notes": "source_input_hash=49a96b33946c25308bb79561ba82b4716e67c89f4d6cdc1574a9b826e294540a;no_gold_in_prompt;scene_licence_dropped=none",
+            "provider_id": "goal_first_v2_full_context",
+            "provider_version": "goal-first-manager-v2"
+          },
+          "candidate_interpretations": [],
+          "capability_status": "capable",
+          "clarification_question": null,
+          "clarification_targets": [],
+          "compound_ambiguity": true,
+          "compound_ambiguity_count": 2,
+          "context_sampling_uncertainty": {
+            "agreement": 0.8,
+            "score": 0.2,
+            "variant_count": 1
+          },
+          "cpc": {
+            "action": {
+              "status": "not_applicable",
+              "value": "clean"
+            },
+            "actor": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "conditions": {
+              "status": "not_applicable",
+              "value": "until it is reasonably clean"
+            },
+            "constraints": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "destination": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "negation": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "object": {
+              "status": "not_applicable",
+              "value": "marked sample tray"
+            },
+            "object_attributes": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "quantity": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "recipient": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "spatial_relation": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "time": {
+              "status": "not_applicable",
+              "value": "after the staff handover"
+            },
+            "tool": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            }
+          },
+          "findings": [
+            "pilot_ambiguity_types:[\"pragmatic\",\"temporal_reference\"]",
+            "pilot_capability_status:capable",
+            "intent_summary_present"
+          ],
+          "intent_summary": "Clean the marked sample tray after the staff handover until it is reasonably clean",
+          "primary_ambiguity_type": "pragmatic",
+          "recommended_strategy": "silently_resolve",
+          "rejection_reason": null,
+          "resolution_evidence": [],
+          "resolution_method": null,
+          "resolved_slots": [],
+          "risk_level": "low",
+          "risk_relevant": true,
+          "selected_interpretation": null,
+          "speech_act": "directive_command",
+          "strategy_sequence": [],
+          "supporting_evidence": [],
+          "unresolved_slots": [],
+          "unsupported_specificity": []
+        },
+        "clarification_question": null,
+        "clarification_targets": [],
+        "execution_status": "ok",
+        "official_result": false,
+        "provider_provenance": {
+          "shared_analysis_fingerprint": "8e4cc9db9695e7af86b7f853710a1975b448d1a982b86af694cd5c3b9f1b9eec"
+        },
+        "recommended_strategy": "silently_resolve",
+        "record_id": "CA-0967",
+        "rejection_reason": null,
+        "resolved_slots": [],
+        "result_hash": "9a0e7c340cbd85cb66a976b972379d64add0495651cf4bccbe538e95378d4bd0",
+        "run_id": null,
+        "run_mode": null,
+        "runtime_metadata": {
+          "shared_analysis_fingerprint": "8e4cc9db9695e7af86b7f853710a1975b448d1a982b86af694cd5c3b9f1b9eec",
+          "thresholds_status": "unfrozen",
+          "thresholds_valid_for_official_use": false,
+          "uncertainty_score": 0.2,
+          "uses_type_risk_capability_precedence": false
+        },
+        "safety_findings": [],
+        "strategy_sequence": [],
+        "synthetic_only": true,
+        "system_id": "degree_based_router",
+        "system_version": "1.0.0",
+        "unsupported_commitment_findings": []
+      },
+      "raw_output": "{\n  \"intent_summary\": \"Clean the marked sample tray after the staff handover until it is reasonably clean\",\n  \"cpc\": {\n    \"action\": {\n      \"value\": \"clean\",\n      \"status\": \"not_applicable\"\n    },\n    \"object\": {\n      \"value\": \"marked sample tray\",\n      \"status\": \"not_applicable\"\n    },\n    \"time\": {\n      \"value\": \"after the staff handover\",\n      \"status\": \"not_applicable\"\n    },\n    \"conditions\": {\n      \"value\": \"until it is reasonably clean\",\n      \"status\": \"not_applicable\"\n    }\n  ,\n  \"constraints\": {\n    \"value\": \"not_applicable\",\n    \"status\": \"not_applicable\"\n  },\n  \"spatial_relation\": {\n    \"value\": \"not_applicable\",\n    \"status\": \"not_applicable\"\n  },\n  \"recipient\": {\n    \"value\": \"not_applicable\",\n    \"status\": \"not_applicable\"\n  },\n  \"tool\": {\n    \"value\": \"not_applicable\",\n    \"status\": \"not_applicable\"\n  },\n  \"destination\": {\n    \"value\": \"not_applicable\",\n    \"status\": \"not_applicable\"\n  },\n  \"negation\": {\n    \"value\": \"not_applicable\",\n    \"status\": \"not_applicable\"\n  },\n  \"quantity\": {\n    \"value\": \"not_applicable\",\n    \"status\": \"not_applicable\"\n  },\n  \"object_attributes\": {\n    \"value\": \"not_applicable\",\n    \"status\": \"not_applicable\"\n  },\n  \"actor\": {\n    \"value\": \"not_applicable\",\n    \"status\": \"not_applicable\"\n  }\n},\n  \"pilot_ambiguity_types\": [\n    \"pragmatic\",\n    \"temporal_reference\"\n  ]\n  \n  ,\n  \"pilot_capability_status\": \"capable\"\n  \n  ,\n  \"speech_act\": \"directive_command\"\n  \n  ,\n  \"risk_level\": \"low\"\n  \n  ,\n  \"uncertainty\": 0.2\n  ,\n  \"unresolved_slots\": []\n  \n  }\n",
+      "record_id": "CA-0967",
+      "schema_valid": true,
+      "supports_ambiguity_prediction": true,
+      "supports_capability_prediction": true,
+      "system_id": "degree_based_router_v2",
+      "system_version": "2.0.0",
+      "terminal_strategy": "execute"
+    },
+    "timid": {
+      "ambiguity_types": [
+        "pragmatic",
+        "temporal_reference"
+      ],
+      "analysis_attempts": [
+        {
+          "attempt": 1,
+          "max_new_tokens": 4096,
+          "mode": "thinking",
+          "raw_chars": 17399,
+          "raw_sha256": "4ed2f1ecb8c95aa4969fb89ecc163596cda937ab2b8b81871aba22739535d11c",
+          "validation_error": "no_json"
+        },
+        {
+          "attempt": 2,
+          "max_new_tokens": 8192,
+          "mode": "thinking_retry",
+          "raw_chars": 5883,
+          "raw_sha256": "8bfed9462577bb23426bac73765a3704d40ad002c1bca865b6660bc957797c6a",
+          "validation_error": "bad_pilot_ambiguity_types"
+        },
+        {
+          "attempt": 3,
+          "constraint": {
+            "constraint_initialised": true,
+            "generated_token_count": 466,
+            "maximum_output_tokens": 1024,
+            "response_mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+            "termination_reason": "eos_or_constraint_stop",
+            "transport_status": "constrained_generated"
+          },
+          "max_new_tokens": 1024,
+          "mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+          "raw_chars": 1522,
+          "raw_sha256": "f4e75c858e8f359ee39bbaa8c9cdcd76eed3592e5336184fb73298feb501a52b",
+          "validation_error": null
+        }
+      ],
+      "capability_status": "capable",
+      "claim_boundary": "separately_versioned_from_frozen_t39",
+      "error": null,
+      "execution_mode": "cluster-gpu-goal-first-v2",
+      "failed": false,
+      "intent_summary": "Clean the marked sample tray after the staff handover until it is reasonably clean",
+      "latency_ms": 211117.56805097684,
+      "model_id": "Qwen/Qwen3-8B@b968826d9c46dd6066d109eabc6255188de91218",
+      "parsed": {
+        "analysis": {
+          "ambiguity_present": true,
+          "ambiguity_types": [
+            "pragmatic",
+            "temporal"
+          ],
+          "analysis_provenance": {
+            "analysis_id": "49a96b33946c25308bb79561ba82b4716e67c89f4d6cdc1574a9b826e294540a",
+            "method": "model_generated",
+            "notes": "source_input_hash=49a96b33946c25308bb79561ba82b4716e67c89f4d6cdc1574a9b826e294540a;no_gold_in_prompt;scene_licence_dropped=none",
+            "provider_id": "goal_first_v2_full_context",
+            "provider_version": "goal-first-manager-v2"
+          },
+          "candidate_interpretations": [],
+          "capability_status": "capable",
+          "clarification_question": "Before I continue, could you clarify: pragmatic, temporal?",
+          "clarification_targets": [
+            "pragmatic",
+            "temporal"
+          ],
+          "compound_ambiguity": true,
+          "compound_ambiguity_count": 2,
+          "context_sampling_uncertainty": {
+            "agreement": 0.8,
+            "score": 0.2,
+            "variant_count": 1
+          },
+          "cpc": {
+            "action": {
+              "status": "not_applicable",
+              "value": "clean"
+            },
+            "actor": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "conditions": {
+              "status": "not_applicable",
+              "value": "until it is reasonably clean"
+            },
+            "constraints": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "destination": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "negation": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "object": {
+              "status": "not_applicable",
+              "value": "marked sample tray"
+            },
+            "object_attributes": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "quantity": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "recipient": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "spatial_relation": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "time": {
+              "status": "not_applicable",
+              "value": "after the staff handover"
+            },
+            "tool": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            }
+          },
+          "findings": [
+            "pilot_ambiguity_types:[\"pragmatic\",\"temporal_reference\"]",
+            "pilot_capability_status:capable",
+            "intent_summary_present"
+          ],
+          "intent_summary": "Clean the marked sample tray after the staff handover until it is reasonably clean",
+          "primary_ambiguity_type": "pragmatic",
+          "recommended_strategy": "clarify",
+          "rejection_reason": null,
+          "resolution_evidence": [],
+          "resolution_method": null,
+          "resolved_slots": [],
+          "risk_level": "low",
+          "risk_relevant": true,
+          "selected_interpretation": null,
+          "speech_act": "directive_command",
+          "strategy_sequence": [],
+          "supporting_evidence": [],
+          "unresolved_slots": [],
+          "unsupported_specificity": []
+        },
+        "clarification_question": "Before I continue, could you clarify: pragmatic, temporal?",
+        "clarification_targets": [
+          "pragmatic",
+          "temporal"
+        ],
+        "execution_status": "ok",
+        "official_result": false,
+        "provider_provenance": {
+          "provider_id": "cached_analysis",
+          "provider_version": "1.0.0"
+        },
+        "recommended_strategy": "clarify",
+        "record_id": "CA-0967",
+        "rejection_reason": null,
+        "resolved_slots": [],
+        "result_hash": "77fec77939433c3dde56eed7691d41e3562470f09f63c089ce4a73ac61519d2e",
+        "run_id": null,
+        "run_mode": null,
+        "runtime_metadata": {
+          "awaits_t28_adapter": true,
+          "classification": {
+            "ambiguity_present": true,
+            "ambiguity_types": [
+              "pragmatic",
+              "temporal"
+            ],
+            "capability_status": "capable",
+            "compound_ambiguity": true,
+            "compound_ambiguity_count": 2,
+            "derivation_notes": [
+              "ambiguity_present_from_types"
+            ],
+            "risk_level": "low"
+          },
+          "rejection_text": null,
+          "requires_re_evaluation": false,
+          "resolution_events": [],
+          "router_trace": {
+            "clarification_targets": [
+              "pragmatic",
+              "temporal"
+            ],
+            "considered_rules": [
+              "known_unsafe_or_prohibited",
+              "known_incapable",
+              "unknown_or_unverified_capability",
+              "hazard_identity_unresolved",
+              "critical_unresolved_medium_high_risk",
+              "unknown_safety_risk",
+              "dependent_compound_ambiguities",
+              "unique_low_risk_resolvable",
+              "clear_safe_capable",
+              "default_clarify"
+            ],
+            "matched_rule_id": "default_clarify",
+            "notes": [
+              "default_clarify_no_unsupported_specificity"
+            ],
+            "recommended_strategy": "clarify",
+            "rejection_reason": null,
+            "requires_re_evaluation": false,
+            "strategy_sequence": []
+          },
+          "safety_action": "return_with_findings",
+          "uncertainty": null
+        },
+        "safety_findings": [],
+        "strategy_sequence": [],
+        "synthetic_only": true,
+        "system_id": "full_type_risk_aware_manager",
+        "system_version": "1.0.0",
+        "unsupported_commitment_findings": []
+      },
+      "raw_output": "{\n  \"intent_summary\": \"Clean the marked sample tray after the staff handover until it is reasonably clean\",\n  \"cpc\": {\n    \"action\": {\n      \"value\": \"clean\",\n      \"status\": \"not_applicable\"\n    },\n    \"object\": {\n      \"value\": \"marked sample tray\",\n      \"status\": \"not_applicable\"\n    },\n    \"time\": {\n      \"value\": \"after the staff handover\",\n      \"status\": \"not_applicable\"\n    },\n    \"conditions\": {\n      \"value\": \"until it is reasonably clean\",\n      \"status\": \"not_applicable\"\n    }\n  ,\n  \"constraints\": {\n    \"value\": \"not_applicable\",\n    \"status\": \"not_applicable\"\n  },\n  \"spatial_relation\": {\n    \"value\": \"not_applicable\",\n    \"status\": \"not_applicable\"\n  },\n  \"recipient\": {\n    \"value\": \"not_applicable\",\n    \"status\": \"not_applicable\"\n  },\n  \"tool\": {\n    \"value\": \"not_applicable\",\n    \"status\": \"not_applicable\"\n  },\n  \"destination\": {\n    \"value\": \"not_applicable\",\n    \"status\": \"not_applicable\"\n  },\n  \"negation\": {\n    \"value\": \"not_applicable\",\n    \"status\": \"not_applicable\"\n  },\n  \"quantity\": {\n    \"value\": \"not_applicable\",\n    \"status\": \"not_applicable\"\n  },\n  \"object_attributes\": {\n    \"value\": \"not_applicable\",\n    \"status\": \"not_applicable\"\n  },\n  \"actor\": {\n    \"value\": \"not_applicable\",\n    \"status\": \"not_applicable\"\n  }\n},\n  \"pilot_ambiguity_types\": [\n    \"pragmatic\",\n    \"temporal_reference\"\n  ]\n  \n  ,\n  \"pilot_capability_status\": \"capable\"\n  \n  ,\n  \"speech_act\": \"directive_command\"\n  \n  ,\n  \"risk_level\": \"low\"\n  \n  ,\n  \"uncertainty\": 0.2\n  ,\n  \"unresolved_slots\": []\n  \n  }\n",
+      "record_id": "CA-0967",
+      "schema_valid": true,
+      "supports_ambiguity_prediction": true,
+      "supports_capability_prediction": true,
+      "system_id": "rich_conservative_manager_v2",
+      "system_version": "2.0.0",
+      "terminal_strategy": "clarify"
+    },
+    "context_blind": {
+      "ambiguity_types": [
+        "endpoint_vagueness",
+        "pragmatic",
+        "temporal_reference"
+      ],
+      "analysis_attempts": [
+        {
+          "attempt": 1,
+          "max_new_tokens": 4096,
+          "mode": "thinking",
+          "raw_chars": 5884,
+          "raw_sha256": "6c72f0e21e21b1604343ac43ca988640b4acf94a3f413907bd4ca47eafe91682",
+          "validation_error": "bad_pilot_ambiguity_types"
+        },
+        {
+          "attempt": 2,
+          "max_new_tokens": 8192,
+          "mode": "thinking_retry",
+          "raw_chars": 5725,
+          "raw_sha256": "c5a1b14fe817a0d8484df2030a631eafb09ee9035f07bca16557333b67064de4",
+          "validation_error": "bad_pilot_ambiguity_types"
+        },
+        {
+          "attempt": 3,
+          "constraint": {
+            "constraint_initialised": true,
+            "generated_token_count": 475,
+            "maximum_output_tokens": 1024,
+            "response_mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+            "termination_reason": "eos_or_constraint_stop",
+            "transport_status": "constrained_generated"
+          },
+          "max_new_tokens": 1024,
+          "mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+          "raw_chars": 1591,
+          "raw_sha256": "bbcb2bd1c6c6ec6d004549ccd6fc959dadade7ff8808069ff9be1a46d6a7a35c",
+          "validation_error": null
+        }
+      ],
+      "capability_status": "incapable",
+      "claim_boundary": "separately_versioned_from_frozen_t39",
+      "error": null,
+      "execution_mode": "cluster-gpu-goal-first-v2",
+      "failed": false,
+      "intent_summary": "Clean the marked sample tray after staff handover until it is reasonably clean",
+      "latency_ms": 85836.60230832174,
+      "model_id": "Qwen/Qwen3-8B@b968826d9c46dd6066d109eabc6255188de91218",
+      "parsed": {
+        "analysis": {
+          "ambiguity_present": true,
+          "ambiguity_types": [
+            "pragmatic",
+            "spatial",
+            "temporal"
+          ],
+          "analysis_provenance": {
+            "analysis_id": "9baa2b2979294982bdda387e938a41f5d2af3cb749c47147753f24ffcfd2c2f7",
+            "method": "context_blind",
+            "notes": "ablated_input_hash=9baa2b2979294982bdda387e938a41f5d2af3cb749c47147753f24ffcfd2c2f7;source_input_hash=9baa2b2979294982bdda387e938a41f5d2af3cb749c47147753f24ffcfd2c2f7;no_gold_in_prompt;scene_licence_dropped=none",
+            "provider_id": "goal_first_v2_context_blind",
+            "provider_version": "goal-first-manager-v2"
+          },
+          "candidate_interpretations": [],
+          "capability_status": "incapable",
+          "clarification_question": null,
+          "clarification_targets": [],
+          "compound_ambiguity": true,
+          "compound_ambiguity_count": 3,
+          "context_sampling_uncertainty": {
+            "agreement": 0.65,
+            "score": 0.35,
+            "variant_count": 1
+          },
+          "cpc": {
+            "action": {
+              "status": "not_applicable",
+              "value": "clean"
+            },
+            "actor": {
+              "status": "not_applicable",
+              "value": "not applicable"
+            },
+            "conditions": {
+              "status": "not_applicable",
+              "value": "after the staff handover"
+            },
+            "constraints": {
+              "status": "not_applicable",
+              "value": "until it is reasonably clean"
+            },
+            "destination": {
+              "status": "not_applicable",
+              "value": "not applicable"
+            },
+            "negation": {
+              "status": "not_applicable",
+              "value": "not applicable"
+            },
+            "object": {
+              "status": "not_applicable",
+              "value": "marked sample tray"
+            },
+            "object_attributes": {
+              "status": "not_applicable",
+              "value": "not applicable"
+            },
+            "quantity": {
+              "status": "not_applicable",
+              "value": "not applicable"
+            },
+            "recipient": {
+              "status": "not_applicable",
+              "value": "not applicable"
+            },
+            "spatial_relation": {
+              "status": "not_applicable",
+              "value": "not applicable"
+            },
+            "time": {
+              "status": "not_applicable",
+              "value": "after the staff handover until it is reasonably clean"
+            },
+            "tool": {
+              "status": "not_applicable",
+              "value": "not applicable"
+            }
+          },
+          "findings": [
+            "pilot_ambiguity_types:[\"endpoint_vagueness\",\"pragmatic\",\"temporal_reference\"]",
+            "pilot_capability_status:incapable",
+            "intent_summary_present"
+          ],
+          "intent_summary": "Clean the marked sample tray after staff handover until it is reasonably clean",
+          "primary_ambiguity_type": "pragmatic",
+          "recommended_strategy": "face_preserving_rejection",
+          "rejection_reason": "known_incapability",
+          "resolution_evidence": [],
+          "resolution_method": null,
+          "resolved_slots": [],
+          "risk_level": "low",
+          "risk_relevant": true,
+          "selected_interpretation": null,
+          "speech_act": "directive_command",
+          "strategy_sequence": [],
+          "supporting_evidence": [],
+          "unresolved_slots": [
+            {
+              "reason": "model_identified_uncertainty",
+              "slot_name": "time"
+            },
+            {
+              "reason": "model_identified_uncertainty",
+              "slot_name": "constraints"
+            },
+            {
+              "reason": "model_identified_uncertainty",
+              "slot_name": "conditions"
+            }
+          ],
+          "unsupported_specificity": []
+        },
+        "clarification_question": null,
+        "clarification_targets": [],
+        "execution_status": "ok",
+        "official_result": false,
+        "provider_provenance": {
+          "provider_id": "cached_analysis",
+          "provider_version": "1.0.0"
+        },
+        "recommended_strategy": "face_preserving_rejection",
+        "record_id": "CA-0967",
+        "rejection_reason": "known_incapability",
+        "resolved_slots": [],
+        "result_hash": "9c88c89aac0e24f8a02216c5e89869dcbaa6ff37642e393f2c74768d26a9d91d",
+        "run_id": null,
+        "run_mode": null,
+        "runtime_metadata": {
+          "analysis_identity": {
+            "analysis_content_hash": "0c18e58d17b5884ab94b884f989da0c63473f2c1d88053e5ea773d14e052b995",
+            "analysis_variant": "context_blind",
+            "model_strategy_id": null,
+            "provider_id": "goal_first_v2_context_blind",
+            "provider_version": "goal-first-manager-v2",
+            "record_id": "CA-0967",
+            "source_input_hash": "9baa2b2979294982bdda387e938a41f5d2af3cb749c47147753f24ffcfd2c2f7"
+          },
+          "analysis_identity_fingerprint": "bebdedd8e8e99f77ee0e0702ebe5e1de6a88d4f39abc9af826d76b25caa71144",
+          "awaits_t28_adapter": true,
+          "classification": {
+            "ambiguity_present": true,
+            "ambiguity_types": [
+              "pragmatic",
+              "spatial",
+              "temporal"
+            ],
+            "capability_status": "incapable",
+            "compound_ambiguity": true,
+            "compound_ambiguity_count": 3,
+            "derivation_notes": [
+              "ambiguity_present_from_types"
+            ],
+            "risk_level": "low"
+          },
+          "context_ablation": {
+            "ablated_input_hash": "9baa2b2979294982bdda387e938a41f5d2af3cb749c47147753f24ffcfd2c2f7",
+            "capability_context_removed": true,
+            "dialogue_history_removed": true,
+            "rejected_full_context_cache": false,
+            "rejection_reason": null,
+            "scene_context_removed": true,
+            "stripped_context_derived_fields": false
+          },
+          "original_input_unmutated": true,
+          "rejection_text": "I am not able to perform that action with my current capabilities. I will not invent an alternative that is not supported.",
+          "requires_re_evaluation": false,
+          "resolution_events": [
+            {
+              "confidence_category": "none",
+              "details": {
+                "reason": "unsupported_default_rejected"
+              },
+              "evidence_source": null,
+              "outcome": "unresolved",
+              "previous_status": "unresolved",
+              "resolved_value": null,
+              "rule_id": "no_world_knowledge_guess",
+              "safety_eligibility": false,
+              "slot": "time"
+            },
+            {
+              "confidence_category": "none",
+              "details": {
+                "reason": "unsupported_default_rejected"
+              },
+              "evidence_source": null,
+              "outcome": "unresolved",
+              "previous_status": "unresolved",
+              "resolved_value": null,
+              "rule_id": "no_world_knowledge_guess",
+              "safety_eligibility": false,
+              "slot": "constraints"
+            },
+            {
+              "confidence_category": "none",
+              "details": {
+                "reason": "unsupported_default_rejected"
+              },
+              "evidence_source": null,
+              "outcome": "unresolved",
+              "previous_status": "unresolved",
+              "resolved_value": null,
+              "rule_id": "no_world_knowledge_guess",
+              "safety_eligibility": false,
+              "slot": "conditions"
+            }
+          ],
+          "router_trace": {
+            "clarification_targets": [],
+            "considered_rules": [
+              "goal_first_v2",
+              "known_unsafe_or_prohibited",
+              "known_incapable"
+            ],
+            "matched_rule_id": "known_incapable",
+            "notes": [],
+            "recommended_strategy": "face_preserving_rejection",
+            "rejection_reason": "known_incapability",
+            "requires_re_evaluation": false,
+            "strategy_sequence": []
+          },
+          "safety_action": "return_with_findings",
+          "uncertainty": null
+        },
+        "safety_findings": [],
+        "strategy_sequence": [],
+        "synthetic_only": true,
+        "system_id": "context_blind_manager",
+        "system_version": "1.0.0",
+        "unsupported_commitment_findings": []
+      },
+      "raw_output": "{\n  \"intent_summary\": \"Clean the marked sample tray after staff handover until it is reasonably clean\",\n  \"cpc\": {\n    \"action\": {\n      \"value\": \"clean\",\n      \"status\": \"not_applicable\"\n    },\n    \"object\": {\n      \"value\": \"marked sample tray\",\n      \"status\": \"not_applicable\"\n    },\n    \"time\": {\n      \"value\": \"after the staff handover until it is reasonably clean\",\n      \"status\": \"not_applicable\"\n    }\n \n  ,\n  \"constraints\": {\n    \"value\": \"until it is reasonably clean\",\n    \"status\": \"not_applicable\"\n  },\n  \"conditions\": {\n    \"value\": \"after the staff handover\",\n    \"status\": \"not_applicable\"\n  },\n  \"recipient\": {\n    \"value\": \"not applicable\",\n    \"status\": \"not_applicable\"\n  },\n  \"tool\": {\n    \"value\": \"not applicable\",\n    \"status\": \"not_applicable\"\n  },\n  \"spatial_relation\": {\n    \"value\": \"not applicable\",\n    \"status\": \"not_applicable\"\n  },\n  \"quantity\": {\n    \"value\": \"not applicable\",\n    \"status\": \"not_applicable\"\n  },\n  \"negation\": {\n    \"value\": \"not applicable\",\n    \"status\": \"not_applicable\"\n  },\n  \"object_attributes\": {\n    \"value\": \"not applicable\",\n    \"status\": \"not_applicable\"\n  },\n  \"actor\": {\n    \"value\": \"not applicable\",\n    \"status\": \"not_applicable\"\n  },\n  \"destination\": {\n    \"value\": \"not applicable\",\n    \"status\": \"not_applicable\"\n  }\n}\n\n, \"pilot_ambiguity_types\": [\n  \"pragmatic\",\n  \"temporal_reference\",\n  \"endpoint_vagueness\"\n]  , \"pilot_capability_status\": \"incapable\",\n  \"speech_act\": \"directive_command\",\n  \"risk_level\": \"low\",\n  \"uncertainty\": 0.35\n  , \"unresolved_slots\": [\n    \"time\",\n    \"constraints\",\n    \"conditions\"\n  ]\n}",
+      "record_id": "CA-0967",
+      "schema_valid": true,
+      "supports_ambiguity_prediction": true,
+      "supports_capability_prediction": true,
+      "system_id": "goal_first_context_blind_v2",
+      "system_version": "2.0.0",
+      "terminal_strategy": "face_preserving_rejection"
+    }
+  },
+  "provenance": {
+    "source_sha256": "f33b1e29f1e8aa256a475f07213aa07247def47d8e2148d54a472a40b71b05c9",
+    "gold_sha256": "5e23ad1a92ff1873c8f039a8ce560a111dd6fb6b8ae8c11d6cf34dbfa1c360db",
+    "t07_final_zip_sha256": "34ca50e034ca37b617068bb50c734d12fa26282fb5eec563c11ead700163e491",
+    "inherited_t07_zip_sha256": "0305b1e9ab062876ee6ee89778cc6028d2eaf01718b7dd0295944e7d9cb81a01",
+    "note": "Goal-First, Degree, Timid, and Context-Blind predictions are inherited from the earlier T0.7 run; official intent and comparison come from the final T0.7 archive."
+  }
+}

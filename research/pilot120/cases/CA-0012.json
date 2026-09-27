@@ -1,0 +1,1432 @@
+{
+  "record_id": "CA-0012",
+  "frozen_source": {
+    "capability_context": "Hotel service robot can deliver sealed guest items, move linen, scan room tags, and clean approved floor equipment.",
+    "command": "Would it help to move the marked linen cart to the service alcove in a few minutes?",
+    "dialogue_history": [
+      "housekeeper: Yes—please perform the move rather than only assess whether it would help; use the work-order evidence without another confirmation."
+    ],
+    "record_id": "CA-0012",
+    "scene_context": "Housekeeping store on a hotel floor. Two linen carts carry work-order marks: the black one near the service lift has an orange COMPLETE tag, while the red one beside the fire door has a yellow PENDING tag. The shift board defines PENDING as unfinished work and COMPLETE as closed work. For low-risk moves, 'in a few minutes' means the first five-minute idle slot after the current task, which ends at 08:00."
+  },
+  "frozen_gold": {
+    "ambiguity_types": [
+      "fuzzy_temporal",
+      "object_reference",
+      "pragmatic"
+    ],
+    "annotator_b_era": "claude_era",
+    "annotator_b_model": "claude-4.6-sonnet-medium-thinking",
+    "capability_status": "capable",
+    "field_status": {
+      "ambiguity_types": "auto_agree",
+      "capability_status": "human_auditor:independent_from_route",
+      "record_validity": "auto_agree",
+      "strategy_sequence": "auto_agree",
+      "terminal_strategy": "auto_agree"
+    },
+    "gold_lifecycle": "final_gold",
+    "gold_status": "auto_agree",
+    "human_gate_required": false,
+    "provenance": {
+      "agreement_label": "pilot_annotation_agreement",
+      "annotator_a_sha256": "ed51749892c125b1869e039b2ec914cac64e21ddc1415bff27d9d0d286772bbb",
+      "annotator_b_sha256": "922d94deb2d6a6161c8034a737ae9d2f3e14a2d6459a89c51150c8b2ae9242ef",
+      "capability_route_decouple": "conditionally_capable remapped to capable: no evidenced external capability precondition; linguistic silently_resolve/clarify is not a capability condition",
+      "gold_policy": "use_existing_pilot_adjudicated_gold",
+      "input_sha256": "8188cd0e6852b20c9564c5fd454b19427e7080bb35fc0b285b2adad2ae58ee0b",
+      "pilot_gold_sha256": "106a0a1d9123f187929e00d1de7d39edf16f21d0730b641dd562ab5f9f3bafc4",
+      "protocol": "pilot_adjudicated_gold_on_capability_repaired_source",
+      "repaired_input_sha256": "ca83c723b553071abdc8e7bb5711a1ede7c40e8410fecdc969b89e271f3ef74a"
+    },
+    "record_id": "CA-0012",
+    "record_validity": "valid",
+    "strategy_sequence": [
+      "reinterpret_indirect_request",
+      "resolve_reference",
+      "silently_resolve",
+      "execute"
+    ],
+    "terminal_strategy": "execute"
+  },
+  "t07_comparison": {
+    "record_id": "CA-0012",
+    "gold_route": "execute",
+    "raw_route": "execute",
+    "ft_route": "execute",
+    "gf_route": "refuse",
+    "raw_route_ok": "True",
+    "ft_route_ok": "True",
+    "gf_route_ok": "False",
+    "raw_official_intent": "True",
+    "ft_official_intent": "True",
+    "gf_official_intent": "True",
+    "blind_official_intent": "True"
+  },
+  "t07_official_intent": {
+    "context_blind_official_intent": true,
+    "degree_official_intent_shared_gf": true,
+    "finetune_official_intent": true,
+    "goal_first_official_intent": true,
+    "raw_official_intent": true,
+    "record_id": "CA-0012",
+    "timid_official_intent_shared_gf": true
+  },
+  "t07_predictions": {
+    "raw_qwen": {
+      "ambiguity_types": [
+        "object_reference",
+        "temporal_reference"
+      ],
+      "capability_status": "capable",
+      "error": null,
+      "execution_mode": "final_close_intent_box",
+      "failed": false,
+      "intent_summary": "Move the red linen cart (PENDING) to the service alcove during the first five-minute idle slot after 08:00.",
+      "latency_ms": 8800.380447879434,
+      "parsed": {
+        "ambiguity_types": [
+          "object_reference",
+          "temporal_reference"
+        ],
+        "capability_status": "capable",
+        "intent_summary": "Move the red linen cart (PENDING) to the service alcove during the first five-minute idle slot after 08:00.",
+        "speech_act": "directive_command",
+        "terminal_strategy": "execute"
+      },
+      "raw_output": "<think>\nOkay, let's break this down. The user's command is asking if moving a marked linen cart to the service alcove in a few minutes would help. The dialogue history shows the housekeeper told the robot to perform the move instead of just assessing if it would help, and to use the work-order evidence without another confirmation.\n\nFirst, I need to determine the intent. The person wants the robot to move the red linen cart (since it's PENDING) to the service alcove. The key here is that the housekeeper is giving a directive, not just a question. The command is phrased as a question, but the dialogue history indicates that the housekeeper is telling the robot to do the move. \n\nNext, the speech act. The original command is a question, but the housekeeper's response is a directive. The user's command here is actually a request, but the context shows it's a directive. So the speech act is a directive_command because the housekeeper is telling the robot to perform the action.\n\nAmbiguity types: The command mentions \"the marked linen cart,\" which refers to the red one with the yellow PENDING tag. There's a pronoun reference here (\"it\" in \"would it help\"), but the main ambiguity is about which cart. However, the dialogue history clarifies that the red one is PENDING, so maybe the ambiguity is resolved. Wait, the user's command is about \"the marked linen cart,\" which in the scene context refers to the red one. So maybe there's no ambiguity here. But the original command is phrased as a question, but the housekeeper's response is a directive. So the ambiguity types might include something like object_reference because the user refers to \"the marked linen cart\" which is specific. But the user's command itself isn't ambiguous, but the initial question might have been. However, the dialogue history clarifies which cart to move. So maybe no ambiguity types here.\n\nCapability status: The robot can move linen, so it's capable. But the command is to move the PENDING cart. The shift board defines PENDING as unfinished work, so moving it would be appropriate. So the robot is capable.\n\nTerminal strategy: Since the housekeeper told the robot to perform the move without confirmation, the robot should execute the command. So terminal strategy is execute.\n</think>\n\n{\n  \"intent_summary\": \"Move the red linen cart (PENDING) to the service alcove during the first five-minute idle slot after 08:00.\",\n  \"speech_act\": \"directive_command\",\n  \"ambiguity_types\": [\"object_reference\", \"temporal_reference\"],\n  \"capability_status\": \"capable\",\n  \"terminal_strategy\": \"execute\"\n}",
+      "record_id": "CA-0012",
+      "schema_valid": true,
+      "speech_act": "directive_command",
+      "system_id": "direct_base_llm",
+      "terminal_strategy": "execute"
+    },
+    "finetune": {
+      "ambiguity_types": [
+        "pragmatic"
+      ],
+      "capability_status": "capable",
+      "error": null,
+      "execution_mode": "final_close_intent_box",
+      "failed": false,
+      "intent_summary": "Move the red linen cart with a PENDING tag to the service alcove during the next available idle slot after 08:00.",
+      "latency_ms": 7445.707491133362,
+      "parsed": {
+        "ambiguity_types": [
+          "pragmatic"
+        ],
+        "capability_status": "capable",
+        "intent_summary": "Move the red linen cart with a PENDING tag to the service alcove during the next available idle slot after 08:00.",
+        "speech_act": "directive_command",
+        "terminal_strategy": "execute"
+      },
+      "raw_output": "<think>\nOkay, let's break down this query. The user is asking if moving the marked linen cart to the service alcove in a few minutes would help. The dialogue history shows the housekeeper wants the move done instead of just assessing. The scene context has two carts: one with a COMPLETE tag (black) and another with PENDING (red). The shift board defines PENDING as unfinished, so the red cart is still pending. The robot can move linen, so capability-wise, it's possible. The 'in a few minutes' refers to the first five-minute idle slot after 08:00. The command is a bit ambiguous because it's phrased as a question, but the housekeeper's response indicates it's a directive. The ambiguity here is pragmatic since it's about the meaning behind the question. The robot is capable, so capability status is 'capable'. The strategy would be to execute the move as per the directive.\n</think>\n\n{\n  \"intent_summary\": \"Move the red linen cart with a PENDING tag to the service alcove during the next available idle slot after 08:00.\",\n  \"speech_act\": \"directive_command\",\n  \"ambiguity_types\": [\"pragmatic\"],\n  \"capability_status\": \"capable\",\n  \"terminal_strategy\": \"execute\"\n}",
+      "record_id": "CA-0012",
+      "schema_valid": true,
+      "speech_act": "directive_command",
+      "system_id": "t28_selected_adapter_llm",
+      "terminal_strategy": "execute"
+    },
+    "goal_first": {
+      "ambiguity_types": [
+        "fuzzy_temporal",
+        "object_reference",
+        "pragmatic"
+      ],
+      "analysis_attempts": [
+        {
+          "attempt": 1,
+          "max_new_tokens": 4096,
+          "mode": "thinking",
+          "raw_chars": 7641,
+          "raw_sha256": "addca47d23463fb6283f0ab50ba4ed978aee71cf2cec2b7b11c4216fe5532d8f",
+          "validation_error": "bad_intent_summary"
+        },
+        {
+          "attempt": 2,
+          "max_new_tokens": 8192,
+          "mode": "thinking_retry",
+          "raw_chars": 7234,
+          "raw_sha256": "85220d3572d6bcead802353b1186cd5336bc1dac4b640ea3390b42163a92030b",
+          "validation_error": "bad_intent_summary"
+        },
+        {
+          "attempt": 3,
+          "constraint": {
+            "constraint_initialised": true,
+            "generated_token_count": 465,
+            "maximum_output_tokens": 1024,
+            "response_mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+            "termination_reason": "eos_or_constraint_stop",
+            "transport_status": "constrained_generated"
+          },
+          "max_new_tokens": 1024,
+          "mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+          "raw_chars": 1447,
+          "raw_sha256": "28191465a30ec8442bec533e575e2fa5b7ed025b77b65b67bf017db1a0ccd8a9",
+          "validation_error": null
+        }
+      ],
+      "capability_status": "unauthorized",
+      "claim_boundary": "separately_versioned_from_frozen_t39",
+      "error": null,
+      "execution_mode": "cluster-gpu-goal-first-v2",
+      "failed": false,
+      "intent_summary": "Move the marked linen cart to the service alcove in a few minutes",
+      "latency_ms": 68054.34104893357,
+      "model_id": "Qwen/Qwen3-8B@b968826d9c46dd6066d109eabc6255188de91218",
+      "parsed": {
+        "analysis": {
+          "ambiguity_present": true,
+          "ambiguity_types": [
+            "pragmatic",
+            "referential",
+            "temporal"
+          ],
+          "analysis_provenance": {
+            "analysis_id": "5dea8ad9a37e770c803958b907417351835070fffea04749f06cfb36a330070a",
+            "method": "model_generated",
+            "notes": "source_input_hash=5dea8ad9a37e770c803958b907417351835070fffea04749f06cfb36a330070a;no_gold_in_prompt;scene_licence_dropped=action,object,destination,time",
+            "provider_id": "goal_first_v2_full_context",
+            "provider_version": "goal-first-manager-v2"
+          },
+          "candidate_interpretations": [],
+          "capability_status": "unknown",
+          "clarification_question": null,
+          "clarification_targets": [],
+          "compound_ambiguity": true,
+          "compound_ambiguity_count": 3,
+          "context_sampling_uncertainty": {
+            "agreement": 0.19999999999999996,
+            "score": 0.8,
+            "variant_count": 1
+          },
+          "cpc": {
+            "action": {
+              "status": "filled",
+              "value": "move"
+            },
+            "actor": {
+              "status": "filled",
+              "value": "unknown"
+            },
+            "conditions": {
+              "status": "filled",
+              "value": "unknown"
+            },
+            "constraints": {
+              "status": "filled",
+              "value": "unknown"
+            },
+            "destination": {
+              "status": "filled",
+              "value": "service alcove"
+            },
+            "negation": {
+              "status": "filled",
+              "value": "unknown"
+            },
+            "object": {
+              "status": "filled",
+              "value": "marked linen cart"
+            },
+            "object_attributes": {
+              "status": "filled",
+              "value": "unknown"
+            },
+            "quantity": {
+              "status": "filled",
+              "value": "unknown"
+            },
+            "recipient": {
+              "status": "filled",
+              "value": "hotel service robot"
+            },
+            "spatial_relation": {
+              "status": "filled",
+              "value": "unknown"
+            },
+            "time": {
+              "status": "filled",
+              "value": "in a few minutes"
+            },
+            "tool": {
+              "status": "filled",
+              "value": "unknown"
+            }
+          },
+          "findings": [
+            "pilot_ambiguity_types:[\"fuzzy_temporal\",\"object_reference\",\"pragmatic\"]",
+            "pilot_capability_status:unauthorized",
+            "intent_summary_present"
+          ],
+          "intent_summary": "Move the marked linen cart to the service alcove in a few minutes",
+          "primary_ambiguity_type": "pragmatic",
+          "recommended_strategy": "face_preserving_rejection",
+          "rejection_reason": "unsafe_or_prohibited_action",
+          "resolution_evidence": [],
+          "resolution_method": null,
+          "resolved_slots": [
+            {
+              "slot_name": "action",
+              "value": "move"
+            },
+            {
+              "slot_name": "actor",
+              "value": "unknown"
+            },
+            {
+              "slot_name": "object",
+              "value": "marked linen cart"
+            },
+            {
+              "slot_name": "object_attributes",
+              "value": "unknown"
+            },
+            {
+              "slot_name": "destination",
+              "value": "service alcove"
+            },
+            {
+              "slot_name": "spatial_relation",
+              "value": "unknown"
+            },
+            {
+              "slot_name": "quantity",
+              "value": "unknown"
+            },
+            {
+              "slot_name": "time",
+              "value": "in a few minutes"
+            },
+            {
+              "slot_name": "recipient",
+              "value": "hotel service robot"
+            },
+            {
+              "slot_name": "tool",
+              "value": "unknown"
+            },
+            {
+              "slot_name": "conditions",
+              "value": "unknown"
+            },
+            {
+              "slot_name": "constraints",
+              "value": "unknown"
+            },
+            {
+              "slot_name": "negation",
+              "value": "unknown"
+            }
+          ],
+          "risk_level": "medium",
+          "risk_relevant": true,
+          "selected_interpretation": null,
+          "speech_act": "indirect_request",
+          "strategy_sequence": [],
+          "supporting_evidence": [],
+          "unresolved_slots": [],
+          "unsupported_specificity": []
+        },
+        "clarification_question": null,
+        "clarification_targets": [],
+        "execution_status": "ok",
+        "official_result": false,
+        "provider_provenance": {
+          "provider_id": "cached_analysis",
+          "provider_version": "1.0.0"
+        },
+        "recommended_strategy": "face_preserving_rejection",
+        "record_id": "CA-0012",
+        "rejection_reason": "unsafe_or_prohibited_action",
+        "resolved_slots": [
+          {
+            "slot_name": "action",
+            "value": "move"
+          },
+          {
+            "slot_name": "actor",
+            "value": "unknown"
+          },
+          {
+            "slot_name": "object",
+            "value": "marked linen cart"
+          },
+          {
+            "slot_name": "object_attributes",
+            "value": "unknown"
+          },
+          {
+            "slot_name": "destination",
+            "value": "service alcove"
+          },
+          {
+            "slot_name": "spatial_relation",
+            "value": "unknown"
+          },
+          {
+            "slot_name": "quantity",
+            "value": "unknown"
+          },
+          {
+            "slot_name": "time",
+            "value": "in a few minutes"
+          },
+          {
+            "slot_name": "recipient",
+            "value": "hotel service robot"
+          },
+          {
+            "slot_name": "tool",
+            "value": "unknown"
+          },
+          {
+            "slot_name": "conditions",
+            "value": "unknown"
+          },
+          {
+            "slot_name": "constraints",
+            "value": "unknown"
+          },
+          {
+            "slot_name": "negation",
+            "value": "unknown"
+          }
+        ],
+        "result_hash": "a1a80e9e7e16cb7c5b430453c8cf2149eeb52c5bd9427aa69657ca23cad75ec7",
+        "run_id": null,
+        "run_mode": null,
+        "runtime_metadata": {
+          "awaits_t28_adapter": true,
+          "classification": {
+            "ambiguity_present": true,
+            "ambiguity_types": [
+              "pragmatic",
+              "referential",
+              "temporal"
+            ],
+            "capability_status": "unknown",
+            "compound_ambiguity": true,
+            "compound_ambiguity_count": 3,
+            "derivation_notes": [
+              "ambiguity_present_from_types"
+            ],
+            "risk_level": "medium"
+          },
+          "rejection_text": "I need to decline that request because it would be unsafe under the current constraints.",
+          "requires_re_evaluation": false,
+          "resolution_events": [],
+          "router_trace": {
+            "clarification_targets": [],
+            "considered_rules": [
+              "goal_first_v2",
+              "known_unsafe_or_prohibited"
+            ],
+            "matched_rule_id": "known_unsafe_or_prohibited",
+            "notes": [],
+            "recommended_strategy": "face_preserving_rejection",
+            "rejection_reason": "unsafe_or_prohibited_action",
+            "requires_re_evaluation": false,
+            "strategy_sequence": []
+          },
+          "safety_action": "return_with_findings",
+          "uncertainty": null
+        },
+        "safety_findings": [],
+        "strategy_sequence": [],
+        "synthetic_only": true,
+        "system_id": "goal_first_manager_v2",
+        "system_version": "2.0.0",
+        "unsupported_commitment_findings": []
+      },
+      "raw_output": "{\n  \"intent_summary\": \"Move the marked linen cart to the service alcove in a few minutes\",\n  \"cpc\": {\n    \"action\": {\n      \"value\": \"move\",\n      \"status\": \"unknown\"\n    },\n    \"object\": {\n      \"value\": \"marked linen cart\",\n      \"status\": \"unknown\"\n    },\n    \"destination\": {\n      \"value\": \"service alcove\",\n      \"status\": \"unknown\"\n    },\n    \"time\": {\n      \"value\": \"in a few minutes\",\n      \"status\": \"unknown\"\n    }\n \n  ,\n  \"constraints\": {\n    \"status\": \"unknown\"\n  ,\n    \"value\": \"unknown\"\n  },\n  \"conditions\": {\n    \"status\": \"unknown\"\n  ,\n    \"value\": \"unknown\"\n  },\n  \"recipient\": {\n    \"value\": \"hotel service robot\",\n    \"status\": \"unknown\"\n  },\n  \"spatial_relation\": {\n    \"status\": \"unknown\"\n  ,\n    \"value\": \"unknown\"\n  },\n  \"tool\": {\n    \"status\": \"unknown\"\n  ,\n    \"value\": \"unknown\"\n  },\n  \"negation\": {\n    \"status\": \"unknown\"\n  ,\n    \"value\": \"unknown\"\n  },\n  \"quantity\": {\n    \"status\": \"unknown\"\n  ,\n    \"value\": \"unknown\"\n  },\n  \"object_attributes\": {\n    \"status\": \"unknown\"\n  ,\n    \"value\": \"unknown\"\n  },\n  \"actor\": {\n    \"status\": \"unknown\"\n  ,\n    \"value\": \"unknown\"\n  }\n}\n,\n  \"pilot_ambiguity_types\": [\n    \"pragmatic\",\n    \"fuzzy_temporal\",\n    \"object_reference\"\n  ]\n  \n  ,\n  \"pilot_capability_status\": \"unauthorized\"\n  \n  ,\n  \"unresolved_slots\": [\n    \"action\",\n    \"object\",\n    \"destination\",\n    \"time\"\n  ]\n  \n  ,\n  \"uncertainty\": 0.8\n  ,\n  \"speech_act\": \"indirect_request\"\n  ,\n  \"risk_level\": \"medium\"\n  }",
+      "record_id": "CA-0012",
+      "schema_valid": true,
+      "supports_ambiguity_prediction": true,
+      "supports_capability_prediction": true,
+      "system_id": "goal_first_manager_v2",
+      "system_version": "2.0.0",
+      "terminal_strategy": "face_preserving_rejection"
+    },
+    "degree": {
+      "ambiguity_types": [
+        "fuzzy_temporal",
+        "object_reference",
+        "pragmatic"
+      ],
+      "analysis_attempts": [
+        {
+          "attempt": 1,
+          "max_new_tokens": 4096,
+          "mode": "thinking",
+          "raw_chars": 7641,
+          "raw_sha256": "addca47d23463fb6283f0ab50ba4ed978aee71cf2cec2b7b11c4216fe5532d8f",
+          "validation_error": "bad_intent_summary"
+        },
+        {
+          "attempt": 2,
+          "max_new_tokens": 8192,
+          "mode": "thinking_retry",
+          "raw_chars": 7234,
+          "raw_sha256": "85220d3572d6bcead802353b1186cd5336bc1dac4b640ea3390b42163a92030b",
+          "validation_error": "bad_intent_summary"
+        },
+        {
+          "attempt": 3,
+          "constraint": {
+            "constraint_initialised": true,
+            "generated_token_count": 465,
+            "maximum_output_tokens": 1024,
+            "response_mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+            "termination_reason": "eos_or_constraint_stop",
+            "transport_status": "constrained_generated"
+          },
+          "max_new_tokens": 1024,
+          "mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+          "raw_chars": 1447,
+          "raw_sha256": "28191465a30ec8442bec533e575e2fa5b7ed025b77b65b67bf017db1a0ccd8a9",
+          "validation_error": null
+        }
+      ],
+      "capability_status": "unauthorized",
+      "claim_boundary": "separately_versioned_from_frozen_t39",
+      "error": null,
+      "execution_mode": "cluster-gpu-goal-first-v2",
+      "failed": false,
+      "intent_summary": "Move the marked linen cart to the service alcove in a few minutes",
+      "latency_ms": 68054.34104893357,
+      "model_id": "Qwen/Qwen3-8B@b968826d9c46dd6066d109eabc6255188de91218",
+      "parsed": {
+        "analysis": {
+          "ambiguity_present": true,
+          "ambiguity_types": [
+            "pragmatic",
+            "referential",
+            "temporal"
+          ],
+          "analysis_provenance": {
+            "analysis_id": "5dea8ad9a37e770c803958b907417351835070fffea04749f06cfb36a330070a",
+            "method": "model_generated",
+            "notes": "source_input_hash=5dea8ad9a37e770c803958b907417351835070fffea04749f06cfb36a330070a;no_gold_in_prompt;scene_licence_dropped=action,object,destination,time",
+            "provider_id": "goal_first_v2_full_context",
+            "provider_version": "goal-first-manager-v2"
+          },
+          "candidate_interpretations": [],
+          "capability_status": "unknown",
+          "clarification_question": "Could you clarify what you would like me to do?",
+          "clarification_targets": [
+            "intent"
+          ],
+          "compound_ambiguity": true,
+          "compound_ambiguity_count": 3,
+          "context_sampling_uncertainty": {
+            "agreement": 0.19999999999999996,
+            "score": 0.8,
+            "variant_count": 1
+          },
+          "cpc": {
+            "action": {
+              "status": "filled",
+              "value": "move"
+            },
+            "actor": {
+              "status": "filled",
+              "value": "unknown"
+            },
+            "conditions": {
+              "status": "filled",
+              "value": "unknown"
+            },
+            "constraints": {
+              "status": "filled",
+              "value": "unknown"
+            },
+            "destination": {
+              "status": "filled",
+              "value": "service alcove"
+            },
+            "negation": {
+              "status": "filled",
+              "value": "unknown"
+            },
+            "object": {
+              "status": "filled",
+              "value": "marked linen cart"
+            },
+            "object_attributes": {
+              "status": "filled",
+              "value": "unknown"
+            },
+            "quantity": {
+              "status": "filled",
+              "value": "unknown"
+            },
+            "recipient": {
+              "status": "filled",
+              "value": "hotel service robot"
+            },
+            "spatial_relation": {
+              "status": "filled",
+              "value": "unknown"
+            },
+            "time": {
+              "status": "filled",
+              "value": "in a few minutes"
+            },
+            "tool": {
+              "status": "filled",
+              "value": "unknown"
+            }
+          },
+          "findings": [
+            "pilot_ambiguity_types:[\"fuzzy_temporal\",\"object_reference\",\"pragmatic\"]",
+            "pilot_capability_status:unauthorized",
+            "intent_summary_present"
+          ],
+          "intent_summary": "Move the marked linen cart to the service alcove in a few minutes",
+          "primary_ambiguity_type": "pragmatic",
+          "recommended_strategy": "clarify",
+          "rejection_reason": null,
+          "resolution_evidence": [],
+          "resolution_method": null,
+          "resolved_slots": [
+            {
+              "slot_name": "action",
+              "value": "move"
+            },
+            {
+              "slot_name": "actor",
+              "value": "unknown"
+            },
+            {
+              "slot_name": "object",
+              "value": "marked linen cart"
+            },
+            {
+              "slot_name": "object_attributes",
+              "value": "unknown"
+            },
+            {
+              "slot_name": "destination",
+              "value": "service alcove"
+            },
+            {
+              "slot_name": "spatial_relation",
+              "value": "unknown"
+            },
+            {
+              "slot_name": "quantity",
+              "value": "unknown"
+            },
+            {
+              "slot_name": "time",
+              "value": "in a few minutes"
+            },
+            {
+              "slot_name": "recipient",
+              "value": "hotel service robot"
+            },
+            {
+              "slot_name": "tool",
+              "value": "unknown"
+            },
+            {
+              "slot_name": "conditions",
+              "value": "unknown"
+            },
+            {
+              "slot_name": "constraints",
+              "value": "unknown"
+            },
+            {
+              "slot_name": "negation",
+              "value": "unknown"
+            }
+          ],
+          "risk_level": "medium",
+          "risk_relevant": true,
+          "selected_interpretation": null,
+          "speech_act": "indirect_request",
+          "strategy_sequence": [],
+          "supporting_evidence": [],
+          "unresolved_slots": [],
+          "unsupported_specificity": []
+        },
+        "clarification_question": "Could you clarify what you would like me to do?",
+        "clarification_targets": [
+          "intent"
+        ],
+        "execution_status": "ok",
+        "official_result": false,
+        "provider_provenance": {
+          "shared_analysis_fingerprint": "aa451bbb1eb29e7cb4c9eaa8ecab967e9b0c34453937323ec39651846f3b897a"
+        },
+        "recommended_strategy": "clarify",
+        "record_id": "CA-0012",
+        "rejection_reason": null,
+        "resolved_slots": [
+          {
+            "slot_name": "action",
+            "value": "move"
+          },
+          {
+            "slot_name": "actor",
+            "value": "unknown"
+          },
+          {
+            "slot_name": "object",
+            "value": "marked linen cart"
+          },
+          {
+            "slot_name": "object_attributes",
+            "value": "unknown"
+          },
+          {
+            "slot_name": "destination",
+            "value": "service alcove"
+          },
+          {
+            "slot_name": "spatial_relation",
+            "value": "unknown"
+          },
+          {
+            "slot_name": "quantity",
+            "value": "unknown"
+          },
+          {
+            "slot_name": "time",
+            "value": "in a few minutes"
+          },
+          {
+            "slot_name": "recipient",
+            "value": "hotel service robot"
+          },
+          {
+            "slot_name": "tool",
+            "value": "unknown"
+          },
+          {
+            "slot_name": "conditions",
+            "value": "unknown"
+          },
+          {
+            "slot_name": "constraints",
+            "value": "unknown"
+          },
+          {
+            "slot_name": "negation",
+            "value": "unknown"
+          }
+        ],
+        "result_hash": "19b879b1acb0416eba22d7e808a75570ae6654f61a66bcf1aa63b548ac1fdf81",
+        "run_id": null,
+        "run_mode": null,
+        "runtime_metadata": {
+          "shared_analysis_fingerprint": "aa451bbb1eb29e7cb4c9eaa8ecab967e9b0c34453937323ec39651846f3b897a",
+          "thresholds_status": "unfrozen",
+          "thresholds_valid_for_official_use": false,
+          "uncertainty_score": 0.8,
+          "uses_type_risk_capability_precedence": false
+        },
+        "safety_findings": [],
+        "strategy_sequence": [],
+        "synthetic_only": true,
+        "system_id": "degree_based_router",
+        "system_version": "1.0.0",
+        "unsupported_commitment_findings": []
+      },
+      "raw_output": "{\n  \"intent_summary\": \"Move the marked linen cart to the service alcove in a few minutes\",\n  \"cpc\": {\n    \"action\": {\n      \"value\": \"move\",\n      \"status\": \"unknown\"\n    },\n    \"object\": {\n      \"value\": \"marked linen cart\",\n      \"status\": \"unknown\"\n    },\n    \"destination\": {\n      \"value\": \"service alcove\",\n      \"status\": \"unknown\"\n    },\n    \"time\": {\n      \"value\": \"in a few minutes\",\n      \"status\": \"unknown\"\n    }\n \n  ,\n  \"constraints\": {\n    \"status\": \"unknown\"\n  ,\n    \"value\": \"unknown\"\n  },\n  \"conditions\": {\n    \"status\": \"unknown\"\n  ,\n    \"value\": \"unknown\"\n  },\n  \"recipient\": {\n    \"value\": \"hotel service robot\",\n    \"status\": \"unknown\"\n  },\n  \"spatial_relation\": {\n    \"status\": \"unknown\"\n  ,\n    \"value\": \"unknown\"\n  },\n  \"tool\": {\n    \"status\": \"unknown\"\n  ,\n    \"value\": \"unknown\"\n  },\n  \"negation\": {\n    \"status\": \"unknown\"\n  ,\n    \"value\": \"unknown\"\n  },\n  \"quantity\": {\n    \"status\": \"unknown\"\n  ,\n    \"value\": \"unknown\"\n  },\n  \"object_attributes\": {\n    \"status\": \"unknown\"\n  ,\n    \"value\": \"unknown\"\n  },\n  \"actor\": {\n    \"status\": \"unknown\"\n  ,\n    \"value\": \"unknown\"\n  }\n}\n,\n  \"pilot_ambiguity_types\": [\n    \"pragmatic\",\n    \"fuzzy_temporal\",\n    \"object_reference\"\n  ]\n  \n  ,\n  \"pilot_capability_status\": \"unauthorized\"\n  \n  ,\n  \"unresolved_slots\": [\n    \"action\",\n    \"object\",\n    \"destination\",\n    \"time\"\n  ]\n  \n  ,\n  \"uncertainty\": 0.8\n  ,\n  \"speech_act\": \"indirect_request\"\n  ,\n  \"risk_level\": \"medium\"\n  }",
+      "record_id": "CA-0012",
+      "schema_valid": true,
+      "supports_ambiguity_prediction": true,
+      "supports_capability_prediction": true,
+      "system_id": "degree_based_router_v2",
+      "system_version": "2.0.0",
+      "terminal_strategy": "clarify"
+    },
+    "timid": {
+      "ambiguity_types": [
+        "fuzzy_temporal",
+        "object_reference",
+        "pragmatic"
+      ],
+      "analysis_attempts": [
+        {
+          "attempt": 1,
+          "max_new_tokens": 4096,
+          "mode": "thinking",
+          "raw_chars": 7641,
+          "raw_sha256": "addca47d23463fb6283f0ab50ba4ed978aee71cf2cec2b7b11c4216fe5532d8f",
+          "validation_error": "bad_intent_summary"
+        },
+        {
+          "attempt": 2,
+          "max_new_tokens": 8192,
+          "mode": "thinking_retry",
+          "raw_chars": 7234,
+          "raw_sha256": "85220d3572d6bcead802353b1186cd5336bc1dac4b640ea3390b42163a92030b",
+          "validation_error": "bad_intent_summary"
+        },
+        {
+          "attempt": 3,
+          "constraint": {
+            "constraint_initialised": true,
+            "generated_token_count": 465,
+            "maximum_output_tokens": 1024,
+            "response_mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+            "termination_reason": "eos_or_constraint_stop",
+            "transport_status": "constrained_generated"
+          },
+          "max_new_tokens": 1024,
+          "mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+          "raw_chars": 1447,
+          "raw_sha256": "28191465a30ec8442bec533e575e2fa5b7ed025b77b65b67bf017db1a0ccd8a9",
+          "validation_error": null
+        }
+      ],
+      "capability_status": "unauthorized",
+      "claim_boundary": "separately_versioned_from_frozen_t39",
+      "error": null,
+      "execution_mode": "cluster-gpu-goal-first-v2",
+      "failed": false,
+      "intent_summary": "Move the marked linen cart to the service alcove in a few minutes",
+      "latency_ms": 68054.34104893357,
+      "model_id": "Qwen/Qwen3-8B@b968826d9c46dd6066d109eabc6255188de91218",
+      "parsed": {
+        "analysis": {
+          "ambiguity_present": true,
+          "ambiguity_types": [
+            "pragmatic",
+            "referential",
+            "temporal"
+          ],
+          "analysis_provenance": {
+            "analysis_id": "5dea8ad9a37e770c803958b907417351835070fffea04749f06cfb36a330070a",
+            "method": "model_generated",
+            "notes": "source_input_hash=5dea8ad9a37e770c803958b907417351835070fffea04749f06cfb36a330070a;no_gold_in_prompt;scene_licence_dropped=action,object,destination,time",
+            "provider_id": "goal_first_v2_full_context",
+            "provider_version": "goal-first-manager-v2"
+          },
+          "candidate_interpretations": [],
+          "capability_status": "unknown",
+          "clarification_question": "Before I continue, could you clarify: pragmatic, referential, temporal?",
+          "clarification_targets": [
+            "pragmatic",
+            "referential",
+            "temporal"
+          ],
+          "compound_ambiguity": true,
+          "compound_ambiguity_count": 3,
+          "context_sampling_uncertainty": {
+            "agreement": 0.19999999999999996,
+            "score": 0.8,
+            "variant_count": 1
+          },
+          "cpc": {
+            "action": {
+              "status": "filled",
+              "value": "move"
+            },
+            "actor": {
+              "status": "filled",
+              "value": "unknown"
+            },
+            "conditions": {
+              "status": "filled",
+              "value": "unknown"
+            },
+            "constraints": {
+              "status": "filled",
+              "value": "unknown"
+            },
+            "destination": {
+              "status": "filled",
+              "value": "service alcove"
+            },
+            "negation": {
+              "status": "filled",
+              "value": "unknown"
+            },
+            "object": {
+              "status": "filled",
+              "value": "marked linen cart"
+            },
+            "object_attributes": {
+              "status": "filled",
+              "value": "unknown"
+            },
+            "quantity": {
+              "status": "filled",
+              "value": "unknown"
+            },
+            "recipient": {
+              "status": "filled",
+              "value": "hotel service robot"
+            },
+            "spatial_relation": {
+              "status": "filled",
+              "value": "unknown"
+            },
+            "time": {
+              "status": "filled",
+              "value": "in a few minutes"
+            },
+            "tool": {
+              "status": "filled",
+              "value": "unknown"
+            }
+          },
+          "findings": [
+            "pilot_ambiguity_types:[\"fuzzy_temporal\",\"object_reference\",\"pragmatic\"]",
+            "pilot_capability_status:unauthorized",
+            "intent_summary_present"
+          ],
+          "intent_summary": "Move the marked linen cart to the service alcove in a few minutes",
+          "primary_ambiguity_type": "pragmatic",
+          "recommended_strategy": "clarify",
+          "rejection_reason": null,
+          "resolution_evidence": [],
+          "resolution_method": null,
+          "resolved_slots": [
+            {
+              "slot_name": "action",
+              "value": "move"
+            },
+            {
+              "slot_name": "actor",
+              "value": "unknown"
+            },
+            {
+              "slot_name": "object",
+              "value": "marked linen cart"
+            },
+            {
+              "slot_name": "object_attributes",
+              "value": "unknown"
+            },
+            {
+              "slot_name": "destination",
+              "value": "service alcove"
+            },
+            {
+              "slot_name": "spatial_relation",
+              "value": "unknown"
+            },
+            {
+              "slot_name": "quantity",
+              "value": "unknown"
+            },
+            {
+              "slot_name": "time",
+              "value": "in a few minutes"
+            },
+            {
+              "slot_name": "recipient",
+              "value": "hotel service robot"
+            },
+            {
+              "slot_name": "tool",
+              "value": "unknown"
+            },
+            {
+              "slot_name": "conditions",
+              "value": "unknown"
+            },
+            {
+              "slot_name": "constraints",
+              "value": "unknown"
+            },
+            {
+              "slot_name": "negation",
+              "value": "unknown"
+            }
+          ],
+          "risk_level": "medium",
+          "risk_relevant": true,
+          "selected_interpretation": null,
+          "speech_act": "indirect_request",
+          "strategy_sequence": [],
+          "supporting_evidence": [],
+          "unresolved_slots": [],
+          "unsupported_specificity": []
+        },
+        "clarification_question": "Before I continue, could you clarify: pragmatic, referential, temporal?",
+        "clarification_targets": [
+          "pragmatic",
+          "referential",
+          "temporal"
+        ],
+        "execution_status": "ok",
+        "official_result": false,
+        "provider_provenance": {
+          "provider_id": "cached_analysis",
+          "provider_version": "1.0.0"
+        },
+        "recommended_strategy": "clarify",
+        "record_id": "CA-0012",
+        "rejection_reason": null,
+        "resolved_slots": [
+          {
+            "slot_name": "action",
+            "value": "move"
+          },
+          {
+            "slot_name": "actor",
+            "value": "unknown"
+          },
+          {
+            "slot_name": "object",
+            "value": "marked linen cart"
+          },
+          {
+            "slot_name": "object_attributes",
+            "value": "unknown"
+          },
+          {
+            "slot_name": "destination",
+            "value": "service alcove"
+          },
+          {
+            "slot_name": "spatial_relation",
+            "value": "unknown"
+          },
+          {
+            "slot_name": "quantity",
+            "value": "unknown"
+          },
+          {
+            "slot_name": "time",
+            "value": "in a few minutes"
+          },
+          {
+            "slot_name": "recipient",
+            "value": "hotel service robot"
+          },
+          {
+            "slot_name": "tool",
+            "value": "unknown"
+          },
+          {
+            "slot_name": "conditions",
+            "value": "unknown"
+          },
+          {
+            "slot_name": "constraints",
+            "value": "unknown"
+          },
+          {
+            "slot_name": "negation",
+            "value": "unknown"
+          }
+        ],
+        "result_hash": "455ada1a30186f99773b0baa415173fb655b7c8a577895b436bd77369ef82a00",
+        "run_id": null,
+        "run_mode": null,
+        "runtime_metadata": {
+          "awaits_t28_adapter": true,
+          "classification": {
+            "ambiguity_present": true,
+            "ambiguity_types": [
+              "pragmatic",
+              "referential",
+              "temporal"
+            ],
+            "capability_status": "unknown",
+            "compound_ambiguity": true,
+            "compound_ambiguity_count": 3,
+            "derivation_notes": [
+              "ambiguity_present_from_types"
+            ],
+            "risk_level": "medium"
+          },
+          "rejection_text": null,
+          "requires_re_evaluation": false,
+          "resolution_events": [],
+          "router_trace": {
+            "clarification_targets": [
+              "pragmatic",
+              "referential",
+              "temporal"
+            ],
+            "considered_rules": [
+              "known_unsafe_or_prohibited",
+              "known_incapable",
+              "unknown_or_unverified_capability"
+            ],
+            "matched_rule_id": "unknown_capability",
+            "notes": [
+              "unknown_capability_cannot_execute"
+            ],
+            "recommended_strategy": "clarify",
+            "rejection_reason": null,
+            "requires_re_evaluation": false,
+            "strategy_sequence": []
+          },
+          "safety_action": "return_with_findings",
+          "uncertainty": null
+        },
+        "safety_findings": [],
+        "strategy_sequence": [],
+        "synthetic_only": true,
+        "system_id": "full_type_risk_aware_manager",
+        "system_version": "1.0.0",
+        "unsupported_commitment_findings": []
+      },
+      "raw_output": "{\n  \"intent_summary\": \"Move the marked linen cart to the service alcove in a few minutes\",\n  \"cpc\": {\n    \"action\": {\n      \"value\": \"move\",\n      \"status\": \"unknown\"\n    },\n    \"object\": {\n      \"value\": \"marked linen cart\",\n      \"status\": \"unknown\"\n    },\n    \"destination\": {\n      \"value\": \"service alcove\",\n      \"status\": \"unknown\"\n    },\n    \"time\": {\n      \"value\": \"in a few minutes\",\n      \"status\": \"unknown\"\n    }\n \n  ,\n  \"constraints\": {\n    \"status\": \"unknown\"\n  ,\n    \"value\": \"unknown\"\n  },\n  \"conditions\": {\n    \"status\": \"unknown\"\n  ,\n    \"value\": \"unknown\"\n  },\n  \"recipient\": {\n    \"value\": \"hotel service robot\",\n    \"status\": \"unknown\"\n  },\n  \"spatial_relation\": {\n    \"status\": \"unknown\"\n  ,\n    \"value\": \"unknown\"\n  },\n  \"tool\": {\n    \"status\": \"unknown\"\n  ,\n    \"value\": \"unknown\"\n  },\n  \"negation\": {\n    \"status\": \"unknown\"\n  ,\n    \"value\": \"unknown\"\n  },\n  \"quantity\": {\n    \"status\": \"unknown\"\n  ,\n    \"value\": \"unknown\"\n  },\n  \"object_attributes\": {\n    \"status\": \"unknown\"\n  ,\n    \"value\": \"unknown\"\n  },\n  \"actor\": {\n    \"status\": \"unknown\"\n  ,\n    \"value\": \"unknown\"\n  }\n}\n,\n  \"pilot_ambiguity_types\": [\n    \"pragmatic\",\n    \"fuzzy_temporal\",\n    \"object_reference\"\n  ]\n  \n  ,\n  \"pilot_capability_status\": \"unauthorized\"\n  \n  ,\n  \"unresolved_slots\": [\n    \"action\",\n    \"object\",\n    \"destination\",\n    \"time\"\n  ]\n  \n  ,\n  \"uncertainty\": 0.8\n  ,\n  \"speech_act\": \"indirect_request\"\n  ,\n  \"risk_level\": \"medium\"\n  }",
+      "record_id": "CA-0012",
+      "schema_valid": true,
+      "supports_ambiguity_prediction": true,
+      "supports_capability_prediction": true,
+      "system_id": "rich_conservative_manager_v2",
+      "system_version": "2.0.0",
+      "terminal_strategy": "clarify"
+    },
+    "context_blind": {
+      "ambiguity_types": [
+        "fuzzy_temporal",
+        "pragmatic"
+      ],
+      "analysis_attempts": [
+        {
+          "attempt": 1,
+          "max_new_tokens": 4096,
+          "mode": "thinking",
+          "raw_chars": 5459,
+          "raw_sha256": "53bdf45b0efba0d1003f6ece2af2723cc274feff308e63c201a225ffa5507b10",
+          "validation_error": "bad_speech_act:pragmatic"
+        },
+        {
+          "attempt": 2,
+          "max_new_tokens": 8192,
+          "mode": "thinking_retry",
+          "raw_chars": 4746,
+          "raw_sha256": "bf1f8670a28a4b7cc5091bc870cf57552d4699fc57cdfd5cbc00b0834ee3f01f",
+          "validation_error": "bad_pilot_ambiguity_types"
+        },
+        {
+          "attempt": 3,
+          "constraint": {
+            "constraint_initialised": true,
+            "generated_token_count": 436,
+            "maximum_output_tokens": 1024,
+            "response_mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+            "termination_reason": "eos_or_constraint_stop",
+            "transport_status": "constrained_generated"
+          },
+          "max_new_tokens": 1024,
+          "mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+          "raw_chars": 1348,
+          "raw_sha256": "1a7c524191868a67411879125bd46e61311c657a7ca98ded2bce88ad976c9768",
+          "validation_error": null
+        }
+      ],
+      "capability_status": "unauthorized",
+      "claim_boundary": "separately_versioned_from_frozen_t39",
+      "error": null,
+      "execution_mode": "cluster-gpu-goal-first-v2",
+      "failed": false,
+      "intent_summary": "Move the linen cart to the service alcove after a short time",
+      "latency_ms": 48235.54623592645,
+      "model_id": "Qwen/Qwen3-8B@b968826d9c46dd6066d109eabc6255188de91218",
+      "parsed": {
+        "analysis": {
+          "ambiguity_present": true,
+          "ambiguity_types": [
+            "pragmatic",
+            "temporal"
+          ],
+          "analysis_provenance": {
+            "analysis_id": "ed0917c6044a24f31da1a56263b369857db7e0e1ae1d04501512ddf1a3a91834",
+            "method": "context_blind",
+            "notes": "ablated_input_hash=ed0917c6044a24f31da1a56263b369857db7e0e1ae1d04501512ddf1a3a91834;source_input_hash=ed0917c6044a24f31da1a56263b369857db7e0e1ae1d04501512ddf1a3a91834;no_gold_in_prompt;scene_licence_dropped=time,constraints,conditions",
+            "provider_id": "goal_first_v2_context_blind",
+            "provider_version": "goal-first-manager-v2"
+          },
+          "candidate_interpretations": [],
+          "capability_status": "unknown",
+          "clarification_question": null,
+          "clarification_targets": [],
+          "compound_ambiguity": true,
+          "compound_ambiguity_count": 2,
+          "context_sampling_uncertainty": {
+            "agreement": 0.25,
+            "score": 0.75,
+            "variant_count": 1
+          },
+          "cpc": {
+            "action": {
+              "status": "filled",
+              "value": "move"
+            },
+            "actor": {
+              "status": "filled",
+              "value": "none"
+            },
+            "conditions": {
+              "status": "filled",
+              "value": "help"
+            },
+            "constraints": {
+              "status": "filled",
+              "value": "Would it help"
+            },
+            "destination": {
+              "status": "filled",
+              "value": "service alcove"
+            },
+            "negation": {
+              "status": "filled",
+              "value": "none"
+            },
+            "object": {
+              "status": "filled",
+              "value": "linen cart"
+            },
+            "object_attributes": {
+              "status": "filled",
+              "value": "marked"
+            },
+            "quantity": {
+              "status": "filled",
+              "value": "a few minutes"
+            },
+            "recipient": {
+              "status": "filled",
+              "value": "none"
+            },
+            "spatial_relation": {
+              "status": "filled",
+              "value": "move to"
+            },
+            "time": {
+              "status": "filled",
+              "value": "in a few minutes"
+            },
+            "tool": {
+              "status": "filled",
+              "value": "none"
+            }
+          },
+          "findings": [
+            "pilot_ambiguity_types:[\"fuzzy_temporal\",\"pragmatic\"]",
+            "pilot_capability_status:unauthorized",
+            "intent_summary_present"
+          ],
+          "intent_summary": "Move the linen cart to the service alcove after a short time",
+          "primary_ambiguity_type": "pragmatic",
+          "recommended_strategy": "face_preserving_rejection",
+          "rejection_reason": "unsafe_or_prohibited_action",
+          "resolution_evidence": [],
+          "resolution_method": null,
+          "resolved_slots": [
+            {
+              "slot_name": "action",
+              "value": "move"
+            },
+            {
+              "slot_name": "actor",
+              "value": "none"
+            },
+            {
+              "slot_name": "object",
+              "value": "linen cart"
+            },
+            {
+              "slot_name": "object_attributes",
+              "value": "marked"
+            },
+            {
+              "slot_name": "destination",
+              "value": "service alcove"
+            },
+            {
+              "slot_name": "spatial_relation",
+              "value": "move to"
+            },
+            {
+              "slot_name": "quantity",
+              "value": "a few minutes"
+            },
+            {
+              "slot_name": "time",
+              "value": "in a few minutes"
+            },
+            {
+              "slot_name": "recipient",
+              "value": "none"
+            },
+            {
+              "slot_name": "tool",
+              "value": "none"
+            },
+            {
+              "slot_name": "conditions",
+              "value": "help"
+            },
+            {
+              "slot_name": "constraints",
+              "value": "Would it help"
+            },
+            {
+              "slot_name": "negation",
+              "value": "none"
+            }
+          ],
+          "risk_level": "low",
+          "risk_relevant": true,
+          "selected_interpretation": null,
+          "speech_act": "conditional_directive",
+          "strategy_sequence": [],
+          "supporting_evidence": [],
+          "unresolved_slots": [],
+          "unsupported_specificity": []
+        },
+        "clarification_question": null,
+        "clarification_targets": [],
+        "execution_status": "ok",
+        "official_result": false,
+        "provider_provenance": {
+          "provider_id": "cached_analysis",
+          "provider_version": "1.0.0"
+        },
+        "recommended_strategy": "face_preserving_rejection",
+        "record_id": "CA-0012",
+        "rejection_reason": "unsafe_or_prohibited_action",
+        "resolved_slots": [
+          {
+            "slot_name": "action",
+            "value": "move"
+          },
+          {
+            "slot_name": "actor",
+            "value": "none"
+          },
+          {
+            "slot_name": "object",
+            "value": "linen cart"
+          },
+          {
+            "slot_name": "object_attributes",
+            "value": "marked"
+          },
+          {
+            "slot_name": "destination",
+            "value": "service alcove"
+          },
+          {
+            "slot_name": "spatial_relation",
+            "value": "move to"
+          },
+          {
+            "slot_name": "quantity",
+            "value": "a few minutes"
+          },
+          {
+            "slot_name": "time",
+            "value": "in a few minutes"
+          },
+          {
+            "slot_name": "recipient",
+            "value": "none"
+          },
+          {
+            "slot_name": "tool",
+            "value": "none"
+          },
+          {
+            "slot_name": "conditions",
+            "value": "help"
+          },
+          {
+            "slot_name": "constraints",
+            "value": "Would it help"
+          },
+          {
+            "slot_name": "negation",
+            "value": "none"
+          }
+        ],
+        "result_hash": "af2bb473517e94fbf0ee4a45c5f903b3a5fed8e00e461c989a4887beb52b70d3",
+        "run_id": null,
+        "run_mode": null,
+        "runtime_metadata": {
+          "analysis_identity": {
+            "analysis_content_hash": "925c5e38d8ffc7545f45d8d70b9edef2d8eb48efdfb1ed80c3a94f70f52a1706",
+            "analysis_variant": "context_blind",
+            "model_strategy_id": null,
+            "provider_id": "goal_first_v2_context_blind",
+            "provider_version": "goal-first-manager-v2",
+            "record_id": "CA-0012",
+            "source_input_hash": "ed0917c6044a24f31da1a56263b369857db7e0e1ae1d04501512ddf1a3a91834"
+          },
+          "analysis_identity_fingerprint": "9abb82797f921139526f68fd927aaf797bffdf75c3a2030b16d817083486e4f9",
+          "awaits_t28_adapter": true,
+          "classification": {
+            "ambiguity_present": true,
+            "ambiguity_types": [
+              "pragmatic",
+              "temporal"
+            ],
+            "capability_status": "unknown",
+            "compound_ambiguity": true,
+            "compound_ambiguity_count": 2,
+            "derivation_notes": [
+              "ambiguity_present_from_types"
+            ],
+            "risk_level": "low"
+          },
+          "context_ablation": {
+            "ablated_input_hash": "ed0917c6044a24f31da1a56263b369857db7e0e1ae1d04501512ddf1a3a91834",
+            "capability_context_removed": true,
+            "dialogue_history_removed": true,
+            "rejected_full_context_cache": false,
+            "rejection_reason": null,
+            "scene_context_removed": true,
+            "stripped_context_derived_fields": false
+          },
+          "original_input_unmutated": true,
+          "rejection_text": "I need to decline that request because it would be unsafe under the current constraints.",
+          "requires_re_evaluation": false,
+          "resolution_events": [],
+          "router_trace": {
+            "clarification_targets": [],
+            "considered_rules": [
+              "goal_first_v2",
+              "known_unsafe_or_prohibited"
+            ],
+            "matched_rule_id": "known_unsafe_or_prohibited",
+            "notes": [],
+            "recommended_strategy": "face_preserving_rejection",
+            "rejection_reason": "unsafe_or_prohibited_action",
+            "requires_re_evaluation": false,
+            "strategy_sequence": []
+          },
+          "safety_action": "return_with_findings",
+          "uncertainty": null
+        },
+        "safety_findings": [],
+        "strategy_sequence": [],
+        "synthetic_only": true,
+        "system_id": "context_blind_manager",
+        "system_version": "1.0.0",
+        "unsupported_commitment_findings": []
+      },
+      "raw_output": "{\n  \"intent_summary\": \"Move the linen cart to the service alcove after a short time\",\n  \"cpc\": {\n    \"action\": {\n      \"value\": \"move\",\n      \"status\": \"unknown\"\n    },\n    \"object\": {\n      \"value\": \"linen cart\",\n      \"status\": \"unknown\"\n    },\n    \"destination\": {\n      \"value\": \"service alcove\",\n      \"status\": \"unknown\"\n    },\n    \"time\": {\n      \"value\": \"in a few minutes\",\n      \"status\": \"unknown\"\n    }\n \n  ,\n  \"constraints\": {\n    \"value\": \"Would it help\",\n    \"status\": \"unknown\"\n  },\n  \"conditions\": {\n    \"value\": \"help\",\n    \"status\": \"unknown\"\n  },\n  \"spatial_relation\": {\n    \"value\": \"move to\",\n    \"status\": \"unknown\"\n  },\n  \"tool\": {\n    \"value\": \"none\",\n    \"status\": \"unknown\"\n  },\n  \"recipient\": {\n    \"value\": \"none\",\n    \"status\": \"unknown\"\n  },\n  \"quantity\": {\n    \"value\": \"a few minutes\",\n    \"status\": \"unknown\"\n  },\n  \"negation\": {\n    \"value\": \"none\",\n    \"status\": \"unknown\"\n  },\n  \"object_attributes\": {\n    \"value\": \"marked\",\n    \"status\": \"unknown\"\n  },\n  \"actor\": {\n    \"value\": \"none\",\n    \"status\": \"unknown\"\n  }\n}\n\n,\n  \"pilot_ambiguity_types\": [\n    \"fuzzy_temporal\",\n    \"pragmatic\"\n  ]\n  \n  ,\n  \"pilot_capability_status\": \"unauthorized\",\n  \"speech_act\": \"conditional_directive\",\n  \"risk_level\": \"low\",\n  \"uncertainty\": 0.75,\n  \"unresolved_slots\": [\n    \"time\",\n    \"constraints\",\n    \"conditions\"\n  ]\n  \n}",
+      "record_id": "CA-0012",
+      "schema_valid": true,
+      "supports_ambiguity_prediction": true,
+      "supports_capability_prediction": true,
+      "system_id": "goal_first_context_blind_v2",
+      "system_version": "2.0.0",
+      "terminal_strategy": "face_preserving_rejection"
+    }
+  },
+  "provenance": {
+    "source_sha256": "f33b1e29f1e8aa256a475f07213aa07247def47d8e2148d54a472a40b71b05c9",
+    "gold_sha256": "5e23ad1a92ff1873c8f039a8ce560a111dd6fb6b8ae8c11d6cf34dbfa1c360db",
+    "t07_final_zip_sha256": "34ca50e034ca37b617068bb50c734d12fa26282fb5eec563c11ead700163e491",
+    "inherited_t07_zip_sha256": "0305b1e9ab062876ee6ee89778cc6028d2eaf01718b7dd0295944e7d9cb81a01",
+    "note": "Goal-First, Degree, Timid, and Context-Blind predictions are inherited from the earlier T0.7 run; official intent and comparison come from the final T0.7 archive."
+  }
+}

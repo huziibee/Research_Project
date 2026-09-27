@@ -1,0 +1,32 @@
+{
+  "protocol_id": "pilot120_semantic_intent_evaluation_v1",
+  "status": "frozen_candidate_before_semantic_goal_judgments",
+  "primary_question": "Does the observable model interpretation state the same underlying user goal, independent of CPC and terminal route?",
+  "primary_outcomes": {
+    "speech_act_accuracy": "Exact match of structured speech_act against frozen closed-class intent label.",
+    "semantic_goal_correctness": "All five prediction-blind semantic-goal checklist items pass.",
+    "full_intent_correctness": "semantic_goal_correctness AND speech_act exact match."
+  },
+  "semantic_goal_checks": [
+    "primary_goal_match",
+    "required_action_set_match",
+    "polarity_match",
+    "explicit_enough",
+    "no_incompatible_goal"
+  ],
+  "semantic_goal_correct_rule": "logical AND of all five checks",
+  "diagnostic_component_score": "sum(checks)/5; descriptive only, not assumed interval-calibrated",
+  "gold_references": "Two independent pre-T39 historical intent_text annotations per Pilot record.",
+  "candidate_evidence": "Gold-independent cleaned observable T39 raw trace with exact source-command repetitions omitted.",
+  "blinding": ["system identity", "terminal route", "system correctness", "aggregate T39 performance", "CPC score"],
+  "judge_design": "Two independent prediction-blind judges; field-wise agreement and Cohen kappa; blind adjudication of disagreements.",
+  "automatic_diagnostics": {
+    "sentence_embedding_cosine": "continuous convergent diagnostic only; no primary correctness threshold",
+    "bidirectional_nli": "continuous mutual-entailment diagnostic only; no primary correctness threshold"
+  },
+  "inference": {
+    "proportion_intervals": "Wilson 95%",
+    "paired_full_context_vs_blind": "exact McNemar on binary correctness plus paired bootstrap accuracy-difference interval"
+  },
+  "important_limit": "Frozen T39 did not request structured intent_summary; semantic-goal correctness measures observable stated interpretation evidence, not hidden internal reasoning."
+}

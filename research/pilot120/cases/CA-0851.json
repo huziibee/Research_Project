@@ -1,0 +1,1272 @@
+{
+  "record_id": "CA-0851",
+  "frozen_source": {
+    "capability_context": "Construction support robot can transport rated loads on level ground, scan permits, and deploy lightweight barriers outside active machinery zones.",
+    "command": "Carry out both the movement and inspection of the material pallet by the concrete pad after the check using the usual setup.",
+    "dialogue_history": [],
+    "record_id": "CA-0851",
+    "scene_context": "Staging area on a construction site. Two locations are labelled concrete pad. Work order WO-324 points to the one beside the safety office. The setup table states that the toolbox inspection applies to a different work-order prefix, while Work order WO-324 maps to the morning safety check. The morning safety check requires the check, then movement to the designated concrete pad, followed by inspection."
+  },
+  "frozen_gold": {
+    "ambiguity_types": [
+      "action_order",
+      "destination_reference",
+      "routine_reference"
+    ],
+    "annotator_b_era": "glm_era",
+    "annotator_b_model": "glm-5.2-high",
+    "capability_status": "capable",
+    "field_status": {
+      "ambiguity_types": "auto_agree",
+      "capability_status": "auto_agree",
+      "record_validity": "auto_agree",
+      "strategy_sequence": "auto_agree",
+      "terminal_strategy": "auto_agree"
+    },
+    "gold_lifecycle": "final_gold",
+    "gold_status": "auto_agree",
+    "human_gate_required": false,
+    "provenance": {
+      "agreement_label": "pilot_annotation_agreement",
+      "annotator_a_sha256": "fd58dde3485a1d877dad883b89e350ebab634c4b7e95dda6a7dd2ce57bf630e2",
+      "annotator_b_sha256": "2a7e20d377807d5d8da0c6c99a1d913c40258b21c9d404d9181143837c64b5e7",
+      "gold_policy": "use_existing_pilot_adjudicated_gold",
+      "input_sha256": "d9ad4f14fb2d4053029fbcb442d25fd4818eb2ede6453030b8492ac98c6ca919",
+      "pilot_gold_sha256": "607856e1763a6f596be9632c25b18816fb65074637d0aabf9a2c2a734f1a7435",
+      "protocol": "pilot_adjudicated_gold_on_capability_repaired_source",
+      "repaired_input_sha256": "c6b8c269ca6b251179e47b19b739fc20fa9eceba8b79e7458cfb5a178d8514b3"
+    },
+    "record_id": "CA-0851",
+    "record_validity": "valid",
+    "strategy_sequence": [
+      "execute"
+    ],
+    "terminal_strategy": "execute"
+  },
+  "t07_comparison": {
+    "record_id": "CA-0851",
+    "gold_route": "execute",
+    "raw_route": "execute",
+    "ft_route": "execute",
+    "gf_route": "refuse",
+    "raw_route_ok": "True",
+    "ft_route_ok": "True",
+    "gf_route_ok": "False",
+    "raw_official_intent": "True",
+    "ft_official_intent": "True",
+    "gf_official_intent": "True",
+    "blind_official_intent": "True"
+  },
+  "t07_official_intent": {
+    "context_blind_official_intent": true,
+    "degree_official_intent_shared_gf": true,
+    "finetune_official_intent": true,
+    "goal_first_official_intent": true,
+    "raw_official_intent": true,
+    "record_id": "CA-0851",
+    "timid_official_intent_shared_gf": true
+  },
+  "t07_predictions": {
+    "raw_qwen": {
+      "ambiguity_types": [
+        "routine_reference",
+        "spatial_reference"
+      ],
+      "capability_status": "capable",
+      "error": null,
+      "execution_mode": "final_close_intent_box",
+      "failed": false,
+      "intent_summary": "Move the material pallet to the designated concrete pad and perform an inspection after completing the morning safety check using the standard setup procedure.",
+      "latency_ms": 20837.310131639242,
+      "parsed": {
+        "ambiguity_types": [
+          "routine_reference",
+          "spatial_reference"
+        ],
+        "capability_status": "capable",
+        "intent_summary": "Move the material pallet to the designated concrete pad and perform an inspection after completing the morning safety check using the standard setup procedure.",
+        "speech_act": "directive_command",
+        "terminal_strategy": "execute"
+      },
+      "raw_output": "<think>\nOkay, let's break this down. The user's command is about carrying out movement and inspection of a material pallet on a concrete pad after a check using the usual setup. \n\nFirst, the intent summary. The main job here is to move the pallet to the concrete pad and inspect it after the check. The work order mentions the morning safety check, then moving to the designated pad, followed by inspection. So the intent is to perform both movement and inspection steps as per the work order.\n\nNext, the speech act. The command is direct, telling the robot to do something. It's a directive command because it's instructing the robot to perform specific actions in sequence. So speech_act should be directive_command.\n\nAmbiguity types: Let's check for possible ambiguities. The command mentions \"the usual setup,\" but the setup table says that toolbox inspection applies to a different work order. However, the current work order WO-324 maps to the morning safety check. The setup might refer to the usual procedure for WO-324. But the mention of \"usual setup\" could be vague. Also, there are two concrete pads labeled, but the scene context specifies which one is for WO-324. However, the command doesn't specify which pad, but the scene context says the designated one is beside the safety office. Wait, the command says \"by the concrete pad\" which might refer to the designated one. But is there ambiguity here? The command might be ambiguous if \"usual setup\" refers to something else, but the setup table mentions that toolbox inspection is for a different prefix. However, the work order WO-324's setup is for the morning safety check. So maybe the \"usual setup\" is the standard procedure for WO-324. But the user didn't specify which concrete pad, but the scene context says the designated one is beside the safety office. However, the command doesn't mention that. So maybe there's a spatial reference ambiguity here. The command says \"concrete pad\" but there are two, but the scene context specifies which one is for WO-324. But the command doesn't mention the safety office, so maybe that's a spatial reference ambiguity. Also, \"usual setup\" might be a routine reference. So possible ambiguity types: spatial_reference and routine_reference. But wait, the command says \"the usual setup\" which refers to the setup for WO-324. But the setup table says that toolbox inspection applies to a different prefix. So maybe the \"usual setup\" is the standard procedure for WO-324, which includes the morning safety check. So maybe there's no ambiguity here. Alternatively, the mention of \"usual setup\" could be vague if it's not explicitly defined. So maybe \"fuzzy_quantity\" or \"fuzzy_temporal\"? Wait, the command is about performing movement and inspection after the check using the usual setup. The setup might be a routine, so routine_reference. Also, the concrete pad is specified as the designated one from the work order, but the command doesn't mention the safety office. So spatial_reference ambiguity? Because there are two concrete pads, but the command refers to the one associated with WO-324. However, the user's command might not specify which pad, leading to spatial ambiguity. So ambiguity_types could include spatial_reference and routine_reference. But need to check if that's the case. Also, \"usual setup\" could be a routine_reference. So ambiguity_types: routine_reference, spatial_reference. Are there others? Maybe not. So the ambiguity_types array would have those two.\n\nCapability status: The robot can transport rated loads on level ground, scan permits, deploy barriers. The task involves moving the pallet (transport) and inspection (scan permits). But the command says \"inspection of the material pallet\" which might involve scanning. However, the setup table says that toolbox inspection applies to a different work order. Wait, the work order WO-324 maps to the morning safety check. The setup table says that the toolbox inspection applies to a different work order prefix. So the current work order's setup is for the morning safety check, which includes checking, then moving to the concrete pad, then inspection. The robot can do the inspection part (scanning permits?), but the movement part is allowed as it can transport rated loads. However, the command says \"carry out both the movement and inspection\". The robot can do both. So capability_status is capable.\n\nTerminal strategy: Since the robot can perform both tasks, it should execute the command. So terminal_strategy is execute.\n</think>\n\n{\n  \"intent_summary\": \"Move the material pallet to the designated concrete pad and perform an inspection after completing the morning safety check using the standard setup procedure.\",\n  \"speech_act\": \"directive_command\",\n  \"ambiguity_types\": [\"spatial_reference\", \"routine_reference\"],\n  \"capability_status\": \"capable\",\n  \"terminal_strategy\": \"execute\"\n}",
+      "record_id": "CA-0851",
+      "schema_valid": true,
+      "speech_act": "directive_command",
+      "system_id": "direct_base_llm",
+      "terminal_strategy": "execute"
+    },
+    "finetune": {
+      "ambiguity_types": [
+        "routine_reference",
+        "spatial_reference"
+      ],
+      "capability_status": "capable",
+      "error": null,
+      "execution_mode": "final_close_intent_box",
+      "failed": false,
+      "intent_summary": "Move the material pallet to the designated concrete pad and inspect it after completing the morning safety check.",
+      "latency_ms": 20411.660509649664,
+      "parsed": {
+        "ambiguity_types": [
+          "routine_reference",
+          "spatial_reference"
+        ],
+        "capability_status": "capable",
+        "intent_summary": "Move the material pallet to the designated concrete pad and inspect it after completing the morning safety check.",
+        "speech_act": "directive_command",
+        "terminal_strategy": "execute"
+      },
+      "raw_output": "<think>\nOkay, let's break this down. The user's command is about carrying out both movement and inspection of a material pallet on a concrete pad after a check using the usual setup. The scene context mentions a construction site with two concrete pads, and the work order WO-324 is linked to a morning safety check. The setup table says that toolbox inspection applies to a different work order prefix, but WO-324 maps to the morning safety check. The morning safety check requires checking, then moving to the designated concrete pad, followed by inspection.\n\nFirst, I need to determine the intent. The person wants the robot to move the pallet and inspect it after the check. The key here is the sequence: check first, then move to the concrete pad, then inspect. The ambiguity types might include things like which concrete pad (since there are two), but the work order specifies the one beside the safety office. Also, the setup table mentions that the usual setup is for the morning safety check, so that's probably the correct setup to use. \n\nThe speech act is a directive command because the user is giving clear instructions. The capability status: the robot can transport and scan, so it's capable. But wait, the command includes moving and inspecting. The robot can transport (movement) and scan (inspection), so it's capable. But the scene context says the morning safety check requires the check, movement, then inspection. The setup table says the toolbox inspection is for a different work order, but WO-324 is for the morning safety check. So the robot's capabilities align with the tasks. \n\nAmbiguity types: the command mentions \"the usual setup,\" which might be a reference to the setup table, but since the setup is specified for WO-324, maybe there's no ambiguity. However, the two concrete pads could be a spatial reference ambiguity. But the work order specifies which one, so maybe that's resolved. The \"usual setup\" might be a routine reference. Also, \"the check\" refers to the morning safety check, which is a specific procedure. So maybe the ambiguity types here are routine_reference and spatial_reference. Wait, the problem says to list only specific names. Let me check the allowed ambiguity types again. The allowed ones include spatial_reference. Since there are two concrete pads, the command refers to \"the designated concrete pad,\" which is specified in the work order. So maybe there's a spatial reference ambiguity. Also, the \"usual setup\" might be a routine_reference. \n\nTerminal strategy: The robot can perform the tasks as per the capabilities, so the strategy is execute. But wait, the command mentions \"after the check using the usual setup.\" The setup table says that the toolbox inspection is for a different work order prefix, but WO-324 is mapped to the morning safety check. So the setup for WO-324 is the morning safety check. The robot's capabilities include scanning permits (which might be part of the check) and transporting. So the robot is capable. Therefore, capability_status is capable. \n\nPutting it all together, the JSON should have intent_summary as moving and inspecting after check, speech_act as directive_command, ambiguity_types as routine_reference and spatial_reference, capability_status as capable, and terminal_strategy as execute.\n</think>\n\n{\n  \"intent_summary\": \"Move the material pallet to the designated concrete pad and inspect it after completing the morning safety check.\",\n  \"speech_act\": \"directive_command\",\n  \"ambiguity_types\": [\"spatial_reference\", \"routine_reference\"],\n  \"capability_status\": \"capable\",\n  \"terminal_strategy\": \"execute\"\n}",
+      "record_id": "CA-0851",
+      "schema_valid": true,
+      "speech_act": "directive_command",
+      "system_id": "t28_selected_adapter_llm",
+      "terminal_strategy": "execute"
+    },
+    "goal_first": {
+      "ambiguity_types": [
+        "destination_reference",
+        "object_reference",
+        "pragmatic"
+      ],
+      "analysis_attempts": [
+        {
+          "attempt": 1,
+          "max_new_tokens": 4096,
+          "mode": "thinking",
+          "raw_chars": 5641,
+          "raw_sha256": "0cd1c6d8261c5e036b5acb4010e3693af474adf0ffe83d79cc076c903a6353df",
+          "validation_error": "bad_intent_summary"
+        },
+        {
+          "attempt": 2,
+          "max_new_tokens": 8192,
+          "mode": "thinking_retry",
+          "raw_chars": 10961,
+          "raw_sha256": "049af32423fb9d9dee1e4e22b620b15660b71255e550f23a02b48eb621226990",
+          "validation_error": "bad_intent_summary"
+        },
+        {
+          "attempt": 3,
+          "constraint": {
+            "constraint_initialised": true,
+            "generated_token_count": 530,
+            "maximum_output_tokens": 1024,
+            "response_mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+            "termination_reason": "eos_or_constraint_stop",
+            "transport_status": "constrained_generated"
+          },
+          "max_new_tokens": 1024,
+          "mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+          "raw_chars": 1717,
+          "raw_sha256": "b61baf79c533e24b7ee385ecb0cdce69fa95643ba4e767d692dd6d7d4946b9dd",
+          "validation_error": null
+        }
+      ],
+      "capability_status": "incapable",
+      "claim_boundary": "separately_versioned_from_frozen_t39",
+      "error": null,
+      "execution_mode": "cluster-gpu-goal-first-v2",
+      "failed": false,
+      "intent_summary": "Perform the movement and inspection of the material pallet to the concrete pad following the morning safety check procedure",
+      "latency_ms": 124760.19080867991,
+      "model_id": "Qwen/Qwen3-8B@b968826d9c46dd6066d109eabc6255188de91218",
+      "parsed": {
+        "analysis": {
+          "ambiguity_present": true,
+          "ambiguity_types": [
+            "pragmatic",
+            "referential",
+            "spatial"
+          ],
+          "analysis_provenance": {
+            "analysis_id": "fd87dfeb35565b9766367b078895e707dd0db28bbca623e58fbd9def8ebbb08f",
+            "method": "model_generated",
+            "notes": "source_input_hash=fd87dfeb35565b9766367b078895e707dd0db28bbca623e58fbd9def8ebbb08f;no_gold_in_prompt;scene_licence_dropped=none",
+            "provider_id": "goal_first_v2_full_context",
+            "provider_version": "goal-first-manager-v2"
+          },
+          "candidate_interpretations": [],
+          "capability_status": "incapable",
+          "clarification_question": null,
+          "clarification_targets": [],
+          "compound_ambiguity": true,
+          "compound_ambiguity_count": 3,
+          "context_sampling_uncertainty": {
+            "agreement": 0.55,
+            "score": 0.45,
+            "variant_count": 1
+          },
+          "cpc": {
+            "action": {
+              "status": "not_applicable",
+              "value": "carry out"
+            },
+            "actor": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "conditions": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "constraints": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "destination": {
+              "status": "not_applicable",
+              "value": "concrete pad"
+            },
+            "negation": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "object": {
+              "status": "not_applicable",
+              "value": "movement and inspection of the material pallet"
+            },
+            "object_attributes": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "quantity": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "recipient": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "spatial_relation": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "time": {
+              "status": "not_applicable",
+              "value": "after the check using the usual setup"
+            },
+            "tool": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            }
+          },
+          "findings": [
+            "pilot_ambiguity_types:[\"destination_reference\",\"object_reference\",\"pragmatic\"]",
+            "pilot_capability_status:incapable",
+            "intent_summary_present"
+          ],
+          "intent_summary": "Perform the movement and inspection of the material pallet to the concrete pad following the morning safety check procedure",
+          "primary_ambiguity_type": "pragmatic",
+          "recommended_strategy": "face_preserving_rejection",
+          "rejection_reason": "known_incapability",
+          "resolution_evidence": [],
+          "resolution_method": null,
+          "resolved_slots": [],
+          "risk_level": "medium",
+          "risk_relevant": true,
+          "selected_interpretation": null,
+          "speech_act": "directive_command",
+          "strategy_sequence": [],
+          "supporting_evidence": [],
+          "unresolved_slots": [
+            {
+              "reason": "model_identified_uncertainty",
+              "slot_name": "constraints"
+            },
+            {
+              "reason": "model_identified_uncertainty",
+              "slot_name": "recipient"
+            },
+            {
+              "reason": "model_identified_uncertainty",
+              "slot_name": "spatial_relation"
+            },
+            {
+              "reason": "model_identified_uncertainty",
+              "slot_name": "object_attributes"
+            }
+          ],
+          "unsupported_specificity": []
+        },
+        "clarification_question": null,
+        "clarification_targets": [],
+        "execution_status": "ok",
+        "official_result": false,
+        "provider_provenance": {
+          "provider_id": "cached_analysis",
+          "provider_version": "1.0.0"
+        },
+        "recommended_strategy": "face_preserving_rejection",
+        "record_id": "CA-0851",
+        "rejection_reason": "known_incapability",
+        "resolved_slots": [],
+        "result_hash": "aea37719940ac9209734481820225ab19979944edfabea1e1a83a720f7b86a90",
+        "run_id": null,
+        "run_mode": null,
+        "runtime_metadata": {
+          "awaits_t28_adapter": true,
+          "classification": {
+            "ambiguity_present": true,
+            "ambiguity_types": [
+              "pragmatic",
+              "referential",
+              "spatial"
+            ],
+            "capability_status": "incapable",
+            "compound_ambiguity": true,
+            "compound_ambiguity_count": 3,
+            "derivation_notes": [
+              "ambiguity_present_from_types"
+            ],
+            "risk_level": "medium"
+          },
+          "rejection_text": "I am not able to perform that action with my current capabilities. I will not invent an alternative that is not supported.",
+          "requires_re_evaluation": false,
+          "resolution_events": [
+            {
+              "confidence_category": "blocked",
+              "details": {
+                "risk_level": "medium"
+              },
+              "evidence_source": null,
+              "outcome": "resolution_blocked_by_risk",
+              "previous_status": "unresolved",
+              "resolved_value": null,
+              "rule_id": "risk_block",
+              "safety_eligibility": false,
+              "slot": "constraints"
+            },
+            {
+              "confidence_category": "blocked",
+              "details": {
+                "risk_level": "medium"
+              },
+              "evidence_source": null,
+              "outcome": "resolution_blocked_by_risk",
+              "previous_status": "unresolved",
+              "resolved_value": null,
+              "rule_id": "risk_block",
+              "safety_eligibility": false,
+              "slot": "recipient"
+            },
+            {
+              "confidence_category": "blocked",
+              "details": {
+                "risk_level": "medium"
+              },
+              "evidence_source": null,
+              "outcome": "resolution_blocked_by_risk",
+              "previous_status": "unresolved",
+              "resolved_value": null,
+              "rule_id": "risk_block",
+              "safety_eligibility": false,
+              "slot": "spatial_relation"
+            },
+            {
+              "confidence_category": "blocked",
+              "details": {
+                "risk_level": "medium"
+              },
+              "evidence_source": null,
+              "outcome": "resolution_blocked_by_risk",
+              "previous_status": "unresolved",
+              "resolved_value": null,
+              "rule_id": "risk_block",
+              "safety_eligibility": false,
+              "slot": "object_attributes"
+            }
+          ],
+          "router_trace": {
+            "clarification_targets": [],
+            "considered_rules": [
+              "goal_first_v2",
+              "known_unsafe_or_prohibited",
+              "known_incapable"
+            ],
+            "matched_rule_id": "known_incapable",
+            "notes": [],
+            "recommended_strategy": "face_preserving_rejection",
+            "rejection_reason": "known_incapability",
+            "requires_re_evaluation": false,
+            "strategy_sequence": []
+          },
+          "safety_action": "return_with_findings",
+          "uncertainty": null
+        },
+        "safety_findings": [],
+        "strategy_sequence": [],
+        "synthetic_only": true,
+        "system_id": "goal_first_manager_v2",
+        "system_version": "2.0.0",
+        "unsupported_commitment_findings": []
+      },
+      "raw_output": "{\n  \"intent_summary\": \"Perform the movement and inspection of the material pallet to the concrete pad following the morning safety check procedure\",\n  \"cpc\": {\n    \"action\": {\n      \"value\": \"carry out\",\n      \"status\": \"not_applicable\"\n    },\n    \"object\": {\n      \"value\": \"movement and inspection of the material pallet\",\n      \"status\": \"not_applicable\"\n    },\n    \"destination\": {\n      \"value\": \"concrete pad\",\n      \"status\": \"not_applicable\"\n    },\n    \"time\": {\n      \"value\": \"after the check using the usual setup\",\n      \"status\": \"not_applicable\"\n    }\n \n  ,\n  \"constraints\": {\n    \"status\": \"not_applicable\"\n  ,\n  \"value\": \"not_applicable\"\n  },\n  \"conditions\": {\n    \"status\": \"not_applicable\"\n  ,\n  \"value\": \"not_applicable\"\n  },\n  \"negation\": {\n    \"status\": \"not_applicable\"\n  ,\n  \"value\": \"not_applicable\"\n  },\n  \"recipient\": {\n    \"status\": \"not_applicable\"\n  ,\n  \"value\": \"not_applicable\"\n  },\n  \"tool\": {\n    \"status\": \"not_applicable\"\n  ,\n  \"value\": \"not_applicable\"\n  },\n  \"quantity\": {\n    \"status\": \"not_applicable\"\n  ,\n  \"value\": \"not_applicable\"\n  },\n  \"spatial_relation\": {\n    \"status\": \"not_applicable\"\n  ,\n  \"value\": \"not_applicable\"\n  },\n  \"object_attributes\": {\n    \"status\": \"not_applicable\"\n  ,\n  \"value\": \"not_applicable\"\n  },\n  \"actor\": {\n    \"status\": \"not_applicable\"\n  ,\n  \"value\": \"not_applicable\"\n  }\n},\n  \"pilot_ambiguity_types\": [\n    \"pragmatic\",\n    \"object_reference\",\n    \"destination_reference\"\n  ]\n  \n  ,\n  \"pilot_capability_status\": \"incapable\"\n  \n  ,\n  \"speech_act\": \"directive_command\"\n  \n  ,\n  \"risk_level\": \"medium\"\n  \n  ,\n  \"uncertainty\": 0.45\n  ,\n  \"unresolved_slots\": [\n    \"constraints\",\n    \"recipient\",\n    \"spatial_relation\",\n    \"object_attributes\"\n  ]\n}",
+      "record_id": "CA-0851",
+      "schema_valid": true,
+      "supports_ambiguity_prediction": true,
+      "supports_capability_prediction": true,
+      "system_id": "goal_first_manager_v2",
+      "system_version": "2.0.0",
+      "terminal_strategy": "face_preserving_rejection"
+    },
+    "degree": {
+      "ambiguity_types": [
+        "destination_reference",
+        "object_reference",
+        "pragmatic"
+      ],
+      "analysis_attempts": [
+        {
+          "attempt": 1,
+          "max_new_tokens": 4096,
+          "mode": "thinking",
+          "raw_chars": 5641,
+          "raw_sha256": "0cd1c6d8261c5e036b5acb4010e3693af474adf0ffe83d79cc076c903a6353df",
+          "validation_error": "bad_intent_summary"
+        },
+        {
+          "attempt": 2,
+          "max_new_tokens": 8192,
+          "mode": "thinking_retry",
+          "raw_chars": 10961,
+          "raw_sha256": "049af32423fb9d9dee1e4e22b620b15660b71255e550f23a02b48eb621226990",
+          "validation_error": "bad_intent_summary"
+        },
+        {
+          "attempt": 3,
+          "constraint": {
+            "constraint_initialised": true,
+            "generated_token_count": 530,
+            "maximum_output_tokens": 1024,
+            "response_mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+            "termination_reason": "eos_or_constraint_stop",
+            "transport_status": "constrained_generated"
+          },
+          "max_new_tokens": 1024,
+          "mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+          "raw_chars": 1717,
+          "raw_sha256": "b61baf79c533e24b7ee385ecb0cdce69fa95643ba4e767d692dd6d7d4946b9dd",
+          "validation_error": null
+        }
+      ],
+      "capability_status": "incapable",
+      "claim_boundary": "separately_versioned_from_frozen_t39",
+      "error": null,
+      "execution_mode": "cluster-gpu-goal-first-v2",
+      "failed": false,
+      "intent_summary": "Perform the movement and inspection of the material pallet to the concrete pad following the morning safety check procedure",
+      "latency_ms": 124760.19080867991,
+      "model_id": "Qwen/Qwen3-8B@b968826d9c46dd6066d109eabc6255188de91218",
+      "parsed": {
+        "analysis": {
+          "ambiguity_present": true,
+          "ambiguity_types": [
+            "pragmatic",
+            "referential",
+            "spatial"
+          ],
+          "analysis_provenance": {
+            "analysis_id": "fd87dfeb35565b9766367b078895e707dd0db28bbca623e58fbd9def8ebbb08f",
+            "method": "model_generated",
+            "notes": "source_input_hash=fd87dfeb35565b9766367b078895e707dd0db28bbca623e58fbd9def8ebbb08f;no_gold_in_prompt;scene_licence_dropped=none",
+            "provider_id": "goal_first_v2_full_context",
+            "provider_version": "goal-first-manager-v2"
+          },
+          "candidate_interpretations": [],
+          "capability_status": "incapable",
+          "clarification_question": "Before I continue, could you clarify: constraints, recipient, spatial relation, object attributes?",
+          "clarification_targets": [
+            "constraints",
+            "recipient",
+            "spatial_relation",
+            "object_attributes"
+          ],
+          "compound_ambiguity": true,
+          "compound_ambiguity_count": 3,
+          "context_sampling_uncertainty": {
+            "agreement": 0.55,
+            "score": 0.45,
+            "variant_count": 1
+          },
+          "cpc": {
+            "action": {
+              "status": "not_applicable",
+              "value": "carry out"
+            },
+            "actor": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "conditions": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "constraints": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "destination": {
+              "status": "not_applicable",
+              "value": "concrete pad"
+            },
+            "negation": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "object": {
+              "status": "not_applicable",
+              "value": "movement and inspection of the material pallet"
+            },
+            "object_attributes": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "quantity": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "recipient": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "spatial_relation": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "time": {
+              "status": "not_applicable",
+              "value": "after the check using the usual setup"
+            },
+            "tool": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            }
+          },
+          "findings": [
+            "pilot_ambiguity_types:[\"destination_reference\",\"object_reference\",\"pragmatic\"]",
+            "pilot_capability_status:incapable",
+            "intent_summary_present"
+          ],
+          "intent_summary": "Perform the movement and inspection of the material pallet to the concrete pad following the morning safety check procedure",
+          "primary_ambiguity_type": "pragmatic",
+          "recommended_strategy": "clarify",
+          "rejection_reason": null,
+          "resolution_evidence": [],
+          "resolution_method": null,
+          "resolved_slots": [],
+          "risk_level": "medium",
+          "risk_relevant": true,
+          "selected_interpretation": null,
+          "speech_act": "directive_command",
+          "strategy_sequence": [],
+          "supporting_evidence": [],
+          "unresolved_slots": [
+            {
+              "reason": "model_identified_uncertainty",
+              "slot_name": "constraints"
+            },
+            {
+              "reason": "model_identified_uncertainty",
+              "slot_name": "recipient"
+            },
+            {
+              "reason": "model_identified_uncertainty",
+              "slot_name": "spatial_relation"
+            },
+            {
+              "reason": "model_identified_uncertainty",
+              "slot_name": "object_attributes"
+            }
+          ],
+          "unsupported_specificity": []
+        },
+        "clarification_question": "Before I continue, could you clarify: constraints, recipient, spatial relation, object attributes?",
+        "clarification_targets": [
+          "constraints",
+          "recipient",
+          "spatial_relation",
+          "object_attributes"
+        ],
+        "execution_status": "ok",
+        "official_result": false,
+        "provider_provenance": {
+          "shared_analysis_fingerprint": "659f64d06bee61bf528680a5633c20f59ee201776c79859d5aa7aa41e9f7c451"
+        },
+        "recommended_strategy": "clarify",
+        "record_id": "CA-0851",
+        "rejection_reason": null,
+        "resolved_slots": [],
+        "result_hash": "c351027e8a61a14624dc69752e16b4e642cb05f9b59fe13a5bfa9aa6b0d607eb",
+        "run_id": null,
+        "run_mode": null,
+        "runtime_metadata": {
+          "shared_analysis_fingerprint": "659f64d06bee61bf528680a5633c20f59ee201776c79859d5aa7aa41e9f7c451",
+          "thresholds_status": "unfrozen",
+          "thresholds_valid_for_official_use": false,
+          "uncertainty_score": 0.45,
+          "uses_type_risk_capability_precedence": false
+        },
+        "safety_findings": [],
+        "strategy_sequence": [],
+        "synthetic_only": true,
+        "system_id": "degree_based_router",
+        "system_version": "1.0.0",
+        "unsupported_commitment_findings": []
+      },
+      "raw_output": "{\n  \"intent_summary\": \"Perform the movement and inspection of the material pallet to the concrete pad following the morning safety check procedure\",\n  \"cpc\": {\n    \"action\": {\n      \"value\": \"carry out\",\n      \"status\": \"not_applicable\"\n    },\n    \"object\": {\n      \"value\": \"movement and inspection of the material pallet\",\n      \"status\": \"not_applicable\"\n    },\n    \"destination\": {\n      \"value\": \"concrete pad\",\n      \"status\": \"not_applicable\"\n    },\n    \"time\": {\n      \"value\": \"after the check using the usual setup\",\n      \"status\": \"not_applicable\"\n    }\n \n  ,\n  \"constraints\": {\n    \"status\": \"not_applicable\"\n  ,\n  \"value\": \"not_applicable\"\n  },\n  \"conditions\": {\n    \"status\": \"not_applicable\"\n  ,\n  \"value\": \"not_applicable\"\n  },\n  \"negation\": {\n    \"status\": \"not_applicable\"\n  ,\n  \"value\": \"not_applicable\"\n  },\n  \"recipient\": {\n    \"status\": \"not_applicable\"\n  ,\n  \"value\": \"not_applicable\"\n  },\n  \"tool\": {\n    \"status\": \"not_applicable\"\n  ,\n  \"value\": \"not_applicable\"\n  },\n  \"quantity\": {\n    \"status\": \"not_applicable\"\n  ,\n  \"value\": \"not_applicable\"\n  },\n  \"spatial_relation\": {\n    \"status\": \"not_applicable\"\n  ,\n  \"value\": \"not_applicable\"\n  },\n  \"object_attributes\": {\n    \"status\": \"not_applicable\"\n  ,\n  \"value\": \"not_applicable\"\n  },\n  \"actor\": {\n    \"status\": \"not_applicable\"\n  ,\n  \"value\": \"not_applicable\"\n  }\n},\n  \"pilot_ambiguity_types\": [\n    \"pragmatic\",\n    \"object_reference\",\n    \"destination_reference\"\n  ]\n  \n  ,\n  \"pilot_capability_status\": \"incapable\"\n  \n  ,\n  \"speech_act\": \"directive_command\"\n  \n  ,\n  \"risk_level\": \"medium\"\n  \n  ,\n  \"uncertainty\": 0.45\n  ,\n  \"unresolved_slots\": [\n    \"constraints\",\n    \"recipient\",\n    \"spatial_relation\",\n    \"object_attributes\"\n  ]\n}",
+      "record_id": "CA-0851",
+      "schema_valid": true,
+      "supports_ambiguity_prediction": true,
+      "supports_capability_prediction": true,
+      "system_id": "degree_based_router_v2",
+      "system_version": "2.0.0",
+      "terminal_strategy": "clarify"
+    },
+    "timid": {
+      "ambiguity_types": [
+        "destination_reference",
+        "object_reference",
+        "pragmatic"
+      ],
+      "analysis_attempts": [
+        {
+          "attempt": 1,
+          "max_new_tokens": 4096,
+          "mode": "thinking",
+          "raw_chars": 5641,
+          "raw_sha256": "0cd1c6d8261c5e036b5acb4010e3693af474adf0ffe83d79cc076c903a6353df",
+          "validation_error": "bad_intent_summary"
+        },
+        {
+          "attempt": 2,
+          "max_new_tokens": 8192,
+          "mode": "thinking_retry",
+          "raw_chars": 10961,
+          "raw_sha256": "049af32423fb9d9dee1e4e22b620b15660b71255e550f23a02b48eb621226990",
+          "validation_error": "bad_intent_summary"
+        },
+        {
+          "attempt": 3,
+          "constraint": {
+            "constraint_initialised": true,
+            "generated_token_count": 530,
+            "maximum_output_tokens": 1024,
+            "response_mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+            "termination_reason": "eos_or_constraint_stop",
+            "transport_status": "constrained_generated"
+          },
+          "max_new_tokens": 1024,
+          "mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+          "raw_chars": 1717,
+          "raw_sha256": "b61baf79c533e24b7ee385ecb0cdce69fa95643ba4e767d692dd6d7d4946b9dd",
+          "validation_error": null
+        }
+      ],
+      "capability_status": "incapable",
+      "claim_boundary": "separately_versioned_from_frozen_t39",
+      "error": null,
+      "execution_mode": "cluster-gpu-goal-first-v2",
+      "failed": false,
+      "intent_summary": "Perform the movement and inspection of the material pallet to the concrete pad following the morning safety check procedure",
+      "latency_ms": 124760.19080867991,
+      "model_id": "Qwen/Qwen3-8B@b968826d9c46dd6066d109eabc6255188de91218",
+      "parsed": {
+        "analysis": {
+          "ambiguity_present": true,
+          "ambiguity_types": [
+            "pragmatic",
+            "referential",
+            "spatial"
+          ],
+          "analysis_provenance": {
+            "analysis_id": "fd87dfeb35565b9766367b078895e707dd0db28bbca623e58fbd9def8ebbb08f",
+            "method": "model_generated",
+            "notes": "source_input_hash=fd87dfeb35565b9766367b078895e707dd0db28bbca623e58fbd9def8ebbb08f;no_gold_in_prompt;scene_licence_dropped=none",
+            "provider_id": "goal_first_v2_full_context",
+            "provider_version": "goal-first-manager-v2"
+          },
+          "candidate_interpretations": [],
+          "capability_status": "incapable",
+          "clarification_question": null,
+          "clarification_targets": [],
+          "compound_ambiguity": true,
+          "compound_ambiguity_count": 3,
+          "context_sampling_uncertainty": {
+            "agreement": 0.55,
+            "score": 0.45,
+            "variant_count": 1
+          },
+          "cpc": {
+            "action": {
+              "status": "not_applicable",
+              "value": "carry out"
+            },
+            "actor": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "conditions": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "constraints": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "destination": {
+              "status": "not_applicable",
+              "value": "concrete pad"
+            },
+            "negation": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "object": {
+              "status": "not_applicable",
+              "value": "movement and inspection of the material pallet"
+            },
+            "object_attributes": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "quantity": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "recipient": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "spatial_relation": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "time": {
+              "status": "not_applicable",
+              "value": "after the check using the usual setup"
+            },
+            "tool": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            }
+          },
+          "findings": [
+            "pilot_ambiguity_types:[\"destination_reference\",\"object_reference\",\"pragmatic\"]",
+            "pilot_capability_status:incapable",
+            "intent_summary_present"
+          ],
+          "intent_summary": "Perform the movement and inspection of the material pallet to the concrete pad following the morning safety check procedure",
+          "primary_ambiguity_type": "pragmatic",
+          "recommended_strategy": "face_preserving_rejection",
+          "rejection_reason": "known_incapability",
+          "resolution_evidence": [],
+          "resolution_method": null,
+          "resolved_slots": [],
+          "risk_level": "medium",
+          "risk_relevant": true,
+          "selected_interpretation": null,
+          "speech_act": "directive_command",
+          "strategy_sequence": [],
+          "supporting_evidence": [],
+          "unresolved_slots": [
+            {
+              "reason": "model_identified_uncertainty",
+              "slot_name": "constraints"
+            },
+            {
+              "reason": "model_identified_uncertainty",
+              "slot_name": "recipient"
+            },
+            {
+              "reason": "model_identified_uncertainty",
+              "slot_name": "spatial_relation"
+            },
+            {
+              "reason": "model_identified_uncertainty",
+              "slot_name": "object_attributes"
+            }
+          ],
+          "unsupported_specificity": []
+        },
+        "clarification_question": null,
+        "clarification_targets": [],
+        "execution_status": "ok",
+        "official_result": false,
+        "provider_provenance": {
+          "provider_id": "cached_analysis",
+          "provider_version": "1.0.0"
+        },
+        "recommended_strategy": "face_preserving_rejection",
+        "record_id": "CA-0851",
+        "rejection_reason": "known_incapability",
+        "resolved_slots": [],
+        "result_hash": "b2562b978785f897a448b4ff14f95c89745c4ce8b7c2e76566c3af31f1eda2d3",
+        "run_id": null,
+        "run_mode": null,
+        "runtime_metadata": {
+          "awaits_t28_adapter": true,
+          "classification": {
+            "ambiguity_present": true,
+            "ambiguity_types": [
+              "pragmatic",
+              "referential",
+              "spatial"
+            ],
+            "capability_status": "incapable",
+            "compound_ambiguity": true,
+            "compound_ambiguity_count": 3,
+            "derivation_notes": [
+              "ambiguity_present_from_types"
+            ],
+            "risk_level": "medium"
+          },
+          "rejection_text": "I am not able to perform that action with my current capabilities. I will not invent an alternative that is not supported.",
+          "requires_re_evaluation": false,
+          "resolution_events": [
+            {
+              "confidence_category": "blocked",
+              "details": {
+                "risk_level": "medium"
+              },
+              "evidence_source": null,
+              "outcome": "resolution_blocked_by_risk",
+              "previous_status": "unresolved",
+              "resolved_value": null,
+              "rule_id": "risk_block",
+              "safety_eligibility": false,
+              "slot": "constraints"
+            },
+            {
+              "confidence_category": "blocked",
+              "details": {
+                "risk_level": "medium"
+              },
+              "evidence_source": null,
+              "outcome": "resolution_blocked_by_risk",
+              "previous_status": "unresolved",
+              "resolved_value": null,
+              "rule_id": "risk_block",
+              "safety_eligibility": false,
+              "slot": "recipient"
+            },
+            {
+              "confidence_category": "blocked",
+              "details": {
+                "risk_level": "medium"
+              },
+              "evidence_source": null,
+              "outcome": "resolution_blocked_by_risk",
+              "previous_status": "unresolved",
+              "resolved_value": null,
+              "rule_id": "risk_block",
+              "safety_eligibility": false,
+              "slot": "spatial_relation"
+            },
+            {
+              "confidence_category": "blocked",
+              "details": {
+                "risk_level": "medium"
+              },
+              "evidence_source": null,
+              "outcome": "resolution_blocked_by_risk",
+              "previous_status": "unresolved",
+              "resolved_value": null,
+              "rule_id": "risk_block",
+              "safety_eligibility": false,
+              "slot": "object_attributes"
+            }
+          ],
+          "router_trace": {
+            "clarification_targets": [],
+            "considered_rules": [
+              "known_unsafe_or_prohibited",
+              "known_incapable"
+            ],
+            "matched_rule_id": "known_incapable",
+            "notes": [],
+            "recommended_strategy": "face_preserving_rejection",
+            "rejection_reason": "known_incapability",
+            "requires_re_evaluation": false,
+            "strategy_sequence": []
+          },
+          "safety_action": "return_with_findings",
+          "uncertainty": null
+        },
+        "safety_findings": [],
+        "strategy_sequence": [],
+        "synthetic_only": true,
+        "system_id": "full_type_risk_aware_manager",
+        "system_version": "1.0.0",
+        "unsupported_commitment_findings": []
+      },
+      "raw_output": "{\n  \"intent_summary\": \"Perform the movement and inspection of the material pallet to the concrete pad following the morning safety check procedure\",\n  \"cpc\": {\n    \"action\": {\n      \"value\": \"carry out\",\n      \"status\": \"not_applicable\"\n    },\n    \"object\": {\n      \"value\": \"movement and inspection of the material pallet\",\n      \"status\": \"not_applicable\"\n    },\n    \"destination\": {\n      \"value\": \"concrete pad\",\n      \"status\": \"not_applicable\"\n    },\n    \"time\": {\n      \"value\": \"after the check using the usual setup\",\n      \"status\": \"not_applicable\"\n    }\n \n  ,\n  \"constraints\": {\n    \"status\": \"not_applicable\"\n  ,\n  \"value\": \"not_applicable\"\n  },\n  \"conditions\": {\n    \"status\": \"not_applicable\"\n  ,\n  \"value\": \"not_applicable\"\n  },\n  \"negation\": {\n    \"status\": \"not_applicable\"\n  ,\n  \"value\": \"not_applicable\"\n  },\n  \"recipient\": {\n    \"status\": \"not_applicable\"\n  ,\n  \"value\": \"not_applicable\"\n  },\n  \"tool\": {\n    \"status\": \"not_applicable\"\n  ,\n  \"value\": \"not_applicable\"\n  },\n  \"quantity\": {\n    \"status\": \"not_applicable\"\n  ,\n  \"value\": \"not_applicable\"\n  },\n  \"spatial_relation\": {\n    \"status\": \"not_applicable\"\n  ,\n  \"value\": \"not_applicable\"\n  },\n  \"object_attributes\": {\n    \"status\": \"not_applicable\"\n  ,\n  \"value\": \"not_applicable\"\n  },\n  \"actor\": {\n    \"status\": \"not_applicable\"\n  ,\n  \"value\": \"not_applicable\"\n  }\n},\n  \"pilot_ambiguity_types\": [\n    \"pragmatic\",\n    \"object_reference\",\n    \"destination_reference\"\n  ]\n  \n  ,\n  \"pilot_capability_status\": \"incapable\"\n  \n  ,\n  \"speech_act\": \"directive_command\"\n  \n  ,\n  \"risk_level\": \"medium\"\n  \n  ,\n  \"uncertainty\": 0.45\n  ,\n  \"unresolved_slots\": [\n    \"constraints\",\n    \"recipient\",\n    \"spatial_relation\",\n    \"object_attributes\"\n  ]\n}",
+      "record_id": "CA-0851",
+      "schema_valid": true,
+      "supports_ambiguity_prediction": true,
+      "supports_capability_prediction": true,
+      "system_id": "rich_conservative_manager_v2",
+      "system_version": "2.0.0",
+      "terminal_strategy": "face_preserving_rejection"
+    },
+    "context_blind": {
+      "ambiguity_types": [
+        "pragmatic"
+      ],
+      "analysis_attempts": [
+        {
+          "attempt": 1,
+          "max_new_tokens": 4096,
+          "mode": "thinking",
+          "raw_chars": 5619,
+          "raw_sha256": "a80b0e45679631dc603359aa0d0deb090d6f3d39c30ba62f2cc4f0b7e5b7ba6b",
+          "validation_error": "bad_intent_summary"
+        },
+        {
+          "attempt": 2,
+          "max_new_tokens": 8192,
+          "mode": "thinking_retry",
+          "raw_chars": 11912,
+          "raw_sha256": "77407fb05130bd37723e582f05e7d7b1a89a2e9cba6c71eac1dccd01e8a89a00",
+          "validation_error": "bad_pilot_ambiguity_types"
+        },
+        {
+          "attempt": 3,
+          "constraint": {
+            "constraint_initialised": true,
+            "generated_token_count": 503,
+            "maximum_output_tokens": 1024,
+            "response_mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+            "termination_reason": "eos_or_constraint_stop",
+            "transport_status": "constrained_generated"
+          },
+          "max_new_tokens": 1024,
+          "mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+          "raw_chars": 1687,
+          "raw_sha256": "e7d18293ebe390399dec88f036816524a0799c2a7b529a41614d108a5fd3e639",
+          "validation_error": null
+        }
+      ],
+      "capability_status": "incapable",
+      "claim_boundary": "separately_versioned_from_frozen_t39",
+      "error": null,
+      "execution_mode": "cluster-gpu-goal-first-v2",
+      "failed": false,
+      "intent_summary": "Perform the movement and inspection of the material pallet on the concrete pad following a standard setup check",
+      "latency_ms": 133268.25505681336,
+      "model_id": "Qwen/Qwen3-8B@b968826d9c46dd6066d109eabc6255188de91218",
+      "parsed": {
+        "analysis": {
+          "ambiguity_present": true,
+          "ambiguity_types": [
+            "pragmatic"
+          ],
+          "analysis_provenance": {
+            "analysis_id": "f294e08c0d791ca20b0a6b41f7eb2c9786e6050cd73598cde4982e2a886d4c1a",
+            "method": "context_blind",
+            "notes": "ablated_input_hash=f294e08c0d791ca20b0a6b41f7eb2c9786e6050cd73598cde4982e2a886d4c1a;source_input_hash=f294e08c0d791ca20b0a6b41f7eb2c9786e6050cd73598cde4982e2a886d4c1a;no_gold_in_prompt;scene_licence_dropped=none",
+            "provider_id": "goal_first_v2_context_blind",
+            "provider_version": "goal-first-manager-v2"
+          },
+          "candidate_interpretations": [],
+          "capability_status": "incapable",
+          "clarification_question": null,
+          "clarification_targets": [],
+          "compound_ambiguity": false,
+          "compound_ambiguity_count": 0,
+          "context_sampling_uncertainty": {
+            "agreement": 0.65,
+            "score": 0.35,
+            "variant_count": 1
+          },
+          "cpc": {
+            "action": {
+              "status": "not_applicable",
+              "value": "Carry out both the movement and inspection of the material pallet by the concrete pad after the check using the usual setup"
+            },
+            "actor": {
+              "status": "not_applicable",
+              "value": "none"
+            },
+            "conditions": {
+              "status": "not_applicable",
+              "value": "none"
+            },
+            "constraints": {
+              "status": "not_applicable",
+              "value": "none"
+            },
+            "destination": {
+              "status": "not_applicable",
+              "value": "concrete pad"
+            },
+            "negation": {
+              "status": "not_applicable",
+              "value": "none"
+            },
+            "object": {
+              "status": "not_applicable",
+              "value": "material pallet"
+            },
+            "object_attributes": {
+              "status": "not_applicable",
+              "value": "none"
+            },
+            "quantity": {
+              "status": "not_applicable",
+              "value": "none"
+            },
+            "recipient": {
+              "status": "not_applicable",
+              "value": "not applicable"
+            },
+            "spatial_relation": {
+              "status": "not_applicable",
+              "value": "by the concrete pad"
+            },
+            "time": {
+              "status": "not_applicable",
+              "value": "after the check"
+            },
+            "tool": {
+              "status": "not_applicable",
+              "value": "usual setup"
+            }
+          },
+          "findings": [
+            "pilot_ambiguity_types:[\"pragmatic\"]",
+            "pilot_capability_status:incapable",
+            "intent_summary_present"
+          ],
+          "intent_summary": "Perform the movement and inspection of the material pallet on the concrete pad following a standard setup check",
+          "primary_ambiguity_type": "pragmatic",
+          "recommended_strategy": "face_preserving_rejection",
+          "rejection_reason": "known_incapability",
+          "resolution_evidence": [],
+          "resolution_method": null,
+          "resolved_slots": [],
+          "risk_level": "medium",
+          "risk_relevant": true,
+          "selected_interpretation": null,
+          "speech_act": "directive_command",
+          "strategy_sequence": [],
+          "supporting_evidence": [],
+          "unresolved_slots": [
+            {
+              "reason": "model_identified_uncertainty",
+              "slot_name": "constraints"
+            },
+            {
+              "reason": "model_identified_uncertainty",
+              "slot_name": "conditions"
+            },
+            {
+              "reason": "model_identified_uncertainty",
+              "slot_name": "spatial_relation"
+            },
+            {
+              "reason": "model_identified_uncertainty",
+              "slot_name": "negation"
+            },
+            {
+              "reason": "model_identified_uncertainty",
+              "slot_name": "quantity"
+            },
+            {
+              "reason": "model_identified_uncertainty",
+              "slot_name": "object_attributes"
+            },
+            {
+              "reason": "model_identified_uncertainty",
+              "slot_name": "actor"
+            }
+          ],
+          "unsupported_specificity": []
+        },
+        "clarification_question": null,
+        "clarification_targets": [],
+        "execution_status": "ok",
+        "official_result": false,
+        "provider_provenance": {
+          "provider_id": "cached_analysis",
+          "provider_version": "1.0.0"
+        },
+        "recommended_strategy": "face_preserving_rejection",
+        "record_id": "CA-0851",
+        "rejection_reason": "known_incapability",
+        "resolved_slots": [],
+        "result_hash": "82b71810edd2fdc0eeccd990eea51225d5529551bb5d7d251a1a4b7f6c47a874",
+        "run_id": null,
+        "run_mode": null,
+        "runtime_metadata": {
+          "analysis_identity": {
+            "analysis_content_hash": "ac15750c20c6c4b416afa5082556989c5fc7a6f7fc8302d5857dc60d6a112e82",
+            "analysis_variant": "context_blind",
+            "model_strategy_id": null,
+            "provider_id": "goal_first_v2_context_blind",
+            "provider_version": "goal-first-manager-v2",
+            "record_id": "CA-0851",
+            "source_input_hash": "f294e08c0d791ca20b0a6b41f7eb2c9786e6050cd73598cde4982e2a886d4c1a"
+          },
+          "analysis_identity_fingerprint": "90fedd154749618ba6052504e712a3c86982e0f1121cf12e5deb72ebb25372bb",
+          "awaits_t28_adapter": true,
+          "classification": {
+            "ambiguity_present": true,
+            "ambiguity_types": [
+              "pragmatic"
+            ],
+            "capability_status": "incapable",
+            "compound_ambiguity": false,
+            "compound_ambiguity_count": 0,
+            "derivation_notes": [
+              "ambiguity_present_from_types"
+            ],
+            "risk_level": "medium"
+          },
+          "context_ablation": {
+            "ablated_input_hash": "f294e08c0d791ca20b0a6b41f7eb2c9786e6050cd73598cde4982e2a886d4c1a",
+            "capability_context_removed": true,
+            "dialogue_history_removed": true,
+            "rejected_full_context_cache": false,
+            "rejection_reason": null,
+            "scene_context_removed": true,
+            "stripped_context_derived_fields": false
+          },
+          "original_input_unmutated": true,
+          "rejection_text": "I am not able to perform that action with my current capabilities. I will not invent an alternative that is not supported.",
+          "requires_re_evaluation": false,
+          "resolution_events": [
+            {
+              "confidence_category": "blocked",
+              "details": {
+                "risk_level": "medium"
+              },
+              "evidence_source": null,
+              "outcome": "resolution_blocked_by_risk",
+              "previous_status": "unresolved",
+              "resolved_value": null,
+              "rule_id": "risk_block",
+              "safety_eligibility": false,
+              "slot": "constraints"
+            },
+            {
+              "confidence_category": "blocked",
+              "details": {
+                "risk_level": "medium"
+              },
+              "evidence_source": null,
+              "outcome": "resolution_blocked_by_risk",
+              "previous_status": "unresolved",
+              "resolved_value": null,
+              "rule_id": "risk_block",
+              "safety_eligibility": false,
+              "slot": "conditions"
+            },
+            {
+              "confidence_category": "blocked",
+              "details": {
+                "risk_level": "medium"
+              },
+              "evidence_source": null,
+              "outcome": "resolution_blocked_by_risk",
+              "previous_status": "unresolved",
+              "resolved_value": null,
+              "rule_id": "risk_block",
+              "safety_eligibility": false,
+              "slot": "spatial_relation"
+            },
+            {
+              "confidence_category": "blocked",
+              "details": {
+                "risk_level": "medium"
+              },
+              "evidence_source": null,
+              "outcome": "resolution_blocked_by_risk",
+              "previous_status": "unresolved",
+              "resolved_value": null,
+              "rule_id": "risk_block",
+              "safety_eligibility": false,
+              "slot": "negation"
+            },
+            {
+              "confidence_category": "blocked",
+              "details": {
+                "risk_level": "medium"
+              },
+              "evidence_source": null,
+              "outcome": "resolution_blocked_by_risk",
+              "previous_status": "unresolved",
+              "resolved_value": null,
+              "rule_id": "risk_block",
+              "safety_eligibility": false,
+              "slot": "quantity"
+            },
+            {
+              "confidence_category": "blocked",
+              "details": {
+                "risk_level": "medium"
+              },
+              "evidence_source": null,
+              "outcome": "resolution_blocked_by_risk",
+              "previous_status": "unresolved",
+              "resolved_value": null,
+              "rule_id": "risk_block",
+              "safety_eligibility": false,
+              "slot": "object_attributes"
+            },
+            {
+              "confidence_category": "blocked",
+              "details": {
+                "risk_level": "medium"
+              },
+              "evidence_source": null,
+              "outcome": "resolution_blocked_by_risk",
+              "previous_status": "unresolved",
+              "resolved_value": null,
+              "rule_id": "risk_block",
+              "safety_eligibility": false,
+              "slot": "actor"
+            }
+          ],
+          "router_trace": {
+            "clarification_targets": [],
+            "considered_rules": [
+              "goal_first_v2",
+              "known_unsafe_or_prohibited",
+              "known_incapable"
+            ],
+            "matched_rule_id": "known_incapable",
+            "notes": [],
+            "recommended_strategy": "face_preserving_rejection",
+            "rejection_reason": "known_incapability",
+            "requires_re_evaluation": false,
+            "strategy_sequence": []
+          },
+          "safety_action": "return_with_findings",
+          "uncertainty": null
+        },
+        "safety_findings": [],
+        "strategy_sequence": [],
+        "synthetic_only": true,
+        "system_id": "context_blind_manager",
+        "system_version": "1.0.0",
+        "unsupported_commitment_findings": []
+      },
+      "raw_output": "{\n  \"intent_summary\": \"Perform the movement and inspection of the material pallet on the concrete pad following a standard setup check\",\n  \"cpc\": {\n    \"action\": {\n      \"value\": \"Carry out both the movement and inspection of the material pallet by the concrete pad after the check using the usual setup\",\n      \"status\": \"not_applicable\"\n    },\n    \"object\": {\n      \"value\": \"material pallet\",\n      \"status\": \"not_applicable\"\n    },\n    \"recipient\": {\n      \"value\": \"not applicable\",\n      \"status\": \"not_applicable\"\n    },\n    \"destination\": {\n      \"value\": \"concrete pad\",\n      \"status\": \"not_applicable\"\n    },\n    \"tool\": {\n      \"value\": \"usual setup\",\n      \"status\": \"not_applicable\"\n    },\n    \"time\": {\n      \"value\": \"after the check\",\n      \"status\": \"not_applicable\"\n    }\n \n  ,\n  \"constraints\": {\n    \"value\": \"none\",\n    \"status\": \"not_applicable\"\n  },\n  \"conditions\": {\n    \"value\": \"none\",\n    \"status\": \"not_applicable\"\n  },\n  \"spatial_relation\": {\n    \"value\": \"by the concrete pad\",\n    \"status\": \"not_applicable\"\n  },\n  \"negation\": {\n    \"value\": \"none\",\n    \"status\": \"not_applicable\"\n  },\n  \"quantity\": {\n    \"value\": \"none\",\n    \"status\": \"not_applicable\"\n  },\n  \"object_attributes\": {\n    \"value\": \"none\",\n    \"status\": \"not_applicable\"\n  },\n  \"actor\": {\n    \"value\": \"none\",\n    \"status\": \"not_applicable\"\n  }\n}\n, \n  \"pilot_ambiguity_types\": [\n    \"pragmatic\"\n  ]\n  , \n  \"pilot_capability_status\": \"incapable\",\n  \"speech_act\": \"directive_command\",\n  \"risk_level\": \"medium\",\n  \"uncertainty\": 0.35,\n  \"unresolved_slots\": [\n    \"constraints\",\n    \"conditions\",\n    \"spatial_relation\",\n    \"negation\",\n    \"quantity\",\n    \"object_attributes\",\n    \"actor\"\n  ]\n}",
+      "record_id": "CA-0851",
+      "schema_valid": true,
+      "supports_ambiguity_prediction": true,
+      "supports_capability_prediction": true,
+      "system_id": "goal_first_context_blind_v2",
+      "system_version": "2.0.0",
+      "terminal_strategy": "face_preserving_rejection"
+    }
+  },
+  "provenance": {
+    "source_sha256": "f33b1e29f1e8aa256a475f07213aa07247def47d8e2148d54a472a40b71b05c9",
+    "gold_sha256": "5e23ad1a92ff1873c8f039a8ce560a111dd6fb6b8ae8c11d6cf34dbfa1c360db",
+    "t07_final_zip_sha256": "34ca50e034ca37b617068bb50c734d12fa26282fb5eec563c11ead700163e491",
+    "inherited_t07_zip_sha256": "0305b1e9ab062876ee6ee89778cc6028d2eaf01718b7dd0295944e7d9cb81a01",
+    "note": "Goal-First, Degree, Timid, and Context-Blind predictions are inherited from the earlier T0.7 run; official intent and comparison come from the final T0.7 archive."
+  }
+}

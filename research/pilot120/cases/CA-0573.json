@@ -1,0 +1,1370 @@
+{
+  "record_id": "CA-0573",
+  "frozen_source": {
+    "capability_context": "Workshop service robot can carry small parts, push carts, scan work orders, and use low-force inspection tools.",
+    "command": "Would it help to carry out both the inspection and movement of the metal bracket after a scheduled tool change, continuing until the setup is ready?",
+    "dialogue_history": [
+      "machinist: Yes, carry out the workable sequence rather than merely assessing it."
+    ],
+    "record_id": "CA-0573",
+    "scene_context": "Assembly bench in a workshop. The current time is 11:26. The tool change is scheduled at 12:00 and again at 16:00. Procedure WO-311 links this job to the 12:00 occurrence. An unrelated drill case is logged for later work at the roller door. Procedure WO-311 requires inspection before movement. The readiness checklist requires the item at the parts washer, its tag scanned, and the path clear."
+  },
+  "frozen_gold": {
+    "ambiguity_types": [
+      "action_order",
+      "endpoint_vagueness",
+      "pragmatic",
+      "temporal_reference"
+    ],
+    "annotator_b_era": "claude_era",
+    "annotator_b_model": "claude-4.6-sonnet-medium-thinking",
+    "capability_status": "capable",
+    "field_status": {
+      "ambiguity_types": "auto_agree",
+      "capability_status": "human_auditor:independent_from_route",
+      "record_validity": "auto_agree",
+      "strategy_sequence": "from_A_matching_terminal",
+      "terminal_strategy": "auto_agree"
+    },
+    "gold_lifecycle": "final_gold",
+    "gold_status": "auto_agree",
+    "human_gate_required": false,
+    "provenance": {
+      "agreement_label": "pilot_annotation_agreement",
+      "annotator_a_sha256": "d98192e322baaa3b03d6d534d7622f45c9e1c48994de8bc2c21fbd9084daaa81",
+      "annotator_b_sha256": "11e939f75e1b2368ad6043eccd5a9baa587eb837400b4162b3b5b39a1aff3a48",
+      "capability_route_decouple": "conditionally_capable remapped to capable: no evidenced external capability precondition; linguistic silently_resolve/clarify is not a capability condition",
+      "gold_policy": "use_existing_pilot_adjudicated_gold",
+      "input_sha256": "8568d9417e375227f5222666bae4e2968307e33ccc9bb9bb70a1af8b6a7475fd",
+      "pilot_gold_sha256": "ce6a16d6cc1bd6e3c3fefcbbef05c2b44de80f92f32daedb985dd207b363a9f3",
+      "protocol": "pilot_adjudicated_gold_on_capability_repaired_source",
+      "repaired_input_sha256": "37265f2bcfffa0902ac76fe0165ef5f64e2bb2871a2e242ff00f7ad95346dd61"
+    },
+    "record_id": "CA-0573",
+    "record_validity": "valid",
+    "strategy_sequence": [
+      "reinterpret_indirect_request",
+      "silently_resolve",
+      "execute"
+    ],
+    "terminal_strategy": "execute"
+  },
+  "t07_comparison": {
+    "record_id": "CA-0573",
+    "gold_route": "execute",
+    "raw_route": "clarify",
+    "ft_route": "clarify",
+    "gf_route": "refuse",
+    "raw_route_ok": "False",
+    "ft_route_ok": "False",
+    "gf_route_ok": "False",
+    "raw_official_intent": "True",
+    "ft_official_intent": "True",
+    "gf_official_intent": "True",
+    "blind_official_intent": "True"
+  },
+  "t07_official_intent": {
+    "context_blind_official_intent": true,
+    "degree_official_intent_shared_gf": true,
+    "finetune_official_intent": true,
+    "goal_first_official_intent": true,
+    "raw_official_intent": true,
+    "record_id": "CA-0573",
+    "timid_official_intent_shared_gf": true
+  },
+  "t07_predictions": {
+    "raw_qwen": {
+      "ambiguity_types": [
+        "destination_reference",
+        "fuzzy_temporal",
+        "temporal_reference"
+      ],
+      "capability_status": "conditionally_capable",
+      "error": null,
+      "execution_mode": "final_close_intent_box",
+      "failed": false,
+      "intent_summary": "Inspect and move the metal bracket after the scheduled tool change until the setup is ready, combining both actions in a workable sequence.",
+      "latency_ms": 8723.781663924456,
+      "parsed": {
+        "ambiguity_types": [
+          "destination_reference",
+          "fuzzy_temporal",
+          "temporal_reference"
+        ],
+        "capability_status": "conditionally_capable",
+        "intent_summary": "Inspect and move the metal bracket after the scheduled tool change until the setup is ready, combining both actions in a workable sequence.",
+        "speech_act": "directive_command",
+        "terminal_strategy": "clarify"
+      },
+      "raw_output": "<think>\nOkay, let's break down this query. The user is asking if it would help to carry out both the inspection and movement of the metal bracket after a scheduled tool change, continuing until the setup is ready. The dialogue history mentions that the machinist wants the workable sequence done rather than just assessing it.\n\nFirst, the intent_summary. The main job here is to inspect and move the metal bracket after the tool change. The user is combining both actions, so I need to capture that. The speech_act is a directive_command because the user is giving a command to perform specific tasks. \n\nLooking at ambiguity_types, there's a lot here. The command mentions \"both the inspection and movement,\" which could be a multi_intent since it's combining two actions. Also, the reference to \"the setup is ready\" might involve a destination_reference or a condition. The \"after a scheduled tool change\" could be a temporal_reference. Also, \"continuing until\" might introduce a duration, so maybe fuzzy_temporal. The mention of \"the setup\" might be a destination_reference. \n\nCapability-wise, the robot can carry small parts, push carts, scan work orders, and use inspection tools. Since the task involves inspection and movement, the robot is capable. But the procedure requires the item at the parts washer, tag scanned, and path clear. The robot can scan work orders, so that's covered. But the movement part might depend on the cart. So maybe conditionally_capable because it depends on having the cart available. \n\nTerminal strategy would be execute if the conditions are met, but since there's a possibility of needing clarification (like if the cart isn't available), maybe clarify. But the user's command seems direct, so maybe execute. Wait, the capability_status is conditionally_capable because the robot can do the tasks but needs the cart. So terminal strategy would be clarify to confirm the cart is available. \n\nPutting it all together, the JSON should have the intent_summary as combining inspection and movement after tool change, speech_act as directive_command, ambiguity_types including multi_intent, temporal_reference, destination_reference, and maybe others. Capability is conditionally_capable, and terminal strategy is clarify.\n</think>\n\n{\n  \"intent_summary\": \"Inspect and move the metal bracket after the scheduled tool change until the setup is ready, combining both actions in a workable sequence.\",\n  \"speech_act\": \"directive_command\",\n  \"ambiguity_types\": [\"multi_intent\", \"temporal_reference\", \"destination_reference\", \"fuzzy_temporal\"],\n  \"capability_status\": \"conditionally_capable\",\n  \"terminal_strategy\": \"clarify\"\n}",
+      "record_id": "CA-0573",
+      "schema_valid": true,
+      "speech_act": "directive_command",
+      "system_id": "direct_base_llm",
+      "terminal_strategy": "clarify"
+    },
+    "finetune": {
+      "ambiguity_types": [
+        "action_order",
+        "temporal_reference"
+      ],
+      "capability_status": "conditionally_capable",
+      "error": null,
+      "execution_mode": "final_close_intent_box",
+      "failed": false,
+      "intent_summary": "The user wants both the inspection and movement of the metal bracket after the tool change, continuing until the setup is ready.",
+      "latency_ms": 38184.832403901964,
+      "parsed": {
+        "ambiguity_types": [
+          "action_order",
+          "temporal_reference"
+        ],
+        "capability_status": "conditionally_capable",
+        "intent_summary": "The user wants both the inspection and movement of the metal bracket after the tool change, continuing until the setup is ready.",
+        "speech_act": "directive_command",
+        "terminal_strategy": "clarify"
+      },
+      "raw_output": "<think>\nOkay, let's break this down. The user is asking if it would help to carry out both the inspection and movement of the metal bracket after a scheduled tool change, continuing until the setup is ready. The dialogue history mentions that the machinist wants the workable sequence done rather than just assessing.\n\nFirst, the intent_summary should capture the main job. The user wants both inspection and movement done after the tool change, continuing until setup is ready. So the summary would mention these two actions post-tool change.\n\nNext, speech_act. The user is asking if doing both tasks would be helpful. But the previous response was a directive to do the workable sequence. So this is more of a request or a command to perform both actions. But the phrasing is a question, so maybe indirect_request? Or is it a directive? The machinist said to carry out the workable sequence, so maybe the user is confirming if doing both is acceptable. Wait, the original command is a question: \"Would it help...\" So the speech act here is an information question, but the user is actually requesting clarification. Hmm. The dialogue history shows the machinist said to do the workable sequence, so maybe the user is asking if doing both tasks is the right approach. So the speech act might be a directive_command, but the structure is a question. Alternatively, since the user is seeking confirmation, it's an information question. But the actual intent is to perform the tasks, so maybe it's a directive. Wait, the options are directive_command, indirect_request, etc. Since the user is asking if doing both is helpful, but the previous response was a directive, perhaps this is an indirect request to perform both. But the structure is a question, so maybe it's an information question. But the main intent is to perform the tasks. Maybe the speech_act is a directive_command. Alternatively, it's an indirect_request. Need to check the definitions. Directive_command is a direct order. Indirect_request is a request phrased as a question. Since the user is asking if doing both would help, which is a way of requesting confirmation, but the actual intent is to perform the tasks. So maybe it's an indirect_request. Or maybe the user is seeking to clarify if the two actions should be done together. \n\nAmbiguity types: The command mentions \"both the inspection and movement\" which are two separate actions. The original procedure requires inspection before movement. The user is combining them. So there's a potential ambiguity in whether both are needed. Also, the time frame is after the tool change until setup is ready. So the temporal reference might be unclear. Also, the object_reference could be ambiguous since the metal bracket is the object. But the procedure says inspection before movement, so maybe the user is combining them. Also, the \"continuing until setup is ready\" could be a duration, so temporal_reference. Also, the \"after a scheduled tool change\" refers to the time when the tool change is done. So the time reference. So the ambiguity types might include temporal_reference and action_order (since the order of inspection and movement is important). Also, the user is combining two actions, so maybe action_order is part of the ambiguity. Wait, the ambiguity types list includes action_order. So if the user is combining two actions, the order might be unclear. Also, the command is about carrying out both, but the procedure says inspection before movement. So the user's command might be ambiguous in the order. So action_order and temporal_reference. Also, the \"continuing until setup is ready\" might be a duration, which is temporal. So the ambiguity types would be temporal_reference and action_order. Also, maybe the object_reference if the metal bracket is unclear. But the context says the item is at the parts washer, so the object is clear. So maybe the ambiguity types are temporal_reference and action_order. Wait, but the original command is \"carry out both the inspection and movement... continuing until setup is ready\". So the temporal part is about the duration until setup is ready. So the temporal_reference is present. Also, the action_order could be ambiguous if the user is not specifying the order. But the procedure requires inspection before movement. So maybe the user is combining them, but the procedure requires a specific order. So the ambiguity here is the action_order. So the ambiguity_types would be action_order and temporal_reference. \n\nCapability_status: The robot can carry small parts, push carts, scan work orders, and use low-force inspection tools. The tasks here are inspection and movement. Since the robot can do both, but the movement part might be pushing a cart. The capability is conditionally_capable because the movement might require a cart, which the robot can push. So capability_status is conditionally_capable. \n\nTerminal_strategy: The user is asking if doing both would be helpful, but the previous response was a directive to perform the workable sequence. The robot's capability is conditionally_capable, so the terminal strategy would be to execute if possible. But the ambiguity might require clarification. However, the user is asking if it would help, which is a way of requesting confirmation. But the main intent is to perform the tasks. So the terminal strategy is execute. But if there's ambiguity, maybe clarify. Wait, the ambiguity_types include action_order and temporal_reference. So the robot might need to clarify the order or duration. So the terminal strategy would be clarify. But the user is asking if it would help, which could be a way of requesting to proceed. But the ambiguity might require clarification. So the terminal_strategy is clarify. But I need to check the definitions. The terminal_strategy is execute, clarify, or face-preserving rejection. If the robot can do it but there's ambiguity, the strategy would be to clarify. So in this case, since there's ambiguity in action_order and temporal_reference, the robot should clarify. So terminal_strategy is clarify. \n\nPutting it all together:\n\nintent_summary: The user wants both the inspection and movement of the metal bracket after the tool change, continuing until the setup is ready.\n\nspeech_act: directive_command (since the user is asking if doing both is helpful, which is a way of requesting to perform the tasks)\n\nambiguity_types: action_order, temporal_reference\n\ncapability_status: conditionally_capable (since the robot can inspect and move, but movement might require a cart)\n\nterminal_strategy: clarify (due to ambiguity in action order and temporal duration)\n</think>\n\n{\n  \"intent_summary\": \"The user wants both the inspection and movement of the metal bracket after the tool change, continuing until the setup is ready.\",\n  \"speech_act\": \"directive_command\",\n  \"ambiguity_types\": [\"action_order\", \"temporal_reference\"],\n  \"capability_status\": \"conditionally_capable\",\n  \"terminal_strategy\": \"clarify\"\n}",
+      "record_id": "CA-0573",
+      "schema_valid": true,
+      "speech_act": "directive_command",
+      "system_id": "t28_selected_adapter_llm",
+      "terminal_strategy": "clarify"
+    },
+    "goal_first": {
+      "ambiguity_types": [
+        "action_order",
+        "object_reference",
+        "pragmatic",
+        "temporal_reference"
+      ],
+      "analysis_attempts": [
+        {
+          "attempt": 1,
+          "max_new_tokens": 4096,
+          "mode": "thinking",
+          "raw_chars": 8991,
+          "raw_sha256": "356f0e7760d6368b15e1a4b631f5cbfcbabd22d2be3514f23bd8c09c59cf5999",
+          "validation_error": "bad_pilot_ambiguity_types"
+        },
+        {
+          "attempt": 2,
+          "max_new_tokens": 8192,
+          "mode": "thinking_retry",
+          "raw_chars": 12115,
+          "raw_sha256": "6244ba939a16a53eeefd76ef0e3c2a75f52080aada128f6f5aafd5e8ed15f46d",
+          "validation_error": "bad_pilot_ambiguity_types"
+        },
+        {
+          "attempt": 3,
+          "constraint": {
+            "constraint_initialised": true,
+            "generated_token_count": 503,
+            "maximum_output_tokens": 1024,
+            "response_mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+            "termination_reason": "eos_or_constraint_stop",
+            "transport_status": "constrained_generated"
+          },
+          "max_new_tokens": 1024,
+          "mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+          "raw_chars": 1695,
+          "raw_sha256": "79af74e765aa24770deec90ad34069e22d114f6d5da9bbf35e92f1527bb0c9df",
+          "validation_error": null
+        }
+      ],
+      "capability_status": "unauthorized",
+      "claim_boundary": "separately_versioned_from_frozen_t39",
+      "error": null,
+      "execution_mode": "cluster-gpu-goal-first-v2",
+      "failed": false,
+      "intent_summary": "Perform both the inspection and movement of the metal bracket after the scheduled tool change, continuing until the setup is ready",
+      "latency_ms": 165722.51292783767,
+      "model_id": "Qwen/Qwen3-8B@b968826d9c46dd6066d109eabc6255188de91218",
+      "parsed": {
+        "analysis": {
+          "ambiguity_present": true,
+          "ambiguity_types": [
+            "pragmatic",
+            "referential",
+            "temporal"
+          ],
+          "analysis_provenance": {
+            "analysis_id": "f37e969543f6ece32b4c0c62566ebc71deb2172d4996ba2db3052ef8a3ee69b4",
+            "method": "model_generated",
+            "notes": "source_input_hash=f37e969543f6ece32b4c0c62566ebc71deb2172d4996ba2db3052ef8a3ee69b4;no_gold_in_prompt;scene_licence_dropped=tool,recipient,destination,time",
+            "provider_id": "goal_first_v2_full_context",
+            "provider_version": "goal-first-manager-v2"
+          },
+          "candidate_interpretations": [],
+          "capability_status": "unknown",
+          "clarification_question": null,
+          "clarification_targets": [],
+          "compound_ambiguity": true,
+          "compound_ambiguity_count": 3,
+          "context_sampling_uncertainty": {
+            "agreement": 0.15000000000000002,
+            "score": 0.85,
+            "variant_count": 1
+          },
+          "cpc": {
+            "action": {
+              "status": "filled",
+              "value": "carry out the inspection and movement"
+            },
+            "actor": {
+              "status": "filled",
+              "value": "workshop service robot"
+            },
+            "conditions": {
+              "status": "filled",
+              "value": "tag scanned, path clear"
+            },
+            "constraints": {
+              "status": "filled",
+              "value": "after scheduled tool change, continuing until setup is ready"
+            },
+            "destination": {
+              "status": "filled",
+              "value": "parts washer"
+            },
+            "negation": {
+              "status": "filled",
+              "value": "not merely assessing"
+            },
+            "object": {
+              "status": "filled",
+              "value": "metal bracket"
+            },
+            "object_attributes": {
+              "status": "filled",
+              "value": "metal bracket"
+            },
+            "quantity": {
+              "status": "filled",
+              "value": "one"
+            },
+            "recipient": {
+              "status": "filled",
+              "value": "workshop service robot"
+            },
+            "spatial_relation": {
+              "status": "filled",
+              "value": "path clear"
+            },
+            "time": {
+              "status": "filled",
+              "value": "after scheduled tool change, continuing until setup is ready"
+            },
+            "tool": {
+              "status": "filled",
+              "value": "low-force inspection tools"
+            }
+          },
+          "findings": [
+            "pilot_ambiguity_types:[\"action_order\",\"object_reference\",\"pragmatic\",\"temporal_reference\"]",
+            "pilot_capability_status:unauthorized",
+            "intent_summary_present"
+          ],
+          "intent_summary": "Perform both the inspection and movement of the metal bracket after the scheduled tool change, continuing until the setup is ready",
+          "primary_ambiguity_type": "pragmatic",
+          "recommended_strategy": "face_preserving_rejection",
+          "rejection_reason": "unsafe_or_prohibited_action",
+          "resolution_evidence": [],
+          "resolution_method": null,
+          "resolved_slots": [
+            {
+              "slot_name": "action",
+              "value": "carry out the inspection and movement"
+            },
+            {
+              "slot_name": "actor",
+              "value": "workshop service robot"
+            },
+            {
+              "slot_name": "object",
+              "value": "metal bracket"
+            },
+            {
+              "slot_name": "object_attributes",
+              "value": "metal bracket"
+            },
+            {
+              "slot_name": "destination",
+              "value": "parts washer"
+            },
+            {
+              "slot_name": "spatial_relation",
+              "value": "path clear"
+            },
+            {
+              "slot_name": "quantity",
+              "value": "one"
+            },
+            {
+              "slot_name": "time",
+              "value": "after scheduled tool change, continuing until setup is ready"
+            },
+            {
+              "slot_name": "recipient",
+              "value": "workshop service robot"
+            },
+            {
+              "slot_name": "tool",
+              "value": "low-force inspection tools"
+            },
+            {
+              "slot_name": "conditions",
+              "value": "tag scanned, path clear"
+            },
+            {
+              "slot_name": "constraints",
+              "value": "after scheduled tool change, continuing until setup is ready"
+            },
+            {
+              "slot_name": "negation",
+              "value": "not merely assessing"
+            }
+          ],
+          "risk_level": "high",
+          "risk_relevant": true,
+          "selected_interpretation": null,
+          "speech_act": "indirect_request",
+          "strategy_sequence": [],
+          "supporting_evidence": [],
+          "unresolved_slots": [],
+          "unsupported_specificity": []
+        },
+        "clarification_question": null,
+        "clarification_targets": [],
+        "execution_status": "ok",
+        "official_result": false,
+        "provider_provenance": {
+          "provider_id": "cached_analysis",
+          "provider_version": "1.0.0"
+        },
+        "recommended_strategy": "face_preserving_rejection",
+        "record_id": "CA-0573",
+        "rejection_reason": "unsafe_or_prohibited_action",
+        "resolved_slots": [
+          {
+            "slot_name": "action",
+            "value": "carry out the inspection and movement"
+          },
+          {
+            "slot_name": "actor",
+            "value": "workshop service robot"
+          },
+          {
+            "slot_name": "object",
+            "value": "metal bracket"
+          },
+          {
+            "slot_name": "object_attributes",
+            "value": "metal bracket"
+          },
+          {
+            "slot_name": "destination",
+            "value": "parts washer"
+          },
+          {
+            "slot_name": "spatial_relation",
+            "value": "path clear"
+          },
+          {
+            "slot_name": "quantity",
+            "value": "one"
+          },
+          {
+            "slot_name": "time",
+            "value": "after scheduled tool change, continuing until setup is ready"
+          },
+          {
+            "slot_name": "recipient",
+            "value": "workshop service robot"
+          },
+          {
+            "slot_name": "tool",
+            "value": "low-force inspection tools"
+          },
+          {
+            "slot_name": "conditions",
+            "value": "tag scanned, path clear"
+          },
+          {
+            "slot_name": "constraints",
+            "value": "after scheduled tool change, continuing until setup is ready"
+          },
+          {
+            "slot_name": "negation",
+            "value": "not merely assessing"
+          }
+        ],
+        "result_hash": "faef03f1774da1ec1932d8697bc1ae2f116983a6b804e7018e9c5fb944612350",
+        "run_id": null,
+        "run_mode": null,
+        "runtime_metadata": {
+          "awaits_t28_adapter": true,
+          "classification": {
+            "ambiguity_present": true,
+            "ambiguity_types": [
+              "pragmatic",
+              "referential",
+              "temporal"
+            ],
+            "capability_status": "unknown",
+            "compound_ambiguity": true,
+            "compound_ambiguity_count": 3,
+            "derivation_notes": [
+              "ambiguity_present_from_types"
+            ],
+            "risk_level": "high"
+          },
+          "rejection_text": "I need to decline that request because it would be unsafe under the current constraints.",
+          "requires_re_evaluation": false,
+          "resolution_events": [],
+          "router_trace": {
+            "clarification_targets": [],
+            "considered_rules": [
+              "goal_first_v2",
+              "known_unsafe_or_prohibited"
+            ],
+            "matched_rule_id": "known_unsafe_or_prohibited",
+            "notes": [],
+            "recommended_strategy": "face_preserving_rejection",
+            "rejection_reason": "unsafe_or_prohibited_action",
+            "requires_re_evaluation": false,
+            "strategy_sequence": []
+          },
+          "safety_action": "return_with_findings",
+          "uncertainty": null
+        },
+        "safety_findings": [],
+        "strategy_sequence": [],
+        "synthetic_only": true,
+        "system_id": "goal_first_manager_v2",
+        "system_version": "2.0.0",
+        "unsupported_commitment_findings": []
+      },
+      "raw_output": "{\n  \"intent_summary\": \"Perform both the inspection and movement of the metal bracket after the scheduled tool change, continuing until the setup is ready\",\n  \"cpc\": {\n    \"action\": {\n      \"status\": \"unknown\",\n      \"value\": \"carry out the inspection and movement\"\n    },\n    \"object\": {\n      \"status\": \"unknown\",\n      \"value\": \"metal bracket\"\n    },\n    \"time\": {\n      \"status\": \"unknown\",\n      \"value\": \"after scheduled tool change, continuing until setup is ready\"\n    }\n \n  ,\n  \"constraints\": {\n    \"status\": \"unknown\",\n    \"value\": \"after scheduled tool change, continuing until setup is ready\"\n  },\n  \"spatial_relation\": {\n    \"status\": \"unknown\",\n    \"value\": \"path clear\"\n  },\n  \"tool\": {\n    \"status\": \"unknown\",\n    \"value\": \"low-force inspection tools\"\n  },\n  \"recipient\": {\n    \"status\": \"unknown\",\n    \"value\": \"workshop service robot\"\n  },\n  \"destination\": {\n    \"status\": \"unknown\",\n    \"value\": \"parts washer\"\n  },\n  \"conditions\": {\n    \"status\": \"unknown\",\n    \"value\": \"tag scanned, path clear\"\n  },\n  \"negation\": {\n    \"status\": \"unknown\",\n    \"value\": \"not merely assessing\"\n  },\n  \"actor\": {\n    \"status\": \"unknown\",\n    \"value\": \"workshop service robot\"\n  },\n  \"object_attributes\": {\n    \"status\": \"unknown\",\n    \"value\": \"metal bracket\"\n  },\n  \"quantity\": {\n    \"status\": \"unknown\",\n    \"value\": \"one\"\n  }\n} \n\n,  \n  \"pilot_ambiguity_types\": [\n    \"pragmatic\",\n    \"temporal_reference\",\n    \"object_reference\",\n    \"action_order\"\n  ]\n  \n  ,\n  \"pilot_capability_status\": \"unauthorized\"\n  ,\n  \"speech_act\": \"indirect_request\"\n  ,\n  \"risk_level\": \"high\"\n  ,\n  \"uncertainty\": 0.85\n  ,\n  \"unresolved_slots\": [\n    \"tool\",\n    \"recipient\",\n    \"destination\",\n    \"time\"\n  ]\n}",
+      "record_id": "CA-0573",
+      "schema_valid": true,
+      "supports_ambiguity_prediction": true,
+      "supports_capability_prediction": true,
+      "system_id": "goal_first_manager_v2",
+      "system_version": "2.0.0",
+      "terminal_strategy": "face_preserving_rejection"
+    },
+    "degree": {
+      "ambiguity_types": [
+        "action_order",
+        "object_reference",
+        "pragmatic",
+        "temporal_reference"
+      ],
+      "analysis_attempts": [
+        {
+          "attempt": 1,
+          "max_new_tokens": 4096,
+          "mode": "thinking",
+          "raw_chars": 8991,
+          "raw_sha256": "356f0e7760d6368b15e1a4b631f5cbfcbabd22d2be3514f23bd8c09c59cf5999",
+          "validation_error": "bad_pilot_ambiguity_types"
+        },
+        {
+          "attempt": 2,
+          "max_new_tokens": 8192,
+          "mode": "thinking_retry",
+          "raw_chars": 12115,
+          "raw_sha256": "6244ba939a16a53eeefd76ef0e3c2a75f52080aada128f6f5aafd5e8ed15f46d",
+          "validation_error": "bad_pilot_ambiguity_types"
+        },
+        {
+          "attempt": 3,
+          "constraint": {
+            "constraint_initialised": true,
+            "generated_token_count": 503,
+            "maximum_output_tokens": 1024,
+            "response_mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+            "termination_reason": "eos_or_constraint_stop",
+            "transport_status": "constrained_generated"
+          },
+          "max_new_tokens": 1024,
+          "mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+          "raw_chars": 1695,
+          "raw_sha256": "79af74e765aa24770deec90ad34069e22d114f6d5da9bbf35e92f1527bb0c9df",
+          "validation_error": null
+        }
+      ],
+      "capability_status": "unauthorized",
+      "claim_boundary": "separately_versioned_from_frozen_t39",
+      "error": null,
+      "execution_mode": "cluster-gpu-goal-first-v2",
+      "failed": false,
+      "intent_summary": "Perform both the inspection and movement of the metal bracket after the scheduled tool change, continuing until the setup is ready",
+      "latency_ms": 165722.51292783767,
+      "model_id": "Qwen/Qwen3-8B@b968826d9c46dd6066d109eabc6255188de91218",
+      "parsed": {
+        "analysis": {
+          "ambiguity_present": true,
+          "ambiguity_types": [
+            "pragmatic",
+            "referential",
+            "temporal"
+          ],
+          "analysis_provenance": {
+            "analysis_id": "f37e969543f6ece32b4c0c62566ebc71deb2172d4996ba2db3052ef8a3ee69b4",
+            "method": "model_generated",
+            "notes": "source_input_hash=f37e969543f6ece32b4c0c62566ebc71deb2172d4996ba2db3052ef8a3ee69b4;no_gold_in_prompt;scene_licence_dropped=tool,recipient,destination,time",
+            "provider_id": "goal_first_v2_full_context",
+            "provider_version": "goal-first-manager-v2"
+          },
+          "candidate_interpretations": [],
+          "capability_status": "unknown",
+          "clarification_question": "Could you clarify what you would like me to do?",
+          "clarification_targets": [
+            "intent"
+          ],
+          "compound_ambiguity": true,
+          "compound_ambiguity_count": 4,
+          "context_sampling_uncertainty": {
+            "agreement": 0.15000000000000002,
+            "score": 0.85,
+            "variant_count": 1
+          },
+          "cpc": {
+            "action": {
+              "status": "filled",
+              "value": "carry out the inspection and movement"
+            },
+            "actor": {
+              "status": "filled",
+              "value": "workshop service robot"
+            },
+            "conditions": {
+              "status": "filled",
+              "value": "tag scanned, path clear"
+            },
+            "constraints": {
+              "status": "filled",
+              "value": "after scheduled tool change, continuing until setup is ready"
+            },
+            "destination": {
+              "status": "filled",
+              "value": "parts washer"
+            },
+            "negation": {
+              "status": "filled",
+              "value": "not merely assessing"
+            },
+            "object": {
+              "status": "filled",
+              "value": "metal bracket"
+            },
+            "object_attributes": {
+              "status": "filled",
+              "value": "metal bracket"
+            },
+            "quantity": {
+              "status": "filled",
+              "value": "one"
+            },
+            "recipient": {
+              "status": "filled",
+              "value": "workshop service robot"
+            },
+            "spatial_relation": {
+              "status": "filled",
+              "value": "path clear"
+            },
+            "time": {
+              "status": "filled",
+              "value": "after scheduled tool change, continuing until setup is ready"
+            },
+            "tool": {
+              "status": "filled",
+              "value": "low-force inspection tools"
+            }
+          },
+          "findings": [
+            "pilot_ambiguity_types:[\"action_order\",\"object_reference\",\"pragmatic\",\"temporal_reference\"]",
+            "pilot_capability_status:unauthorized",
+            "intent_summary_present"
+          ],
+          "intent_summary": "Perform both the inspection and movement of the metal bracket after the scheduled tool change, continuing until the setup is ready",
+          "primary_ambiguity_type": "pragmatic",
+          "recommended_strategy": "clarify",
+          "rejection_reason": null,
+          "resolution_evidence": [],
+          "resolution_method": null,
+          "resolved_slots": [
+            {
+              "slot_name": "action",
+              "value": "carry out the inspection and movement"
+            },
+            {
+              "slot_name": "actor",
+              "value": "workshop service robot"
+            },
+            {
+              "slot_name": "object",
+              "value": "metal bracket"
+            },
+            {
+              "slot_name": "object_attributes",
+              "value": "metal bracket"
+            },
+            {
+              "slot_name": "destination",
+              "value": "parts washer"
+            },
+            {
+              "slot_name": "spatial_relation",
+              "value": "path clear"
+            },
+            {
+              "slot_name": "quantity",
+              "value": "one"
+            },
+            {
+              "slot_name": "time",
+              "value": "after scheduled tool change, continuing until setup is ready"
+            },
+            {
+              "slot_name": "recipient",
+              "value": "workshop service robot"
+            },
+            {
+              "slot_name": "tool",
+              "value": "low-force inspection tools"
+            },
+            {
+              "slot_name": "conditions",
+              "value": "tag scanned, path clear"
+            },
+            {
+              "slot_name": "constraints",
+              "value": "after scheduled tool change, continuing until setup is ready"
+            },
+            {
+              "slot_name": "negation",
+              "value": "not merely assessing"
+            }
+          ],
+          "risk_level": "high",
+          "risk_relevant": true,
+          "selected_interpretation": null,
+          "speech_act": "indirect_request",
+          "strategy_sequence": [],
+          "supporting_evidence": [],
+          "unresolved_slots": [],
+          "unsupported_specificity": []
+        },
+        "clarification_question": "Could you clarify what you would like me to do?",
+        "clarification_targets": [
+          "intent"
+        ],
+        "execution_status": "ok",
+        "official_result": false,
+        "provider_provenance": {
+          "shared_analysis_fingerprint": "4e7a1225281fe07cbdf6bf1d71e113aa614352e7f6924f2a7e9ef7e9cd1213c1"
+        },
+        "recommended_strategy": "clarify",
+        "record_id": "CA-0573",
+        "rejection_reason": null,
+        "resolved_slots": [
+          {
+            "slot_name": "action",
+            "value": "carry out the inspection and movement"
+          },
+          {
+            "slot_name": "actor",
+            "value": "workshop service robot"
+          },
+          {
+            "slot_name": "object",
+            "value": "metal bracket"
+          },
+          {
+            "slot_name": "object_attributes",
+            "value": "metal bracket"
+          },
+          {
+            "slot_name": "destination",
+            "value": "parts washer"
+          },
+          {
+            "slot_name": "spatial_relation",
+            "value": "path clear"
+          },
+          {
+            "slot_name": "quantity",
+            "value": "one"
+          },
+          {
+            "slot_name": "time",
+            "value": "after scheduled tool change, continuing until setup is ready"
+          },
+          {
+            "slot_name": "recipient",
+            "value": "workshop service robot"
+          },
+          {
+            "slot_name": "tool",
+            "value": "low-force inspection tools"
+          },
+          {
+            "slot_name": "conditions",
+            "value": "tag scanned, path clear"
+          },
+          {
+            "slot_name": "constraints",
+            "value": "after scheduled tool change, continuing until setup is ready"
+          },
+          {
+            "slot_name": "negation",
+            "value": "not merely assessing"
+          }
+        ],
+        "result_hash": "7eda39b89fd71426cc0e528877a2cbef373dc0f673a66079380596b45b344d95",
+        "run_id": null,
+        "run_mode": null,
+        "runtime_metadata": {
+          "shared_analysis_fingerprint": "4e7a1225281fe07cbdf6bf1d71e113aa614352e7f6924f2a7e9ef7e9cd1213c1",
+          "thresholds_status": "unfrozen",
+          "thresholds_valid_for_official_use": false,
+          "uncertainty_score": 0.85,
+          "uses_type_risk_capability_precedence": false
+        },
+        "safety_findings": [],
+        "strategy_sequence": [],
+        "synthetic_only": true,
+        "system_id": "degree_based_router",
+        "system_version": "1.0.0",
+        "unsupported_commitment_findings": []
+      },
+      "raw_output": "{\n  \"intent_summary\": \"Perform both the inspection and movement of the metal bracket after the scheduled tool change, continuing until the setup is ready\",\n  \"cpc\": {\n    \"action\": {\n      \"status\": \"unknown\",\n      \"value\": \"carry out the inspection and movement\"\n    },\n    \"object\": {\n      \"status\": \"unknown\",\n      \"value\": \"metal bracket\"\n    },\n    \"time\": {\n      \"status\": \"unknown\",\n      \"value\": \"after scheduled tool change, continuing until setup is ready\"\n    }\n \n  ,\n  \"constraints\": {\n    \"status\": \"unknown\",\n    \"value\": \"after scheduled tool change, continuing until setup is ready\"\n  },\n  \"spatial_relation\": {\n    \"status\": \"unknown\",\n    \"value\": \"path clear\"\n  },\n  \"tool\": {\n    \"status\": \"unknown\",\n    \"value\": \"low-force inspection tools\"\n  },\n  \"recipient\": {\n    \"status\": \"unknown\",\n    \"value\": \"workshop service robot\"\n  },\n  \"destination\": {\n    \"status\": \"unknown\",\n    \"value\": \"parts washer\"\n  },\n  \"conditions\": {\n    \"status\": \"unknown\",\n    \"value\": \"tag scanned, path clear\"\n  },\n  \"negation\": {\n    \"status\": \"unknown\",\n    \"value\": \"not merely assessing\"\n  },\n  \"actor\": {\n    \"status\": \"unknown\",\n    \"value\": \"workshop service robot\"\n  },\n  \"object_attributes\": {\n    \"status\": \"unknown\",\n    \"value\": \"metal bracket\"\n  },\n  \"quantity\": {\n    \"status\": \"unknown\",\n    \"value\": \"one\"\n  }\n} \n\n,  \n  \"pilot_ambiguity_types\": [\n    \"pragmatic\",\n    \"temporal_reference\",\n    \"object_reference\",\n    \"action_order\"\n  ]\n  \n  ,\n  \"pilot_capability_status\": \"unauthorized\"\n  ,\n  \"speech_act\": \"indirect_request\"\n  ,\n  \"risk_level\": \"high\"\n  ,\n  \"uncertainty\": 0.85\n  ,\n  \"unresolved_slots\": [\n    \"tool\",\n    \"recipient\",\n    \"destination\",\n    \"time\"\n  ]\n}",
+      "record_id": "CA-0573",
+      "schema_valid": true,
+      "supports_ambiguity_prediction": true,
+      "supports_capability_prediction": true,
+      "system_id": "degree_based_router_v2",
+      "system_version": "2.0.0",
+      "terminal_strategy": "clarify"
+    },
+    "timid": {
+      "ambiguity_types": [
+        "action_order",
+        "object_reference",
+        "pragmatic",
+        "temporal_reference"
+      ],
+      "analysis_attempts": [
+        {
+          "attempt": 1,
+          "max_new_tokens": 4096,
+          "mode": "thinking",
+          "raw_chars": 8991,
+          "raw_sha256": "356f0e7760d6368b15e1a4b631f5cbfcbabd22d2be3514f23bd8c09c59cf5999",
+          "validation_error": "bad_pilot_ambiguity_types"
+        },
+        {
+          "attempt": 2,
+          "max_new_tokens": 8192,
+          "mode": "thinking_retry",
+          "raw_chars": 12115,
+          "raw_sha256": "6244ba939a16a53eeefd76ef0e3c2a75f52080aada128f6f5aafd5e8ed15f46d",
+          "validation_error": "bad_pilot_ambiguity_types"
+        },
+        {
+          "attempt": 3,
+          "constraint": {
+            "constraint_initialised": true,
+            "generated_token_count": 503,
+            "maximum_output_tokens": 1024,
+            "response_mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+            "termination_reason": "eos_or_constraint_stop",
+            "transport_status": "constrained_generated"
+          },
+          "max_new_tokens": 1024,
+          "mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+          "raw_chars": 1695,
+          "raw_sha256": "79af74e765aa24770deec90ad34069e22d114f6d5da9bbf35e92f1527bb0c9df",
+          "validation_error": null
+        }
+      ],
+      "capability_status": "unauthorized",
+      "claim_boundary": "separately_versioned_from_frozen_t39",
+      "error": null,
+      "execution_mode": "cluster-gpu-goal-first-v2",
+      "failed": false,
+      "intent_summary": "Perform both the inspection and movement of the metal bracket after the scheduled tool change, continuing until the setup is ready",
+      "latency_ms": 165722.51292783767,
+      "model_id": "Qwen/Qwen3-8B@b968826d9c46dd6066d109eabc6255188de91218",
+      "parsed": {
+        "analysis": {
+          "ambiguity_present": true,
+          "ambiguity_types": [
+            "pragmatic",
+            "referential",
+            "temporal"
+          ],
+          "analysis_provenance": {
+            "analysis_id": "f37e969543f6ece32b4c0c62566ebc71deb2172d4996ba2db3052ef8a3ee69b4",
+            "method": "model_generated",
+            "notes": "source_input_hash=f37e969543f6ece32b4c0c62566ebc71deb2172d4996ba2db3052ef8a3ee69b4;no_gold_in_prompt;scene_licence_dropped=tool,recipient,destination,time",
+            "provider_id": "goal_first_v2_full_context",
+            "provider_version": "goal-first-manager-v2"
+          },
+          "candidate_interpretations": [],
+          "capability_status": "unknown",
+          "clarification_question": "Before I continue, could you clarify: pragmatic, referential, temporal?",
+          "clarification_targets": [
+            "pragmatic",
+            "referential",
+            "temporal"
+          ],
+          "compound_ambiguity": true,
+          "compound_ambiguity_count": 3,
+          "context_sampling_uncertainty": {
+            "agreement": 0.15000000000000002,
+            "score": 0.85,
+            "variant_count": 1
+          },
+          "cpc": {
+            "action": {
+              "status": "filled",
+              "value": "carry out the inspection and movement"
+            },
+            "actor": {
+              "status": "filled",
+              "value": "workshop service robot"
+            },
+            "conditions": {
+              "status": "filled",
+              "value": "tag scanned, path clear"
+            },
+            "constraints": {
+              "status": "filled",
+              "value": "after scheduled tool change, continuing until setup is ready"
+            },
+            "destination": {
+              "status": "filled",
+              "value": "parts washer"
+            },
+            "negation": {
+              "status": "filled",
+              "value": "not merely assessing"
+            },
+            "object": {
+              "status": "filled",
+              "value": "metal bracket"
+            },
+            "object_attributes": {
+              "status": "filled",
+              "value": "metal bracket"
+            },
+            "quantity": {
+              "status": "filled",
+              "value": "one"
+            },
+            "recipient": {
+              "status": "filled",
+              "value": "workshop service robot"
+            },
+            "spatial_relation": {
+              "status": "filled",
+              "value": "path clear"
+            },
+            "time": {
+              "status": "filled",
+              "value": "after scheduled tool change, continuing until setup is ready"
+            },
+            "tool": {
+              "status": "filled",
+              "value": "low-force inspection tools"
+            }
+          },
+          "findings": [
+            "pilot_ambiguity_types:[\"action_order\",\"object_reference\",\"pragmatic\",\"temporal_reference\"]",
+            "pilot_capability_status:unauthorized",
+            "intent_summary_present"
+          ],
+          "intent_summary": "Perform both the inspection and movement of the metal bracket after the scheduled tool change, continuing until the setup is ready",
+          "primary_ambiguity_type": "pragmatic",
+          "recommended_strategy": "clarify",
+          "rejection_reason": null,
+          "resolution_evidence": [],
+          "resolution_method": null,
+          "resolved_slots": [
+            {
+              "slot_name": "action",
+              "value": "carry out the inspection and movement"
+            },
+            {
+              "slot_name": "actor",
+              "value": "workshop service robot"
+            },
+            {
+              "slot_name": "object",
+              "value": "metal bracket"
+            },
+            {
+              "slot_name": "object_attributes",
+              "value": "metal bracket"
+            },
+            {
+              "slot_name": "destination",
+              "value": "parts washer"
+            },
+            {
+              "slot_name": "spatial_relation",
+              "value": "path clear"
+            },
+            {
+              "slot_name": "quantity",
+              "value": "one"
+            },
+            {
+              "slot_name": "time",
+              "value": "after scheduled tool change, continuing until setup is ready"
+            },
+            {
+              "slot_name": "recipient",
+              "value": "workshop service robot"
+            },
+            {
+              "slot_name": "tool",
+              "value": "low-force inspection tools"
+            },
+            {
+              "slot_name": "conditions",
+              "value": "tag scanned, path clear"
+            },
+            {
+              "slot_name": "constraints",
+              "value": "after scheduled tool change, continuing until setup is ready"
+            },
+            {
+              "slot_name": "negation",
+              "value": "not merely assessing"
+            }
+          ],
+          "risk_level": "high",
+          "risk_relevant": true,
+          "selected_interpretation": null,
+          "speech_act": "indirect_request",
+          "strategy_sequence": [],
+          "supporting_evidence": [],
+          "unresolved_slots": [],
+          "unsupported_specificity": []
+        },
+        "clarification_question": "Before I continue, could you clarify: pragmatic, referential, temporal?",
+        "clarification_targets": [
+          "pragmatic",
+          "referential",
+          "temporal"
+        ],
+        "execution_status": "ok",
+        "official_result": false,
+        "provider_provenance": {
+          "provider_id": "cached_analysis",
+          "provider_version": "1.0.0"
+        },
+        "recommended_strategy": "clarify",
+        "record_id": "CA-0573",
+        "rejection_reason": null,
+        "resolved_slots": [
+          {
+            "slot_name": "action",
+            "value": "carry out the inspection and movement"
+          },
+          {
+            "slot_name": "actor",
+            "value": "workshop service robot"
+          },
+          {
+            "slot_name": "object",
+            "value": "metal bracket"
+          },
+          {
+            "slot_name": "object_attributes",
+            "value": "metal bracket"
+          },
+          {
+            "slot_name": "destination",
+            "value": "parts washer"
+          },
+          {
+            "slot_name": "spatial_relation",
+            "value": "path clear"
+          },
+          {
+            "slot_name": "quantity",
+            "value": "one"
+          },
+          {
+            "slot_name": "time",
+            "value": "after scheduled tool change, continuing until setup is ready"
+          },
+          {
+            "slot_name": "recipient",
+            "value": "workshop service robot"
+          },
+          {
+            "slot_name": "tool",
+            "value": "low-force inspection tools"
+          },
+          {
+            "slot_name": "conditions",
+            "value": "tag scanned, path clear"
+          },
+          {
+            "slot_name": "constraints",
+            "value": "after scheduled tool change, continuing until setup is ready"
+          },
+          {
+            "slot_name": "negation",
+            "value": "not merely assessing"
+          }
+        ],
+        "result_hash": "ec60c6f6dee94efaa12ef8704c4031aa0cfc45ce3ea7d30f0cb91ac5ff507bf4",
+        "run_id": null,
+        "run_mode": null,
+        "runtime_metadata": {
+          "awaits_t28_adapter": true,
+          "classification": {
+            "ambiguity_present": true,
+            "ambiguity_types": [
+              "pragmatic",
+              "referential",
+              "temporal"
+            ],
+            "capability_status": "unknown",
+            "compound_ambiguity": true,
+            "compound_ambiguity_count": 3,
+            "derivation_notes": [
+              "ambiguity_present_from_types"
+            ],
+            "risk_level": "high"
+          },
+          "rejection_text": null,
+          "requires_re_evaluation": false,
+          "resolution_events": [],
+          "router_trace": {
+            "clarification_targets": [
+              "pragmatic",
+              "referential",
+              "temporal"
+            ],
+            "considered_rules": [
+              "known_unsafe_or_prohibited",
+              "known_incapable",
+              "unknown_or_unverified_capability"
+            ],
+            "matched_rule_id": "unknown_capability",
+            "notes": [
+              "unknown_capability_cannot_execute"
+            ],
+            "recommended_strategy": "clarify",
+            "rejection_reason": null,
+            "requires_re_evaluation": false,
+            "strategy_sequence": []
+          },
+          "safety_action": "return_with_findings",
+          "uncertainty": null
+        },
+        "safety_findings": [],
+        "strategy_sequence": [],
+        "synthetic_only": true,
+        "system_id": "full_type_risk_aware_manager",
+        "system_version": "1.0.0",
+        "unsupported_commitment_findings": []
+      },
+      "raw_output": "{\n  \"intent_summary\": \"Perform both the inspection and movement of the metal bracket after the scheduled tool change, continuing until the setup is ready\",\n  \"cpc\": {\n    \"action\": {\n      \"status\": \"unknown\",\n      \"value\": \"carry out the inspection and movement\"\n    },\n    \"object\": {\n      \"status\": \"unknown\",\n      \"value\": \"metal bracket\"\n    },\n    \"time\": {\n      \"status\": \"unknown\",\n      \"value\": \"after scheduled tool change, continuing until setup is ready\"\n    }\n \n  ,\n  \"constraints\": {\n    \"status\": \"unknown\",\n    \"value\": \"after scheduled tool change, continuing until setup is ready\"\n  },\n  \"spatial_relation\": {\n    \"status\": \"unknown\",\n    \"value\": \"path clear\"\n  },\n  \"tool\": {\n    \"status\": \"unknown\",\n    \"value\": \"low-force inspection tools\"\n  },\n  \"recipient\": {\n    \"status\": \"unknown\",\n    \"value\": \"workshop service robot\"\n  },\n  \"destination\": {\n    \"status\": \"unknown\",\n    \"value\": \"parts washer\"\n  },\n  \"conditions\": {\n    \"status\": \"unknown\",\n    \"value\": \"tag scanned, path clear\"\n  },\n  \"negation\": {\n    \"status\": \"unknown\",\n    \"value\": \"not merely assessing\"\n  },\n  \"actor\": {\n    \"status\": \"unknown\",\n    \"value\": \"workshop service robot\"\n  },\n  \"object_attributes\": {\n    \"status\": \"unknown\",\n    \"value\": \"metal bracket\"\n  },\n  \"quantity\": {\n    \"status\": \"unknown\",\n    \"value\": \"one\"\n  }\n} \n\n,  \n  \"pilot_ambiguity_types\": [\n    \"pragmatic\",\n    \"temporal_reference\",\n    \"object_reference\",\n    \"action_order\"\n  ]\n  \n  ,\n  \"pilot_capability_status\": \"unauthorized\"\n  ,\n  \"speech_act\": \"indirect_request\"\n  ,\n  \"risk_level\": \"high\"\n  ,\n  \"uncertainty\": 0.85\n  ,\n  \"unresolved_slots\": [\n    \"tool\",\n    \"recipient\",\n    \"destination\",\n    \"time\"\n  ]\n}",
+      "record_id": "CA-0573",
+      "schema_valid": true,
+      "supports_ambiguity_prediction": true,
+      "supports_capability_prediction": true,
+      "system_id": "rich_conservative_manager_v2",
+      "system_version": "2.0.0",
+      "terminal_strategy": "clarify"
+    },
+    "context_blind": {
+      "ambiguity_types": [
+        "pragmatic",
+        "temporal_reference"
+      ],
+      "analysis_attempts": [
+        {
+          "attempt": 1,
+          "max_new_tokens": 4096,
+          "mode": "thinking",
+          "raw_chars": 4769,
+          "raw_sha256": "2aa9ad87e9fe62e34c7e8dd1ce36ee4e9d076a701ab6856609032ba18e47ef1f",
+          "validation_error": "bad_intent_summary"
+        },
+        {
+          "attempt": 2,
+          "max_new_tokens": 8192,
+          "mode": "thinking_retry",
+          "raw_chars": 8326,
+          "raw_sha256": "c343177a95d528368a3e27618fb67be415abf61c97d6bf598ead646d15d7e466",
+          "validation_error": "bad_pilot_ambiguity_types"
+        },
+        {
+          "attempt": 3,
+          "constraint": {
+            "constraint_initialised": true,
+            "generated_token_count": 492,
+            "maximum_output_tokens": 1024,
+            "response_mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+            "termination_reason": "eos_or_constraint_stop",
+            "transport_status": "constrained_generated"
+          },
+          "max_new_tokens": 1024,
+          "mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+          "raw_chars": 1707,
+          "raw_sha256": "aa248427edb1599d1036778b72b0f38251a5fecd55bfe8e0f3fc5b0d9b1722a7",
+          "validation_error": null
+        }
+      ],
+      "capability_status": "incapable",
+      "claim_boundary": "separately_versioned_from_frozen_t39",
+      "error": null,
+      "execution_mode": "cluster-gpu-goal-first-v2",
+      "failed": false,
+      "intent_summary": "Carry out inspection and movement of the metal bracket after a tool change, continuing until setup is ready",
+      "latency_ms": 80822.12966540828,
+      "model_id": "Qwen/Qwen3-8B@b968826d9c46dd6066d109eabc6255188de91218",
+      "parsed": {
+        "analysis": {
+          "ambiguity_present": true,
+          "ambiguity_types": [
+            "pragmatic",
+            "temporal"
+          ],
+          "analysis_provenance": {
+            "analysis_id": "f152cdad06869783c8f021963c257930d77e81723890326cf7780622d9b0e95d",
+            "method": "context_blind",
+            "notes": "ablated_input_hash=f152cdad06869783c8f021963c257930d77e81723890326cf7780622d9b0e95d;source_input_hash=f152cdad06869783c8f021963c257930d77e81723890326cf7780622d9b0e95d;no_gold_in_prompt;scene_licence_dropped=destination",
+            "provider_id": "goal_first_v2_context_blind",
+            "provider_version": "goal-first-manager-v2"
+          },
+          "candidate_interpretations": [],
+          "capability_status": "incapable",
+          "clarification_question": null,
+          "clarification_targets": [],
+          "compound_ambiguity": true,
+          "compound_ambiguity_count": 2,
+          "context_sampling_uncertainty": {
+            "agreement": 0.30000000000000004,
+            "score": 0.7,
+            "variant_count": 1
+          },
+          "cpc": {
+            "action": {
+              "status": "not_applicable",
+              "value": "carry out inspection and movement of the metal bracket"
+            },
+            "actor": {
+              "status": "not_applicable",
+              "value": "not specified"
+            },
+            "conditions": {
+              "status": "not_applicable",
+              "value": "after a scheduled tool change, continuing until the setup is ready"
+            },
+            "constraints": {
+              "status": "not_applicable",
+              "value": "not specified"
+            },
+            "destination": {
+              "status": "not_applicable",
+              "value": "not specified"
+            },
+            "negation": {
+              "status": "not_applicable",
+              "value": "not specified"
+            },
+            "object": {
+              "status": "not_applicable",
+              "value": "metal bracket"
+            },
+            "object_attributes": {
+              "status": "not_applicable",
+              "value": "not specified"
+            },
+            "quantity": {
+              "status": "not_applicable",
+              "value": "not specified"
+            },
+            "recipient": {
+              "status": "not_applicable",
+              "value": "not specified"
+            },
+            "spatial_relation": {
+              "status": "not_applicable",
+              "value": "not specified"
+            },
+            "time": {
+              "status": "not_applicable",
+              "value": "after a scheduled tool change, continuing until the setup is ready"
+            },
+            "tool": {
+              "status": "not_applicable",
+              "value": "not specified"
+            }
+          },
+          "findings": [
+            "pilot_ambiguity_types:[\"pragmatic\",\"temporal_reference\"]",
+            "pilot_capability_status:incapable",
+            "intent_summary_present"
+          ],
+          "intent_summary": "Carry out inspection and movement of the metal bracket after a tool change, continuing until setup is ready",
+          "primary_ambiguity_type": "pragmatic",
+          "recommended_strategy": "face_preserving_rejection",
+          "rejection_reason": "known_incapability",
+          "resolution_evidence": [],
+          "resolution_method": null,
+          "resolved_slots": [],
+          "risk_level": "medium",
+          "risk_relevant": true,
+          "selected_interpretation": null,
+          "speech_act": "indirect_request",
+          "strategy_sequence": [],
+          "supporting_evidence": [],
+          "unresolved_slots": [
+            {
+              "reason": "model_identified_uncertainty",
+              "slot_name": "tool"
+            },
+            {
+              "reason": "model_identified_uncertainty",
+              "slot_name": "recipient"
+            }
+          ],
+          "unsupported_specificity": []
+        },
+        "clarification_question": null,
+        "clarification_targets": [],
+        "execution_status": "ok",
+        "official_result": false,
+        "provider_provenance": {
+          "provider_id": "cached_analysis",
+          "provider_version": "1.0.0"
+        },
+        "recommended_strategy": "face_preserving_rejection",
+        "record_id": "CA-0573",
+        "rejection_reason": "known_incapability",
+        "resolved_slots": [],
+        "result_hash": "75eef81a8da4aabb10479ecba55d70051b038b5a87bf4f0532f0ddd887483a55",
+        "run_id": null,
+        "run_mode": null,
+        "runtime_metadata": {
+          "analysis_identity": {
+            "analysis_content_hash": "1254d7af16854fa72272b223e717f181d764bd7a1507f2b69d201352da349c17",
+            "analysis_variant": "context_blind",
+            "model_strategy_id": null,
+            "provider_id": "goal_first_v2_context_blind",
+            "provider_version": "goal-first-manager-v2",
+            "record_id": "CA-0573",
+            "source_input_hash": "f152cdad06869783c8f021963c257930d77e81723890326cf7780622d9b0e95d"
+          },
+          "analysis_identity_fingerprint": "e255c726df88923763024fcab5665c87ffa9a9d805b10af906e71d378309e497",
+          "awaits_t28_adapter": true,
+          "classification": {
+            "ambiguity_present": true,
+            "ambiguity_types": [
+              "pragmatic",
+              "temporal"
+            ],
+            "capability_status": "incapable",
+            "compound_ambiguity": true,
+            "compound_ambiguity_count": 2,
+            "derivation_notes": [
+              "ambiguity_present_from_types"
+            ],
+            "risk_level": "medium"
+          },
+          "context_ablation": {
+            "ablated_input_hash": "f152cdad06869783c8f021963c257930d77e81723890326cf7780622d9b0e95d",
+            "capability_context_removed": true,
+            "dialogue_history_removed": true,
+            "rejected_full_context_cache": false,
+            "rejection_reason": null,
+            "scene_context_removed": true,
+            "stripped_context_derived_fields": false
+          },
+          "original_input_unmutated": true,
+          "rejection_text": "I am not able to perform that action with my current capabilities. I will not invent an alternative that is not supported.",
+          "requires_re_evaluation": false,
+          "resolution_events": [
+            {
+              "confidence_category": "blocked",
+              "details": {
+                "risk_level": "medium"
+              },
+              "evidence_source": null,
+              "outcome": "resolution_blocked_by_risk",
+              "previous_status": "unresolved",
+              "resolved_value": null,
+              "rule_id": "risk_block",
+              "safety_eligibility": false,
+              "slot": "tool"
+            },
+            {
+              "confidence_category": "blocked",
+              "details": {
+                "risk_level": "medium"
+              },
+              "evidence_source": null,
+              "outcome": "resolution_blocked_by_risk",
+              "previous_status": "unresolved",
+              "resolved_value": null,
+              "rule_id": "risk_block",
+              "safety_eligibility": false,
+              "slot": "recipient"
+            }
+          ],
+          "router_trace": {
+            "clarification_targets": [],
+            "considered_rules": [
+              "goal_first_v2",
+              "known_unsafe_or_prohibited",
+              "known_incapable"
+            ],
+            "matched_rule_id": "known_incapable",
+            "notes": [],
+            "recommended_strategy": "face_preserving_rejection",
+            "rejection_reason": "known_incapability",
+            "requires_re_evaluation": false,
+            "strategy_sequence": []
+          },
+          "safety_action": "return_with_findings",
+          "uncertainty": null
+        },
+        "safety_findings": [],
+        "strategy_sequence": [],
+        "synthetic_only": true,
+        "system_id": "context_blind_manager",
+        "system_version": "1.0.0",
+        "unsupported_commitment_findings": []
+      },
+      "raw_output": "{\n  \"intent_summary\": \"Carry out inspection and movement of the metal bracket after a tool change, continuing until setup is ready\",\n  \"cpc\": {\n    \"action\": {\n      \"value\": \"carry out inspection and movement of the metal bracket\",\n      \"status\": \"not_applicable\"\n    },\n    \"time\": {\n      \"value\": \"after a scheduled tool change, continuing until the setup is ready\",\n      \"status\": \"not_applicable\"\n    },\n    \"object\": {\n      \"value\": \"metal bracket\",\n      \"status\": \"not_applicable\"\n    },\n    \"recipient\": {\n      \"value\": \"not specified\",\n      \"status\": \"not_applicable\"\n    },\n    \"tool\": {\n      \"value\": \"not specified\",\n      \"status\": \"not_applicable\"\n    }\n  ,\n  \"conditions\": {\n    \"value\": \"after a scheduled tool change, continuing until the setup is ready\",\n    \"status\": \"not_applicable\"\n  },\n  \"constraints\": {\n    \"value\": \"not specified\",\n    \"status\": \"not_applicable\"\n  },\n  \"spatial_relation\": {\n    \"value\": \"not specified\",\n    \"status\": \"not_applicable\"\n  },\n  \"negation\": {\n    \"value\": \"not specified\",\n    \"status\": \"not_applicable\"\n  },\n  \"quantity\": {\n    \"value\": \"not specified\",\n    \"status\": \"not_applicable\"\n  },\n  \"destination\": {\n    \"value\": \"not specified\",\n    \"status\": \"not_applicable\"\n  },\n  \"object_attributes\": {\n    \"value\": \"not specified\",\n    \"status\": \"not_applicable\"\n  },\n  \"actor\": {\n    \"value\": \"not specified\",\n    \"status\": \"not_applicable\"\n  }\n}\n,\n  \"pilot_ambiguity_types\": [\n    \"pragmatic\",\n    \"temporal_reference\"\n  ]\n  ,\n  \"pilot_capability_status\": \"incapable\"\n  ,\n  \"speech_act\": \"indirect_request\"\n  ,\n  \"risk_level\": \"medium\"\n  ,\n  \"uncertainty\": 0.7\n  ,\n  \"unresolved_slots\": [\n    \"tool\",\n    \"recipient\",\n    \"destination\"\n  ]\n}",
+      "record_id": "CA-0573",
+      "schema_valid": true,
+      "supports_ambiguity_prediction": true,
+      "supports_capability_prediction": true,
+      "system_id": "goal_first_context_blind_v2",
+      "system_version": "2.0.0",
+      "terminal_strategy": "face_preserving_rejection"
+    }
+  },
+  "provenance": {
+    "source_sha256": "f33b1e29f1e8aa256a475f07213aa07247def47d8e2148d54a472a40b71b05c9",
+    "gold_sha256": "5e23ad1a92ff1873c8f039a8ce560a111dd6fb6b8ae8c11d6cf34dbfa1c360db",
+    "t07_final_zip_sha256": "34ca50e034ca37b617068bb50c734d12fa26282fb5eec563c11ead700163e491",
+    "inherited_t07_zip_sha256": "0305b1e9ab062876ee6ee89778cc6028d2eaf01718b7dd0295944e7d9cb81a01",
+    "note": "Goal-First, Degree, Timid, and Context-Blind predictions are inherited from the earlier T0.7 run; official intent and comparison come from the final T0.7 archive."
+  }
+}

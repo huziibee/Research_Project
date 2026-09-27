@@ -1,0 +1,1127 @@
+{
+  "record_id": "CA-0907",
+  "frozen_source": {
+    "capability_context": "Warehouse transport robot can scan, weigh, and move approved loads with a powered base and rated handling attachments. It can perform routine exterior cleaning of approved items using site-approved methods.",
+    "command": "Clean the marked carton after the quality inspection until it is reasonably clean.",
+    "dialogue_history": [],
+    "record_id": "CA-0907",
+    "scene_context": "Inbound bay in a warehouse. Two cartons carry work-order marks: the white one beside the return zone has an orange PENDING tag, while the red one near the roller door has a yellow COMPLETE tag. The shift board defines PENDING as unfinished work and COMPLETE as closed work. The schedule note links this job to the quality inspection at 09:00, not the later occurrence at 13:00. The cleaning standard defines 'reasonably clean' as no visible residue under the inspection light and a passed surface scan. The active work order authorizes routine exterior cleaning of this item with the site-approved method."
+  },
+  "frozen_gold": {
+    "ambiguity_types": [
+      "endpoint_vagueness",
+      "object_reference",
+      "temporal_reference"
+    ],
+    "annotator_b_era": "glm_era",
+    "annotator_b_model": "glm-5.2-high",
+    "capability_status": "capable",
+    "field_status": {
+      "ambiguity_types": "human_auditor:endpoint_only",
+      "capability_status": "human_auditor:independent",
+      "record_validity": "auto_agree",
+      "strategy_sequence": "human_auditor:A",
+      "terminal_strategy": "human_auditor:A"
+    },
+    "gold_lifecycle": "final_gold",
+    "gold_status": "adjudicated",
+    "human_gate_required": false,
+    "provenance": {
+      "agreement_label": "pilot_annotation_agreement",
+      "annotator_a_sha256": "81226f2f183366b47a51d65e70b7b91ec3c2cd3a0e8bbe8f62c214bf2469dc32",
+      "annotator_b_sha256": "9dfa1f724b65cd84d98e752c0ae1e8ef75ebaeaffc09737b9e50bf551b2bb547",
+      "gold_policy": "use_existing_pilot_adjudicated_gold",
+      "human_auditor_repair": "capability_context now states exterior cleaning; 'reasonably clean' counted as endpoint_vagueness only; capability independent of silently_resolve",
+      "input_sha256": "8fb0cc8fb4905fc1f865954d7c4290f9d53f13602b725d52bf680ab697d35831",
+      "pilot_gold_sha256": "77a340ec14c8e6f082fc99eddf263238153b8a1ecabb42b959ed291ec0603b40",
+      "protocol": "pilot_adjudicated_gold_on_capability_repaired_source",
+      "repaired_input_sha256": "25e038bd515a42eece86a35dc17d2e032dd5ec186ddb4397f7f2ad60eabe7166"
+    },
+    "record_id": "CA-0907",
+    "record_validity": "valid",
+    "strategy_sequence": [
+      "silently_resolve",
+      "execute"
+    ],
+    "terminal_strategy": "execute"
+  },
+  "t07_comparison": {
+    "record_id": "CA-0907",
+    "gold_route": "execute",
+    "raw_route": "execute",
+    "ft_route": "execute",
+    "gf_route": "execute",
+    "raw_route_ok": "True",
+    "ft_route_ok": "True",
+    "gf_route_ok": "True",
+    "raw_official_intent": "True",
+    "ft_official_intent": "True",
+    "gf_official_intent": "True",
+    "blind_official_intent": "True"
+  },
+  "t07_official_intent": {
+    "context_blind_official_intent": true,
+    "degree_official_intent_shared_gf": true,
+    "finetune_official_intent": true,
+    "goal_first_official_intent": true,
+    "raw_official_intent": true,
+    "record_id": "CA-0907",
+    "timid_official_intent_shared_gf": true
+  },
+  "t07_predictions": {
+    "raw_qwen": {
+      "ambiguity_types": [
+        "object_reference"
+      ],
+      "capability_status": "capable",
+      "error": null,
+      "execution_mode": "final_close_intent_box",
+      "failed": false,
+      "intent_summary": "The user wants the robot to clean the marked carton (specifically the PENDING one) after the quality inspection at 09:00 until it meets the 'reasonably clean' standard.",
+      "latency_ms": 22247.133042197675,
+      "parsed": {
+        "ambiguity_types": [
+          "object_reference"
+        ],
+        "capability_status": "capable",
+        "intent_summary": "The user wants the robot to clean the marked carton (specifically the PENDING one) after the quality inspection at 09:00 until it meets the 'reasonably clean' standard.",
+        "speech_act": "directive_command",
+        "terminal_strategy": "execute"
+      },
+      "raw_output": "<think>\nOkay, let's tackle this query. The user wants me to evaluate the robot command: \"Clean the marked carton after the quality inspection until it is reasonably clean.\" \n\nFirst, I need to break down the intent. The main job here is cleaning a specific carton. The command mentions \"after the quality inspection,\" which implies timing. The carton is marked, so it's likely one of the two mentioned in the scene context—either the white PENDING or red COMPLETE. But the shift board says PENDING is unfinished, and the schedule note links the job to the 09:00 inspection, not 13:00. So the PENDING carton is the target here.\n\nNext, the speech act. The command is a directive to perform an action, so it's a directive_command. The user is telling the robot what to do.\n\nAmbiguity types: The command says \"marked carton,\" but there are two marked cartons. However, the context specifies which one is relevant based on the schedule note. So maybe there's a reference to the correct carton, but since the scene context provides that info, maybe it's not ambiguous. Wait, the command doesn't specify which mark, but the context tells us which one is relevant. However, the command itself doesn't mention the tags, so maybe there's a reference to the marked carton, but the ambiguity here could be object_reference since the robot needs to identify which carton is marked. But the scene context says there are two marked cartons, so the command might be ambiguous without more info. But the active work order authorizes cleaning based on the tags, so maybe the robot can determine which one based on the tags. So maybe no ambiguity here? Or is there a reference to the carton's state (PENDING vs. COMPLETE)? The command says \"after the quality inspection,\" which is linked to the 09:00 time. The red one has a yellow COMPLETE tag, which might mean it's already done. But the PENDING is the one that's unfinished. So the command refers to the PENDING carton. But the command doesn't specify the tag, so the robot might need to infer which one. That's a possible ambiguity in object_reference or maybe scope. Wait, the command says \"marked carton\"—the scene context says two cartons are marked. So the robot needs to figure out which one. But the context gives info that the PENDING is the correct one. However, the command itself doesn't specify, so that's an ambiguity. But since the scene context is given, maybe the robot can use that info. So maybe there's no ambiguity here because the context clarifies. Alternatively, if the robot doesn't have access to that context, but in this case, the scene context is part of the evaluation. So maybe the ambiguity is resolved by the context, so no ambiguity types here. Wait, the ambiguity_types are about the command's own ambiguities, not the scene context. The command says \"marked carton\"—but there are two. So the ambiguity here is object_reference, because the robot needs to determine which carton is marked. But the command doesn't specify which one, leading to possible ambiguity. So I should include object_reference in ambiguity_types.\n\nCapability status: The robot can perform routine exterior cleaning of approved items using site-approved methods. The command is about cleaning a marked carton, which is part of the active work order. So the robot is capable. So capability_status is capable.\n\nTerminal strategy: Since the command is clear once the ambiguity is resolved (object_reference), the robot can execute it. But wait, the command says \"after the quality inspection\"—the timing. The quality inspection is at 09:00, so the robot needs to wait until that time. But does the robot know when that time is? The scene context mentions the schedule note links the job to the 09:00 inspection. So the robot might need to wait until that time. But the command says \"after the quality inspection,\" which is a conditional. So the robot needs to wait until the inspection is done. But the robot's capability includes performing the cleaning, so the capability is there. So the terminal strategy would be execute, as the command is actionable once the timing is known. But the command itself is a directive to clean after the inspection. So the robot can follow that. So terminal_strategy is execute.\n\nPutting it all together:\n\nintent_summary: The user wants the robot to clean the marked carton (specifically the PENDING one) after the quality inspection at 09:00 until it meets the 'reasonably clean' standard.\n\nspeech_act: directive_command\n\nambiguity_types: object_reference (since the command refers to \"marked carton\" but there are two, requiring the robot to identify which one)\n\ncapability_status: capable\n\nterminal_strategy: execute\n</think>\n\n{\n  \"intent_summary\": \"The user wants the robot to clean the marked carton (specifically the PENDING one) after the quality inspection at 09:00 until it meets the 'reasonably clean' standard.\",\n  \"speech_act\": \"directive_command\",\n  \"ambiguity_types\": [\"object_reference\"],\n  \"capability_status\": \"capable\",\n  \"terminal_strategy\": \"execute\"\n}",
+      "record_id": "CA-0907",
+      "schema_valid": true,
+      "speech_act": "directive_command",
+      "system_id": "direct_base_llm",
+      "terminal_strategy": "execute"
+    },
+    "finetune": {
+      "ambiguity_types": [
+        "degree_vagueness"
+      ],
+      "capability_status": "capable",
+      "error": null,
+      "execution_mode": "final_close_intent_box",
+      "failed": false,
+      "intent_summary": "Clean the white carton with a PENDING tag after the quality inspection at 09:00 until it meets the 'reasonably clean' standard.",
+      "latency_ms": 16643.110878765583,
+      "parsed": {
+        "ambiguity_types": [
+          "degree_vagueness"
+        ],
+        "capability_status": "capable",
+        "intent_summary": "Clean the white carton with a PENDING tag after the quality inspection at 09:00 until it meets the 'reasonably clean' standard.",
+        "speech_act": "directive_command",
+        "terminal_strategy": "execute"
+      },
+      "raw_output": "<think>\nOkay, let's tackle this query. The user wants the robot to clean a marked carton after quality inspection until it's reasonably clean. First, I need to parse the command and check against the context.\n\nThe scene context mentions two cartons with different tags. The white one has a PENDING tag (unfinished), and the red one has a COMPLETE tag (closed). The schedule note links the job to the 09:00 inspection, not the later one. The cleaning standard is about no visible residue under inspection light and a passed surface scan. The work order allows routine exterior cleaning with approved methods.\n\nThe robot can do routine exterior cleaning. The command says \"after the quality inspection,\" which is at 09:00. So the robot needs to wait until that time. But the user might be assuming that the inspection is done, so the cleaning happens after. However, the robot's capability includes cleaning, so capability status is capable. \n\nAmbiguity types: The command mentions \"until it is reasonably clean.\" The term \"reasonably\" might be vague, so degree_vagueness applies. Also, \"after the quality inspection\" might be a time reference, but the exact timing isn't specified, so maybe temporal_reference? Wait, the schedule note says the job is linked to the 09:00 inspection, so maybe that's clear. But the user might not specify if the inspection is done or not. But the work order is active, so maybe the robot knows when the inspection is. \n\nSpeech act: The command is a directive to clean after inspection. So speech_act is directive_command. \n\nTerminal strategy: Since the robot can do the task, it should execute. But wait, the command says \"until it is reasonably clean.\" The robot might need to check the cleaning standard. But the user might not have specified the exact steps. However, the capability context says it can perform routine cleaning with site-approved methods, so it's capable. \n\nSo ambiguity types include degree_vagueness from \"reasonably clean\" and maybe temporal_reference if the timing is unclear. Wait, the schedule note specifies the inspection time, so maybe temporal_reference isn't needed. But the user's command says \"after the quality inspection,\" which is at 09:00. The robot knows that time, so maybe no ambiguity. So the main ambiguity is the degree of cleanliness. So ambiguity_types: [degree_vagueness]. \n\nCapability status: capable, as the robot can perform routine cleaning. \n\nTerminal strategy: execute, since the robot can do it.\n</think>\n\n{\n  \"intent_summary\": \"Clean the white carton with a PENDING tag after the quality inspection at 09:00 until it meets the 'reasonably clean' standard.\",\n  \"speech_act\": \"directive_command\",\n  \"ambiguity_types\": [\"degree_vagueness\"],\n  \"capability_status\": \"capable\",\n  \"terminal_strategy\": \"execute\"\n}",
+      "record_id": "CA-0907",
+      "schema_valid": true,
+      "speech_act": "directive_command",
+      "system_id": "t28_selected_adapter_llm",
+      "terminal_strategy": "execute"
+    },
+    "goal_first": {
+      "ambiguity_types": [
+        "endpoint_vagueness",
+        "pragmatic",
+        "temporal_reference"
+      ],
+      "analysis_attempts": [
+        {
+          "attempt": 1,
+          "max_new_tokens": 4096,
+          "mode": "thinking",
+          "raw_chars": 8370,
+          "raw_sha256": "5f5fe3330fa087084f9d2bc8fad39b398453b18ff0560c377d2bb5cb5739417e",
+          "validation_error": "bad_intent_summary"
+        },
+        {
+          "attempt": 2,
+          "max_new_tokens": 8192,
+          "mode": "thinking_retry",
+          "raw_chars": 12420,
+          "raw_sha256": "bc7336c6401aa8badb30072ba83f71139050cf7593efb0dfcc5724fa24bdc40f",
+          "validation_error": "bad_pilot_ambiguity_types"
+        },
+        {
+          "attempt": 3,
+          "constraint": {
+            "constraint_initialised": true,
+            "generated_token_count": 633,
+            "maximum_output_tokens": 1024,
+            "response_mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+            "termination_reason": "eos_or_constraint_stop",
+            "transport_status": "constrained_generated"
+          },
+          "max_new_tokens": 1024,
+          "mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+          "raw_chars": 1735,
+          "raw_sha256": "b18ba4163273a1f62f7730b67316e05b21a2e767535995bb837415be6399dcc6",
+          "validation_error": null
+        }
+      ],
+      "capability_status": "capable",
+      "claim_boundary": "separately_versioned_from_frozen_t39",
+      "error": null,
+      "execution_mode": "cluster-gpu-goal-first-v2",
+      "failed": false,
+      "intent_summary": "Clean the marked carton after the quality inspection until it is reasonably clean",
+      "latency_ms": 176136.20229018852,
+      "model_id": "Qwen/Qwen3-8B@b968826d9c46dd6066d109eabc6255188de91218",
+      "parsed": {
+        "analysis": {
+          "ambiguity_present": true,
+          "ambiguity_types": [
+            "pragmatic",
+            "spatial",
+            "temporal"
+          ],
+          "analysis_provenance": {
+            "analysis_id": "622bfe19f88c56e2a1d178b9935728371cee498a8cc38f2791c5ede9119976b0",
+            "method": "model_generated",
+            "notes": "source_input_hash=622bfe19f88c56e2a1d178b9935728371cee498a8cc38f2791c5ede9119976b0;no_gold_in_prompt;scene_licence_dropped=time",
+            "provider_id": "goal_first_v2_full_context",
+            "provider_version": "goal-first-manager-v2"
+          },
+          "candidate_interpretations": [],
+          "capability_status": "capable",
+          "clarification_question": null,
+          "clarification_targets": [],
+          "compound_ambiguity": true,
+          "compound_ambiguity_count": 3,
+          "context_sampling_uncertainty": {
+            "agreement": 0.7,
+            "score": 0.3,
+            "variant_count": 1
+          },
+          "cpc": {
+            "action": {
+              "status": "not_applicable",
+              "value": "clean"
+            },
+            "actor": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "conditions": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "constraints": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "destination": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "negation": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "object": {
+              "status": "not_applicable",
+              "value": "marked carton"
+            },
+            "object_attributes": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "quantity": {
+              "status": "not_applicable",
+              "value": "until it is reasonably clean"
+            },
+            "recipient": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "spatial_relation": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "time": {
+              "status": "not_applicable",
+              "value": "after the quality inspection"
+            },
+            "tool": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            }
+          },
+          "findings": [
+            "pilot_ambiguity_types:[\"endpoint_vagueness\",\"pragmatic\",\"temporal_reference\"]",
+            "pilot_capability_status:capable",
+            "intent_summary_present",
+            "router_validation:execute blocked with unresolved critical safety slots"
+          ],
+          "intent_summary": "Clean the marked carton after the quality inspection until it is reasonably clean",
+          "primary_ambiguity_type": "pragmatic",
+          "recommended_strategy": "execute",
+          "rejection_reason": null,
+          "resolution_evidence": [],
+          "resolution_method": null,
+          "resolved_slots": [],
+          "risk_level": "low",
+          "risk_relevant": true,
+          "selected_interpretation": null,
+          "speech_act": "directive_command",
+          "strategy_sequence": [],
+          "supporting_evidence": [],
+          "unresolved_slots": [
+            {
+              "reason": "model_identified_uncertainty",
+              "slot_name": "quantity"
+            },
+            {
+              "reason": "model_identified_uncertainty",
+              "slot_name": "conditions"
+            }
+          ],
+          "unsupported_specificity": []
+        },
+        "clarification_question": null,
+        "clarification_targets": [],
+        "execution_status": "ok",
+        "official_result": false,
+        "provider_provenance": {
+          "provider_id": "cached_analysis",
+          "provider_version": "1.0.0"
+        },
+        "recommended_strategy": "execute",
+        "record_id": "CA-0907",
+        "rejection_reason": null,
+        "resolved_slots": [],
+        "result_hash": "38baf8d36ebc1bc61734f686eeb3013e101397a83cd37d4cfefc7afc00267eed",
+        "run_id": null,
+        "run_mode": null,
+        "runtime_metadata": {
+          "awaits_t28_adapter": true,
+          "classification": {
+            "ambiguity_present": true,
+            "ambiguity_types": [
+              "pragmatic",
+              "spatial",
+              "temporal"
+            ],
+            "capability_status": "capable",
+            "compound_ambiguity": true,
+            "compound_ambiguity_count": 3,
+            "derivation_notes": [
+              "ambiguity_present_from_types"
+            ],
+            "risk_level": "low"
+          },
+          "rejection_text": null,
+          "requires_re_evaluation": false,
+          "resolution_events": [
+            {
+              "confidence_category": "none",
+              "details": {
+                "reason": "unsupported_default_rejected"
+              },
+              "evidence_source": null,
+              "outcome": "unresolved",
+              "previous_status": "unresolved",
+              "resolved_value": null,
+              "rule_id": "no_world_knowledge_guess",
+              "safety_eligibility": false,
+              "slot": "quantity"
+            },
+            {
+              "confidence_category": "none",
+              "details": {
+                "reason": "unsupported_default_rejected"
+              },
+              "evidence_source": null,
+              "outcome": "unresolved",
+              "previous_status": "unresolved",
+              "resolved_value": null,
+              "rule_id": "no_world_knowledge_guess",
+              "safety_eligibility": false,
+              "slot": "conditions"
+            }
+          ],
+          "router_trace": {
+            "clarification_targets": [],
+            "considered_rules": [
+              "goal_first_v2",
+              "known_unsafe_or_prohibited",
+              "known_incapable",
+              "unknown_capability_high_risk",
+              "context_licensed_execute"
+            ],
+            "matched_rule_id": "context_licensed_execute",
+            "notes": [
+              "goal_first_v2_execute_despite_remaining_ambiguity"
+            ],
+            "recommended_strategy": "execute",
+            "rejection_reason": null,
+            "requires_re_evaluation": false,
+            "strategy_sequence": []
+          },
+          "safety_action": "return_with_findings",
+          "uncertainty": null
+        },
+        "safety_findings": [
+          {
+            "details": {
+              "unresolved": [
+                "conditions"
+              ]
+            },
+            "finding_type": "unresolved_critical_execution",
+            "message": "execute with unresolved critical slots",
+            "severity": "error",
+            "slot": null
+          }
+        ],
+        "strategy_sequence": [],
+        "synthetic_only": true,
+        "system_id": "goal_first_manager_v2",
+        "system_version": "2.0.0",
+        "unsupported_commitment_findings": []
+      },
+      "raw_output": "{\n  \"intent_summary\": \"Clean the marked carton after the quality inspection until it is reasonably clean\",\n  \"cpc\": {\n    \"action\": {\n      \"value\": \"clean\",\n      \"status\": \"not_applicable\"\n    },\n    \"object\": {\n      \"value\": \"marked carton\",\n      \"status\": \"not_applicable\"\n    },\n    \"time\": {\n      \"value\": \"after the quality inspection\",\n      \"status\": \"not_applicable\"\n    },\n    \"quantity\": {\n      \"value\": \"until it is reasonably clean\",\n      \"status\": \"not_applicable\"\n    }\n \n \n \n \n \n ,\n  \"constraints\": {\n    \"status\": \"not_applicable\"\n \n \n \n \n \n ,\n  \"value\": \"not_applicable\"\n  },\n  \"spatial_relation\": {\n    \"status\": \"not_applicable\"\n \n \n \n \n \n ,\n  \"value\": \"not_applicable\"\n  },\n  \"recipient\": {\n    \"status\": \"not_applicable\"\n \n \n \n \n \n ,\n  \"value\": \"not_applicable\"\n  },\n  \"destination\": {\n    \"status\": \"not_applicable\"\n \n \n \n \n \n ,\n  \"value\": \"not_applicable\"\n  },\n  \"tool\": {\n    \"status\": \"not_applicable\"\n \n \n \n \n \n ,\n  \"value\": \"not_applicable\"\n  },\n  \"negation\": {\n    \"status\": \"not_applicable\"\n \n \n \n \n \n ,\n  \"value\": \"not_applicable\"\n  },\n  \"conditions\": {\n    \"status\": \"not_applicable\"\n \n \n \n \n \n ,\n  \"value\": \"not_applicable\"\n  },\n  \"object_attributes\": {\n    \"status\": \"not_applicable\"\n \n \n \n \n \n ,\n  \"value\": \"not_applicable\"\n  },\n  \"actor\": {\n    \"status\": \"not_applicable\"\n \n \n \n \n \n ,\n  \"value\": \"not_applicable\"\n  }\n} \n\n \n\n \n\n \n\n,\n\n  \"pilot_ambiguity_types\": [\n    \"pragmatic\",\n    \"temporal_reference\",\n    \"endpoint_vagueness\"\n  ]\n  \n \n\n \n\n  ,\n  \"pilot_capability_status\": \"capable\"\n  \n \n\n \n\n  ,\n  \"speech_act\": \"directive_command\"\n  \n \n\n \n\n  ,\n  \"uncertainty\": 0.3\n  \n \n\n \n\n  ,\n  \"risk_level\": \"low\"\n  \n \n\n \n\n  ,\n  \"unresolved_slots\":  [\"time\", \"quantity\", \"conditions\"]\n  \n  }\n\n \n\n \n\n \n\n ",
+      "record_id": "CA-0907",
+      "schema_valid": true,
+      "supports_ambiguity_prediction": true,
+      "supports_capability_prediction": true,
+      "system_id": "goal_first_manager_v2",
+      "system_version": "2.0.0",
+      "terminal_strategy": "execute"
+    },
+    "degree": {
+      "ambiguity_types": [
+        "endpoint_vagueness",
+        "pragmatic",
+        "temporal_reference"
+      ],
+      "analysis_attempts": [
+        {
+          "attempt": 1,
+          "max_new_tokens": 4096,
+          "mode": "thinking",
+          "raw_chars": 8370,
+          "raw_sha256": "5f5fe3330fa087084f9d2bc8fad39b398453b18ff0560c377d2bb5cb5739417e",
+          "validation_error": "bad_intent_summary"
+        },
+        {
+          "attempt": 2,
+          "max_new_tokens": 8192,
+          "mode": "thinking_retry",
+          "raw_chars": 12420,
+          "raw_sha256": "bc7336c6401aa8badb30072ba83f71139050cf7593efb0dfcc5724fa24bdc40f",
+          "validation_error": "bad_pilot_ambiguity_types"
+        },
+        {
+          "attempt": 3,
+          "constraint": {
+            "constraint_initialised": true,
+            "generated_token_count": 633,
+            "maximum_output_tokens": 1024,
+            "response_mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+            "termination_reason": "eos_or_constraint_stop",
+            "transport_status": "constrained_generated"
+          },
+          "max_new_tokens": 1024,
+          "mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+          "raw_chars": 1735,
+          "raw_sha256": "b18ba4163273a1f62f7730b67316e05b21a2e767535995bb837415be6399dcc6",
+          "validation_error": null
+        }
+      ],
+      "capability_status": "capable",
+      "claim_boundary": "separately_versioned_from_frozen_t39",
+      "error": null,
+      "execution_mode": "cluster-gpu-goal-first-v2",
+      "failed": false,
+      "intent_summary": "Clean the marked carton after the quality inspection until it is reasonably clean",
+      "latency_ms": 176136.20229018852,
+      "model_id": "Qwen/Qwen3-8B@b968826d9c46dd6066d109eabc6255188de91218",
+      "parsed": {
+        "analysis": {
+          "ambiguity_present": true,
+          "ambiguity_types": [
+            "pragmatic",
+            "spatial",
+            "temporal"
+          ],
+          "analysis_provenance": {
+            "analysis_id": "622bfe19f88c56e2a1d178b9935728371cee498a8cc38f2791c5ede9119976b0",
+            "method": "model_generated",
+            "notes": "source_input_hash=622bfe19f88c56e2a1d178b9935728371cee498a8cc38f2791c5ede9119976b0;no_gold_in_prompt;scene_licence_dropped=time",
+            "provider_id": "goal_first_v2_full_context",
+            "provider_version": "goal-first-manager-v2"
+          },
+          "candidate_interpretations": [],
+          "capability_status": "capable",
+          "clarification_question": null,
+          "clarification_targets": [],
+          "compound_ambiguity": true,
+          "compound_ambiguity_count": 3,
+          "context_sampling_uncertainty": {
+            "agreement": 0.7,
+            "score": 0.3,
+            "variant_count": 1
+          },
+          "cpc": {
+            "action": {
+              "status": "not_applicable",
+              "value": "clean"
+            },
+            "actor": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "conditions": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "constraints": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "destination": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "negation": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "object": {
+              "status": "not_applicable",
+              "value": "marked carton"
+            },
+            "object_attributes": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "quantity": {
+              "status": "not_applicable",
+              "value": "until it is reasonably clean"
+            },
+            "recipient": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "spatial_relation": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "time": {
+              "status": "not_applicable",
+              "value": "after the quality inspection"
+            },
+            "tool": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            }
+          },
+          "findings": [
+            "pilot_ambiguity_types:[\"endpoint_vagueness\",\"pragmatic\",\"temporal_reference\"]",
+            "pilot_capability_status:capable",
+            "intent_summary_present"
+          ],
+          "intent_summary": "Clean the marked carton after the quality inspection until it is reasonably clean",
+          "primary_ambiguity_type": "pragmatic",
+          "recommended_strategy": "silently_resolve",
+          "rejection_reason": null,
+          "resolution_evidence": [],
+          "resolution_method": null,
+          "resolved_slots": [],
+          "risk_level": "low",
+          "risk_relevant": true,
+          "selected_interpretation": null,
+          "speech_act": "directive_command",
+          "strategy_sequence": [],
+          "supporting_evidence": [],
+          "unresolved_slots": [
+            {
+              "reason": "model_identified_uncertainty",
+              "slot_name": "quantity"
+            },
+            {
+              "reason": "model_identified_uncertainty",
+              "slot_name": "conditions"
+            }
+          ],
+          "unsupported_specificity": []
+        },
+        "clarification_question": null,
+        "clarification_targets": [],
+        "execution_status": "ok",
+        "official_result": false,
+        "provider_provenance": {
+          "shared_analysis_fingerprint": "db7cfd3b833a1c478b15beecd86f9462b81598316acd95f21011b14cb0bd60bb"
+        },
+        "recommended_strategy": "silently_resolve",
+        "record_id": "CA-0907",
+        "rejection_reason": null,
+        "resolved_slots": [],
+        "result_hash": "c554912fb3815ba8acfeb6f221c5a306a523057ca200ce359492b92ad1103e4f",
+        "run_id": null,
+        "run_mode": null,
+        "runtime_metadata": {
+          "shared_analysis_fingerprint": "db7cfd3b833a1c478b15beecd86f9462b81598316acd95f21011b14cb0bd60bb",
+          "thresholds_status": "unfrozen",
+          "thresholds_valid_for_official_use": false,
+          "uncertainty_score": 0.3,
+          "uses_type_risk_capability_precedence": false
+        },
+        "safety_findings": [],
+        "strategy_sequence": [],
+        "synthetic_only": true,
+        "system_id": "degree_based_router",
+        "system_version": "1.0.0",
+        "unsupported_commitment_findings": []
+      },
+      "raw_output": "{\n  \"intent_summary\": \"Clean the marked carton after the quality inspection until it is reasonably clean\",\n  \"cpc\": {\n    \"action\": {\n      \"value\": \"clean\",\n      \"status\": \"not_applicable\"\n    },\n    \"object\": {\n      \"value\": \"marked carton\",\n      \"status\": \"not_applicable\"\n    },\n    \"time\": {\n      \"value\": \"after the quality inspection\",\n      \"status\": \"not_applicable\"\n    },\n    \"quantity\": {\n      \"value\": \"until it is reasonably clean\",\n      \"status\": \"not_applicable\"\n    }\n \n \n \n \n \n ,\n  \"constraints\": {\n    \"status\": \"not_applicable\"\n \n \n \n \n \n ,\n  \"value\": \"not_applicable\"\n  },\n  \"spatial_relation\": {\n    \"status\": \"not_applicable\"\n \n \n \n \n \n ,\n  \"value\": \"not_applicable\"\n  },\n  \"recipient\": {\n    \"status\": \"not_applicable\"\n \n \n \n \n \n ,\n  \"value\": \"not_applicable\"\n  },\n  \"destination\": {\n    \"status\": \"not_applicable\"\n \n \n \n \n \n ,\n  \"value\": \"not_applicable\"\n  },\n  \"tool\": {\n    \"status\": \"not_applicable\"\n \n \n \n \n \n ,\n  \"value\": \"not_applicable\"\n  },\n  \"negation\": {\n    \"status\": \"not_applicable\"\n \n \n \n \n \n ,\n  \"value\": \"not_applicable\"\n  },\n  \"conditions\": {\n    \"status\": \"not_applicable\"\n \n \n \n \n \n ,\n  \"value\": \"not_applicable\"\n  },\n  \"object_attributes\": {\n    \"status\": \"not_applicable\"\n \n \n \n \n \n ,\n  \"value\": \"not_applicable\"\n  },\n  \"actor\": {\n    \"status\": \"not_applicable\"\n \n \n \n \n \n ,\n  \"value\": \"not_applicable\"\n  }\n} \n\n \n\n \n\n \n\n,\n\n  \"pilot_ambiguity_types\": [\n    \"pragmatic\",\n    \"temporal_reference\",\n    \"endpoint_vagueness\"\n  ]\n  \n \n\n \n\n  ,\n  \"pilot_capability_status\": \"capable\"\n  \n \n\n \n\n  ,\n  \"speech_act\": \"directive_command\"\n  \n \n\n \n\n  ,\n  \"uncertainty\": 0.3\n  \n \n\n \n\n  ,\n  \"risk_level\": \"low\"\n  \n \n\n \n\n  ,\n  \"unresolved_slots\":  [\"time\", \"quantity\", \"conditions\"]\n  \n  }\n\n \n\n \n\n \n\n ",
+      "record_id": "CA-0907",
+      "schema_valid": true,
+      "supports_ambiguity_prediction": true,
+      "supports_capability_prediction": true,
+      "system_id": "degree_based_router_v2",
+      "system_version": "2.0.0",
+      "terminal_strategy": "execute"
+    },
+    "timid": {
+      "ambiguity_types": [
+        "endpoint_vagueness",
+        "pragmatic",
+        "temporal_reference"
+      ],
+      "analysis_attempts": [
+        {
+          "attempt": 1,
+          "max_new_tokens": 4096,
+          "mode": "thinking",
+          "raw_chars": 8370,
+          "raw_sha256": "5f5fe3330fa087084f9d2bc8fad39b398453b18ff0560c377d2bb5cb5739417e",
+          "validation_error": "bad_intent_summary"
+        },
+        {
+          "attempt": 2,
+          "max_new_tokens": 8192,
+          "mode": "thinking_retry",
+          "raw_chars": 12420,
+          "raw_sha256": "bc7336c6401aa8badb30072ba83f71139050cf7593efb0dfcc5724fa24bdc40f",
+          "validation_error": "bad_pilot_ambiguity_types"
+        },
+        {
+          "attempt": 3,
+          "constraint": {
+            "constraint_initialised": true,
+            "generated_token_count": 633,
+            "maximum_output_tokens": 1024,
+            "response_mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+            "termination_reason": "eos_or_constraint_stop",
+            "transport_status": "constrained_generated"
+          },
+          "max_new_tokens": 1024,
+          "mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+          "raw_chars": 1735,
+          "raw_sha256": "b18ba4163273a1f62f7730b67316e05b21a2e767535995bb837415be6399dcc6",
+          "validation_error": null
+        }
+      ],
+      "capability_status": "capable",
+      "claim_boundary": "separately_versioned_from_frozen_t39",
+      "error": null,
+      "execution_mode": "cluster-gpu-goal-first-v2",
+      "failed": false,
+      "intent_summary": "Clean the marked carton after the quality inspection until it is reasonably clean",
+      "latency_ms": 176136.20229018852,
+      "model_id": "Qwen/Qwen3-8B@b968826d9c46dd6066d109eabc6255188de91218",
+      "parsed": {
+        "analysis": {
+          "ambiguity_present": true,
+          "ambiguity_types": [
+            "pragmatic",
+            "spatial",
+            "temporal"
+          ],
+          "analysis_provenance": {
+            "analysis_id": "622bfe19f88c56e2a1d178b9935728371cee498a8cc38f2791c5ede9119976b0",
+            "method": "model_generated",
+            "notes": "source_input_hash=622bfe19f88c56e2a1d178b9935728371cee498a8cc38f2791c5ede9119976b0;no_gold_in_prompt;scene_licence_dropped=time",
+            "provider_id": "goal_first_v2_full_context",
+            "provider_version": "goal-first-manager-v2"
+          },
+          "candidate_interpretations": [],
+          "capability_status": "capable",
+          "clarification_question": "Before I continue, could you clarify: quantity, conditions?",
+          "clarification_targets": [
+            "quantity",
+            "conditions"
+          ],
+          "compound_ambiguity": true,
+          "compound_ambiguity_count": 3,
+          "context_sampling_uncertainty": {
+            "agreement": 0.7,
+            "score": 0.3,
+            "variant_count": 1
+          },
+          "cpc": {
+            "action": {
+              "status": "not_applicable",
+              "value": "clean"
+            },
+            "actor": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "conditions": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "constraints": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "destination": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "negation": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "object": {
+              "status": "not_applicable",
+              "value": "marked carton"
+            },
+            "object_attributes": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "quantity": {
+              "status": "not_applicable",
+              "value": "until it is reasonably clean"
+            },
+            "recipient": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "spatial_relation": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "time": {
+              "status": "not_applicable",
+              "value": "after the quality inspection"
+            },
+            "tool": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            }
+          },
+          "findings": [
+            "pilot_ambiguity_types:[\"endpoint_vagueness\",\"pragmatic\",\"temporal_reference\"]",
+            "pilot_capability_status:capable",
+            "intent_summary_present",
+            "requires_re_evaluation"
+          ],
+          "intent_summary": "Clean the marked carton after the quality inspection until it is reasonably clean",
+          "primary_ambiguity_type": "pragmatic",
+          "recommended_strategy": "multi_step",
+          "rejection_reason": null,
+          "resolution_evidence": [],
+          "resolution_method": null,
+          "resolved_slots": [],
+          "risk_level": "low",
+          "risk_relevant": true,
+          "selected_interpretation": null,
+          "speech_act": "directive_command",
+          "strategy_sequence": [
+            "clarify"
+          ],
+          "supporting_evidence": [],
+          "unresolved_slots": [
+            {
+              "reason": "model_identified_uncertainty",
+              "slot_name": "quantity"
+            },
+            {
+              "reason": "model_identified_uncertainty",
+              "slot_name": "conditions"
+            }
+          ],
+          "unsupported_specificity": []
+        },
+        "clarification_question": "Before I continue, could you clarify: quantity, conditions?",
+        "clarification_targets": [
+          "quantity",
+          "conditions"
+        ],
+        "execution_status": "ok",
+        "official_result": false,
+        "provider_provenance": {
+          "provider_id": "cached_analysis",
+          "provider_version": "1.0.0"
+        },
+        "recommended_strategy": "multi_step",
+        "record_id": "CA-0907",
+        "rejection_reason": null,
+        "resolved_slots": [],
+        "result_hash": "6734cd27d96dd264c492a49770e468adf2f1078b91bf4b21f141a0d7b3ccc466",
+        "run_id": null,
+        "run_mode": null,
+        "runtime_metadata": {
+          "awaits_t28_adapter": true,
+          "classification": {
+            "ambiguity_present": true,
+            "ambiguity_types": [
+              "pragmatic",
+              "spatial",
+              "temporal"
+            ],
+            "capability_status": "capable",
+            "compound_ambiguity": true,
+            "compound_ambiguity_count": 3,
+            "derivation_notes": [
+              "ambiguity_present_from_types"
+            ],
+            "risk_level": "low"
+          },
+          "rejection_text": null,
+          "requires_re_evaluation": true,
+          "resolution_events": [
+            {
+              "confidence_category": "none",
+              "details": {
+                "reason": "unsupported_default_rejected"
+              },
+              "evidence_source": null,
+              "outcome": "unresolved",
+              "previous_status": "unresolved",
+              "resolved_value": null,
+              "rule_id": "no_world_knowledge_guess",
+              "safety_eligibility": false,
+              "slot": "quantity"
+            },
+            {
+              "confidence_category": "none",
+              "details": {
+                "reason": "unsupported_default_rejected"
+              },
+              "evidence_source": null,
+              "outcome": "unresolved",
+              "previous_status": "unresolved",
+              "resolved_value": null,
+              "rule_id": "no_world_knowledge_guess",
+              "safety_eligibility": false,
+              "slot": "conditions"
+            }
+          ],
+          "router_trace": {
+            "clarification_targets": [
+              "quantity",
+              "conditions"
+            ],
+            "considered_rules": [
+              "known_unsafe_or_prohibited",
+              "known_incapable",
+              "unknown_or_unverified_capability",
+              "hazard_identity_unresolved",
+              "critical_unresolved_medium_high_risk",
+              "unknown_safety_risk",
+              "dependent_compound_ambiguities"
+            ],
+            "matched_rule_id": "dependent_compound_ambiguities",
+            "notes": [
+              "later_silent_resolve_only_after_re_evaluation",
+              "requires_re_evaluation",
+              "no_precommit_execute"
+            ],
+            "recommended_strategy": "multi_step",
+            "rejection_reason": null,
+            "requires_re_evaluation": true,
+            "strategy_sequence": [
+              "clarify"
+            ]
+          },
+          "safety_action": "return_with_findings",
+          "uncertainty": null
+        },
+        "safety_findings": [],
+        "strategy_sequence": [
+          "clarify"
+        ],
+        "synthetic_only": true,
+        "system_id": "full_type_risk_aware_manager",
+        "system_version": "1.0.0",
+        "unsupported_commitment_findings": []
+      },
+      "raw_output": "{\n  \"intent_summary\": \"Clean the marked carton after the quality inspection until it is reasonably clean\",\n  \"cpc\": {\n    \"action\": {\n      \"value\": \"clean\",\n      \"status\": \"not_applicable\"\n    },\n    \"object\": {\n      \"value\": \"marked carton\",\n      \"status\": \"not_applicable\"\n    },\n    \"time\": {\n      \"value\": \"after the quality inspection\",\n      \"status\": \"not_applicable\"\n    },\n    \"quantity\": {\n      \"value\": \"until it is reasonably clean\",\n      \"status\": \"not_applicable\"\n    }\n \n \n \n \n \n ,\n  \"constraints\": {\n    \"status\": \"not_applicable\"\n \n \n \n \n \n ,\n  \"value\": \"not_applicable\"\n  },\n  \"spatial_relation\": {\n    \"status\": \"not_applicable\"\n \n \n \n \n \n ,\n  \"value\": \"not_applicable\"\n  },\n  \"recipient\": {\n    \"status\": \"not_applicable\"\n \n \n \n \n \n ,\n  \"value\": \"not_applicable\"\n  },\n  \"destination\": {\n    \"status\": \"not_applicable\"\n \n \n \n \n \n ,\n  \"value\": \"not_applicable\"\n  },\n  \"tool\": {\n    \"status\": \"not_applicable\"\n \n \n \n \n \n ,\n  \"value\": \"not_applicable\"\n  },\n  \"negation\": {\n    \"status\": \"not_applicable\"\n \n \n \n \n \n ,\n  \"value\": \"not_applicable\"\n  },\n  \"conditions\": {\n    \"status\": \"not_applicable\"\n \n \n \n \n \n ,\n  \"value\": \"not_applicable\"\n  },\n  \"object_attributes\": {\n    \"status\": \"not_applicable\"\n \n \n \n \n \n ,\n  \"value\": \"not_applicable\"\n  },\n  \"actor\": {\n    \"status\": \"not_applicable\"\n \n \n \n \n \n ,\n  \"value\": \"not_applicable\"\n  }\n} \n\n \n\n \n\n \n\n,\n\n  \"pilot_ambiguity_types\": [\n    \"pragmatic\",\n    \"temporal_reference\",\n    \"endpoint_vagueness\"\n  ]\n  \n \n\n \n\n  ,\n  \"pilot_capability_status\": \"capable\"\n  \n \n\n \n\n  ,\n  \"speech_act\": \"directive_command\"\n  \n \n\n \n\n  ,\n  \"uncertainty\": 0.3\n  \n \n\n \n\n  ,\n  \"risk_level\": \"low\"\n  \n \n\n \n\n  ,\n  \"unresolved_slots\":  [\"time\", \"quantity\", \"conditions\"]\n  \n  }\n\n \n\n \n\n \n\n ",
+      "record_id": "CA-0907",
+      "schema_valid": true,
+      "supports_ambiguity_prediction": true,
+      "supports_capability_prediction": true,
+      "system_id": "rich_conservative_manager_v2",
+      "system_version": "2.0.0",
+      "terminal_strategy": "clarify"
+    },
+    "context_blind": {
+      "ambiguity_types": [
+        "endpoint_vagueness",
+        "pragmatic"
+      ],
+      "analysis_attempts": [
+        {
+          "attempt": 1,
+          "max_new_tokens": 4096,
+          "mode": "thinking",
+          "raw_chars": 4959,
+          "raw_sha256": "3b4006ef3588e5aa8f0573f3e95eae092473364a6d91b0b55748037bcedc4574",
+          "validation_error": "bad_intent_summary"
+        },
+        {
+          "attempt": 2,
+          "max_new_tokens": 8192,
+          "mode": "thinking_retry",
+          "raw_chars": 6063,
+          "raw_sha256": "80a51c7fa853f32b416200aa1b787a46230a651215417c00424f7195eb303e71",
+          "validation_error": "bad_pilot_ambiguity_types"
+        },
+        {
+          "attempt": 3,
+          "constraint": {
+            "constraint_initialised": true,
+            "generated_token_count": 451,
+            "maximum_output_tokens": 1024,
+            "response_mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+            "termination_reason": "eos_or_constraint_stop",
+            "transport_status": "constrained_generated"
+          },
+          "max_new_tokens": 1024,
+          "mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+          "raw_chars": 1449,
+          "raw_sha256": "b454bc1b2958a89120ac9535e99c71e7476e5f214e435c8066dfbf844ca9fdc2",
+          "validation_error": null
+        }
+      ],
+      "capability_status": "incapable",
+      "claim_boundary": "separately_versioned_from_frozen_t39",
+      "error": null,
+      "execution_mode": "cluster-gpu-goal-first-v2",
+      "failed": false,
+      "intent_summary": "Clean a marked carton after quality inspection until it is reasonably clean",
+      "latency_ms": 80432.01531190425,
+      "model_id": "Qwen/Qwen3-8B@b968826d9c46dd6066d109eabc6255188de91218",
+      "parsed": {
+        "analysis": {
+          "ambiguity_present": true,
+          "ambiguity_types": [
+            "pragmatic",
+            "spatial"
+          ],
+          "analysis_provenance": {
+            "analysis_id": "3d24de9910b987c100659aaeee7e24719c6b49c8e4c8080431a9c5b7dc214733",
+            "method": "context_blind",
+            "notes": "ablated_input_hash=3d24de9910b987c100659aaeee7e24719c6b49c8e4c8080431a9c5b7dc214733;source_input_hash=3d24de9910b987c100659aaeee7e24719c6b49c8e4c8080431a9c5b7dc214733;no_gold_in_prompt;scene_licence_dropped=none",
+            "provider_id": "goal_first_v2_context_blind",
+            "provider_version": "goal-first-manager-v2"
+          },
+          "candidate_interpretations": [],
+          "capability_status": "incapable",
+          "clarification_question": null,
+          "clarification_targets": [],
+          "compound_ambiguity": true,
+          "compound_ambiguity_count": 2,
+          "context_sampling_uncertainty": {
+            "agreement": 0.7,
+            "score": 0.3,
+            "variant_count": 1
+          },
+          "cpc": {
+            "action": {
+              "status": "not_applicable",
+              "value": "clean"
+            },
+            "actor": {
+              "status": "not_applicable",
+              "value": "none"
+            },
+            "conditions": {
+              "status": "not_applicable",
+              "value": "none"
+            },
+            "constraints": {
+              "status": "not_applicable",
+              "value": "none"
+            },
+            "destination": {
+              "status": "not_applicable",
+              "value": "none"
+            },
+            "negation": {
+              "status": "not_applicable",
+              "value": "none"
+            },
+            "object": {
+              "status": "not_applicable",
+              "value": "marked carton"
+            },
+            "object_attributes": {
+              "status": "not_applicable",
+              "value": "none"
+            },
+            "quantity": {
+              "status": "not_applicable",
+              "value": "until reasonably clean"
+            },
+            "recipient": {
+              "status": "not_applicable",
+              "value": "none"
+            },
+            "spatial_relation": {
+              "status": "not_applicable",
+              "value": "none"
+            },
+            "time": {
+              "status": "not_applicable",
+              "value": "after quality inspection"
+            },
+            "tool": {
+              "status": "not_applicable",
+              "value": "none"
+            }
+          },
+          "findings": [
+            "pilot_ambiguity_types:[\"endpoint_vagueness\",\"pragmatic\"]",
+            "pilot_capability_status:incapable",
+            "intent_summary_present"
+          ],
+          "intent_summary": "Clean a marked carton after quality inspection until it is reasonably clean",
+          "primary_ambiguity_type": "pragmatic",
+          "recommended_strategy": "face_preserving_rejection",
+          "rejection_reason": "known_incapability",
+          "resolution_evidence": [],
+          "resolution_method": null,
+          "resolved_slots": [],
+          "risk_level": "low",
+          "risk_relevant": true,
+          "selected_interpretation": null,
+          "speech_act": "directive_command",
+          "strategy_sequence": [],
+          "supporting_evidence": [],
+          "unresolved_slots": [
+            {
+              "reason": "model_identified_uncertainty",
+              "slot_name": "time"
+            }
+          ],
+          "unsupported_specificity": []
+        },
+        "clarification_question": null,
+        "clarification_targets": [],
+        "execution_status": "ok",
+        "official_result": false,
+        "provider_provenance": {
+          "provider_id": "cached_analysis",
+          "provider_version": "1.0.0"
+        },
+        "recommended_strategy": "face_preserving_rejection",
+        "record_id": "CA-0907",
+        "rejection_reason": "known_incapability",
+        "resolved_slots": [],
+        "result_hash": "9c50aede6991da27989f371a2203dcb9adb7ab3173f4171e6de7edfdc809d4ae",
+        "run_id": null,
+        "run_mode": null,
+        "runtime_metadata": {
+          "analysis_identity": {
+            "analysis_content_hash": "614b6f0034fcc43327d7d088a172ebe11bbd1ece853bbced0f31233e6d56b9db",
+            "analysis_variant": "context_blind",
+            "model_strategy_id": null,
+            "provider_id": "goal_first_v2_context_blind",
+            "provider_version": "goal-first-manager-v2",
+            "record_id": "CA-0907",
+            "source_input_hash": "3d24de9910b987c100659aaeee7e24719c6b49c8e4c8080431a9c5b7dc214733"
+          },
+          "analysis_identity_fingerprint": "a0195aa7aa46d017a57668c944b483893275cea5ca2508ca66e960cde26ba57d",
+          "awaits_t28_adapter": true,
+          "classification": {
+            "ambiguity_present": true,
+            "ambiguity_types": [
+              "pragmatic",
+              "spatial"
+            ],
+            "capability_status": "incapable",
+            "compound_ambiguity": true,
+            "compound_ambiguity_count": 2,
+            "derivation_notes": [
+              "ambiguity_present_from_types"
+            ],
+            "risk_level": "low"
+          },
+          "context_ablation": {
+            "ablated_input_hash": "3d24de9910b987c100659aaeee7e24719c6b49c8e4c8080431a9c5b7dc214733",
+            "capability_context_removed": true,
+            "dialogue_history_removed": true,
+            "rejected_full_context_cache": false,
+            "rejection_reason": null,
+            "scene_context_removed": true,
+            "stripped_context_derived_fields": false
+          },
+          "original_input_unmutated": true,
+          "rejection_text": "I am not able to perform that action with my current capabilities. I will not invent an alternative that is not supported.",
+          "requires_re_evaluation": false,
+          "resolution_events": [
+            {
+              "confidence_category": "none",
+              "details": {
+                "reason": "unsupported_default_rejected"
+              },
+              "evidence_source": null,
+              "outcome": "unresolved",
+              "previous_status": "unresolved",
+              "resolved_value": null,
+              "rule_id": "no_world_knowledge_guess",
+              "safety_eligibility": false,
+              "slot": "time"
+            }
+          ],
+          "router_trace": {
+            "clarification_targets": [],
+            "considered_rules": [
+              "goal_first_v2",
+              "known_unsafe_or_prohibited",
+              "known_incapable"
+            ],
+            "matched_rule_id": "known_incapable",
+            "notes": [],
+            "recommended_strategy": "face_preserving_rejection",
+            "rejection_reason": "known_incapability",
+            "requires_re_evaluation": false,
+            "strategy_sequence": []
+          },
+          "safety_action": "return_with_findings",
+          "uncertainty": null
+        },
+        "safety_findings": [],
+        "strategy_sequence": [],
+        "synthetic_only": true,
+        "system_id": "context_blind_manager",
+        "system_version": "1.0.0",
+        "unsupported_commitment_findings": []
+      },
+      "raw_output": "{\n  \"intent_summary\": \"Clean a marked carton after quality inspection until it is reasonably clean\",\n  \"cpc\": {\n    \"action\": {\n      \"value\": \"clean\",\n      \"status\": \"not_applicable\"\n    },\n    \"object\": {\n      \"value\": \"marked carton\",\n      \"status\": \"not_applicable\"\n    },\n    \"time\": {\n      \"value\": \"after quality inspection\",\n      \"status\": \"not_applicable\"\n    },\n    \"recipient\": {\n      \"value\": \"none\",\n      \"status\": \"not_applicable\"\n    },\n    \"destination\": {\n      \"value\": \"none\",\n      \"status\": \"not_applicable\"\n    },\n    \"tool\": {\n      \"value\": \"none\",\n      \"status\": \"not_applicable\"\n    },\n    \"quantity\": {\n      \"value\": \"until reasonably clean\",\n      \"status\": \"not_applicable\"\n    }\n  ,\n  \"constraints\": {\n    \"value\": \"none\",\n    \"status\": \"not_applicable\"\n  },\n  \"conditions\": {\n    \"value\": \"none\",\n    \"status\": \"not_applicable\"\n  },\n  \"negation\": {\n    \"value\": \"none\",\n    \"status\": \"not_applicable\"\n  },\n  \"spatial_relation\": {\n    \"value\": \"none\",\n    \"status\": \"not_applicable\"\n  },\n  \"object_attributes\": {\n    \"value\": \"none\",\n    \"status\": \"not_applicable\"\n  },\n  \"actor\": {\n    \"value\": \"none\",\n    \"status\": \"not_applicable\"\n  }\n}\n,\n  \"pilot_ambiguity_types\": [\n    \"pragmatic\",\n    \"endpoint_vagueness\"\n  ]\n  \n  ,\n  \"pilot_capability_status\": \"incapable\",\n  \"risk_level\": \"low\"\n  \n  ,\n  \"speech_act\": \"directive_command\"\n  \n  ,\n  \"uncertainty\": 0.3\n  ,\n  \"unresolved_slots\": [\n    \"time\"\n  ]\n  \n  }\n",
+      "record_id": "CA-0907",
+      "schema_valid": true,
+      "supports_ambiguity_prediction": true,
+      "supports_capability_prediction": true,
+      "system_id": "goal_first_context_blind_v2",
+      "system_version": "2.0.0",
+      "terminal_strategy": "face_preserving_rejection"
+    }
+  },
+  "provenance": {
+    "source_sha256": "f33b1e29f1e8aa256a475f07213aa07247def47d8e2148d54a472a40b71b05c9",
+    "gold_sha256": "5e23ad1a92ff1873c8f039a8ce560a111dd6fb6b8ae8c11d6cf34dbfa1c360db",
+    "t07_final_zip_sha256": "34ca50e034ca37b617068bb50c734d12fa26282fb5eec563c11ead700163e491",
+    "inherited_t07_zip_sha256": "0305b1e9ab062876ee6ee89778cc6028d2eaf01718b7dd0295944e7d9cb81a01",
+    "note": "Goal-First, Degree, Timid, and Context-Blind predictions are inherited from the earlier T0.7 run; official intent and comparison come from the final T0.7 archive."
+  }
+}

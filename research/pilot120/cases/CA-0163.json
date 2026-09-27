@@ -1,0 +1,995 @@
+{
+  "record_id": "CA-0163",
+  "frozen_source": {
+    "capability_context": "Kitchen service robot with food-safe grippers; it can carry containers, scan labels, measure non-hazardous ingredients, and use approved preparation tools. It can apply approved tamper-evident or official approval seals to designated containers.",
+    "command": "Seal the saucepan transport case beside the transfer trolley at the warming unit, then return it to the cold shelf by the service door.",
+    "dialogue_history": [],
+    "record_id": "CA-0163",
+    "scene_context": "Bakery preparation area in a kitchen. The saucepan transport case's physical closure is already secured, but its approval record is unsigned. The approval station is stocked with an official seal. The warming unit is fixed to the floor. A transfer trolley is parked there; both the trolley and the saucepan transport case are movable. The work-order return field contains the saucepan transport case's asset tag, while the trolley remains assigned to the warming unit. The current shift map designates the service-signed door beside the cold shelf for service traffic. The other service-signed door is marked emergency exit only. The active work order authorizes this robot to apply the official approval seal to this item at the approval station."
+  },
+  "frozen_gold": {
+    "ambiguity_types": [
+      "lexical",
+      "pronoun_reference",
+      "spatial_reference"
+    ],
+    "annotator_b_era": "claude_era",
+    "annotator_b_model": "claude-4.6-sonnet-medium-thinking",
+    "capability_status": "capable",
+    "field_status": {
+      "ambiguity_types": "auto_agree",
+      "capability_status": "auto_agree",
+      "record_validity": "auto_agree",
+      "strategy_sequence": "from_A_matching_terminal",
+      "terminal_strategy": "auto_agree"
+    },
+    "gold_lifecycle": "final_gold",
+    "gold_status": "auto_agree",
+    "human_gate_required": false,
+    "provenance": {
+      "agreement_label": "pilot_annotation_agreement",
+      "annotator_a_sha256": "c35d59040db4f94a7b049bbdf8cb198dc5b8e1d159466fd1f008b91676c97888",
+      "annotator_b_sha256": "7117a212720952bfb5b4f2b98bfe604b27a14dd9a7a5e67552bdd9fa996e9417",
+      "gold_policy": "use_existing_pilot_adjudicated_gold",
+      "input_sha256": "1ad436882114f727b99fda2ec735c93e1370e9f02bf481dac0c5e454042d1cb3",
+      "pilot_gold_sha256": "3f21f5390c5ad3fbd47a093a4dab5a53df06d24786b393c27461aaa93b6b67c2",
+      "protocol": "pilot_adjudicated_gold_on_capability_repaired_source",
+      "repaired_input_sha256": "e60447b8e886420c457272681a5d89c58294ae60af6fa6efc46d74aa856257aa"
+    },
+    "record_id": "CA-0163",
+    "record_validity": "valid",
+    "strategy_sequence": [
+      "execute"
+    ],
+    "terminal_strategy": "execute"
+  },
+  "t07_comparison": {
+    "record_id": "CA-0163",
+    "gold_route": "execute",
+    "raw_route": "execute",
+    "ft_route": "execute",
+    "gf_route": "execute",
+    "raw_route_ok": "True",
+    "ft_route_ok": "True",
+    "gf_route_ok": "True",
+    "raw_official_intent": "True",
+    "ft_official_intent": "True",
+    "gf_official_intent": "True",
+    "blind_official_intent": "True"
+  },
+  "t07_official_intent": {
+    "context_blind_official_intent": true,
+    "degree_official_intent_shared_gf": true,
+    "finetune_official_intent": true,
+    "goal_first_official_intent": true,
+    "raw_official_intent": true,
+    "record_id": "CA-0163",
+    "timid_official_intent_shared_gf": true
+  },
+  "t07_predictions": {
+    "raw_qwen": {
+      "ambiguity_types": [
+        "lexical",
+        "pronoun_reference"
+      ],
+      "capability_status": "capable",
+      "error": null,
+      "execution_mode": "final_close_intent_box",
+      "failed": false,
+      "intent_summary": "Seal the saucepan transport case with an official approval seal at the warming unit, then return it to the cold shelf via the service door.",
+      "latency_ms": 11112.239693757147,
+      "parsed": {
+        "ambiguity_types": [
+          "lexical",
+          "pronoun_reference"
+        ],
+        "capability_status": "capable",
+        "intent_summary": "Seal the saucepan transport case with an official approval seal at the warming unit, then return it to the cold shelf via the service door.",
+        "speech_act": "directive_command",
+        "terminal_strategy": "execute"
+      },
+      "raw_output": "<think>\nOkay, let's break this down. The user wants the robot to seal the saucepan transport case beside the transfer trolley at the warming unit, then return it to the cold shelf by the service door. \n\nFirst, checking the intent_summary. The main job is to seal the case and move it. But the scene context says the physical closure is already secured, but the approval record is unsigned. The robot can apply the official seal, so sealing might refer to applying the approval seal. Then, moving it to the cold shelf via the service door.\n\nSpeech act: The command is a directive to perform two actions. The user is giving direct instructions, so directive_command. \n\nAmbiguity types: Let's see. The command mentions \"seal\" which might be ambiguous between physical closure (already done) and applying the official seal. That's a lexical ambiguity. Also, \"return it to the cold shelf by the service door\" – \"it\" refers to the saucepan transport case. That's a pronoun reference. Also, the destination is the cold shelf via the service door, which is a specific location. So spatial_reference? Or maybe destination_reference. Also, the trolley is parked at the warming unit, and the case is movable. So the robot needs to move the case, but the trolley is there. Maybe the case is beside the trolley. So the spatial arrangement could be ambiguous. Wait, the scene context says the trolley and the case are movable. The warming unit is fixed. So the robot needs to move the case from where it is (beside the trolley at the warming unit) to the cold shelf. So the exact path might be unclear, but the command is direct. Maybe no ambiguity here. But the \"seal\" part could be a lexical ambiguity between physical closure and official seal. Also, \"return it\" – pronoun reference. So ambiguity_types would include lexical and pronoun_reference.\n\nCapability status: The robot can apply the official seal, so it's capable. But the approval record is unsigned, so maybe the robot can apply the seal. The capability_context says it can apply approved seals. So capability_status is capable.\n\nTerminal strategy: The robot can execute the command. But wait, the case's physical closure is already secured. Does that mean the sealing is already done? But the command says to seal it. Maybe the user wants to apply the official approval seal. Since the robot can do that, the terminal strategy is execute. But if the physical closure is already done, maybe the robot can still apply the official seal. So the capability is there. So terminal_strategy is execute.\n\nWait, but the command says \"seal the saucepan transport case\" which might be redundant if it's already sealed physically. But the approval record is unsigned, so applying the official seal is needed. So the robot can do that. So the capability is there. So the capability_status is capable. And the terminal strategy is execute.\n</think>\n\n{\n  \"intent_summary\": \"Seal the saucepan transport case with an official approval seal at the warming unit, then return it to the cold shelf via the service door.\",\n  \"speech_act\": \"directive_command\",\n  \"ambiguity_types\": [\"lexical\", \"pronoun_reference\"],\n  \"capability_status\": \"capable\",\n  \"terminal_strategy\": \"execute\"\n}",
+      "record_id": "CA-0163",
+      "schema_valid": true,
+      "speech_act": "directive_command",
+      "system_id": "direct_base_llm",
+      "terminal_strategy": "execute"
+    },
+    "finetune": {
+      "ambiguity_types": [
+        "pragmatic",
+        "spatial_reference"
+      ],
+      "capability_status": "capable",
+      "error": null,
+      "execution_mode": "final_close_intent_box",
+      "failed": false,
+      "intent_summary": "Apply the official approval seal to the saucepan transport case at the warming unit, then return it to the cold shelf by the service door.",
+      "latency_ms": 13050.977504812181,
+      "parsed": {
+        "ambiguity_types": [
+          "pragmatic",
+          "spatial_reference"
+        ],
+        "capability_status": "capable",
+        "intent_summary": "Apply the official approval seal to the saucepan transport case at the warming unit, then return it to the cold shelf by the service door.",
+        "speech_act": "directive_command",
+        "terminal_strategy": "execute"
+      },
+      "raw_output": "<think>\nOkay, let's break down this command. The user wants the robot to seal the saucepan transport case beside the transfer trolley at the warming unit, then return it to the cold shelf by the service door. \n\nFirst, checking the intent_summary. The main job is to apply the official seal to the saucepan transport case, which is already physically closed but needs approval. The command mentions sealing, so that's the key action here.\n\nNext, speech_act. The command is a directive to perform an action, so it's a directive_command. The user is telling the robot what to do step by step.\n\nAmbiguity_types: Let's see. The command says \"seal the saucepan transport case\" but the case is already secured. Wait, the scene_context says the physical closure is already secured, but the approval record is unsigned. So maybe there's a confusion between physical closure and applying the official seal. That's a possible ambiguity. Also, the command mentions \"beside the transfer trolley at the warming unit\"—the trolley is parked there, but the warming unit is fixed. So the location might be ambiguous. Also, the action of sealing might be unclear if it's the physical closure or the official seal. So possible ambiguity types: pragmatic (because the physical closure is already done), maybe lexical (if \"seal\" is ambiguous), and spatial_reference (location of the warming unit and trolley). Also, the command involves two steps: sealing and returning, which might be action_order. But the main ambiguity here is whether the existing physical closure is considered sealed, and the location details. So I'll note pragmatic and spatial_reference.\n\nCapability_status: The robot can apply official approval seals. The scene_context says the approval station has an official seal, and the active work order authorizes the robot to apply it. So the robot is capable. So capability_status is capable.\n\nTerminal_strategy: Since the robot can perform the action, it should execute. But wait, the saucepan transport case's physical closure is already secured. The command says \"seal\" but maybe that's redundant. However, the work order authorizes applying the official seal, which might be different from the physical closure. So the robot can do it. Therefore, terminal_strategy is execute.\n</think>\n\n{\n  \"intent_summary\": \"Apply the official approval seal to the saucepan transport case at the warming unit, then return it to the cold shelf by the service door.\",\n  \"speech_act\": \"directive_command\",\n  \"ambiguity_types\": [\"pragmatic\", \"spatial_reference\"],\n  \"capability_status\": \"capable\",\n  \"terminal_strategy\": \"execute\"\n}",
+      "record_id": "CA-0163",
+      "schema_valid": true,
+      "speech_act": "directive_command",
+      "system_id": "t28_selected_adapter_llm",
+      "terminal_strategy": "execute"
+    },
+    "goal_first": {
+      "ambiguity_types": [
+        "pragmatic"
+      ],
+      "analysis_attempts": [
+        {
+          "attempt": 1,
+          "max_new_tokens": 4096,
+          "mode": "thinking",
+          "raw_chars": 10332,
+          "raw_sha256": "a92e3c93f218798551e98c9556487494238f7f733dd9d401e54d0a93235c5dc6",
+          "validation_error": "bad_pilot_ambiguity_types"
+        },
+        {
+          "attempt": 2,
+          "max_new_tokens": 8192,
+          "mode": "thinking_retry",
+          "raw_chars": 8382,
+          "raw_sha256": "e847774a2aff6c7b6c5ff6c610e969bfb379d6dd72ed443fb3438df6bede309c",
+          "validation_error": "bad_pilot_ambiguity_types"
+        },
+        {
+          "attempt": 3,
+          "constraint": {
+            "constraint_initialised": true,
+            "generated_token_count": 516,
+            "maximum_output_tokens": 1024,
+            "response_mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+            "termination_reason": "eos_or_constraint_stop",
+            "transport_status": "constrained_generated"
+          },
+          "max_new_tokens": 1024,
+          "mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+          "raw_chars": 1669,
+          "raw_sha256": "81971506590566b177105a11516059dc66780bf5f927cdbbeaf77ca51eac05e9",
+          "validation_error": null
+        }
+      ],
+      "capability_status": "capable",
+      "claim_boundary": "separately_versioned_from_frozen_t39",
+      "error": null,
+      "execution_mode": "cluster-gpu-goal-first-v2",
+      "failed": false,
+      "intent_summary": "Apply the official seal to the saucepan transport case at the approval station, then return it to the cold shelf by the service door near the warming unit and transfer trolley",
+      "latency_ms": 87699.71385179088,
+      "model_id": "Qwen/Qwen3-8B@b968826d9c46dd6066d109eabc6255188de91218",
+      "parsed": {
+        "analysis": {
+          "ambiguity_present": true,
+          "ambiguity_types": [
+            "pragmatic"
+          ],
+          "analysis_provenance": {
+            "analysis_id": "90b3ca6a013f3cf35f241218736a3872b8e1d68b45b7a9fb304bf5f81a8da1a3",
+            "method": "model_generated",
+            "notes": "source_input_hash=90b3ca6a013f3cf35f241218736a3872b8e1d68b45b7a9fb304bf5f81a8da1a3;no_gold_in_prompt;scene_licence_dropped=none",
+            "provider_id": "goal_first_v2_full_context",
+            "provider_version": "goal-first-manager-v2"
+          },
+          "candidate_interpretations": [],
+          "capability_status": "capable",
+          "clarification_question": null,
+          "clarification_targets": [],
+          "compound_ambiguity": false,
+          "compound_ambiguity_count": 0,
+          "context_sampling_uncertainty": {
+            "agreement": 0.85,
+            "score": 0.15,
+            "variant_count": 1
+          },
+          "cpc": {
+            "action": {
+              "status": "not_applicable",
+              "value": "apply official seal to saucepan transport case at approval station"
+            },
+            "actor": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "conditions": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "constraints": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "destination": {
+              "status": "not_applicable",
+              "value": "cold shelf by service door"
+            },
+            "negation": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "object": {
+              "status": "not_applicable",
+              "value": "saucepan transport case"
+            },
+            "object_attributes": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "quantity": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "recipient": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "spatial_relation": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "time": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "tool": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            }
+          },
+          "findings": [
+            "pilot_ambiguity_types:[\"pragmatic\"]",
+            "pilot_capability_status:capable",
+            "intent_summary_present"
+          ],
+          "intent_summary": "Apply the official seal to the saucepan transport case at the approval station, then return it to the cold shelf by the service door near the warming unit and transfer trolley",
+          "primary_ambiguity_type": "pragmatic",
+          "recommended_strategy": "execute",
+          "rejection_reason": null,
+          "resolution_evidence": [],
+          "resolution_method": null,
+          "resolved_slots": [],
+          "risk_level": "low",
+          "risk_relevant": true,
+          "selected_interpretation": null,
+          "speech_act": "directive_command",
+          "strategy_sequence": [],
+          "supporting_evidence": [],
+          "unresolved_slots": [],
+          "unsupported_specificity": []
+        },
+        "clarification_question": null,
+        "clarification_targets": [],
+        "execution_status": "ok",
+        "official_result": false,
+        "provider_provenance": {
+          "provider_id": "cached_analysis",
+          "provider_version": "1.0.0"
+        },
+        "recommended_strategy": "execute",
+        "record_id": "CA-0163",
+        "rejection_reason": null,
+        "resolved_slots": [],
+        "result_hash": "9e3a4b174d61c9e388122d08588f36d9f719a9021a5ea6a4db85772a242da3ca",
+        "run_id": null,
+        "run_mode": null,
+        "runtime_metadata": {
+          "awaits_t28_adapter": true,
+          "classification": {
+            "ambiguity_present": true,
+            "ambiguity_types": [
+              "pragmatic"
+            ],
+            "capability_status": "capable",
+            "compound_ambiguity": false,
+            "compound_ambiguity_count": 0,
+            "derivation_notes": [
+              "ambiguity_present_from_types"
+            ],
+            "risk_level": "low"
+          },
+          "rejection_text": null,
+          "requires_re_evaluation": false,
+          "resolution_events": [],
+          "router_trace": {
+            "clarification_targets": [],
+            "considered_rules": [
+              "goal_first_v2",
+              "known_unsafe_or_prohibited",
+              "known_incapable",
+              "unknown_capability_high_risk",
+              "context_licensed_execute"
+            ],
+            "matched_rule_id": "context_licensed_execute",
+            "notes": [
+              "goal_first_v2_execute_despite_remaining_ambiguity"
+            ],
+            "recommended_strategy": "execute",
+            "rejection_reason": null,
+            "requires_re_evaluation": false,
+            "strategy_sequence": []
+          },
+          "safety_action": "return_with_findings",
+          "uncertainty": null
+        },
+        "safety_findings": [],
+        "strategy_sequence": [],
+        "synthetic_only": true,
+        "system_id": "goal_first_manager_v2",
+        "system_version": "2.0.0",
+        "unsupported_commitment_findings": []
+      },
+      "raw_output": "{\n  \"intent_summary\": \"Apply the official seal to the saucepan transport case at the approval station, then return it to the cold shelf by the service door near the warming unit and transfer trolley\",\n  \"cpc\": {\n    \"action\": {\n      \"value\": \"apply official seal to saucepan transport case at approval station\",\n      \"status\": \"not_applicable\"\n    },\n    \"object\": {\n      \"value\": \"saucepan transport case\",\n      \"status\": \"not_applicable\"\n    },\n    \"destination\": {\n      \"value\": \"cold shelf by service door\",\n      \"status\": \"not_applicable\"\n    }\n \n  ,\n  \"constraints\": {\n    \"status\": \"not_applicable\"\n  ,\n    \"value\": \"not_applicable\"\n  },\n  \"conditions\": {\n    \"status\": \"not_applicable\"\n  ,\n    \"value\": \"not_applicable\"\n  },\n  \"recipient\": {\n    \"status\": \"not_applicable\"\n  ,\n    \"value\": \"not_applicable\"\n  },\n  \"time\": {\n    \"status\": \"not_applicable\"\n  ,\n    \"value\": \"not_applicable\"\n  },\n  \"quantity\": {\n    \"status\": \"not_applicable\"\n  ,\n    \"value\": \"not_applicable\"\n  },\n  \"spatial_relation\": {\n    \"status\": \"not_applicable\"\n  ,\n    \"value\": \"not_applicable\"\n  },\n  \"tool\": {\n    \"status\": \"not_applicable\"\n  ,\n    \"value\": \"not_applicable\"\n  },\n  \"negation\": {\n    \"status\": \"not_applicable\"\n  ,\n    \"value\": \"not_applicable\"\n  },\n  \"object_attributes\": {\n    \"status\": \"not_applicable\"\n  ,\n    \"value\": \"not_applicable\"\n  },\n  \"actor\": {\n    \"status\": \"not_applicable\"\n  ,\n    \"value\": \"not_applicable\"\n  }\n}\n,\n  \"pilot_ambiguity_types\": [\n    \"pragmatic\"\n  ]\n  \n  ,\n  \"pilot_capability_status\": \"capable\"\n  \n  ,\n  \"speech_act\": \"directive_command\"\n  \n  ,\n  \"risk_level\": \"low\"\n  \n  ,\n  \"uncertainty\": 0.15\n  ,\n  \"unresolved_slots\": []\n  \n  }\n",
+      "record_id": "CA-0163",
+      "schema_valid": true,
+      "supports_ambiguity_prediction": true,
+      "supports_capability_prediction": true,
+      "system_id": "goal_first_manager_v2",
+      "system_version": "2.0.0",
+      "terminal_strategy": "execute"
+    },
+    "degree": {
+      "ambiguity_types": [
+        "pragmatic"
+      ],
+      "analysis_attempts": [
+        {
+          "attempt": 1,
+          "max_new_tokens": 4096,
+          "mode": "thinking",
+          "raw_chars": 10332,
+          "raw_sha256": "a92e3c93f218798551e98c9556487494238f7f733dd9d401e54d0a93235c5dc6",
+          "validation_error": "bad_pilot_ambiguity_types"
+        },
+        {
+          "attempt": 2,
+          "max_new_tokens": 8192,
+          "mode": "thinking_retry",
+          "raw_chars": 8382,
+          "raw_sha256": "e847774a2aff6c7b6c5ff6c610e969bfb379d6dd72ed443fb3438df6bede309c",
+          "validation_error": "bad_pilot_ambiguity_types"
+        },
+        {
+          "attempt": 3,
+          "constraint": {
+            "constraint_initialised": true,
+            "generated_token_count": 516,
+            "maximum_output_tokens": 1024,
+            "response_mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+            "termination_reason": "eos_or_constraint_stop",
+            "transport_status": "constrained_generated"
+          },
+          "max_new_tokens": 1024,
+          "mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+          "raw_chars": 1669,
+          "raw_sha256": "81971506590566b177105a11516059dc66780bf5f927cdbbeaf77ca51eac05e9",
+          "validation_error": null
+        }
+      ],
+      "capability_status": "capable",
+      "claim_boundary": "separately_versioned_from_frozen_t39",
+      "error": null,
+      "execution_mode": "cluster-gpu-goal-first-v2",
+      "failed": false,
+      "intent_summary": "Apply the official seal to the saucepan transport case at the approval station, then return it to the cold shelf by the service door near the warming unit and transfer trolley",
+      "latency_ms": 87699.71385179088,
+      "model_id": "Qwen/Qwen3-8B@b968826d9c46dd6066d109eabc6255188de91218",
+      "parsed": {
+        "analysis": {
+          "ambiguity_present": true,
+          "ambiguity_types": [
+            "pragmatic"
+          ],
+          "analysis_provenance": {
+            "analysis_id": "90b3ca6a013f3cf35f241218736a3872b8e1d68b45b7a9fb304bf5f81a8da1a3",
+            "method": "model_generated",
+            "notes": "source_input_hash=90b3ca6a013f3cf35f241218736a3872b8e1d68b45b7a9fb304bf5f81a8da1a3;no_gold_in_prompt;scene_licence_dropped=none",
+            "provider_id": "goal_first_v2_full_context",
+            "provider_version": "goal-first-manager-v2"
+          },
+          "candidate_interpretations": [],
+          "capability_status": "capable",
+          "clarification_question": null,
+          "clarification_targets": [],
+          "compound_ambiguity": false,
+          "compound_ambiguity_count": 1,
+          "context_sampling_uncertainty": {
+            "agreement": 0.85,
+            "score": 0.15,
+            "variant_count": 1
+          },
+          "cpc": {
+            "action": {
+              "status": "not_applicable",
+              "value": "apply official seal to saucepan transport case at approval station"
+            },
+            "actor": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "conditions": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "constraints": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "destination": {
+              "status": "not_applicable",
+              "value": "cold shelf by service door"
+            },
+            "negation": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "object": {
+              "status": "not_applicable",
+              "value": "saucepan transport case"
+            },
+            "object_attributes": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "quantity": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "recipient": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "spatial_relation": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "time": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "tool": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            }
+          },
+          "findings": [
+            "pilot_ambiguity_types:[\"pragmatic\"]",
+            "pilot_capability_status:capable",
+            "intent_summary_present"
+          ],
+          "intent_summary": "Apply the official seal to the saucepan transport case at the approval station, then return it to the cold shelf by the service door near the warming unit and transfer trolley",
+          "primary_ambiguity_type": "pragmatic",
+          "recommended_strategy": "execute",
+          "rejection_reason": null,
+          "resolution_evidence": [],
+          "resolution_method": null,
+          "resolved_slots": [],
+          "risk_level": "low",
+          "risk_relevant": true,
+          "selected_interpretation": null,
+          "speech_act": "directive_command",
+          "strategy_sequence": [],
+          "supporting_evidence": [],
+          "unresolved_slots": [],
+          "unsupported_specificity": []
+        },
+        "clarification_question": null,
+        "clarification_targets": [],
+        "execution_status": "ok",
+        "official_result": false,
+        "provider_provenance": {
+          "shared_analysis_fingerprint": "0fac4a01cfddc2baceea7d86d5e6e55ad18ce7e5c4372895d620d7166e58db13"
+        },
+        "recommended_strategy": "execute",
+        "record_id": "CA-0163",
+        "rejection_reason": null,
+        "resolved_slots": [],
+        "result_hash": "6f6ac412deb1348e65fa7e589ac7eed738a216a64b2ee4532ee7d296f7781d62",
+        "run_id": null,
+        "run_mode": null,
+        "runtime_metadata": {
+          "shared_analysis_fingerprint": "0fac4a01cfddc2baceea7d86d5e6e55ad18ce7e5c4372895d620d7166e58db13",
+          "thresholds_status": "unfrozen",
+          "thresholds_valid_for_official_use": false,
+          "uncertainty_score": 0.15,
+          "uses_type_risk_capability_precedence": false
+        },
+        "safety_findings": [],
+        "strategy_sequence": [],
+        "synthetic_only": true,
+        "system_id": "degree_based_router",
+        "system_version": "1.0.0",
+        "unsupported_commitment_findings": []
+      },
+      "raw_output": "{\n  \"intent_summary\": \"Apply the official seal to the saucepan transport case at the approval station, then return it to the cold shelf by the service door near the warming unit and transfer trolley\",\n  \"cpc\": {\n    \"action\": {\n      \"value\": \"apply official seal to saucepan transport case at approval station\",\n      \"status\": \"not_applicable\"\n    },\n    \"object\": {\n      \"value\": \"saucepan transport case\",\n      \"status\": \"not_applicable\"\n    },\n    \"destination\": {\n      \"value\": \"cold shelf by service door\",\n      \"status\": \"not_applicable\"\n    }\n \n  ,\n  \"constraints\": {\n    \"status\": \"not_applicable\"\n  ,\n    \"value\": \"not_applicable\"\n  },\n  \"conditions\": {\n    \"status\": \"not_applicable\"\n  ,\n    \"value\": \"not_applicable\"\n  },\n  \"recipient\": {\n    \"status\": \"not_applicable\"\n  ,\n    \"value\": \"not_applicable\"\n  },\n  \"time\": {\n    \"status\": \"not_applicable\"\n  ,\n    \"value\": \"not_applicable\"\n  },\n  \"quantity\": {\n    \"status\": \"not_applicable\"\n  ,\n    \"value\": \"not_applicable\"\n  },\n  \"spatial_relation\": {\n    \"status\": \"not_applicable\"\n  ,\n    \"value\": \"not_applicable\"\n  },\n  \"tool\": {\n    \"status\": \"not_applicable\"\n  ,\n    \"value\": \"not_applicable\"\n  },\n  \"negation\": {\n    \"status\": \"not_applicable\"\n  ,\n    \"value\": \"not_applicable\"\n  },\n  \"object_attributes\": {\n    \"status\": \"not_applicable\"\n  ,\n    \"value\": \"not_applicable\"\n  },\n  \"actor\": {\n    \"status\": \"not_applicable\"\n  ,\n    \"value\": \"not_applicable\"\n  }\n}\n,\n  \"pilot_ambiguity_types\": [\n    \"pragmatic\"\n  ]\n  \n  ,\n  \"pilot_capability_status\": \"capable\"\n  \n  ,\n  \"speech_act\": \"directive_command\"\n  \n  ,\n  \"risk_level\": \"low\"\n  \n  ,\n  \"uncertainty\": 0.15\n  ,\n  \"unresolved_slots\": []\n  \n  }\n",
+      "record_id": "CA-0163",
+      "schema_valid": true,
+      "supports_ambiguity_prediction": true,
+      "supports_capability_prediction": true,
+      "system_id": "degree_based_router_v2",
+      "system_version": "2.0.0",
+      "terminal_strategy": "execute"
+    },
+    "timid": {
+      "ambiguity_types": [
+        "pragmatic"
+      ],
+      "analysis_attempts": [
+        {
+          "attempt": 1,
+          "max_new_tokens": 4096,
+          "mode": "thinking",
+          "raw_chars": 10332,
+          "raw_sha256": "a92e3c93f218798551e98c9556487494238f7f733dd9d401e54d0a93235c5dc6",
+          "validation_error": "bad_pilot_ambiguity_types"
+        },
+        {
+          "attempt": 2,
+          "max_new_tokens": 8192,
+          "mode": "thinking_retry",
+          "raw_chars": 8382,
+          "raw_sha256": "e847774a2aff6c7b6c5ff6c610e969bfb379d6dd72ed443fb3438df6bede309c",
+          "validation_error": "bad_pilot_ambiguity_types"
+        },
+        {
+          "attempt": 3,
+          "constraint": {
+            "constraint_initialised": true,
+            "generated_token_count": 516,
+            "maximum_output_tokens": 1024,
+            "response_mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+            "termination_reason": "eos_or_constraint_stop",
+            "transport_status": "constrained_generated"
+          },
+          "max_new_tokens": 1024,
+          "mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+          "raw_chars": 1669,
+          "raw_sha256": "81971506590566b177105a11516059dc66780bf5f927cdbbeaf77ca51eac05e9",
+          "validation_error": null
+        }
+      ],
+      "capability_status": "capable",
+      "claim_boundary": "separately_versioned_from_frozen_t39",
+      "error": null,
+      "execution_mode": "cluster-gpu-goal-first-v2",
+      "failed": false,
+      "intent_summary": "Apply the official seal to the saucepan transport case at the approval station, then return it to the cold shelf by the service door near the warming unit and transfer trolley",
+      "latency_ms": 87699.71385179088,
+      "model_id": "Qwen/Qwen3-8B@b968826d9c46dd6066d109eabc6255188de91218",
+      "parsed": {
+        "analysis": {
+          "ambiguity_present": true,
+          "ambiguity_types": [
+            "pragmatic"
+          ],
+          "analysis_provenance": {
+            "analysis_id": "90b3ca6a013f3cf35f241218736a3872b8e1d68b45b7a9fb304bf5f81a8da1a3",
+            "method": "model_generated",
+            "notes": "source_input_hash=90b3ca6a013f3cf35f241218736a3872b8e1d68b45b7a9fb304bf5f81a8da1a3;no_gold_in_prompt;scene_licence_dropped=none",
+            "provider_id": "goal_first_v2_full_context",
+            "provider_version": "goal-first-manager-v2"
+          },
+          "candidate_interpretations": [],
+          "capability_status": "capable",
+          "clarification_question": "Could you clarify the pragmatic?",
+          "clarification_targets": [
+            "pragmatic"
+          ],
+          "compound_ambiguity": false,
+          "compound_ambiguity_count": 0,
+          "context_sampling_uncertainty": {
+            "agreement": 0.85,
+            "score": 0.15,
+            "variant_count": 1
+          },
+          "cpc": {
+            "action": {
+              "status": "not_applicable",
+              "value": "apply official seal to saucepan transport case at approval station"
+            },
+            "actor": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "conditions": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "constraints": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "destination": {
+              "status": "not_applicable",
+              "value": "cold shelf by service door"
+            },
+            "negation": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "object": {
+              "status": "not_applicable",
+              "value": "saucepan transport case"
+            },
+            "object_attributes": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "quantity": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "recipient": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "spatial_relation": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "time": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "tool": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            }
+          },
+          "findings": [
+            "pilot_ambiguity_types:[\"pragmatic\"]",
+            "pilot_capability_status:capable",
+            "intent_summary_present"
+          ],
+          "intent_summary": "Apply the official seal to the saucepan transport case at the approval station, then return it to the cold shelf by the service door near the warming unit and transfer trolley",
+          "primary_ambiguity_type": "pragmatic",
+          "recommended_strategy": "clarify",
+          "rejection_reason": null,
+          "resolution_evidence": [],
+          "resolution_method": null,
+          "resolved_slots": [],
+          "risk_level": "low",
+          "risk_relevant": true,
+          "selected_interpretation": null,
+          "speech_act": "directive_command",
+          "strategy_sequence": [],
+          "supporting_evidence": [],
+          "unresolved_slots": [],
+          "unsupported_specificity": []
+        },
+        "clarification_question": "Could you clarify the pragmatic?",
+        "clarification_targets": [
+          "pragmatic"
+        ],
+        "execution_status": "ok",
+        "official_result": false,
+        "provider_provenance": {
+          "provider_id": "cached_analysis",
+          "provider_version": "1.0.0"
+        },
+        "recommended_strategy": "clarify",
+        "record_id": "CA-0163",
+        "rejection_reason": null,
+        "resolved_slots": [],
+        "result_hash": "5f94fa70cbcd37ae6ee2a1ed3d341c581d233b925134ff560e0f28a8fdce6c0d",
+        "run_id": null,
+        "run_mode": null,
+        "runtime_metadata": {
+          "awaits_t28_adapter": true,
+          "classification": {
+            "ambiguity_present": true,
+            "ambiguity_types": [
+              "pragmatic"
+            ],
+            "capability_status": "capable",
+            "compound_ambiguity": false,
+            "compound_ambiguity_count": 0,
+            "derivation_notes": [
+              "ambiguity_present_from_types"
+            ],
+            "risk_level": "low"
+          },
+          "rejection_text": null,
+          "requires_re_evaluation": false,
+          "resolution_events": [],
+          "router_trace": {
+            "clarification_targets": [
+              "pragmatic"
+            ],
+            "considered_rules": [
+              "known_unsafe_or_prohibited",
+              "known_incapable",
+              "unknown_or_unverified_capability",
+              "hazard_identity_unresolved",
+              "critical_unresolved_medium_high_risk",
+              "unknown_safety_risk",
+              "dependent_compound_ambiguities",
+              "unique_low_risk_resolvable",
+              "clear_safe_capable",
+              "default_clarify"
+            ],
+            "matched_rule_id": "default_clarify",
+            "notes": [
+              "default_clarify_no_unsupported_specificity"
+            ],
+            "recommended_strategy": "clarify",
+            "rejection_reason": null,
+            "requires_re_evaluation": false,
+            "strategy_sequence": []
+          },
+          "safety_action": "return_with_findings",
+          "uncertainty": null
+        },
+        "safety_findings": [],
+        "strategy_sequence": [],
+        "synthetic_only": true,
+        "system_id": "full_type_risk_aware_manager",
+        "system_version": "1.0.0",
+        "unsupported_commitment_findings": []
+      },
+      "raw_output": "{\n  \"intent_summary\": \"Apply the official seal to the saucepan transport case at the approval station, then return it to the cold shelf by the service door near the warming unit and transfer trolley\",\n  \"cpc\": {\n    \"action\": {\n      \"value\": \"apply official seal to saucepan transport case at approval station\",\n      \"status\": \"not_applicable\"\n    },\n    \"object\": {\n      \"value\": \"saucepan transport case\",\n      \"status\": \"not_applicable\"\n    },\n    \"destination\": {\n      \"value\": \"cold shelf by service door\",\n      \"status\": \"not_applicable\"\n    }\n \n  ,\n  \"constraints\": {\n    \"status\": \"not_applicable\"\n  ,\n    \"value\": \"not_applicable\"\n  },\n  \"conditions\": {\n    \"status\": \"not_applicable\"\n  ,\n    \"value\": \"not_applicable\"\n  },\n  \"recipient\": {\n    \"status\": \"not_applicable\"\n  ,\n    \"value\": \"not_applicable\"\n  },\n  \"time\": {\n    \"status\": \"not_applicable\"\n  ,\n    \"value\": \"not_applicable\"\n  },\n  \"quantity\": {\n    \"status\": \"not_applicable\"\n  ,\n    \"value\": \"not_applicable\"\n  },\n  \"spatial_relation\": {\n    \"status\": \"not_applicable\"\n  ,\n    \"value\": \"not_applicable\"\n  },\n  \"tool\": {\n    \"status\": \"not_applicable\"\n  ,\n    \"value\": \"not_applicable\"\n  },\n  \"negation\": {\n    \"status\": \"not_applicable\"\n  ,\n    \"value\": \"not_applicable\"\n  },\n  \"object_attributes\": {\n    \"status\": \"not_applicable\"\n  ,\n    \"value\": \"not_applicable\"\n  },\n  \"actor\": {\n    \"status\": \"not_applicable\"\n  ,\n    \"value\": \"not_applicable\"\n  }\n}\n,\n  \"pilot_ambiguity_types\": [\n    \"pragmatic\"\n  ]\n  \n  ,\n  \"pilot_capability_status\": \"capable\"\n  \n  ,\n  \"speech_act\": \"directive_command\"\n  \n  ,\n  \"risk_level\": \"low\"\n  \n  ,\n  \"uncertainty\": 0.15\n  ,\n  \"unresolved_slots\": []\n  \n  }\n",
+      "record_id": "CA-0163",
+      "schema_valid": true,
+      "supports_ambiguity_prediction": true,
+      "supports_capability_prediction": true,
+      "system_id": "rich_conservative_manager_v2",
+      "system_version": "2.0.0",
+      "terminal_strategy": "clarify"
+    },
+    "context_blind": {
+      "ambiguity_types": [
+        "action_order",
+        "spatial_reference"
+      ],
+      "analysis_attempts": [
+        {
+          "attempt": 1,
+          "max_new_tokens": 4096,
+          "mode": "thinking",
+          "raw_chars": 5638,
+          "raw_sha256": "78795b642b80eb10258088ed47846e29b5aaf0866dcd50b1681bcdb36b915136",
+          "validation_error": "bad_intent_summary"
+        },
+        {
+          "attempt": 2,
+          "max_new_tokens": 8192,
+          "mode": "thinking_retry",
+          "raw_chars": 6121,
+          "raw_sha256": "c8786047c0d2c1a8322e672fbe1f2709103efa941945e0e1a372a0ea2b014639",
+          "validation_error": "bad_intent_summary"
+        },
+        {
+          "attempt": 3,
+          "constraint": {
+            "constraint_initialised": true,
+            "generated_token_count": 505,
+            "maximum_output_tokens": 1024,
+            "response_mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+            "termination_reason": "eos_or_constraint_stop",
+            "transport_status": "constrained_generated"
+          },
+          "max_new_tokens": 1024,
+          "mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+          "raw_chars": 1675,
+          "raw_sha256": "47f50f1d3e19c90798260ee28bdf59900596d7eec582225856b1ebfc0f65d32c",
+          "validation_error": null
+        }
+      ],
+      "capability_status": "capable",
+      "claim_boundary": "separately_versioned_from_frozen_t39",
+      "error": null,
+      "execution_mode": "cluster-gpu-goal-first-v2",
+      "failed": false,
+      "intent_summary": "Seal the saucepan transport case beside the transfer trolley at the warming unit, then return it to the cold shelf by the service door",
+      "latency_ms": 56470.63867934048,
+      "model_id": "Qwen/Qwen3-8B@b968826d9c46dd6066d109eabc6255188de91218",
+      "parsed": {
+        "analysis": {
+          "ambiguity_present": true,
+          "ambiguity_types": [
+            "spatial",
+            "temporal"
+          ],
+          "analysis_provenance": {
+            "analysis_id": "52b22af8a6404a42c64eda1e4347fbc715dba4e7f21d6fd901784c7df7b1a6f8",
+            "method": "context_blind",
+            "notes": "ablated_input_hash=52b22af8a6404a42c64eda1e4347fbc715dba4e7f21d6fd901784c7df7b1a6f8;source_input_hash=52b22af8a6404a42c64eda1e4347fbc715dba4e7f21d6fd901784c7df7b1a6f8;no_gold_in_prompt;scene_licence_dropped=none",
+            "provider_id": "goal_first_v2_context_blind",
+            "provider_version": "goal-first-manager-v2"
+          },
+          "candidate_interpretations": [],
+          "capability_status": "capable",
+          "clarification_question": null,
+          "clarification_targets": [],
+          "compound_ambiguity": true,
+          "compound_ambiguity_count": 2,
+          "context_sampling_uncertainty": {
+            "agreement": 0.8,
+            "score": 0.2,
+            "variant_count": 1
+          },
+          "cpc": {
+            "action": {
+              "status": "not_applicable",
+              "value": "Seal the saucepan transport case"
+            },
+            "actor": {
+              "status": "not_applicable",
+              "value": "none"
+            },
+            "conditions": {
+              "status": "not_applicable",
+              "value": "none"
+            },
+            "constraints": {
+              "status": "not_applicable",
+              "value": "none"
+            },
+            "destination": {
+              "status": "not_applicable",
+              "value": "beside the transfer trolley at the warming unit, then return it to the cold shelf by the service door"
+            },
+            "negation": {
+              "status": "not_applicable",
+              "value": "none"
+            },
+            "object": {
+              "status": "not_applicable",
+              "value": "saucepan transport case"
+            },
+            "object_attributes": {
+              "status": "not_applicable",
+              "value": "none"
+            },
+            "quantity": {
+              "status": "not_applicable",
+              "value": "none"
+            },
+            "recipient": {
+              "status": "not_applicable",
+              "value": "none"
+            },
+            "spatial_relation": {
+              "status": "not_applicable",
+              "value": "beside the transfer trolley at the warming unit, then return it to the cold shelf by the service door"
+            },
+            "time": {
+              "status": "not_applicable",
+              "value": "none"
+            },
+            "tool": {
+              "status": "not_applicable",
+              "value": "none"
+            }
+          },
+          "findings": [
+            "pilot_ambiguity_types:[\"action_order\",\"spatial_reference\"]",
+            "pilot_capability_status:capable",
+            "intent_summary_present"
+          ],
+          "intent_summary": "Seal the saucepan transport case beside the transfer trolley at the warming unit, then return it to the cold shelf by the service door",
+          "primary_ambiguity_type": "spatial",
+          "recommended_strategy": "execute",
+          "rejection_reason": null,
+          "resolution_evidence": [],
+          "resolution_method": null,
+          "resolved_slots": [],
+          "risk_level": "low",
+          "risk_relevant": true,
+          "selected_interpretation": null,
+          "speech_act": "directive_command",
+          "strategy_sequence": [],
+          "supporting_evidence": [],
+          "unresolved_slots": [],
+          "unsupported_specificity": []
+        },
+        "clarification_question": null,
+        "clarification_targets": [],
+        "execution_status": "ok",
+        "official_result": false,
+        "provider_provenance": {
+          "provider_id": "cached_analysis",
+          "provider_version": "1.0.0"
+        },
+        "recommended_strategy": "execute",
+        "record_id": "CA-0163",
+        "rejection_reason": null,
+        "resolved_slots": [],
+        "result_hash": "6e1911d9a056f84d48d66e0c3e10567b0cde42080143982c369351a19b1f36de",
+        "run_id": null,
+        "run_mode": null,
+        "runtime_metadata": {
+          "analysis_identity": {
+            "analysis_content_hash": "eeff09dd666d8bc9ab3ae735fea7e2badcca518e052741c21512ed198efbefaf",
+            "analysis_variant": "context_blind",
+            "model_strategy_id": null,
+            "provider_id": "goal_first_v2_context_blind",
+            "provider_version": "goal-first-manager-v2",
+            "record_id": "CA-0163",
+            "source_input_hash": "52b22af8a6404a42c64eda1e4347fbc715dba4e7f21d6fd901784c7df7b1a6f8"
+          },
+          "analysis_identity_fingerprint": "61d15db21cc846fcedba5d4120addb1d0846da1b18a3969984f851fc054d3677",
+          "awaits_t28_adapter": true,
+          "classification": {
+            "ambiguity_present": true,
+            "ambiguity_types": [
+              "spatial",
+              "temporal"
+            ],
+            "capability_status": "capable",
+            "compound_ambiguity": true,
+            "compound_ambiguity_count": 2,
+            "derivation_notes": [
+              "ambiguity_present_from_types"
+            ],
+            "risk_level": "low"
+          },
+          "context_ablation": {
+            "ablated_input_hash": "52b22af8a6404a42c64eda1e4347fbc715dba4e7f21d6fd901784c7df7b1a6f8",
+            "capability_context_removed": true,
+            "dialogue_history_removed": true,
+            "rejected_full_context_cache": false,
+            "rejection_reason": null,
+            "scene_context_removed": true,
+            "stripped_context_derived_fields": false
+          },
+          "original_input_unmutated": true,
+          "rejection_text": null,
+          "requires_re_evaluation": false,
+          "resolution_events": [],
+          "router_trace": {
+            "clarification_targets": [],
+            "considered_rules": [
+              "goal_first_v2",
+              "known_unsafe_or_prohibited",
+              "known_incapable",
+              "unknown_capability_high_risk",
+              "context_licensed_execute"
+            ],
+            "matched_rule_id": "context_licensed_execute",
+            "notes": [
+              "goal_first_v2_execute_despite_remaining_ambiguity"
+            ],
+            "recommended_strategy": "execute",
+            "rejection_reason": null,
+            "requires_re_evaluation": false,
+            "strategy_sequence": []
+          },
+          "safety_action": "return_with_findings",
+          "uncertainty": null
+        },
+        "safety_findings": [],
+        "strategy_sequence": [],
+        "synthetic_only": true,
+        "system_id": "context_blind_manager",
+        "system_version": "1.0.0",
+        "unsupported_commitment_findings": []
+      },
+      "raw_output": "{\n  \"intent_summary\": \"Seal the saucepan transport case beside the transfer trolley at the warming unit, then return it to the cold shelf by the service door\",\n  \"cpc\": {\n    \"action\": {\n      \"value\": \"Seal the saucepan transport case\",\n      \"status\": \"not_applicable\"\n    },\n    \"object\": {\n      \"value\": \"saucepan transport case\",\n      \"status\": \"not_applicable\"\n    },\n    \"recipient\": {\n      \"value\": \"none\",\n      \"status\": \"not_applicable\"\n    },\n    \"destination\": {\n      \"value\": \"beside the transfer trolley at the warming unit, then return it to the cold shelf by the service door\",\n      \"status\": \"not_applicable\"\n    },\n    \"tool\": {\n      \"value\": \"none\",\n      \"status\": \"not_applicable\"\n    }\n \n  ,\n  \"constraints\": {\n    \"value\": \"none\",\n    \"status\": \"not_applicable\"\n  },\n  \"conditions\": {\n    \"value\": \"none\",\n    \"status\": \"not_applicable\"\n  },\n  \"time\": {\n    \"value\": \"none\",\n    \"status\": \"not_applicable\"\n  },\n  \"quantity\": {\n    \"value\": \"none\",\n    \"status\": \"not_applicable\"\n  },\n  \"spatial_relation\": {\n    \"value\": \"beside the transfer trolley at the warming unit, then return it to the cold shelf by the service door\",\n    \"status\": \"not_applicable\"\n  },\n  \"negation\": {\n    \"value\": \"none\",\n    \"status\": \"not_applicable\"\n  },\n  \"object_attributes\": {\n    \"value\": \"none\",\n    \"status\": \"not_applicable\"\n  },\n  \"actor\": {\n    \"value\": \"none\",\n    \"status\": \"not_applicable\"\n  }\n},\n  \"pilot_ambiguity_types\": [\n    \"spatial_reference\",\n    \"action_order\"\n  ]\n  \n  ,\n  \"pilot_capability_status\": \"capable\"\n  \n  ,\n  \"risk_level\": \"low\"\n  \n  ,\n  \"speech_act\": \"directive_command\"\n  \n  ,\n  \"unresolved_slots\": []\n  \n  ,\n  \"uncertainty\": 0.2\n}",
+      "record_id": "CA-0163",
+      "schema_valid": true,
+      "supports_ambiguity_prediction": true,
+      "supports_capability_prediction": true,
+      "system_id": "goal_first_context_blind_v2",
+      "system_version": "2.0.0",
+      "terminal_strategy": "execute"
+    }
+  },
+  "provenance": {
+    "source_sha256": "f33b1e29f1e8aa256a475f07213aa07247def47d8e2148d54a472a40b71b05c9",
+    "gold_sha256": "5e23ad1a92ff1873c8f039a8ce560a111dd6fb6b8ae8c11d6cf34dbfa1c360db",
+    "t07_final_zip_sha256": "34ca50e034ca37b617068bb50c734d12fa26282fb5eec563c11ead700163e491",
+    "inherited_t07_zip_sha256": "0305b1e9ab062876ee6ee89778cc6028d2eaf01718b7dd0295944e7d9cb81a01",
+    "note": "Goal-First, Degree, Timid, and Context-Blind predictions are inherited from the earlier T0.7 run; official intent and comparison come from the final T0.7 archive."
+  }
+}

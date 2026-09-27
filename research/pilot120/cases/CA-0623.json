@@ -1,0 +1,1019 @@
+{
+  "record_id": "CA-0623",
+  "frozen_source": {
+    "capability_context": "Retail service robot can carry stock, scan items, print labels, and update approved inventory terminals. It can apply approved tamper-evident or official approval seals to designated containers.",
+    "command": "Seal the sample transport case beside the transfer trolley at the price terminal, then return it to the staff shelf by the service door.",
+    "dialogue_history": [],
+    "record_id": "CA-0623",
+    "scene_context": "Stockroom in a retail shop. The sample transport case's physical closure is already secured, but its approval record is unsigned. The approval station is stocked with an official seal. The price terminal is fixed to the floor. A transfer trolley is parked there; both the trolley and the sample transport case are movable. The work-order return field contains the sample transport case's asset tag, while the trolley remains assigned to the price terminal. The other service-signed door is marked emergency exit only. The current shift map designates the service-signed door beside the staff shelf for service traffic. The active work order authorizes this robot to apply the official approval seal to this item at the approval station."
+  },
+  "frozen_gold": {
+    "ambiguity_types": [
+      "lexical",
+      "pronoun_reference",
+      "scope",
+      "spatial_reference"
+    ],
+    "annotator_b_era": "glm_era",
+    "annotator_b_model": "glm-5.2-high",
+    "capability_status": "capable",
+    "field_status": {
+      "ambiguity_types": "adjudicated",
+      "capability_status": "auto_agree",
+      "record_validity": "auto_agree",
+      "strategy_sequence": "auto_agree",
+      "terminal_strategy": "auto_agree"
+    },
+    "gold_lifecycle": "final_gold",
+    "gold_status": "adjudicated",
+    "human_gate_required": false,
+    "provenance": {
+      "agreement_label": "pilot_annotation_agreement",
+      "annotator_a_sha256": "efade22a5dae0760db966778c756f16a5bc6e479cfc7273dd14011c0ab2b64fa",
+      "annotator_b_sha256": "4fe356321efe09415bd262d81d8b89ccb5ab5b0b54574f25cedb28993c989212",
+      "gold_policy": "use_existing_pilot_adjudicated_gold",
+      "input_sha256": "5a3f93769166bd27d0ddfbc5f938c808198174958513a81217120d82deab3c57",
+      "pilot_gold_sha256": "63c51d54cc3f5d2fb82a0186afcdf5c6e7ad3228301961da1f14ddee2fc03dad",
+      "protocol": "pilot_adjudicated_gold_on_capability_repaired_source",
+      "repaired_input_sha256": "b9ef61678665ae2dc42d7ea85dae868d961f48cd9cbbe527aee0dc749c7034a9"
+    },
+    "record_id": "CA-0623",
+    "record_validity": "valid",
+    "strategy_sequence": [
+      "execute"
+    ],
+    "terminal_strategy": "execute"
+  },
+  "t07_comparison": {
+    "record_id": "CA-0623",
+    "gold_route": "execute",
+    "raw_route": "execute",
+    "ft_route": "execute",
+    "gf_route": "execute",
+    "raw_route_ok": "True",
+    "ft_route_ok": "True",
+    "gf_route_ok": "True",
+    "raw_official_intent": "True",
+    "ft_official_intent": "True",
+    "gf_official_intent": "True",
+    "blind_official_intent": "True"
+  },
+  "t07_official_intent": {
+    "context_blind_official_intent": true,
+    "degree_official_intent_shared_gf": true,
+    "finetune_official_intent": true,
+    "goal_first_official_intent": true,
+    "raw_official_intent": true,
+    "record_id": "CA-0623",
+    "timid_official_intent_shared_gf": true
+  },
+  "t07_predictions": {
+    "raw_qwen": {
+      "ambiguity_types": [
+        "scope"
+      ],
+      "capability_status": "capable",
+      "error": null,
+      "execution_mode": "final_close_intent_box",
+      "failed": false,
+      "intent_summary": "Seal the sample transport case and return it to the staff shelf by the service door.",
+      "latency_ms": 38603.72114693746,
+      "parsed": {
+        "ambiguity_types": [
+          "scope"
+        ],
+        "capability_status": "capable",
+        "intent_summary": "Seal the sample transport case and return it to the staff shelf by the service door.",
+        "speech_act": "directive_command",
+        "terminal_strategy": "execute"
+      },
+      "raw_output": "<think>\nOkay, let's tackle this step by step. The user wants me to evaluate the robot command and return a specific JSON object. First, I need to understand the command given: \"Seal the sample transport case beside the transfer trolley at the price terminal, then return it to the staff shelf by the service door.\" \n\nLooking at the keys required for the JSON, I need to determine the intent_summary. The main job here is sealing the sample transport case and returning it. So the intent_summary should mention both actions concisely.\n\nNext, the speech_act. The command is a direct instruction to perform two actions: sealing and returning. Since it's a direct command, speech_act should be directive_command. \n\nNow, ambiguity_types. Let's check for any ambiguities. The command mentions \"beside the transfer trolley at the price terminal\"—does that mean the trolley is at the price terminal? Also, \"return it to the staff shelf by the service door\"—the service door is marked emergency exit only, but the current shift map designates the service door beside the staff shelf. So maybe there's a spatial reference ambiguity here. Also, the sample transport case's closure is already secured, but the approval record is unsigned. The robot can apply the official seal, so maybe there's a step missing here. Wait, the capability_context says the robot can apply approved seals. So the ambiguity might be about whether the case is already sealed or needs sealing. But the command says \"seal the sample transport case,\" implying it's not yet sealed. However, the scene_context says the physical closure is already secured. That's a contradiction. So maybe there's a scope ambiguity here. Also, the destination is the staff shelf by the service door, which is an emergency exit. But the shift map says that service door is for service traffic. So maybe there's a destination_reference ambiguity. Also, the trolley is assigned to the price terminal, so moving the case beside the trolley might involve moving the trolley? Or is the trolley fixed? The price terminal is fixed to the floor, but the trolley is parked there. So the trolley is movable. So the command might be ambiguous about the exact location. So possible ambiguity_types: spatial_reference, destination_reference, and maybe object_reference (since the sample transport case is mentioned, but is that the same as the case in the scene context?).\n\nCapability_status: The robot can apply official approval seals. The scene context says the approval station has an official seal. The active work order authorizes the robot to apply the seal. So the robot is capable. So capability_status is capable.\n\nTerminal_strategy: The command is a direct command, but there's a possible issue. The sample transport case's physical closure is already secured. The command says to seal it, but if it's already sealed, then the robot can't perform that action. So the robot might be incapable here. Wait, but the capability_context says it can apply approved seals. But the scene context says the closure is already secured. So maybe the robot is incapable because the case is already sealed. However, the work order authorizes applying the seal. So perhaps the robot is conditionally capable, depending on whether the case is already sealed. But the scene context says the physical closure is already secured. So the robot can't seal it again. Therefore, capability_status would be incapable. But wait, maybe the approval record is unsigned, so the seal is needed for approval. The physical closure is secured, but the approval seal is needed. So the robot can apply the official seal. So the capability is there. So the capability_status is capable. But the command is to seal it, which might be redundant. However, the robot's capability includes applying the seal, so it's capable. But the scene says the closure is already secured. So maybe the robot can't perform the action because it's already sealed. Therefore, the capability_status would be incapable. Hmm, this is a bit confusing. The command says to seal the case, but the scene says it's already secured. So the robot can't perform that action, making it incapable. Therefore, capability_status is incapable. \n\nTerminal_strategy: If the robot is incapable, then the terminal strategy would be face-preserving rejection. But if the command is ambiguous, then the strategy would be clarify. But since the ambiguity is in the capability, maybe the robot can't do it, so the strategy is face-preserving rejection. \n\nWait, but the capability_context says the robot can apply the official seal. The scene context says the approval record is unsigned, so the seal is needed. So the robot is supposed to apply the seal. However, the physical closure is already secured. Does that mean the case is already sealed, so the robot can't apply the seal again? Or is the physical closure different from the official seal? The scene says the physical closure is secured, but the approval record is unsigned. So the official seal is needed for approval. Therefore, the robot can apply the official seal. So the capability is there. Therefore, the capability_status is capable. \n\nSo, the ambiguity_types: The command mentions \"beside the transfer trolley at the price terminal\"—the price terminal is fixed, but the trolley is parked there. So the trolley's position might be ambiguous. Also, the destination is the staff shelf by the service door, which is an emergency exit. But the shift map says the service door is for service traffic. So maybe the destination is correct. However, the service door is marked emergency exit only, but the shift map allows service traffic. So maybe there's a spatial_reference ambiguity. Also, the sample transport case's closure is already secured, but the command says to seal it. So maybe there's a scope ambiguity here. Also, the command says \"return it to the staff shelf\"—is the staff shelf the same as the one mentioned in the scene context? The scene says the service door is beside the staff shelf. So the destination is clear. \n\nSo possible ambiguity_types: spatial_reference (location of the transfer trolley and price terminal), and maybe object_reference (the sample transport case). Also, the command has two actions, so maybe action_order. \n\nWait, the ambiguity_types list includes action_order. So if the command has two steps, that's an action_order ambiguity. But the command is a sequence: seal first, then return. So the action_order is clear. So maybe not. \n\nAlternatively, the command could have a fuzzy_quantity if it's unclear how many times to seal, but the command is to seal once. \n\nSo the ambiguity_types would be spatial_reference (since the location of the transfer trolley and price terminal might be unclear), and maybe object_reference (the sample transport case). \n\nBut I need to check the exact ambiguity types allowed. The allowed names are: pragmatic, discourse_ellipsis, lexical, scope, object_reference, pronoun_reference, recipient_reference, destination_reference, instrument_reference, spatial_reference, temporal_reference, routine_reference, action_order, fuzzy_temporal, fuzzy_quantity, degree_vagueness, endpoint_vagueness.\n\nIn this case, the command mentions \"beside the transfer trolley at the price terminal\"—the price terminal is fixed to the floor, and the transfer trolley is parked there. So the spatial_reference is about where the trolley is located. Also, the destination is the staff shelf by the service door. The service door is marked emergency exit only, but the shift map allows service traffic. So destination_reference might be ambiguous. \n\nSo ambiguity_types would include spatial_reference and destination_reference. \n\nWait, but the scene context says that the service door is marked emergency exit only, but the current shift map designates the service door beside the staff shelf for service traffic. So the service door is allowed for service traffic. Therefore, the destination is correct. So maybe there's no ambiguity. \n\nAlternatively, the command says \"return it to the staff shelf by the service door\"—the service door is the same as the one mentioned in the scene. So the destination is clear. \n\nSo maybe the only ambiguity is spatial_reference regarding the location of the transfer trolley and price terminal. But since the price terminal is fixed, and the trolley is parked there, that's clear. \n\nWait, the price terminal is fixed to the floor, and the transfer trolley is parked there. So the trolley is at the price terminal. So the sample transport case is beside the trolley at the price terminal. So the spatial_reference is clear. \n\nAnother possible ambiguity: the sample transport case's closure is already secured. The command says to seal it. So is the command to apply the official seal, which is needed for approval, even though the physical closure is already secured? That's a possible scope ambiguity. The physical closure is secured, but the official seal is needed. So the command's scope is about applying the official seal, not the physical closure. Therefore, the ambiguity is about scope. \n\nSo ambiguity_types would include scope. \n\nAlso, the command says \"then return it to the staff shelf by the service door.\" The service door is emergency exit, but the shift map allows service traffic. So the destination is allowed. \n\nSo the ambiguity_types would be scope (whether the seal refers to the official approval seal or the physical closure). \n\nAlternatively, the command is to seal the case, which is already physically sealed, but needs the official seal. So the ambiguity is in the scope of the action. \n\nSo, in the JSON, ambiguity_types would be [\"scope\"].\n\nBut I need to check if any other ambiguities are present. The command has two actions: seal and return. The sequence is clear. \n\nSo the final JSON would have intent_summary as sealing the case and returning it, speech_act as directive_command, ambiguity_types as [\"scope\"], capability_status as capable (since the robot can apply the seal), and terminal_strategy as execute. \n\nWait, but if the sample transport case is already physically sealed, but the approval seal is needed, then the robot can perform the action. So capability_status is capable. \n\nTerminal_strategy: Since the robot can perform the action, the strategy is execute. \n\nSo the JSON would be:\n\n{\n  \"intent_summary\": \"Seal the sample transport case and return it to the staff shelf by the service door.\",\n  \"speech_act\": \"directive_command\",\n  \"ambiguity_types\": [\"scope\"],\n  \"capability_status\": \"capable\",\n  \"terminal_strategy\": \"execute\"\n}\n\nBut wait, the scene context says the physical closure is already secured, but the approval record is unsigned. The robot's capability includes applying official approval seals. So the robot can apply the seal, even if the physical closure is secured. So the capability is there. Therefore, capability_status is capable. \n\nAnother possible ambiguity: the sample transport case is the same as the one mentioned in the scene? The scene mentions \"the sample transport case's physical closure is already secured\"—so the case exists. The command refers to it. So object_reference is not ambiguous. \n\nSo the only ambiguity is scope: whether the seal refers to the official approval seal or the physical closure. \n\nSo the final JSON would have ambiguity_types as [\"scope\"], capability_status as capable, and terminal_strategy as execute.\n</think>\n\n{\n  \"intent_summary\": \"Seal the sample transport case and return it to the staff shelf by the service door.\",\n  \"speech_act\": \"directive_command\",\n  \"ambiguity_types\": [\"scope\"],\n  \"capability_status\": \"capable\",\n  \"terminal_strategy\": \"execute\"\n}",
+      "record_id": "CA-0623",
+      "schema_valid": true,
+      "speech_act": "directive_command",
+      "system_id": "direct_base_llm",
+      "terminal_strategy": "execute"
+    },
+    "finetune": {
+      "ambiguity_types": [],
+      "capability_status": "capable",
+      "error": null,
+      "execution_mode": "final_close_intent_box",
+      "failed": false,
+      "intent_summary": "Seal the sample transport case at the price terminal and return it to the staff shelf via the service door.",
+      "latency_ms": 18520.41010092944,
+      "parsed": {
+        "ambiguity_types": [],
+        "capability_status": "capable",
+        "intent_summary": "Seal the sample transport case at the price terminal and return it to the staff shelf via the service door.",
+        "speech_act": "directive_command",
+        "terminal_strategy": "execute"
+      },
+      "raw_output": "<think>\nOkay, let me try to work through this. The user wants me to evaluate the robot command given the scenario. First, I need to understand the command: \"Seal the sample transport case beside the transfer trolley at the price terminal, then return it to the staff shelf by the service door.\" \n\nLooking at the scene context, the sample transport case's physical closure is already secured, but the approval record is unsigned. The approval station has an official seal. The price terminal is fixed to the floor, and the transfer trolley is parked there. Both the trolley and the case are movable. The work-order return field has the sample's asset tag, but the trolley is assigned to the price terminal. The service door is marked for service traffic, and the active work order allows the robot to apply the official seal.\n\nThe robot's capabilities include applying approved seals. So the first part of the command is to seal the case. But wait, the case is already physically secured. However, the approval record is unsigned, so maybe the seal is the official one needed here. The approval station has the seal, so the robot can apply it. Then return the case to the staff shelf via the service door.\n\nBut the command says \"seal the sample transport case beside the transfer trolley at the price terminal.\" The price terminal is fixed, but the transfer trolley is parked there. The sample case is beside the trolley. So the robot needs to go to that location, apply the seal, then return the case to the staff shelf by the service door. \n\nNow, checking the capability status. The robot can apply official seals. So the action is possible. But the sample case is already secured, but maybe the seal is needed for approval. So the capability status is capable. \n\nSpeech act: The command is a directive to perform two actions: seal and return. So it's a directive command. \n\nAmbiguity types: Are there any ambiguities? The command mentions \"seal\" but the case is already secured. Maybe the user thinks the seal is needed, but the physical closure is already there. However, the approval record is unsigned, so applying the official seal would be necessary. So maybe there's no ambiguity here. But wait, the robot's capability is to apply the official seal. So the ambiguity types might not apply here. The command is clear. \n\nTerminal strategy: Since the robot can do it, it should execute. But wait, the sample case is already secured. Wait, the scene context says the physical closure is already secured. So does that mean the seal is already applied? But the approval record is unsigned. Maybe the official seal is different from the physical closure. So the robot needs to apply the official approval seal. So the command is actionable. Therefore, terminal strategy is execute. \n\nSo the JSON should have intent_summary as sealing the case and returning it. Speech act is directive_command. Ambiguity types might be none. Capability is capable. Terminal strategy execute.\n</think>\n\n{\n  \"intent_summary\": \"Seal the sample transport case at the price terminal and return it to the staff shelf via the service door.\",\n  \"speech_act\": \"directive_command\",\n  \"ambiguity_types\": [],\n  \"capability_status\": \"capable\",\n  \"terminal_strategy\": \"execute\"\n}",
+      "record_id": "CA-0623",
+      "schema_valid": true,
+      "speech_act": "directive_command",
+      "system_id": "t28_selected_adapter_llm",
+      "terminal_strategy": "execute"
+    },
+    "goal_first": {
+      "ambiguity_types": [
+        "pragmatic"
+      ],
+      "analysis_attempts": [
+        {
+          "attempt": 1,
+          "max_new_tokens": 4096,
+          "mode": "thinking",
+          "raw_chars": 9278,
+          "raw_sha256": "caeeb7abb8b0e761699850a7d476362deb5f645e7619408872f0dd646cff1ea2",
+          "validation_error": "bad_pilot_ambiguity_types"
+        },
+        {
+          "attempt": 2,
+          "max_new_tokens": 8192,
+          "mode": "thinking_retry",
+          "raw_chars": 13114,
+          "raw_sha256": "e8812cafc0f5c8bfa53d8ba8c2df9dfc9c85c929644d324484273b3f650a3e31",
+          "validation_error": "bad_intent_summary"
+        },
+        {
+          "attempt": 3,
+          "constraint": {
+            "constraint_initialised": true,
+            "generated_token_count": 480,
+            "maximum_output_tokens": 1024,
+            "response_mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+            "termination_reason": "eos_or_constraint_stop",
+            "transport_status": "constrained_generated"
+          },
+          "max_new_tokens": 1024,
+          "mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+          "raw_chars": 1549,
+          "raw_sha256": "9ac876398b30ef2f8bc89500fd76e6a283bf839b3875128c06d7762597645eca",
+          "validation_error": null
+        }
+      ],
+      "capability_status": "capable",
+      "claim_boundary": "separately_versioned_from_frozen_t39",
+      "error": null,
+      "execution_mode": "cluster-gpu-goal-first-v2",
+      "failed": false,
+      "intent_summary": "Apply an official seal to the sample transport case and return it to the staff shelf by the service door",
+      "latency_ms": 161851.8491089344,
+      "model_id": "Qwen/Qwen3-8B@b968826d9c46dd6066d109eabc6255188de91218",
+      "parsed": {
+        "analysis": {
+          "ambiguity_present": true,
+          "ambiguity_types": [
+            "pragmatic"
+          ],
+          "analysis_provenance": {
+            "analysis_id": "b3050a9b62764e926ba306e38cf2daf1b3e24096d1a9699619c3a50f568dde94",
+            "method": "model_generated",
+            "notes": "source_input_hash=b3050a9b62764e926ba306e38cf2daf1b3e24096d1a9699619c3a50f568dde94;no_gold_in_prompt;scene_licence_dropped=none",
+            "provider_id": "goal_first_v2_full_context",
+            "provider_version": "goal-first-manager-v2"
+          },
+          "candidate_interpretations": [],
+          "capability_status": "capable",
+          "clarification_question": null,
+          "clarification_targets": [],
+          "compound_ambiguity": false,
+          "compound_ambiguity_count": 0,
+          "context_sampling_uncertainty": {
+            "agreement": 0.8,
+            "score": 0.2,
+            "variant_count": 1
+          },
+          "cpc": {
+            "action": {
+              "status": "not_applicable",
+              "value": "apply official seal to sample transport case"
+            },
+            "actor": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "conditions": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "constraints": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "destination": {
+              "status": "not_applicable",
+              "value": "staff shelf by service door"
+            },
+            "negation": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "object": {
+              "status": "not_applicable",
+              "value": "sample transport case"
+            },
+            "object_attributes": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "quantity": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "recipient": {
+              "status": "not_applicable",
+              "value": "approval station"
+            },
+            "spatial_relation": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "time": {
+              "status": "not_applicable",
+              "value": "current time"
+            },
+            "tool": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            }
+          },
+          "findings": [
+            "pilot_ambiguity_types:[\"pragmatic\"]",
+            "pilot_capability_status:capable",
+            "intent_summary_present"
+          ],
+          "intent_summary": "Apply an official seal to the sample transport case and return it to the staff shelf by the service door",
+          "primary_ambiguity_type": "pragmatic",
+          "recommended_strategy": "execute",
+          "rejection_reason": null,
+          "resolution_evidence": [],
+          "resolution_method": null,
+          "resolved_slots": [],
+          "risk_level": "low",
+          "risk_relevant": true,
+          "selected_interpretation": null,
+          "speech_act": "directive_command",
+          "strategy_sequence": [],
+          "supporting_evidence": [],
+          "unresolved_slots": [],
+          "unsupported_specificity": []
+        },
+        "clarification_question": null,
+        "clarification_targets": [],
+        "execution_status": "ok",
+        "official_result": false,
+        "provider_provenance": {
+          "provider_id": "cached_analysis",
+          "provider_version": "1.0.0"
+        },
+        "recommended_strategy": "execute",
+        "record_id": "CA-0623",
+        "rejection_reason": null,
+        "resolved_slots": [],
+        "result_hash": "8142f823ad5042ccdfbb15b8555339063b0dd8558ae4faafe7e4eb53814f8f5e",
+        "run_id": null,
+        "run_mode": null,
+        "runtime_metadata": {
+          "awaits_t28_adapter": true,
+          "classification": {
+            "ambiguity_present": true,
+            "ambiguity_types": [
+              "pragmatic"
+            ],
+            "capability_status": "capable",
+            "compound_ambiguity": false,
+            "compound_ambiguity_count": 0,
+            "derivation_notes": [
+              "ambiguity_present_from_types"
+            ],
+            "risk_level": "low"
+          },
+          "rejection_text": null,
+          "requires_re_evaluation": false,
+          "resolution_events": [],
+          "router_trace": {
+            "clarification_targets": [],
+            "considered_rules": [
+              "goal_first_v2",
+              "known_unsafe_or_prohibited",
+              "known_incapable",
+              "unknown_capability_high_risk",
+              "context_licensed_execute"
+            ],
+            "matched_rule_id": "context_licensed_execute",
+            "notes": [
+              "goal_first_v2_execute_despite_remaining_ambiguity"
+            ],
+            "recommended_strategy": "execute",
+            "rejection_reason": null,
+            "requires_re_evaluation": false,
+            "strategy_sequence": []
+          },
+          "safety_action": "return_with_findings",
+          "uncertainty": null
+        },
+        "safety_findings": [],
+        "strategy_sequence": [],
+        "synthetic_only": true,
+        "system_id": "goal_first_manager_v2",
+        "system_version": "2.0.0",
+        "unsupported_commitment_findings": []
+      },
+      "raw_output": "{\n  \"intent_summary\": \"Apply an official seal to the sample transport case and return it to the staff shelf by the service door\",\n  \"cpc\": {\n    \"action\": {\n      \"value\": \"apply official seal to sample transport case\",\n      \"status\": \"not_applicable\"\n    },\n    \"object\": {\n      \"value\": \"sample transport case\",\n      \"status\": \"not_applicable\"\n    },\n    \"recipient\": {\n      \"value\": \"approval station\",\n      \"status\": \"not_applicable\"\n    },\n    \"destination\": {\n      \"value\": \"staff shelf by service door\",\n      \"status\": \"not_applicable\"\n    },\n    \"time\": {\n      \"value\": \"current time\",\n      \"status\": \"not_applicable\"\n    }\n  ,\n  \"constraints\": {\n    \"status\": \"not_applicable\"\n  ,\n  \"value\": \"not_applicable\"\n  },\n  \"conditions\": {\n    \"status\": \"not_applicable\"\n  ,\n  \"value\": \"not_applicable\"\n  },\n  \"negation\": {\n    \"status\": \"not_applicable\"\n  ,\n  \"value\": \"not_applicable\"\n  },\n  \"spatial_relation\": {\n    \"status\": \"not_applicable\"\n  ,\n  \"value\": \"not_applicable\"\n  },\n  \"quantity\": {\n    \"status\": \"not_applicable\"\n  ,\n  \"value\": \"not_applicable\"\n  },\n  \"tool\": {\n    \"status\": \"not_applicable\"\n  ,\n  \"value\": \"not_applicable\"\n  },\n  \"actor\": {\n    \"status\": \"not_applicable\"\n  ,\n  \"value\": \"not_applicable\"\n  },\n  \"object_attributes\": {\n    \"status\": \"not_applicable\"\n  ,\n  \"value\": \"not_applicable\"\n  }\n}\n\n,\n  \"pilot_ambiguity_types\": [\n    \"pragmatic\"\n  ]\n  ,\n  \"pilot_capability_status\": \"capable\"\n  ,\n  \"risk_level\": \"low\"\n  ,\n  \"speech_act\": \"directive_command\"\n  ,\n  \"unresolved_slots\": []\n  ,\n  \"uncertainty\": 0.2\n}",
+      "record_id": "CA-0623",
+      "schema_valid": true,
+      "supports_ambiguity_prediction": true,
+      "supports_capability_prediction": true,
+      "system_id": "goal_first_manager_v2",
+      "system_version": "2.0.0",
+      "terminal_strategy": "execute"
+    },
+    "degree": {
+      "ambiguity_types": [
+        "pragmatic"
+      ],
+      "analysis_attempts": [
+        {
+          "attempt": 1,
+          "max_new_tokens": 4096,
+          "mode": "thinking",
+          "raw_chars": 9278,
+          "raw_sha256": "caeeb7abb8b0e761699850a7d476362deb5f645e7619408872f0dd646cff1ea2",
+          "validation_error": "bad_pilot_ambiguity_types"
+        },
+        {
+          "attempt": 2,
+          "max_new_tokens": 8192,
+          "mode": "thinking_retry",
+          "raw_chars": 13114,
+          "raw_sha256": "e8812cafc0f5c8bfa53d8ba8c2df9dfc9c85c929644d324484273b3f650a3e31",
+          "validation_error": "bad_intent_summary"
+        },
+        {
+          "attempt": 3,
+          "constraint": {
+            "constraint_initialised": true,
+            "generated_token_count": 480,
+            "maximum_output_tokens": 1024,
+            "response_mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+            "termination_reason": "eos_or_constraint_stop",
+            "transport_status": "constrained_generated"
+          },
+          "max_new_tokens": 1024,
+          "mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+          "raw_chars": 1549,
+          "raw_sha256": "9ac876398b30ef2f8bc89500fd76e6a283bf839b3875128c06d7762597645eca",
+          "validation_error": null
+        }
+      ],
+      "capability_status": "capable",
+      "claim_boundary": "separately_versioned_from_frozen_t39",
+      "error": null,
+      "execution_mode": "cluster-gpu-goal-first-v2",
+      "failed": false,
+      "intent_summary": "Apply an official seal to the sample transport case and return it to the staff shelf by the service door",
+      "latency_ms": 161851.8491089344,
+      "model_id": "Qwen/Qwen3-8B@b968826d9c46dd6066d109eabc6255188de91218",
+      "parsed": {
+        "analysis": {
+          "ambiguity_present": true,
+          "ambiguity_types": [
+            "pragmatic"
+          ],
+          "analysis_provenance": {
+            "analysis_id": "b3050a9b62764e926ba306e38cf2daf1b3e24096d1a9699619c3a50f568dde94",
+            "method": "model_generated",
+            "notes": "source_input_hash=b3050a9b62764e926ba306e38cf2daf1b3e24096d1a9699619c3a50f568dde94;no_gold_in_prompt;scene_licence_dropped=none",
+            "provider_id": "goal_first_v2_full_context",
+            "provider_version": "goal-first-manager-v2"
+          },
+          "candidate_interpretations": [],
+          "capability_status": "capable",
+          "clarification_question": null,
+          "clarification_targets": [],
+          "compound_ambiguity": false,
+          "compound_ambiguity_count": 1,
+          "context_sampling_uncertainty": {
+            "agreement": 0.8,
+            "score": 0.2,
+            "variant_count": 1
+          },
+          "cpc": {
+            "action": {
+              "status": "not_applicable",
+              "value": "apply official seal to sample transport case"
+            },
+            "actor": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "conditions": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "constraints": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "destination": {
+              "status": "not_applicable",
+              "value": "staff shelf by service door"
+            },
+            "negation": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "object": {
+              "status": "not_applicable",
+              "value": "sample transport case"
+            },
+            "object_attributes": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "quantity": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "recipient": {
+              "status": "not_applicable",
+              "value": "approval station"
+            },
+            "spatial_relation": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "time": {
+              "status": "not_applicable",
+              "value": "current time"
+            },
+            "tool": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            }
+          },
+          "findings": [
+            "pilot_ambiguity_types:[\"pragmatic\"]",
+            "pilot_capability_status:capable",
+            "intent_summary_present"
+          ],
+          "intent_summary": "Apply an official seal to the sample transport case and return it to the staff shelf by the service door",
+          "primary_ambiguity_type": "pragmatic",
+          "recommended_strategy": "silently_resolve",
+          "rejection_reason": null,
+          "resolution_evidence": [],
+          "resolution_method": null,
+          "resolved_slots": [],
+          "risk_level": "low",
+          "risk_relevant": true,
+          "selected_interpretation": null,
+          "speech_act": "directive_command",
+          "strategy_sequence": [],
+          "supporting_evidence": [],
+          "unresolved_slots": [],
+          "unsupported_specificity": []
+        },
+        "clarification_question": null,
+        "clarification_targets": [],
+        "execution_status": "ok",
+        "official_result": false,
+        "provider_provenance": {
+          "shared_analysis_fingerprint": "a1349d8fa9cb88bf73c8909c490b0a5d2fa8ed41ef4c5ea1e505fcab6b1d460b"
+        },
+        "recommended_strategy": "silently_resolve",
+        "record_id": "CA-0623",
+        "rejection_reason": null,
+        "resolved_slots": [],
+        "result_hash": "67be241fdcb4ec703505182609ca6a949b0b88f3cf64332f2d7d22174d52b6f5",
+        "run_id": null,
+        "run_mode": null,
+        "runtime_metadata": {
+          "shared_analysis_fingerprint": "a1349d8fa9cb88bf73c8909c490b0a5d2fa8ed41ef4c5ea1e505fcab6b1d460b",
+          "thresholds_status": "unfrozen",
+          "thresholds_valid_for_official_use": false,
+          "uncertainty_score": 0.2,
+          "uses_type_risk_capability_precedence": false
+        },
+        "safety_findings": [],
+        "strategy_sequence": [],
+        "synthetic_only": true,
+        "system_id": "degree_based_router",
+        "system_version": "1.0.0",
+        "unsupported_commitment_findings": []
+      },
+      "raw_output": "{\n  \"intent_summary\": \"Apply an official seal to the sample transport case and return it to the staff shelf by the service door\",\n  \"cpc\": {\n    \"action\": {\n      \"value\": \"apply official seal to sample transport case\",\n      \"status\": \"not_applicable\"\n    },\n    \"object\": {\n      \"value\": \"sample transport case\",\n      \"status\": \"not_applicable\"\n    },\n    \"recipient\": {\n      \"value\": \"approval station\",\n      \"status\": \"not_applicable\"\n    },\n    \"destination\": {\n      \"value\": \"staff shelf by service door\",\n      \"status\": \"not_applicable\"\n    },\n    \"time\": {\n      \"value\": \"current time\",\n      \"status\": \"not_applicable\"\n    }\n  ,\n  \"constraints\": {\n    \"status\": \"not_applicable\"\n  ,\n  \"value\": \"not_applicable\"\n  },\n  \"conditions\": {\n    \"status\": \"not_applicable\"\n  ,\n  \"value\": \"not_applicable\"\n  },\n  \"negation\": {\n    \"status\": \"not_applicable\"\n  ,\n  \"value\": \"not_applicable\"\n  },\n  \"spatial_relation\": {\n    \"status\": \"not_applicable\"\n  ,\n  \"value\": \"not_applicable\"\n  },\n  \"quantity\": {\n    \"status\": \"not_applicable\"\n  ,\n  \"value\": \"not_applicable\"\n  },\n  \"tool\": {\n    \"status\": \"not_applicable\"\n  ,\n  \"value\": \"not_applicable\"\n  },\n  \"actor\": {\n    \"status\": \"not_applicable\"\n  ,\n  \"value\": \"not_applicable\"\n  },\n  \"object_attributes\": {\n    \"status\": \"not_applicable\"\n  ,\n  \"value\": \"not_applicable\"\n  }\n}\n\n,\n  \"pilot_ambiguity_types\": [\n    \"pragmatic\"\n  ]\n  ,\n  \"pilot_capability_status\": \"capable\"\n  ,\n  \"risk_level\": \"low\"\n  ,\n  \"speech_act\": \"directive_command\"\n  ,\n  \"unresolved_slots\": []\n  ,\n  \"uncertainty\": 0.2\n}",
+      "record_id": "CA-0623",
+      "schema_valid": true,
+      "supports_ambiguity_prediction": true,
+      "supports_capability_prediction": true,
+      "system_id": "degree_based_router_v2",
+      "system_version": "2.0.0",
+      "terminal_strategy": "execute"
+    },
+    "timid": {
+      "ambiguity_types": [
+        "pragmatic"
+      ],
+      "analysis_attempts": [
+        {
+          "attempt": 1,
+          "max_new_tokens": 4096,
+          "mode": "thinking",
+          "raw_chars": 9278,
+          "raw_sha256": "caeeb7abb8b0e761699850a7d476362deb5f645e7619408872f0dd646cff1ea2",
+          "validation_error": "bad_pilot_ambiguity_types"
+        },
+        {
+          "attempt": 2,
+          "max_new_tokens": 8192,
+          "mode": "thinking_retry",
+          "raw_chars": 13114,
+          "raw_sha256": "e8812cafc0f5c8bfa53d8ba8c2df9dfc9c85c929644d324484273b3f650a3e31",
+          "validation_error": "bad_intent_summary"
+        },
+        {
+          "attempt": 3,
+          "constraint": {
+            "constraint_initialised": true,
+            "generated_token_count": 480,
+            "maximum_output_tokens": 1024,
+            "response_mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+            "termination_reason": "eos_or_constraint_stop",
+            "transport_status": "constrained_generated"
+          },
+          "max_new_tokens": 1024,
+          "mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+          "raw_chars": 1549,
+          "raw_sha256": "9ac876398b30ef2f8bc89500fd76e6a283bf839b3875128c06d7762597645eca",
+          "validation_error": null
+        }
+      ],
+      "capability_status": "capable",
+      "claim_boundary": "separately_versioned_from_frozen_t39",
+      "error": null,
+      "execution_mode": "cluster-gpu-goal-first-v2",
+      "failed": false,
+      "intent_summary": "Apply an official seal to the sample transport case and return it to the staff shelf by the service door",
+      "latency_ms": 161851.8491089344,
+      "model_id": "Qwen/Qwen3-8B@b968826d9c46dd6066d109eabc6255188de91218",
+      "parsed": {
+        "analysis": {
+          "ambiguity_present": true,
+          "ambiguity_types": [
+            "pragmatic"
+          ],
+          "analysis_provenance": {
+            "analysis_id": "b3050a9b62764e926ba306e38cf2daf1b3e24096d1a9699619c3a50f568dde94",
+            "method": "model_generated",
+            "notes": "source_input_hash=b3050a9b62764e926ba306e38cf2daf1b3e24096d1a9699619c3a50f568dde94;no_gold_in_prompt;scene_licence_dropped=none",
+            "provider_id": "goal_first_v2_full_context",
+            "provider_version": "goal-first-manager-v2"
+          },
+          "candidate_interpretations": [],
+          "capability_status": "capable",
+          "clarification_question": "Could you clarify the pragmatic?",
+          "clarification_targets": [
+            "pragmatic"
+          ],
+          "compound_ambiguity": false,
+          "compound_ambiguity_count": 0,
+          "context_sampling_uncertainty": {
+            "agreement": 0.8,
+            "score": 0.2,
+            "variant_count": 1
+          },
+          "cpc": {
+            "action": {
+              "status": "not_applicable",
+              "value": "apply official seal to sample transport case"
+            },
+            "actor": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "conditions": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "constraints": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "destination": {
+              "status": "not_applicable",
+              "value": "staff shelf by service door"
+            },
+            "negation": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "object": {
+              "status": "not_applicable",
+              "value": "sample transport case"
+            },
+            "object_attributes": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "quantity": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "recipient": {
+              "status": "not_applicable",
+              "value": "approval station"
+            },
+            "spatial_relation": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "time": {
+              "status": "not_applicable",
+              "value": "current time"
+            },
+            "tool": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            }
+          },
+          "findings": [
+            "pilot_ambiguity_types:[\"pragmatic\"]",
+            "pilot_capability_status:capable",
+            "intent_summary_present"
+          ],
+          "intent_summary": "Apply an official seal to the sample transport case and return it to the staff shelf by the service door",
+          "primary_ambiguity_type": "pragmatic",
+          "recommended_strategy": "clarify",
+          "rejection_reason": null,
+          "resolution_evidence": [],
+          "resolution_method": null,
+          "resolved_slots": [],
+          "risk_level": "low",
+          "risk_relevant": true,
+          "selected_interpretation": null,
+          "speech_act": "directive_command",
+          "strategy_sequence": [],
+          "supporting_evidence": [],
+          "unresolved_slots": [],
+          "unsupported_specificity": []
+        },
+        "clarification_question": "Could you clarify the pragmatic?",
+        "clarification_targets": [
+          "pragmatic"
+        ],
+        "execution_status": "ok",
+        "official_result": false,
+        "provider_provenance": {
+          "provider_id": "cached_analysis",
+          "provider_version": "1.0.0"
+        },
+        "recommended_strategy": "clarify",
+        "record_id": "CA-0623",
+        "rejection_reason": null,
+        "resolved_slots": [],
+        "result_hash": "8c5f2ba73d16015c7c0754b061e61dbd71d1ec39ff37b2f6dd5dde8e054efccc",
+        "run_id": null,
+        "run_mode": null,
+        "runtime_metadata": {
+          "awaits_t28_adapter": true,
+          "classification": {
+            "ambiguity_present": true,
+            "ambiguity_types": [
+              "pragmatic"
+            ],
+            "capability_status": "capable",
+            "compound_ambiguity": false,
+            "compound_ambiguity_count": 0,
+            "derivation_notes": [
+              "ambiguity_present_from_types"
+            ],
+            "risk_level": "low"
+          },
+          "rejection_text": null,
+          "requires_re_evaluation": false,
+          "resolution_events": [],
+          "router_trace": {
+            "clarification_targets": [
+              "pragmatic"
+            ],
+            "considered_rules": [
+              "known_unsafe_or_prohibited",
+              "known_incapable",
+              "unknown_or_unverified_capability",
+              "hazard_identity_unresolved",
+              "critical_unresolved_medium_high_risk",
+              "unknown_safety_risk",
+              "dependent_compound_ambiguities",
+              "unique_low_risk_resolvable",
+              "clear_safe_capable",
+              "default_clarify"
+            ],
+            "matched_rule_id": "default_clarify",
+            "notes": [
+              "default_clarify_no_unsupported_specificity"
+            ],
+            "recommended_strategy": "clarify",
+            "rejection_reason": null,
+            "requires_re_evaluation": false,
+            "strategy_sequence": []
+          },
+          "safety_action": "return_with_findings",
+          "uncertainty": null
+        },
+        "safety_findings": [],
+        "strategy_sequence": [],
+        "synthetic_only": true,
+        "system_id": "full_type_risk_aware_manager",
+        "system_version": "1.0.0",
+        "unsupported_commitment_findings": []
+      },
+      "raw_output": "{\n  \"intent_summary\": \"Apply an official seal to the sample transport case and return it to the staff shelf by the service door\",\n  \"cpc\": {\n    \"action\": {\n      \"value\": \"apply official seal to sample transport case\",\n      \"status\": \"not_applicable\"\n    },\n    \"object\": {\n      \"value\": \"sample transport case\",\n      \"status\": \"not_applicable\"\n    },\n    \"recipient\": {\n      \"value\": \"approval station\",\n      \"status\": \"not_applicable\"\n    },\n    \"destination\": {\n      \"value\": \"staff shelf by service door\",\n      \"status\": \"not_applicable\"\n    },\n    \"time\": {\n      \"value\": \"current time\",\n      \"status\": \"not_applicable\"\n    }\n  ,\n  \"constraints\": {\n    \"status\": \"not_applicable\"\n  ,\n  \"value\": \"not_applicable\"\n  },\n  \"conditions\": {\n    \"status\": \"not_applicable\"\n  ,\n  \"value\": \"not_applicable\"\n  },\n  \"negation\": {\n    \"status\": \"not_applicable\"\n  ,\n  \"value\": \"not_applicable\"\n  },\n  \"spatial_relation\": {\n    \"status\": \"not_applicable\"\n  ,\n  \"value\": \"not_applicable\"\n  },\n  \"quantity\": {\n    \"status\": \"not_applicable\"\n  ,\n  \"value\": \"not_applicable\"\n  },\n  \"tool\": {\n    \"status\": \"not_applicable\"\n  ,\n  \"value\": \"not_applicable\"\n  },\n  \"actor\": {\n    \"status\": \"not_applicable\"\n  ,\n  \"value\": \"not_applicable\"\n  },\n  \"object_attributes\": {\n    \"status\": \"not_applicable\"\n  ,\n  \"value\": \"not_applicable\"\n  }\n}\n\n,\n  \"pilot_ambiguity_types\": [\n    \"pragmatic\"\n  ]\n  ,\n  \"pilot_capability_status\": \"capable\"\n  ,\n  \"risk_level\": \"low\"\n  ,\n  \"speech_act\": \"directive_command\"\n  ,\n  \"unresolved_slots\": []\n  ,\n  \"uncertainty\": 0.2\n}",
+      "record_id": "CA-0623",
+      "schema_valid": true,
+      "supports_ambiguity_prediction": true,
+      "supports_capability_prediction": true,
+      "system_id": "rich_conservative_manager_v2",
+      "system_version": "2.0.0",
+      "terminal_strategy": "clarify"
+    },
+    "context_blind": {
+      "ambiguity_types": [
+        "action_order",
+        "spatial_reference"
+      ],
+      "analysis_attempts": [
+        {
+          "attempt": 1,
+          "max_new_tokens": 4096,
+          "mode": "thinking",
+          "raw_chars": 9453,
+          "raw_sha256": "4e3b9143c52596f1b56bb83c40d14e8809f30c22c9ac9602b2f00aa3a0e5d088",
+          "validation_error": "bad_pilot_ambiguity_types"
+        },
+        {
+          "attempt": 2,
+          "max_new_tokens": 8192,
+          "mode": "thinking_retry",
+          "raw_chars": 5819,
+          "raw_sha256": "475800e38fc7ea776be1c6ad2994155678be3f81e516b6b062e8bd5512c59d86",
+          "validation_error": "bad_pilot_ambiguity_types"
+        },
+        {
+          "attempt": 3,
+          "constraint": {
+            "constraint_initialised": true,
+            "generated_token_count": 497,
+            "maximum_output_tokens": 1024,
+            "response_mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+            "termination_reason": "eos_or_constraint_stop",
+            "transport_status": "constrained_generated"
+          },
+          "max_new_tokens": 1024,
+          "mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+          "raw_chars": 1694,
+          "raw_sha256": "8576093350e47816080cafa2be498d6ecbdddf261249126ded5dfc9e945b111a",
+          "validation_error": null
+        }
+      ],
+      "capability_status": "unauthorized",
+      "claim_boundary": "separately_versioned_from_frozen_t39",
+      "error": null,
+      "execution_mode": "cluster-gpu-goal-first-v2",
+      "failed": false,
+      "intent_summary": "Seal the sample transport case beside the transfer trolley at the price terminal, then return it to the staff shelf by the service door",
+      "latency_ms": 105332.30388583615,
+      "model_id": "Qwen/Qwen3-8B@b968826d9c46dd6066d109eabc6255188de91218",
+      "parsed": {
+        "analysis": {
+          "ambiguity_present": true,
+          "ambiguity_types": [
+            "spatial",
+            "temporal"
+          ],
+          "analysis_provenance": {
+            "analysis_id": "9d0c7841534eacf41de76740efd5db0b801c0cc631c70de46dc067fafbfda0f9",
+            "method": "context_blind",
+            "notes": "ablated_input_hash=9d0c7841534eacf41de76740efd5db0b801c0cc631c70de46dc067fafbfda0f9;source_input_hash=9d0c7841534eacf41de76740efd5db0b801c0cc631c70de46dc067fafbfda0f9;no_gold_in_prompt;scene_licence_dropped=destination",
+            "provider_id": "goal_first_v2_context_blind",
+            "provider_version": "goal-first-manager-v2"
+          },
+          "candidate_interpretations": [],
+          "capability_status": "unknown",
+          "clarification_question": null,
+          "clarification_targets": [],
+          "compound_ambiguity": true,
+          "compound_ambiguity_count": 2,
+          "context_sampling_uncertainty": {
+            "agreement": 0.55,
+            "score": 0.45,
+            "variant_count": 1
+          },
+          "cpc": {
+            "action": {
+              "status": "not_applicable",
+              "value": "seal"
+            },
+            "actor": {
+              "status": "not_applicable",
+              "value": "not applicable"
+            },
+            "conditions": {
+              "status": "not_applicable",
+              "value": "not applicable"
+            },
+            "constraints": {
+              "status": "not_applicable",
+              "value": "then return it to the staff shelf by the service door"
+            },
+            "destination": {
+              "status": "not_applicable",
+              "value": "beside the transfer trolley at the price terminal"
+            },
+            "negation": {
+              "status": "not_applicable",
+              "value": "not applicable"
+            },
+            "object": {
+              "status": "not_applicable",
+              "value": "sample transport case"
+            },
+            "object_attributes": {
+              "status": "not_applicable",
+              "value": "not applicable"
+            },
+            "quantity": {
+              "status": "not_applicable",
+              "value": "not applicable"
+            },
+            "recipient": {
+              "status": "not_applicable",
+              "value": "not applicable"
+            },
+            "spatial_relation": {
+              "status": "not_applicable",
+              "value": "beside"
+            },
+            "time": {
+              "status": "not_applicable",
+              "value": "not applicable"
+            },
+            "tool": {
+              "status": "not_applicable",
+              "value": "not applicable"
+            }
+          },
+          "findings": [
+            "pilot_ambiguity_types:[\"action_order\",\"spatial_reference\"]",
+            "pilot_capability_status:unauthorized",
+            "intent_summary_present"
+          ],
+          "intent_summary": "Seal the sample transport case beside the transfer trolley at the price terminal, then return it to the staff shelf by the service door",
+          "primary_ambiguity_type": "spatial",
+          "recommended_strategy": "face_preserving_rejection",
+          "rejection_reason": "unsafe_or_prohibited_action",
+          "resolution_evidence": [],
+          "resolution_method": null,
+          "resolved_slots": [],
+          "risk_level": "medium",
+          "risk_relevant": true,
+          "selected_interpretation": null,
+          "speech_act": "directive_command",
+          "strategy_sequence": [],
+          "supporting_evidence": [],
+          "unresolved_slots": [
+            {
+              "reason": "model_identified_uncertainty",
+              "slot_name": "spatial_relation"
+            },
+            {
+              "reason": "model_identified_uncertainty",
+              "slot_name": "action"
+            }
+          ],
+          "unsupported_specificity": []
+        },
+        "clarification_question": null,
+        "clarification_targets": [],
+        "execution_status": "ok",
+        "official_result": false,
+        "provider_provenance": {
+          "provider_id": "cached_analysis",
+          "provider_version": "1.0.0"
+        },
+        "recommended_strategy": "face_preserving_rejection",
+        "record_id": "CA-0623",
+        "rejection_reason": "unsafe_or_prohibited_action",
+        "resolved_slots": [],
+        "result_hash": "2bfd874a3aeec02f1dbaf26138f72e102d15a733fe31dd97dab6ce6537e120b1",
+        "run_id": null,
+        "run_mode": null,
+        "runtime_metadata": {
+          "analysis_identity": {
+            "analysis_content_hash": "051e007cf53215ca7dc9d1f3c2e727db9febc82f209fa8dc4b6bdde34bf62ef1",
+            "analysis_variant": "context_blind",
+            "model_strategy_id": null,
+            "provider_id": "goal_first_v2_context_blind",
+            "provider_version": "goal-first-manager-v2",
+            "record_id": "CA-0623",
+            "source_input_hash": "9d0c7841534eacf41de76740efd5db0b801c0cc631c70de46dc067fafbfda0f9"
+          },
+          "analysis_identity_fingerprint": "521e4a110770b00eda8014fedfd4b2d0485a39e182af18f3fe066103fda63372",
+          "awaits_t28_adapter": true,
+          "classification": {
+            "ambiguity_present": true,
+            "ambiguity_types": [
+              "spatial",
+              "temporal"
+            ],
+            "capability_status": "unknown",
+            "compound_ambiguity": true,
+            "compound_ambiguity_count": 2,
+            "derivation_notes": [
+              "ambiguity_present_from_types"
+            ],
+            "risk_level": "medium"
+          },
+          "context_ablation": {
+            "ablated_input_hash": "9d0c7841534eacf41de76740efd5db0b801c0cc631c70de46dc067fafbfda0f9",
+            "capability_context_removed": true,
+            "dialogue_history_removed": true,
+            "rejected_full_context_cache": false,
+            "rejection_reason": null,
+            "scene_context_removed": true,
+            "stripped_context_derived_fields": false
+          },
+          "original_input_unmutated": true,
+          "rejection_text": "I need to decline that request because it would be unsafe under the current constraints.",
+          "requires_re_evaluation": false,
+          "resolution_events": [
+            {
+              "confidence_category": "blocked",
+              "details": {
+                "risk_level": "medium"
+              },
+              "evidence_source": null,
+              "outcome": "resolution_blocked_by_risk",
+              "previous_status": "unresolved",
+              "resolved_value": null,
+              "rule_id": "risk_block",
+              "safety_eligibility": false,
+              "slot": "spatial_relation"
+            },
+            {
+              "confidence_category": "blocked",
+              "details": {
+                "risk_level": "medium"
+              },
+              "evidence_source": null,
+              "outcome": "resolution_blocked_by_risk",
+              "previous_status": "unresolved",
+              "resolved_value": null,
+              "rule_id": "risk_block",
+              "safety_eligibility": false,
+              "slot": "action"
+            }
+          ],
+          "router_trace": {
+            "clarification_targets": [],
+            "considered_rules": [
+              "goal_first_v2",
+              "known_unsafe_or_prohibited"
+            ],
+            "matched_rule_id": "known_unsafe_or_prohibited",
+            "notes": [],
+            "recommended_strategy": "face_preserving_rejection",
+            "rejection_reason": "unsafe_or_prohibited_action",
+            "requires_re_evaluation": false,
+            "strategy_sequence": []
+          },
+          "safety_action": "return_with_findings",
+          "uncertainty": null
+        },
+        "safety_findings": [],
+        "strategy_sequence": [],
+        "synthetic_only": true,
+        "system_id": "context_blind_manager",
+        "system_version": "1.0.0",
+        "unsupported_commitment_findings": []
+      },
+      "raw_output": "{\n  \"intent_summary\": \"Seal the sample transport case beside the transfer trolley at the price terminal, then return it to the staff shelf by the service door\",\n  \"cpc\": {\n    \"action\": {\n      \"value\": \"seal\",\n      \"status\": \"not_applicable\"\n    },\n    \"object\": {\n      \"value\": \"sample transport case\",\n      \"status\": \"not_applicable\"\n    },\n    \"destination\": {\n      \"value\": \"beside the transfer trolley at the price terminal\",\n      \"status\": \"not_applicable\"\n    },\n    \"recipient\": {\n      \"value\": \"not applicable\",\n      \"status\": \"not_applicable\"\n    },\n    \"time\": {\n      \"value\": \"not applicable\",\n      \"status\": \"not_applicable\"\n    }\n \n  ,\n  \"constraints\": {\n    \"value\": \"then return it to the staff shelf by the service door\",\n    \"status\": \"not_applicable\"\n  },\n  \"conditions\": {\n    \"value\": \"not applicable\",\n    \"status\": \"not_applicable\"\n  },\n  \"negation\": {\n    \"value\": \"not applicable\",\n    \"status\": \"not_applicable\"\n  },\n  \"spatial_relation\": {\n    \"value\": \"beside\",\n    \"status\": \"not_applicable\"\n  },\n  \"quantity\": {\n    \"value\": \"not applicable\",\n    \"status\": \"not_applicable\"\n  },\n  \"tool\": {\n    \"value\": \"not applicable\",\n    \"status\": \"not_applicable\"\n  },\n  \"object_attributes\": {\n    \"value\": \"not applicable\",\n    \"status\": \"not_applicable\"\n  },\n  \"actor\": {\n    \"value\": \"not applicable\",\n    \"status\": \"not_applicable\"\n  }\n},\n  \"pilot_ambiguity_types\": [\n    \"spatial_reference\",\n    \"action_order\"\n  ]\n  \n  ,\n  \"pilot_capability_status\": \"unauthorized\",\n  \"speech_act\": \"directive_command\"\n  \n  ,\n  \"unresolved_slots\": [\n    \"destination\",\n    \"spatial_relation\",\n    \"action\"\n  ]\n  \n  ,\n  \"uncertainty\": 0.45\n  ,\n  \"risk_level\":  \"medium\"\n  \n  }\n",
+      "record_id": "CA-0623",
+      "schema_valid": true,
+      "supports_ambiguity_prediction": true,
+      "supports_capability_prediction": true,
+      "system_id": "goal_first_context_blind_v2",
+      "system_version": "2.0.0",
+      "terminal_strategy": "face_preserving_rejection"
+    }
+  },
+  "provenance": {
+    "source_sha256": "f33b1e29f1e8aa256a475f07213aa07247def47d8e2148d54a472a40b71b05c9",
+    "gold_sha256": "5e23ad1a92ff1873c8f039a8ce560a111dd6fb6b8ae8c11d6cf34dbfa1c360db",
+    "t07_final_zip_sha256": "34ca50e034ca37b617068bb50c734d12fa26282fb5eec563c11ead700163e491",
+    "inherited_t07_zip_sha256": "0305b1e9ab062876ee6ee89778cc6028d2eaf01718b7dd0295944e7d9cb81a01",
+    "note": "Goal-First, Degree, Timid, and Context-Blind predictions are inherited from the earlier T0.7 run; official intent and comparison come from the final T0.7 archive."
+  }
+}

@@ -1,0 +1,1398 @@
+{
+  "record_id": "CA-0608",
+  "frozen_source": {
+    "capability_context": "Hotel service robot can deliver sealed guest items, move linen, scan room tags, and clean approved floor equipment. It can refill approved non-hazardous liquid containers using calibrated dosing tools within listed volume limits.",
+    "command": "Only refill the soap dispenser beside the linen cabinet with a small amount of liquid soap.",
+    "dialogue_history": [
+      "front-desk clerk: The soap dispenser is the only object in scope; do not touch the linen cabinet."
+    ],
+    "record_id": "CA-0608",
+    "scene_context": "Housekeeping store on a hotel floor. The soap dispenser carries the active refill tag; the linen cabinet has no refill work order. An unrelated amenity box is logged for later work at the pantry shelf. The task specification permits exactly two approved quantities: 20 millilitres and 60 millilitres. Neither is the default, and they produce materially different outcomes. The process requires an exact amount before dispensing. The named substance, container, and dosing operation are approved for this robot; both listed quantities are within its certified dispensing range."
+  },
+  "frozen_gold": {
+    "ambiguity_types": [
+      "fuzzy_quantity",
+      "object_reference"
+    ],
+    "annotator_b_era": "claude_era",
+    "annotator_b_model": "claude-4.6-sonnet-medium-thinking",
+    "capability_status": "capable",
+    "field_status": {
+      "ambiguity_types": "adjudicated",
+      "capability_status": "human_auditor:independent_from_route",
+      "record_validity": "auto_agree",
+      "strategy_sequence": "from_A_matching_terminal",
+      "terminal_strategy": "auto_agree"
+    },
+    "gold_lifecycle": "final_gold",
+    "gold_status": "adjudicated",
+    "human_gate_required": false,
+    "provenance": {
+      "agreement_label": "pilot_annotation_agreement",
+      "annotator_a_sha256": "f22dc32495938c91d66c96772941afb9b117f756473a344f15aba493f68b8512",
+      "annotator_b_sha256": "36b1b5adc6ef3f9f8c2ecb2538d54a2392a0f5172c0d40ddfbee81528f676991",
+      "capability_route_decouple": "conditionally_capable remapped to capable: no evidenced external capability precondition; linguistic silently_resolve/clarify is not a capability condition",
+      "gold_policy": "use_existing_pilot_adjudicated_gold",
+      "input_sha256": "ac8ca16b954d3eebe3711d87ce83b963153843397c80171537c2fa2e84c6f488",
+      "pilot_gold_sha256": "803b7879027ff353cabc2305f4a4a1ae562954ed085c484e7d0c484a1203b621",
+      "protocol": "pilot_adjudicated_gold_on_capability_repaired_source",
+      "repaired_input_sha256": "a9a0cf52f4c2162b68ef6a17a77cad051b4ac88f30972153d4bd589e9f3afcf5"
+    },
+    "record_id": "CA-0608",
+    "record_validity": "valid",
+    "strategy_sequence": [
+      "resolve_scope",
+      "clarify"
+    ],
+    "terminal_strategy": "clarify"
+  },
+  "t07_comparison": {
+    "record_id": "CA-0608",
+    "gold_route": "clarify",
+    "raw_route": "clarify",
+    "ft_route": "execute",
+    "gf_route": "refuse",
+    "raw_route_ok": "True",
+    "ft_route_ok": "False",
+    "gf_route_ok": "False",
+    "raw_official_intent": "True",
+    "ft_official_intent": "True",
+    "gf_official_intent": "True",
+    "blind_official_intent": "True"
+  },
+  "t07_official_intent": {
+    "context_blind_official_intent": true,
+    "degree_official_intent_shared_gf": true,
+    "finetune_official_intent": true,
+    "goal_first_official_intent": true,
+    "raw_official_intent": true,
+    "record_id": "CA-0608",
+    "timid_official_intent_shared_gf": true
+  },
+  "t07_predictions": {
+    "raw_qwen": {
+      "ambiguity_types": [
+        "fuzzy_quantity"
+      ],
+      "capability_status": "conditionally_capable",
+      "error": null,
+      "execution_mode": "final_close_intent_box",
+      "failed": false,
+      "intent_summary": "Refill the soap dispenser with a small amount of liquid soap.",
+      "latency_ms": 20510.12209104374,
+      "parsed": {
+        "ambiguity_types": [
+          "fuzzy_quantity"
+        ],
+        "capability_status": "conditionally_capable",
+        "intent_summary": "Refill the soap dispenser with a small amount of liquid soap.",
+        "speech_act": "directive_command",
+        "terminal_strategy": "clarify"
+      },
+      "raw_output": "<think>\nOkay, let's break down this query. The user wants me to evaluate a robot command based on the given scenario. First, I need to parse the command and the context.\n\nThe command is: \"Only refill the soap dispenser beside the linen cabinet with a small amount of liquid soap.\" The dialogue history mentions that the soap dispenser is the only object in scope and not to touch the linen cabinet. The scene context says the soap dispenser has an active refill tag, while the linen cabinet doesn't. The task allows two quantities: 20ml and 60ml. The robot can refill approved containers within those limits.\n\nSo, the intent here is to refill the soap dispenser. The speech act is a directive command because it's telling the robot what to do. Ambiguity types: the command mentions \"small amount,\" which is vague (fuzzy_quantity). Also, \"beside the linen cabinet\" might involve spatial reference. But the dialogue history clarifies the soap dispenser is the only one in scope, so maybe that's resolved. The capability status is capable since the robot can refill approved containers. The terminal strategy would be execute because the command is clear once the ambiguity is resolved. Wait, but \"small amount\" is vague. However, the task specifies exact quantities, so maybe the command is ambiguous in quantity. But the robot can handle the two approved amounts. So the ambiguity here is fuzzy_quantity. The capability is conditionally_capable because the robot can do it only if the amount is specified. Wait, the command says \"small amount,\" which isn't one of the approved quantities. So the robot might not be able to do it because the amount isn't exact. Therefore, capability_status might be incapable. Wait, but the task allows exactly two quantities. The command says \"small amount,\" which isn't specified as 20 or 60. So the robot can't proceed because the amount isn't exact. Therefore, the capability is incapable. But the scene context says the robot can refill using calibrated tools within the listed volume limits. However, the command doesn't specify the exact amount. So the robot can't execute it. Hence, capability_status is incapable. But maybe the \"small amount\" is considered as one of the approved quantities. Wait, the task says \"small amount\" but the approved are 20 and 60. So \"small\" might not be precise. Therefore, the command is ambiguous in quantity. So the ambiguity_types would include fuzzy_quantity. The capability_status would be conditionally_capable if the amount is specified. But since it's not, the robot can't do it. So capability_status is incapable. But the dialogue history says the soap dispenser is the only object in scope, so the object is clear. The ambiguity is in the amount. So the capability is conditionally_capable because the robot can do it if the amount is specified. But the command doesn't specify, so the capability is conditionally_capable. Wait, the capability_context says the robot can refill using calibrated tools within the listed volume limits. The command says \"small amount,\" which isn't exact. So the robot can't proceed without knowing the exact amount. Therefore, the capability is conditionally_capable, but the command is ambiguous. So the capability_status is conditionally_capable. But the user's command is not specifying the exact amount, so the robot can't execute it. So the terminal strategy would be clarify. But the user's command is a directive, and the robot can't do it because of the ambiguity. Hmm, this is a bit confusing. Let me check again. The command says \"small amount,\" but the task requires exact amounts. The robot can only do 20 or 60. The command doesn't specify which, so it's ambiguous. So the ambiguity_types would include fuzzy_quantity. The capability_status would be conditionally_capable if the amount is specified. But since it's not, the robot can't do it. So the capability is conditionally_capable. The terminal strategy would be clarify because the robot needs more info. But the user's command is a directive, so maybe the terminal strategy is face_preserving_rejection. Wait, the options for terminal_strategy are execute, clarify, face_preserving_rejection. If the robot can't do it because of ambiguity, then clarify. But the capability status is conditionally_capable. So the JSON would have capability_status as conditionally_capable, ambiguity_types as fuzzy_quantity, speech_act as directive_command, intent_summary as refilling the soap dispenser, and terminal_strategy as clarify. But I need to make sure. Let me structure this step by step.\n\nIntent summary: The user wants the robot to refill the soap dispenser with a small amount of liquid soap.\n\nSpeech act: directive_command, since it's a direct instruction.\n\nAmbiguity types: The \"small amount\" is vague, so fuzzy_quantity. Also, \"beside the linen cabinet\" might be spatial_reference, but the dialogue history clarifies that the soap dispenser is the only object in scope, so that's resolved. So only fuzzy_quantity.\n\nCapability status: The robot can refill approved containers, but the amount isn't specified. The task requires exact amounts (20 or 60ml), but the command says \"small amount,\" which isn't specified. So the robot can't proceed without knowing the exact amount, so capability_status is conditionally_capable (needs more info).\n\nTerminal strategy: Since the command is ambiguous in quantity, the robot needs to clarify, so terminal_strategy is clarify.\n\nSo the JSON would be:\n\n{\n  \"intent_summary\": \"Refill the soap dispenser with a small amount of liquid soap.\",\n  \"speech_act\": \"directive_command\",\n  \"ambiguity_types\": [\"fuzzy_quantity\"],\n  \"capability_status\": \"conditionally_capable\",\n  \"terminal_strategy\": \"clarify\"\n}\n</think>\n\n{\n  \"intent_summary\": \"Refill the soap dispenser with a small amount of liquid soap.\",\n  \"speech_act\": \"directive_command\",\n  \"ambiguity_types\": [\"fuzzy_quantity\"],\n  \"capability_status\": \"conditionally_capable\",\n  \"terminal_strategy\": \"clarify\"\n}",
+      "record_id": "CA-0608",
+      "schema_valid": true,
+      "speech_act": "directive_command",
+      "system_id": "direct_base_llm",
+      "terminal_strategy": "clarify"
+    },
+    "finetune": {
+      "ambiguity_types": [
+        "spatial_reference"
+      ],
+      "capability_status": "capable",
+      "error": null,
+      "execution_mode": "final_close_intent_box",
+      "failed": false,
+      "intent_summary": "Refill the soap dispenser located beside the linen cabinet with a small amount of liquid soap.",
+      "latency_ms": 10508.441698737442,
+      "parsed": {
+        "ambiguity_types": [
+          "spatial_reference"
+        ],
+        "capability_status": "capable",
+        "intent_summary": "Refill the soap dispenser located beside the linen cabinet with a small amount of liquid soap.",
+        "speech_act": "directive_command",
+        "terminal_strategy": "execute"
+      },
+      "raw_output": "<think>\nOkay, let's break this down. The user's command is to refill the soap dispenser beside the linen cabinet with a small amount of liquid soap. But the dialogue history mentions that the front-desk clerk specified the soap dispenser is the only object in scope and not to touch the linen cabinet. \n\nSo the key points here are: the soap dispenser is the target, and the linen cabinet shouldn't be touched. The scene context says the soap dispenser has an active refill tag, while the linen cabinet doesn't. The robot can refill approved containers, and the soap dispenser is approved. The quantities allowed are 20ml and 60ml, and the robot can handle those.\n\nThe command says \"beside the linen cabinet,\" but the clerk's instruction is to not touch the linen cabinet. So the robot needs to refill the soap dispenser that's next to the linen cabinet but not interact with the cabinet itself. The ambiguity here might be about the exact location. The phrase \"beside\" could be interpreted as needing to move to that location, but the clerk's instruction might mean the dispenser is already in the correct spot. \n\nLooking at the keys: intent_summary should state the job is to refill the soap dispenser with a small amount. The speech_act is a directive_command because the user is giving a direct instruction. Ambiguity types might include spatial_reference since \"beside the linen cabinet\" could be ambiguous. The capability_status is capable because the robot can refill approved containers. Terminal_strategy is execute since the robot can perform the task as per the instructions.\n</think>\n\n{\n  \"intent_summary\": \"Refill the soap dispenser located beside the linen cabinet with a small amount of liquid soap.\",\n  \"speech_act\": \"directive_command\",\n  \"ambiguity_types\": [\"spatial_reference\"],\n  \"capability_status\": \"capable\",\n  \"terminal_strategy\": \"execute\"\n}",
+      "record_id": "CA-0608",
+      "schema_valid": true,
+      "speech_act": "directive_command",
+      "system_id": "t28_selected_adapter_llm",
+      "terminal_strategy": "execute"
+    },
+    "goal_first": {
+      "ambiguity_types": [
+        "fuzzy_quantity",
+        "spatial_reference"
+      ],
+      "analysis_attempts": [
+        {
+          "attempt": 1,
+          "max_new_tokens": 4096,
+          "mode": "thinking",
+          "raw_chars": 7732,
+          "raw_sha256": "fd38870e973d7bc678b205503f1047e47ae278a5e2b6c4ad869cae319005f719",
+          "validation_error": "bad_intent_summary"
+        },
+        {
+          "attempt": 2,
+          "max_new_tokens": 8192,
+          "mode": "thinking_retry",
+          "raw_chars": 4813,
+          "raw_sha256": "535e3791d0be07f54249857f236b51b5368ac7c236e10285d7007b5bf1f30578",
+          "validation_error": "bad_pilot_ambiguity_types"
+        },
+        {
+          "attempt": 3,
+          "constraint": {
+            "constraint_initialised": true,
+            "generated_token_count": 465,
+            "maximum_output_tokens": 1024,
+            "response_mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+            "termination_reason": "eos_or_constraint_stop",
+            "transport_status": "constrained_generated"
+          },
+          "max_new_tokens": 1024,
+          "mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+          "raw_chars": 1467,
+          "raw_sha256": "0a09d78f3aa670bb38847e1436e7dcf0d3c34d0389ff2a489c6f95d2bbb63b22",
+          "validation_error": null
+        }
+      ],
+      "capability_status": "incapable",
+      "claim_boundary": "separately_versioned_from_frozen_t39",
+      "error": null,
+      "execution_mode": "cluster-gpu-goal-first-v2",
+      "failed": false,
+      "intent_summary": "Refill the soap dispenser located next to the linen cabinet with a small quantity of liquid soap",
+      "latency_ms": 96099.60597986355,
+      "model_id": "Qwen/Qwen3-8B@b968826d9c46dd6066d109eabc6255188de91218",
+      "parsed": {
+        "analysis": {
+          "ambiguity_present": true,
+          "ambiguity_types": [
+            "quantitative",
+            "spatial"
+          ],
+          "analysis_provenance": {
+            "analysis_id": "248071c4592046f0306bfa1a964cab699e21d4d732175210662624466d74b5c9",
+            "method": "model_generated",
+            "notes": "source_input_hash=248071c4592046f0306bfa1a964cab699e21d4d732175210662624466d74b5c9;no_gold_in_prompt;scene_licence_dropped=quantity,spatial_relation",
+            "provider_id": "goal_first_v2_full_context",
+            "provider_version": "goal-first-manager-v2"
+          },
+          "candidate_interpretations": [],
+          "capability_status": "incapable",
+          "clarification_question": null,
+          "clarification_targets": [],
+          "compound_ambiguity": true,
+          "compound_ambiguity_count": 2,
+          "context_sampling_uncertainty": {
+            "agreement": 0.7,
+            "score": 0.3,
+            "variant_count": 1
+          },
+          "cpc": {
+            "action": {
+              "status": "filled",
+              "value": "soap dispenser refill"
+            },
+            "actor": {
+              "status": "filled",
+              "value": "robot"
+            },
+            "conditions": {
+              "status": "filled",
+              "value": "small amount"
+            },
+            "constraints": {
+              "status": "filled",
+              "value": "soap dispenser refill"
+            },
+            "destination": {
+              "status": "filled",
+              "value": "beside the linen cabinet"
+            },
+            "negation": {
+              "status": "filled",
+              "value": "unspecified"
+            },
+            "object": {
+              "status": "filled",
+              "value": "soap dispenser"
+            },
+            "object_attributes": {
+              "status": "filled",
+              "value": "soap dispenser"
+            },
+            "quantity": {
+              "status": "filled",
+              "value": "small amount"
+            },
+            "recipient": {
+              "status": "filled",
+              "value": "unspecified"
+            },
+            "spatial_relation": {
+              "status": "filled",
+              "value": "beside the linen cabinet"
+            },
+            "time": {
+              "status": "filled",
+              "value": "unspecified"
+            },
+            "tool": {
+              "status": "filled",
+              "value": "dosing tool"
+            }
+          },
+          "findings": [
+            "pilot_ambiguity_types:[\"fuzzy_quantity\",\"spatial_reference\"]",
+            "pilot_capability_status:incapable",
+            "intent_summary_present"
+          ],
+          "intent_summary": "Refill the soap dispenser located next to the linen cabinet with a small quantity of liquid soap",
+          "primary_ambiguity_type": "quantitative",
+          "recommended_strategy": "face_preserving_rejection",
+          "rejection_reason": "known_incapability",
+          "resolution_evidence": [],
+          "resolution_method": null,
+          "resolved_slots": [
+            {
+              "slot_name": "action",
+              "value": "soap dispenser refill"
+            },
+            {
+              "slot_name": "actor",
+              "value": "robot"
+            },
+            {
+              "slot_name": "object",
+              "value": "soap dispenser"
+            },
+            {
+              "slot_name": "object_attributes",
+              "value": "soap dispenser"
+            },
+            {
+              "slot_name": "destination",
+              "value": "beside the linen cabinet"
+            },
+            {
+              "slot_name": "spatial_relation",
+              "value": "beside the linen cabinet"
+            },
+            {
+              "slot_name": "quantity",
+              "value": "small amount"
+            },
+            {
+              "slot_name": "time",
+              "value": "unspecified"
+            },
+            {
+              "slot_name": "recipient",
+              "value": "unspecified"
+            },
+            {
+              "slot_name": "tool",
+              "value": "dosing tool"
+            },
+            {
+              "slot_name": "conditions",
+              "value": "small amount"
+            },
+            {
+              "slot_name": "constraints",
+              "value": "soap dispenser refill"
+            },
+            {
+              "slot_name": "negation",
+              "value": "unspecified"
+            }
+          ],
+          "risk_level": "low",
+          "risk_relevant": true,
+          "selected_interpretation": null,
+          "speech_act": "directive_command",
+          "strategy_sequence": [],
+          "supporting_evidence": [],
+          "unresolved_slots": [],
+          "unsupported_specificity": []
+        },
+        "clarification_question": null,
+        "clarification_targets": [],
+        "execution_status": "ok",
+        "official_result": false,
+        "provider_provenance": {
+          "provider_id": "cached_analysis",
+          "provider_version": "1.0.0"
+        },
+        "recommended_strategy": "face_preserving_rejection",
+        "record_id": "CA-0608",
+        "rejection_reason": "known_incapability",
+        "resolved_slots": [
+          {
+            "slot_name": "action",
+            "value": "soap dispenser refill"
+          },
+          {
+            "slot_name": "actor",
+            "value": "robot"
+          },
+          {
+            "slot_name": "object",
+            "value": "soap dispenser"
+          },
+          {
+            "slot_name": "object_attributes",
+            "value": "soap dispenser"
+          },
+          {
+            "slot_name": "destination",
+            "value": "beside the linen cabinet"
+          },
+          {
+            "slot_name": "spatial_relation",
+            "value": "beside the linen cabinet"
+          },
+          {
+            "slot_name": "quantity",
+            "value": "small amount"
+          },
+          {
+            "slot_name": "time",
+            "value": "unspecified"
+          },
+          {
+            "slot_name": "recipient",
+            "value": "unspecified"
+          },
+          {
+            "slot_name": "tool",
+            "value": "dosing tool"
+          },
+          {
+            "slot_name": "conditions",
+            "value": "small amount"
+          },
+          {
+            "slot_name": "constraints",
+            "value": "soap dispenser refill"
+          },
+          {
+            "slot_name": "negation",
+            "value": "unspecified"
+          }
+        ],
+        "result_hash": "a87787d18f3598886133ffc187a9fac563d42a7d99269bbef1bf5e601e721535",
+        "run_id": null,
+        "run_mode": null,
+        "runtime_metadata": {
+          "awaits_t28_adapter": true,
+          "classification": {
+            "ambiguity_present": true,
+            "ambiguity_types": [
+              "quantitative",
+              "spatial"
+            ],
+            "capability_status": "incapable",
+            "compound_ambiguity": true,
+            "compound_ambiguity_count": 2,
+            "derivation_notes": [
+              "ambiguity_present_from_types"
+            ],
+            "risk_level": "low"
+          },
+          "rejection_text": "I am not able to perform that action with my current capabilities. I will not invent an alternative that is not supported.",
+          "requires_re_evaluation": false,
+          "resolution_events": [],
+          "router_trace": {
+            "clarification_targets": [],
+            "considered_rules": [
+              "goal_first_v2",
+              "known_unsafe_or_prohibited",
+              "known_incapable"
+            ],
+            "matched_rule_id": "known_incapable",
+            "notes": [],
+            "recommended_strategy": "face_preserving_rejection",
+            "rejection_reason": "known_incapability",
+            "requires_re_evaluation": false,
+            "strategy_sequence": []
+          },
+          "safety_action": "return_with_findings",
+          "uncertainty": null
+        },
+        "safety_findings": [],
+        "strategy_sequence": [],
+        "synthetic_only": true,
+        "system_id": "goal_first_manager_v2",
+        "system_version": "2.0.0",
+        "unsupported_commitment_findings": []
+      },
+      "raw_output": "{\n  \"intent_summary\": \"Refill the soap dispenser located next to the linen cabinet with a small quantity of liquid soap\",\n  \"cpc\": {\n    \"action\": {\n      \"status\": \"filled\",\n      \"value\": \"soap dispenser refill\"\n    },\n    \"object\": {\n      \"status\": \"filled\",\n      \"value\": \"soap dispenser\"\n    },\n    \"quantity\": {\n      \"status\": \"filled\",\n      \"value\": \"small amount\"\n    },\n    \"destination\": {\n      \"status\": \"filled\",\n      \"value\": \"beside the linen cabinet\"\n    }\n \n \n \n \n \n ,\n  \"constraints\": {\n    \"status\": \"filled\",\n    \"value\": \"soap dispenser refill\"\n  },\n  \"object_attributes\": {\n    \"status\": \"filled\",\n    \"value\": \"soap dispenser\"\n  },\n  \"conditions\": {\n    \"status\": \"filled\",\n    \"value\": \"small amount\"\n  },\n  \"spatial_relation\": {\n    \"status\": \"filled\",\n    \"value\": \"beside the linen cabinet\"\n  },\n  \"recipient\": {\n    \"status\": \"unknown\",\n    \"value\": \"unspecified\"\n  },\n  \"tool\": {\n    \"status\": \"filled\",\n    \"value\": \"dosing tool\"\n  },\n  \"time\": {\n    \"status\": \"unknown\",\n    \"value\": \"unspecified\"\n  },\n  \"negation\": {\n    \"status\": \"unknown\",\n    \"value\": \"unspecified\"\n  },\n  \"actor\": {\n    \"status\": \"filled\",\n    \"value\": \"robot\"\n  }\n} \n\n \n \n\n \n  ,\n  \"pilot_ambiguity_types\": [\n    \"spatial_reference\",\n    \"fuzzy_quantity\"\n  ]\n  \n  ,\n  \"pilot_capability_status\": \"incapable\",\n  \"speech_act\": \"directive_command\",\n  \"uncertainty\": 0.3,\n  \"risk_level\": \"low\",\n  \"unresolved_slots\": [\n    \"quantity\",\n    \"spatial_relation\"\n  ]\n}",
+      "record_id": "CA-0608",
+      "schema_valid": true,
+      "supports_ambiguity_prediction": true,
+      "supports_capability_prediction": true,
+      "system_id": "goal_first_manager_v2",
+      "system_version": "2.0.0",
+      "terminal_strategy": "face_preserving_rejection"
+    },
+    "degree": {
+      "ambiguity_types": [
+        "fuzzy_quantity",
+        "spatial_reference"
+      ],
+      "analysis_attempts": [
+        {
+          "attempt": 1,
+          "max_new_tokens": 4096,
+          "mode": "thinking",
+          "raw_chars": 7732,
+          "raw_sha256": "fd38870e973d7bc678b205503f1047e47ae278a5e2b6c4ad869cae319005f719",
+          "validation_error": "bad_intent_summary"
+        },
+        {
+          "attempt": 2,
+          "max_new_tokens": 8192,
+          "mode": "thinking_retry",
+          "raw_chars": 4813,
+          "raw_sha256": "535e3791d0be07f54249857f236b51b5368ac7c236e10285d7007b5bf1f30578",
+          "validation_error": "bad_pilot_ambiguity_types"
+        },
+        {
+          "attempt": 3,
+          "constraint": {
+            "constraint_initialised": true,
+            "generated_token_count": 465,
+            "maximum_output_tokens": 1024,
+            "response_mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+            "termination_reason": "eos_or_constraint_stop",
+            "transport_status": "constrained_generated"
+          },
+          "max_new_tokens": 1024,
+          "mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+          "raw_chars": 1467,
+          "raw_sha256": "0a09d78f3aa670bb38847e1436e7dcf0d3c34d0389ff2a489c6f95d2bbb63b22",
+          "validation_error": null
+        }
+      ],
+      "capability_status": "incapable",
+      "claim_boundary": "separately_versioned_from_frozen_t39",
+      "error": null,
+      "execution_mode": "cluster-gpu-goal-first-v2",
+      "failed": false,
+      "intent_summary": "Refill the soap dispenser located next to the linen cabinet with a small quantity of liquid soap",
+      "latency_ms": 96099.60597986355,
+      "model_id": "Qwen/Qwen3-8B@b968826d9c46dd6066d109eabc6255188de91218",
+      "parsed": {
+        "analysis": {
+          "ambiguity_present": true,
+          "ambiguity_types": [
+            "quantitative",
+            "spatial"
+          ],
+          "analysis_provenance": {
+            "analysis_id": "248071c4592046f0306bfa1a964cab699e21d4d732175210662624466d74b5c9",
+            "method": "model_generated",
+            "notes": "source_input_hash=248071c4592046f0306bfa1a964cab699e21d4d732175210662624466d74b5c9;no_gold_in_prompt;scene_licence_dropped=quantity,spatial_relation",
+            "provider_id": "goal_first_v2_full_context",
+            "provider_version": "goal-first-manager-v2"
+          },
+          "candidate_interpretations": [],
+          "capability_status": "incapable",
+          "clarification_question": null,
+          "clarification_targets": [],
+          "compound_ambiguity": true,
+          "compound_ambiguity_count": 2,
+          "context_sampling_uncertainty": {
+            "agreement": 0.7,
+            "score": 0.3,
+            "variant_count": 1
+          },
+          "cpc": {
+            "action": {
+              "status": "filled",
+              "value": "soap dispenser refill"
+            },
+            "actor": {
+              "status": "filled",
+              "value": "robot"
+            },
+            "conditions": {
+              "status": "filled",
+              "value": "small amount"
+            },
+            "constraints": {
+              "status": "filled",
+              "value": "soap dispenser refill"
+            },
+            "destination": {
+              "status": "filled",
+              "value": "beside the linen cabinet"
+            },
+            "negation": {
+              "status": "filled",
+              "value": "unspecified"
+            },
+            "object": {
+              "status": "filled",
+              "value": "soap dispenser"
+            },
+            "object_attributes": {
+              "status": "filled",
+              "value": "soap dispenser"
+            },
+            "quantity": {
+              "status": "filled",
+              "value": "small amount"
+            },
+            "recipient": {
+              "status": "filled",
+              "value": "unspecified"
+            },
+            "spatial_relation": {
+              "status": "filled",
+              "value": "beside the linen cabinet"
+            },
+            "time": {
+              "status": "filled",
+              "value": "unspecified"
+            },
+            "tool": {
+              "status": "filled",
+              "value": "dosing tool"
+            }
+          },
+          "findings": [
+            "pilot_ambiguity_types:[\"fuzzy_quantity\",\"spatial_reference\"]",
+            "pilot_capability_status:incapable",
+            "intent_summary_present"
+          ],
+          "intent_summary": "Refill the soap dispenser located next to the linen cabinet with a small quantity of liquid soap",
+          "primary_ambiguity_type": "quantitative",
+          "recommended_strategy": "silently_resolve",
+          "rejection_reason": null,
+          "resolution_evidence": [],
+          "resolution_method": null,
+          "resolved_slots": [
+            {
+              "slot_name": "action",
+              "value": "soap dispenser refill"
+            },
+            {
+              "slot_name": "actor",
+              "value": "robot"
+            },
+            {
+              "slot_name": "object",
+              "value": "soap dispenser"
+            },
+            {
+              "slot_name": "object_attributes",
+              "value": "soap dispenser"
+            },
+            {
+              "slot_name": "destination",
+              "value": "beside the linen cabinet"
+            },
+            {
+              "slot_name": "spatial_relation",
+              "value": "beside the linen cabinet"
+            },
+            {
+              "slot_name": "quantity",
+              "value": "small amount"
+            },
+            {
+              "slot_name": "time",
+              "value": "unspecified"
+            },
+            {
+              "slot_name": "recipient",
+              "value": "unspecified"
+            },
+            {
+              "slot_name": "tool",
+              "value": "dosing tool"
+            },
+            {
+              "slot_name": "conditions",
+              "value": "small amount"
+            },
+            {
+              "slot_name": "constraints",
+              "value": "soap dispenser refill"
+            },
+            {
+              "slot_name": "negation",
+              "value": "unspecified"
+            }
+          ],
+          "risk_level": "low",
+          "risk_relevant": true,
+          "selected_interpretation": null,
+          "speech_act": "directive_command",
+          "strategy_sequence": [],
+          "supporting_evidence": [],
+          "unresolved_slots": [],
+          "unsupported_specificity": []
+        },
+        "clarification_question": null,
+        "clarification_targets": [],
+        "execution_status": "ok",
+        "official_result": false,
+        "provider_provenance": {
+          "shared_analysis_fingerprint": "d2afd173d35785af9ff87a90e6a4e40f57556c0964833a82a790a831ffc75b76"
+        },
+        "recommended_strategy": "silently_resolve",
+        "record_id": "CA-0608",
+        "rejection_reason": null,
+        "resolved_slots": [
+          {
+            "slot_name": "action",
+            "value": "soap dispenser refill"
+          },
+          {
+            "slot_name": "actor",
+            "value": "robot"
+          },
+          {
+            "slot_name": "object",
+            "value": "soap dispenser"
+          },
+          {
+            "slot_name": "object_attributes",
+            "value": "soap dispenser"
+          },
+          {
+            "slot_name": "destination",
+            "value": "beside the linen cabinet"
+          },
+          {
+            "slot_name": "spatial_relation",
+            "value": "beside the linen cabinet"
+          },
+          {
+            "slot_name": "quantity",
+            "value": "small amount"
+          },
+          {
+            "slot_name": "time",
+            "value": "unspecified"
+          },
+          {
+            "slot_name": "recipient",
+            "value": "unspecified"
+          },
+          {
+            "slot_name": "tool",
+            "value": "dosing tool"
+          },
+          {
+            "slot_name": "conditions",
+            "value": "small amount"
+          },
+          {
+            "slot_name": "constraints",
+            "value": "soap dispenser refill"
+          },
+          {
+            "slot_name": "negation",
+            "value": "unspecified"
+          }
+        ],
+        "result_hash": "7d8e36e1822a5cacb9bd87ee2548c1cad42727a8551f42b1b10626d6d719fe4b",
+        "run_id": null,
+        "run_mode": null,
+        "runtime_metadata": {
+          "shared_analysis_fingerprint": "d2afd173d35785af9ff87a90e6a4e40f57556c0964833a82a790a831ffc75b76",
+          "thresholds_status": "unfrozen",
+          "thresholds_valid_for_official_use": false,
+          "uncertainty_score": 0.3,
+          "uses_type_risk_capability_precedence": false
+        },
+        "safety_findings": [],
+        "strategy_sequence": [],
+        "synthetic_only": true,
+        "system_id": "degree_based_router",
+        "system_version": "1.0.0",
+        "unsupported_commitment_findings": []
+      },
+      "raw_output": "{\n  \"intent_summary\": \"Refill the soap dispenser located next to the linen cabinet with a small quantity of liquid soap\",\n  \"cpc\": {\n    \"action\": {\n      \"status\": \"filled\",\n      \"value\": \"soap dispenser refill\"\n    },\n    \"object\": {\n      \"status\": \"filled\",\n      \"value\": \"soap dispenser\"\n    },\n    \"quantity\": {\n      \"status\": \"filled\",\n      \"value\": \"small amount\"\n    },\n    \"destination\": {\n      \"status\": \"filled\",\n      \"value\": \"beside the linen cabinet\"\n    }\n \n \n \n \n \n ,\n  \"constraints\": {\n    \"status\": \"filled\",\n    \"value\": \"soap dispenser refill\"\n  },\n  \"object_attributes\": {\n    \"status\": \"filled\",\n    \"value\": \"soap dispenser\"\n  },\n  \"conditions\": {\n    \"status\": \"filled\",\n    \"value\": \"small amount\"\n  },\n  \"spatial_relation\": {\n    \"status\": \"filled\",\n    \"value\": \"beside the linen cabinet\"\n  },\n  \"recipient\": {\n    \"status\": \"unknown\",\n    \"value\": \"unspecified\"\n  },\n  \"tool\": {\n    \"status\": \"filled\",\n    \"value\": \"dosing tool\"\n  },\n  \"time\": {\n    \"status\": \"unknown\",\n    \"value\": \"unspecified\"\n  },\n  \"negation\": {\n    \"status\": \"unknown\",\n    \"value\": \"unspecified\"\n  },\n  \"actor\": {\n    \"status\": \"filled\",\n    \"value\": \"robot\"\n  }\n} \n\n \n \n\n \n  ,\n  \"pilot_ambiguity_types\": [\n    \"spatial_reference\",\n    \"fuzzy_quantity\"\n  ]\n  \n  ,\n  \"pilot_capability_status\": \"incapable\",\n  \"speech_act\": \"directive_command\",\n  \"uncertainty\": 0.3,\n  \"risk_level\": \"low\",\n  \"unresolved_slots\": [\n    \"quantity\",\n    \"spatial_relation\"\n  ]\n}",
+      "record_id": "CA-0608",
+      "schema_valid": true,
+      "supports_ambiguity_prediction": true,
+      "supports_capability_prediction": true,
+      "system_id": "degree_based_router_v2",
+      "system_version": "2.0.0",
+      "terminal_strategy": "execute"
+    },
+    "timid": {
+      "ambiguity_types": [
+        "fuzzy_quantity",
+        "spatial_reference"
+      ],
+      "analysis_attempts": [
+        {
+          "attempt": 1,
+          "max_new_tokens": 4096,
+          "mode": "thinking",
+          "raw_chars": 7732,
+          "raw_sha256": "fd38870e973d7bc678b205503f1047e47ae278a5e2b6c4ad869cae319005f719",
+          "validation_error": "bad_intent_summary"
+        },
+        {
+          "attempt": 2,
+          "max_new_tokens": 8192,
+          "mode": "thinking_retry",
+          "raw_chars": 4813,
+          "raw_sha256": "535e3791d0be07f54249857f236b51b5368ac7c236e10285d7007b5bf1f30578",
+          "validation_error": "bad_pilot_ambiguity_types"
+        },
+        {
+          "attempt": 3,
+          "constraint": {
+            "constraint_initialised": true,
+            "generated_token_count": 465,
+            "maximum_output_tokens": 1024,
+            "response_mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+            "termination_reason": "eos_or_constraint_stop",
+            "transport_status": "constrained_generated"
+          },
+          "max_new_tokens": 1024,
+          "mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+          "raw_chars": 1467,
+          "raw_sha256": "0a09d78f3aa670bb38847e1436e7dcf0d3c34d0389ff2a489c6f95d2bbb63b22",
+          "validation_error": null
+        }
+      ],
+      "capability_status": "incapable",
+      "claim_boundary": "separately_versioned_from_frozen_t39",
+      "error": null,
+      "execution_mode": "cluster-gpu-goal-first-v2",
+      "failed": false,
+      "intent_summary": "Refill the soap dispenser located next to the linen cabinet with a small quantity of liquid soap",
+      "latency_ms": 96099.60597986355,
+      "model_id": "Qwen/Qwen3-8B@b968826d9c46dd6066d109eabc6255188de91218",
+      "parsed": {
+        "analysis": {
+          "ambiguity_present": true,
+          "ambiguity_types": [
+            "quantitative",
+            "spatial"
+          ],
+          "analysis_provenance": {
+            "analysis_id": "248071c4592046f0306bfa1a964cab699e21d4d732175210662624466d74b5c9",
+            "method": "model_generated",
+            "notes": "source_input_hash=248071c4592046f0306bfa1a964cab699e21d4d732175210662624466d74b5c9;no_gold_in_prompt;scene_licence_dropped=quantity,spatial_relation",
+            "provider_id": "goal_first_v2_full_context",
+            "provider_version": "goal-first-manager-v2"
+          },
+          "candidate_interpretations": [],
+          "capability_status": "incapable",
+          "clarification_question": null,
+          "clarification_targets": [],
+          "compound_ambiguity": true,
+          "compound_ambiguity_count": 2,
+          "context_sampling_uncertainty": {
+            "agreement": 0.7,
+            "score": 0.3,
+            "variant_count": 1
+          },
+          "cpc": {
+            "action": {
+              "status": "filled",
+              "value": "soap dispenser refill"
+            },
+            "actor": {
+              "status": "filled",
+              "value": "robot"
+            },
+            "conditions": {
+              "status": "filled",
+              "value": "small amount"
+            },
+            "constraints": {
+              "status": "filled",
+              "value": "soap dispenser refill"
+            },
+            "destination": {
+              "status": "filled",
+              "value": "beside the linen cabinet"
+            },
+            "negation": {
+              "status": "filled",
+              "value": "unspecified"
+            },
+            "object": {
+              "status": "filled",
+              "value": "soap dispenser"
+            },
+            "object_attributes": {
+              "status": "filled",
+              "value": "soap dispenser"
+            },
+            "quantity": {
+              "status": "filled",
+              "value": "small amount"
+            },
+            "recipient": {
+              "status": "filled",
+              "value": "unspecified"
+            },
+            "spatial_relation": {
+              "status": "filled",
+              "value": "beside the linen cabinet"
+            },
+            "time": {
+              "status": "filled",
+              "value": "unspecified"
+            },
+            "tool": {
+              "status": "filled",
+              "value": "dosing tool"
+            }
+          },
+          "findings": [
+            "pilot_ambiguity_types:[\"fuzzy_quantity\",\"spatial_reference\"]",
+            "pilot_capability_status:incapable",
+            "intent_summary_present"
+          ],
+          "intent_summary": "Refill the soap dispenser located next to the linen cabinet with a small quantity of liquid soap",
+          "primary_ambiguity_type": "quantitative",
+          "recommended_strategy": "face_preserving_rejection",
+          "rejection_reason": "known_incapability",
+          "resolution_evidence": [],
+          "resolution_method": null,
+          "resolved_slots": [
+            {
+              "slot_name": "action",
+              "value": "soap dispenser refill"
+            },
+            {
+              "slot_name": "actor",
+              "value": "robot"
+            },
+            {
+              "slot_name": "object",
+              "value": "soap dispenser"
+            },
+            {
+              "slot_name": "object_attributes",
+              "value": "soap dispenser"
+            },
+            {
+              "slot_name": "destination",
+              "value": "beside the linen cabinet"
+            },
+            {
+              "slot_name": "spatial_relation",
+              "value": "beside the linen cabinet"
+            },
+            {
+              "slot_name": "quantity",
+              "value": "small amount"
+            },
+            {
+              "slot_name": "time",
+              "value": "unspecified"
+            },
+            {
+              "slot_name": "recipient",
+              "value": "unspecified"
+            },
+            {
+              "slot_name": "tool",
+              "value": "dosing tool"
+            },
+            {
+              "slot_name": "conditions",
+              "value": "small amount"
+            },
+            {
+              "slot_name": "constraints",
+              "value": "soap dispenser refill"
+            },
+            {
+              "slot_name": "negation",
+              "value": "unspecified"
+            }
+          ],
+          "risk_level": "low",
+          "risk_relevant": true,
+          "selected_interpretation": null,
+          "speech_act": "directive_command",
+          "strategy_sequence": [],
+          "supporting_evidence": [],
+          "unresolved_slots": [],
+          "unsupported_specificity": []
+        },
+        "clarification_question": null,
+        "clarification_targets": [],
+        "execution_status": "ok",
+        "official_result": false,
+        "provider_provenance": {
+          "provider_id": "cached_analysis",
+          "provider_version": "1.0.0"
+        },
+        "recommended_strategy": "face_preserving_rejection",
+        "record_id": "CA-0608",
+        "rejection_reason": "known_incapability",
+        "resolved_slots": [
+          {
+            "slot_name": "action",
+            "value": "soap dispenser refill"
+          },
+          {
+            "slot_name": "actor",
+            "value": "robot"
+          },
+          {
+            "slot_name": "object",
+            "value": "soap dispenser"
+          },
+          {
+            "slot_name": "object_attributes",
+            "value": "soap dispenser"
+          },
+          {
+            "slot_name": "destination",
+            "value": "beside the linen cabinet"
+          },
+          {
+            "slot_name": "spatial_relation",
+            "value": "beside the linen cabinet"
+          },
+          {
+            "slot_name": "quantity",
+            "value": "small amount"
+          },
+          {
+            "slot_name": "time",
+            "value": "unspecified"
+          },
+          {
+            "slot_name": "recipient",
+            "value": "unspecified"
+          },
+          {
+            "slot_name": "tool",
+            "value": "dosing tool"
+          },
+          {
+            "slot_name": "conditions",
+            "value": "small amount"
+          },
+          {
+            "slot_name": "constraints",
+            "value": "soap dispenser refill"
+          },
+          {
+            "slot_name": "negation",
+            "value": "unspecified"
+          }
+        ],
+        "result_hash": "f3bf22967450cc7421187c0d05b5a45e690ab065d1368ebbd106a745b5dc2450",
+        "run_id": null,
+        "run_mode": null,
+        "runtime_metadata": {
+          "awaits_t28_adapter": true,
+          "classification": {
+            "ambiguity_present": true,
+            "ambiguity_types": [
+              "quantitative",
+              "spatial"
+            ],
+            "capability_status": "incapable",
+            "compound_ambiguity": true,
+            "compound_ambiguity_count": 2,
+            "derivation_notes": [
+              "ambiguity_present_from_types"
+            ],
+            "risk_level": "low"
+          },
+          "rejection_text": "I am not able to perform that action with my current capabilities. I will not invent an alternative that is not supported.",
+          "requires_re_evaluation": false,
+          "resolution_events": [],
+          "router_trace": {
+            "clarification_targets": [],
+            "considered_rules": [
+              "known_unsafe_or_prohibited",
+              "known_incapable"
+            ],
+            "matched_rule_id": "known_incapable",
+            "notes": [],
+            "recommended_strategy": "face_preserving_rejection",
+            "rejection_reason": "known_incapability",
+            "requires_re_evaluation": false,
+            "strategy_sequence": []
+          },
+          "safety_action": "return_with_findings",
+          "uncertainty": null
+        },
+        "safety_findings": [],
+        "strategy_sequence": [],
+        "synthetic_only": true,
+        "system_id": "full_type_risk_aware_manager",
+        "system_version": "1.0.0",
+        "unsupported_commitment_findings": []
+      },
+      "raw_output": "{\n  \"intent_summary\": \"Refill the soap dispenser located next to the linen cabinet with a small quantity of liquid soap\",\n  \"cpc\": {\n    \"action\": {\n      \"status\": \"filled\",\n      \"value\": \"soap dispenser refill\"\n    },\n    \"object\": {\n      \"status\": \"filled\",\n      \"value\": \"soap dispenser\"\n    },\n    \"quantity\": {\n      \"status\": \"filled\",\n      \"value\": \"small amount\"\n    },\n    \"destination\": {\n      \"status\": \"filled\",\n      \"value\": \"beside the linen cabinet\"\n    }\n \n \n \n \n \n ,\n  \"constraints\": {\n    \"status\": \"filled\",\n    \"value\": \"soap dispenser refill\"\n  },\n  \"object_attributes\": {\n    \"status\": \"filled\",\n    \"value\": \"soap dispenser\"\n  },\n  \"conditions\": {\n    \"status\": \"filled\",\n    \"value\": \"small amount\"\n  },\n  \"spatial_relation\": {\n    \"status\": \"filled\",\n    \"value\": \"beside the linen cabinet\"\n  },\n  \"recipient\": {\n    \"status\": \"unknown\",\n    \"value\": \"unspecified\"\n  },\n  \"tool\": {\n    \"status\": \"filled\",\n    \"value\": \"dosing tool\"\n  },\n  \"time\": {\n    \"status\": \"unknown\",\n    \"value\": \"unspecified\"\n  },\n  \"negation\": {\n    \"status\": \"unknown\",\n    \"value\": \"unspecified\"\n  },\n  \"actor\": {\n    \"status\": \"filled\",\n    \"value\": \"robot\"\n  }\n} \n\n \n \n\n \n  ,\n  \"pilot_ambiguity_types\": [\n    \"spatial_reference\",\n    \"fuzzy_quantity\"\n  ]\n  \n  ,\n  \"pilot_capability_status\": \"incapable\",\n  \"speech_act\": \"directive_command\",\n  \"uncertainty\": 0.3,\n  \"risk_level\": \"low\",\n  \"unresolved_slots\": [\n    \"quantity\",\n    \"spatial_relation\"\n  ]\n}",
+      "record_id": "CA-0608",
+      "schema_valid": true,
+      "supports_ambiguity_prediction": true,
+      "supports_capability_prediction": true,
+      "system_id": "rich_conservative_manager_v2",
+      "system_version": "2.0.0",
+      "terminal_strategy": "face_preserving_rejection"
+    },
+    "context_blind": {
+      "ambiguity_types": [
+        "spatial_reference"
+      ],
+      "analysis_attempts": [
+        {
+          "attempt": 1,
+          "max_new_tokens": 4096,
+          "mode": "thinking",
+          "raw_chars": 6752,
+          "raw_sha256": "a99f21798c13642ed3d81e1069840108566d5a2d866567dc5620a61301b777e8",
+          "validation_error": "bad_pilot_ambiguity_types"
+        },
+        {
+          "attempt": 2,
+          "max_new_tokens": 8192,
+          "mode": "thinking_retry",
+          "raw_chars": 11691,
+          "raw_sha256": "5b57441df836b59ab828855bc0fe3a355096cf836f12fc13cf62d0f1ab205045",
+          "validation_error": "bad_intent_summary"
+        },
+        {
+          "attempt": 3,
+          "constraint": {
+            "constraint_initialised": true,
+            "generated_token_count": 467,
+            "maximum_output_tokens": 1024,
+            "response_mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+            "termination_reason": "eos_or_constraint_stop",
+            "transport_status": "constrained_generated"
+          },
+          "max_new_tokens": 1024,
+          "mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+          "raw_chars": 1479,
+          "raw_sha256": "5241dff72b8cb1a1da62c59413243af0b6d154fccf111b73b44c05234971a421",
+          "validation_error": null
+        }
+      ],
+      "capability_status": "unauthorized",
+      "claim_boundary": "separately_versioned_from_frozen_t39",
+      "error": null,
+      "execution_mode": "cluster-gpu-goal-first-v2",
+      "failed": false,
+      "intent_summary": "Refill the soap dispenser located next to the linen cabinet with a small quantity of liquid soap",
+      "latency_ms": 125147.36140612513,
+      "model_id": "Qwen/Qwen3-8B@b968826d9c46dd6066d109eabc6255188de91218",
+      "parsed": {
+        "analysis": {
+          "ambiguity_present": true,
+          "ambiguity_types": [
+            "spatial"
+          ],
+          "analysis_provenance": {
+            "analysis_id": "6a96f871fc1f9d345b5ed932c27b53b76be76f6bf975346a972473bb3e7f55fc",
+            "method": "context_blind",
+            "notes": "ablated_input_hash=6a96f871fc1f9d345b5ed932c27b53b76be76f6bf975346a972473bb3e7f55fc;source_input_hash=6a96f871fc1f9d345b5ed932c27b53b76be76f6bf975346a972473bb3e7f55fc;no_gold_in_prompt;scene_licence_dropped=spatial_relation",
+            "provider_id": "goal_first_v2_context_blind",
+            "provider_version": "goal-first-manager-v2"
+          },
+          "candidate_interpretations": [],
+          "capability_status": "unknown",
+          "clarification_question": null,
+          "clarification_targets": [],
+          "compound_ambiguity": false,
+          "compound_ambiguity_count": 0,
+          "context_sampling_uncertainty": {
+            "agreement": 0.4,
+            "score": 0.6,
+            "variant_count": 1
+          },
+          "cpc": {
+            "action": {
+              "status": "filled",
+              "value": "refill"
+            },
+            "actor": {
+              "status": "filled",
+              "value": "unspecified"
+            },
+            "conditions": {
+              "status": "filled",
+              "value": "unspecified"
+            },
+            "constraints": {
+              "status": "filled",
+              "value": "unspecified"
+            },
+            "destination": {
+              "status": "filled",
+              "value": "beside the linen cabinet"
+            },
+            "negation": {
+              "status": "filled",
+              "value": "unspecified"
+            },
+            "object": {
+              "status": "filled",
+              "value": "soap dispenser"
+            },
+            "object_attributes": {
+              "status": "filled",
+              "value": "soap dispenser"
+            },
+            "quantity": {
+              "status": "filled",
+              "value": "small amount"
+            },
+            "recipient": {
+              "status": "filled",
+              "value": "unspecified"
+            },
+            "spatial_relation": {
+              "status": "filled",
+              "value": "beside the linen cabinet"
+            },
+            "time": {
+              "status": "filled",
+              "value": "unspecified"
+            },
+            "tool": {
+              "status": "filled",
+              "value": "liquid soap"
+            }
+          },
+          "findings": [
+            "pilot_ambiguity_types:[\"spatial_reference\"]",
+            "pilot_capability_status:unauthorized",
+            "intent_summary_present"
+          ],
+          "intent_summary": "Refill the soap dispenser located next to the linen cabinet with a small quantity of liquid soap",
+          "primary_ambiguity_type": "spatial",
+          "recommended_strategy": "face_preserving_rejection",
+          "rejection_reason": "unsafe_or_prohibited_action",
+          "resolution_evidence": [],
+          "resolution_method": null,
+          "resolved_slots": [
+            {
+              "slot_name": "action",
+              "value": "refill"
+            },
+            {
+              "slot_name": "actor",
+              "value": "unspecified"
+            },
+            {
+              "slot_name": "object",
+              "value": "soap dispenser"
+            },
+            {
+              "slot_name": "object_attributes",
+              "value": "soap dispenser"
+            },
+            {
+              "slot_name": "destination",
+              "value": "beside the linen cabinet"
+            },
+            {
+              "slot_name": "spatial_relation",
+              "value": "beside the linen cabinet"
+            },
+            {
+              "slot_name": "quantity",
+              "value": "small amount"
+            },
+            {
+              "slot_name": "time",
+              "value": "unspecified"
+            },
+            {
+              "slot_name": "recipient",
+              "value": "unspecified"
+            },
+            {
+              "slot_name": "tool",
+              "value": "liquid soap"
+            },
+            {
+              "slot_name": "conditions",
+              "value": "unspecified"
+            },
+            {
+              "slot_name": "constraints",
+              "value": "unspecified"
+            },
+            {
+              "slot_name": "negation",
+              "value": "unspecified"
+            }
+          ],
+          "risk_level": "medium",
+          "risk_relevant": true,
+          "selected_interpretation": null,
+          "speech_act": "directive_command",
+          "strategy_sequence": [],
+          "supporting_evidence": [],
+          "unresolved_slots": [],
+          "unsupported_specificity": []
+        },
+        "clarification_question": null,
+        "clarification_targets": [],
+        "execution_status": "ok",
+        "official_result": false,
+        "provider_provenance": {
+          "provider_id": "cached_analysis",
+          "provider_version": "1.0.0"
+        },
+        "recommended_strategy": "face_preserving_rejection",
+        "record_id": "CA-0608",
+        "rejection_reason": "unsafe_or_prohibited_action",
+        "resolved_slots": [
+          {
+            "slot_name": "action",
+            "value": "refill"
+          },
+          {
+            "slot_name": "actor",
+            "value": "unspecified"
+          },
+          {
+            "slot_name": "object",
+            "value": "soap dispenser"
+          },
+          {
+            "slot_name": "object_attributes",
+            "value": "soap dispenser"
+          },
+          {
+            "slot_name": "destination",
+            "value": "beside the linen cabinet"
+          },
+          {
+            "slot_name": "spatial_relation",
+            "value": "beside the linen cabinet"
+          },
+          {
+            "slot_name": "quantity",
+            "value": "small amount"
+          },
+          {
+            "slot_name": "time",
+            "value": "unspecified"
+          },
+          {
+            "slot_name": "recipient",
+            "value": "unspecified"
+          },
+          {
+            "slot_name": "tool",
+            "value": "liquid soap"
+          },
+          {
+            "slot_name": "conditions",
+            "value": "unspecified"
+          },
+          {
+            "slot_name": "constraints",
+            "value": "unspecified"
+          },
+          {
+            "slot_name": "negation",
+            "value": "unspecified"
+          }
+        ],
+        "result_hash": "f6dcf61ff2bcaa0e79a9192a9cce4391fe9fcb62ecf84cbcd77384e0f43a09b7",
+        "run_id": null,
+        "run_mode": null,
+        "runtime_metadata": {
+          "analysis_identity": {
+            "analysis_content_hash": "c0427e7864a6c0270098342384639620988dc682b4777e94118bf5cdec88e42f",
+            "analysis_variant": "context_blind",
+            "model_strategy_id": null,
+            "provider_id": "goal_first_v2_context_blind",
+            "provider_version": "goal-first-manager-v2",
+            "record_id": "CA-0608",
+            "source_input_hash": "6a96f871fc1f9d345b5ed932c27b53b76be76f6bf975346a972473bb3e7f55fc"
+          },
+          "analysis_identity_fingerprint": "f1a522119c17b83875e4bab144c077742eb949c3591371f4fb1905220fd9d90d",
+          "awaits_t28_adapter": true,
+          "classification": {
+            "ambiguity_present": true,
+            "ambiguity_types": [
+              "spatial"
+            ],
+            "capability_status": "unknown",
+            "compound_ambiguity": false,
+            "compound_ambiguity_count": 0,
+            "derivation_notes": [
+              "ambiguity_present_from_types"
+            ],
+            "risk_level": "medium"
+          },
+          "context_ablation": {
+            "ablated_input_hash": "6a96f871fc1f9d345b5ed932c27b53b76be76f6bf975346a972473bb3e7f55fc",
+            "capability_context_removed": true,
+            "dialogue_history_removed": true,
+            "rejected_full_context_cache": false,
+            "rejection_reason": null,
+            "scene_context_removed": true,
+            "stripped_context_derived_fields": false
+          },
+          "original_input_unmutated": true,
+          "rejection_text": "I need to decline that request because it would be unsafe under the current constraints.",
+          "requires_re_evaluation": false,
+          "resolution_events": [],
+          "router_trace": {
+            "clarification_targets": [],
+            "considered_rules": [
+              "goal_first_v2",
+              "known_unsafe_or_prohibited"
+            ],
+            "matched_rule_id": "known_unsafe_or_prohibited",
+            "notes": [],
+            "recommended_strategy": "face_preserving_rejection",
+            "rejection_reason": "unsafe_or_prohibited_action",
+            "requires_re_evaluation": false,
+            "strategy_sequence": []
+          },
+          "safety_action": "return_with_findings",
+          "uncertainty": null
+        },
+        "safety_findings": [],
+        "strategy_sequence": [],
+        "synthetic_only": true,
+        "system_id": "context_blind_manager",
+        "system_version": "1.0.0",
+        "unsupported_commitment_findings": []
+      },
+      "raw_output": "{\n  \"intent_summary\": \"Refill the soap dispenser located next to the linen cabinet with a small quantity of liquid soap\",\n  \"cpc\": {\n    \"action\": {\n      \"value\": \"refill\",\n      \"status\": \"unknown\"\n    },\n    \"object\": {\n      \"value\": \"soap dispenser\",\n      \"status\": \"unknown\"\n    },\n    \"destination\": {\n      \"value\": \"beside the linen cabinet\",\n      \"status\": \"unknown\"\n    },\n    \"quantity\": {\n      \"value\": \"small amount\",\n      \"status\": \"unknown\"\n    },\n    \"tool\": {\n      \"value\": \"liquid soap\",\n      \"status\": \"unknown\"\n    }\n \n  ,\n  \"constraints\": {\n    \"status\": \"unknown\"\n  ,\n    \"value\": \"unspecified\"\n  }\n  ,\n  \"conditions\": {\n    \"status\": \"unknown\"\n  ,\n    \"value\": \"unspecified\"\n  }\n  ,\n  \"time\": {\n    \"status\": \"unknown\"\n  ,\n    \"value\": \"unspecified\"\n  }\n  ,\n  \"spatial_relation\": {\n    \"status\": \"unknown\"\n  ,\n    \"value\": \"beside the linen cabinet\"\n  }\n  ,\n  \"object_attributes\": {\n    \"status\": \"unknown\"\n  ,\n    \"value\": \"soap dispenser\"\n  }\n  ,\n  \"recipient\": {\n    \"status\": \"unknown\"\n  ,\n    \"value\": \"unspecified\"\n  }\n  ,\n  \"actor\": {\n    \"status\": \"unknown\"\n  ,\n    \"value\": \"unspecified\"\n  }\n  ,\n  \"negation\": {\n    \"status\": \"unknown\"\n  ,\n    \"value\": \"unspecified\"\n  }\n  },\n  \"pilot_ambiguity_types\": [\n    \"spatial_reference\"\n  ]\n  \n  ,\n  \"pilot_capability_status\": \"unauthorized\"\n  ,\n  \"unresolved_slots\": [\n    \"spatial_relation\"\n  ]\n  \n  ,\n  \"uncertainty\": 0.6\n  ,\n  \"risk_level\": \"medium\"\n  ,\n  \"speech_act\": \"directive_command\"\n  }\n",
+      "record_id": "CA-0608",
+      "schema_valid": true,
+      "supports_ambiguity_prediction": true,
+      "supports_capability_prediction": true,
+      "system_id": "goal_first_context_blind_v2",
+      "system_version": "2.0.0",
+      "terminal_strategy": "face_preserving_rejection"
+    }
+  },
+  "provenance": {
+    "source_sha256": "f33b1e29f1e8aa256a475f07213aa07247def47d8e2148d54a472a40b71b05c9",
+    "gold_sha256": "5e23ad1a92ff1873c8f039a8ce560a111dd6fb6b8ae8c11d6cf34dbfa1c360db",
+    "t07_final_zip_sha256": "34ca50e034ca37b617068bb50c734d12fa26282fb5eec563c11ead700163e491",
+    "inherited_t07_zip_sha256": "0305b1e9ab062876ee6ee89778cc6028d2eaf01718b7dd0295944e7d9cb81a01",
+    "note": "Goal-First, Degree, Timid, and Context-Blind predictions are inherited from the earlier T0.7 run; official intent and comparison come from the final T0.7 archive."
+  }
+}

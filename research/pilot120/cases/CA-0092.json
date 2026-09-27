@@ -1,0 +1,1433 @@
+{
+  "record_id": "CA-0092",
+  "frozen_source": {
+    "capability_context": "Hotel service robot can deliver sealed guest items, move linen, scan room tags, and clean approved floor equipment.",
+    "command": "After a scheduled linen pickup, deliver the selected guest parcel using the usual setup.",
+    "dialogue_history": [],
+    "record_id": "CA-0092",
+    "scene_context": "Housekeeping store on a hotel floor. Two guest parcels are selected and both remain pending. The green one is assigned to floor supervisor; the blue one is assigned to porter. The current time is 07:40. The linen pickup is scheduled at 08:00 and again at 12:00. Work order WO-673 links this delivery to the 08:00 occurrence. The setup table states that Work order WO-673 maps to the guest delivery, while the fire-door check applies to a different work-order prefix. Each selected item is already paired with its named recipient. The command provides no item code, color, or recipient name. Both pending assignments are pre-authorized handoffs within the robot's certified transport and access limits; either is executable once selected."
+  },
+  "frozen_gold": {
+    "ambiguity_types": [
+      "object_reference",
+      "routine_reference",
+      "temporal_reference"
+    ],
+    "annotator_b_era": "claude_era",
+    "annotator_b_model": "claude-4.6-sonnet-medium-thinking",
+    "capability_status": "capable",
+    "field_status": {
+      "ambiguity_types": "auto_agree",
+      "capability_status": "human_auditor:independent_from_route",
+      "record_validity": "auto_agree",
+      "strategy_sequence": "from_A_matching_terminal",
+      "terminal_strategy": "auto_agree"
+    },
+    "gold_lifecycle": "final_gold",
+    "gold_status": "auto_agree",
+    "human_gate_required": false,
+    "provenance": {
+      "agreement_label": "pilot_annotation_agreement",
+      "annotator_a_sha256": "c72b9d69b5943b4d31b9bcbce5ec336ba8e02c560370724240d9a4eb69f0abd9",
+      "annotator_b_sha256": "7d79dc7d669212289baebca5c2ae04b7f1be3fc541e818ebd185eab68b102a3f",
+      "capability_route_decouple": "conditionally_capable remapped to capable: no evidenced external capability precondition; linguistic silently_resolve/clarify is not a capability condition",
+      "gold_policy": "use_existing_pilot_adjudicated_gold",
+      "input_sha256": "56ba9434ee8b72302a5fba56c996684b0653343844316ee88e1d0e89cfeee96e",
+      "pilot_gold_sha256": "c3c12102078261be1031c1b98cadd6a3952adcef45de0a2e928f5b797b7e3dae",
+      "protocol": "pilot_adjudicated_gold_on_capability_repaired_source",
+      "repaired_input_sha256": "87deaa60a4881bad0461e127a44c1dcc8b047d8330b38da2de13b2e7f7e81e56"
+    },
+    "record_id": "CA-0092",
+    "record_validity": "valid",
+    "strategy_sequence": [
+      "clarify"
+    ],
+    "terminal_strategy": "clarify"
+  },
+  "t07_comparison": {
+    "record_id": "CA-0092",
+    "gold_route": "clarify",
+    "raw_route": "execute",
+    "ft_route": "clarify",
+    "gf_route": "refuse",
+    "raw_route_ok": "False",
+    "ft_route_ok": "True",
+    "gf_route_ok": "False",
+    "raw_official_intent": "True",
+    "ft_official_intent": "True",
+    "gf_official_intent": "True",
+    "blind_official_intent": "True"
+  },
+  "t07_official_intent": {
+    "context_blind_official_intent": true,
+    "degree_official_intent_shared_gf": true,
+    "finetune_official_intent": true,
+    "goal_first_official_intent": true,
+    "raw_official_intent": true,
+    "record_id": "CA-0092",
+    "timid_official_intent_shared_gf": true
+  },
+  "t07_predictions": {
+    "raw_qwen": {
+      "ambiguity_types": [
+        "object_reference"
+      ],
+      "capability_status": "conditionally_capable",
+      "error": null,
+      "execution_mode": "final_close_intent_box",
+      "failed": false,
+      "intent_summary": "Deliver the selected guest parcel after the 08:00 linen pickup using the usual setup linked to work order WO-673.",
+      "latency_ms": 7538.707047700882,
+      "parsed": {
+        "ambiguity_types": [
+          "object_reference"
+        ],
+        "capability_status": "conditionally_capable",
+        "intent_summary": "Deliver the selected guest parcel after the 08:00 linen pickup using the usual setup linked to work order WO-673.",
+        "speech_act": "directive_command",
+        "terminal_strategy": "execute"
+      },
+      "raw_output": "<think>\nOkay, let's break down this command. The user wants the robot to deliver selected guest parcels after a linen pickup. The key points here are the timing and the specific setup. The linen pickup is scheduled at 08:00, and the work order WO-673 is linked to that occurrence. The command mentions using the \"usual setup,\" which refers to the setup table that maps WO-673 to the guest delivery. \n\nNow, the robot's capabilities include delivering sealed guest items, moving linen, scanning room tags, and cleaning approved equipment. Since the parcels are already paired with their recipients and are pre-authorized, the robot should be capable. But wait, the command doesn't specify which parcel (green or blue) or any item code. However, the setup table links WO-673 to the guest delivery, so the robot can infer the correct parcel based on the work order. \n\nThe ambiguity here might be about which parcel to deliver since there are two selected. But the work order and the usual setup should resolve that. The speech act is a directive command because it's instructing the robot to perform a specific action. The capability status is conditionally_capable because it depends on the correct setup and the work order. But since the setup is already defined, maybe it's capable. Wait, the command doesn't mention the item code, but the setup table is part of the scene context. The robot can use the work order to determine the correct parcel, so it's capable. \n\nTerminal strategy would be execute since the conditions are met. Ambiguity types might include object_reference because the parcel isn't specified, but the work order and setup resolve that. So, the JSON should have intent_summary about delivering after pickup, speech_act as directive_command, ambiguity_types with object_reference, capability_status as capable, and terminal_strategy as execute.\n</think>\n\n{\n  \"intent_summary\": \"Deliver the selected guest parcel after the 08:00 linen pickup using the usual setup linked to work order WO-673.\",\n  \"speech_act\": \"directive_command\",\n  \"ambiguity_types\": [\"object_reference\"],\n  \"capability_status\": \"conditionally_capable\",\n  \"terminal_strategy\": \"execute\"\n}",
+      "record_id": "CA-0092",
+      "schema_valid": true,
+      "speech_act": "directive_command",
+      "system_id": "direct_base_llm",
+      "terminal_strategy": "execute"
+    },
+    "finetune": {
+      "ambiguity_types": [
+        "object_reference",
+        "temporal_reference"
+      ],
+      "capability_status": "conditionally_capable",
+      "error": null,
+      "execution_mode": "final_close_intent_box",
+      "failed": false,
+      "intent_summary": "Deliver a selected guest parcel after the scheduled linen pickup at 08:00.",
+      "latency_ms": 17732.3567410931,
+      "parsed": {
+        "ambiguity_types": [
+          "object_reference",
+          "temporal_reference"
+        ],
+        "capability_status": "conditionally_capable",
+        "intent_summary": "Deliver a selected guest parcel after the scheduled linen pickup at 08:00.",
+        "speech_act": "conditional_directive",
+        "terminal_strategy": "clarify"
+      },
+      "raw_output": "<think>\nOkay, let's break down this robot command. The user wants the robot to deliver a selected guest parcel after a scheduled linen pickup. The key points here are the timing and the specific parcel.\n\nFirst, the command mentions \"after a scheduled linen pickup.\" The scene context says the linen pickup is at 08:00. So the robot needs to wait until that time. But the current time is 07:40, so there's a 20-minute wait. \n\nNext, delivering the \"selected guest parcel.\" The dialogue history is empty, so there's no prior info. The scene context mentions two parcels: green (floor supervisor) and blue (porter). Both are pending. The command doesn't specify which one, so that's an ambiguity. The user might have intended one of them, but the lack of color or recipient name makes it unclear. \n\nThe work order WO-673 is linked to the 08:00 linen pickup. The setup table says this work order maps to guest delivery. But the command doesn't mention the item code or color, so the robot can't determine which parcel to deliver. \n\nLooking at the capability context, the robot can deliver sealed guest items. Since both parcels are pending and pre-authorized, the robot is capable. But the ambiguity here is about which parcel. The lack of specific details (color, recipient name) leads to object_reference ambiguity. Also, the timing is a conditional_directive since it depends on the linen pickup happening first. \n\nSo, the intent is to deliver a guest parcel after the linen pickup. The speech act is a conditional_directive. Ambiguity types include object_reference and possibly temporal_reference (since it's after a scheduled time). The capability status is conditionally_capable because it depends on the linen pickup. The terminal strategy would be clarify to confirm which parcel, but since the user might not have specified, maybe execute if the robot can infer. Wait, but the command doesn't specify, so maybe the robot can't execute without clarification. Hmm. But the scene says both are pending and pre-authorized. The command might be using the work order to select the correct one. However, the ambiguity is still there. So the capability status might be conditionally_capable because the timing is conditional. The terminal strategy would be clarify because the robot needs to know which parcel. But the user might have intended the one linked to WO-673. But the command doesn't specify, so the robot can't know. Therefore, the answer would have ambiguity in object_reference and possibly temporal_reference. The speech act is a conditional_directive because it's dependent on the linen pickup. The capability is conditionally_capable since it's contingent on the pickup. The terminal strategy would be clarify to resolve the ambiguity.\n</think>\n\n{\n  \"intent_summary\": \"Deliver a selected guest parcel after the scheduled linen pickup at 08:00.\",\n  \"speech_act\": \"conditional_directive\",\n  \"ambiguity_types\": [\"object_reference\", \"temporal_reference\"],\n  \"capability_status\": \"conditionally_capable\",\n  \"terminal_strategy\": \"clarify\"\n}",
+      "record_id": "CA-0092",
+      "schema_valid": true,
+      "speech_act": "conditional_directive",
+      "system_id": "t28_selected_adapter_llm",
+      "terminal_strategy": "clarify"
+    },
+    "goal_first": {
+      "ambiguity_types": [
+        "object_reference",
+        "pragmatic",
+        "recipient_reference",
+        "temporal_reference"
+      ],
+      "analysis_attempts": [
+        {
+          "attempt": 1,
+          "max_new_tokens": 4096,
+          "mode": "thinking",
+          "raw_chars": 12467,
+          "raw_sha256": "9023db4afb8eae0be832dff1801c59fbc88597c4f331537f94c1ae218e31456e",
+          "validation_error": "bad_intent_summary"
+        },
+        {
+          "attempt": 2,
+          "max_new_tokens": 8192,
+          "mode": "thinking_retry",
+          "raw_chars": 10162,
+          "raw_sha256": "2479ea3f6f6a1241a3d90ab0f96697d90491ba5834ddaf81e3e11790b113a1b6",
+          "validation_error": "bad_pilot_ambiguity_types"
+        },
+        {
+          "attempt": 3,
+          "constraint": {
+            "constraint_initialised": true,
+            "generated_token_count": 449,
+            "maximum_output_tokens": 1024,
+            "response_mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+            "termination_reason": "eos_or_constraint_stop",
+            "transport_status": "constrained_generated"
+          },
+          "max_new_tokens": 1024,
+          "mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+          "raw_chars": 1508,
+          "raw_sha256": "b4c977933a6f7771cc7896f761e67fa9789b2aee2bc55b14becc4200626d11a4",
+          "validation_error": null
+        }
+      ],
+      "capability_status": "unauthorized",
+      "claim_boundary": "separately_versioned_from_frozen_t39",
+      "error": null,
+      "execution_mode": "cluster-gpu-goal-first-v2",
+      "failed": false,
+      "intent_summary": "After the scheduled linen pickup, deliver the selected guest parcel using the usual setup",
+      "latency_ms": 111304.04783785343,
+      "model_id": "Qwen/Qwen3-8B@b968826d9c46dd6066d109eabc6255188de91218",
+      "parsed": {
+        "analysis": {
+          "ambiguity_present": true,
+          "ambiguity_types": [
+            "pragmatic",
+            "referential",
+            "temporal"
+          ],
+          "analysis_provenance": {
+            "analysis_id": "a90462163a639fb891c98eee615c3718a44d046846a9be05568fda5fdfcb678e",
+            "method": "model_generated",
+            "notes": "source_input_hash=a90462163a639fb891c98eee615c3718a44d046846a9be05568fda5fdfcb678e;no_gold_in_prompt;scene_licence_dropped=recipient,time,object",
+            "provider_id": "goal_first_v2_full_context",
+            "provider_version": "goal-first-manager-v2"
+          },
+          "candidate_interpretations": [],
+          "capability_status": "unknown",
+          "clarification_question": null,
+          "clarification_targets": [],
+          "compound_ambiguity": true,
+          "compound_ambiguity_count": 3,
+          "context_sampling_uncertainty": {
+            "agreement": 0.25,
+            "score": 0.75,
+            "variant_count": 1
+          },
+          "cpc": {
+            "action": {
+              "status": "filled",
+              "value": "delivery"
+            },
+            "actor": {
+              "status": "filled",
+              "value": "robot"
+            },
+            "conditions": {
+              "status": "filled",
+              "value": "linen pickup has occurred"
+            },
+            "constraints": {
+              "status": "filled",
+              "value": "usual setup"
+            },
+            "destination": {
+              "status": "filled",
+              "value": "not specified"
+            },
+            "negation": {
+              "status": "filled",
+              "value": "not specified"
+            },
+            "object": {
+              "status": "filled",
+              "value": "selected guest parcel"
+            },
+            "object_attributes": {
+              "status": "filled",
+              "value": "not specified"
+            },
+            "quantity": {
+              "status": "filled",
+              "value": "single item"
+            },
+            "recipient": {
+              "status": "filled",
+              "value": "assigned to floor supervisor or porter"
+            },
+            "spatial_relation": {
+              "status": "filled",
+              "value": "not specified"
+            },
+            "time": {
+              "status": "filled",
+              "value": "after scheduled linen pickup"
+            },
+            "tool": {
+              "status": "filled",
+              "value": "usual setup"
+            }
+          },
+          "findings": [
+            "pilot_ambiguity_types:[\"object_reference\",\"pragmatic\",\"recipient_reference\",\"temporal_reference\"]",
+            "pilot_capability_status:unauthorized",
+            "intent_summary_present"
+          ],
+          "intent_summary": "After the scheduled linen pickup, deliver the selected guest parcel using the usual setup",
+          "primary_ambiguity_type": "pragmatic",
+          "recommended_strategy": "face_preserving_rejection",
+          "rejection_reason": "unsafe_or_prohibited_action",
+          "resolution_evidence": [],
+          "resolution_method": null,
+          "resolved_slots": [
+            {
+              "slot_name": "action",
+              "value": "delivery"
+            },
+            {
+              "slot_name": "actor",
+              "value": "robot"
+            },
+            {
+              "slot_name": "object",
+              "value": "selected guest parcel"
+            },
+            {
+              "slot_name": "object_attributes",
+              "value": "not specified"
+            },
+            {
+              "slot_name": "destination",
+              "value": "not specified"
+            },
+            {
+              "slot_name": "spatial_relation",
+              "value": "not specified"
+            },
+            {
+              "slot_name": "quantity",
+              "value": "single item"
+            },
+            {
+              "slot_name": "time",
+              "value": "after scheduled linen pickup"
+            },
+            {
+              "slot_name": "recipient",
+              "value": "assigned to floor supervisor or porter"
+            },
+            {
+              "slot_name": "tool",
+              "value": "usual setup"
+            },
+            {
+              "slot_name": "conditions",
+              "value": "linen pickup has occurred"
+            },
+            {
+              "slot_name": "constraints",
+              "value": "usual setup"
+            },
+            {
+              "slot_name": "negation",
+              "value": "not specified"
+            }
+          ],
+          "risk_level": "medium",
+          "risk_relevant": true,
+          "selected_interpretation": null,
+          "speech_act": "directive_command",
+          "strategy_sequence": [],
+          "supporting_evidence": [],
+          "unresolved_slots": [],
+          "unsupported_specificity": []
+        },
+        "clarification_question": null,
+        "clarification_targets": [],
+        "execution_status": "ok",
+        "official_result": false,
+        "provider_provenance": {
+          "provider_id": "cached_analysis",
+          "provider_version": "1.0.0"
+        },
+        "recommended_strategy": "face_preserving_rejection",
+        "record_id": "CA-0092",
+        "rejection_reason": "unsafe_or_prohibited_action",
+        "resolved_slots": [
+          {
+            "slot_name": "action",
+            "value": "delivery"
+          },
+          {
+            "slot_name": "actor",
+            "value": "robot"
+          },
+          {
+            "slot_name": "object",
+            "value": "selected guest parcel"
+          },
+          {
+            "slot_name": "object_attributes",
+            "value": "not specified"
+          },
+          {
+            "slot_name": "destination",
+            "value": "not specified"
+          },
+          {
+            "slot_name": "spatial_relation",
+            "value": "not specified"
+          },
+          {
+            "slot_name": "quantity",
+            "value": "single item"
+          },
+          {
+            "slot_name": "time",
+            "value": "after scheduled linen pickup"
+          },
+          {
+            "slot_name": "recipient",
+            "value": "assigned to floor supervisor or porter"
+          },
+          {
+            "slot_name": "tool",
+            "value": "usual setup"
+          },
+          {
+            "slot_name": "conditions",
+            "value": "linen pickup has occurred"
+          },
+          {
+            "slot_name": "constraints",
+            "value": "usual setup"
+          },
+          {
+            "slot_name": "negation",
+            "value": "not specified"
+          }
+        ],
+        "result_hash": "6533e239fd3bed0b9ce03174701c7c092b8e5c525eb495ca048ddd23baf86fc6",
+        "run_id": null,
+        "run_mode": null,
+        "runtime_metadata": {
+          "awaits_t28_adapter": true,
+          "classification": {
+            "ambiguity_present": true,
+            "ambiguity_types": [
+              "pragmatic",
+              "referential",
+              "temporal"
+            ],
+            "capability_status": "unknown",
+            "compound_ambiguity": true,
+            "compound_ambiguity_count": 3,
+            "derivation_notes": [
+              "ambiguity_present_from_types"
+            ],
+            "risk_level": "medium"
+          },
+          "rejection_text": "I need to decline that request because it would be unsafe under the current constraints.",
+          "requires_re_evaluation": false,
+          "resolution_events": [],
+          "router_trace": {
+            "clarification_targets": [],
+            "considered_rules": [
+              "goal_first_v2",
+              "known_unsafe_or_prohibited"
+            ],
+            "matched_rule_id": "known_unsafe_or_prohibited",
+            "notes": [],
+            "recommended_strategy": "face_preserving_rejection",
+            "rejection_reason": "unsafe_or_prohibited_action",
+            "requires_re_evaluation": false,
+            "strategy_sequence": []
+          },
+          "safety_action": "return_with_findings",
+          "uncertainty": null
+        },
+        "safety_findings": [],
+        "strategy_sequence": [],
+        "synthetic_only": true,
+        "system_id": "goal_first_manager_v2",
+        "system_version": "2.0.0",
+        "unsupported_commitment_findings": []
+      },
+      "raw_output": "{\n  \"intent_summary\": \"After the scheduled linen pickup, deliver the selected guest parcel using the usual setup\",\n  \"cpc\": {\n    \"action\": {\n      \"status\": \"unknown\",\n      \"value\": \"delivery\"\n    },\n    \"object\": {\n      \"status\": \"unknown\",\n      \"value\": \"selected guest parcel\"\n    },\n    \"time\": {\n      \"status\": \"unknown\",\n      \"value\": \"after scheduled linen pickup\"\n    },\n    \"recipient\": {\n      \"status\": \"unknown\",\n      \"value\": \"assigned to floor supervisor or porter\"\n    }\n  ,\n  \"constraints\": {\n    \"status\": \"unknown\",\n    \"value\": \"usual setup\"\n  },\n  \"conditions\": {\n    \"status\": \"unknown\",\n    \"value\": \"linen pickup has occurred\"\n  },\n  \"destination\": {\n    \"status\": \"unknown\",\n    \"value\": \"not specified\"\n  },\n  \"tool\": {\n    \"status\": \"unknown\",\n    \"value\": \"usual setup\"\n  },\n  \"spatial_relation\": {\n    \"status\": \"unknown\",\n    \"value\": \"not specified\"\n  },\n  \"quantity\": {\n    \"status\": \"unknown\",\n    \"value\": \"single item\"\n  },\n  \"negation\": {\n    \"status\": \"unknown\",\n    \"value\": \"not specified\"\n  },\n  \"object_attributes\": {\n    \"status\": \"unknown\",\n    \"value\": \"not specified\"\n  },\n  \"actor\": {\n    \"status\": \"unknown\",\n    \"value\": \"robot\"\n  }\n}\n\n, \"pilot_ambiguity_types\": [\n  \"pragmatic\",\n  \"temporal_reference\",\n  \"object_reference\",\n  \"recipient_reference\"\n]  \n, \"pilot_capability_status\": \"unauthorized\"  \n, \"speech_act\": \"directive_command\"  \n, \"risk_level\": \"medium\"  \n, \"uncertainty\": 0.75  \n, \"unresolved_slots\": [\n  \"recipient\",\n  \"time\",\n  \"object\"\n]  \n}",
+      "record_id": "CA-0092",
+      "schema_valid": true,
+      "supports_ambiguity_prediction": true,
+      "supports_capability_prediction": true,
+      "system_id": "goal_first_manager_v2",
+      "system_version": "2.0.0",
+      "terminal_strategy": "face_preserving_rejection"
+    },
+    "degree": {
+      "ambiguity_types": [
+        "object_reference",
+        "pragmatic",
+        "recipient_reference",
+        "temporal_reference"
+      ],
+      "analysis_attempts": [
+        {
+          "attempt": 1,
+          "max_new_tokens": 4096,
+          "mode": "thinking",
+          "raw_chars": 12467,
+          "raw_sha256": "9023db4afb8eae0be832dff1801c59fbc88597c4f331537f94c1ae218e31456e",
+          "validation_error": "bad_intent_summary"
+        },
+        {
+          "attempt": 2,
+          "max_new_tokens": 8192,
+          "mode": "thinking_retry",
+          "raw_chars": 10162,
+          "raw_sha256": "2479ea3f6f6a1241a3d90ab0f96697d90491ba5834ddaf81e3e11790b113a1b6",
+          "validation_error": "bad_pilot_ambiguity_types"
+        },
+        {
+          "attempt": 3,
+          "constraint": {
+            "constraint_initialised": true,
+            "generated_token_count": 449,
+            "maximum_output_tokens": 1024,
+            "response_mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+            "termination_reason": "eos_or_constraint_stop",
+            "transport_status": "constrained_generated"
+          },
+          "max_new_tokens": 1024,
+          "mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+          "raw_chars": 1508,
+          "raw_sha256": "b4c977933a6f7771cc7896f761e67fa9789b2aee2bc55b14becc4200626d11a4",
+          "validation_error": null
+        }
+      ],
+      "capability_status": "unauthorized",
+      "claim_boundary": "separately_versioned_from_frozen_t39",
+      "error": null,
+      "execution_mode": "cluster-gpu-goal-first-v2",
+      "failed": false,
+      "intent_summary": "After the scheduled linen pickup, deliver the selected guest parcel using the usual setup",
+      "latency_ms": 111304.04783785343,
+      "model_id": "Qwen/Qwen3-8B@b968826d9c46dd6066d109eabc6255188de91218",
+      "parsed": {
+        "analysis": {
+          "ambiguity_present": true,
+          "ambiguity_types": [
+            "pragmatic",
+            "referential",
+            "temporal"
+          ],
+          "analysis_provenance": {
+            "analysis_id": "a90462163a639fb891c98eee615c3718a44d046846a9be05568fda5fdfcb678e",
+            "method": "model_generated",
+            "notes": "source_input_hash=a90462163a639fb891c98eee615c3718a44d046846a9be05568fda5fdfcb678e;no_gold_in_prompt;scene_licence_dropped=recipient,time,object",
+            "provider_id": "goal_first_v2_full_context",
+            "provider_version": "goal-first-manager-v2"
+          },
+          "candidate_interpretations": [],
+          "capability_status": "unknown",
+          "clarification_question": "Could you clarify what you would like me to do?",
+          "clarification_targets": [
+            "intent"
+          ],
+          "compound_ambiguity": true,
+          "compound_ambiguity_count": 4,
+          "context_sampling_uncertainty": {
+            "agreement": 0.25,
+            "score": 0.75,
+            "variant_count": 1
+          },
+          "cpc": {
+            "action": {
+              "status": "filled",
+              "value": "delivery"
+            },
+            "actor": {
+              "status": "filled",
+              "value": "robot"
+            },
+            "conditions": {
+              "status": "filled",
+              "value": "linen pickup has occurred"
+            },
+            "constraints": {
+              "status": "filled",
+              "value": "usual setup"
+            },
+            "destination": {
+              "status": "filled",
+              "value": "not specified"
+            },
+            "negation": {
+              "status": "filled",
+              "value": "not specified"
+            },
+            "object": {
+              "status": "filled",
+              "value": "selected guest parcel"
+            },
+            "object_attributes": {
+              "status": "filled",
+              "value": "not specified"
+            },
+            "quantity": {
+              "status": "filled",
+              "value": "single item"
+            },
+            "recipient": {
+              "status": "filled",
+              "value": "assigned to floor supervisor or porter"
+            },
+            "spatial_relation": {
+              "status": "filled",
+              "value": "not specified"
+            },
+            "time": {
+              "status": "filled",
+              "value": "after scheduled linen pickup"
+            },
+            "tool": {
+              "status": "filled",
+              "value": "usual setup"
+            }
+          },
+          "findings": [
+            "pilot_ambiguity_types:[\"object_reference\",\"pragmatic\",\"recipient_reference\",\"temporal_reference\"]",
+            "pilot_capability_status:unauthorized",
+            "intent_summary_present"
+          ],
+          "intent_summary": "After the scheduled linen pickup, deliver the selected guest parcel using the usual setup",
+          "primary_ambiguity_type": "pragmatic",
+          "recommended_strategy": "clarify",
+          "rejection_reason": null,
+          "resolution_evidence": [],
+          "resolution_method": null,
+          "resolved_slots": [
+            {
+              "slot_name": "action",
+              "value": "delivery"
+            },
+            {
+              "slot_name": "actor",
+              "value": "robot"
+            },
+            {
+              "slot_name": "object",
+              "value": "selected guest parcel"
+            },
+            {
+              "slot_name": "object_attributes",
+              "value": "not specified"
+            },
+            {
+              "slot_name": "destination",
+              "value": "not specified"
+            },
+            {
+              "slot_name": "spatial_relation",
+              "value": "not specified"
+            },
+            {
+              "slot_name": "quantity",
+              "value": "single item"
+            },
+            {
+              "slot_name": "time",
+              "value": "after scheduled linen pickup"
+            },
+            {
+              "slot_name": "recipient",
+              "value": "assigned to floor supervisor or porter"
+            },
+            {
+              "slot_name": "tool",
+              "value": "usual setup"
+            },
+            {
+              "slot_name": "conditions",
+              "value": "linen pickup has occurred"
+            },
+            {
+              "slot_name": "constraints",
+              "value": "usual setup"
+            },
+            {
+              "slot_name": "negation",
+              "value": "not specified"
+            }
+          ],
+          "risk_level": "medium",
+          "risk_relevant": true,
+          "selected_interpretation": null,
+          "speech_act": "directive_command",
+          "strategy_sequence": [],
+          "supporting_evidence": [],
+          "unresolved_slots": [],
+          "unsupported_specificity": []
+        },
+        "clarification_question": "Could you clarify what you would like me to do?",
+        "clarification_targets": [
+          "intent"
+        ],
+        "execution_status": "ok",
+        "official_result": false,
+        "provider_provenance": {
+          "shared_analysis_fingerprint": "6e6ed28b84e65d6059fd4f4b10053988e035e5e4025b724a50c5aaf298665a7e"
+        },
+        "recommended_strategy": "clarify",
+        "record_id": "CA-0092",
+        "rejection_reason": null,
+        "resolved_slots": [
+          {
+            "slot_name": "action",
+            "value": "delivery"
+          },
+          {
+            "slot_name": "actor",
+            "value": "robot"
+          },
+          {
+            "slot_name": "object",
+            "value": "selected guest parcel"
+          },
+          {
+            "slot_name": "object_attributes",
+            "value": "not specified"
+          },
+          {
+            "slot_name": "destination",
+            "value": "not specified"
+          },
+          {
+            "slot_name": "spatial_relation",
+            "value": "not specified"
+          },
+          {
+            "slot_name": "quantity",
+            "value": "single item"
+          },
+          {
+            "slot_name": "time",
+            "value": "after scheduled linen pickup"
+          },
+          {
+            "slot_name": "recipient",
+            "value": "assigned to floor supervisor or porter"
+          },
+          {
+            "slot_name": "tool",
+            "value": "usual setup"
+          },
+          {
+            "slot_name": "conditions",
+            "value": "linen pickup has occurred"
+          },
+          {
+            "slot_name": "constraints",
+            "value": "usual setup"
+          },
+          {
+            "slot_name": "negation",
+            "value": "not specified"
+          }
+        ],
+        "result_hash": "903771211a22271868bc0d837d4157749cf80eee9a11dffbaca70483fb2b3482",
+        "run_id": null,
+        "run_mode": null,
+        "runtime_metadata": {
+          "shared_analysis_fingerprint": "6e6ed28b84e65d6059fd4f4b10053988e035e5e4025b724a50c5aaf298665a7e",
+          "thresholds_status": "unfrozen",
+          "thresholds_valid_for_official_use": false,
+          "uncertainty_score": 0.75,
+          "uses_type_risk_capability_precedence": false
+        },
+        "safety_findings": [],
+        "strategy_sequence": [],
+        "synthetic_only": true,
+        "system_id": "degree_based_router",
+        "system_version": "1.0.0",
+        "unsupported_commitment_findings": []
+      },
+      "raw_output": "{\n  \"intent_summary\": \"After the scheduled linen pickup, deliver the selected guest parcel using the usual setup\",\n  \"cpc\": {\n    \"action\": {\n      \"status\": \"unknown\",\n      \"value\": \"delivery\"\n    },\n    \"object\": {\n      \"status\": \"unknown\",\n      \"value\": \"selected guest parcel\"\n    },\n    \"time\": {\n      \"status\": \"unknown\",\n      \"value\": \"after scheduled linen pickup\"\n    },\n    \"recipient\": {\n      \"status\": \"unknown\",\n      \"value\": \"assigned to floor supervisor or porter\"\n    }\n  ,\n  \"constraints\": {\n    \"status\": \"unknown\",\n    \"value\": \"usual setup\"\n  },\n  \"conditions\": {\n    \"status\": \"unknown\",\n    \"value\": \"linen pickup has occurred\"\n  },\n  \"destination\": {\n    \"status\": \"unknown\",\n    \"value\": \"not specified\"\n  },\n  \"tool\": {\n    \"status\": \"unknown\",\n    \"value\": \"usual setup\"\n  },\n  \"spatial_relation\": {\n    \"status\": \"unknown\",\n    \"value\": \"not specified\"\n  },\n  \"quantity\": {\n    \"status\": \"unknown\",\n    \"value\": \"single item\"\n  },\n  \"negation\": {\n    \"status\": \"unknown\",\n    \"value\": \"not specified\"\n  },\n  \"object_attributes\": {\n    \"status\": \"unknown\",\n    \"value\": \"not specified\"\n  },\n  \"actor\": {\n    \"status\": \"unknown\",\n    \"value\": \"robot\"\n  }\n}\n\n, \"pilot_ambiguity_types\": [\n  \"pragmatic\",\n  \"temporal_reference\",\n  \"object_reference\",\n  \"recipient_reference\"\n]  \n, \"pilot_capability_status\": \"unauthorized\"  \n, \"speech_act\": \"directive_command\"  \n, \"risk_level\": \"medium\"  \n, \"uncertainty\": 0.75  \n, \"unresolved_slots\": [\n  \"recipient\",\n  \"time\",\n  \"object\"\n]  \n}",
+      "record_id": "CA-0092",
+      "schema_valid": true,
+      "supports_ambiguity_prediction": true,
+      "supports_capability_prediction": true,
+      "system_id": "degree_based_router_v2",
+      "system_version": "2.0.0",
+      "terminal_strategy": "clarify"
+    },
+    "timid": {
+      "ambiguity_types": [
+        "object_reference",
+        "pragmatic",
+        "recipient_reference",
+        "temporal_reference"
+      ],
+      "analysis_attempts": [
+        {
+          "attempt": 1,
+          "max_new_tokens": 4096,
+          "mode": "thinking",
+          "raw_chars": 12467,
+          "raw_sha256": "9023db4afb8eae0be832dff1801c59fbc88597c4f331537f94c1ae218e31456e",
+          "validation_error": "bad_intent_summary"
+        },
+        {
+          "attempt": 2,
+          "max_new_tokens": 8192,
+          "mode": "thinking_retry",
+          "raw_chars": 10162,
+          "raw_sha256": "2479ea3f6f6a1241a3d90ab0f96697d90491ba5834ddaf81e3e11790b113a1b6",
+          "validation_error": "bad_pilot_ambiguity_types"
+        },
+        {
+          "attempt": 3,
+          "constraint": {
+            "constraint_initialised": true,
+            "generated_token_count": 449,
+            "maximum_output_tokens": 1024,
+            "response_mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+            "termination_reason": "eos_or_constraint_stop",
+            "transport_status": "constrained_generated"
+          },
+          "max_new_tokens": 1024,
+          "mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+          "raw_chars": 1508,
+          "raw_sha256": "b4c977933a6f7771cc7896f761e67fa9789b2aee2bc55b14becc4200626d11a4",
+          "validation_error": null
+        }
+      ],
+      "capability_status": "unauthorized",
+      "claim_boundary": "separately_versioned_from_frozen_t39",
+      "error": null,
+      "execution_mode": "cluster-gpu-goal-first-v2",
+      "failed": false,
+      "intent_summary": "After the scheduled linen pickup, deliver the selected guest parcel using the usual setup",
+      "latency_ms": 111304.04783785343,
+      "model_id": "Qwen/Qwen3-8B@b968826d9c46dd6066d109eabc6255188de91218",
+      "parsed": {
+        "analysis": {
+          "ambiguity_present": true,
+          "ambiguity_types": [
+            "pragmatic",
+            "referential",
+            "temporal"
+          ],
+          "analysis_provenance": {
+            "analysis_id": "a90462163a639fb891c98eee615c3718a44d046846a9be05568fda5fdfcb678e",
+            "method": "model_generated",
+            "notes": "source_input_hash=a90462163a639fb891c98eee615c3718a44d046846a9be05568fda5fdfcb678e;no_gold_in_prompt;scene_licence_dropped=recipient,time,object",
+            "provider_id": "goal_first_v2_full_context",
+            "provider_version": "goal-first-manager-v2"
+          },
+          "candidate_interpretations": [],
+          "capability_status": "unknown",
+          "clarification_question": "Before I continue, could you clarify: pragmatic, referential, temporal?",
+          "clarification_targets": [
+            "pragmatic",
+            "referential",
+            "temporal"
+          ],
+          "compound_ambiguity": true,
+          "compound_ambiguity_count": 3,
+          "context_sampling_uncertainty": {
+            "agreement": 0.25,
+            "score": 0.75,
+            "variant_count": 1
+          },
+          "cpc": {
+            "action": {
+              "status": "filled",
+              "value": "delivery"
+            },
+            "actor": {
+              "status": "filled",
+              "value": "robot"
+            },
+            "conditions": {
+              "status": "filled",
+              "value": "linen pickup has occurred"
+            },
+            "constraints": {
+              "status": "filled",
+              "value": "usual setup"
+            },
+            "destination": {
+              "status": "filled",
+              "value": "not specified"
+            },
+            "negation": {
+              "status": "filled",
+              "value": "not specified"
+            },
+            "object": {
+              "status": "filled",
+              "value": "selected guest parcel"
+            },
+            "object_attributes": {
+              "status": "filled",
+              "value": "not specified"
+            },
+            "quantity": {
+              "status": "filled",
+              "value": "single item"
+            },
+            "recipient": {
+              "status": "filled",
+              "value": "assigned to floor supervisor or porter"
+            },
+            "spatial_relation": {
+              "status": "filled",
+              "value": "not specified"
+            },
+            "time": {
+              "status": "filled",
+              "value": "after scheduled linen pickup"
+            },
+            "tool": {
+              "status": "filled",
+              "value": "usual setup"
+            }
+          },
+          "findings": [
+            "pilot_ambiguity_types:[\"object_reference\",\"pragmatic\",\"recipient_reference\",\"temporal_reference\"]",
+            "pilot_capability_status:unauthorized",
+            "intent_summary_present"
+          ],
+          "intent_summary": "After the scheduled linen pickup, deliver the selected guest parcel using the usual setup",
+          "primary_ambiguity_type": "pragmatic",
+          "recommended_strategy": "clarify",
+          "rejection_reason": null,
+          "resolution_evidence": [],
+          "resolution_method": null,
+          "resolved_slots": [
+            {
+              "slot_name": "action",
+              "value": "delivery"
+            },
+            {
+              "slot_name": "actor",
+              "value": "robot"
+            },
+            {
+              "slot_name": "object",
+              "value": "selected guest parcel"
+            },
+            {
+              "slot_name": "object_attributes",
+              "value": "not specified"
+            },
+            {
+              "slot_name": "destination",
+              "value": "not specified"
+            },
+            {
+              "slot_name": "spatial_relation",
+              "value": "not specified"
+            },
+            {
+              "slot_name": "quantity",
+              "value": "single item"
+            },
+            {
+              "slot_name": "time",
+              "value": "after scheduled linen pickup"
+            },
+            {
+              "slot_name": "recipient",
+              "value": "assigned to floor supervisor or porter"
+            },
+            {
+              "slot_name": "tool",
+              "value": "usual setup"
+            },
+            {
+              "slot_name": "conditions",
+              "value": "linen pickup has occurred"
+            },
+            {
+              "slot_name": "constraints",
+              "value": "usual setup"
+            },
+            {
+              "slot_name": "negation",
+              "value": "not specified"
+            }
+          ],
+          "risk_level": "medium",
+          "risk_relevant": true,
+          "selected_interpretation": null,
+          "speech_act": "directive_command",
+          "strategy_sequence": [],
+          "supporting_evidence": [],
+          "unresolved_slots": [],
+          "unsupported_specificity": []
+        },
+        "clarification_question": "Before I continue, could you clarify: pragmatic, referential, temporal?",
+        "clarification_targets": [
+          "pragmatic",
+          "referential",
+          "temporal"
+        ],
+        "execution_status": "ok",
+        "official_result": false,
+        "provider_provenance": {
+          "provider_id": "cached_analysis",
+          "provider_version": "1.0.0"
+        },
+        "recommended_strategy": "clarify",
+        "record_id": "CA-0092",
+        "rejection_reason": null,
+        "resolved_slots": [
+          {
+            "slot_name": "action",
+            "value": "delivery"
+          },
+          {
+            "slot_name": "actor",
+            "value": "robot"
+          },
+          {
+            "slot_name": "object",
+            "value": "selected guest parcel"
+          },
+          {
+            "slot_name": "object_attributes",
+            "value": "not specified"
+          },
+          {
+            "slot_name": "destination",
+            "value": "not specified"
+          },
+          {
+            "slot_name": "spatial_relation",
+            "value": "not specified"
+          },
+          {
+            "slot_name": "quantity",
+            "value": "single item"
+          },
+          {
+            "slot_name": "time",
+            "value": "after scheduled linen pickup"
+          },
+          {
+            "slot_name": "recipient",
+            "value": "assigned to floor supervisor or porter"
+          },
+          {
+            "slot_name": "tool",
+            "value": "usual setup"
+          },
+          {
+            "slot_name": "conditions",
+            "value": "linen pickup has occurred"
+          },
+          {
+            "slot_name": "constraints",
+            "value": "usual setup"
+          },
+          {
+            "slot_name": "negation",
+            "value": "not specified"
+          }
+        ],
+        "result_hash": "d0fd4ef8e6b3898fd6db6c7ccffd906a90ce67b2cfe61fa8dd626d4b1cca6da8",
+        "run_id": null,
+        "run_mode": null,
+        "runtime_metadata": {
+          "awaits_t28_adapter": true,
+          "classification": {
+            "ambiguity_present": true,
+            "ambiguity_types": [
+              "pragmatic",
+              "referential",
+              "temporal"
+            ],
+            "capability_status": "unknown",
+            "compound_ambiguity": true,
+            "compound_ambiguity_count": 3,
+            "derivation_notes": [
+              "ambiguity_present_from_types"
+            ],
+            "risk_level": "medium"
+          },
+          "rejection_text": null,
+          "requires_re_evaluation": false,
+          "resolution_events": [],
+          "router_trace": {
+            "clarification_targets": [
+              "pragmatic",
+              "referential",
+              "temporal"
+            ],
+            "considered_rules": [
+              "known_unsafe_or_prohibited",
+              "known_incapable",
+              "unknown_or_unverified_capability"
+            ],
+            "matched_rule_id": "unknown_capability",
+            "notes": [
+              "unknown_capability_cannot_execute"
+            ],
+            "recommended_strategy": "clarify",
+            "rejection_reason": null,
+            "requires_re_evaluation": false,
+            "strategy_sequence": []
+          },
+          "safety_action": "return_with_findings",
+          "uncertainty": null
+        },
+        "safety_findings": [],
+        "strategy_sequence": [],
+        "synthetic_only": true,
+        "system_id": "full_type_risk_aware_manager",
+        "system_version": "1.0.0",
+        "unsupported_commitment_findings": []
+      },
+      "raw_output": "{\n  \"intent_summary\": \"After the scheduled linen pickup, deliver the selected guest parcel using the usual setup\",\n  \"cpc\": {\n    \"action\": {\n      \"status\": \"unknown\",\n      \"value\": \"delivery\"\n    },\n    \"object\": {\n      \"status\": \"unknown\",\n      \"value\": \"selected guest parcel\"\n    },\n    \"time\": {\n      \"status\": \"unknown\",\n      \"value\": \"after scheduled linen pickup\"\n    },\n    \"recipient\": {\n      \"status\": \"unknown\",\n      \"value\": \"assigned to floor supervisor or porter\"\n    }\n  ,\n  \"constraints\": {\n    \"status\": \"unknown\",\n    \"value\": \"usual setup\"\n  },\n  \"conditions\": {\n    \"status\": \"unknown\",\n    \"value\": \"linen pickup has occurred\"\n  },\n  \"destination\": {\n    \"status\": \"unknown\",\n    \"value\": \"not specified\"\n  },\n  \"tool\": {\n    \"status\": \"unknown\",\n    \"value\": \"usual setup\"\n  },\n  \"spatial_relation\": {\n    \"status\": \"unknown\",\n    \"value\": \"not specified\"\n  },\n  \"quantity\": {\n    \"status\": \"unknown\",\n    \"value\": \"single item\"\n  },\n  \"negation\": {\n    \"status\": \"unknown\",\n    \"value\": \"not specified\"\n  },\n  \"object_attributes\": {\n    \"status\": \"unknown\",\n    \"value\": \"not specified\"\n  },\n  \"actor\": {\n    \"status\": \"unknown\",\n    \"value\": \"robot\"\n  }\n}\n\n, \"pilot_ambiguity_types\": [\n  \"pragmatic\",\n  \"temporal_reference\",\n  \"object_reference\",\n  \"recipient_reference\"\n]  \n, \"pilot_capability_status\": \"unauthorized\"  \n, \"speech_act\": \"directive_command\"  \n, \"risk_level\": \"medium\"  \n, \"uncertainty\": 0.75  \n, \"unresolved_slots\": [\n  \"recipient\",\n  \"time\",\n  \"object\"\n]  \n}",
+      "record_id": "CA-0092",
+      "schema_valid": true,
+      "supports_ambiguity_prediction": true,
+      "supports_capability_prediction": true,
+      "system_id": "rich_conservative_manager_v2",
+      "system_version": "2.0.0",
+      "terminal_strategy": "clarify"
+    },
+    "context_blind": {
+      "ambiguity_types": [
+        "pragmatic",
+        "routine_reference",
+        "temporal_reference"
+      ],
+      "analysis_attempts": [
+        {
+          "attempt": 1,
+          "max_new_tokens": 4096,
+          "mode": "thinking",
+          "raw_chars": 4258,
+          "raw_sha256": "b66ee9e94e183f50db349442349af3d26c8035f3ce9fe336ff16ae38a82444ad",
+          "validation_error": "bad_pilot_ambiguity_types"
+        },
+        {
+          "attempt": 2,
+          "max_new_tokens": 8192,
+          "mode": "thinking_retry",
+          "raw_chars": 7931,
+          "raw_sha256": "49b63e999704c585d922844e81041d751b6deba17b11367fca71502cc37d6686",
+          "validation_error": "bad_intent_summary"
+        },
+        {
+          "attempt": 3,
+          "constraint": {
+            "constraint_initialised": true,
+            "generated_token_count": 453,
+            "maximum_output_tokens": 1024,
+            "response_mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+            "termination_reason": "eos_or_constraint_stop",
+            "transport_status": "constrained_generated"
+          },
+          "max_new_tokens": 1024,
+          "mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+          "raw_chars": 1508,
+          "raw_sha256": "1e428a3131bb7bc07305923666e1a5836d056e86eb0eab7ff2b0bea9a4d54b0a",
+          "validation_error": null
+        }
+      ],
+      "capability_status": "unauthorized",
+      "claim_boundary": "separately_versioned_from_frozen_t39",
+      "error": null,
+      "execution_mode": "cluster-gpu-goal-first-v2",
+      "failed": false,
+      "intent_summary": "Deliver the selected guest parcel after a scheduled linen pickup using the usual setup",
+      "latency_ms": 56674.8057953082,
+      "model_id": "Qwen/Qwen3-8B@b968826d9c46dd6066d109eabc6255188de91218",
+      "parsed": {
+        "analysis": {
+          "ambiguity_present": true,
+          "ambiguity_types": [
+            "contextual",
+            "pragmatic",
+            "temporal"
+          ],
+          "analysis_provenance": {
+            "analysis_id": "279c20f5cb6cbe6dbd02b038ec32990dd15bb640586dc1546869614acb7c13c9",
+            "method": "context_blind",
+            "notes": "ablated_input_hash=279c20f5cb6cbe6dbd02b038ec32990dd15bb640586dc1546869614acb7c13c9;source_input_hash=279c20f5cb6cbe6dbd02b038ec32990dd15bb640586dc1546869614acb7c13c9;no_gold_in_prompt;scene_licence_dropped=recipient,destination,time",
+            "provider_id": "goal_first_v2_context_blind",
+            "provider_version": "goal-first-manager-v2"
+          },
+          "candidate_interpretations": [],
+          "capability_status": "unknown",
+          "clarification_question": null,
+          "clarification_targets": [],
+          "compound_ambiguity": true,
+          "compound_ambiguity_count": 3,
+          "context_sampling_uncertainty": {
+            "agreement": 0.35,
+            "score": 0.65,
+            "variant_count": 1
+          },
+          "cpc": {
+            "action": {
+              "status": "filled",
+              "value": "deliver the selected guest parcel"
+            },
+            "actor": {
+              "status": "filled",
+              "value": "none"
+            },
+            "conditions": {
+              "status": "filled",
+              "value": "after a scheduled linen pickup"
+            },
+            "constraints": {
+              "status": "filled",
+              "value": "using the usual setup"
+            },
+            "destination": {
+              "status": "filled",
+              "value": "unknown"
+            },
+            "negation": {
+              "status": "filled",
+              "value": "none"
+            },
+            "object": {
+              "status": "filled",
+              "value": "selected guest parcel"
+            },
+            "object_attributes": {
+              "status": "filled",
+              "value": "none"
+            },
+            "quantity": {
+              "status": "filled",
+              "value": "selected"
+            },
+            "recipient": {
+              "status": "filled",
+              "value": "unknown"
+            },
+            "spatial_relation": {
+              "status": "filled",
+              "value": "none"
+            },
+            "time": {
+              "status": "filled",
+              "value": "after a scheduled linen pickup"
+            },
+            "tool": {
+              "status": "filled",
+              "value": "usual setup"
+            }
+          },
+          "findings": [
+            "pilot_ambiguity_types:[\"pragmatic\",\"routine_reference\",\"temporal_reference\"]",
+            "pilot_capability_status:unauthorized",
+            "intent_summary_present"
+          ],
+          "intent_summary": "Deliver the selected guest parcel after a scheduled linen pickup using the usual setup",
+          "primary_ambiguity_type": "contextual",
+          "recommended_strategy": "face_preserving_rejection",
+          "rejection_reason": "unsafe_or_prohibited_action",
+          "resolution_evidence": [],
+          "resolution_method": null,
+          "resolved_slots": [
+            {
+              "slot_name": "action",
+              "value": "deliver the selected guest parcel"
+            },
+            {
+              "slot_name": "actor",
+              "value": "none"
+            },
+            {
+              "slot_name": "object",
+              "value": "selected guest parcel"
+            },
+            {
+              "slot_name": "object_attributes",
+              "value": "none"
+            },
+            {
+              "slot_name": "destination",
+              "value": "unknown"
+            },
+            {
+              "slot_name": "spatial_relation",
+              "value": "none"
+            },
+            {
+              "slot_name": "quantity",
+              "value": "selected"
+            },
+            {
+              "slot_name": "time",
+              "value": "after a scheduled linen pickup"
+            },
+            {
+              "slot_name": "recipient",
+              "value": "unknown"
+            },
+            {
+              "slot_name": "tool",
+              "value": "usual setup"
+            },
+            {
+              "slot_name": "conditions",
+              "value": "after a scheduled linen pickup"
+            },
+            {
+              "slot_name": "constraints",
+              "value": "using the usual setup"
+            },
+            {
+              "slot_name": "negation",
+              "value": "none"
+            }
+          ],
+          "risk_level": "medium",
+          "risk_relevant": true,
+          "selected_interpretation": null,
+          "speech_act": "directive_command",
+          "strategy_sequence": [],
+          "supporting_evidence": [],
+          "unresolved_slots": [],
+          "unsupported_specificity": []
+        },
+        "clarification_question": null,
+        "clarification_targets": [],
+        "execution_status": "ok",
+        "official_result": false,
+        "provider_provenance": {
+          "provider_id": "cached_analysis",
+          "provider_version": "1.0.0"
+        },
+        "recommended_strategy": "face_preserving_rejection",
+        "record_id": "CA-0092",
+        "rejection_reason": "unsafe_or_prohibited_action",
+        "resolved_slots": [
+          {
+            "slot_name": "action",
+            "value": "deliver the selected guest parcel"
+          },
+          {
+            "slot_name": "actor",
+            "value": "none"
+          },
+          {
+            "slot_name": "object",
+            "value": "selected guest parcel"
+          },
+          {
+            "slot_name": "object_attributes",
+            "value": "none"
+          },
+          {
+            "slot_name": "destination",
+            "value": "unknown"
+          },
+          {
+            "slot_name": "spatial_relation",
+            "value": "none"
+          },
+          {
+            "slot_name": "quantity",
+            "value": "selected"
+          },
+          {
+            "slot_name": "time",
+            "value": "after a scheduled linen pickup"
+          },
+          {
+            "slot_name": "recipient",
+            "value": "unknown"
+          },
+          {
+            "slot_name": "tool",
+            "value": "usual setup"
+          },
+          {
+            "slot_name": "conditions",
+            "value": "after a scheduled linen pickup"
+          },
+          {
+            "slot_name": "constraints",
+            "value": "using the usual setup"
+          },
+          {
+            "slot_name": "negation",
+            "value": "none"
+          }
+        ],
+        "result_hash": "a8cd2754340d29cdb5d691ea98556c1f8770859a7fb2afe21dd56eed4dc1fcb0",
+        "run_id": null,
+        "run_mode": null,
+        "runtime_metadata": {
+          "analysis_identity": {
+            "analysis_content_hash": "8427ae23bdc229e5e46770ae192c58d4aeb1c1140c62be7635eb77bdd46b6e8f",
+            "analysis_variant": "context_blind",
+            "model_strategy_id": null,
+            "provider_id": "goal_first_v2_context_blind",
+            "provider_version": "goal-first-manager-v2",
+            "record_id": "CA-0092",
+            "source_input_hash": "279c20f5cb6cbe6dbd02b038ec32990dd15bb640586dc1546869614acb7c13c9"
+          },
+          "analysis_identity_fingerprint": "e682fc6f2fec4c032052a8ea6447a66147368145965ab199921e06baa1b7effd",
+          "awaits_t28_adapter": true,
+          "classification": {
+            "ambiguity_present": true,
+            "ambiguity_types": [
+              "contextual",
+              "pragmatic",
+              "temporal"
+            ],
+            "capability_status": "unknown",
+            "compound_ambiguity": true,
+            "compound_ambiguity_count": 3,
+            "derivation_notes": [
+              "ambiguity_present_from_types"
+            ],
+            "risk_level": "medium"
+          },
+          "context_ablation": {
+            "ablated_input_hash": "279c20f5cb6cbe6dbd02b038ec32990dd15bb640586dc1546869614acb7c13c9",
+            "capability_context_removed": true,
+            "dialogue_history_removed": true,
+            "rejected_full_context_cache": false,
+            "rejection_reason": null,
+            "scene_context_removed": true,
+            "stripped_context_derived_fields": false
+          },
+          "original_input_unmutated": true,
+          "rejection_text": "I need to decline that request because it would be unsafe under the current constraints.",
+          "requires_re_evaluation": false,
+          "resolution_events": [],
+          "router_trace": {
+            "clarification_targets": [],
+            "considered_rules": [
+              "goal_first_v2",
+              "known_unsafe_or_prohibited"
+            ],
+            "matched_rule_id": "known_unsafe_or_prohibited",
+            "notes": [],
+            "recommended_strategy": "face_preserving_rejection",
+            "rejection_reason": "unsafe_or_prohibited_action",
+            "requires_re_evaluation": false,
+            "strategy_sequence": []
+          },
+          "safety_action": "return_with_findings",
+          "uncertainty": null
+        },
+        "safety_findings": [],
+        "strategy_sequence": [],
+        "synthetic_only": true,
+        "system_id": "context_blind_manager",
+        "system_version": "1.0.0",
+        "unsupported_commitment_findings": []
+      },
+      "raw_output": "{\n  \"intent_summary\": \"Deliver the selected guest parcel after a scheduled linen pickup using the usual setup\",\n  \"cpc\": {\n    \"action\": {\n      \"status\": \"unknown\",\n      \"value\": \"deliver the selected guest parcel\"\n    },\n    \"object\": {\n      \"status\": \"unknown\",\n      \"value\": \"selected guest parcel\"\n    },\n    \"recipient\": {\n      \"status\": \"unknown\",\n      \"value\": \"unknown\"\n    },\n    \"destination\": {\n      \"status\": \"unknown\",\n      \"value\": \"unknown\"\n    },\n    \"time\": {\n      \"status\": \"unknown\",\n      \"value\": \"after a scheduled linen pickup\"\n    }\n  ,\n  \"constraints\": {\n    \"status\": \"unknown\",\n    \"value\": \"using the usual setup\"\n  },\n  \"conditions\": {\n    \"status\": \"unknown\",\n    \"value\": \"after a scheduled linen pickup\"\n  },\n  \"negation\": {\n    \"status\": \"unknown\",\n    \"value\": \"none\"\n  },\n  \"tool\": {\n    \"status\": \"unknown\",\n    \"value\": \"usual setup\"\n  },\n  \"spatial_relation\": {\n    \"status\": \"unknown\",\n    \"value\": \"none\"\n  },\n  \"quantity\": {\n    \"status\": \"unknown\",\n    \"value\": \"selected\"\n  },\n  \"object_attributes\": {\n    \"status\": \"unknown\",\n    \"value\": \"none\"\n  },\n  \"actor\": {\n    \"status\": \"unknown\",\n    \"value\": \"none\"\n  }\n}\n\n,\n  \"pilot_ambiguity_types\": [\n    \"pragmatic\",\n    \"temporal_reference\",\n    \"routine_reference\"\n  ]\n  \n  ,\n  \"pilot_capability_status\": \"unauthorized\"\n  \n  ,\n  \"speech_act\": \"directive_command\"\n  \n  ,\n  \"risk_level\": \"medium\"\n  \n  ,\n  \"uncertainty\": 0.65\n  ,\n  \"unresolved_slots\": [\n    \"recipient\",\n    \"destination\",\n    \"time\"\n  ]\n  }",
+      "record_id": "CA-0092",
+      "schema_valid": true,
+      "supports_ambiguity_prediction": true,
+      "supports_capability_prediction": true,
+      "system_id": "goal_first_context_blind_v2",
+      "system_version": "2.0.0",
+      "terminal_strategy": "face_preserving_rejection"
+    }
+  },
+  "provenance": {
+    "source_sha256": "f33b1e29f1e8aa256a475f07213aa07247def47d8e2148d54a472a40b71b05c9",
+    "gold_sha256": "5e23ad1a92ff1873c8f039a8ce560a111dd6fb6b8ae8c11d6cf34dbfa1c360db",
+    "t07_final_zip_sha256": "34ca50e034ca37b617068bb50c734d12fa26282fb5eec563c11ead700163e491",
+    "inherited_t07_zip_sha256": "0305b1e9ab062876ee6ee89778cc6028d2eaf01718b7dd0295944e7d9cb81a01",
+    "note": "Goal-First, Degree, Timid, and Context-Blind predictions are inherited from the earlier T0.7 run; official intent and comparison come from the final T0.7 archive."
+  }
+}

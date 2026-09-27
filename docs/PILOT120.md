@@ -1,4 +1,4 @@
-# Pilot-120: frozen evaluation and public metadata
+# Pilot-120: frozen evaluation, cases, and results
 
 Pilot-120 v1 is a 120-case, evaluation-only set of ambiguous commands. Its
 source was capability-context repaired and its gold was pilot adjudicated by
@@ -8,7 +8,7 @@ evidence using these 120 records.
 
 ## Frozen identity
 
-The internal full-text files are at
+The byte-preserved full-text files are at
 `data/annotations/pilot_120_v1/source_canonical.jsonl` and
 `data/annotations/pilot_120_v1/pilot_120_final_gold.jsonl`. They each contain
 120 unique IDs in frozen order. The controlling files are
@@ -23,11 +23,13 @@ The internal full-text files are at
 | Gold policy | `3c1f0a4d43c29996062a4a2ecd321e4023a38f5fad950801f96e07e23aac4a34` |
 | Frozen manifest | `c61489101bfbc6cf0222538107abd272b50ce59c2f2a4292e95773f686d60230` |
 
-The full source and gold contain derived upstream text. Their inclusion in a
-historical Git commit is not evidence of public redistribution permission.
-A public release should include this page, the hashes, protocol, code, and
-aggregate results, while access to the text itself remains rights-controlled.
-The machine-readable public metadata is in `docs/pilot120_public_manifest.json`.
+The full source and gold contain derived upstream text. They are tracked in
+the current repository at the project owner's request, and each case can be
+browsed through [the case index](../research/pilot120/INDEX.md), including
+[CA-0007](../research/pilot120/cases/CA-0007.json). Repository presence is
+not evidence of a public redistribution grant; check the current rights
+register before changing visibility or mirroring. The machine-readable
+identity metadata is in `docs/pilot120_public_manifest.json`.
 Do not download a newer upstream version and claim it reproduces this frozen
 set. Dataset origins and rights evidence are listed in `docs/DATASETS.md` and
 `configs/licences/dataset_licence_register.json`.
@@ -65,15 +67,17 @@ The completed T0.7 counts are:
 | Timid | 29 | 117, inherited Goal-First intent |
 | Context-Blind | 21 | 119 |
 
-The T0.7 archive is
-`outputs/t07_matched_baseline_completion_20260927_FINAL.zip` in the local
-research checkout. SHA-256:
+The T0.7 archive is tracked at
+[`research/pilot120/artifacts/t07_matched_baseline_completion_20260927_FINAL.zip`](../research/pilot120/artifacts/t07_matched_baseline_completion_20260927_FINAL.zip).
+SHA-256:
 `34ca50e034ca37b617068bb50c734d12fa26282fb5eec563c11ead700163e491`.
-It contains raw case-level material and is **not a public release asset**.
+It contains raw case-level material. Inspect the rights register before public
+redistribution.
 The three failed clarify-recovery cases CA-0702, CA-0733, and CA-0778 are
 retained in that package. T0.3 is excluded from the official T0.7 package;
 the separate matched-depth-5 control has not run.
 
-The T41 closure ZIP remains frozen at SHA-256
+The [T41 closure ZIP](../research/pilot120/artifacts/pilot120_t41_complete_closure.zip)
+remains frozen at SHA-256
 `aea638cf05eab66610429e69f0d88f112eb09b4bd5582bb0d1b23d0a6dd3c21a`.
 Any future T42+ work needs a new versioned protocol and fresh provenance.

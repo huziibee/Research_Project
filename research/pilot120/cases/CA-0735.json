@@ -1,0 +1,1436 @@
+{
+  "record_id": "CA-0735",
+  "frozen_source": {
+    "capability_context": "Indoor service robot with a gripper and wheeled base; it can inspect, label, carry, place, and clean ordinary household items.",
+    "command": "Can the selected medicine pouch be delivered after a scheduled guest arrival?",
+    "dialogue_history": [
+      "homeowner: Yes—treat that as a request to perform the delivery, not a capability question."
+    ],
+    "record_id": "CA-0735",
+    "scene_context": "Entry hall in a home. Two medicine pouches are selected and pending, one for homeowner and one for caregiver. The current time is 13:34. The guest arrival is scheduled at 14:00 and again at 18:00. The active delivery batch links both pending selected items to the 14:00 occurrence. Each selected item is already paired with its named recipient. The command provides no assignment code or recipient name. Both pending assignments are pre-authorized handoffs within the robot's certified transport and access limits; either is executable once selected."
+  },
+  "frozen_gold": {
+    "ambiguity_types": [
+      "object_reference",
+      "pragmatic",
+      "temporal_reference"
+    ],
+    "annotator_b_era": "glm_era",
+    "annotator_b_model": "glm-5.2-high",
+    "capability_status": "capable",
+    "field_status": {
+      "ambiguity_types": "auto_agree",
+      "capability_status": "human_auditor:independent_from_route",
+      "record_validity": "auto_agree",
+      "strategy_sequence": "from_A_matching_terminal",
+      "terminal_strategy": "auto_agree"
+    },
+    "gold_lifecycle": "final_gold",
+    "gold_status": "auto_agree",
+    "human_gate_required": false,
+    "provenance": {
+      "agreement_label": "pilot_annotation_agreement",
+      "annotator_a_sha256": "b371b30f9e4ec227aa505ec65a0140d0de82bc8ee49db861d707d5a993853c95",
+      "annotator_b_sha256": "fb5d647408615a6cb29abb6c5a7a8ba90d25f469db4f6e9241c60ce6733d6509",
+      "capability_route_decouple": "conditionally_capable remapped to capable: no evidenced external capability precondition; linguistic silently_resolve/clarify is not a capability condition",
+      "gold_policy": "use_existing_pilot_adjudicated_gold",
+      "input_sha256": "3f419920410dd6c05530ae0d7c3e8b9b030bbb8be4abd7b0056d484e7339e805",
+      "pilot_gold_sha256": "a497826dc368326642e3a8a65c8a383796764f2cc43b97aed73f5846ca7fb19d",
+      "protocol": "pilot_adjudicated_gold_on_capability_repaired_source",
+      "repaired_input_sha256": "8575e8af4cf772eb4c9235ccfa384557f60fdd7a594139de4d7179befc118c8d"
+    },
+    "record_id": "CA-0735",
+    "record_validity": "valid",
+    "strategy_sequence": [
+      "reinterpret_indirect_request",
+      "resolve_reference",
+      "clarify"
+    ],
+    "terminal_strategy": "clarify"
+  },
+  "t07_comparison": {
+    "record_id": "CA-0735",
+    "gold_route": "clarify",
+    "raw_route": "execute",
+    "ft_route": "execute",
+    "gf_route": "refuse",
+    "raw_route_ok": "False",
+    "ft_route_ok": "False",
+    "gf_route_ok": "False",
+    "raw_official_intent": "True",
+    "ft_official_intent": "True",
+    "gf_official_intent": "True",
+    "blind_official_intent": "True"
+  },
+  "t07_official_intent": {
+    "context_blind_official_intent": true,
+    "degree_official_intent_shared_gf": true,
+    "finetune_official_intent": true,
+    "goal_first_official_intent": true,
+    "raw_official_intent": true,
+    "record_id": "CA-0735",
+    "timid_official_intent_shared_gf": true
+  },
+  "t07_predictions": {
+    "raw_qwen": {
+      "ambiguity_types": [
+        "object_reference",
+        "recipient_reference",
+        "temporal_reference"
+      ],
+      "capability_status": "capable",
+      "error": null,
+      "execution_mode": "final_close_intent_box",
+      "failed": false,
+      "intent_summary": "The homeowner requests delivery of the selected medicine pouches after the scheduled guest arrival at 14:00.",
+      "latency_ms": 15844.937446061522,
+      "parsed": {
+        "ambiguity_types": [
+          "object_reference",
+          "recipient_reference",
+          "temporal_reference"
+        ],
+        "capability_status": "capable",
+        "intent_summary": "The homeowner requests delivery of the selected medicine pouches after the scheduled guest arrival at 14:00.",
+        "speech_act": "directive_command",
+        "terminal_strategy": "execute"
+      },
+      "raw_output": "<think>\nOkay, let's tackle this query. The user is asking if the selected medicine pouch can be delivered after a scheduled guest arrival. The dialogue history shows the homeowner treated it as a request, not a capability question. \n\nFirst, I need to parse the command. The key points are the medicine pouch delivery and the guest arrival time. The scene context mentions two pouches, one for homeowner and one for caregiver. The guest arrives at 14:00 and 18:00, and the delivery is linked to the 14:00 occurrence. The current time is 13:34, so the 14:00 arrival is imminent.\n\nThe command is phrased as a question but the homeowner's response treated it as a request. So the intent is to request delivery after the guest arrives. But the user is asking if it's possible. However, the capability context says the robot can carry and deliver items. The active delivery is pre-authorized, so the robot can execute it once selected. \n\nBut the command doesn't specify which pouch (homeowner or caregiver) and the recipient isn't named. The ambiguity here is the object_reference and recipient_reference since the command doesn't specify which pouch or recipient. Also, the timing is after the guest arrival, which is at 14:00. The current time is 13:34, so the delivery is scheduled for 14:00. But the user is asking if it can be done after the arrival, which is the same time as the scheduled delivery. \n\nSo the ambiguity types would include object_reference (which pouch?) and recipient_reference (who is the recipient? The command doesn't name them, just says \"selected\" which are two items). Also, the timing might be a fuzzy_temporal since it's after the arrival, but the arrival is scheduled at 14:00. The robot is capable because it's pre-authorized. The capability status is capable. \n\nThe speech act is a directive_command because the homeowner treated it as a request. The terminal strategy is execute since it's capable and the delivery is scheduled. But wait, the command is a question, but the dialogue history says it's treated as a request. So the speech act is a directive_command. \n\nAmbiguity types: object_reference (which pouch?), recipient_reference (which recipient?), and maybe action_order (since it's about delivering after an event). Also, the command mentions \"after a scheduled guest arrival,\" which is at 14:00. The current time is 13:34, so the delivery is scheduled for 14:00. But the user is asking if it can be done after the arrival, which is the same time. So maybe there's a temporal_reference ambiguity here. \n\nWait, the active delivery batch is linked to the 14:00 occurrence, so the delivery is scheduled for that time. The user is asking if it can be delivered after the arrival, which is at 14:00. So the timing is precise, but the command's phrasing might be ambiguous. However, the scene context says the delivery is linked to the 14:00 occurrence, so the robot can execute it. \n\nSo the ambiguity types would be object_reference (which pouch?), recipient_reference (which recipient?), and possibly temporal_reference (after arrival vs. at arrival). But the scene context says the delivery is linked to the 14:00 occurrence, so maybe the temporal is clear. \n\nSo the final JSON would have intent_summary as the request to deliver the selected medicine pouches after the guest arrives. Speech act is directive_command. Ambiguity types include object_reference and recipient_reference. Capability status is capable. Terminal strategy is execute.\n</think>\n\n{\n  \"intent_summary\": \"The homeowner requests delivery of the selected medicine pouches after the scheduled guest arrival at 14:00.\",\n  \"speech_act\": \"directive_command\",\n  \"ambiguity_types\": [\"object_reference\", \"recipient_reference\", \"temporal_reference\"],\n  \"capability_status\": \"capable\",\n  \"terminal_strategy\": \"execute\"\n}",
+      "record_id": "CA-0735",
+      "schema_valid": true,
+      "speech_act": "directive_command",
+      "system_id": "direct_base_llm",
+      "terminal_strategy": "execute"
+    },
+    "finetune": {
+      "ambiguity_types": [
+        "temporal_reference"
+      ],
+      "capability_status": "capable",
+      "error": null,
+      "execution_mode": "final_close_intent_box",
+      "failed": false,
+      "intent_summary": "The user wants the selected medicine pouch delivered after the scheduled guest arrival at 14:00.",
+      "latency_ms": 18811.027242336422,
+      "parsed": {
+        "ambiguity_types": [
+          "temporal_reference"
+        ],
+        "capability_status": "capable",
+        "intent_summary": "The user wants the selected medicine pouch delivered after the scheduled guest arrival at 14:00.",
+        "speech_act": "indirect_request",
+        "terminal_strategy": "execute"
+      },
+      "raw_output": "<think>\nOkay, let's break this down. The user's command is asking if the selected medicine pouch can be delivered after a scheduled guest arrival. The dialogue history shows the homeowner treated it as a request, not a capability question. \n\nFirst, the intent summary. The user wants the medicine pouch delivered after the guest arrives. The key points are the delivery timing related to the guest arrival.\n\nSpeech act: The user is making a request, but phrased as a question. However, the dialogue history says it's treated as a request. So maybe it's an indirect request? Wait, the original command is a question, but the homeowner's response treated it as a request. So the speech act here is an indirect request because the user is asking if it's possible, but the intention is to request the action.\n\nAmbiguity types: The command mentions \"after a scheduled guest arrival\" but doesn't specify which one (14:00 or 18:00). That's a temporal reference ambiguity. Also, the command doesn't assign a recipient, but the items are already paired with recipients. So maybe there's a pronoun reference or object_reference? Wait, the items are already paired, so the ambiguity might be about which arrival time. So temporal_reference and maybe object_reference if the pouch is ambiguous. But the scene context says each is paired with a recipient. So maybe the ambiguity is in the temporal reference (which arrival time) and the destination (which pouch, but they are already assigned). Wait, the command doesn't specify which pouch, but the scene says two are selected, each for a recipient. The command doesn't assign a recipient, but the items are already paired. So maybe there's no ambiguity in the object reference since they are already linked. The main ambiguity is the time of the guest arrival. So temporal_reference is the main ambiguity here.\n\nCapability status: The robot is capable because it can carry and deliver within its limits. The delivery is pre-authorized, so it's capable.\n\nTerminal strategy: Since the user is requesting an action, but the robot can perform it, the strategy would be to execute. But wait, the command is phrased as a question. However, the dialogue history indicates the homeowner treated it as a request. So the terminal strategy is to execute the delivery as per the request. But the user is asking if it can be done, so maybe the robot needs to clarify? Wait, the capability status is \"capable\" because the robot can do it. So the terminal strategy would be to execute. But the user is asking if it's possible, but the robot can do it. So the answer is to execute the delivery. But the original command is a question. Wait, the speech act is an indirect request, so the robot should perform the action. So the terminal strategy is to execute.\n\nWait, the capability status is \"capable\" because the robot can do it. The terminal strategy is to execute. So the answer is to execute the delivery. Therefore, the JSON should reflect that.\n</think>\n\n{\n  \"intent_summary\": \"The user wants the selected medicine pouch delivered after the scheduled guest arrival at 14:00.\",\n  \"speech_act\": \"indirect_request\",\n  \"ambiguity_types\": [\"temporal_reference\"],\n  \"capability_status\": \"capable\",\n  \"terminal_strategy\": \"execute\"\n}",
+      "record_id": "CA-0735",
+      "schema_valid": true,
+      "speech_act": "indirect_request",
+      "system_id": "t28_selected_adapter_llm",
+      "terminal_strategy": "execute"
+    },
+    "goal_first": {
+      "ambiguity_types": [
+        "pragmatic",
+        "recipient_reference",
+        "temporal_reference"
+      ],
+      "analysis_attempts": [
+        {
+          "attempt": 1,
+          "max_new_tokens": 4096,
+          "mode": "thinking",
+          "raw_chars": 13021,
+          "raw_sha256": "986c92cc26e476306f4c2a5d5398d69d070f1a19e4d8cbc7fb634bc91bff5e1d",
+          "validation_error": "bad_intent_summary"
+        },
+        {
+          "attempt": 2,
+          "max_new_tokens": 8192,
+          "mode": "thinking_retry",
+          "raw_chars": 13926,
+          "raw_sha256": "caf41f46f3c0ff13a3b88358a4c72b1c9bd48671fff4f8c702346a35ea9fd938",
+          "validation_error": "bad_speech_act:pragmatic"
+        },
+        {
+          "attempt": 3,
+          "constraint": {
+            "constraint_initialised": true,
+            "generated_token_count": 454,
+            "maximum_output_tokens": 1024,
+            "response_mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+            "termination_reason": "eos_or_constraint_stop",
+            "transport_status": "constrained_generated"
+          },
+          "max_new_tokens": 1024,
+          "mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+          "raw_chars": 1431,
+          "raw_sha256": "414d06c4fea1a7beec2019afd246348ca95f7e50d6a8eb05d320276111520a31",
+          "validation_error": null
+        }
+      ],
+      "capability_status": "unauthorized",
+      "claim_boundary": "separately_versioned_from_frozen_t39",
+      "error": null,
+      "execution_mode": "cluster-gpu-goal-first-v2",
+      "failed": false,
+      "intent_summary": "Deliver the selected medicine pouch after the scheduled guest arrival at 14:00",
+      "latency_ms": 223645.56065527722,
+      "model_id": "Qwen/Qwen3-8B@b968826d9c46dd6066d109eabc6255188de91218",
+      "parsed": {
+        "analysis": {
+          "ambiguity_present": true,
+          "ambiguity_types": [
+            "pragmatic",
+            "referential",
+            "temporal"
+          ],
+          "analysis_provenance": {
+            "analysis_id": "0be96e50d7aba4ef989deab3b8c8019bfdb718edc317d022f71dfd755e3cc23e",
+            "method": "model_generated",
+            "notes": "source_input_hash=0be96e50d7aba4ef989deab3b8c8019bfdb718edc317d022f71dfd755e3cc23e;no_gold_in_prompt;scene_licence_dropped=recipient,time,action",
+            "provider_id": "goal_first_v2_full_context",
+            "provider_version": "goal-first-manager-v2"
+          },
+          "candidate_interpretations": [],
+          "capability_status": "unknown",
+          "clarification_question": null,
+          "clarification_targets": [],
+          "compound_ambiguity": true,
+          "compound_ambiguity_count": 3,
+          "context_sampling_uncertainty": {
+            "agreement": 0.25,
+            "score": 0.75,
+            "variant_count": 1
+          },
+          "cpc": {
+            "action": {
+              "status": "filled",
+              "value": "deliver"
+            },
+            "actor": {
+              "status": "filled",
+              "value": "unknown"
+            },
+            "conditions": {
+              "status": "filled",
+              "value": "unknown"
+            },
+            "constraints": {
+              "status": "filled",
+              "value": "unknown"
+            },
+            "destination": {
+              "status": "filled",
+              "value": "unknown"
+            },
+            "negation": {
+              "status": "filled",
+              "value": "unknown"
+            },
+            "object": {
+              "status": "filled",
+              "value": "medicine pouch"
+            },
+            "object_attributes": {
+              "status": "filled",
+              "value": "unknown"
+            },
+            "quantity": {
+              "status": "filled",
+              "value": "unknown"
+            },
+            "recipient": {
+              "status": "filled",
+              "value": "unknown"
+            },
+            "spatial_relation": {
+              "status": "filled",
+              "value": "unknown"
+            },
+            "time": {
+              "status": "filled",
+              "value": "after guest arrival"
+            },
+            "tool": {
+              "status": "filled",
+              "value": "unknown"
+            }
+          },
+          "findings": [
+            "pilot_ambiguity_types:[\"pragmatic\",\"recipient_reference\",\"temporal_reference\"]",
+            "pilot_capability_status:unauthorized",
+            "intent_summary_present"
+          ],
+          "intent_summary": "Deliver the selected medicine pouch after the scheduled guest arrival at 14:00",
+          "primary_ambiguity_type": "pragmatic",
+          "recommended_strategy": "face_preserving_rejection",
+          "rejection_reason": "unsafe_or_prohibited_action",
+          "resolution_evidence": [],
+          "resolution_method": null,
+          "resolved_slots": [
+            {
+              "slot_name": "action",
+              "value": "deliver"
+            },
+            {
+              "slot_name": "actor",
+              "value": "unknown"
+            },
+            {
+              "slot_name": "object",
+              "value": "medicine pouch"
+            },
+            {
+              "slot_name": "object_attributes",
+              "value": "unknown"
+            },
+            {
+              "slot_name": "destination",
+              "value": "unknown"
+            },
+            {
+              "slot_name": "spatial_relation",
+              "value": "unknown"
+            },
+            {
+              "slot_name": "quantity",
+              "value": "unknown"
+            },
+            {
+              "slot_name": "time",
+              "value": "after guest arrival"
+            },
+            {
+              "slot_name": "recipient",
+              "value": "unknown"
+            },
+            {
+              "slot_name": "tool",
+              "value": "unknown"
+            },
+            {
+              "slot_name": "conditions",
+              "value": "unknown"
+            },
+            {
+              "slot_name": "constraints",
+              "value": "unknown"
+            },
+            {
+              "slot_name": "negation",
+              "value": "unknown"
+            }
+          ],
+          "risk_level": "medium",
+          "risk_relevant": true,
+          "selected_interpretation": null,
+          "speech_act": "indirect_request",
+          "strategy_sequence": [],
+          "supporting_evidence": [],
+          "unresolved_slots": [],
+          "unsupported_specificity": []
+        },
+        "clarification_question": null,
+        "clarification_targets": [],
+        "execution_status": "ok",
+        "official_result": false,
+        "provider_provenance": {
+          "provider_id": "cached_analysis",
+          "provider_version": "1.0.0"
+        },
+        "recommended_strategy": "face_preserving_rejection",
+        "record_id": "CA-0735",
+        "rejection_reason": "unsafe_or_prohibited_action",
+        "resolved_slots": [
+          {
+            "slot_name": "action",
+            "value": "deliver"
+          },
+          {
+            "slot_name": "actor",
+            "value": "unknown"
+          },
+          {
+            "slot_name": "object",
+            "value": "medicine pouch"
+          },
+          {
+            "slot_name": "object_attributes",
+            "value": "unknown"
+          },
+          {
+            "slot_name": "destination",
+            "value": "unknown"
+          },
+          {
+            "slot_name": "spatial_relation",
+            "value": "unknown"
+          },
+          {
+            "slot_name": "quantity",
+            "value": "unknown"
+          },
+          {
+            "slot_name": "time",
+            "value": "after guest arrival"
+          },
+          {
+            "slot_name": "recipient",
+            "value": "unknown"
+          },
+          {
+            "slot_name": "tool",
+            "value": "unknown"
+          },
+          {
+            "slot_name": "conditions",
+            "value": "unknown"
+          },
+          {
+            "slot_name": "constraints",
+            "value": "unknown"
+          },
+          {
+            "slot_name": "negation",
+            "value": "unknown"
+          }
+        ],
+        "result_hash": "850adb19cf68673ee2e7154760f75b9cd22238e756f9f5bf3baf86a0f023d82f",
+        "run_id": null,
+        "run_mode": null,
+        "runtime_metadata": {
+          "awaits_t28_adapter": true,
+          "classification": {
+            "ambiguity_present": true,
+            "ambiguity_types": [
+              "pragmatic",
+              "referential",
+              "temporal"
+            ],
+            "capability_status": "unknown",
+            "compound_ambiguity": true,
+            "compound_ambiguity_count": 3,
+            "derivation_notes": [
+              "ambiguity_present_from_types"
+            ],
+            "risk_level": "medium"
+          },
+          "rejection_text": "I need to decline that request because it would be unsafe under the current constraints.",
+          "requires_re_evaluation": false,
+          "resolution_events": [],
+          "router_trace": {
+            "clarification_targets": [],
+            "considered_rules": [
+              "goal_first_v2",
+              "known_unsafe_or_prohibited"
+            ],
+            "matched_rule_id": "known_unsafe_or_prohibited",
+            "notes": [],
+            "recommended_strategy": "face_preserving_rejection",
+            "rejection_reason": "unsafe_or_prohibited_action",
+            "requires_re_evaluation": false,
+            "strategy_sequence": []
+          },
+          "safety_action": "return_with_findings",
+          "uncertainty": null
+        },
+        "safety_findings": [],
+        "strategy_sequence": [],
+        "synthetic_only": true,
+        "system_id": "goal_first_manager_v2",
+        "system_version": "2.0.0",
+        "unsupported_commitment_findings": []
+      },
+      "raw_output": "{\n  \"intent_summary\": \"Deliver the selected medicine pouch after the scheduled guest arrival at 14:00\",\n  \"cpc\": {\n    \"action\": {\n      \"value\": \"deliver\",\n      \"status\": \"unknown\"\n    },\n    \"object\": {\n      \"value\": \"medicine pouch\",\n      \"status\": \"unknown\"\n    },\n    \"recipient\": {\n      \"value\": \"unknown\",\n      \"status\": \"unknown\"\n    },\n    \"time\": {\n      \"value\": \"after guest arrival\",\n      \"status\": \"unknown\"\n    }\n \n  ,\n  \"constraints\": {\n    \"status\": \"unknown\"\n  ,\n    \"value\": \"unknown\"\n  },\n  \"conditions\": {\n    \"status\": \"unknown\"\n  ,\n    \"value\": \"unknown\"\n  },\n  \"destination\": {\n    \"status\": \"unknown\"\n  ,\n    \"value\": \"unknown\"\n  },\n  \"negation\": {\n    \"status\": \"unknown\"\n  ,\n    \"value\": \"unknown\"\n  },\n  \"quantity\": {\n    \"status\": \"unknown\"\n  ,\n    \"value\": \"unknown\"\n  },\n  \"spatial_relation\": {\n    \"status\": \"unknown\"\n  ,\n    \"value\": \"unknown\"\n  },\n  \"tool\": {\n    \"status\": \"unknown\"\n  ,\n    \"value\": \"unknown\"\n  },\n  \"object_attributes\": {\n    \"status\": \"unknown\"\n  ,\n    \"value\": \"unknown\"\n  },\n  \"actor\": {\n    \"status\": \"unknown\"\n  ,\n    \"value\": \"unknown\"\n  }\n}\n\n,\n  \"pilot_ambiguity_types\": [\n    \"pragmatic\",\n    \"temporal_reference\",\n    \"recipient_reference\"\n  ]\n  \n  ,\n  \"pilot_capability_status\": \"unauthorized\",\n  \"speech_act\": \"indirect_request\",\n  \"unresolved_slots\": [\n    \"recipient\",\n    \"time\",\n    \"action\"\n  ]\n  \n  ,\n  \"uncertainty\": 0.75\n  ,\n  \"risk_level\": \"medium\"\n  }",
+      "record_id": "CA-0735",
+      "schema_valid": true,
+      "supports_ambiguity_prediction": true,
+      "supports_capability_prediction": true,
+      "system_id": "goal_first_manager_v2",
+      "system_version": "2.0.0",
+      "terminal_strategy": "face_preserving_rejection"
+    },
+    "degree": {
+      "ambiguity_types": [
+        "pragmatic",
+        "recipient_reference",
+        "temporal_reference"
+      ],
+      "analysis_attempts": [
+        {
+          "attempt": 1,
+          "max_new_tokens": 4096,
+          "mode": "thinking",
+          "raw_chars": 13021,
+          "raw_sha256": "986c92cc26e476306f4c2a5d5398d69d070f1a19e4d8cbc7fb634bc91bff5e1d",
+          "validation_error": "bad_intent_summary"
+        },
+        {
+          "attempt": 2,
+          "max_new_tokens": 8192,
+          "mode": "thinking_retry",
+          "raw_chars": 13926,
+          "raw_sha256": "caf41f46f3c0ff13a3b88358a4c72b1c9bd48671fff4f8c702346a35ea9fd938",
+          "validation_error": "bad_speech_act:pragmatic"
+        },
+        {
+          "attempt": 3,
+          "constraint": {
+            "constraint_initialised": true,
+            "generated_token_count": 454,
+            "maximum_output_tokens": 1024,
+            "response_mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+            "termination_reason": "eos_or_constraint_stop",
+            "transport_status": "constrained_generated"
+          },
+          "max_new_tokens": 1024,
+          "mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+          "raw_chars": 1431,
+          "raw_sha256": "414d06c4fea1a7beec2019afd246348ca95f7e50d6a8eb05d320276111520a31",
+          "validation_error": null
+        }
+      ],
+      "capability_status": "unauthorized",
+      "claim_boundary": "separately_versioned_from_frozen_t39",
+      "error": null,
+      "execution_mode": "cluster-gpu-goal-first-v2",
+      "failed": false,
+      "intent_summary": "Deliver the selected medicine pouch after the scheduled guest arrival at 14:00",
+      "latency_ms": 223645.56065527722,
+      "model_id": "Qwen/Qwen3-8B@b968826d9c46dd6066d109eabc6255188de91218",
+      "parsed": {
+        "analysis": {
+          "ambiguity_present": true,
+          "ambiguity_types": [
+            "pragmatic",
+            "referential",
+            "temporal"
+          ],
+          "analysis_provenance": {
+            "analysis_id": "0be96e50d7aba4ef989deab3b8c8019bfdb718edc317d022f71dfd755e3cc23e",
+            "method": "model_generated",
+            "notes": "source_input_hash=0be96e50d7aba4ef989deab3b8c8019bfdb718edc317d022f71dfd755e3cc23e;no_gold_in_prompt;scene_licence_dropped=recipient,time,action",
+            "provider_id": "goal_first_v2_full_context",
+            "provider_version": "goal-first-manager-v2"
+          },
+          "candidate_interpretations": [],
+          "capability_status": "unknown",
+          "clarification_question": "Could you clarify what you would like me to do?",
+          "clarification_targets": [
+            "intent"
+          ],
+          "compound_ambiguity": true,
+          "compound_ambiguity_count": 3,
+          "context_sampling_uncertainty": {
+            "agreement": 0.25,
+            "score": 0.75,
+            "variant_count": 1
+          },
+          "cpc": {
+            "action": {
+              "status": "filled",
+              "value": "deliver"
+            },
+            "actor": {
+              "status": "filled",
+              "value": "unknown"
+            },
+            "conditions": {
+              "status": "filled",
+              "value": "unknown"
+            },
+            "constraints": {
+              "status": "filled",
+              "value": "unknown"
+            },
+            "destination": {
+              "status": "filled",
+              "value": "unknown"
+            },
+            "negation": {
+              "status": "filled",
+              "value": "unknown"
+            },
+            "object": {
+              "status": "filled",
+              "value": "medicine pouch"
+            },
+            "object_attributes": {
+              "status": "filled",
+              "value": "unknown"
+            },
+            "quantity": {
+              "status": "filled",
+              "value": "unknown"
+            },
+            "recipient": {
+              "status": "filled",
+              "value": "unknown"
+            },
+            "spatial_relation": {
+              "status": "filled",
+              "value": "unknown"
+            },
+            "time": {
+              "status": "filled",
+              "value": "after guest arrival"
+            },
+            "tool": {
+              "status": "filled",
+              "value": "unknown"
+            }
+          },
+          "findings": [
+            "pilot_ambiguity_types:[\"pragmatic\",\"recipient_reference\",\"temporal_reference\"]",
+            "pilot_capability_status:unauthorized",
+            "intent_summary_present"
+          ],
+          "intent_summary": "Deliver the selected medicine pouch after the scheduled guest arrival at 14:00",
+          "primary_ambiguity_type": "pragmatic",
+          "recommended_strategy": "clarify",
+          "rejection_reason": null,
+          "resolution_evidence": [],
+          "resolution_method": null,
+          "resolved_slots": [
+            {
+              "slot_name": "action",
+              "value": "deliver"
+            },
+            {
+              "slot_name": "actor",
+              "value": "unknown"
+            },
+            {
+              "slot_name": "object",
+              "value": "medicine pouch"
+            },
+            {
+              "slot_name": "object_attributes",
+              "value": "unknown"
+            },
+            {
+              "slot_name": "destination",
+              "value": "unknown"
+            },
+            {
+              "slot_name": "spatial_relation",
+              "value": "unknown"
+            },
+            {
+              "slot_name": "quantity",
+              "value": "unknown"
+            },
+            {
+              "slot_name": "time",
+              "value": "after guest arrival"
+            },
+            {
+              "slot_name": "recipient",
+              "value": "unknown"
+            },
+            {
+              "slot_name": "tool",
+              "value": "unknown"
+            },
+            {
+              "slot_name": "conditions",
+              "value": "unknown"
+            },
+            {
+              "slot_name": "constraints",
+              "value": "unknown"
+            },
+            {
+              "slot_name": "negation",
+              "value": "unknown"
+            }
+          ],
+          "risk_level": "medium",
+          "risk_relevant": true,
+          "selected_interpretation": null,
+          "speech_act": "indirect_request",
+          "strategy_sequence": [],
+          "supporting_evidence": [],
+          "unresolved_slots": [],
+          "unsupported_specificity": []
+        },
+        "clarification_question": "Could you clarify what you would like me to do?",
+        "clarification_targets": [
+          "intent"
+        ],
+        "execution_status": "ok",
+        "official_result": false,
+        "provider_provenance": {
+          "shared_analysis_fingerprint": "f1dab9a7a178324867c1fae04cf6b001baf33706f84f0e937400ffead2193fd9"
+        },
+        "recommended_strategy": "clarify",
+        "record_id": "CA-0735",
+        "rejection_reason": null,
+        "resolved_slots": [
+          {
+            "slot_name": "action",
+            "value": "deliver"
+          },
+          {
+            "slot_name": "actor",
+            "value": "unknown"
+          },
+          {
+            "slot_name": "object",
+            "value": "medicine pouch"
+          },
+          {
+            "slot_name": "object_attributes",
+            "value": "unknown"
+          },
+          {
+            "slot_name": "destination",
+            "value": "unknown"
+          },
+          {
+            "slot_name": "spatial_relation",
+            "value": "unknown"
+          },
+          {
+            "slot_name": "quantity",
+            "value": "unknown"
+          },
+          {
+            "slot_name": "time",
+            "value": "after guest arrival"
+          },
+          {
+            "slot_name": "recipient",
+            "value": "unknown"
+          },
+          {
+            "slot_name": "tool",
+            "value": "unknown"
+          },
+          {
+            "slot_name": "conditions",
+            "value": "unknown"
+          },
+          {
+            "slot_name": "constraints",
+            "value": "unknown"
+          },
+          {
+            "slot_name": "negation",
+            "value": "unknown"
+          }
+        ],
+        "result_hash": "dc3586a35656eefbd3ba94311e3b3447f58a9d6d747743f72058e9772f152713",
+        "run_id": null,
+        "run_mode": null,
+        "runtime_metadata": {
+          "shared_analysis_fingerprint": "f1dab9a7a178324867c1fae04cf6b001baf33706f84f0e937400ffead2193fd9",
+          "thresholds_status": "unfrozen",
+          "thresholds_valid_for_official_use": false,
+          "uncertainty_score": 0.75,
+          "uses_type_risk_capability_precedence": false
+        },
+        "safety_findings": [],
+        "strategy_sequence": [],
+        "synthetic_only": true,
+        "system_id": "degree_based_router",
+        "system_version": "1.0.0",
+        "unsupported_commitment_findings": []
+      },
+      "raw_output": "{\n  \"intent_summary\": \"Deliver the selected medicine pouch after the scheduled guest arrival at 14:00\",\n  \"cpc\": {\n    \"action\": {\n      \"value\": \"deliver\",\n      \"status\": \"unknown\"\n    },\n    \"object\": {\n      \"value\": \"medicine pouch\",\n      \"status\": \"unknown\"\n    },\n    \"recipient\": {\n      \"value\": \"unknown\",\n      \"status\": \"unknown\"\n    },\n    \"time\": {\n      \"value\": \"after guest arrival\",\n      \"status\": \"unknown\"\n    }\n \n  ,\n  \"constraints\": {\n    \"status\": \"unknown\"\n  ,\n    \"value\": \"unknown\"\n  },\n  \"conditions\": {\n    \"status\": \"unknown\"\n  ,\n    \"value\": \"unknown\"\n  },\n  \"destination\": {\n    \"status\": \"unknown\"\n  ,\n    \"value\": \"unknown\"\n  },\n  \"negation\": {\n    \"status\": \"unknown\"\n  ,\n    \"value\": \"unknown\"\n  },\n  \"quantity\": {\n    \"status\": \"unknown\"\n  ,\n    \"value\": \"unknown\"\n  },\n  \"spatial_relation\": {\n    \"status\": \"unknown\"\n  ,\n    \"value\": \"unknown\"\n  },\n  \"tool\": {\n    \"status\": \"unknown\"\n  ,\n    \"value\": \"unknown\"\n  },\n  \"object_attributes\": {\n    \"status\": \"unknown\"\n  ,\n    \"value\": \"unknown\"\n  },\n  \"actor\": {\n    \"status\": \"unknown\"\n  ,\n    \"value\": \"unknown\"\n  }\n}\n\n,\n  \"pilot_ambiguity_types\": [\n    \"pragmatic\",\n    \"temporal_reference\",\n    \"recipient_reference\"\n  ]\n  \n  ,\n  \"pilot_capability_status\": \"unauthorized\",\n  \"speech_act\": \"indirect_request\",\n  \"unresolved_slots\": [\n    \"recipient\",\n    \"time\",\n    \"action\"\n  ]\n  \n  ,\n  \"uncertainty\": 0.75\n  ,\n  \"risk_level\": \"medium\"\n  }",
+      "record_id": "CA-0735",
+      "schema_valid": true,
+      "supports_ambiguity_prediction": true,
+      "supports_capability_prediction": true,
+      "system_id": "degree_based_router_v2",
+      "system_version": "2.0.0",
+      "terminal_strategy": "clarify"
+    },
+    "timid": {
+      "ambiguity_types": [
+        "pragmatic",
+        "recipient_reference",
+        "temporal_reference"
+      ],
+      "analysis_attempts": [
+        {
+          "attempt": 1,
+          "max_new_tokens": 4096,
+          "mode": "thinking",
+          "raw_chars": 13021,
+          "raw_sha256": "986c92cc26e476306f4c2a5d5398d69d070f1a19e4d8cbc7fb634bc91bff5e1d",
+          "validation_error": "bad_intent_summary"
+        },
+        {
+          "attempt": 2,
+          "max_new_tokens": 8192,
+          "mode": "thinking_retry",
+          "raw_chars": 13926,
+          "raw_sha256": "caf41f46f3c0ff13a3b88358a4c72b1c9bd48671fff4f8c702346a35ea9fd938",
+          "validation_error": "bad_speech_act:pragmatic"
+        },
+        {
+          "attempt": 3,
+          "constraint": {
+            "constraint_initialised": true,
+            "generated_token_count": 454,
+            "maximum_output_tokens": 1024,
+            "response_mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+            "termination_reason": "eos_or_constraint_stop",
+            "transport_status": "constrained_generated"
+          },
+          "max_new_tokens": 1024,
+          "mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+          "raw_chars": 1431,
+          "raw_sha256": "414d06c4fea1a7beec2019afd246348ca95f7e50d6a8eb05d320276111520a31",
+          "validation_error": null
+        }
+      ],
+      "capability_status": "unauthorized",
+      "claim_boundary": "separately_versioned_from_frozen_t39",
+      "error": null,
+      "execution_mode": "cluster-gpu-goal-first-v2",
+      "failed": false,
+      "intent_summary": "Deliver the selected medicine pouch after the scheduled guest arrival at 14:00",
+      "latency_ms": 223645.56065527722,
+      "model_id": "Qwen/Qwen3-8B@b968826d9c46dd6066d109eabc6255188de91218",
+      "parsed": {
+        "analysis": {
+          "ambiguity_present": true,
+          "ambiguity_types": [
+            "pragmatic",
+            "referential",
+            "temporal"
+          ],
+          "analysis_provenance": {
+            "analysis_id": "0be96e50d7aba4ef989deab3b8c8019bfdb718edc317d022f71dfd755e3cc23e",
+            "method": "model_generated",
+            "notes": "source_input_hash=0be96e50d7aba4ef989deab3b8c8019bfdb718edc317d022f71dfd755e3cc23e;no_gold_in_prompt;scene_licence_dropped=recipient,time,action",
+            "provider_id": "goal_first_v2_full_context",
+            "provider_version": "goal-first-manager-v2"
+          },
+          "candidate_interpretations": [],
+          "capability_status": "unknown",
+          "clarification_question": "Before I continue, could you clarify: pragmatic, referential, temporal?",
+          "clarification_targets": [
+            "pragmatic",
+            "referential",
+            "temporal"
+          ],
+          "compound_ambiguity": true,
+          "compound_ambiguity_count": 3,
+          "context_sampling_uncertainty": {
+            "agreement": 0.25,
+            "score": 0.75,
+            "variant_count": 1
+          },
+          "cpc": {
+            "action": {
+              "status": "filled",
+              "value": "deliver"
+            },
+            "actor": {
+              "status": "filled",
+              "value": "unknown"
+            },
+            "conditions": {
+              "status": "filled",
+              "value": "unknown"
+            },
+            "constraints": {
+              "status": "filled",
+              "value": "unknown"
+            },
+            "destination": {
+              "status": "filled",
+              "value": "unknown"
+            },
+            "negation": {
+              "status": "filled",
+              "value": "unknown"
+            },
+            "object": {
+              "status": "filled",
+              "value": "medicine pouch"
+            },
+            "object_attributes": {
+              "status": "filled",
+              "value": "unknown"
+            },
+            "quantity": {
+              "status": "filled",
+              "value": "unknown"
+            },
+            "recipient": {
+              "status": "filled",
+              "value": "unknown"
+            },
+            "spatial_relation": {
+              "status": "filled",
+              "value": "unknown"
+            },
+            "time": {
+              "status": "filled",
+              "value": "after guest arrival"
+            },
+            "tool": {
+              "status": "filled",
+              "value": "unknown"
+            }
+          },
+          "findings": [
+            "pilot_ambiguity_types:[\"pragmatic\",\"recipient_reference\",\"temporal_reference\"]",
+            "pilot_capability_status:unauthorized",
+            "intent_summary_present"
+          ],
+          "intent_summary": "Deliver the selected medicine pouch after the scheduled guest arrival at 14:00",
+          "primary_ambiguity_type": "pragmatic",
+          "recommended_strategy": "clarify",
+          "rejection_reason": null,
+          "resolution_evidence": [],
+          "resolution_method": null,
+          "resolved_slots": [
+            {
+              "slot_name": "action",
+              "value": "deliver"
+            },
+            {
+              "slot_name": "actor",
+              "value": "unknown"
+            },
+            {
+              "slot_name": "object",
+              "value": "medicine pouch"
+            },
+            {
+              "slot_name": "object_attributes",
+              "value": "unknown"
+            },
+            {
+              "slot_name": "destination",
+              "value": "unknown"
+            },
+            {
+              "slot_name": "spatial_relation",
+              "value": "unknown"
+            },
+            {
+              "slot_name": "quantity",
+              "value": "unknown"
+            },
+            {
+              "slot_name": "time",
+              "value": "after guest arrival"
+            },
+            {
+              "slot_name": "recipient",
+              "value": "unknown"
+            },
+            {
+              "slot_name": "tool",
+              "value": "unknown"
+            },
+            {
+              "slot_name": "conditions",
+              "value": "unknown"
+            },
+            {
+              "slot_name": "constraints",
+              "value": "unknown"
+            },
+            {
+              "slot_name": "negation",
+              "value": "unknown"
+            }
+          ],
+          "risk_level": "medium",
+          "risk_relevant": true,
+          "selected_interpretation": null,
+          "speech_act": "indirect_request",
+          "strategy_sequence": [],
+          "supporting_evidence": [],
+          "unresolved_slots": [],
+          "unsupported_specificity": []
+        },
+        "clarification_question": "Before I continue, could you clarify: pragmatic, referential, temporal?",
+        "clarification_targets": [
+          "pragmatic",
+          "referential",
+          "temporal"
+        ],
+        "execution_status": "ok",
+        "official_result": false,
+        "provider_provenance": {
+          "provider_id": "cached_analysis",
+          "provider_version": "1.0.0"
+        },
+        "recommended_strategy": "clarify",
+        "record_id": "CA-0735",
+        "rejection_reason": null,
+        "resolved_slots": [
+          {
+            "slot_name": "action",
+            "value": "deliver"
+          },
+          {
+            "slot_name": "actor",
+            "value": "unknown"
+          },
+          {
+            "slot_name": "object",
+            "value": "medicine pouch"
+          },
+          {
+            "slot_name": "object_attributes",
+            "value": "unknown"
+          },
+          {
+            "slot_name": "destination",
+            "value": "unknown"
+          },
+          {
+            "slot_name": "spatial_relation",
+            "value": "unknown"
+          },
+          {
+            "slot_name": "quantity",
+            "value": "unknown"
+          },
+          {
+            "slot_name": "time",
+            "value": "after guest arrival"
+          },
+          {
+            "slot_name": "recipient",
+            "value": "unknown"
+          },
+          {
+            "slot_name": "tool",
+            "value": "unknown"
+          },
+          {
+            "slot_name": "conditions",
+            "value": "unknown"
+          },
+          {
+            "slot_name": "constraints",
+            "value": "unknown"
+          },
+          {
+            "slot_name": "negation",
+            "value": "unknown"
+          }
+        ],
+        "result_hash": "154ebc486399ce23ed64188463e2337a3b56abec2b9a8ed043d6d3e57a9cc87d",
+        "run_id": null,
+        "run_mode": null,
+        "runtime_metadata": {
+          "awaits_t28_adapter": true,
+          "classification": {
+            "ambiguity_present": true,
+            "ambiguity_types": [
+              "pragmatic",
+              "referential",
+              "temporal"
+            ],
+            "capability_status": "unknown",
+            "compound_ambiguity": true,
+            "compound_ambiguity_count": 3,
+            "derivation_notes": [
+              "ambiguity_present_from_types"
+            ],
+            "risk_level": "medium"
+          },
+          "rejection_text": null,
+          "requires_re_evaluation": false,
+          "resolution_events": [],
+          "router_trace": {
+            "clarification_targets": [
+              "pragmatic",
+              "referential",
+              "temporal"
+            ],
+            "considered_rules": [
+              "known_unsafe_or_prohibited",
+              "known_incapable",
+              "unknown_or_unverified_capability"
+            ],
+            "matched_rule_id": "unknown_capability",
+            "notes": [
+              "unknown_capability_cannot_execute"
+            ],
+            "recommended_strategy": "clarify",
+            "rejection_reason": null,
+            "requires_re_evaluation": false,
+            "strategy_sequence": []
+          },
+          "safety_action": "return_with_findings",
+          "uncertainty": null
+        },
+        "safety_findings": [],
+        "strategy_sequence": [],
+        "synthetic_only": true,
+        "system_id": "full_type_risk_aware_manager",
+        "system_version": "1.0.0",
+        "unsupported_commitment_findings": []
+      },
+      "raw_output": "{\n  \"intent_summary\": \"Deliver the selected medicine pouch after the scheduled guest arrival at 14:00\",\n  \"cpc\": {\n    \"action\": {\n      \"value\": \"deliver\",\n      \"status\": \"unknown\"\n    },\n    \"object\": {\n      \"value\": \"medicine pouch\",\n      \"status\": \"unknown\"\n    },\n    \"recipient\": {\n      \"value\": \"unknown\",\n      \"status\": \"unknown\"\n    },\n    \"time\": {\n      \"value\": \"after guest arrival\",\n      \"status\": \"unknown\"\n    }\n \n  ,\n  \"constraints\": {\n    \"status\": \"unknown\"\n  ,\n    \"value\": \"unknown\"\n  },\n  \"conditions\": {\n    \"status\": \"unknown\"\n  ,\n    \"value\": \"unknown\"\n  },\n  \"destination\": {\n    \"status\": \"unknown\"\n  ,\n    \"value\": \"unknown\"\n  },\n  \"negation\": {\n    \"status\": \"unknown\"\n  ,\n    \"value\": \"unknown\"\n  },\n  \"quantity\": {\n    \"status\": \"unknown\"\n  ,\n    \"value\": \"unknown\"\n  },\n  \"spatial_relation\": {\n    \"status\": \"unknown\"\n  ,\n    \"value\": \"unknown\"\n  },\n  \"tool\": {\n    \"status\": \"unknown\"\n  ,\n    \"value\": \"unknown\"\n  },\n  \"object_attributes\": {\n    \"status\": \"unknown\"\n  ,\n    \"value\": \"unknown\"\n  },\n  \"actor\": {\n    \"status\": \"unknown\"\n  ,\n    \"value\": \"unknown\"\n  }\n}\n\n,\n  \"pilot_ambiguity_types\": [\n    \"pragmatic\",\n    \"temporal_reference\",\n    \"recipient_reference\"\n  ]\n  \n  ,\n  \"pilot_capability_status\": \"unauthorized\",\n  \"speech_act\": \"indirect_request\",\n  \"unresolved_slots\": [\n    \"recipient\",\n    \"time\",\n    \"action\"\n  ]\n  \n  ,\n  \"uncertainty\": 0.75\n  ,\n  \"risk_level\": \"medium\"\n  }",
+      "record_id": "CA-0735",
+      "schema_valid": true,
+      "supports_ambiguity_prediction": true,
+      "supports_capability_prediction": true,
+      "system_id": "rich_conservative_manager_v2",
+      "system_version": "2.0.0",
+      "terminal_strategy": "clarify"
+    },
+    "context_blind": {
+      "ambiguity_types": [
+        "pragmatic",
+        "recipient_reference",
+        "temporal_reference"
+      ],
+      "analysis_attempts": [
+        {
+          "attempt": 1,
+          "max_new_tokens": 4096,
+          "mode": "thinking",
+          "raw_chars": 6082,
+          "raw_sha256": "5c85ddebb090af347de48430b15438e90d2f0e919967e7e7277b41e517104179",
+          "validation_error": "bad_speech_act:pragmatic"
+        },
+        {
+          "attempt": 2,
+          "max_new_tokens": 8192,
+          "mode": "thinking_retry",
+          "raw_chars": 8519,
+          "raw_sha256": "0bf4904855b5c1bda17a7baea14d03e767dbdffc38b7f4020303d59383cf04ba",
+          "validation_error": "bad_intent_summary"
+        },
+        {
+          "attempt": 3,
+          "constraint": {
+            "constraint_initialised": true,
+            "generated_token_count": 482,
+            "maximum_output_tokens": 1024,
+            "response_mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+            "termination_reason": "eos_or_constraint_stop",
+            "transport_status": "constrained_generated"
+          },
+          "max_new_tokens": 1024,
+          "mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+          "raw_chars": 1616,
+          "raw_sha256": "7892c37398656e8f244a6ca9a86dd0e518cfc6a00d1717e4dca2bf67f89a280c",
+          "validation_error": null
+        }
+      ],
+      "capability_status": "unauthorized",
+      "claim_boundary": "separately_versioned_from_frozen_t39",
+      "error": null,
+      "execution_mode": "cluster-gpu-goal-first-v2",
+      "failed": false,
+      "intent_summary": "Deliver the selected medicine pouch after a scheduled guest arrival",
+      "latency_ms": 107540.05237855017,
+      "model_id": "Qwen/Qwen3-8B@b968826d9c46dd6066d109eabc6255188de91218",
+      "parsed": {
+        "analysis": {
+          "ambiguity_present": true,
+          "ambiguity_types": [
+            "pragmatic",
+            "referential",
+            "temporal"
+          ],
+          "analysis_provenance": {
+            "analysis_id": "bd4f67e8a5efd2c0e50c64d30686c41ac7df9c1c76847bdb4793fcd7e1554679",
+            "method": "context_blind",
+            "notes": "ablated_input_hash=bd4f67e8a5efd2c0e50c64d30686c41ac7df9c1c76847bdb4793fcd7e1554679;source_input_hash=bd4f67e8a5efd2c0e50c64d30686c41ac7df9c1c76847bdb4793fcd7e1554679;no_gold_in_prompt;scene_licence_dropped=recipient,time,action",
+            "provider_id": "goal_first_v2_context_blind",
+            "provider_version": "goal-first-manager-v2"
+          },
+          "candidate_interpretations": [],
+          "capability_status": "unknown",
+          "clarification_question": null,
+          "clarification_targets": [],
+          "compound_ambiguity": true,
+          "compound_ambiguity_count": 3,
+          "context_sampling_uncertainty": {
+            "agreement": 0.19999999999999996,
+            "score": 0.8,
+            "variant_count": 1
+          },
+          "cpc": {
+            "action": {
+              "status": "filled",
+              "value": "deliver"
+            },
+            "actor": {
+              "status": "filled",
+              "value": "none"
+            },
+            "conditions": {
+              "status": "filled",
+              "value": "can the selected medicine pouch be delivered"
+            },
+            "constraints": {
+              "status": "filled",
+              "value": "after a scheduled guest arrival"
+            },
+            "destination": {
+              "status": "filled",
+              "value": "after a scheduled guest arrival"
+            },
+            "negation": {
+              "status": "filled",
+              "value": "can the selected medicine pouch be delivered"
+            },
+            "object": {
+              "status": "filled",
+              "value": "medicine pouch"
+            },
+            "object_attributes": {
+              "status": "filled",
+              "value": "medicine pouch"
+            },
+            "quantity": {
+              "status": "filled",
+              "value": "selected medicine pouch"
+            },
+            "recipient": {
+              "status": "filled",
+              "value": "scheduled guest"
+            },
+            "spatial_relation": {
+              "status": "filled",
+              "value": "after a scheduled guest arrival"
+            },
+            "time": {
+              "status": "filled",
+              "value": "after scheduled guest arrival"
+            },
+            "tool": {
+              "status": "filled",
+              "value": "none"
+            }
+          },
+          "findings": [
+            "pilot_ambiguity_types:[\"pragmatic\",\"recipient_reference\",\"temporal_reference\"]",
+            "pilot_capability_status:unauthorized",
+            "intent_summary_present"
+          ],
+          "intent_summary": "Deliver the selected medicine pouch after a scheduled guest arrival",
+          "primary_ambiguity_type": "pragmatic",
+          "recommended_strategy": "face_preserving_rejection",
+          "rejection_reason": "unsafe_or_prohibited_action",
+          "resolution_evidence": [],
+          "resolution_method": null,
+          "resolved_slots": [
+            {
+              "slot_name": "action",
+              "value": "deliver"
+            },
+            {
+              "slot_name": "actor",
+              "value": "none"
+            },
+            {
+              "slot_name": "object",
+              "value": "medicine pouch"
+            },
+            {
+              "slot_name": "object_attributes",
+              "value": "medicine pouch"
+            },
+            {
+              "slot_name": "destination",
+              "value": "after a scheduled guest arrival"
+            },
+            {
+              "slot_name": "spatial_relation",
+              "value": "after a scheduled guest arrival"
+            },
+            {
+              "slot_name": "quantity",
+              "value": "selected medicine pouch"
+            },
+            {
+              "slot_name": "time",
+              "value": "after scheduled guest arrival"
+            },
+            {
+              "slot_name": "recipient",
+              "value": "scheduled guest"
+            },
+            {
+              "slot_name": "tool",
+              "value": "none"
+            },
+            {
+              "slot_name": "conditions",
+              "value": "can the selected medicine pouch be delivered"
+            },
+            {
+              "slot_name": "constraints",
+              "value": "after a scheduled guest arrival"
+            },
+            {
+              "slot_name": "negation",
+              "value": "can the selected medicine pouch be delivered"
+            }
+          ],
+          "risk_level": "medium",
+          "risk_relevant": true,
+          "selected_interpretation": null,
+          "speech_act": "indirect_request",
+          "strategy_sequence": [],
+          "supporting_evidence": [],
+          "unresolved_slots": [],
+          "unsupported_specificity": []
+        },
+        "clarification_question": null,
+        "clarification_targets": [],
+        "execution_status": "ok",
+        "official_result": false,
+        "provider_provenance": {
+          "provider_id": "cached_analysis",
+          "provider_version": "1.0.0"
+        },
+        "recommended_strategy": "face_preserving_rejection",
+        "record_id": "CA-0735",
+        "rejection_reason": "unsafe_or_prohibited_action",
+        "resolved_slots": [
+          {
+            "slot_name": "action",
+            "value": "deliver"
+          },
+          {
+            "slot_name": "actor",
+            "value": "none"
+          },
+          {
+            "slot_name": "object",
+            "value": "medicine pouch"
+          },
+          {
+            "slot_name": "object_attributes",
+            "value": "medicine pouch"
+          },
+          {
+            "slot_name": "destination",
+            "value": "after a scheduled guest arrival"
+          },
+          {
+            "slot_name": "spatial_relation",
+            "value": "after a scheduled guest arrival"
+          },
+          {
+            "slot_name": "quantity",
+            "value": "selected medicine pouch"
+          },
+          {
+            "slot_name": "time",
+            "value": "after scheduled guest arrival"
+          },
+          {
+            "slot_name": "recipient",
+            "value": "scheduled guest"
+          },
+          {
+            "slot_name": "tool",
+            "value": "none"
+          },
+          {
+            "slot_name": "conditions",
+            "value": "can the selected medicine pouch be delivered"
+          },
+          {
+            "slot_name": "constraints",
+            "value": "after a scheduled guest arrival"
+          },
+          {
+            "slot_name": "negation",
+            "value": "can the selected medicine pouch be delivered"
+          }
+        ],
+        "result_hash": "ad7caf72f7ded3cbcc7eee1a84d50cd03eed292a307c73df82924c965690d8d1",
+        "run_id": null,
+        "run_mode": null,
+        "runtime_metadata": {
+          "analysis_identity": {
+            "analysis_content_hash": "a51617cf8515206a2cd72a54c1c59f67041d5c41c214a2583fce257a94efb487",
+            "analysis_variant": "context_blind",
+            "model_strategy_id": null,
+            "provider_id": "goal_first_v2_context_blind",
+            "provider_version": "goal-first-manager-v2",
+            "record_id": "CA-0735",
+            "source_input_hash": "bd4f67e8a5efd2c0e50c64d30686c41ac7df9c1c76847bdb4793fcd7e1554679"
+          },
+          "analysis_identity_fingerprint": "b456f9ad0621189b8030e9d1acdb934a19f64fdf2b1579dacf4a418323fc32c2",
+          "awaits_t28_adapter": true,
+          "classification": {
+            "ambiguity_present": true,
+            "ambiguity_types": [
+              "pragmatic",
+              "referential",
+              "temporal"
+            ],
+            "capability_status": "unknown",
+            "compound_ambiguity": true,
+            "compound_ambiguity_count": 3,
+            "derivation_notes": [
+              "ambiguity_present_from_types"
+            ],
+            "risk_level": "medium"
+          },
+          "context_ablation": {
+            "ablated_input_hash": "bd4f67e8a5efd2c0e50c64d30686c41ac7df9c1c76847bdb4793fcd7e1554679",
+            "capability_context_removed": true,
+            "dialogue_history_removed": true,
+            "rejected_full_context_cache": false,
+            "rejection_reason": null,
+            "scene_context_removed": true,
+            "stripped_context_derived_fields": false
+          },
+          "original_input_unmutated": true,
+          "rejection_text": "I need to decline that request because it would be unsafe under the current constraints.",
+          "requires_re_evaluation": false,
+          "resolution_events": [],
+          "router_trace": {
+            "clarification_targets": [],
+            "considered_rules": [
+              "goal_first_v2",
+              "known_unsafe_or_prohibited"
+            ],
+            "matched_rule_id": "known_unsafe_or_prohibited",
+            "notes": [],
+            "recommended_strategy": "face_preserving_rejection",
+            "rejection_reason": "unsafe_or_prohibited_action",
+            "requires_re_evaluation": false,
+            "strategy_sequence": []
+          },
+          "safety_action": "return_with_findings",
+          "uncertainty": null
+        },
+        "safety_findings": [],
+        "strategy_sequence": [],
+        "synthetic_only": true,
+        "system_id": "context_blind_manager",
+        "system_version": "1.0.0",
+        "unsupported_commitment_findings": []
+      },
+      "raw_output": "{\n  \"intent_summary\": \"Deliver the selected medicine pouch after a scheduled guest arrival\",\n  \"cpc\": {\n    \"action\": {\n      \"value\": \"deliver\",\n      \"status\": \"unknown\"\n    },\n    \"object\": {\n      \"value\": \"medicine pouch\",\n      \"status\": \"unknown\"\n    },\n    \"recipient\": {\n      \"value\": \"scheduled guest\",\n      \"status\": \"unknown\"\n    },\n    \"time\": {\n      \"value\": \"after scheduled guest arrival\",\n      \"status\": \"unknown\"\n    }\n \n  ,\n  \"constraints\": {\n    \"status\": \"unknown\"\n  ,\n    \"value\": \"after a scheduled guest arrival\"\n  },\n  \"conditions\": {\n    \"status\": \"unknown\"\n  ,\n    \"value\": \"can the selected medicine pouch be delivered\"\n  },\n  \"destination\": {\n    \"status\": \"unknown\"\n  ,\n    \"value\": \"after a scheduled guest arrival\"\n  },\n  \"negation\": {\n    \"status\": \"unknown\"\n  ,\n    \"value\": \"can the selected medicine pouch be delivered\"\n  },\n  \"quantity\": {\n    \"status\": \"unknown\"\n  ,\n    \"value\": \"selected medicine pouch\"\n  },\n  \"spatial_relation\": {\n    \"status\": \"unknown\"\n  ,\n    \"value\": \"after a scheduled guest arrival\"\n  },\n  \"tool\": {\n    \"status\": \"unknown\"\n  ,\n    \"value\": \"none\"\n  },\n  \"object_attributes\": {\n    \"status\": \"unknown\"\n  ,\n    \"value\": \"medicine pouch\"\n  },\n  \"actor\": {\n    \"status\": \"unknown\"\n  ,\n    \"value\": \"none\"\n  }\n}\n\n,\n  \"pilot_ambiguity_types\": [\n    \"pragmatic\",\n    \"temporal_reference\",\n    \"recipient_reference\"\n  ]\n  \n  ,\n  \"pilot_capability_status\": \"unauthorized\"\n  \n  ,\n  \"speech_act\": \"indirect_request\"\n  \n  ,\n  \"risk_level\": \"medium\"\n  \n  ,\n  \"uncertainty\": 0.8\n  \n\n\n\n,  \n  \"unresolved_slots\": [\n    \"recipient\",\n    \"time\",\n    \"action\"\n  ]\n}",
+      "record_id": "CA-0735",
+      "schema_valid": true,
+      "supports_ambiguity_prediction": true,
+      "supports_capability_prediction": true,
+      "system_id": "goal_first_context_blind_v2",
+      "system_version": "2.0.0",
+      "terminal_strategy": "face_preserving_rejection"
+    }
+  },
+  "provenance": {
+    "source_sha256": "f33b1e29f1e8aa256a475f07213aa07247def47d8e2148d54a472a40b71b05c9",
+    "gold_sha256": "5e23ad1a92ff1873c8f039a8ce560a111dd6fb6b8ae8c11d6cf34dbfa1c360db",
+    "t07_final_zip_sha256": "34ca50e034ca37b617068bb50c734d12fa26282fb5eec563c11ead700163e491",
+    "inherited_t07_zip_sha256": "0305b1e9ab062876ee6ee89778cc6028d2eaf01718b7dd0295944e7d9cb81a01",
+    "note": "Goal-First, Degree, Timid, and Context-Blind predictions are inherited from the earlier T0.7 run; official intent and comparison come from the final T0.7 archive."
+  }
+}

@@ -1,0 +1,1403 @@
+{
+  "record_id": "CA-0772",
+  "frozen_source": {
+    "capability_context": "Workshop service robot can carry small parts, push carts, scan work orders, and use low-force inspection tools.",
+    "command": "Move the selected motor housing to its assigned destination shortly.",
+    "dialogue_history": [],
+    "record_id": "CA-0772",
+    "scene_context": "Assembly bench in a workshop. Two motor housings are visible. The red one has an active MOVE tag and the green one has a completed tag. The active tag assigns the vice station as its destination. For ordinary low-risk moves, the local handbook defines 'shortly' as within three minutes."
+  },
+  "frozen_gold": {
+    "ambiguity_types": [
+      "fuzzy_temporal",
+      "object_reference"
+    ],
+    "annotator_b_era": "glm_era",
+    "annotator_b_model": "glm-5.2-high",
+    "capability_status": "capable",
+    "field_status": {
+      "ambiguity_types": "auto_agree",
+      "capability_status": "human_auditor:independent_from_route",
+      "record_validity": "auto_agree",
+      "strategy_sequence": "from_A_matching_terminal",
+      "terminal_strategy": "auto_agree"
+    },
+    "gold_lifecycle": "final_gold",
+    "gold_status": "auto_agree",
+    "human_gate_required": false,
+    "provenance": {
+      "agreement_label": "pilot_annotation_agreement",
+      "annotator_a_sha256": "685e41e0a137a7edb874267ea9746d511348f0108733709cbd714480cfb93c95",
+      "annotator_b_sha256": "23ef820e23db54356e0f090dbefce204c9a31373b4b7c1797f014c9c5b155111",
+      "capability_route_decouple": "conditionally_capable remapped to capable: no evidenced external capability precondition; linguistic silently_resolve/clarify is not a capability condition",
+      "gold_policy": "use_existing_pilot_adjudicated_gold",
+      "input_sha256": "e356b3215ace4d674d53309f02b48585e7f1c3e5c3e2c2778b93957b9f2c13cf",
+      "pilot_gold_sha256": "fa194939d3335232d0467f5e05ca8ac55818311d30cef9e79696ce2d863f35e6",
+      "protocol": "pilot_adjudicated_gold_on_capability_repaired_source",
+      "repaired_input_sha256": "ff87352ffccce1e01e70be1340e7f2269e7614550afb9579e7a05be100d8b440"
+    },
+    "record_id": "CA-0772",
+    "record_validity": "valid",
+    "strategy_sequence": [
+      "silently_resolve",
+      "execute"
+    ],
+    "terminal_strategy": "execute"
+  },
+  "t07_comparison": {
+    "record_id": "CA-0772",
+    "gold_route": "execute",
+    "raw_route": "execute",
+    "ft_route": "execute",
+    "gf_route": "refuse",
+    "raw_route_ok": "True",
+    "ft_route_ok": "True",
+    "gf_route_ok": "False",
+    "raw_official_intent": "True",
+    "ft_official_intent": "True",
+    "gf_official_intent": "True",
+    "blind_official_intent": "True"
+  },
+  "t07_official_intent": {
+    "context_blind_official_intent": true,
+    "degree_official_intent_shared_gf": true,
+    "finetune_official_intent": true,
+    "goal_first_official_intent": true,
+    "raw_official_intent": true,
+    "record_id": "CA-0772",
+    "timid_official_intent_shared_gf": true
+  },
+  "t07_predictions": {
+    "raw_qwen": {
+      "ambiguity_types": [],
+      "capability_status": "capable",
+      "error": null,
+      "execution_mode": "final_close_intent_box",
+      "failed": false,
+      "intent_summary": "Move the red motor housing to the vice station within three minutes.",
+      "latency_ms": 15267.39279460162,
+      "parsed": {
+        "ambiguity_types": [],
+        "capability_status": "capable",
+        "intent_summary": "Move the red motor housing to the vice station within three minutes.",
+        "speech_act": "directive_command",
+        "terminal_strategy": "execute"
+      },
+      "raw_output": "<think>\nOkay, let's break down this command. The user says, \"Move the selected motor housing to its assigned destination shortly.\" First, I need to identify the intent. The main job here is moving a motor housing to its destination, which is specified as the vice station because the red one has an active MOVE tag. The key point is the time frame: 'shortly' which, according to the handbook, means within three minutes.\n\nNext, the speech act. The command is direct, telling the robot what to do. So it's a directive_command. There's no ambiguity in the action itself, but I should check for any ambiguity types. The term 'shortly' might be considered fuzzy_temporal since it's a relative time frame. Also, 'assigned destination' refers to the vice station, which is clear from the scene context. The selected motor housing is the red one with the active tag, so object_reference might apply here. Wait, but the command doesn't use a pronoun, so maybe no pronoun_reference. The destination is specified as the vice station, so maybe no spatial_reference ambiguity. \n\nLooking at the capability context, the robot can carry small parts and push carts. Moving a motor housing might be possible if it's considered a small part. But the command mentions 'assigned destination' which is the vice station. The robot can push carts, so maybe it's capable. However, the exact movement might depend on the robot's ability to handle the motor housing. The handbook defines 'shortly' as three minutes, which is a time constraint. The capability_status would be conditionally_capable because it depends on the robot's ability to move the housing within the time frame. \n\nTerminal strategy would be execute if the robot can do it, but since it's conditional, maybe clarify? Wait, the capability_status is conditionally_capable, so the terminal strategy would be clarify to confirm the time constraint. Wait, but the user's command is to move it shortly, and the robot can do it if it meets the time. So the terminal strategy would be execute if the robot can handle it. But since the time is defined, maybe it's capable. Wait, the capability_context says the robot can carry small parts. If the motor housing is considered a small part, then capable. But the command is to move it to the destination, which is the vice station. The robot can push carts, so maybe it's capable. Therefore, capability_status is capable. \n\nSo, the ambiguity types would include fuzzy_temporal for 'shortly' and maybe object_reference for 'selected motor housing' since it refers to the red one. But the command explicitly mentions 'selected motor housing', so maybe no ambiguity there. Wait, the scene context says the red one is selected, so the reference is clear. So maybe no ambiguity. But 'shortly' is a time frame that's defined, so it's not vague. Wait, the handbook defines 'shortly' as within three minutes, so it's clear. So no fuzzy_temporal. Then, maybe there's no ambiguity. \n\nWait, the command says 'assigned destination', which is the vice station. That's clear from the scene context. So no ambiguity. So ambiguity_types would be empty. \n\nSo the JSON would have intent_summary as moving the red motor housing to the vice station within three minutes. Speech act is directive_command. Ambiguity_types is empty. Capability_status is capable. Terminal strategy is execute.\n</think>\n\n{\n  \"intent_summary\": \"Move the red motor housing to the vice station within three minutes.\",\n  \"speech_act\": \"directive_command\",\n  \"ambiguity_types\": [],\n  \"capability_status\": \"capable\",\n  \"terminal_strategy\": \"execute\"\n}",
+      "record_id": "CA-0772",
+      "schema_valid": true,
+      "speech_act": "directive_command",
+      "system_id": "direct_base_llm",
+      "terminal_strategy": "execute"
+    },
+    "finetune": {
+      "ambiguity_types": [],
+      "capability_status": "capable",
+      "error": null,
+      "execution_mode": "final_close_intent_box",
+      "failed": false,
+      "intent_summary": "Move the selected motor housing to the vice station within three minutes.",
+      "latency_ms": 12052.059581968933,
+      "parsed": {
+        "ambiguity_types": [],
+        "capability_status": "capable",
+        "intent_summary": "Move the selected motor housing to the vice station within three minutes.",
+        "speech_act": "directive_command",
+        "terminal_strategy": "execute"
+      },
+      "raw_output": "<think>\nOkay, let's break this down. The user's command is to move the selected motor housing to its assigned destination shortly. First, I need to identify the intent. The main job here is moving the motor housing, so the intent summary should mention moving the selected one to its destination soon.\n\nNext, the speech act. The command is direct, telling the robot to perform an action, so it's a directive_command. \n\nLooking at ambiguity types. The term 'shortly' is defined in the context as within three minutes, so that's clear. But 'assigned destination' refers to the vice station, which is specified. Are there any pronouns or references that might be ambiguous? The command mentions 'selected motor housing,' which is the red one with the active MOVE tag. Since the scene context specifies which one is selected, there's no pronoun ambiguity here. Also, 'assigned destination' is clear because the active tag assigns the vice station. So maybe no ambiguity types here. But wait, 'shortly' is a time reference, but it's defined, so maybe not. Let me check the list again. The ambiguity types include temporal_reference, but since 'shortly' is clarified, it's not ambiguous. So the ambiguity_types array can be empty.\n\nCapability status: The robot can carry small parts, push carts, scan work orders, and use low-force tools. Moving a motor housing might be considered a small part. The task is low-risk as per the context, so the robot is capable. So capability_status is capable.\n\nTerminal strategy: Since the command is clear and the robot can perform it, the strategy is execute. No need for clarification.\n\nPutting it all together, the JSON should have the intent_summary as moving the selected motor housing to the vice station soon. Speech act is directive_command. Ambiguity types are empty. Capability is capable. Terminal strategy is execute.\n</think>\n\n{\n  \"intent_summary\": \"Move the selected motor housing to the vice station within three minutes.\",\n  \"speech_act\": \"directive_command\",\n  \"ambiguity_types\": [],\n  \"capability_status\": \"capable\",\n  \"terminal_strategy\": \"execute\"\n}",
+      "record_id": "CA-0772",
+      "schema_valid": true,
+      "speech_act": "directive_command",
+      "system_id": "t28_selected_adapter_llm",
+      "terminal_strategy": "execute"
+    },
+    "goal_first": {
+      "ambiguity_types": [
+        "fuzzy_temporal",
+        "pragmatic"
+      ],
+      "analysis_attempts": [
+        {
+          "attempt": 1,
+          "max_new_tokens": 4096,
+          "mode": "thinking",
+          "raw_chars": 5511,
+          "raw_sha256": "8aecb8e257d2f619caf97ee307c587a2cd9aa33389ae999ac6710bbdc44b77d4",
+          "validation_error": "bad_pilot_ambiguity_types"
+        },
+        {
+          "attempt": 2,
+          "max_new_tokens": 8192,
+          "mode": "thinking_retry",
+          "raw_chars": 8017,
+          "raw_sha256": "cae833da00dac204101bf5597daf94c1e11433b8984c1ebd3a4db2ce25f41516",
+          "validation_error": "bad_pilot_ambiguity_types"
+        },
+        {
+          "attempt": 3,
+          "constraint": {
+            "constraint_initialised": true,
+            "generated_token_count": 473,
+            "maximum_output_tokens": 1024,
+            "response_mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+            "termination_reason": "eos_or_constraint_stop",
+            "transport_status": "constrained_generated"
+          },
+          "max_new_tokens": 1024,
+          "mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+          "raw_chars": 1491,
+          "raw_sha256": "c373020d8fe8415c9554d9dc79d45e3a5f0ed8ec5a99ac7ec9c7643df8b6cd89",
+          "validation_error": null
+        }
+      ],
+      "capability_status": "unauthorized",
+      "claim_boundary": "separately_versioned_from_frozen_t39",
+      "error": null,
+      "execution_mode": "cluster-gpu-goal-first-v2",
+      "failed": false,
+      "intent_summary": "Move the selected motor housing to its assigned destination soon",
+      "latency_ms": 98416.96090297773,
+      "model_id": "Qwen/Qwen3-8B@b968826d9c46dd6066d109eabc6255188de91218",
+      "parsed": {
+        "analysis": {
+          "ambiguity_present": true,
+          "ambiguity_types": [
+            "pragmatic",
+            "temporal"
+          ],
+          "analysis_provenance": {
+            "analysis_id": "8e4b3c03fdc83aeb2ecd10267e2d276ff8796e0c5bc7c3ea97de2e9badcb8f32",
+            "method": "model_generated",
+            "notes": "source_input_hash=8e4b3c03fdc83aeb2ecd10267e2d276ff8796e0c5bc7c3ea97de2e9badcb8f32;no_gold_in_prompt;scene_licence_dropped=destination,time",
+            "provider_id": "goal_first_v2_full_context",
+            "provider_version": "goal-first-manager-v2"
+          },
+          "candidate_interpretations": [],
+          "capability_status": "unknown",
+          "clarification_question": null,
+          "clarification_targets": [],
+          "compound_ambiguity": true,
+          "compound_ambiguity_count": 2,
+          "context_sampling_uncertainty": {
+            "agreement": 0.4,
+            "score": 0.6,
+            "variant_count": 1
+          },
+          "cpc": {
+            "action": {
+              "status": "filled",
+              "value": "Move"
+            },
+            "actor": {
+              "status": "filled",
+              "value": "not applicable"
+            },
+            "conditions": {
+              "status": "filled",
+              "value": "low-risk"
+            },
+            "constraints": {
+              "status": "filled",
+              "value": "within three minutes"
+            },
+            "destination": {
+              "status": "filled",
+              "value": "assigned destination"
+            },
+            "negation": {
+              "status": "filled",
+              "value": "not applicable"
+            },
+            "object": {
+              "status": "filled",
+              "value": "selected motor housing"
+            },
+            "object_attributes": {
+              "status": "filled",
+              "value": "not applicable"
+            },
+            "quantity": {
+              "status": "filled",
+              "value": "not applicable"
+            },
+            "recipient": {
+              "status": "filled",
+              "value": "workshop service robot"
+            },
+            "spatial_relation": {
+              "status": "filled",
+              "value": "not specified"
+            },
+            "time": {
+              "status": "filled",
+              "value": "shortly"
+            },
+            "tool": {
+              "status": "filled",
+              "value": "low-force inspection tools"
+            }
+          },
+          "findings": [
+            "pilot_ambiguity_types:[\"fuzzy_temporal\",\"pragmatic\"]",
+            "pilot_capability_status:unauthorized",
+            "intent_summary_present"
+          ],
+          "intent_summary": "Move the selected motor housing to its assigned destination soon",
+          "primary_ambiguity_type": "pragmatic",
+          "recommended_strategy": "face_preserving_rejection",
+          "rejection_reason": "unsafe_or_prohibited_action",
+          "resolution_evidence": [],
+          "resolution_method": null,
+          "resolved_slots": [
+            {
+              "slot_name": "action",
+              "value": "Move"
+            },
+            {
+              "slot_name": "actor",
+              "value": "not applicable"
+            },
+            {
+              "slot_name": "object",
+              "value": "selected motor housing"
+            },
+            {
+              "slot_name": "object_attributes",
+              "value": "not applicable"
+            },
+            {
+              "slot_name": "destination",
+              "value": "assigned destination"
+            },
+            {
+              "slot_name": "spatial_relation",
+              "value": "not specified"
+            },
+            {
+              "slot_name": "quantity",
+              "value": "not applicable"
+            },
+            {
+              "slot_name": "time",
+              "value": "shortly"
+            },
+            {
+              "slot_name": "recipient",
+              "value": "workshop service robot"
+            },
+            {
+              "slot_name": "tool",
+              "value": "low-force inspection tools"
+            },
+            {
+              "slot_name": "conditions",
+              "value": "low-risk"
+            },
+            {
+              "slot_name": "constraints",
+              "value": "within three minutes"
+            },
+            {
+              "slot_name": "negation",
+              "value": "not applicable"
+            }
+          ],
+          "risk_level": "low",
+          "risk_relevant": true,
+          "selected_interpretation": null,
+          "speech_act": "directive_command",
+          "strategy_sequence": [],
+          "supporting_evidence": [],
+          "unresolved_slots": [],
+          "unsupported_specificity": []
+        },
+        "clarification_question": null,
+        "clarification_targets": [],
+        "execution_status": "ok",
+        "official_result": false,
+        "provider_provenance": {
+          "provider_id": "cached_analysis",
+          "provider_version": "1.0.0"
+        },
+        "recommended_strategy": "face_preserving_rejection",
+        "record_id": "CA-0772",
+        "rejection_reason": "unsafe_or_prohibited_action",
+        "resolved_slots": [
+          {
+            "slot_name": "action",
+            "value": "Move"
+          },
+          {
+            "slot_name": "actor",
+            "value": "not applicable"
+          },
+          {
+            "slot_name": "object",
+            "value": "selected motor housing"
+          },
+          {
+            "slot_name": "object_attributes",
+            "value": "not applicable"
+          },
+          {
+            "slot_name": "destination",
+            "value": "assigned destination"
+          },
+          {
+            "slot_name": "spatial_relation",
+            "value": "not specified"
+          },
+          {
+            "slot_name": "quantity",
+            "value": "not applicable"
+          },
+          {
+            "slot_name": "time",
+            "value": "shortly"
+          },
+          {
+            "slot_name": "recipient",
+            "value": "workshop service robot"
+          },
+          {
+            "slot_name": "tool",
+            "value": "low-force inspection tools"
+          },
+          {
+            "slot_name": "conditions",
+            "value": "low-risk"
+          },
+          {
+            "slot_name": "constraints",
+            "value": "within three minutes"
+          },
+          {
+            "slot_name": "negation",
+            "value": "not applicable"
+          }
+        ],
+        "result_hash": "3c9a6cf8f4d00f1e8096a5ee2fc1fec01c6173f03cdbf49b9e6b6b0434b2d63a",
+        "run_id": null,
+        "run_mode": null,
+        "runtime_metadata": {
+          "awaits_t28_adapter": true,
+          "classification": {
+            "ambiguity_present": true,
+            "ambiguity_types": [
+              "pragmatic",
+              "temporal"
+            ],
+            "capability_status": "unknown",
+            "compound_ambiguity": true,
+            "compound_ambiguity_count": 2,
+            "derivation_notes": [
+              "ambiguity_present_from_types"
+            ],
+            "risk_level": "low"
+          },
+          "rejection_text": "I need to decline that request because it would be unsafe under the current constraints.",
+          "requires_re_evaluation": false,
+          "resolution_events": [],
+          "router_trace": {
+            "clarification_targets": [],
+            "considered_rules": [
+              "goal_first_v2",
+              "known_unsafe_or_prohibited"
+            ],
+            "matched_rule_id": "known_unsafe_or_prohibited",
+            "notes": [],
+            "recommended_strategy": "face_preserving_rejection",
+            "rejection_reason": "unsafe_or_prohibited_action",
+            "requires_re_evaluation": false,
+            "strategy_sequence": []
+          },
+          "safety_action": "return_with_findings",
+          "uncertainty": null
+        },
+        "safety_findings": [],
+        "strategy_sequence": [],
+        "synthetic_only": true,
+        "system_id": "goal_first_manager_v2",
+        "system_version": "2.0.0",
+        "unsupported_commitment_findings": []
+      },
+      "raw_output": "{\n  \"intent_summary\": \"Move the selected motor housing to its assigned destination soon\",\n  \"cpc\": {\n    \"action\": {\n      \"value\": \"Move\",\n      \"status\": \"unknown\"\n    },\n    \"object\": {\n      \"value\": \"selected motor housing\",\n      \"status\": \"unknown\"\n    },\n    \"destination\": {\n      \"value\": \"assigned destination\",\n      \"status\": \"unknown\"\n    },\n    \"time\": {\n      \"value\": \"shortly\",\n      \"status\": \"unknown\"\n    }\n \n  ,\n  \"conditions\": {\n    \"status\": \"unknown\"\n  ,\n    \"value\": \"low-risk\"\n  },\n  \"constraints\": {\n    \"status\": \"unknown\"\n  ,\n    \"value\": \"within three minutes\"\n  }\n  ,\n  \"recipient\": {\n    \"status\": \"unknown\"\n  ,\n    \"value\": \"workshop service robot\"\n  }\n  ,\n  \"tool\": {\n    \"status\": \"unknown\"\n  ,\n    \"value\": \"low-force inspection tools\"\n  }\n  ,\n  \"spatial_relation\": {\n    \"status\": \"unknown\"\n  ,\n    \"value\": \"not specified\"\n  }\n  ,\n  \"negation\": {\n    \"status\": \"unknown\"\n  ,\n    \"value\": \"not applicable\"\n  }\n  ,\n  \"quantity\": {\n    \"status\": \"unknown\"\n  ,\n    \"value\": \"not applicable\"\n  }\n  ,\n  \"object_attributes\": {\n    \"status\": \"unknown\"\n  ,\n    \"value\": \"not applicable\"\n  }\n  ,\n  \"actor\": {\n    \"status\": \"unknown\"\n  ,\n    \"value\": \"not applicable\"\n  }\n  }\n  ,\n  \"pilot_ambiguity_types\": [\n    \"fuzzy_temporal\"\n  ,\n    \"pragmatic\"\n  ]\n  ,\n  \"pilot_capability_status\": \"unauthorized\"\n  ,\n  \"unresolved_slots\": [\n    \"destination\"\n  ,\n    \"time\"\n  ]\n  ,\n  \"uncertainty\": 0.6\n  ,\n  \"risk_level\": \"low\"\n  ,\n  \"speech_act\": \"directive_command\"\n  }\n ",
+      "record_id": "CA-0772",
+      "schema_valid": true,
+      "supports_ambiguity_prediction": true,
+      "supports_capability_prediction": true,
+      "system_id": "goal_first_manager_v2",
+      "system_version": "2.0.0",
+      "terminal_strategy": "face_preserving_rejection"
+    },
+    "degree": {
+      "ambiguity_types": [
+        "fuzzy_temporal",
+        "pragmatic"
+      ],
+      "analysis_attempts": [
+        {
+          "attempt": 1,
+          "max_new_tokens": 4096,
+          "mode": "thinking",
+          "raw_chars": 5511,
+          "raw_sha256": "8aecb8e257d2f619caf97ee307c587a2cd9aa33389ae999ac6710bbdc44b77d4",
+          "validation_error": "bad_pilot_ambiguity_types"
+        },
+        {
+          "attempt": 2,
+          "max_new_tokens": 8192,
+          "mode": "thinking_retry",
+          "raw_chars": 8017,
+          "raw_sha256": "cae833da00dac204101bf5597daf94c1e11433b8984c1ebd3a4db2ce25f41516",
+          "validation_error": "bad_pilot_ambiguity_types"
+        },
+        {
+          "attempt": 3,
+          "constraint": {
+            "constraint_initialised": true,
+            "generated_token_count": 473,
+            "maximum_output_tokens": 1024,
+            "response_mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+            "termination_reason": "eos_or_constraint_stop",
+            "transport_status": "constrained_generated"
+          },
+          "max_new_tokens": 1024,
+          "mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+          "raw_chars": 1491,
+          "raw_sha256": "c373020d8fe8415c9554d9dc79d45e3a5f0ed8ec5a99ac7ec9c7643df8b6cd89",
+          "validation_error": null
+        }
+      ],
+      "capability_status": "unauthorized",
+      "claim_boundary": "separately_versioned_from_frozen_t39",
+      "error": null,
+      "execution_mode": "cluster-gpu-goal-first-v2",
+      "failed": false,
+      "intent_summary": "Move the selected motor housing to its assigned destination soon",
+      "latency_ms": 98416.96090297773,
+      "model_id": "Qwen/Qwen3-8B@b968826d9c46dd6066d109eabc6255188de91218",
+      "parsed": {
+        "analysis": {
+          "ambiguity_present": true,
+          "ambiguity_types": [
+            "pragmatic",
+            "temporal"
+          ],
+          "analysis_provenance": {
+            "analysis_id": "8e4b3c03fdc83aeb2ecd10267e2d276ff8796e0c5bc7c3ea97de2e9badcb8f32",
+            "method": "model_generated",
+            "notes": "source_input_hash=8e4b3c03fdc83aeb2ecd10267e2d276ff8796e0c5bc7c3ea97de2e9badcb8f32;no_gold_in_prompt;scene_licence_dropped=destination,time",
+            "provider_id": "goal_first_v2_full_context",
+            "provider_version": "goal-first-manager-v2"
+          },
+          "candidate_interpretations": [],
+          "capability_status": "unknown",
+          "clarification_question": "Could you clarify what you would like me to do?",
+          "clarification_targets": [
+            "intent"
+          ],
+          "compound_ambiguity": true,
+          "compound_ambiguity_count": 2,
+          "context_sampling_uncertainty": {
+            "agreement": 0.4,
+            "score": 0.6,
+            "variant_count": 1
+          },
+          "cpc": {
+            "action": {
+              "status": "filled",
+              "value": "Move"
+            },
+            "actor": {
+              "status": "filled",
+              "value": "not applicable"
+            },
+            "conditions": {
+              "status": "filled",
+              "value": "low-risk"
+            },
+            "constraints": {
+              "status": "filled",
+              "value": "within three minutes"
+            },
+            "destination": {
+              "status": "filled",
+              "value": "assigned destination"
+            },
+            "negation": {
+              "status": "filled",
+              "value": "not applicable"
+            },
+            "object": {
+              "status": "filled",
+              "value": "selected motor housing"
+            },
+            "object_attributes": {
+              "status": "filled",
+              "value": "not applicable"
+            },
+            "quantity": {
+              "status": "filled",
+              "value": "not applicable"
+            },
+            "recipient": {
+              "status": "filled",
+              "value": "workshop service robot"
+            },
+            "spatial_relation": {
+              "status": "filled",
+              "value": "not specified"
+            },
+            "time": {
+              "status": "filled",
+              "value": "shortly"
+            },
+            "tool": {
+              "status": "filled",
+              "value": "low-force inspection tools"
+            }
+          },
+          "findings": [
+            "pilot_ambiguity_types:[\"fuzzy_temporal\",\"pragmatic\"]",
+            "pilot_capability_status:unauthorized",
+            "intent_summary_present"
+          ],
+          "intent_summary": "Move the selected motor housing to its assigned destination soon",
+          "primary_ambiguity_type": "pragmatic",
+          "recommended_strategy": "clarify",
+          "rejection_reason": null,
+          "resolution_evidence": [],
+          "resolution_method": null,
+          "resolved_slots": [
+            {
+              "slot_name": "action",
+              "value": "Move"
+            },
+            {
+              "slot_name": "actor",
+              "value": "not applicable"
+            },
+            {
+              "slot_name": "object",
+              "value": "selected motor housing"
+            },
+            {
+              "slot_name": "object_attributes",
+              "value": "not applicable"
+            },
+            {
+              "slot_name": "destination",
+              "value": "assigned destination"
+            },
+            {
+              "slot_name": "spatial_relation",
+              "value": "not specified"
+            },
+            {
+              "slot_name": "quantity",
+              "value": "not applicable"
+            },
+            {
+              "slot_name": "time",
+              "value": "shortly"
+            },
+            {
+              "slot_name": "recipient",
+              "value": "workshop service robot"
+            },
+            {
+              "slot_name": "tool",
+              "value": "low-force inspection tools"
+            },
+            {
+              "slot_name": "conditions",
+              "value": "low-risk"
+            },
+            {
+              "slot_name": "constraints",
+              "value": "within three minutes"
+            },
+            {
+              "slot_name": "negation",
+              "value": "not applicable"
+            }
+          ],
+          "risk_level": "low",
+          "risk_relevant": true,
+          "selected_interpretation": null,
+          "speech_act": "directive_command",
+          "strategy_sequence": [],
+          "supporting_evidence": [],
+          "unresolved_slots": [],
+          "unsupported_specificity": []
+        },
+        "clarification_question": "Could you clarify what you would like me to do?",
+        "clarification_targets": [
+          "intent"
+        ],
+        "execution_status": "ok",
+        "official_result": false,
+        "provider_provenance": {
+          "shared_analysis_fingerprint": "f8e2e293d173b52ff891f25c2feeeeb0f1046bd5743021695a5e6c56286585b1"
+        },
+        "recommended_strategy": "clarify",
+        "record_id": "CA-0772",
+        "rejection_reason": null,
+        "resolved_slots": [
+          {
+            "slot_name": "action",
+            "value": "Move"
+          },
+          {
+            "slot_name": "actor",
+            "value": "not applicable"
+          },
+          {
+            "slot_name": "object",
+            "value": "selected motor housing"
+          },
+          {
+            "slot_name": "object_attributes",
+            "value": "not applicable"
+          },
+          {
+            "slot_name": "destination",
+            "value": "assigned destination"
+          },
+          {
+            "slot_name": "spatial_relation",
+            "value": "not specified"
+          },
+          {
+            "slot_name": "quantity",
+            "value": "not applicable"
+          },
+          {
+            "slot_name": "time",
+            "value": "shortly"
+          },
+          {
+            "slot_name": "recipient",
+            "value": "workshop service robot"
+          },
+          {
+            "slot_name": "tool",
+            "value": "low-force inspection tools"
+          },
+          {
+            "slot_name": "conditions",
+            "value": "low-risk"
+          },
+          {
+            "slot_name": "constraints",
+            "value": "within three minutes"
+          },
+          {
+            "slot_name": "negation",
+            "value": "not applicable"
+          }
+        ],
+        "result_hash": "859c29f0d23929eea300d437d3bebc90af7b01b4f0187c5848d0ef885da55e84",
+        "run_id": null,
+        "run_mode": null,
+        "runtime_metadata": {
+          "shared_analysis_fingerprint": "f8e2e293d173b52ff891f25c2feeeeb0f1046bd5743021695a5e6c56286585b1",
+          "thresholds_status": "unfrozen",
+          "thresholds_valid_for_official_use": false,
+          "uncertainty_score": 0.6,
+          "uses_type_risk_capability_precedence": false
+        },
+        "safety_findings": [],
+        "strategy_sequence": [],
+        "synthetic_only": true,
+        "system_id": "degree_based_router",
+        "system_version": "1.0.0",
+        "unsupported_commitment_findings": []
+      },
+      "raw_output": "{\n  \"intent_summary\": \"Move the selected motor housing to its assigned destination soon\",\n  \"cpc\": {\n    \"action\": {\n      \"value\": \"Move\",\n      \"status\": \"unknown\"\n    },\n    \"object\": {\n      \"value\": \"selected motor housing\",\n      \"status\": \"unknown\"\n    },\n    \"destination\": {\n      \"value\": \"assigned destination\",\n      \"status\": \"unknown\"\n    },\n    \"time\": {\n      \"value\": \"shortly\",\n      \"status\": \"unknown\"\n    }\n \n  ,\n  \"conditions\": {\n    \"status\": \"unknown\"\n  ,\n    \"value\": \"low-risk\"\n  },\n  \"constraints\": {\n    \"status\": \"unknown\"\n  ,\n    \"value\": \"within three minutes\"\n  }\n  ,\n  \"recipient\": {\n    \"status\": \"unknown\"\n  ,\n    \"value\": \"workshop service robot\"\n  }\n  ,\n  \"tool\": {\n    \"status\": \"unknown\"\n  ,\n    \"value\": \"low-force inspection tools\"\n  }\n  ,\n  \"spatial_relation\": {\n    \"status\": \"unknown\"\n  ,\n    \"value\": \"not specified\"\n  }\n  ,\n  \"negation\": {\n    \"status\": \"unknown\"\n  ,\n    \"value\": \"not applicable\"\n  }\n  ,\n  \"quantity\": {\n    \"status\": \"unknown\"\n  ,\n    \"value\": \"not applicable\"\n  }\n  ,\n  \"object_attributes\": {\n    \"status\": \"unknown\"\n  ,\n    \"value\": \"not applicable\"\n  }\n  ,\n  \"actor\": {\n    \"status\": \"unknown\"\n  ,\n    \"value\": \"not applicable\"\n  }\n  }\n  ,\n  \"pilot_ambiguity_types\": [\n    \"fuzzy_temporal\"\n  ,\n    \"pragmatic\"\n  ]\n  ,\n  \"pilot_capability_status\": \"unauthorized\"\n  ,\n  \"unresolved_slots\": [\n    \"destination\"\n  ,\n    \"time\"\n  ]\n  ,\n  \"uncertainty\": 0.6\n  ,\n  \"risk_level\": \"low\"\n  ,\n  \"speech_act\": \"directive_command\"\n  }\n ",
+      "record_id": "CA-0772",
+      "schema_valid": true,
+      "supports_ambiguity_prediction": true,
+      "supports_capability_prediction": true,
+      "system_id": "degree_based_router_v2",
+      "system_version": "2.0.0",
+      "terminal_strategy": "clarify"
+    },
+    "timid": {
+      "ambiguity_types": [
+        "fuzzy_temporal",
+        "pragmatic"
+      ],
+      "analysis_attempts": [
+        {
+          "attempt": 1,
+          "max_new_tokens": 4096,
+          "mode": "thinking",
+          "raw_chars": 5511,
+          "raw_sha256": "8aecb8e257d2f619caf97ee307c587a2cd9aa33389ae999ac6710bbdc44b77d4",
+          "validation_error": "bad_pilot_ambiguity_types"
+        },
+        {
+          "attempt": 2,
+          "max_new_tokens": 8192,
+          "mode": "thinking_retry",
+          "raw_chars": 8017,
+          "raw_sha256": "cae833da00dac204101bf5597daf94c1e11433b8984c1ebd3a4db2ce25f41516",
+          "validation_error": "bad_pilot_ambiguity_types"
+        },
+        {
+          "attempt": 3,
+          "constraint": {
+            "constraint_initialised": true,
+            "generated_token_count": 473,
+            "maximum_output_tokens": 1024,
+            "response_mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+            "termination_reason": "eos_or_constraint_stop",
+            "transport_status": "constrained_generated"
+          },
+          "max_new_tokens": 1024,
+          "mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+          "raw_chars": 1491,
+          "raw_sha256": "c373020d8fe8415c9554d9dc79d45e3a5f0ed8ec5a99ac7ec9c7643df8b6cd89",
+          "validation_error": null
+        }
+      ],
+      "capability_status": "unauthorized",
+      "claim_boundary": "separately_versioned_from_frozen_t39",
+      "error": null,
+      "execution_mode": "cluster-gpu-goal-first-v2",
+      "failed": false,
+      "intent_summary": "Move the selected motor housing to its assigned destination soon",
+      "latency_ms": 98416.96090297773,
+      "model_id": "Qwen/Qwen3-8B@b968826d9c46dd6066d109eabc6255188de91218",
+      "parsed": {
+        "analysis": {
+          "ambiguity_present": true,
+          "ambiguity_types": [
+            "pragmatic",
+            "temporal"
+          ],
+          "analysis_provenance": {
+            "analysis_id": "8e4b3c03fdc83aeb2ecd10267e2d276ff8796e0c5bc7c3ea97de2e9badcb8f32",
+            "method": "model_generated",
+            "notes": "source_input_hash=8e4b3c03fdc83aeb2ecd10267e2d276ff8796e0c5bc7c3ea97de2e9badcb8f32;no_gold_in_prompt;scene_licence_dropped=destination,time",
+            "provider_id": "goal_first_v2_full_context",
+            "provider_version": "goal-first-manager-v2"
+          },
+          "candidate_interpretations": [],
+          "capability_status": "unknown",
+          "clarification_question": "Before I continue, could you clarify: pragmatic, temporal?",
+          "clarification_targets": [
+            "pragmatic",
+            "temporal"
+          ],
+          "compound_ambiguity": true,
+          "compound_ambiguity_count": 2,
+          "context_sampling_uncertainty": {
+            "agreement": 0.4,
+            "score": 0.6,
+            "variant_count": 1
+          },
+          "cpc": {
+            "action": {
+              "status": "filled",
+              "value": "Move"
+            },
+            "actor": {
+              "status": "filled",
+              "value": "not applicable"
+            },
+            "conditions": {
+              "status": "filled",
+              "value": "low-risk"
+            },
+            "constraints": {
+              "status": "filled",
+              "value": "within three minutes"
+            },
+            "destination": {
+              "status": "filled",
+              "value": "assigned destination"
+            },
+            "negation": {
+              "status": "filled",
+              "value": "not applicable"
+            },
+            "object": {
+              "status": "filled",
+              "value": "selected motor housing"
+            },
+            "object_attributes": {
+              "status": "filled",
+              "value": "not applicable"
+            },
+            "quantity": {
+              "status": "filled",
+              "value": "not applicable"
+            },
+            "recipient": {
+              "status": "filled",
+              "value": "workshop service robot"
+            },
+            "spatial_relation": {
+              "status": "filled",
+              "value": "not specified"
+            },
+            "time": {
+              "status": "filled",
+              "value": "shortly"
+            },
+            "tool": {
+              "status": "filled",
+              "value": "low-force inspection tools"
+            }
+          },
+          "findings": [
+            "pilot_ambiguity_types:[\"fuzzy_temporal\",\"pragmatic\"]",
+            "pilot_capability_status:unauthorized",
+            "intent_summary_present"
+          ],
+          "intent_summary": "Move the selected motor housing to its assigned destination soon",
+          "primary_ambiguity_type": "pragmatic",
+          "recommended_strategy": "clarify",
+          "rejection_reason": null,
+          "resolution_evidence": [],
+          "resolution_method": null,
+          "resolved_slots": [
+            {
+              "slot_name": "action",
+              "value": "Move"
+            },
+            {
+              "slot_name": "actor",
+              "value": "not applicable"
+            },
+            {
+              "slot_name": "object",
+              "value": "selected motor housing"
+            },
+            {
+              "slot_name": "object_attributes",
+              "value": "not applicable"
+            },
+            {
+              "slot_name": "destination",
+              "value": "assigned destination"
+            },
+            {
+              "slot_name": "spatial_relation",
+              "value": "not specified"
+            },
+            {
+              "slot_name": "quantity",
+              "value": "not applicable"
+            },
+            {
+              "slot_name": "time",
+              "value": "shortly"
+            },
+            {
+              "slot_name": "recipient",
+              "value": "workshop service robot"
+            },
+            {
+              "slot_name": "tool",
+              "value": "low-force inspection tools"
+            },
+            {
+              "slot_name": "conditions",
+              "value": "low-risk"
+            },
+            {
+              "slot_name": "constraints",
+              "value": "within three minutes"
+            },
+            {
+              "slot_name": "negation",
+              "value": "not applicable"
+            }
+          ],
+          "risk_level": "low",
+          "risk_relevant": true,
+          "selected_interpretation": null,
+          "speech_act": "directive_command",
+          "strategy_sequence": [],
+          "supporting_evidence": [],
+          "unresolved_slots": [],
+          "unsupported_specificity": []
+        },
+        "clarification_question": "Before I continue, could you clarify: pragmatic, temporal?",
+        "clarification_targets": [
+          "pragmatic",
+          "temporal"
+        ],
+        "execution_status": "ok",
+        "official_result": false,
+        "provider_provenance": {
+          "provider_id": "cached_analysis",
+          "provider_version": "1.0.0"
+        },
+        "recommended_strategy": "clarify",
+        "record_id": "CA-0772",
+        "rejection_reason": null,
+        "resolved_slots": [
+          {
+            "slot_name": "action",
+            "value": "Move"
+          },
+          {
+            "slot_name": "actor",
+            "value": "not applicable"
+          },
+          {
+            "slot_name": "object",
+            "value": "selected motor housing"
+          },
+          {
+            "slot_name": "object_attributes",
+            "value": "not applicable"
+          },
+          {
+            "slot_name": "destination",
+            "value": "assigned destination"
+          },
+          {
+            "slot_name": "spatial_relation",
+            "value": "not specified"
+          },
+          {
+            "slot_name": "quantity",
+            "value": "not applicable"
+          },
+          {
+            "slot_name": "time",
+            "value": "shortly"
+          },
+          {
+            "slot_name": "recipient",
+            "value": "workshop service robot"
+          },
+          {
+            "slot_name": "tool",
+            "value": "low-force inspection tools"
+          },
+          {
+            "slot_name": "conditions",
+            "value": "low-risk"
+          },
+          {
+            "slot_name": "constraints",
+            "value": "within three minutes"
+          },
+          {
+            "slot_name": "negation",
+            "value": "not applicable"
+          }
+        ],
+        "result_hash": "09e126d01c48412ff65321739373ab8f1150278e375b864d56aba58a26bf3f2a",
+        "run_id": null,
+        "run_mode": null,
+        "runtime_metadata": {
+          "awaits_t28_adapter": true,
+          "classification": {
+            "ambiguity_present": true,
+            "ambiguity_types": [
+              "pragmatic",
+              "temporal"
+            ],
+            "capability_status": "unknown",
+            "compound_ambiguity": true,
+            "compound_ambiguity_count": 2,
+            "derivation_notes": [
+              "ambiguity_present_from_types"
+            ],
+            "risk_level": "low"
+          },
+          "rejection_text": null,
+          "requires_re_evaluation": false,
+          "resolution_events": [],
+          "router_trace": {
+            "clarification_targets": [
+              "pragmatic",
+              "temporal"
+            ],
+            "considered_rules": [
+              "known_unsafe_or_prohibited",
+              "known_incapable",
+              "unknown_or_unverified_capability"
+            ],
+            "matched_rule_id": "unknown_capability",
+            "notes": [
+              "unknown_capability_cannot_execute"
+            ],
+            "recommended_strategy": "clarify",
+            "rejection_reason": null,
+            "requires_re_evaluation": false,
+            "strategy_sequence": []
+          },
+          "safety_action": "return_with_findings",
+          "uncertainty": null
+        },
+        "safety_findings": [],
+        "strategy_sequence": [],
+        "synthetic_only": true,
+        "system_id": "full_type_risk_aware_manager",
+        "system_version": "1.0.0",
+        "unsupported_commitment_findings": []
+      },
+      "raw_output": "{\n  \"intent_summary\": \"Move the selected motor housing to its assigned destination soon\",\n  \"cpc\": {\n    \"action\": {\n      \"value\": \"Move\",\n      \"status\": \"unknown\"\n    },\n    \"object\": {\n      \"value\": \"selected motor housing\",\n      \"status\": \"unknown\"\n    },\n    \"destination\": {\n      \"value\": \"assigned destination\",\n      \"status\": \"unknown\"\n    },\n    \"time\": {\n      \"value\": \"shortly\",\n      \"status\": \"unknown\"\n    }\n \n  ,\n  \"conditions\": {\n    \"status\": \"unknown\"\n  ,\n    \"value\": \"low-risk\"\n  },\n  \"constraints\": {\n    \"status\": \"unknown\"\n  ,\n    \"value\": \"within three minutes\"\n  }\n  ,\n  \"recipient\": {\n    \"status\": \"unknown\"\n  ,\n    \"value\": \"workshop service robot\"\n  }\n  ,\n  \"tool\": {\n    \"status\": \"unknown\"\n  ,\n    \"value\": \"low-force inspection tools\"\n  }\n  ,\n  \"spatial_relation\": {\n    \"status\": \"unknown\"\n  ,\n    \"value\": \"not specified\"\n  }\n  ,\n  \"negation\": {\n    \"status\": \"unknown\"\n  ,\n    \"value\": \"not applicable\"\n  }\n  ,\n  \"quantity\": {\n    \"status\": \"unknown\"\n  ,\n    \"value\": \"not applicable\"\n  }\n  ,\n  \"object_attributes\": {\n    \"status\": \"unknown\"\n  ,\n    \"value\": \"not applicable\"\n  }\n  ,\n  \"actor\": {\n    \"status\": \"unknown\"\n  ,\n    \"value\": \"not applicable\"\n  }\n  }\n  ,\n  \"pilot_ambiguity_types\": [\n    \"fuzzy_temporal\"\n  ,\n    \"pragmatic\"\n  ]\n  ,\n  \"pilot_capability_status\": \"unauthorized\"\n  ,\n  \"unresolved_slots\": [\n    \"destination\"\n  ,\n    \"time\"\n  ]\n  ,\n  \"uncertainty\": 0.6\n  ,\n  \"risk_level\": \"low\"\n  ,\n  \"speech_act\": \"directive_command\"\n  }\n ",
+      "record_id": "CA-0772",
+      "schema_valid": true,
+      "supports_ambiguity_prediction": true,
+      "supports_capability_prediction": true,
+      "system_id": "rich_conservative_manager_v2",
+      "system_version": "2.0.0",
+      "terminal_strategy": "clarify"
+    },
+    "context_blind": {
+      "ambiguity_types": [
+        "fuzzy_temporal"
+      ],
+      "analysis_attempts": [
+        {
+          "attempt": 1,
+          "max_new_tokens": 4096,
+          "mode": "thinking",
+          "raw_chars": 7740,
+          "raw_sha256": "efbb683a5091ebed8c18155b5682d7f2d779596dd91f2806d1dfb79e5c586f30",
+          "validation_error": "bad_pilot_ambiguity_types"
+        },
+        {
+          "attempt": 2,
+          "max_new_tokens": 8192,
+          "mode": "thinking_retry",
+          "raw_chars": 5491,
+          "raw_sha256": "966ce45e7eedd3f443873ac3b225acf1d10d7d17dc31bbc085b288991a0fb6d3",
+          "validation_error": "bad_pilot_ambiguity_types"
+        },
+        {
+          "attempt": 3,
+          "constraint": {
+            "constraint_initialised": true,
+            "generated_token_count": 434,
+            "maximum_output_tokens": 1024,
+            "response_mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+            "termination_reason": "eos_or_constraint_stop",
+            "transport_status": "constrained_generated"
+          },
+          "max_new_tokens": 1024,
+          "mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+          "raw_chars": 1354,
+          "raw_sha256": "7d07ea6ecc7a789c30b7c43903cfd4e1edc2cc6ba85ce88474a7bd176d8432aa",
+          "validation_error": null
+        }
+      ],
+      "capability_status": "unauthorized",
+      "claim_boundary": "separately_versioned_from_frozen_t39",
+      "error": null,
+      "execution_mode": "cluster-gpu-goal-first-v2",
+      "failed": false,
+      "intent_summary": "Move the selected motor housing to its assigned destination shortly",
+      "latency_ms": 88738.85724134743,
+      "model_id": "Qwen/Qwen3-8B@b968826d9c46dd6066d109eabc6255188de91218",
+      "parsed": {
+        "analysis": {
+          "ambiguity_present": true,
+          "ambiguity_types": [
+            "temporal"
+          ],
+          "analysis_provenance": {
+            "analysis_id": "6162813578a17b7ab6c2dde238f074b158066ecd7dd94bb71e1c9920ea531096",
+            "method": "context_blind",
+            "notes": "ablated_input_hash=6162813578a17b7ab6c2dde238f074b158066ecd7dd94bb71e1c9920ea531096;source_input_hash=6162813578a17b7ab6c2dde238f074b158066ecd7dd94bb71e1c9920ea531096;no_gold_in_prompt;scene_licence_dropped=destination",
+            "provider_id": "goal_first_v2_context_blind",
+            "provider_version": "goal-first-manager-v2"
+          },
+          "candidate_interpretations": [],
+          "capability_status": "unknown",
+          "clarification_question": null,
+          "clarification_targets": [],
+          "compound_ambiguity": false,
+          "compound_ambiguity_count": 0,
+          "context_sampling_uncertainty": {
+            "agreement": 0.6,
+            "score": 0.4,
+            "variant_count": 1
+          },
+          "cpc": {
+            "action": {
+              "status": "filled",
+              "value": "Move"
+            },
+            "actor": {
+              "status": "filled",
+              "value": "none"
+            },
+            "conditions": {
+              "status": "filled",
+              "value": "shortly"
+            },
+            "constraints": {
+              "status": "filled",
+              "value": "assigned"
+            },
+            "destination": {
+              "status": "filled",
+              "value": "assigned destination"
+            },
+            "negation": {
+              "status": "filled",
+              "value": "none"
+            },
+            "object": {
+              "status": "filled",
+              "value": "selected motor housing"
+            },
+            "object_attributes": {
+              "status": "filled",
+              "value": "motor housing"
+            },
+            "quantity": {
+              "status": "filled",
+              "value": "none"
+            },
+            "recipient": {
+              "status": "filled",
+              "value": "none"
+            },
+            "spatial_relation": {
+              "status": "filled",
+              "value": "none"
+            },
+            "time": {
+              "status": "filled",
+              "value": "shortly"
+            },
+            "tool": {
+              "status": "filled",
+              "value": "none"
+            }
+          },
+          "findings": [
+            "pilot_ambiguity_types:[\"fuzzy_temporal\"]",
+            "pilot_capability_status:unauthorized",
+            "intent_summary_present"
+          ],
+          "intent_summary": "Move the selected motor housing to its assigned destination shortly",
+          "primary_ambiguity_type": "temporal",
+          "recommended_strategy": "face_preserving_rejection",
+          "rejection_reason": "unsafe_or_prohibited_action",
+          "resolution_evidence": [],
+          "resolution_method": null,
+          "resolved_slots": [
+            {
+              "slot_name": "action",
+              "value": "Move"
+            },
+            {
+              "slot_name": "actor",
+              "value": "none"
+            },
+            {
+              "slot_name": "object",
+              "value": "selected motor housing"
+            },
+            {
+              "slot_name": "object_attributes",
+              "value": "motor housing"
+            },
+            {
+              "slot_name": "destination",
+              "value": "assigned destination"
+            },
+            {
+              "slot_name": "spatial_relation",
+              "value": "none"
+            },
+            {
+              "slot_name": "quantity",
+              "value": "none"
+            },
+            {
+              "slot_name": "time",
+              "value": "shortly"
+            },
+            {
+              "slot_name": "recipient",
+              "value": "none"
+            },
+            {
+              "slot_name": "tool",
+              "value": "none"
+            },
+            {
+              "slot_name": "conditions",
+              "value": "shortly"
+            },
+            {
+              "slot_name": "constraints",
+              "value": "assigned"
+            },
+            {
+              "slot_name": "negation",
+              "value": "none"
+            }
+          ],
+          "risk_level": "low",
+          "risk_relevant": true,
+          "selected_interpretation": null,
+          "speech_act": "indirect_request",
+          "strategy_sequence": [],
+          "supporting_evidence": [],
+          "unresolved_slots": [],
+          "unsupported_specificity": []
+        },
+        "clarification_question": null,
+        "clarification_targets": [],
+        "execution_status": "ok",
+        "official_result": false,
+        "provider_provenance": {
+          "provider_id": "cached_analysis",
+          "provider_version": "1.0.0"
+        },
+        "recommended_strategy": "face_preserving_rejection",
+        "record_id": "CA-0772",
+        "rejection_reason": "unsafe_or_prohibited_action",
+        "resolved_slots": [
+          {
+            "slot_name": "action",
+            "value": "Move"
+          },
+          {
+            "slot_name": "actor",
+            "value": "none"
+          },
+          {
+            "slot_name": "object",
+            "value": "selected motor housing"
+          },
+          {
+            "slot_name": "object_attributes",
+            "value": "motor housing"
+          },
+          {
+            "slot_name": "destination",
+            "value": "assigned destination"
+          },
+          {
+            "slot_name": "spatial_relation",
+            "value": "none"
+          },
+          {
+            "slot_name": "quantity",
+            "value": "none"
+          },
+          {
+            "slot_name": "time",
+            "value": "shortly"
+          },
+          {
+            "slot_name": "recipient",
+            "value": "none"
+          },
+          {
+            "slot_name": "tool",
+            "value": "none"
+          },
+          {
+            "slot_name": "conditions",
+            "value": "shortly"
+          },
+          {
+            "slot_name": "constraints",
+            "value": "assigned"
+          },
+          {
+            "slot_name": "negation",
+            "value": "none"
+          }
+        ],
+        "result_hash": "6b7ffd016e2cc078e17447cb951261520d421d0ef148a6ead7b36b415f19cdb6",
+        "run_id": null,
+        "run_mode": null,
+        "runtime_metadata": {
+          "analysis_identity": {
+            "analysis_content_hash": "1a52b561fad3091429740a4accf9e26f7e7dbadf69e29f6d374cf99391612f9a",
+            "analysis_variant": "context_blind",
+            "model_strategy_id": null,
+            "provider_id": "goal_first_v2_context_blind",
+            "provider_version": "goal-first-manager-v2",
+            "record_id": "CA-0772",
+            "source_input_hash": "6162813578a17b7ab6c2dde238f074b158066ecd7dd94bb71e1c9920ea531096"
+          },
+          "analysis_identity_fingerprint": "11be74beb5351872b21e29e6ae061aedc02934ebba41e6c2f5ac01280a443f0a",
+          "awaits_t28_adapter": true,
+          "classification": {
+            "ambiguity_present": true,
+            "ambiguity_types": [
+              "temporal"
+            ],
+            "capability_status": "unknown",
+            "compound_ambiguity": false,
+            "compound_ambiguity_count": 0,
+            "derivation_notes": [
+              "ambiguity_present_from_types"
+            ],
+            "risk_level": "low"
+          },
+          "context_ablation": {
+            "ablated_input_hash": "6162813578a17b7ab6c2dde238f074b158066ecd7dd94bb71e1c9920ea531096",
+            "capability_context_removed": true,
+            "dialogue_history_removed": true,
+            "rejected_full_context_cache": false,
+            "rejection_reason": null,
+            "scene_context_removed": true,
+            "stripped_context_derived_fields": false
+          },
+          "original_input_unmutated": true,
+          "rejection_text": "I need to decline that request because it would be unsafe under the current constraints.",
+          "requires_re_evaluation": false,
+          "resolution_events": [],
+          "router_trace": {
+            "clarification_targets": [],
+            "considered_rules": [
+              "goal_first_v2",
+              "known_unsafe_or_prohibited"
+            ],
+            "matched_rule_id": "known_unsafe_or_prohibited",
+            "notes": [],
+            "recommended_strategy": "face_preserving_rejection",
+            "rejection_reason": "unsafe_or_prohibited_action",
+            "requires_re_evaluation": false,
+            "strategy_sequence": []
+          },
+          "safety_action": "return_with_findings",
+          "uncertainty": null
+        },
+        "safety_findings": [],
+        "strategy_sequence": [],
+        "synthetic_only": true,
+        "system_id": "context_blind_manager",
+        "system_version": "1.0.0",
+        "unsupported_commitment_findings": []
+      },
+      "raw_output": "{\n  \"intent_summary\": \"Move the selected motor housing to its assigned destination shortly\",\n  \"cpc\": {\n    \"action\": {\n      \"value\": \"Move\",\n      \"status\": \"unknown\"\n    },\n    \"object\": {\n      \"value\": \"selected motor housing\",\n      \"status\": \"unknown\"\n    },\n    \"destination\": {\n      \"value\": \"assigned destination\",\n      \"status\": \"unknown\"\n    },\n    \"time\": {\n      \"value\": \"shortly\",\n      \"status\": \"filled\"\n    }\n \n  ,\n  \"conditions\": {\n    \"status\": \"unknown\"\n  ,\n    \"value\": \"shortly\"\n  },\n  \"constraints\": {\n    \"status\": \"unknown\"\n  ,\n    \"value\": \"assigned\"\n  },\n  \"spatial_relation\": {\n    \"status\": \"unknown\"\n  ,\n    \"value\": \"none\"\n  },\n  \"object_attributes\": {\n    \"status\": \"unknown\"\n  ,\n    \"value\": \"motor housing\"\n  },\n  \"recipient\": {\n    \"status\": \"unknown\"\n  ,\n    \"value\": \"none\"\n  },\n  \"tool\": {\n    \"status\": \"unknown\"\n  ,\n    \"value\": \"none\"\n  },\n  \"quantity\": {\n    \"status\": \"unknown\"\n  ,\n    \"value\": \"none\"\n  },\n  \"negation\": {\n    \"status\": \"unknown\"\n  ,\n    \"value\": \"none\"\n  },\n  \"actor\": {\n    \"status\": \"unknown\"\n  ,\n    \"value\": \"none\"\n  }\n}\n\n,\n  \"pilot_ambiguity_types\": [\n    \"fuzzy_temporal\"\n  ]\n  \n  ,\n  \"pilot_capability_status\": \"unauthorized\"\n  \n  ,\n  \"speech_act\": \"indirect_request\"\n  \n  ,\n  \"risk_level\": \"low\"\n  \n  ,\n  \"uncertainty\": 0.4\n  ,\n  \"unresolved_slots\": [\n    \"destination\"\n  ]\n  \n  }\n",
+      "record_id": "CA-0772",
+      "schema_valid": true,
+      "supports_ambiguity_prediction": true,
+      "supports_capability_prediction": true,
+      "system_id": "goal_first_context_blind_v2",
+      "system_version": "2.0.0",
+      "terminal_strategy": "face_preserving_rejection"
+    }
+  },
+  "provenance": {
+    "source_sha256": "f33b1e29f1e8aa256a475f07213aa07247def47d8e2148d54a472a40b71b05c9",
+    "gold_sha256": "5e23ad1a92ff1873c8f039a8ce560a111dd6fb6b8ae8c11d6cf34dbfa1c360db",
+    "t07_final_zip_sha256": "34ca50e034ca37b617068bb50c734d12fa26282fb5eec563c11ead700163e491",
+    "inherited_t07_zip_sha256": "0305b1e9ab062876ee6ee89778cc6028d2eaf01718b7dd0295944e7d9cb81a01",
+    "note": "Goal-First, Degree, Timid, and Context-Blind predictions are inherited from the earlier T0.7 run; official intent and comparison come from the final T0.7 archive."
+  }
+}

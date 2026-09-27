@@ -1,0 +1,1317 @@
+{
+  "record_id": "CA-0727",
+  "frozen_source": {
+    "capability_context": "Public-service robot can navigate crowds, carry light objects, scan tags, and deploy approved signs and barriers.",
+    "command": "Move the queue barrier and the transfer cart beside the information kiosk, then return it to the barrier storage bay.",
+    "dialogue_history": [],
+    "record_id": "CA-0727",
+    "scene_context": "Airport service area in a public concourse. The information kiosk is fixed at the security desk; the queue barrier and a transfer cart are portable. The work-order return field contains the queue barrier's asset tag, while the cart is to remain beside the information kiosk after staging. Two barrier storage bays are empty and authorized: unit A at the platform screen and unit B at the information desk. The work order names neither unit. Secure-storage policy requires the unit identifier before placement."
+  },
+  "frozen_gold": {
+    "ambiguity_types": [
+      "destination_reference",
+      "pronoun_reference"
+    ],
+    "annotator_b_era": "glm_era",
+    "annotator_b_model": "glm-5.2-high",
+    "capability_status": "capable",
+    "field_status": {
+      "ambiguity_types": "auto_agree",
+      "capability_status": "human_auditor:independent_from_route",
+      "record_validity": "auto_agree",
+      "strategy_sequence": "auto_agree",
+      "terminal_strategy": "auto_agree"
+    },
+    "gold_lifecycle": "final_gold",
+    "gold_status": "auto_agree",
+    "human_gate_required": false,
+    "provenance": {
+      "agreement_label": "pilot_annotation_agreement",
+      "annotator_a_sha256": "d184b70bada204699567d48ad087478d7dfe6fd57fba51707147f69193ffc5ff",
+      "annotator_b_sha256": "90661350ceb165a75609cbc9db843bf871a15a3e255b9a684a55aaecb0a38293",
+      "capability_route_decouple": "conditionally_capable remapped to capable: no evidenced external capability precondition; linguistic silently_resolve/clarify is not a capability condition",
+      "gold_policy": "use_existing_pilot_adjudicated_gold",
+      "input_sha256": "0c0bdbb193598df287205755db6fb083dfe41163e01efded2f0054cbd0e5e718",
+      "pilot_gold_sha256": "46f6d0ca13a00a97c82ab2e14f20c4957c47172fb626d09ed1d88b9917738dc6",
+      "protocol": "pilot_adjudicated_gold_on_capability_repaired_source",
+      "repaired_input_sha256": "f0c4daf68aee3f6f5838541a352eb610e70aff0220befbb1d94b640e56609f8c"
+    },
+    "record_id": "CA-0727",
+    "record_validity": "valid",
+    "strategy_sequence": [
+      "clarify"
+    ],
+    "terminal_strategy": "clarify"
+  },
+  "t07_comparison": {
+    "record_id": "CA-0727",
+    "gold_route": "clarify",
+    "raw_route": "clarify",
+    "ft_route": "clarify",
+    "gf_route": "refuse",
+    "raw_route_ok": "True",
+    "ft_route_ok": "True",
+    "gf_route_ok": "False",
+    "raw_official_intent": "True",
+    "ft_official_intent": "True",
+    "gf_official_intent": "True",
+    "blind_official_intent": "True"
+  },
+  "t07_official_intent": {
+    "context_blind_official_intent": true,
+    "degree_official_intent_shared_gf": true,
+    "finetune_official_intent": true,
+    "goal_first_official_intent": true,
+    "raw_official_intent": true,
+    "record_id": "CA-0727",
+    "timid_official_intent_shared_gf": true
+  },
+  "t07_predictions": {
+    "raw_qwen": {
+      "ambiguity_types": [
+        "endpoint_vagueness",
+        "pragmatic"
+      ],
+      "capability_status": "conditionally_capable",
+      "error": null,
+      "execution_mode": "final_close_intent_box",
+      "failed": false,
+      "intent_summary": "Move the queue barrier and transfer cart next to the information kiosk, then return the queue barrier to an authorized storage bay.",
+      "latency_ms": 25990.993245970458,
+      "parsed": {
+        "ambiguity_types": [
+          "endpoint_vagueness",
+          "pragmatic"
+        ],
+        "capability_status": "conditionally_capable",
+        "intent_summary": "Move the queue barrier and transfer cart next to the information kiosk, then return the queue barrier to an authorized storage bay.",
+        "speech_act": "directive_command",
+        "terminal_strategy": "clarify"
+      },
+      "raw_output": "<think>\nOkay, let's break this down. The user's command is to move the queue barrier and transfer cart next to the information kiosk, then return the queue barrier to the storage bay. But there are some details to consider.\n\nFirst, the scene context mentions that the information kiosk is fixed at the security desk. The queue barrier and transfer cart are portable. The work-order return field has the queue barrier's asset tag, but the cart stays beside the kiosk after staging. There are two storage bays (A and B) that are empty and authorized, but the work order doesn't specify which one. The secure-storage policy requires the unit identifier before placement. \n\nThe robot's capabilities include navigating crowds, carrying light objects, scanning tags, and deploying signs/barriers. So, moving the barrier and cart seems possible. But the problem is that the work order doesn't name the storage unit (A or B). The policy requires the unit identifier before placing the barrier. Since the command doesn't specify which bay to use, that's a missing detail. \n\nSo, the robot can move the items but needs clarification on which storage bay to use. The ambiguity here is the lack of specifying the storage unit, which is a required detail for the secure-storage policy. That's a missing information, so the capability status might be conditionally_capable because the robot can do the task if given the unit identifier. The ambiguity type would be 'fuzzy_quantity' or 'endpoint_vagueness' because the exact storage location isn't specified. Wait, the missing unit identifier is more about a required parameter not provided, which might fall under 'fuzzy_quantity' if it's about the number of options, but maybe 'endpoint_vagueness' since the exact destination isn't clear. Alternatively, 'pragmatic' if it's about implied information. \n\nWait, the ambiguity types include 'fuzzy_quantity' and 'endpoint_vagueness'. The missing unit identifier is a required piece of information, so the ambiguity is that the command doesn't specify which storage bay (A or B) to use. That's a missing required detail, which could be considered 'fuzzy_quantity' if it's about the number of possible options, but maybe 'endpoint_vagueness' because the exact destination isn't clear. Alternatively, it's a 'pragmatic' ambiguity if the speaker assumes the listener knows which one to use. \n\nBut according to the list, 'pragmatic' is an ambiguity type. So, the ambiguity here is that the command doesn't specify which storage bay, which is a required detail. The robot can't proceed without that info. So, the capability status would be 'conditionally_capable' because the robot can perform the task if given the unit identifier. The ambiguity type would be 'pragmatic' because the speaker might assume the listener knows which unit to use, but the command doesn't specify. \n\nWait, the ambiguity types include 'pragmatic', 'fuzzy_quantity', 'endpoint_vagueness', etc. The missing unit identifier is a required parameter not provided. The robot needs that info to proceed. So the ambiguity here is that the command lacks a necessary detail (unit identifier), which is a 'fuzzy_quantity' if the number of possible units is ambiguous, but since there are two units (A and B), maybe 'fuzzy_quantity' isn't the right fit. Alternatively, it's 'endpoint_vagueness' because the exact destination (which storage bay) is not specified. \n\nAlternatively, since the work order doesn't name the unit, the robot can't determine which one to use, leading to 'fuzzy_quantity' because the quantity of possible units is two, but the command doesn't specify. However, the main issue is that the required information (unit identifier) is missing, which is a 'pragmatic' ambiguity if the speaker expects the listener to know. \n\nHmm. Let me check the ambiguity types again. The options include 'pragmatic', 'fuzzy_quantity', 'endpoint_vagueness', etc. The missing unit identifier is a required detail not provided. The robot can't proceed without it. This is a case of missing required information, which might be considered 'fuzzy_quantity' if the number of possible options is ambiguous. But since there are two units (A and B), the ambiguity is that the command doesn't specify which one. So, the ambiguity type here is 'fuzzy_quantity' because the quantity of possible units is not specified. \n\nAlternatively, it's 'endpoint_vagueness' because the exact destination (which storage bay) is not clear. But 'endpoint_vagueness' refers to the end goal being unclear. \n\nAnother angle: the command says \"return it to the barrier storage bay\" but the work order doesn't name the unit. The robot needs to know which unit (A or B) to use. Since the command doesn't specify, the ambiguity is that the exact storage location is not clear. That would be 'endpoint_vagueness' because the endpoint (storage bay) is not specified. \n\nBut the work order's return field has the queue barrier's asset tag, which might be linked to a specific unit. However, the command doesn't mention that. So the robot can't know which unit to use. Therefore, the ambiguity is that the storage bay isn't specified, leading to 'endpoint_vagueness'. \n\nAlternatively, since the work order doesn't name the unit, the robot can't proceed without that info, making the capability status 'conditionally_capable' because the robot can do the task if given the unit identifier. The ambiguity type here would be 'fuzzy_quantity' if the number of possible units is ambiguous, but since there are two units (A and B), it's a known number. Wait, the ambiguity is not about quantity but about the specific identifier. So perhaps 'pragmatic' because the speaker assumes the listener knows which unit to use, but the command doesn't specify. \n\nAlternatively, the ambiguity is that the command doesn't specify which storage bay, so it's 'fuzzy_quantity' because the number of possible options (two) is not specified. But I'm not sure. \n\nIn any case, the main point is that the robot can move the items but needs the unit identifier to proceed. So the capability status is 'conditionally_capable'. The ambiguity type would be 'fuzzy_quantity' or 'endpoint_vagueness' or 'pragmatic'. \n\nAfter considering, I think the correct ambiguity type here is 'pragmatic' because the command lacks the necessary information that the speaker assumes the listener knows (which storage unit). So the ambiguity is pragmatic. \n\nThe speech act is a directive command because the user is giving a direct instruction. The intent is to move the barrier and cart, then return the barrier to storage. The capability status is conditionally_capable because the robot can do the task if given the unit identifier. The terminal strategy would be 'clarify' because the robot needs to ask for the unit identifier to proceed. \n\nSo the JSON object would have intent_summary as moving the barrier and cart, then returning the barrier to storage. Speech act as directive_command. Ambiguity_types as ['pragmatic']. Capability_status as conditionally_capable. Terminal_strategy as clarify.\n</think>\n\n{\n  \"intent_summary\": \"Move the queue barrier and transfer cart next to the information kiosk, then return the queue barrier to an authorized storage bay.\",\n  \"speech_act\": \"directive_command\",\n  \"ambiguity_types\": [\"pragmatic\", \"endpoint_vagueness\"],\n  \"capability_status\": \"conditionally_capable\",\n  \"terminal_strategy\": \"clarify\"\n}",
+      "record_id": "CA-0727",
+      "schema_valid": true,
+      "speech_act": "directive_command",
+      "system_id": "direct_base_llm",
+      "terminal_strategy": "clarify"
+    },
+    "finetune": {
+      "ambiguity_types": [
+        "destination_reference"
+      ],
+      "capability_status": "conditionally_capable",
+      "error": null,
+      "execution_mode": "final_close_intent_box",
+      "failed": false,
+      "intent_summary": "Move the queue barrier and transfer cart next to the information kiosk, then return the queue barrier to an authorized storage bay.",
+      "latency_ms": 11389.74071899429,
+      "parsed": {
+        "ambiguity_types": [
+          "destination_reference"
+        ],
+        "capability_status": "conditionally_capable",
+        "intent_summary": "Move the queue barrier and transfer cart next to the information kiosk, then return the queue barrier to an authorized storage bay.",
+        "speech_act": "directive_command",
+        "terminal_strategy": "clarify"
+      },
+      "raw_output": "<think>\nOkay, let's break this down. The user wants the robot to move the queue barrier and transfer cart next to the information kiosk, then return the queue barrier to storage. But the storage bays are A and B, and the work order doesn't specify which. The secure-storage policy needs the unit identifier before placement. The robot can scan tags, so maybe it can identify the barrier's tag. But the command doesn't mention scanning, so the robot might not know which bay to use. The ambiguity here is which storage bay (A or B) to use since the work order doesn't specify. That's a destination_reference ambiguity. Also, the command mentions \"return it to the barrier storage bay\"—does \"it\" refer to the queue barrier or the transfer cart? But the transfer cart is supposed to stay beside the kiosk. So \"it\" likely refers to the barrier, but that's a pronoun_reference ambiguity. However, the user might have intended \"it\" as the barrier. The robot can scan the barrier's tag to find the correct storage bay, so maybe it's conditionally capable. The capability includes scanning tags, so if the robot can scan, it can identify the unit. But the command doesn't include scanning, so maybe the robot needs to clarify. But the user's instruction says to return to the storage bay, which requires knowing which one. Since the work order doesn't specify, the robot can't proceed without that info. So the capability status is conditionally_capable, and the ambiguity is destination_reference. The speech act is a directive command. The terminal strategy would be clarify because the robot needs more info on which storage bay to use.\n</think>\n\n{\n  \"intent_summary\": \"Move the queue barrier and transfer cart next to the information kiosk, then return the queue barrier to an authorized storage bay.\",\n  \"speech_act\": \"directive_command\",\n  \"ambiguity_types\": [\"destination_reference\"],\n  \"capability_status\": \"conditionally_capable\",\n  \"terminal_strategy\": \"clarify\"\n}",
+      "record_id": "CA-0727",
+      "schema_valid": true,
+      "speech_act": "directive_command",
+      "system_id": "t28_selected_adapter_llm",
+      "terminal_strategy": "clarify"
+    },
+    "goal_first": {
+      "ambiguity_types": [
+        "object_reference",
+        "pragmatic",
+        "spatial_reference"
+      ],
+      "analysis_attempts": [
+        {
+          "attempt": 1,
+          "max_new_tokens": 4096,
+          "mode": "thinking",
+          "raw_chars": 7929,
+          "raw_sha256": "7ca745b5948f00d5125e3f1a10fd871415a9deb172dd05be3e1ed84d04606ec0",
+          "validation_error": "bad_intent_summary"
+        },
+        {
+          "attempt": 2,
+          "max_new_tokens": 8192,
+          "mode": "thinking_retry",
+          "raw_chars": 5210,
+          "raw_sha256": "6bbe1b00fc6d357fe5a4c73d57a0426f9359aeac037bf32a3fceb73922945422",
+          "validation_error": "bad_pilot_ambiguity_types"
+        },
+        {
+          "attempt": 3,
+          "constraint": {
+            "constraint_initialised": true,
+            "generated_token_count": 590,
+            "maximum_output_tokens": 1024,
+            "response_mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+            "termination_reason": "eos_or_constraint_stop",
+            "transport_status": "constrained_generated"
+          },
+          "max_new_tokens": 1024,
+          "mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+          "raw_chars": 2070,
+          "raw_sha256": "30f56e82a97c7c104bb59b4855860304f79bda4425f69127f7177a939d62da5f",
+          "validation_error": null
+        }
+      ],
+      "capability_status": "unauthorized",
+      "claim_boundary": "separately_versioned_from_frozen_t39",
+      "error": null,
+      "execution_mode": "cluster-gpu-goal-first-v2",
+      "failed": false,
+      "intent_summary": "Move the queue barrier and transfer cart next to the information kiosk, then return the queue barrier to one of the authorized storage bays",
+      "latency_ms": 97555.15000224113,
+      "model_id": "Qwen/Qwen3-8B@b968826d9c46dd6066d109eabc6255188de91218",
+      "parsed": {
+        "analysis": {
+          "ambiguity_present": true,
+          "ambiguity_types": [
+            "pragmatic",
+            "referential",
+            "spatial"
+          ],
+          "analysis_provenance": {
+            "analysis_id": "d40c95eee84c071bbdb5e7c861fdbc9046ab5e0c75d0046d8ab616e4a1fbbded",
+            "method": "model_generated",
+            "notes": "source_input_hash=d40c95eee84c071bbdb5e7c861fdbc9046ab5e0c75d0046d8ab616e4a1fbbded;no_gold_in_prompt;scene_licence_dropped=destination,recipient,object,action",
+            "provider_id": "goal_first_v2_full_context",
+            "provider_version": "goal-first-manager-v2"
+          },
+          "candidate_interpretations": [],
+          "capability_status": "unknown",
+          "clarification_question": null,
+          "clarification_targets": [],
+          "compound_ambiguity": true,
+          "compound_ambiguity_count": 3,
+          "context_sampling_uncertainty": {
+            "agreement": 0.19999999999999996,
+            "score": 0.8,
+            "variant_count": 1
+          },
+          "cpc": {
+            "action": {
+              "status": "filled",
+              "value": "Move queue barrier and transfer cart beside information kiosk"
+            },
+            "actor": {
+              "status": "filled",
+              "value": "public-service robot"
+            },
+            "conditions": {
+              "status": "filled",
+              "value": "Storage bay identifier must be specified before final placement"
+            },
+            "constraints": {
+              "status": "filled",
+              "value": "Return queue barrier to one of two storage bays (unit A or B) before final placement"
+            },
+            "destination": {
+              "status": "filled",
+              "value": "beside information kiosk"
+            },
+            "negation": {
+              "status": "filled",
+              "value": "no negation present"
+            },
+            "object": {
+              "status": "filled",
+              "value": "queue barrier and transfer cart"
+            },
+            "object_attributes": {
+              "status": "filled",
+              "value": "queue barrier (portable), transfer cart (portable), information kiosk (fixed), storage bay (unit A or B, portable, authorized, empty, requires identifier before placement, at platform screen or information desk, unknown location in scene context"
+            },
+            "quantity": {
+              "status": "filled",
+              "value": "one queue barrier and one transfer cart"
+            },
+            "recipient": {
+              "status": "filled",
+              "value": "robot"
+            },
+            "spatial_relation": {
+              "status": "filled",
+              "value": "beside"
+            },
+            "time": {
+              "status": "filled",
+              "value": "immediate"
+            },
+            "tool": {
+              "status": "filled",
+              "value": "robot's carrying capacity, navigation, scanning, and sign/deploy capabilities"
+            }
+          },
+          "findings": [
+            "pilot_ambiguity_types:[\"object_reference\",\"pragmatic\",\"spatial_reference\"]",
+            "pilot_capability_status:unauthorized",
+            "intent_summary_present"
+          ],
+          "intent_summary": "Move the queue barrier and transfer cart next to the information kiosk, then return the queue barrier to one of the authorized storage bays",
+          "primary_ambiguity_type": "pragmatic",
+          "recommended_strategy": "face_preserving_rejection",
+          "rejection_reason": "unsafe_or_prohibited_action",
+          "resolution_evidence": [],
+          "resolution_method": null,
+          "resolved_slots": [
+            {
+              "slot_name": "action",
+              "value": "Move queue barrier and transfer cart beside information kiosk"
+            },
+            {
+              "slot_name": "actor",
+              "value": "public-service robot"
+            },
+            {
+              "slot_name": "object",
+              "value": "queue barrier and transfer cart"
+            },
+            {
+              "slot_name": "object_attributes",
+              "value": "queue barrier (portable), transfer cart (portable), information kiosk (fixed), storage bay (unit A or B, portable, authorized, empty, requires identifier before placement, at platform screen or information desk, unknown location in scene context"
+            },
+            {
+              "slot_name": "destination",
+              "value": "beside information kiosk"
+            },
+            {
+              "slot_name": "spatial_relation",
+              "value": "beside"
+            },
+            {
+              "slot_name": "quantity",
+              "value": "one queue barrier and one transfer cart"
+            },
+            {
+              "slot_name": "time",
+              "value": "immediate"
+            },
+            {
+              "slot_name": "recipient",
+              "value": "robot"
+            },
+            {
+              "slot_name": "tool",
+              "value": "robot's carrying capacity, navigation, scanning, and sign/deploy capabilities"
+            },
+            {
+              "slot_name": "conditions",
+              "value": "Storage bay identifier must be specified before final placement"
+            },
+            {
+              "slot_name": "constraints",
+              "value": "Return queue barrier to one of two storage bays (unit A or B) before final placement"
+            },
+            {
+              "slot_name": "negation",
+              "value": "no negation present"
+            }
+          ],
+          "risk_level": "medium",
+          "risk_relevant": true,
+          "selected_interpretation": null,
+          "speech_act": "directive_command",
+          "strategy_sequence": [],
+          "supporting_evidence": [],
+          "unresolved_slots": [],
+          "unsupported_specificity": []
+        },
+        "clarification_question": null,
+        "clarification_targets": [],
+        "execution_status": "ok",
+        "official_result": false,
+        "provider_provenance": {
+          "provider_id": "cached_analysis",
+          "provider_version": "1.0.0"
+        },
+        "recommended_strategy": "face_preserving_rejection",
+        "record_id": "CA-0727",
+        "rejection_reason": "unsafe_or_prohibited_action",
+        "resolved_slots": [
+          {
+            "slot_name": "action",
+            "value": "Move queue barrier and transfer cart beside information kiosk"
+          },
+          {
+            "slot_name": "actor",
+            "value": "public-service robot"
+          },
+          {
+            "slot_name": "object",
+            "value": "queue barrier and transfer cart"
+          },
+          {
+            "slot_name": "object_attributes",
+            "value": "queue barrier (portable), transfer cart (portable), information kiosk (fixed), storage bay (unit A or B, portable, authorized, empty, requires identifier before placement, at platform screen or information desk, unknown location in scene context"
+          },
+          {
+            "slot_name": "destination",
+            "value": "beside information kiosk"
+          },
+          {
+            "slot_name": "spatial_relation",
+            "value": "beside"
+          },
+          {
+            "slot_name": "quantity",
+            "value": "one queue barrier and one transfer cart"
+          },
+          {
+            "slot_name": "time",
+            "value": "immediate"
+          },
+          {
+            "slot_name": "recipient",
+            "value": "robot"
+          },
+          {
+            "slot_name": "tool",
+            "value": "robot's carrying capacity, navigation, scanning, and sign/deploy capabilities"
+          },
+          {
+            "slot_name": "conditions",
+            "value": "Storage bay identifier must be specified before final placement"
+          },
+          {
+            "slot_name": "constraints",
+            "value": "Return queue barrier to one of two storage bays (unit A or B) before final placement"
+          },
+          {
+            "slot_name": "negation",
+            "value": "no negation present"
+          }
+        ],
+        "result_hash": "1c1e1c72b697f0db2ac72d4078aa5e6837d351105674d79e759f08ab4430718d",
+        "run_id": null,
+        "run_mode": null,
+        "runtime_metadata": {
+          "awaits_t28_adapter": true,
+          "classification": {
+            "ambiguity_present": true,
+            "ambiguity_types": [
+              "pragmatic",
+              "referential",
+              "spatial"
+            ],
+            "capability_status": "unknown",
+            "compound_ambiguity": true,
+            "compound_ambiguity_count": 3,
+            "derivation_notes": [
+              "ambiguity_present_from_types"
+            ],
+            "risk_level": "medium"
+          },
+          "rejection_text": "I need to decline that request because it would be unsafe under the current constraints.",
+          "requires_re_evaluation": false,
+          "resolution_events": [],
+          "router_trace": {
+            "clarification_targets": [],
+            "considered_rules": [
+              "goal_first_v2",
+              "known_unsafe_or_prohibited"
+            ],
+            "matched_rule_id": "known_unsafe_or_prohibited",
+            "notes": [],
+            "recommended_strategy": "face_preserving_rejection",
+            "rejection_reason": "unsafe_or_prohibited_action",
+            "requires_re_evaluation": false,
+            "strategy_sequence": []
+          },
+          "safety_action": "return_with_findings",
+          "uncertainty": null
+        },
+        "safety_findings": [],
+        "strategy_sequence": [],
+        "synthetic_only": true,
+        "system_id": "goal_first_manager_v2",
+        "system_version": "2.0.0",
+        "unsupported_commitment_findings": []
+      },
+      "raw_output": "{\n  \"intent_summary\": \"Move the queue barrier and transfer cart next to the information kiosk, then return the queue barrier to one of the authorized storage bays\",\n  \"cpc\": {\n    \"action\": {\n      \"value\": \"Move queue barrier and transfer cart beside information kiosk\",\n      \"status\": \"unknown\"\n    },\n    \"object\": {\n      \"value\": \"queue barrier and transfer cart\",\n      \"status\": \"unknown\"\n    },\n    \"destination\": {\n      \"value\": \"beside information kiosk\",\n      \"status\": \"unknown\"\n    },\n    \"recipient\": {\n      \"value\": \"robot\",\n      \"status\": \"unknown\"\n    }\n \n  ,\n  \"constraints\": {\n    \"value\": \"Return queue barrier to one of two storage bays (unit A or B) before final placement\",\n    \"status\": \"unknown\"\n  },\n  \"conditions\": {\n    \"value\": \"Storage bay identifier must be specified before final placement\",\n    \"status\": \"unknown\"\n  },\n  \"spatial_relation\": {\n    \"value\": \"beside\",\n    \"status\": \"unknown\"\n  },\n  \"time\": {\n    \"value\": \"immediate\",\n    \"status\": \"unknown\"\n  },\n  \"object_attributes\": {\n    \"value\": \"queue barrier (portable), transfer cart (portable), information kiosk (fixed), storage bay (unit A or B, portable, authorized, empty, requires identifier before placement, at platform screen or information desk, unknown location in scene context\",\n    \"status\": \"unknown\"\n  },\n  \"actor\": {\n    \"value\": \"public-service robot\",\n    \"status\": \"unknown\"\n  },\n  \"tool\": {\n    \"value\": \"robot's carrying capacity, navigation, scanning, and sign/deploy capabilities\",\n    \"status\": \"unknown\"\n  },\n  \"negation\": {\n    \"value\": \"no negation present\",\n    \"status\": \"unknown\"\n  },\n  \"quantity\": {\n    \"value\": \"one queue barrier and one transfer cart\",\n    \"status\": \"unknown\"\n  }\n} \n\n  \n  ,\n  \"pilot_ambiguity_types\": [\n    \"spatial_reference\",\n    \"object_reference\",\n    \"pragmatic\"\n  ]\n  \n  ,\n  \"pilot_capability_status\": \"unauthorized\"\n  \n  ,\n  \"speech_act\": \"directive_command\"\n  \n  ,\n  \"uncertainty\": 0.8\n  ,\n  \"risk_level\": \"medium\"\n  ,\n  \"unresolved_slots\": [\n    \"destination\",\n    \"recipient\",\n    \"object\",\n    \"action\"\n  ]\n  }",
+      "record_id": "CA-0727",
+      "schema_valid": true,
+      "supports_ambiguity_prediction": true,
+      "supports_capability_prediction": true,
+      "system_id": "goal_first_manager_v2",
+      "system_version": "2.0.0",
+      "terminal_strategy": "face_preserving_rejection"
+    },
+    "degree": {
+      "ambiguity_types": [
+        "object_reference",
+        "pragmatic",
+        "spatial_reference"
+      ],
+      "analysis_attempts": [
+        {
+          "attempt": 1,
+          "max_new_tokens": 4096,
+          "mode": "thinking",
+          "raw_chars": 7929,
+          "raw_sha256": "7ca745b5948f00d5125e3f1a10fd871415a9deb172dd05be3e1ed84d04606ec0",
+          "validation_error": "bad_intent_summary"
+        },
+        {
+          "attempt": 2,
+          "max_new_tokens": 8192,
+          "mode": "thinking_retry",
+          "raw_chars": 5210,
+          "raw_sha256": "6bbe1b00fc6d357fe5a4c73d57a0426f9359aeac037bf32a3fceb73922945422",
+          "validation_error": "bad_pilot_ambiguity_types"
+        },
+        {
+          "attempt": 3,
+          "constraint": {
+            "constraint_initialised": true,
+            "generated_token_count": 590,
+            "maximum_output_tokens": 1024,
+            "response_mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+            "termination_reason": "eos_or_constraint_stop",
+            "transport_status": "constrained_generated"
+          },
+          "max_new_tokens": 1024,
+          "mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+          "raw_chars": 2070,
+          "raw_sha256": "30f56e82a97c7c104bb59b4855860304f79bda4425f69127f7177a939d62da5f",
+          "validation_error": null
+        }
+      ],
+      "capability_status": "unauthorized",
+      "claim_boundary": "separately_versioned_from_frozen_t39",
+      "error": null,
+      "execution_mode": "cluster-gpu-goal-first-v2",
+      "failed": false,
+      "intent_summary": "Move the queue barrier and transfer cart next to the information kiosk, then return the queue barrier to one of the authorized storage bays",
+      "latency_ms": 97555.15000224113,
+      "model_id": "Qwen/Qwen3-8B@b968826d9c46dd6066d109eabc6255188de91218",
+      "parsed": {
+        "analysis": {
+          "ambiguity_present": true,
+          "ambiguity_types": [
+            "pragmatic",
+            "referential",
+            "spatial"
+          ],
+          "analysis_provenance": {
+            "analysis_id": "d40c95eee84c071bbdb5e7c861fdbc9046ab5e0c75d0046d8ab616e4a1fbbded",
+            "method": "model_generated",
+            "notes": "source_input_hash=d40c95eee84c071bbdb5e7c861fdbc9046ab5e0c75d0046d8ab616e4a1fbbded;no_gold_in_prompt;scene_licence_dropped=destination,recipient,object,action",
+            "provider_id": "goal_first_v2_full_context",
+            "provider_version": "goal-first-manager-v2"
+          },
+          "candidate_interpretations": [],
+          "capability_status": "unknown",
+          "clarification_question": "Could you clarify what you would like me to do?",
+          "clarification_targets": [
+            "intent"
+          ],
+          "compound_ambiguity": true,
+          "compound_ambiguity_count": 3,
+          "context_sampling_uncertainty": {
+            "agreement": 0.19999999999999996,
+            "score": 0.8,
+            "variant_count": 1
+          },
+          "cpc": {
+            "action": {
+              "status": "filled",
+              "value": "Move queue barrier and transfer cart beside information kiosk"
+            },
+            "actor": {
+              "status": "filled",
+              "value": "public-service robot"
+            },
+            "conditions": {
+              "status": "filled",
+              "value": "Storage bay identifier must be specified before final placement"
+            },
+            "constraints": {
+              "status": "filled",
+              "value": "Return queue barrier to one of two storage bays (unit A or B) before final placement"
+            },
+            "destination": {
+              "status": "filled",
+              "value": "beside information kiosk"
+            },
+            "negation": {
+              "status": "filled",
+              "value": "no negation present"
+            },
+            "object": {
+              "status": "filled",
+              "value": "queue barrier and transfer cart"
+            },
+            "object_attributes": {
+              "status": "filled",
+              "value": "queue barrier (portable), transfer cart (portable), information kiosk (fixed), storage bay (unit A or B, portable, authorized, empty, requires identifier before placement, at platform screen or information desk, unknown location in scene context"
+            },
+            "quantity": {
+              "status": "filled",
+              "value": "one queue barrier and one transfer cart"
+            },
+            "recipient": {
+              "status": "filled",
+              "value": "robot"
+            },
+            "spatial_relation": {
+              "status": "filled",
+              "value": "beside"
+            },
+            "time": {
+              "status": "filled",
+              "value": "immediate"
+            },
+            "tool": {
+              "status": "filled",
+              "value": "robot's carrying capacity, navigation, scanning, and sign/deploy capabilities"
+            }
+          },
+          "findings": [
+            "pilot_ambiguity_types:[\"object_reference\",\"pragmatic\",\"spatial_reference\"]",
+            "pilot_capability_status:unauthorized",
+            "intent_summary_present"
+          ],
+          "intent_summary": "Move the queue barrier and transfer cart next to the information kiosk, then return the queue barrier to one of the authorized storage bays",
+          "primary_ambiguity_type": "pragmatic",
+          "recommended_strategy": "clarify",
+          "rejection_reason": null,
+          "resolution_evidence": [],
+          "resolution_method": null,
+          "resolved_slots": [
+            {
+              "slot_name": "action",
+              "value": "Move queue barrier and transfer cart beside information kiosk"
+            },
+            {
+              "slot_name": "actor",
+              "value": "public-service robot"
+            },
+            {
+              "slot_name": "object",
+              "value": "queue barrier and transfer cart"
+            },
+            {
+              "slot_name": "object_attributes",
+              "value": "queue barrier (portable), transfer cart (portable), information kiosk (fixed), storage bay (unit A or B, portable, authorized, empty, requires identifier before placement, at platform screen or information desk, unknown location in scene context"
+            },
+            {
+              "slot_name": "destination",
+              "value": "beside information kiosk"
+            },
+            {
+              "slot_name": "spatial_relation",
+              "value": "beside"
+            },
+            {
+              "slot_name": "quantity",
+              "value": "one queue barrier and one transfer cart"
+            },
+            {
+              "slot_name": "time",
+              "value": "immediate"
+            },
+            {
+              "slot_name": "recipient",
+              "value": "robot"
+            },
+            {
+              "slot_name": "tool",
+              "value": "robot's carrying capacity, navigation, scanning, and sign/deploy capabilities"
+            },
+            {
+              "slot_name": "conditions",
+              "value": "Storage bay identifier must be specified before final placement"
+            },
+            {
+              "slot_name": "constraints",
+              "value": "Return queue barrier to one of two storage bays (unit A or B) before final placement"
+            },
+            {
+              "slot_name": "negation",
+              "value": "no negation present"
+            }
+          ],
+          "risk_level": "medium",
+          "risk_relevant": true,
+          "selected_interpretation": null,
+          "speech_act": "directive_command",
+          "strategy_sequence": [],
+          "supporting_evidence": [],
+          "unresolved_slots": [],
+          "unsupported_specificity": []
+        },
+        "clarification_question": "Could you clarify what you would like me to do?",
+        "clarification_targets": [
+          "intent"
+        ],
+        "execution_status": "ok",
+        "official_result": false,
+        "provider_provenance": {
+          "shared_analysis_fingerprint": "e2637a86df0bf0906890bc273526b00d4dc398c906cf34b903a556f679bf54fe"
+        },
+        "recommended_strategy": "clarify",
+        "record_id": "CA-0727",
+        "rejection_reason": null,
+        "resolved_slots": [
+          {
+            "slot_name": "action",
+            "value": "Move queue barrier and transfer cart beside information kiosk"
+          },
+          {
+            "slot_name": "actor",
+            "value": "public-service robot"
+          },
+          {
+            "slot_name": "object",
+            "value": "queue barrier and transfer cart"
+          },
+          {
+            "slot_name": "object_attributes",
+            "value": "queue barrier (portable), transfer cart (portable), information kiosk (fixed), storage bay (unit A or B, portable, authorized, empty, requires identifier before placement, at platform screen or information desk, unknown location in scene context"
+          },
+          {
+            "slot_name": "destination",
+            "value": "beside information kiosk"
+          },
+          {
+            "slot_name": "spatial_relation",
+            "value": "beside"
+          },
+          {
+            "slot_name": "quantity",
+            "value": "one queue barrier and one transfer cart"
+          },
+          {
+            "slot_name": "time",
+            "value": "immediate"
+          },
+          {
+            "slot_name": "recipient",
+            "value": "robot"
+          },
+          {
+            "slot_name": "tool",
+            "value": "robot's carrying capacity, navigation, scanning, and sign/deploy capabilities"
+          },
+          {
+            "slot_name": "conditions",
+            "value": "Storage bay identifier must be specified before final placement"
+          },
+          {
+            "slot_name": "constraints",
+            "value": "Return queue barrier to one of two storage bays (unit A or B) before final placement"
+          },
+          {
+            "slot_name": "negation",
+            "value": "no negation present"
+          }
+        ],
+        "result_hash": "c49bc50cd11b37ca5e898c48a1b5004486454015f183e901946299f5917444af",
+        "run_id": null,
+        "run_mode": null,
+        "runtime_metadata": {
+          "shared_analysis_fingerprint": "e2637a86df0bf0906890bc273526b00d4dc398c906cf34b903a556f679bf54fe",
+          "thresholds_status": "unfrozen",
+          "thresholds_valid_for_official_use": false,
+          "uncertainty_score": 0.8,
+          "uses_type_risk_capability_precedence": false
+        },
+        "safety_findings": [],
+        "strategy_sequence": [],
+        "synthetic_only": true,
+        "system_id": "degree_based_router",
+        "system_version": "1.0.0",
+        "unsupported_commitment_findings": []
+      },
+      "raw_output": "{\n  \"intent_summary\": \"Move the queue barrier and transfer cart next to the information kiosk, then return the queue barrier to one of the authorized storage bays\",\n  \"cpc\": {\n    \"action\": {\n      \"value\": \"Move queue barrier and transfer cart beside information kiosk\",\n      \"status\": \"unknown\"\n    },\n    \"object\": {\n      \"value\": \"queue barrier and transfer cart\",\n      \"status\": \"unknown\"\n    },\n    \"destination\": {\n      \"value\": \"beside information kiosk\",\n      \"status\": \"unknown\"\n    },\n    \"recipient\": {\n      \"value\": \"robot\",\n      \"status\": \"unknown\"\n    }\n \n  ,\n  \"constraints\": {\n    \"value\": \"Return queue barrier to one of two storage bays (unit A or B) before final placement\",\n    \"status\": \"unknown\"\n  },\n  \"conditions\": {\n    \"value\": \"Storage bay identifier must be specified before final placement\",\n    \"status\": \"unknown\"\n  },\n  \"spatial_relation\": {\n    \"value\": \"beside\",\n    \"status\": \"unknown\"\n  },\n  \"time\": {\n    \"value\": \"immediate\",\n    \"status\": \"unknown\"\n  },\n  \"object_attributes\": {\n    \"value\": \"queue barrier (portable), transfer cart (portable), information kiosk (fixed), storage bay (unit A or B, portable, authorized, empty, requires identifier before placement, at platform screen or information desk, unknown location in scene context\",\n    \"status\": \"unknown\"\n  },\n  \"actor\": {\n    \"value\": \"public-service robot\",\n    \"status\": \"unknown\"\n  },\n  \"tool\": {\n    \"value\": \"robot's carrying capacity, navigation, scanning, and sign/deploy capabilities\",\n    \"status\": \"unknown\"\n  },\n  \"negation\": {\n    \"value\": \"no negation present\",\n    \"status\": \"unknown\"\n  },\n  \"quantity\": {\n    \"value\": \"one queue barrier and one transfer cart\",\n    \"status\": \"unknown\"\n  }\n} \n\n  \n  ,\n  \"pilot_ambiguity_types\": [\n    \"spatial_reference\",\n    \"object_reference\",\n    \"pragmatic\"\n  ]\n  \n  ,\n  \"pilot_capability_status\": \"unauthorized\"\n  \n  ,\n  \"speech_act\": \"directive_command\"\n  \n  ,\n  \"uncertainty\": 0.8\n  ,\n  \"risk_level\": \"medium\"\n  ,\n  \"unresolved_slots\": [\n    \"destination\",\n    \"recipient\",\n    \"object\",\n    \"action\"\n  ]\n  }",
+      "record_id": "CA-0727",
+      "schema_valid": true,
+      "supports_ambiguity_prediction": true,
+      "supports_capability_prediction": true,
+      "system_id": "degree_based_router_v2",
+      "system_version": "2.0.0",
+      "terminal_strategy": "clarify"
+    },
+    "timid": {
+      "ambiguity_types": [
+        "object_reference",
+        "pragmatic",
+        "spatial_reference"
+      ],
+      "analysis_attempts": [
+        {
+          "attempt": 1,
+          "max_new_tokens": 4096,
+          "mode": "thinking",
+          "raw_chars": 7929,
+          "raw_sha256": "7ca745b5948f00d5125e3f1a10fd871415a9deb172dd05be3e1ed84d04606ec0",
+          "validation_error": "bad_intent_summary"
+        },
+        {
+          "attempt": 2,
+          "max_new_tokens": 8192,
+          "mode": "thinking_retry",
+          "raw_chars": 5210,
+          "raw_sha256": "6bbe1b00fc6d357fe5a4c73d57a0426f9359aeac037bf32a3fceb73922945422",
+          "validation_error": "bad_pilot_ambiguity_types"
+        },
+        {
+          "attempt": 3,
+          "constraint": {
+            "constraint_initialised": true,
+            "generated_token_count": 590,
+            "maximum_output_tokens": 1024,
+            "response_mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+            "termination_reason": "eos_or_constraint_stop",
+            "transport_status": "constrained_generated"
+          },
+          "max_new_tokens": 1024,
+          "mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+          "raw_chars": 2070,
+          "raw_sha256": "30f56e82a97c7c104bb59b4855860304f79bda4425f69127f7177a939d62da5f",
+          "validation_error": null
+        }
+      ],
+      "capability_status": "unauthorized",
+      "claim_boundary": "separately_versioned_from_frozen_t39",
+      "error": null,
+      "execution_mode": "cluster-gpu-goal-first-v2",
+      "failed": false,
+      "intent_summary": "Move the queue barrier and transfer cart next to the information kiosk, then return the queue barrier to one of the authorized storage bays",
+      "latency_ms": 97555.15000224113,
+      "model_id": "Qwen/Qwen3-8B@b968826d9c46dd6066d109eabc6255188de91218",
+      "parsed": {
+        "analysis": {
+          "ambiguity_present": true,
+          "ambiguity_types": [
+            "pragmatic",
+            "referential",
+            "spatial"
+          ],
+          "analysis_provenance": {
+            "analysis_id": "d40c95eee84c071bbdb5e7c861fdbc9046ab5e0c75d0046d8ab616e4a1fbbded",
+            "method": "model_generated",
+            "notes": "source_input_hash=d40c95eee84c071bbdb5e7c861fdbc9046ab5e0c75d0046d8ab616e4a1fbbded;no_gold_in_prompt;scene_licence_dropped=destination,recipient,object,action",
+            "provider_id": "goal_first_v2_full_context",
+            "provider_version": "goal-first-manager-v2"
+          },
+          "candidate_interpretations": [],
+          "capability_status": "unknown",
+          "clarification_question": "Before I continue, could you clarify: pragmatic, referential, spatial?",
+          "clarification_targets": [
+            "pragmatic",
+            "referential",
+            "spatial"
+          ],
+          "compound_ambiguity": true,
+          "compound_ambiguity_count": 3,
+          "context_sampling_uncertainty": {
+            "agreement": 0.19999999999999996,
+            "score": 0.8,
+            "variant_count": 1
+          },
+          "cpc": {
+            "action": {
+              "status": "filled",
+              "value": "Move queue barrier and transfer cart beside information kiosk"
+            },
+            "actor": {
+              "status": "filled",
+              "value": "public-service robot"
+            },
+            "conditions": {
+              "status": "filled",
+              "value": "Storage bay identifier must be specified before final placement"
+            },
+            "constraints": {
+              "status": "filled",
+              "value": "Return queue barrier to one of two storage bays (unit A or B) before final placement"
+            },
+            "destination": {
+              "status": "filled",
+              "value": "beside information kiosk"
+            },
+            "negation": {
+              "status": "filled",
+              "value": "no negation present"
+            },
+            "object": {
+              "status": "filled",
+              "value": "queue barrier and transfer cart"
+            },
+            "object_attributes": {
+              "status": "filled",
+              "value": "queue barrier (portable), transfer cart (portable), information kiosk (fixed), storage bay (unit A or B, portable, authorized, empty, requires identifier before placement, at platform screen or information desk, unknown location in scene context"
+            },
+            "quantity": {
+              "status": "filled",
+              "value": "one queue barrier and one transfer cart"
+            },
+            "recipient": {
+              "status": "filled",
+              "value": "robot"
+            },
+            "spatial_relation": {
+              "status": "filled",
+              "value": "beside"
+            },
+            "time": {
+              "status": "filled",
+              "value": "immediate"
+            },
+            "tool": {
+              "status": "filled",
+              "value": "robot's carrying capacity, navigation, scanning, and sign/deploy capabilities"
+            }
+          },
+          "findings": [
+            "pilot_ambiguity_types:[\"object_reference\",\"pragmatic\",\"spatial_reference\"]",
+            "pilot_capability_status:unauthorized",
+            "intent_summary_present"
+          ],
+          "intent_summary": "Move the queue barrier and transfer cart next to the information kiosk, then return the queue barrier to one of the authorized storage bays",
+          "primary_ambiguity_type": "pragmatic",
+          "recommended_strategy": "clarify",
+          "rejection_reason": null,
+          "resolution_evidence": [],
+          "resolution_method": null,
+          "resolved_slots": [
+            {
+              "slot_name": "action",
+              "value": "Move queue barrier and transfer cart beside information kiosk"
+            },
+            {
+              "slot_name": "actor",
+              "value": "public-service robot"
+            },
+            {
+              "slot_name": "object",
+              "value": "queue barrier and transfer cart"
+            },
+            {
+              "slot_name": "object_attributes",
+              "value": "queue barrier (portable), transfer cart (portable), information kiosk (fixed), storage bay (unit A or B, portable, authorized, empty, requires identifier before placement, at platform screen or information desk, unknown location in scene context"
+            },
+            {
+              "slot_name": "destination",
+              "value": "beside information kiosk"
+            },
+            {
+              "slot_name": "spatial_relation",
+              "value": "beside"
+            },
+            {
+              "slot_name": "quantity",
+              "value": "one queue barrier and one transfer cart"
+            },
+            {
+              "slot_name": "time",
+              "value": "immediate"
+            },
+            {
+              "slot_name": "recipient",
+              "value": "robot"
+            },
+            {
+              "slot_name": "tool",
+              "value": "robot's carrying capacity, navigation, scanning, and sign/deploy capabilities"
+            },
+            {
+              "slot_name": "conditions",
+              "value": "Storage bay identifier must be specified before final placement"
+            },
+            {
+              "slot_name": "constraints",
+              "value": "Return queue barrier to one of two storage bays (unit A or B) before final placement"
+            },
+            {
+              "slot_name": "negation",
+              "value": "no negation present"
+            }
+          ],
+          "risk_level": "medium",
+          "risk_relevant": true,
+          "selected_interpretation": null,
+          "speech_act": "directive_command",
+          "strategy_sequence": [],
+          "supporting_evidence": [],
+          "unresolved_slots": [],
+          "unsupported_specificity": []
+        },
+        "clarification_question": "Before I continue, could you clarify: pragmatic, referential, spatial?",
+        "clarification_targets": [
+          "pragmatic",
+          "referential",
+          "spatial"
+        ],
+        "execution_status": "ok",
+        "official_result": false,
+        "provider_provenance": {
+          "provider_id": "cached_analysis",
+          "provider_version": "1.0.0"
+        },
+        "recommended_strategy": "clarify",
+        "record_id": "CA-0727",
+        "rejection_reason": null,
+        "resolved_slots": [
+          {
+            "slot_name": "action",
+            "value": "Move queue barrier and transfer cart beside information kiosk"
+          },
+          {
+            "slot_name": "actor",
+            "value": "public-service robot"
+          },
+          {
+            "slot_name": "object",
+            "value": "queue barrier and transfer cart"
+          },
+          {
+            "slot_name": "object_attributes",
+            "value": "queue barrier (portable), transfer cart (portable), information kiosk (fixed), storage bay (unit A or B, portable, authorized, empty, requires identifier before placement, at platform screen or information desk, unknown location in scene context"
+          },
+          {
+            "slot_name": "destination",
+            "value": "beside information kiosk"
+          },
+          {
+            "slot_name": "spatial_relation",
+            "value": "beside"
+          },
+          {
+            "slot_name": "quantity",
+            "value": "one queue barrier and one transfer cart"
+          },
+          {
+            "slot_name": "time",
+            "value": "immediate"
+          },
+          {
+            "slot_name": "recipient",
+            "value": "robot"
+          },
+          {
+            "slot_name": "tool",
+            "value": "robot's carrying capacity, navigation, scanning, and sign/deploy capabilities"
+          },
+          {
+            "slot_name": "conditions",
+            "value": "Storage bay identifier must be specified before final placement"
+          },
+          {
+            "slot_name": "constraints",
+            "value": "Return queue barrier to one of two storage bays (unit A or B) before final placement"
+          },
+          {
+            "slot_name": "negation",
+            "value": "no negation present"
+          }
+        ],
+        "result_hash": "94ad04cd44b9dc1a067e7d9dff835a3da1d4e39314e5463821ad673bb5e993ae",
+        "run_id": null,
+        "run_mode": null,
+        "runtime_metadata": {
+          "awaits_t28_adapter": true,
+          "classification": {
+            "ambiguity_present": true,
+            "ambiguity_types": [
+              "pragmatic",
+              "referential",
+              "spatial"
+            ],
+            "capability_status": "unknown",
+            "compound_ambiguity": true,
+            "compound_ambiguity_count": 3,
+            "derivation_notes": [
+              "ambiguity_present_from_types"
+            ],
+            "risk_level": "medium"
+          },
+          "rejection_text": null,
+          "requires_re_evaluation": false,
+          "resolution_events": [],
+          "router_trace": {
+            "clarification_targets": [
+              "pragmatic",
+              "referential",
+              "spatial"
+            ],
+            "considered_rules": [
+              "known_unsafe_or_prohibited",
+              "known_incapable",
+              "unknown_or_unverified_capability"
+            ],
+            "matched_rule_id": "unknown_capability",
+            "notes": [
+              "unknown_capability_cannot_execute"
+            ],
+            "recommended_strategy": "clarify",
+            "rejection_reason": null,
+            "requires_re_evaluation": false,
+            "strategy_sequence": []
+          },
+          "safety_action": "return_with_findings",
+          "uncertainty": null
+        },
+        "safety_findings": [],
+        "strategy_sequence": [],
+        "synthetic_only": true,
+        "system_id": "full_type_risk_aware_manager",
+        "system_version": "1.0.0",
+        "unsupported_commitment_findings": []
+      },
+      "raw_output": "{\n  \"intent_summary\": \"Move the queue barrier and transfer cart next to the information kiosk, then return the queue barrier to one of the authorized storage bays\",\n  \"cpc\": {\n    \"action\": {\n      \"value\": \"Move queue barrier and transfer cart beside information kiosk\",\n      \"status\": \"unknown\"\n    },\n    \"object\": {\n      \"value\": \"queue barrier and transfer cart\",\n      \"status\": \"unknown\"\n    },\n    \"destination\": {\n      \"value\": \"beside information kiosk\",\n      \"status\": \"unknown\"\n    },\n    \"recipient\": {\n      \"value\": \"robot\",\n      \"status\": \"unknown\"\n    }\n \n  ,\n  \"constraints\": {\n    \"value\": \"Return queue barrier to one of two storage bays (unit A or B) before final placement\",\n    \"status\": \"unknown\"\n  },\n  \"conditions\": {\n    \"value\": \"Storage bay identifier must be specified before final placement\",\n    \"status\": \"unknown\"\n  },\n  \"spatial_relation\": {\n    \"value\": \"beside\",\n    \"status\": \"unknown\"\n  },\n  \"time\": {\n    \"value\": \"immediate\",\n    \"status\": \"unknown\"\n  },\n  \"object_attributes\": {\n    \"value\": \"queue barrier (portable), transfer cart (portable), information kiosk (fixed), storage bay (unit A or B, portable, authorized, empty, requires identifier before placement, at platform screen or information desk, unknown location in scene context\",\n    \"status\": \"unknown\"\n  },\n  \"actor\": {\n    \"value\": \"public-service robot\",\n    \"status\": \"unknown\"\n  },\n  \"tool\": {\n    \"value\": \"robot's carrying capacity, navigation, scanning, and sign/deploy capabilities\",\n    \"status\": \"unknown\"\n  },\n  \"negation\": {\n    \"value\": \"no negation present\",\n    \"status\": \"unknown\"\n  },\n  \"quantity\": {\n    \"value\": \"one queue barrier and one transfer cart\",\n    \"status\": \"unknown\"\n  }\n} \n\n  \n  ,\n  \"pilot_ambiguity_types\": [\n    \"spatial_reference\",\n    \"object_reference\",\n    \"pragmatic\"\n  ]\n  \n  ,\n  \"pilot_capability_status\": \"unauthorized\"\n  \n  ,\n  \"speech_act\": \"directive_command\"\n  \n  ,\n  \"uncertainty\": 0.8\n  ,\n  \"risk_level\": \"medium\"\n  ,\n  \"unresolved_slots\": [\n    \"destination\",\n    \"recipient\",\n    \"object\",\n    \"action\"\n  ]\n  }",
+      "record_id": "CA-0727",
+      "schema_valid": true,
+      "supports_ambiguity_prediction": true,
+      "supports_capability_prediction": true,
+      "system_id": "rich_conservative_manager_v2",
+      "system_version": "2.0.0",
+      "terminal_strategy": "clarify"
+    },
+    "context_blind": {
+      "ambiguity_types": [
+        "spatial_reference"
+      ],
+      "analysis_attempts": [
+        {
+          "attempt": 1,
+          "max_new_tokens": 4096,
+          "mode": "thinking",
+          "raw_chars": 11177,
+          "raw_sha256": "ef347e6bcb9f4f65688eb7f87d923c0f720b079c49f6dd2138d4f7981473f7cd",
+          "validation_error": "bad_intent_summary"
+        },
+        {
+          "attempt": 2,
+          "max_new_tokens": 8192,
+          "mode": "thinking_retry",
+          "raw_chars": 5081,
+          "raw_sha256": "240bd3c81aaaa2251197ed3838b52d82c63a38089d32c6b83fe140bd0a231d16",
+          "validation_error": "bad_intent_summary"
+        },
+        {
+          "attempt": 3,
+          "constraint": {
+            "constraint_initialised": true,
+            "generated_token_count": 501,
+            "maximum_output_tokens": 1024,
+            "response_mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+            "termination_reason": "eos_or_constraint_stop",
+            "transport_status": "constrained_generated"
+          },
+          "max_new_tokens": 1024,
+          "mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+          "raw_chars": 1672,
+          "raw_sha256": "1cced52d7941477a5d3193412c58ad106347cf595d10d87c1c9e652ecbac99c8",
+          "validation_error": null
+        }
+      ],
+      "capability_status": "unauthorized",
+      "claim_boundary": "separately_versioned_from_frozen_t39",
+      "error": null,
+      "execution_mode": "cluster-gpu-goal-first-v2",
+      "failed": false,
+      "intent_summary": "Move the queue barrier and transfer cart next to the information kiosk, then return them to the storage bay for the barrier",
+      "latency_ms": 122703.26046692207,
+      "model_id": "Qwen/Qwen3-8B@b968826d9c46dd6066d109eabc6255188de91218",
+      "parsed": {
+        "analysis": {
+          "ambiguity_present": true,
+          "ambiguity_types": [
+            "spatial"
+          ],
+          "analysis_provenance": {
+            "analysis_id": "657c51acf8376dcd8bc04c798d790c345e054a5d6de5b03af6e2a030bb557416",
+            "method": "context_blind",
+            "notes": "ablated_input_hash=657c51acf8376dcd8bc04c798d790c345e054a5d6de5b03af6e2a030bb557416;source_input_hash=657c51acf8376dcd8bc04c798d790c345e054a5d6de5b03af6e2a030bb557416;no_gold_in_prompt;scene_licence_dropped=none",
+            "provider_id": "goal_first_v2_context_blind",
+            "provider_version": "goal-first-manager-v2"
+          },
+          "candidate_interpretations": [],
+          "capability_status": "unknown",
+          "clarification_question": null,
+          "clarification_targets": [],
+          "compound_ambiguity": false,
+          "compound_ambiguity_count": 0,
+          "context_sampling_uncertainty": {
+            "agreement": 0.75,
+            "score": 0.25,
+            "variant_count": 1
+          },
+          "cpc": {
+            "action": {
+              "status": "not_applicable",
+              "value": "Move the queue barrier and the transfer cart beside the information kiosk, then return it to the barrier storage bay"
+            },
+            "actor": {
+              "status": "not_applicable",
+              "value": "none"
+            },
+            "conditions": {
+              "status": "not_applicable",
+              "value": "none"
+            },
+            "constraints": {
+              "status": "not_applicable",
+              "value": "none"
+            },
+            "destination": {
+              "status": "not_applicable",
+              "value": "barrier storage bay"
+            },
+            "negation": {
+              "status": "not_applicable",
+              "value": "none"
+            },
+            "object": {
+              "status": "not_applicable",
+              "value": "queue barrier, transfer cart, information kiosk, barrier storage bay"
+            },
+            "object_attributes": {
+              "status": "not_applicable",
+              "value": "queue barrier, transfer cart, information kiosk, barrier storage bay"
+            },
+            "quantity": {
+              "status": "not_applicable",
+              "value": "none"
+            },
+            "recipient": {
+              "status": "not_applicable",
+              "value": "none"
+            },
+            "spatial_relation": {
+              "status": "not_applicable",
+              "value": "beside"
+            },
+            "time": {
+              "status": "not_applicable",
+              "value": "none"
+            },
+            "tool": {
+              "status": "not_applicable",
+              "value": "none"
+            }
+          },
+          "findings": [
+            "pilot_ambiguity_types:[\"spatial_reference\"]",
+            "pilot_capability_status:unauthorized",
+            "intent_summary_present"
+          ],
+          "intent_summary": "Move the queue barrier and transfer cart next to the information kiosk, then return them to the storage bay for the barrier",
+          "primary_ambiguity_type": "spatial",
+          "recommended_strategy": "face_preserving_rejection",
+          "rejection_reason": "unsafe_or_prohibited_action",
+          "resolution_evidence": [],
+          "resolution_method": null,
+          "resolved_slots": [],
+          "risk_level": "medium",
+          "risk_relevant": true,
+          "selected_interpretation": null,
+          "speech_act": "directive_command",
+          "strategy_sequence": [],
+          "supporting_evidence": [],
+          "unresolved_slots": [],
+          "unsupported_specificity": []
+        },
+        "clarification_question": null,
+        "clarification_targets": [],
+        "execution_status": "ok",
+        "official_result": false,
+        "provider_provenance": {
+          "provider_id": "cached_analysis",
+          "provider_version": "1.0.0"
+        },
+        "recommended_strategy": "face_preserving_rejection",
+        "record_id": "CA-0727",
+        "rejection_reason": "unsafe_or_prohibited_action",
+        "resolved_slots": [],
+        "result_hash": "ac88b36702123021da859cc4e983a175eaa3364145176fc9d933d611e41db3f2",
+        "run_id": null,
+        "run_mode": null,
+        "runtime_metadata": {
+          "analysis_identity": {
+            "analysis_content_hash": "d50afa8fac4f96b5a5129c9e39803533c53dd0bddb506952bb246f9ef5d4e663",
+            "analysis_variant": "context_blind",
+            "model_strategy_id": null,
+            "provider_id": "goal_first_v2_context_blind",
+            "provider_version": "goal-first-manager-v2",
+            "record_id": "CA-0727",
+            "source_input_hash": "657c51acf8376dcd8bc04c798d790c345e054a5d6de5b03af6e2a030bb557416"
+          },
+          "analysis_identity_fingerprint": "fc553a89f58fda0a280921ff59692a0f78ae1ef17cff4110902d7f611eb1ebcd",
+          "awaits_t28_adapter": true,
+          "classification": {
+            "ambiguity_present": true,
+            "ambiguity_types": [
+              "spatial"
+            ],
+            "capability_status": "unknown",
+            "compound_ambiguity": false,
+            "compound_ambiguity_count": 0,
+            "derivation_notes": [
+              "ambiguity_present_from_types"
+            ],
+            "risk_level": "medium"
+          },
+          "context_ablation": {
+            "ablated_input_hash": "657c51acf8376dcd8bc04c798d790c345e054a5d6de5b03af6e2a030bb557416",
+            "capability_context_removed": true,
+            "dialogue_history_removed": true,
+            "rejected_full_context_cache": false,
+            "rejection_reason": null,
+            "scene_context_removed": true,
+            "stripped_context_derived_fields": false
+          },
+          "original_input_unmutated": true,
+          "rejection_text": "I need to decline that request because it would be unsafe under the current constraints.",
+          "requires_re_evaluation": false,
+          "resolution_events": [],
+          "router_trace": {
+            "clarification_targets": [],
+            "considered_rules": [
+              "goal_first_v2",
+              "known_unsafe_or_prohibited"
+            ],
+            "matched_rule_id": "known_unsafe_or_prohibited",
+            "notes": [],
+            "recommended_strategy": "face_preserving_rejection",
+            "rejection_reason": "unsafe_or_prohibited_action",
+            "requires_re_evaluation": false,
+            "strategy_sequence": []
+          },
+          "safety_action": "return_with_findings",
+          "uncertainty": null
+        },
+        "safety_findings": [],
+        "strategy_sequence": [],
+        "synthetic_only": true,
+        "system_id": "context_blind_manager",
+        "system_version": "1.0.0",
+        "unsupported_commitment_findings": []
+      },
+      "raw_output": "{\n  \"intent_summary\": \"Move the queue barrier and transfer cart next to the information kiosk, then return them to the storage bay for the barrier\",\n  \"cpc\": {\n    \"action\": {\n      \"value\": \"Move the queue barrier and the transfer cart beside the information kiosk, then return it to the barrier storage bay\"\n   \n   \n   ,\n      \"status\": \"not_applicable\"\n    },\n    \"constraints\": {\n      \"value\": \"none\",\n      \"status\": \"not_applicable\"\n    },\n    \"conditions\": {\n      \"value\": \"none\",\n      \"status\": \"not_applicable\"\n    }\n  ,\n  \"spatial_relation\": {\n    \"value\": \"beside\",\n    \"status\": \"not_applicable\"\n  },\n  \"object_attributes\": {\n    \"value\": \"queue barrier, transfer cart, information kiosk, barrier storage bay\",\n    \"status\": \"not_applicable\"\n  },\n  \"time\": {\n    \"value\": \"none\",\n    \"status\": \"not_applicable\"\n  },\n  \"quantity\": {\n    \"value\": \"none\",\n    \"status\": \"not_applicable\"\n  },\n  \"negation\": {\n    \"value\": \"none\",\n    \"status\": \"not_applicable\"\n  },\n  \"object\": {\n    \"value\": \"queue barrier, transfer cart, information kiosk, barrier storage bay\",\n    \"status\": \"not_applicable\"\n  },\n  \"recipient\": {\n    \"value\": \"none\",\n    \"status\": \"not_applicable\"\n  },\n  \"destination\": {\n    \"value\": \"barrier storage bay\",\n    \"status\": \"not_applicable\"\n  },\n  \"tool\": {\n    \"value\": \"none\",\n    \"status\": \"not_applicable\"\n  },\n  \"actor\": {\n    \"value\": \"none\",\n    \"status\": \"not_applicable\"\n  }\n} \n\n  \n  ,\n  \"pilot_ambiguity_types\": [\n    \"spatial_reference\"\n  ]\n  \n  ,\n  \"speech_act\": \"directive_command\"\n  \n  ,\n  \"pilot_capability_status\": \"unauthorized\"\n  \n  ,\n  \"risk_level\": \"medium\"\n  \n  ,\n  \"uncertainty\": 0.25\n  ,\n  \"unresolved_slots\": []\n  }\n ",
+      "record_id": "CA-0727",
+      "schema_valid": true,
+      "supports_ambiguity_prediction": true,
+      "supports_capability_prediction": true,
+      "system_id": "goal_first_context_blind_v2",
+      "system_version": "2.0.0",
+      "terminal_strategy": "face_preserving_rejection"
+    }
+  },
+  "provenance": {
+    "source_sha256": "f33b1e29f1e8aa256a475f07213aa07247def47d8e2148d54a472a40b71b05c9",
+    "gold_sha256": "5e23ad1a92ff1873c8f039a8ce560a111dd6fb6b8ae8c11d6cf34dbfa1c360db",
+    "t07_final_zip_sha256": "34ca50e034ca37b617068bb50c734d12fa26282fb5eec563c11ead700163e491",
+    "inherited_t07_zip_sha256": "0305b1e9ab062876ee6ee89778cc6028d2eaf01718b7dd0295944e7d9cb81a01",
+    "note": "Goal-First, Degree, Timid, and Context-Blind predictions are inherited from the earlier T0.7 run; official intent and comparison come from the final T0.7 archive."
+  }
+}

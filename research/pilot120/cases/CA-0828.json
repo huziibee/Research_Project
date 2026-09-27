@@ -1,0 +1,1076 @@
+{
+  "record_id": "CA-0828",
+  "frozen_source": {
+    "capability_context": "Response logistics robot can move rated supplies, scan labels, and operate approved radios and meters outside direct medical treatment.",
+    "command": "Could you place the medical-supply crate on the supply scale beside the command console, then handle it by returning it to the triage tent?",
+    "dialogue_history": [
+      "medic: Treat this as an instruction, and use 'handle it' to mean move the medical-supply crate after weighing it."
+    ],
+    "record_id": "CA-0828",
+    "scene_context": "Logistics area in a disaster-response command post. An unrelated battery box is logged for later work at the supply lane. The command console is fixed to the floor. Both the medical-supply crate and the assigned supply scale are movable at the work point. The work-order return field contains the medical-supply crate's asset tag; the supply scale's return point is the calibration rack. Two locations are labelled triage tent; the work order names the one beside the secure cage. Two supply scales are present. The unit assigned to this work order is calibrated; the other is reserved for a different load. The assigned supply scale must first verify that the loaded medical-supply crate is below 18 kilograms. It displays 12 kilograms. The robot's handling certificate permits this target below the stated 18-kilogram limit."
+  },
+  "frozen_gold": {
+    "ambiguity_types": [
+      "destination_reference",
+      "discourse_ellipsis",
+      "object_reference",
+      "pragmatic",
+      "pronoun_reference"
+    ],
+    "annotator_b_era": "glm_era",
+    "annotator_b_model": "glm-5.2-high",
+    "capability_status": "capable",
+    "field_status": {
+      "ambiguity_types": "adjudicated",
+      "capability_status": "auto_agree",
+      "record_validity": "auto_agree",
+      "strategy_sequence": "auto_agree",
+      "terminal_strategy": "auto_agree"
+    },
+    "gold_lifecycle": "final_gold",
+    "gold_status": "adjudicated",
+    "human_gate_required": false,
+    "provenance": {
+      "agreement_label": "pilot_annotation_agreement",
+      "annotator_a_sha256": "18ae2b6d16b89dbf038a087d140f62dce7916ec7c497077a6f0e4e9c3463cd9d",
+      "annotator_b_sha256": "c3d156a81222c449937d551fdf267fe449c9dd61cdc23f596728a6d386315d6d",
+      "gold_policy": "use_existing_pilot_adjudicated_gold",
+      "input_sha256": "3ce66284030971c5d96a71a043d53419e2913725b43259bf12fdf79415691ed4",
+      "pilot_gold_sha256": "f15346541513dff2825a157ed5d88a2ead9353c13326a981edf2029a73c38e51",
+      "protocol": "pilot_adjudicated_gold_on_capability_repaired_source",
+      "repaired_input_sha256": "2f28dd4f3ed6689c6e307bf166abca023ea328a64e5e4c5a21f4ead35a31ed92"
+    },
+    "record_id": "CA-0828",
+    "record_validity": "valid",
+    "strategy_sequence": [
+      "execute"
+    ],
+    "terminal_strategy": "execute"
+  },
+  "t07_comparison": {
+    "record_id": "CA-0828",
+    "gold_route": "execute",
+    "raw_route": "execute",
+    "ft_route": "execute",
+    "gf_route": "execute",
+    "raw_route_ok": "True",
+    "ft_route_ok": "True",
+    "gf_route_ok": "True",
+    "raw_official_intent": "True",
+    "ft_official_intent": "True",
+    "gf_official_intent": "True",
+    "blind_official_intent": "True"
+  },
+  "t07_official_intent": {
+    "context_blind_official_intent": true,
+    "degree_official_intent_shared_gf": true,
+    "finetune_official_intent": true,
+    "goal_first_official_intent": true,
+    "raw_official_intent": true,
+    "record_id": "CA-0828",
+    "timid_official_intent_shared_gf": true
+  },
+  "t07_predictions": {
+    "raw_qwen": {
+      "ambiguity_types": [
+        "object_reference",
+        "spatial_reference"
+      ],
+      "capability_status": "conditionally_capable",
+      "error": null,
+      "execution_mode": "final_close_intent_box",
+      "failed": false,
+      "intent_summary": "Place the medical-supply crate on the supply scale beside the command console, then move it to the specified triage tent location after verifying its weight.",
+      "latency_ms": 14996.647839900106,
+      "parsed": {
+        "ambiguity_types": [
+          "object_reference",
+          "spatial_reference"
+        ],
+        "capability_status": "conditionally_capable",
+        "intent_summary": "Place the medical-supply crate on the supply scale beside the command console, then move it to the specified triage tent location after verifying its weight.",
+        "speech_act": "directive_command",
+        "terminal_strategy": "execute"
+      },
+      "raw_output": "<think>\nOkay, let's break down this query. The user wants the robot to place the medical-supply crate on the supply scale beside the command console, then handle it by returning it to the triage tent. The dialogue history mentions that 'handle it' means move the crate after weighing it. \n\nFirst, the intent_summary should capture both actions: placing the crate on the scale and then moving it to the triage tent. The speech_act is a directive_command because it's a direct instruction. \n\nLooking at ambiguity_types: The command mentions \"the supply scale\" but there are two scales. The dialogue specifies the assigned scale must check the weight, which is below 18kg. The robot's capability allows moving below 18kg, so there's no ambiguity here. However, the triage tent has two locations, but the work order specifies the one beside the secure cage. So maybe there's a spatial_reference ambiguity? Wait, the scene context says the work order names the triage tent beside the secure cage, so that's specific. The scale's return point is the calibration rack, but the command says to return it to the triage tent. Wait, the supply scale's return point is the calibration rack, but the command says to return the crate to the triage tent. So the 'handle it' part is moving the crate after weighing, which is allowed. \n\nThe capability_status is conditionally_capable because the robot can move supplies below 18kg, which is allowed. The terminal_strategy is execute since the robot can perform the task as per the constraints. \n\nWait, the ambiguity_types: The command refers to \"the supply scale\" but there are two scales. However, the dialogue history specifies that the assigned scale is the one that must verify the weight. So maybe there's no ambiguity here. But the scene context says two supply scales are present, and the assigned one is the calibrated one. So the robot is using the correct scale. So no ambiguity. But maybe the 'triage tent' has two locations, but the work order specifies the one beside the secure cage. So that's clear. So maybe no ambiguity types. But wait, the command says \"return it to the triage tent\"—could that be ambiguous? But the scene context says the work order names the specific triage tent. So no ambiguity. \n\nSo ambiguity_types is empty. But wait, the command mentions \"the supply scale beside the command console\"—there are two supply scales. The assigned one is the calibrated one. The scene says the command console is fixed. The supply scale is movable. So the robot needs to place the crate on the supply scale beside the command console. Since there are two scales, but the assigned one is the calibrated one. The dialogue says the assigned scale is the one that must verify the weight. So the robot is using the correct scale. So no ambiguity here. \n\nTherefore, ambiguity_types is empty. \n\nSo the JSON would have intent_summary as placing the crate on the scale and moving it to the triage tent. Speech act is directive_command. Ambiguity types empty. Capability is conditionally_capable because the robot is allowed to move under 18kg. Terminal strategy is execute.\n</think>\n\n{\n  \"intent_summary\": \"Place the medical-supply crate on the supply scale beside the command console, then move it to the specified triage tent location after verifying its weight.\",\n  \"speech_act\": \"directive_command\",\n  \"ambiguity_types\": [\"spatial_reference\", \"object_reference\"],\n  \"capability_status\": \"conditionally_capable\",\n  \"terminal_strategy\": \"execute\"\n}",
+      "record_id": "CA-0828",
+      "schema_valid": true,
+      "speech_act": "directive_command",
+      "system_id": "direct_base_llm",
+      "terminal_strategy": "execute"
+    },
+    "finetune": {
+      "ambiguity_types": [
+        "pragmatic"
+      ],
+      "capability_status": "capable",
+      "error": null,
+      "execution_mode": "final_close_intent_box",
+      "failed": false,
+      "intent_summary": "Place the medical-supply crate on the assigned supply scale, verify its weight, then transport it to the specified triage tent.",
+      "latency_ms": 25639.5169692114,
+      "parsed": {
+        "ambiguity_types": [
+          "pragmatic"
+        ],
+        "capability_status": "capable",
+        "intent_summary": "Place the medical-supply crate on the assigned supply scale, verify its weight, then transport it to the specified triage tent.",
+        "speech_act": "directive_command",
+        "terminal_strategy": "execute"
+      },
+      "raw_output": "<think>\nOkay, let's break this down. The user's command is asking the robot to place the medical-supply crate on the supply scale beside the command console, then handle it by returning it to the triage tent. \n\nFirst, I need to determine the intent. The main job here is to move the crate to the scale, check its weight, and then move it to the triage tent. But the key part is the handling after weighing. The dialogue history mentions that \"handle it\" means moving the crate after weighing. So the robot needs to first place it on the scale, check the weight (which is under 18kg), then move it to the triage tent.\n\nNext, the speech act. The command is a directive, but it's structured as a request with \"Could you...\" which makes it an indirect request. But the user might be using a directive command here. Wait, the dialogue history clarifies that \"handle it\" is a directive. So the main action is a command to move the crate after weighing. But the original command is phrased as a request. Hmm, the speech_act options include directive_command and indirect_request. Since the user is using \"Could you,\" it's an indirect request, but the context might make it a direct command. Need to check the exact phrasing. The user says \"Could you place... then handle it...\" which is a request, but the dialogue history says to treat \"handle it\" as a directive. So maybe the speech act is a directive command. Wait, the speech_act options are one of the types. The original command is a request, but the clarification in the dialogue history makes it a direct instruction. So the speech_act is a directive_command. Or is it an indirect request because of the \"Could you\"? That's a bit ambiguous. But the dialogue history says to treat \"handle it\" as a directive, so the main action is a command. So the speech_act would be directive_command.\n\nAmbiguity types: Let's see. The command mentions \"supply scale beside the command console\" — is that clear? The scene context says there are two supply scales, and the assigned one must verify the weight. The robot is allowed to use the assigned scale. So the scale's location is specified. The triage tent has two locations, but the work order specifies the one beside the secure cage. The robot is supposed to handle the crate after weighing, which is a specific action. The ambiguity here could be about which triage tent to use, but the work order names the one beside the secure cage. The dialogue history says to use the assigned supply scale, so that's clear. The command mentions \"handle it by returning it to the triage tent\" — is that clear? The work order's return field is the triage tent, so that's specified. The only possible ambiguity might be the \"handle it\" part, which is clarified in the dialogue. So maybe the ambiguity is in the interpretation of \"handle it\" as a directive. So the ambiguity type could be pragmatic, because the meaning of \"handle it\" is clarified by the dialogue history. Also, the command has two parts: placing on the scale and then handling. So maybe there's a sequence of actions. But the ambiguity_types need to be from the given list. The key ambiguity here is the interpretation of \"handle it\" as a directive, which is a pragmatic ambiguity. Also, the command might have multiple intents, but the user is asking for one. Wait, the speech_act is a directive_command, so the ambiguity might be in the interpretation of the command. So the ambiguity_types would include pragmatic. Are there others? The command mentions \"the medical-supply crate\" which is clear. The supply scale is specified as the assigned one. The triage tent is specified. So maybe no other ambiguities. So ambiguity_types is [\"pragmatic\"].\n\nCapability status: The robot can move rated supplies, and the crate's weight is under 18kg, which is allowed. The handling certificate permits this. So the robot is capable. So capability_status is \"capable\".\n\nTerminal strategy: Since the command is clear after considering the dialogue history, the robot can execute it. So terminal_strategy is \"execute\".\n</think>\n\n{\n  \"intent_summary\": \"Place the medical-supply crate on the assigned supply scale, verify its weight, then transport it to the specified triage tent.\",\n  \"speech_act\": \"directive_command\",\n  \"ambiguity_types\": [\"pragmatic\"],\n  \"capability_status\": \"capable\",\n  \"terminal_strategy\": \"execute\"\n}",
+      "record_id": "CA-0828",
+      "schema_valid": true,
+      "speech_act": "directive_command",
+      "system_id": "t28_selected_adapter_llm",
+      "terminal_strategy": "execute"
+    },
+    "goal_first": {
+      "ambiguity_types": [
+        "action_order",
+        "object_reference",
+        "pragmatic",
+        "spatial_reference"
+      ],
+      "analysis_attempts": [
+        {
+          "attempt": 1,
+          "max_new_tokens": 4096,
+          "mode": "thinking",
+          "raw_chars": 8587,
+          "raw_sha256": "5a7aa811a46490a5039233e7814d09ce5a82fbe171d2872124c4241f0a12ad4f",
+          "validation_error": "bad_intent_summary"
+        },
+        {
+          "attempt": 2,
+          "max_new_tokens": 8192,
+          "mode": "thinking_retry",
+          "raw_chars": 8058,
+          "raw_sha256": "62ca37e4e441ec154354e5e6aa1b7df4a0de6a011cddddaa2ac1f8bee81bffb8",
+          "validation_error": "bad_intent_summary"
+        },
+        {
+          "attempt": 3,
+          "constraint": {
+            "constraint_initialised": true,
+            "generated_token_count": 492,
+            "maximum_output_tokens": 1024,
+            "response_mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+            "termination_reason": "eos_or_constraint_stop",
+            "transport_status": "constrained_generated"
+          },
+          "max_new_tokens": 1024,
+          "mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+          "raw_chars": 1654,
+          "raw_sha256": "00ba452bbfd5e55765b9223864e8a80eea3dc752b4dba5d4b0af02244ca9c4d6",
+          "validation_error": null
+        }
+      ],
+      "capability_status": "capable",
+      "claim_boundary": "separately_versioned_from_frozen_t39",
+      "error": null,
+      "execution_mode": "cluster-gpu-goal-first-v2",
+      "failed": false,
+      "intent_summary": "Place the medical-supply crate on the supply scale beside the command console, then return it to the triage tent after weighing it",
+      "latency_ms": 125311.49339769036,
+      "model_id": "Qwen/Qwen3-8B@b968826d9c46dd6066d109eabc6255188de91218",
+      "parsed": {
+        "analysis": {
+          "ambiguity_present": true,
+          "ambiguity_types": [
+            "pragmatic",
+            "referential",
+            "spatial",
+            "temporal"
+          ],
+          "analysis_provenance": {
+            "analysis_id": "9c46444a017bdc9efc0f46304480531fe72c4e8e5201cdcc7905fef2b49c721a",
+            "method": "model_generated",
+            "notes": "source_input_hash=9c46444a017bdc9efc0f46304480531fe72c4e8e5201cdcc7905fef2b49c721a;no_gold_in_prompt;scene_licence_dropped=destination,tool",
+            "provider_id": "goal_first_v2_full_context",
+            "provider_version": "goal-first-manager-v2"
+          },
+          "candidate_interpretations": [],
+          "capability_status": "capable",
+          "clarification_question": null,
+          "clarification_targets": [],
+          "compound_ambiguity": true,
+          "compound_ambiguity_count": 4,
+          "context_sampling_uncertainty": {
+            "agreement": 0.85,
+            "score": 0.15,
+            "variant_count": 1
+          },
+          "cpc": {
+            "action": {
+              "status": "not_applicable",
+              "value": "place"
+            },
+            "actor": {
+              "status": "not_applicable",
+              "value": "robot"
+            },
+            "conditions": {
+              "status": "not_applicable",
+              "value": "must verify weight before returning"
+            },
+            "constraints": {
+              "status": "not_applicable",
+              "value": "weighing below 18 kilograms"
+            },
+            "destination": {
+              "status": "not_applicable",
+              "value": "supply scale beside command console"
+            },
+            "negation": {
+              "status": "not_applicable",
+              "value": "no explicit negation"
+            },
+            "object": {
+              "status": "not_applicable",
+              "value": "medical-supply crate"
+            },
+            "object_attributes": {
+              "status": "not_applicable",
+              "value": "medical-supply crate"
+            },
+            "quantity": {
+              "status": "not_applicable",
+              "value": "12 kilograms"
+            },
+            "recipient": {
+              "status": "not_applicable",
+              "value": "robot"
+            },
+            "spatial_relation": {
+              "status": "not_applicable",
+              "value": "beside"
+            },
+            "time": {
+              "status": "not_applicable",
+              "value": "after weighing"
+            },
+            "tool": {
+              "status": "not_applicable",
+              "value": "supply scale"
+            }
+          },
+          "findings": [
+            "pilot_ambiguity_types:[\"action_order\",\"object_reference\",\"pragmatic\",\"spatial_reference\"]",
+            "pilot_capability_status:capable",
+            "intent_summary_present"
+          ],
+          "intent_summary": "Place the medical-supply crate on the supply scale beside the command console, then return it to the triage tent after weighing it",
+          "primary_ambiguity_type": "pragmatic",
+          "recommended_strategy": "execute",
+          "rejection_reason": null,
+          "resolution_evidence": [],
+          "resolution_method": null,
+          "resolved_slots": [],
+          "risk_level": "low",
+          "risk_relevant": true,
+          "selected_interpretation": null,
+          "speech_act": "directive_command",
+          "strategy_sequence": [],
+          "supporting_evidence": [],
+          "unresolved_slots": [
+            {
+              "reason": "model_identified_uncertainty",
+              "slot_name": "time"
+            }
+          ],
+          "unsupported_specificity": []
+        },
+        "clarification_question": null,
+        "clarification_targets": [],
+        "execution_status": "ok",
+        "official_result": false,
+        "provider_provenance": {
+          "provider_id": "cached_analysis",
+          "provider_version": "1.0.0"
+        },
+        "recommended_strategy": "execute",
+        "record_id": "CA-0828",
+        "rejection_reason": null,
+        "resolved_slots": [],
+        "result_hash": "9e163447dc08d1ccd22b321e44ed6eaa7f88367216880653956750e7726446f2",
+        "run_id": null,
+        "run_mode": null,
+        "runtime_metadata": {
+          "awaits_t28_adapter": true,
+          "classification": {
+            "ambiguity_present": true,
+            "ambiguity_types": [
+              "pragmatic",
+              "referential",
+              "spatial",
+              "temporal"
+            ],
+            "capability_status": "capable",
+            "compound_ambiguity": true,
+            "compound_ambiguity_count": 4,
+            "derivation_notes": [
+              "ambiguity_present_from_types"
+            ],
+            "risk_level": "low"
+          },
+          "rejection_text": null,
+          "requires_re_evaluation": false,
+          "resolution_events": [
+            {
+              "confidence_category": "none",
+              "details": {
+                "reason": "unsupported_default_rejected"
+              },
+              "evidence_source": null,
+              "outcome": "unresolved",
+              "previous_status": "unresolved",
+              "resolved_value": null,
+              "rule_id": "no_world_knowledge_guess",
+              "safety_eligibility": false,
+              "slot": "time"
+            }
+          ],
+          "router_trace": {
+            "clarification_targets": [],
+            "considered_rules": [
+              "goal_first_v2",
+              "known_unsafe_or_prohibited",
+              "known_incapable",
+              "unknown_capability_high_risk",
+              "context_licensed_execute"
+            ],
+            "matched_rule_id": "context_licensed_execute",
+            "notes": [
+              "goal_first_v2_execute_despite_remaining_ambiguity"
+            ],
+            "recommended_strategy": "execute",
+            "rejection_reason": null,
+            "requires_re_evaluation": false,
+            "strategy_sequence": []
+          },
+          "safety_action": "return_with_findings",
+          "uncertainty": null
+        },
+        "safety_findings": [],
+        "strategy_sequence": [],
+        "synthetic_only": true,
+        "system_id": "goal_first_manager_v2",
+        "system_version": "2.0.0",
+        "unsupported_commitment_findings": []
+      },
+      "raw_output": "{\n  \"intent_summary\": \"Place the medical-supply crate on the supply scale beside the command console, then return it to the triage tent after weighing it\",\n  \"cpc\": {\n    \"action\": {\n      \"value\": \"place\",\n      \"status\": \"not_applicable\"\n    },\n    \"object\": {\n      \"value\": \"medical-supply crate\",\n      \"status\": \"not_applicable\"\n    },\n    \"destination\": {\n      \"value\": \"supply scale beside command console\",\n      \"status\": \"not_applicable\"\n    },\n    \"recipient\": {\n      \"value\": \"robot\",\n      \"status\": \"not_applicable\"\n    },\n    \"time\": {\n      \"value\": \"after weighing\",\n      \"status\": \"not_applicable\"\n    }\n \n  ,\n  \"constraints\": {\n    \"value\": \"weighing below 18 kilograms\",\n    \"status\": \"not_applicable\"\n  },\n  \"conditions\": {\n    \"value\": \"must verify weight before returning\",\n    \"status\": \"not_applicable\"\n  },\n  \"spatial_relation\": {\n    \"value\": \"beside\",\n    \"status\": \"not_applicable\"\n  },\n  \"quantity\": {\n    \"value\": \"12 kilograms\",\n    \"status\": \"not_applicable\"\n  },\n  \"object_attributes\": {\n    \"value\": \"medical-supply crate\",\n    \"status\": \"not_applicable\"\n  },\n  \"tool\": {\n    \"value\": \"supply scale\",\n    \"status\": \"not_applicable\"\n  },\n  \"negation\": {\n    \"value\": \"no explicit negation\",\n    \"status\": \"not_applicable\"\n  },\n  \"actor\": {\n    \"value\": \"robot\",\n    \"status\": \"not_applicable\"\n  }\n},\n\n\"pilot_ambiguity_types\": [\n  \"pragmatic\",\n  \"action_order\",\n  \"object_reference\",\n  \"spatial_reference\"\n]  \n  \n\n  \n\n ,\n\n\n\n\"pilot_capability_status\": \"capable\",\n  \"speech_act\": \"directive_command\",\n  \"risk_level\": \"low\",\n  \"uncertainty\": 0.15,\n  \"unresolved_slots\":  [\n    \"destination\",\n    \"time\",\n    \"tool\"\n  ]\n}",
+      "record_id": "CA-0828",
+      "schema_valid": true,
+      "supports_ambiguity_prediction": true,
+      "supports_capability_prediction": true,
+      "system_id": "goal_first_manager_v2",
+      "system_version": "2.0.0",
+      "terminal_strategy": "execute"
+    },
+    "degree": {
+      "ambiguity_types": [
+        "action_order",
+        "object_reference",
+        "pragmatic",
+        "spatial_reference"
+      ],
+      "analysis_attempts": [
+        {
+          "attempt": 1,
+          "max_new_tokens": 4096,
+          "mode": "thinking",
+          "raw_chars": 8587,
+          "raw_sha256": "5a7aa811a46490a5039233e7814d09ce5a82fbe171d2872124c4241f0a12ad4f",
+          "validation_error": "bad_intent_summary"
+        },
+        {
+          "attempt": 2,
+          "max_new_tokens": 8192,
+          "mode": "thinking_retry",
+          "raw_chars": 8058,
+          "raw_sha256": "62ca37e4e441ec154354e5e6aa1b7df4a0de6a011cddddaa2ac1f8bee81bffb8",
+          "validation_error": "bad_intent_summary"
+        },
+        {
+          "attempt": 3,
+          "constraint": {
+            "constraint_initialised": true,
+            "generated_token_count": 492,
+            "maximum_output_tokens": 1024,
+            "response_mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+            "termination_reason": "eos_or_constraint_stop",
+            "transport_status": "constrained_generated"
+          },
+          "max_new_tokens": 1024,
+          "mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+          "raw_chars": 1654,
+          "raw_sha256": "00ba452bbfd5e55765b9223864e8a80eea3dc752b4dba5d4b0af02244ca9c4d6",
+          "validation_error": null
+        }
+      ],
+      "capability_status": "capable",
+      "claim_boundary": "separately_versioned_from_frozen_t39",
+      "error": null,
+      "execution_mode": "cluster-gpu-goal-first-v2",
+      "failed": false,
+      "intent_summary": "Place the medical-supply crate on the supply scale beside the command console, then return it to the triage tent after weighing it",
+      "latency_ms": 125311.49339769036,
+      "model_id": "Qwen/Qwen3-8B@b968826d9c46dd6066d109eabc6255188de91218",
+      "parsed": {
+        "analysis": {
+          "ambiguity_present": true,
+          "ambiguity_types": [
+            "pragmatic",
+            "referential",
+            "spatial",
+            "temporal"
+          ],
+          "analysis_provenance": {
+            "analysis_id": "9c46444a017bdc9efc0f46304480531fe72c4e8e5201cdcc7905fef2b49c721a",
+            "method": "model_generated",
+            "notes": "source_input_hash=9c46444a017bdc9efc0f46304480531fe72c4e8e5201cdcc7905fef2b49c721a;no_gold_in_prompt;scene_licence_dropped=destination,tool",
+            "provider_id": "goal_first_v2_full_context",
+            "provider_version": "goal-first-manager-v2"
+          },
+          "candidate_interpretations": [],
+          "capability_status": "capable",
+          "clarification_question": null,
+          "clarification_targets": [],
+          "compound_ambiguity": true,
+          "compound_ambiguity_count": 4,
+          "context_sampling_uncertainty": {
+            "agreement": 0.85,
+            "score": 0.15,
+            "variant_count": 1
+          },
+          "cpc": {
+            "action": {
+              "status": "not_applicable",
+              "value": "place"
+            },
+            "actor": {
+              "status": "not_applicable",
+              "value": "robot"
+            },
+            "conditions": {
+              "status": "not_applicable",
+              "value": "must verify weight before returning"
+            },
+            "constraints": {
+              "status": "not_applicable",
+              "value": "weighing below 18 kilograms"
+            },
+            "destination": {
+              "status": "not_applicable",
+              "value": "supply scale beside command console"
+            },
+            "negation": {
+              "status": "not_applicable",
+              "value": "no explicit negation"
+            },
+            "object": {
+              "status": "not_applicable",
+              "value": "medical-supply crate"
+            },
+            "object_attributes": {
+              "status": "not_applicable",
+              "value": "medical-supply crate"
+            },
+            "quantity": {
+              "status": "not_applicable",
+              "value": "12 kilograms"
+            },
+            "recipient": {
+              "status": "not_applicable",
+              "value": "robot"
+            },
+            "spatial_relation": {
+              "status": "not_applicable",
+              "value": "beside"
+            },
+            "time": {
+              "status": "not_applicable",
+              "value": "after weighing"
+            },
+            "tool": {
+              "status": "not_applicable",
+              "value": "supply scale"
+            }
+          },
+          "findings": [
+            "pilot_ambiguity_types:[\"action_order\",\"object_reference\",\"pragmatic\",\"spatial_reference\"]",
+            "pilot_capability_status:capable",
+            "intent_summary_present"
+          ],
+          "intent_summary": "Place the medical-supply crate on the supply scale beside the command console, then return it to the triage tent after weighing it",
+          "primary_ambiguity_type": "pragmatic",
+          "recommended_strategy": "execute",
+          "rejection_reason": null,
+          "resolution_evidence": [],
+          "resolution_method": null,
+          "resolved_slots": [],
+          "risk_level": "low",
+          "risk_relevant": true,
+          "selected_interpretation": null,
+          "speech_act": "directive_command",
+          "strategy_sequence": [],
+          "supporting_evidence": [],
+          "unresolved_slots": [
+            {
+              "reason": "model_identified_uncertainty",
+              "slot_name": "time"
+            }
+          ],
+          "unsupported_specificity": []
+        },
+        "clarification_question": null,
+        "clarification_targets": [],
+        "execution_status": "ok",
+        "official_result": false,
+        "provider_provenance": {
+          "shared_analysis_fingerprint": "0658b459bcbc13aa730782d54c5afd1cd7541c08c109b770561e6d95c881e759"
+        },
+        "recommended_strategy": "execute",
+        "record_id": "CA-0828",
+        "rejection_reason": null,
+        "resolved_slots": [],
+        "result_hash": "cacd2cf97ec31a3155de061742fd6a07fe0c3fdba6fbb7be07e4092afa464f30",
+        "run_id": null,
+        "run_mode": null,
+        "runtime_metadata": {
+          "shared_analysis_fingerprint": "0658b459bcbc13aa730782d54c5afd1cd7541c08c109b770561e6d95c881e759",
+          "thresholds_status": "unfrozen",
+          "thresholds_valid_for_official_use": false,
+          "uncertainty_score": 0.15,
+          "uses_type_risk_capability_precedence": false
+        },
+        "safety_findings": [],
+        "strategy_sequence": [],
+        "synthetic_only": true,
+        "system_id": "degree_based_router",
+        "system_version": "1.0.0",
+        "unsupported_commitment_findings": []
+      },
+      "raw_output": "{\n  \"intent_summary\": \"Place the medical-supply crate on the supply scale beside the command console, then return it to the triage tent after weighing it\",\n  \"cpc\": {\n    \"action\": {\n      \"value\": \"place\",\n      \"status\": \"not_applicable\"\n    },\n    \"object\": {\n      \"value\": \"medical-supply crate\",\n      \"status\": \"not_applicable\"\n    },\n    \"destination\": {\n      \"value\": \"supply scale beside command console\",\n      \"status\": \"not_applicable\"\n    },\n    \"recipient\": {\n      \"value\": \"robot\",\n      \"status\": \"not_applicable\"\n    },\n    \"time\": {\n      \"value\": \"after weighing\",\n      \"status\": \"not_applicable\"\n    }\n \n  ,\n  \"constraints\": {\n    \"value\": \"weighing below 18 kilograms\",\n    \"status\": \"not_applicable\"\n  },\n  \"conditions\": {\n    \"value\": \"must verify weight before returning\",\n    \"status\": \"not_applicable\"\n  },\n  \"spatial_relation\": {\n    \"value\": \"beside\",\n    \"status\": \"not_applicable\"\n  },\n  \"quantity\": {\n    \"value\": \"12 kilograms\",\n    \"status\": \"not_applicable\"\n  },\n  \"object_attributes\": {\n    \"value\": \"medical-supply crate\",\n    \"status\": \"not_applicable\"\n  },\n  \"tool\": {\n    \"value\": \"supply scale\",\n    \"status\": \"not_applicable\"\n  },\n  \"negation\": {\n    \"value\": \"no explicit negation\",\n    \"status\": \"not_applicable\"\n  },\n  \"actor\": {\n    \"value\": \"robot\",\n    \"status\": \"not_applicable\"\n  }\n},\n\n\"pilot_ambiguity_types\": [\n  \"pragmatic\",\n  \"action_order\",\n  \"object_reference\",\n  \"spatial_reference\"\n]  \n  \n\n  \n\n ,\n\n\n\n\"pilot_capability_status\": \"capable\",\n  \"speech_act\": \"directive_command\",\n  \"risk_level\": \"low\",\n  \"uncertainty\": 0.15,\n  \"unresolved_slots\":  [\n    \"destination\",\n    \"time\",\n    \"tool\"\n  ]\n}",
+      "record_id": "CA-0828",
+      "schema_valid": true,
+      "supports_ambiguity_prediction": true,
+      "supports_capability_prediction": true,
+      "system_id": "degree_based_router_v2",
+      "system_version": "2.0.0",
+      "terminal_strategy": "execute"
+    },
+    "timid": {
+      "ambiguity_types": [
+        "action_order",
+        "object_reference",
+        "pragmatic",
+        "spatial_reference"
+      ],
+      "analysis_attempts": [
+        {
+          "attempt": 1,
+          "max_new_tokens": 4096,
+          "mode": "thinking",
+          "raw_chars": 8587,
+          "raw_sha256": "5a7aa811a46490a5039233e7814d09ce5a82fbe171d2872124c4241f0a12ad4f",
+          "validation_error": "bad_intent_summary"
+        },
+        {
+          "attempt": 2,
+          "max_new_tokens": 8192,
+          "mode": "thinking_retry",
+          "raw_chars": 8058,
+          "raw_sha256": "62ca37e4e441ec154354e5e6aa1b7df4a0de6a011cddddaa2ac1f8bee81bffb8",
+          "validation_error": "bad_intent_summary"
+        },
+        {
+          "attempt": 3,
+          "constraint": {
+            "constraint_initialised": true,
+            "generated_token_count": 492,
+            "maximum_output_tokens": 1024,
+            "response_mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+            "termination_reason": "eos_or_constraint_stop",
+            "transport_status": "constrained_generated"
+          },
+          "max_new_tokens": 1024,
+          "mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+          "raw_chars": 1654,
+          "raw_sha256": "00ba452bbfd5e55765b9223864e8a80eea3dc752b4dba5d4b0af02244ca9c4d6",
+          "validation_error": null
+        }
+      ],
+      "capability_status": "capable",
+      "claim_boundary": "separately_versioned_from_frozen_t39",
+      "error": null,
+      "execution_mode": "cluster-gpu-goal-first-v2",
+      "failed": false,
+      "intent_summary": "Place the medical-supply crate on the supply scale beside the command console, then return it to the triage tent after weighing it",
+      "latency_ms": 125311.49339769036,
+      "model_id": "Qwen/Qwen3-8B@b968826d9c46dd6066d109eabc6255188de91218",
+      "parsed": {
+        "analysis": {
+          "ambiguity_present": true,
+          "ambiguity_types": [
+            "pragmatic",
+            "referential",
+            "spatial",
+            "temporal"
+          ],
+          "analysis_provenance": {
+            "analysis_id": "9c46444a017bdc9efc0f46304480531fe72c4e8e5201cdcc7905fef2b49c721a",
+            "method": "model_generated",
+            "notes": "source_input_hash=9c46444a017bdc9efc0f46304480531fe72c4e8e5201cdcc7905fef2b49c721a;no_gold_in_prompt;scene_licence_dropped=destination,tool",
+            "provider_id": "goal_first_v2_full_context",
+            "provider_version": "goal-first-manager-v2"
+          },
+          "candidate_interpretations": [],
+          "capability_status": "capable",
+          "clarification_question": "When should I do that?",
+          "clarification_targets": [
+            "time"
+          ],
+          "compound_ambiguity": true,
+          "compound_ambiguity_count": 4,
+          "context_sampling_uncertainty": {
+            "agreement": 0.85,
+            "score": 0.15,
+            "variant_count": 1
+          },
+          "cpc": {
+            "action": {
+              "status": "not_applicable",
+              "value": "place"
+            },
+            "actor": {
+              "status": "not_applicable",
+              "value": "robot"
+            },
+            "conditions": {
+              "status": "not_applicable",
+              "value": "must verify weight before returning"
+            },
+            "constraints": {
+              "status": "not_applicable",
+              "value": "weighing below 18 kilograms"
+            },
+            "destination": {
+              "status": "not_applicable",
+              "value": "supply scale beside command console"
+            },
+            "negation": {
+              "status": "not_applicable",
+              "value": "no explicit negation"
+            },
+            "object": {
+              "status": "not_applicable",
+              "value": "medical-supply crate"
+            },
+            "object_attributes": {
+              "status": "not_applicable",
+              "value": "medical-supply crate"
+            },
+            "quantity": {
+              "status": "not_applicable",
+              "value": "12 kilograms"
+            },
+            "recipient": {
+              "status": "not_applicable",
+              "value": "robot"
+            },
+            "spatial_relation": {
+              "status": "not_applicable",
+              "value": "beside"
+            },
+            "time": {
+              "status": "not_applicable",
+              "value": "after weighing"
+            },
+            "tool": {
+              "status": "not_applicable",
+              "value": "supply scale"
+            }
+          },
+          "findings": [
+            "pilot_ambiguity_types:[\"action_order\",\"object_reference\",\"pragmatic\",\"spatial_reference\"]",
+            "pilot_capability_status:capable",
+            "intent_summary_present"
+          ],
+          "intent_summary": "Place the medical-supply crate on the supply scale beside the command console, then return it to the triage tent after weighing it",
+          "primary_ambiguity_type": "pragmatic",
+          "recommended_strategy": "clarify",
+          "rejection_reason": null,
+          "resolution_evidence": [],
+          "resolution_method": null,
+          "resolved_slots": [],
+          "risk_level": "low",
+          "risk_relevant": true,
+          "selected_interpretation": null,
+          "speech_act": "directive_command",
+          "strategy_sequence": [],
+          "supporting_evidence": [],
+          "unresolved_slots": [
+            {
+              "reason": "model_identified_uncertainty",
+              "slot_name": "time"
+            }
+          ],
+          "unsupported_specificity": []
+        },
+        "clarification_question": "When should I do that?",
+        "clarification_targets": [
+          "time"
+        ],
+        "execution_status": "ok",
+        "official_result": false,
+        "provider_provenance": {
+          "provider_id": "cached_analysis",
+          "provider_version": "1.0.0"
+        },
+        "recommended_strategy": "clarify",
+        "record_id": "CA-0828",
+        "rejection_reason": null,
+        "resolved_slots": [],
+        "result_hash": "6a907d274231a79a1151dd6f75c566bd223afb14f3b8d394fbb63af5e15794fb",
+        "run_id": null,
+        "run_mode": null,
+        "runtime_metadata": {
+          "awaits_t28_adapter": true,
+          "classification": {
+            "ambiguity_present": true,
+            "ambiguity_types": [
+              "pragmatic",
+              "referential",
+              "spatial",
+              "temporal"
+            ],
+            "capability_status": "capable",
+            "compound_ambiguity": true,
+            "compound_ambiguity_count": 4,
+            "derivation_notes": [
+              "ambiguity_present_from_types"
+            ],
+            "risk_level": "low"
+          },
+          "rejection_text": null,
+          "requires_re_evaluation": false,
+          "resolution_events": [
+            {
+              "confidence_category": "none",
+              "details": {
+                "reason": "unsupported_default_rejected"
+              },
+              "evidence_source": null,
+              "outcome": "unresolved",
+              "previous_status": "unresolved",
+              "resolved_value": null,
+              "rule_id": "no_world_knowledge_guess",
+              "safety_eligibility": false,
+              "slot": "time"
+            }
+          ],
+          "router_trace": {
+            "clarification_targets": [
+              "time"
+            ],
+            "considered_rules": [
+              "known_unsafe_or_prohibited",
+              "known_incapable",
+              "unknown_or_unverified_capability",
+              "hazard_identity_unresolved",
+              "critical_unresolved_medium_high_risk",
+              "unknown_safety_risk",
+              "dependent_compound_ambiguities",
+              "unique_low_risk_resolvable",
+              "clear_safe_capable",
+              "default_clarify"
+            ],
+            "matched_rule_id": "default_clarify",
+            "notes": [
+              "default_clarify_no_unsupported_specificity"
+            ],
+            "recommended_strategy": "clarify",
+            "rejection_reason": null,
+            "requires_re_evaluation": false,
+            "strategy_sequence": []
+          },
+          "safety_action": "return_with_findings",
+          "uncertainty": null
+        },
+        "safety_findings": [],
+        "strategy_sequence": [],
+        "synthetic_only": true,
+        "system_id": "full_type_risk_aware_manager",
+        "system_version": "1.0.0",
+        "unsupported_commitment_findings": []
+      },
+      "raw_output": "{\n  \"intent_summary\": \"Place the medical-supply crate on the supply scale beside the command console, then return it to the triage tent after weighing it\",\n  \"cpc\": {\n    \"action\": {\n      \"value\": \"place\",\n      \"status\": \"not_applicable\"\n    },\n    \"object\": {\n      \"value\": \"medical-supply crate\",\n      \"status\": \"not_applicable\"\n    },\n    \"destination\": {\n      \"value\": \"supply scale beside command console\",\n      \"status\": \"not_applicable\"\n    },\n    \"recipient\": {\n      \"value\": \"robot\",\n      \"status\": \"not_applicable\"\n    },\n    \"time\": {\n      \"value\": \"after weighing\",\n      \"status\": \"not_applicable\"\n    }\n \n  ,\n  \"constraints\": {\n    \"value\": \"weighing below 18 kilograms\",\n    \"status\": \"not_applicable\"\n  },\n  \"conditions\": {\n    \"value\": \"must verify weight before returning\",\n    \"status\": \"not_applicable\"\n  },\n  \"spatial_relation\": {\n    \"value\": \"beside\",\n    \"status\": \"not_applicable\"\n  },\n  \"quantity\": {\n    \"value\": \"12 kilograms\",\n    \"status\": \"not_applicable\"\n  },\n  \"object_attributes\": {\n    \"value\": \"medical-supply crate\",\n    \"status\": \"not_applicable\"\n  },\n  \"tool\": {\n    \"value\": \"supply scale\",\n    \"status\": \"not_applicable\"\n  },\n  \"negation\": {\n    \"value\": \"no explicit negation\",\n    \"status\": \"not_applicable\"\n  },\n  \"actor\": {\n    \"value\": \"robot\",\n    \"status\": \"not_applicable\"\n  }\n},\n\n\"pilot_ambiguity_types\": [\n  \"pragmatic\",\n  \"action_order\",\n  \"object_reference\",\n  \"spatial_reference\"\n]  \n  \n\n  \n\n ,\n\n\n\n\"pilot_capability_status\": \"capable\",\n  \"speech_act\": \"directive_command\",\n  \"risk_level\": \"low\",\n  \"uncertainty\": 0.15,\n  \"unresolved_slots\":  [\n    \"destination\",\n    \"time\",\n    \"tool\"\n  ]\n}",
+      "record_id": "CA-0828",
+      "schema_valid": true,
+      "supports_ambiguity_prediction": true,
+      "supports_capability_prediction": true,
+      "system_id": "rich_conservative_manager_v2",
+      "system_version": "2.0.0",
+      "terminal_strategy": "clarify"
+    },
+    "context_blind": {
+      "ambiguity_types": [
+        "action_order"
+      ],
+      "analysis_attempts": [
+        {
+          "attempt": 1,
+          "max_new_tokens": 4096,
+          "mode": "thinking",
+          "raw_chars": 5653,
+          "raw_sha256": "a5caa46c26a47f479e79461549e2276aef0c76342b273467e63d71433107bb51",
+          "validation_error": "bad_intent_summary"
+        },
+        {
+          "attempt": 2,
+          "max_new_tokens": 8192,
+          "mode": "thinking_retry",
+          "raw_chars": 5800,
+          "raw_sha256": "dc87b8e118878963391a030f3887a714c5ba8f149b4ab5075c078e59999c8def",
+          "validation_error": "bad_intent_summary"
+        },
+        {
+          "attempt": 3,
+          "constraint": {
+            "constraint_initialised": true,
+            "generated_token_count": 470,
+            "maximum_output_tokens": 1024,
+            "response_mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+            "termination_reason": "eos_or_constraint_stop",
+            "transport_status": "constrained_generated"
+          },
+          "max_new_tokens": 1024,
+          "mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+          "raw_chars": 1532,
+          "raw_sha256": "da2ab6c7a52e505aa1a9e172b112dba816925e81480cd1398de5c997567d609d",
+          "validation_error": null
+        }
+      ],
+      "capability_status": "incapable",
+      "claim_boundary": "separately_versioned_from_frozen_t39",
+      "error": null,
+      "execution_mode": "cluster-gpu-goal-first-v2",
+      "failed": false,
+      "intent_summary": "Place the medical-supply crate on the supply scale beside the command console and then return it to the triage tent",
+      "latency_ms": 83202.29304814711,
+      "model_id": "Qwen/Qwen3-8B@b968826d9c46dd6066d109eabc6255188de91218",
+      "parsed": {
+        "analysis": {
+          "ambiguity_present": true,
+          "ambiguity_types": [
+            "temporal"
+          ],
+          "analysis_provenance": {
+            "analysis_id": "61b32f2d7325f2ccff18ef01f0abb1b0d7d48a973eb577b7ba7d92d13a934b4f",
+            "method": "context_blind",
+            "notes": "ablated_input_hash=61b32f2d7325f2ccff18ef01f0abb1b0d7d48a973eb577b7ba7d92d13a934b4f;source_input_hash=61b32f2d7325f2ccff18ef01f0abb1b0d7d48a973eb577b7ba7d92d13a934b4f;no_gold_in_prompt;scene_licence_dropped=none",
+            "provider_id": "goal_first_v2_context_blind",
+            "provider_version": "goal-first-manager-v2"
+          },
+          "candidate_interpretations": [],
+          "capability_status": "incapable",
+          "clarification_question": null,
+          "clarification_targets": [],
+          "compound_ambiguity": false,
+          "compound_ambiguity_count": 0,
+          "context_sampling_uncertainty": {
+            "agreement": 0.6,
+            "score": 0.4,
+            "variant_count": 1
+          },
+          "cpc": {
+            "action": {
+              "status": "not_applicable",
+              "value": "place"
+            },
+            "actor": {
+              "status": "not_applicable",
+              "value": "none"
+            },
+            "conditions": {
+              "status": "not_applicable",
+              "value": "then handle it by returning it to the triage tent"
+            },
+            "constraints": {
+              "status": "not_applicable",
+              "value": "none"
+            },
+            "destination": {
+              "status": "not_applicable",
+              "value": "supply scale beside the command console"
+            },
+            "negation": {
+              "status": "not_applicable",
+              "value": "none"
+            },
+            "object": {
+              "status": "not_applicable",
+              "value": "medical-supply crate"
+            },
+            "object_attributes": {
+              "status": "not_applicable",
+              "value": "none"
+            },
+            "quantity": {
+              "status": "not_applicable",
+              "value": "none"
+            },
+            "recipient": {
+              "status": "not_applicable",
+              "value": "none"
+            },
+            "spatial_relation": {
+              "status": "not_applicable",
+              "value": "beside the command console"
+            },
+            "time": {
+              "status": "not_applicable",
+              "value": "none"
+            },
+            "tool": {
+              "status": "not_applicable",
+              "value": "none"
+            }
+          },
+          "findings": [
+            "pilot_ambiguity_types:[\"action_order\"]",
+            "pilot_capability_status:incapable",
+            "intent_summary_present"
+          ],
+          "intent_summary": "Place the medical-supply crate on the supply scale beside the command console and then return it to the triage tent",
+          "primary_ambiguity_type": "temporal",
+          "recommended_strategy": "face_preserving_rejection",
+          "rejection_reason": "known_incapability",
+          "resolution_evidence": [],
+          "resolution_method": null,
+          "resolved_slots": [],
+          "risk_level": "medium",
+          "risk_relevant": true,
+          "selected_interpretation": null,
+          "speech_act": "directive_command",
+          "strategy_sequence": [],
+          "supporting_evidence": [],
+          "unresolved_slots": [
+            {
+              "reason": "model_identified_uncertainty",
+              "slot_name": "action"
+            }
+          ],
+          "unsupported_specificity": []
+        },
+        "clarification_question": null,
+        "clarification_targets": [],
+        "execution_status": "ok",
+        "official_result": false,
+        "provider_provenance": {
+          "provider_id": "cached_analysis",
+          "provider_version": "1.0.0"
+        },
+        "recommended_strategy": "face_preserving_rejection",
+        "record_id": "CA-0828",
+        "rejection_reason": "known_incapability",
+        "resolved_slots": [],
+        "result_hash": "2c53cf4356bbc7af6319c9b9ab00908dea8a3764ed4f9dcff65969c75994aa66",
+        "run_id": null,
+        "run_mode": null,
+        "runtime_metadata": {
+          "analysis_identity": {
+            "analysis_content_hash": "f79c0170cf52e68ff5a6a34b45be003e414980d4f882e83e109eb5210da8205e",
+            "analysis_variant": "context_blind",
+            "model_strategy_id": null,
+            "provider_id": "goal_first_v2_context_blind",
+            "provider_version": "goal-first-manager-v2",
+            "record_id": "CA-0828",
+            "source_input_hash": "61b32f2d7325f2ccff18ef01f0abb1b0d7d48a973eb577b7ba7d92d13a934b4f"
+          },
+          "analysis_identity_fingerprint": "c15d7dc07e8a13bdcc5f0d9498b5bf6c8e957d21a8a0faa0ec6bfc4342f177c3",
+          "awaits_t28_adapter": true,
+          "classification": {
+            "ambiguity_present": true,
+            "ambiguity_types": [
+              "temporal"
+            ],
+            "capability_status": "incapable",
+            "compound_ambiguity": false,
+            "compound_ambiguity_count": 0,
+            "derivation_notes": [
+              "ambiguity_present_from_types"
+            ],
+            "risk_level": "medium"
+          },
+          "context_ablation": {
+            "ablated_input_hash": "61b32f2d7325f2ccff18ef01f0abb1b0d7d48a973eb577b7ba7d92d13a934b4f",
+            "capability_context_removed": true,
+            "dialogue_history_removed": true,
+            "rejected_full_context_cache": false,
+            "rejection_reason": null,
+            "scene_context_removed": true,
+            "stripped_context_derived_fields": false
+          },
+          "original_input_unmutated": true,
+          "rejection_text": "I am not able to perform that action with my current capabilities. I will not invent an alternative that is not supported.",
+          "requires_re_evaluation": false,
+          "resolution_events": [
+            {
+              "confidence_category": "blocked",
+              "details": {
+                "risk_level": "medium"
+              },
+              "evidence_source": null,
+              "outcome": "resolution_blocked_by_risk",
+              "previous_status": "unresolved",
+              "resolved_value": null,
+              "rule_id": "risk_block",
+              "safety_eligibility": false,
+              "slot": "action"
+            }
+          ],
+          "router_trace": {
+            "clarification_targets": [],
+            "considered_rules": [
+              "goal_first_v2",
+              "known_unsafe_or_prohibited",
+              "known_incapable"
+            ],
+            "matched_rule_id": "known_incapable",
+            "notes": [],
+            "recommended_strategy": "face_preserving_rejection",
+            "rejection_reason": "known_incapability",
+            "requires_re_evaluation": false,
+            "strategy_sequence": []
+          },
+          "safety_action": "return_with_findings",
+          "uncertainty": null
+        },
+        "safety_findings": [],
+        "strategy_sequence": [],
+        "synthetic_only": true,
+        "system_id": "context_blind_manager",
+        "system_version": "1.0.0",
+        "unsupported_commitment_findings": []
+      },
+      "raw_output": "{\n  \"intent_summary\": \"Place the medical-supply crate on the supply scale beside the command console and then return it to the triage tent\",\n  \"cpc\": {\n    \"action\": {\n      \"value\": \"place\",\n      \"status\": \"not_applicable\"\n    },\n    \"object\": {\n      \"value\": \"medical-supply crate\",\n      \"status\": \"not_applicable\"\n    },\n    \"destination\": {\n      \"value\": \"supply scale beside the command console\",\n      \"status\": \"not_applicable\"\n    },\n    \"recipient\": {\n      \"value\": \"none\",\n      \"status\": \"not_applicable\"\n    },\n    \"tool\": {\n      \"value\": \"none\",\n      \"status\": \"not_applicable\"\n    }\n \n  ,\n  \"conditions\": {\n    \"value\": \"then handle it by returning it to the triage tent\",\n    \"status\": \"not_applicable\"\n  },\n  \"constraints\": {\n    \"value\": \"none\",\n    \"status\": \"not_applicable\"\n  },\n  \"spatial_relation\": {\n    \"value\": \"beside the command console\",\n    \"status\": \"not_applicable\"\n  },\n  \"time\": {\n    \"value\": \"none\",\n    \"status\": \"not_applicable\"\n  },\n  \"quantity\": {\n    \"value\": \"none\",\n    \"status\": \"not_applicable\"\n  },\n  \"negation\": {\n    \"value\": \"none\",\n    \"status\": \"not_applicable\"\n  },\n  \"object_attributes\": {\n    \"value\": \"none\",\n    \"status\": \"not_applicable\"\n  },\n  \"actor\": {\n    \"value\": \"none\",\n    \"status\": \"not_applicable\"\n  }\n}\n\n,\n  \"pilot_ambiguity_types\": [\n    \"action_order\"\n  ]\n  \n  ,\n  \"pilot_capability_status\": \"incapable\"\n  \n  ,\n  \"speech_act\": \"directive_command\"\n  \n  ,\n  \"risk_level\": \"medium\"\n  \n  ,\n  \"unresolved_slots\": [\n    \"action\"\n  ]\n  \n  ,\n  \"uncertainty\": 0.4\n}",
+      "record_id": "CA-0828",
+      "schema_valid": true,
+      "supports_ambiguity_prediction": true,
+      "supports_capability_prediction": true,
+      "system_id": "goal_first_context_blind_v2",
+      "system_version": "2.0.0",
+      "terminal_strategy": "face_preserving_rejection"
+    }
+  },
+  "provenance": {
+    "source_sha256": "f33b1e29f1e8aa256a475f07213aa07247def47d8e2148d54a472a40b71b05c9",
+    "gold_sha256": "5e23ad1a92ff1873c8f039a8ce560a111dd6fb6b8ae8c11d6cf34dbfa1c360db",
+    "t07_final_zip_sha256": "34ca50e034ca37b617068bb50c734d12fa26282fb5eec563c11ead700163e491",
+    "inherited_t07_zip_sha256": "0305b1e9ab062876ee6ee89778cc6028d2eaf01718b7dd0295944e7d9cb81a01",
+    "note": "Goal-First, Degree, Timid, and Context-Blind predictions are inherited from the earlier T0.7 run; official intent and comparison come from the final T0.7 archive."
+  }
+}

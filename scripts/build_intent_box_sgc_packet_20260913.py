@@ -10,19 +10,10 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-sys.path.insert(
-    0,
-    str(ROOT / "pilot120_intent_evaluation_20260902" / "pilot120_intent_evaluation_20260902" / "scripts"),
-)
+sys.path.insert(0, str(ROOT / "scripts"))
 from intent_eval_common import _strip_verbatim_source_command, sha256_text  # type: ignore
 
-GOLD = (
-    ROOT
-    / "pilot120_intent_evaluation_20260902"
-    / "pilot120_intent_evaluation_20260902"
-    / "data"
-    / "intent_gold_references_120.jsonl"
-)
+GOLD = ROOT / "data/annotations/pilot_120_v1/intent_gold_references_120.jsonl"
 
 
 def load_jsonl(path: Path) -> dict[str, dict]:

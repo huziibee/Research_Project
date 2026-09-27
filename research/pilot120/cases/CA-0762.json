@@ -1,0 +1,1136 @@
+{
+  "record_id": "CA-0762",
+  "frozen_source": {
+    "capability_context": "Restaurant service robot can carry sealed food-service items, scan table tags, and move approved furniture accessories outside occupied paths.",
+    "command": "File the reservation sheet after the check using the usual setup.",
+    "dialogue_history": [],
+    "record_id": "CA-0762",
+    "scene_context": "Service area in a restaurant dining room. A physical folder and a digital record for the same reservation sheet are both open and both require filing. An unrelated water jug is logged for later work at the window table. The check at 13:00 is the one linked to this job. The active task card for this command is Work order WO-728. The setup table states that Work order WO-728 maps to the service reset, while the allergen check applies to a different work-order prefix. Both physical filing at the pass counter and digital filing in the records system are authorized; the task card does not choose a medium."
+  },
+  "frozen_gold": {
+    "ambiguity_types": [
+      "destination_reference",
+      "routine_reference",
+      "temporal_reference"
+    ],
+    "annotator_b_era": "glm_era",
+    "annotator_b_model": "glm-5.2-high",
+    "capability_status": "capable",
+    "field_status": {
+      "ambiguity_types": "adjudicated",
+      "capability_status": "human_auditor:independent_from_route",
+      "record_validity": "auto_agree",
+      "strategy_sequence": "auto_agree",
+      "terminal_strategy": "auto_agree"
+    },
+    "gold_lifecycle": "final_gold",
+    "gold_status": "adjudicated",
+    "human_gate_required": false,
+    "provenance": {
+      "agreement_label": "pilot_annotation_agreement",
+      "annotator_a_sha256": "8fd47321e3cc4e44e634afc4c5007800def5959319d1c0a2306dca279313ce70",
+      "annotator_b_sha256": "fb6bf568b277317b97b101785329f7c0755840c3748010d27284a5d87d2c860e",
+      "capability_route_decouple": "conditionally_capable remapped to capable: no evidenced external capability precondition; linguistic silently_resolve/clarify is not a capability condition",
+      "gold_policy": "use_existing_pilot_adjudicated_gold",
+      "input_sha256": "2f606610d30a5f81d196be57700da830dad18e0522e1899af277bde1d2c2423e",
+      "pilot_gold_sha256": "4c069c66e60c462345e8d853fa9594b68120dd90268cf837bcf10f66d0a0605e",
+      "protocol": "pilot_adjudicated_gold_on_capability_repaired_source",
+      "repaired_input_sha256": "56b812da1d31a3a7b131ffb40d7a1190fedb63aea1ac8f3f6bc7b1c20f5e18f7"
+    },
+    "record_id": "CA-0762",
+    "record_validity": "valid",
+    "strategy_sequence": [
+      "clarify"
+    ],
+    "terminal_strategy": "clarify"
+  },
+  "t07_comparison": {
+    "record_id": "CA-0762",
+    "gold_route": "clarify",
+    "raw_route": "clarify",
+    "ft_route": "execute",
+    "gf_route": "execute",
+    "raw_route_ok": "True",
+    "ft_route_ok": "False",
+    "gf_route_ok": "False",
+    "raw_official_intent": "True",
+    "ft_official_intent": "False",
+    "gf_official_intent": "True",
+    "blind_official_intent": "True"
+  },
+  "t07_official_intent": {
+    "context_blind_official_intent": true,
+    "degree_official_intent_shared_gf": true,
+    "finetune_official_intent": false,
+    "goal_first_official_intent": true,
+    "raw_official_intent": true,
+    "record_id": "CA-0762",
+    "timid_official_intent_shared_gf": true
+  },
+  "t07_predictions": {
+    "raw_qwen": {
+      "ambiguity_types": [
+        "object_reference",
+        "routine_reference"
+      ],
+      "capability_status": "conditionally_capable",
+      "error": null,
+      "execution_mode": "final_close_intent_box",
+      "failed": false,
+      "intent_summary": "File the reservation sheet after the check at 13:00 using the standard filing procedure.",
+      "latency_ms": 12088.738878723234,
+      "parsed": {
+        "ambiguity_types": [
+          "object_reference",
+          "routine_reference"
+        ],
+        "capability_status": "conditionally_capable",
+        "intent_summary": "File the reservation sheet after the check at 13:00 using the standard filing procedure.",
+        "speech_act": "directive_command",
+        "terminal_strategy": "clarify"
+      },
+      "raw_output": "<think>\nOkay, let's break this down. The user's command is \"File the reservation sheet after the check using the usual setup.\" First, I need to figure out the intent. They want the reservation sheet filed after the check, which is at 13:00. The dialogue history is empty, so no prior context. The scene is a restaurant service area with both physical and digital filing options open. The task card mentions Work order WO-728, which maps to service reset, but the allergen check is for a different work order. The setup says both physical and digital filing are authorized, but the task card doesn't specify the medium.\n\nSo, the robot needs to file the reservation sheet. But the command says \"after the check,\" which is the check at 13:00. The robot can scan table tags and carry items. However, the task card doesn't choose a medium, so the robot might need to handle both? Wait, the capability context says it can carry sealed items, scan tags, and move furniture. But the command is about filing, which could be physical or digital. The ambiguity here is whether the user wants physical, digital, or both. The task card doesn't specify, so that's a missing medium. Also, \"usual setup\" might refer to a specific method, but since it's not defined, that's another ambiguity. \n\nThe speech act is a directive command because the user is giving a direct instruction. The ambiguity types would include object_reference (reservation sheet) and maybe destination_reference (where to file it). Wait, the user didn't specify where, but the scene mentions both physical and digital. So the robot might need to clarify the medium. But the capability status is conditionally_capable because the task card doesn't choose the medium. The terminal strategy would be clarify since the medium isn't specified. \n\nWait, the capability context says both are authorized, so maybe the robot can handle either. But the task card doesn't specify, so the robot might need to ask. So the capability status is conditionally_capable. The ambiguity types would include object_reference (reservation sheet) and maybe destination_reference (physical vs digital). Also, \"usual setup\" might be a routine reference. So the ambiguity_types could be routine_reference and object_reference. \n\nPutting it all together: the intent is to file the reservation sheet after the check. The speech act is a directive command. Ambiguity types include object_reference and routine_reference. Capability status is conditionally_capable because the medium isn't specified. Terminal strategy is clarify to determine the filing method.\n</think>\n\n{\n  \"intent_summary\": \"File the reservation sheet after the check at 13:00 using the standard filing procedure.\",\n  \"speech_act\": \"directive_command\",\n  \"ambiguity_types\": [\"routine_reference\", \"object_reference\"],\n  \"capability_status\": \"conditionally_capable\",\n  \"terminal_strategy\": \"clarify\"\n}",
+      "record_id": "CA-0762",
+      "schema_valid": true,
+      "speech_act": "directive_command",
+      "system_id": "direct_base_llm",
+      "terminal_strategy": "clarify"
+    },
+    "finetune": {
+      "ambiguity_types": [
+        "object_reference",
+        "routine_reference"
+      ],
+      "capability_status": "capable",
+      "error": null,
+      "execution_mode": "final_close_intent_box",
+      "failed": false,
+      "intent_summary": "File the reservation sheet after the check using the usual setup.",
+      "latency_ms": 28461.350300349295,
+      "parsed": {
+        "ambiguity_types": [
+          "object_reference",
+          "routine_reference"
+        ],
+        "capability_status": "capable",
+        "intent_summary": "File the reservation sheet after the check using the usual setup.",
+        "speech_act": "directive_command",
+        "terminal_strategy": "execute"
+      },
+      "raw_output": "<think>\nOkay, let's break down this command. The user says, \"File the reservation sheet after the check using the usual setup.\" First, I need to understand what the intent is here. The main job is to file the reservation sheet, but the timing is after the check. The check is mentioned as happening at 13:00, which is probably when the reservation is finalized.\n\nNow, looking at the dialogue history, there's nothing, so this is the first command. The scene context mentions a physical folder and a digital record for the reservation sheet. Both need filing. The task card is WO-728, which maps to service reset, but there's no medium specified. The capability context says the robot can carry items, scan table tags, and move furniture accessories. \n\nSo, the robot needs to file both the physical and digital copies. But the command says \"using the usual setup,\" which might refer to the setup table. The setup table mentions that WO-728 is for service reset, but the allergen check is a different work order. The task card doesn't specify a medium, so the robot might need to handle both. However, the robot's capabilities include moving furniture, but does it have the ability to file physical folders? The capability context says it can carry sealed items, so maybe it can carry the physical folder. The digital filing might involve scanning or some digital process, but the robot's capabilities mention scanning table tags, so that's possible. \n\nWait, the problem is whether the robot can do both. The capability status could be conditionally_capable because the task card doesn't specify a medium, but the robot can handle both. However, the ambiguity here is whether \"usual setup\" refers to the physical or digital. The command is a bit vague on the medium, so that's a fuzzy_quantity or ambiguity in the medium. Also, the \"after the check\" part might be a temporal_reference. The check is at 13:00, so the timing is clear. \n\nThe speech act here is a directive_command because the user is giving a direct instruction. The intent_summary is to file the reservation sheet after the check. The ambiguity_types would include object_reference (since it's about the reservation sheet) and possibly routine_reference if \"usual setup\" refers to a standard procedure. But the main ambiguity is the medium (physical vs digital) since the task card doesn't specify. So that's a fuzzy_quantity or maybe object_reference. Wait, the task card mentions both physical and digital are authorized. So maybe the ambiguity is in the medium, which is not specified. So the ambiguity type would be object_reference or maybe not. Alternatively, since the command doesn't specify the medium, but the setup table mentions the usual setup, which might be a routine_reference. \n\nHmm, the ambiguity_types need to be from the list. The main ambiguity here is the medium (physical vs digital) since the task card doesn't choose one. That's a scope ambiguity or object_reference. Wait, object_reference is when the referent is unclear. Here, the reservation sheet could refer to either the physical or digital. So that's an object_reference. Also, the \"usual setup\" might be a routine_reference. So the ambiguity_types would be object_reference and routine_reference. \n\nThe capability status is conditionally_capable because the robot can handle both, but the task card doesn't specify, so it depends on the setup. The terminal strategy is to execute, but since the medium is ambiguous, maybe clarify. Wait, the task card says both are authorized, so the robot can do either. So the capability is conditionally_capable because the setup isn't specified. The terminal strategy would be to execute, but since the command is ambiguous, maybe clarify. However, the task card allows both, so the robot can proceed. Wait, the capability context says the robot can carry sealed items and scan table tags. The physical filing might involve carrying the folder, and digital could involve scanning. So the robot is capable of both. Therefore, capability_status is capable. \n\nWait, the task card doesn't choose a medium, but both are authorized. So the robot can do either. So the capability is capable. But the ambiguity is in the medium, so the robot can handle both. Therefore, capability_status is capable. The terminal strategy would be to execute, but maybe the robot needs to clarify which medium. However, the task card allows both, so the robot can proceed. So the terminal strategy is execute. \n\nPutting it all together: intent_summary is to file the reservation sheet after the check. Speech act is directive_command. Ambiguity_types are object_reference (reservation sheet could be physical or digital) and routine_reference (usual setup). Capability is capable. Terminal strategy is execute.\n</think>\n\n{\n  \"intent_summary\": \"File the reservation sheet after the check using the usual setup.\",\n  \"speech_act\": \"directive_command\",\n  \"ambiguity_types\": [\"object_reference\", \"routine_reference\"],\n  \"capability_status\": \"capable\",\n  \"terminal_strategy\": \"execute\"\n}",
+      "record_id": "CA-0762",
+      "schema_valid": true,
+      "speech_act": "directive_command",
+      "system_id": "t28_selected_adapter_llm",
+      "terminal_strategy": "execute"
+    },
+    "goal_first": {
+      "ambiguity_types": [
+        "object_reference",
+        "pragmatic",
+        "temporal_reference"
+      ],
+      "analysis_attempts": [
+        {
+          "attempt": 1,
+          "max_new_tokens": 4096,
+          "mode": "thinking",
+          "raw_chars": 9349,
+          "raw_sha256": "0bc5e58ef6bb0ceefd5a237b93e07d17bd49d84ed9ef9edcf1645b5bfec36dcf",
+          "validation_error": "bad_intent_summary"
+        },
+        {
+          "attempt": 2,
+          "max_new_tokens": 8192,
+          "mode": "thinking_retry",
+          "raw_chars": 4631,
+          "raw_sha256": "bec71aa3e8d85ab9e16f22de8fe0d21fdb10fad2ab24e9781012d1abd0d53663",
+          "validation_error": "bad_pilot_ambiguity_types"
+        },
+        {
+          "attempt": 3,
+          "constraint": {
+            "constraint_initialised": true,
+            "generated_token_count": 492,
+            "maximum_output_tokens": 1024,
+            "response_mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+            "termination_reason": "eos_or_constraint_stop",
+            "transport_status": "constrained_generated"
+          },
+          "max_new_tokens": 1024,
+          "mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+          "raw_chars": 1549,
+          "raw_sha256": "187c4c4af3d07f57a06a2ba5ee1ffab8f0003f6399e3240dc6cedb3d2e3f7a37",
+          "validation_error": null
+        }
+      ],
+      "capability_status": "capable",
+      "claim_boundary": "separately_versioned_from_frozen_t39",
+      "error": null,
+      "execution_mode": "cluster-gpu-goal-first-v2",
+      "failed": false,
+      "intent_summary": "File the reservation sheet after the check using the usual setup",
+      "latency_ms": 108214.21705419198,
+      "model_id": "Qwen/Qwen3-8B@b968826d9c46dd6066d109eabc6255188de91218",
+      "parsed": {
+        "analysis": {
+          "ambiguity_present": true,
+          "ambiguity_types": [
+            "pragmatic",
+            "referential",
+            "temporal"
+          ],
+          "analysis_provenance": {
+            "analysis_id": "98088b5fc009bb94fc1374872e5bfbad46b2c6840362f5c733e58eb93aefcc85",
+            "method": "model_generated",
+            "notes": "source_input_hash=98088b5fc009bb94fc1374872e5bfbad46b2c6840362f5c733e58eb93aefcc85;no_gold_in_prompt;scene_licence_dropped=time",
+            "provider_id": "goal_first_v2_full_context",
+            "provider_version": "goal-first-manager-v2"
+          },
+          "candidate_interpretations": [],
+          "capability_status": "capable",
+          "clarification_question": null,
+          "clarification_targets": [],
+          "compound_ambiguity": true,
+          "compound_ambiguity_count": 3,
+          "context_sampling_uncertainty": {
+            "agreement": 0.8,
+            "score": 0.2,
+            "variant_count": 1
+          },
+          "cpc": {
+            "action": {
+              "status": "not_applicable",
+              "value": "file"
+            },
+            "actor": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "conditions": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "constraints": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "destination": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "negation": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "object": {
+              "status": "not_applicable",
+              "value": "reservation sheet"
+            },
+            "object_attributes": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "quantity": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "recipient": {
+              "status": "not_applicable",
+              "value": "usual setup"
+            },
+            "spatial_relation": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "time": {
+              "status": "not_applicable",
+              "value": "after the check"
+            },
+            "tool": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            }
+          },
+          "findings": [
+            "pilot_ambiguity_types:[\"object_reference\",\"pragmatic\",\"temporal_reference\"]",
+            "pilot_capability_status:capable",
+            "intent_summary_present",
+            "router_validation:execute blocked with unresolved critical safety slots"
+          ],
+          "intent_summary": "File the reservation sheet after the check using the usual setup",
+          "primary_ambiguity_type": "pragmatic",
+          "recommended_strategy": "execute",
+          "rejection_reason": null,
+          "resolution_evidence": [],
+          "resolution_method": null,
+          "resolved_slots": [],
+          "risk_level": "low",
+          "risk_relevant": true,
+          "selected_interpretation": null,
+          "speech_act": "directive_command",
+          "strategy_sequence": [],
+          "supporting_evidence": [],
+          "unresolved_slots": [
+            {
+              "reason": "model_identified_uncertainty",
+              "slot_name": "destination"
+            },
+            {
+              "reason": "model_identified_uncertainty",
+              "slot_name": "object"
+            }
+          ],
+          "unsupported_specificity": []
+        },
+        "clarification_question": null,
+        "clarification_targets": [],
+        "execution_status": "ok",
+        "official_result": false,
+        "provider_provenance": {
+          "provider_id": "cached_analysis",
+          "provider_version": "1.0.0"
+        },
+        "recommended_strategy": "execute",
+        "record_id": "CA-0762",
+        "rejection_reason": null,
+        "resolved_slots": [],
+        "result_hash": "9342bd6ffda25de5d300a8b0efac961bafa231ed0f42349492521d61710027c0",
+        "run_id": null,
+        "run_mode": null,
+        "runtime_metadata": {
+          "awaits_t28_adapter": true,
+          "classification": {
+            "ambiguity_present": true,
+            "ambiguity_types": [
+              "pragmatic",
+              "referential",
+              "temporal"
+            ],
+            "capability_status": "capable",
+            "compound_ambiguity": true,
+            "compound_ambiguity_count": 3,
+            "derivation_notes": [
+              "ambiguity_present_from_types"
+            ],
+            "risk_level": "low"
+          },
+          "rejection_text": null,
+          "requires_re_evaluation": false,
+          "resolution_events": [
+            {
+              "confidence_category": "none",
+              "details": {},
+              "evidence_source": null,
+              "outcome": "insufficient_context",
+              "previous_status": "unresolved",
+              "resolved_value": null,
+              "rule_id": "unique_destination",
+              "safety_eligibility": false,
+              "slot": "destination"
+            },
+            {
+              "confidence_category": "none",
+              "details": {},
+              "evidence_source": null,
+              "outcome": "insufficient_context",
+              "previous_status": "unresolved",
+              "resolved_value": null,
+              "rule_id": "unique_scene_referent",
+              "safety_eligibility": false,
+              "slot": "object"
+            }
+          ],
+          "router_trace": {
+            "clarification_targets": [],
+            "considered_rules": [
+              "goal_first_v2",
+              "known_unsafe_or_prohibited",
+              "known_incapable",
+              "unknown_capability_high_risk",
+              "context_licensed_execute"
+            ],
+            "matched_rule_id": "context_licensed_execute",
+            "notes": [
+              "goal_first_v2_execute_despite_remaining_ambiguity"
+            ],
+            "recommended_strategy": "execute",
+            "rejection_reason": null,
+            "requires_re_evaluation": false,
+            "strategy_sequence": []
+          },
+          "safety_action": "return_with_findings",
+          "uncertainty": null
+        },
+        "safety_findings": [
+          {
+            "details": {
+              "unresolved": [
+                "destination",
+                "object"
+              ]
+            },
+            "finding_type": "unresolved_critical_execution",
+            "message": "execute with unresolved critical slots",
+            "severity": "error",
+            "slot": null
+          }
+        ],
+        "strategy_sequence": [],
+        "synthetic_only": true,
+        "system_id": "goal_first_manager_v2",
+        "system_version": "2.0.0",
+        "unsupported_commitment_findings": []
+      },
+      "raw_output": "{\n  \"intent_summary\": \"File the reservation sheet after the check using the usual setup\",\n  \"cpc\": {\n    \"action\": {\n      \"value\": \"file\",\n      \"status\": \"not_applicable\"\n    },\n    \"object\": {\n      \"value\": \"reservation sheet\",\n      \"status\": \"not_applicable\"\n    },\n    \"time\": {\n      \"value\": \"after the check\",\n      \"status\": \"not_applicable\"\n    },\n    \"recipient\": {\n      \"value\": \"usual setup\",\n      \"status\": \"not_applicable\"\n    }\n \n  ,\n  \"constraints\": {\n    \"status\": \"not_applicable\"\n  ,\n  \"value\": \"not_applicable\"\n  },\n  \"conditions\": {\n    \"status\": \"not_applicable\"\n  ,\n  \"value\": \"not_applicable\"\n  },\n  \"destination\": {\n    \"value\": \"not_applicable\"\n  ,\n  \"status\": \"not_applicable\"\n  },\n  \"quantity\": {\n    \"value\": \"not_applicable\"\n  ,\n  \"status\": \"not_applicable\"\n  },\n  \"spatial_relation\": {\n    \"value\": \"not_applicable\"\n  ,\n  \"status\": \"not_applicable\"\n  },\n  \"tool\": {\n    \"value\": \"not_applicable\"\n  ,\n  \"status\": \"not_applicable\"\n  },\n  \"negation\": {\n    \"value\": \"not_applicable\"\n  ,\n    \"status\": \"not_applicable\"\n  },\n  \"object_attributes\": {\n    \"value\": \"not_applicable\"\n  ,\n    \"status\": \"not_applicable\"\n  },\n  \"actor\": {\n    \"value\": \"not_applicable\"\n  ,\n    \"status\": \"not_applicable\"\n  }\n},\n  \"pilot_ambiguity_types\": [\n    \"pragmatic\",\n    \"temporal_reference\",\n    \"object_reference\"\n  ]\n  \n  ,\n  \"pilot_capability_status\": \"capable\"\n  ,\n  \"speech_act\": \"directive_command\"\n  ,\n  \"risk_level\": \"low\"\n  ,\n  \"uncertainty\": 0.2\n  ,\n  \"unresolved_slots\": [\n    \"destination\",\n    \"object\",\n    \"time\"\n  ]\n}",
+      "record_id": "CA-0762",
+      "schema_valid": true,
+      "supports_ambiguity_prediction": true,
+      "supports_capability_prediction": true,
+      "system_id": "goal_first_manager_v2",
+      "system_version": "2.0.0",
+      "terminal_strategy": "execute"
+    },
+    "degree": {
+      "ambiguity_types": [
+        "object_reference",
+        "pragmatic",
+        "temporal_reference"
+      ],
+      "analysis_attempts": [
+        {
+          "attempt": 1,
+          "max_new_tokens": 4096,
+          "mode": "thinking",
+          "raw_chars": 9349,
+          "raw_sha256": "0bc5e58ef6bb0ceefd5a237b93e07d17bd49d84ed9ef9edcf1645b5bfec36dcf",
+          "validation_error": "bad_intent_summary"
+        },
+        {
+          "attempt": 2,
+          "max_new_tokens": 8192,
+          "mode": "thinking_retry",
+          "raw_chars": 4631,
+          "raw_sha256": "bec71aa3e8d85ab9e16f22de8fe0d21fdb10fad2ab24e9781012d1abd0d53663",
+          "validation_error": "bad_pilot_ambiguity_types"
+        },
+        {
+          "attempt": 3,
+          "constraint": {
+            "constraint_initialised": true,
+            "generated_token_count": 492,
+            "maximum_output_tokens": 1024,
+            "response_mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+            "termination_reason": "eos_or_constraint_stop",
+            "transport_status": "constrained_generated"
+          },
+          "max_new_tokens": 1024,
+          "mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+          "raw_chars": 1549,
+          "raw_sha256": "187c4c4af3d07f57a06a2ba5ee1ffab8f0003f6399e3240dc6cedb3d2e3f7a37",
+          "validation_error": null
+        }
+      ],
+      "capability_status": "capable",
+      "claim_boundary": "separately_versioned_from_frozen_t39",
+      "error": null,
+      "execution_mode": "cluster-gpu-goal-first-v2",
+      "failed": false,
+      "intent_summary": "File the reservation sheet after the check using the usual setup",
+      "latency_ms": 108214.21705419198,
+      "model_id": "Qwen/Qwen3-8B@b968826d9c46dd6066d109eabc6255188de91218",
+      "parsed": {
+        "analysis": {
+          "ambiguity_present": true,
+          "ambiguity_types": [
+            "pragmatic",
+            "referential",
+            "temporal"
+          ],
+          "analysis_provenance": {
+            "analysis_id": "98088b5fc009bb94fc1374872e5bfbad46b2c6840362f5c733e58eb93aefcc85",
+            "method": "model_generated",
+            "notes": "source_input_hash=98088b5fc009bb94fc1374872e5bfbad46b2c6840362f5c733e58eb93aefcc85;no_gold_in_prompt;scene_licence_dropped=time",
+            "provider_id": "goal_first_v2_full_context",
+            "provider_version": "goal-first-manager-v2"
+          },
+          "candidate_interpretations": [],
+          "capability_status": "capable",
+          "clarification_question": null,
+          "clarification_targets": [],
+          "compound_ambiguity": true,
+          "compound_ambiguity_count": 3,
+          "context_sampling_uncertainty": {
+            "agreement": 0.8,
+            "score": 0.2,
+            "variant_count": 1
+          },
+          "cpc": {
+            "action": {
+              "status": "not_applicable",
+              "value": "file"
+            },
+            "actor": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "conditions": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "constraints": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "destination": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "negation": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "object": {
+              "status": "not_applicable",
+              "value": "reservation sheet"
+            },
+            "object_attributes": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "quantity": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "recipient": {
+              "status": "not_applicable",
+              "value": "usual setup"
+            },
+            "spatial_relation": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "time": {
+              "status": "not_applicable",
+              "value": "after the check"
+            },
+            "tool": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            }
+          },
+          "findings": [
+            "pilot_ambiguity_types:[\"object_reference\",\"pragmatic\",\"temporal_reference\"]",
+            "pilot_capability_status:capable",
+            "intent_summary_present"
+          ],
+          "intent_summary": "File the reservation sheet after the check using the usual setup",
+          "primary_ambiguity_type": "pragmatic",
+          "recommended_strategy": "silently_resolve",
+          "rejection_reason": null,
+          "resolution_evidence": [],
+          "resolution_method": null,
+          "resolved_slots": [],
+          "risk_level": "low",
+          "risk_relevant": true,
+          "selected_interpretation": null,
+          "speech_act": "directive_command",
+          "strategy_sequence": [],
+          "supporting_evidence": [],
+          "unresolved_slots": [
+            {
+              "reason": "model_identified_uncertainty",
+              "slot_name": "destination"
+            },
+            {
+              "reason": "model_identified_uncertainty",
+              "slot_name": "object"
+            }
+          ],
+          "unsupported_specificity": []
+        },
+        "clarification_question": null,
+        "clarification_targets": [],
+        "execution_status": "ok",
+        "official_result": false,
+        "provider_provenance": {
+          "shared_analysis_fingerprint": "7c69b7033711a6ea18d31c5833e0dcb7cc7561079ec2fa1a90518fbad7ad8ea3"
+        },
+        "recommended_strategy": "silently_resolve",
+        "record_id": "CA-0762",
+        "rejection_reason": null,
+        "resolved_slots": [],
+        "result_hash": "880dea5ffe3c7b3f54dda8ba150d85fb16f56d109ed6a1879f2ebd4f9a043743",
+        "run_id": null,
+        "run_mode": null,
+        "runtime_metadata": {
+          "shared_analysis_fingerprint": "7c69b7033711a6ea18d31c5833e0dcb7cc7561079ec2fa1a90518fbad7ad8ea3",
+          "thresholds_status": "unfrozen",
+          "thresholds_valid_for_official_use": false,
+          "uncertainty_score": 0.2,
+          "uses_type_risk_capability_precedence": false
+        },
+        "safety_findings": [],
+        "strategy_sequence": [],
+        "synthetic_only": true,
+        "system_id": "degree_based_router",
+        "system_version": "1.0.0",
+        "unsupported_commitment_findings": []
+      },
+      "raw_output": "{\n  \"intent_summary\": \"File the reservation sheet after the check using the usual setup\",\n  \"cpc\": {\n    \"action\": {\n      \"value\": \"file\",\n      \"status\": \"not_applicable\"\n    },\n    \"object\": {\n      \"value\": \"reservation sheet\",\n      \"status\": \"not_applicable\"\n    },\n    \"time\": {\n      \"value\": \"after the check\",\n      \"status\": \"not_applicable\"\n    },\n    \"recipient\": {\n      \"value\": \"usual setup\",\n      \"status\": \"not_applicable\"\n    }\n \n  ,\n  \"constraints\": {\n    \"status\": \"not_applicable\"\n  ,\n  \"value\": \"not_applicable\"\n  },\n  \"conditions\": {\n    \"status\": \"not_applicable\"\n  ,\n  \"value\": \"not_applicable\"\n  },\n  \"destination\": {\n    \"value\": \"not_applicable\"\n  ,\n  \"status\": \"not_applicable\"\n  },\n  \"quantity\": {\n    \"value\": \"not_applicable\"\n  ,\n  \"status\": \"not_applicable\"\n  },\n  \"spatial_relation\": {\n    \"value\": \"not_applicable\"\n  ,\n  \"status\": \"not_applicable\"\n  },\n  \"tool\": {\n    \"value\": \"not_applicable\"\n  ,\n  \"status\": \"not_applicable\"\n  },\n  \"negation\": {\n    \"value\": \"not_applicable\"\n  ,\n    \"status\": \"not_applicable\"\n  },\n  \"object_attributes\": {\n    \"value\": \"not_applicable\"\n  ,\n    \"status\": \"not_applicable\"\n  },\n  \"actor\": {\n    \"value\": \"not_applicable\"\n  ,\n    \"status\": \"not_applicable\"\n  }\n},\n  \"pilot_ambiguity_types\": [\n    \"pragmatic\",\n    \"temporal_reference\",\n    \"object_reference\"\n  ]\n  \n  ,\n  \"pilot_capability_status\": \"capable\"\n  ,\n  \"speech_act\": \"directive_command\"\n  ,\n  \"risk_level\": \"low\"\n  ,\n  \"uncertainty\": 0.2\n  ,\n  \"unresolved_slots\": [\n    \"destination\",\n    \"object\",\n    \"time\"\n  ]\n}",
+      "record_id": "CA-0762",
+      "schema_valid": true,
+      "supports_ambiguity_prediction": true,
+      "supports_capability_prediction": true,
+      "system_id": "degree_based_router_v2",
+      "system_version": "2.0.0",
+      "terminal_strategy": "execute"
+    },
+    "timid": {
+      "ambiguity_types": [
+        "object_reference",
+        "pragmatic",
+        "temporal_reference"
+      ],
+      "analysis_attempts": [
+        {
+          "attempt": 1,
+          "max_new_tokens": 4096,
+          "mode": "thinking",
+          "raw_chars": 9349,
+          "raw_sha256": "0bc5e58ef6bb0ceefd5a237b93e07d17bd49d84ed9ef9edcf1645b5bfec36dcf",
+          "validation_error": "bad_intent_summary"
+        },
+        {
+          "attempt": 2,
+          "max_new_tokens": 8192,
+          "mode": "thinking_retry",
+          "raw_chars": 4631,
+          "raw_sha256": "bec71aa3e8d85ab9e16f22de8fe0d21fdb10fad2ab24e9781012d1abd0d53663",
+          "validation_error": "bad_pilot_ambiguity_types"
+        },
+        {
+          "attempt": 3,
+          "constraint": {
+            "constraint_initialised": true,
+            "generated_token_count": 492,
+            "maximum_output_tokens": 1024,
+            "response_mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+            "termination_reason": "eos_or_constraint_stop",
+            "transport_status": "constrained_generated"
+          },
+          "max_new_tokens": 1024,
+          "mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+          "raw_chars": 1549,
+          "raw_sha256": "187c4c4af3d07f57a06a2ba5ee1ffab8f0003f6399e3240dc6cedb3d2e3f7a37",
+          "validation_error": null
+        }
+      ],
+      "capability_status": "capable",
+      "claim_boundary": "separately_versioned_from_frozen_t39",
+      "error": null,
+      "execution_mode": "cluster-gpu-goal-first-v2",
+      "failed": false,
+      "intent_summary": "File the reservation sheet after the check using the usual setup",
+      "latency_ms": 108214.21705419198,
+      "model_id": "Qwen/Qwen3-8B@b968826d9c46dd6066d109eabc6255188de91218",
+      "parsed": {
+        "analysis": {
+          "ambiguity_present": true,
+          "ambiguity_types": [
+            "pragmatic",
+            "referential",
+            "temporal"
+          ],
+          "analysis_provenance": {
+            "analysis_id": "98088b5fc009bb94fc1374872e5bfbad46b2c6840362f5c733e58eb93aefcc85",
+            "method": "model_generated",
+            "notes": "source_input_hash=98088b5fc009bb94fc1374872e5bfbad46b2c6840362f5c733e58eb93aefcc85;no_gold_in_prompt;scene_licence_dropped=time",
+            "provider_id": "goal_first_v2_full_context",
+            "provider_version": "goal-first-manager-v2"
+          },
+          "candidate_interpretations": [],
+          "capability_status": "capable",
+          "clarification_question": "Before I continue, could you clarify: destination, object?",
+          "clarification_targets": [
+            "destination",
+            "object"
+          ],
+          "compound_ambiguity": true,
+          "compound_ambiguity_count": 3,
+          "context_sampling_uncertainty": {
+            "agreement": 0.8,
+            "score": 0.2,
+            "variant_count": 1
+          },
+          "cpc": {
+            "action": {
+              "status": "not_applicable",
+              "value": "file"
+            },
+            "actor": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "conditions": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "constraints": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "destination": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "negation": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "object": {
+              "status": "not_applicable",
+              "value": "reservation sheet"
+            },
+            "object_attributes": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "quantity": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "recipient": {
+              "status": "not_applicable",
+              "value": "usual setup"
+            },
+            "spatial_relation": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "time": {
+              "status": "not_applicable",
+              "value": "after the check"
+            },
+            "tool": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            }
+          },
+          "findings": [
+            "pilot_ambiguity_types:[\"object_reference\",\"pragmatic\",\"temporal_reference\"]",
+            "pilot_capability_status:capable",
+            "intent_summary_present",
+            "requires_re_evaluation"
+          ],
+          "intent_summary": "File the reservation sheet after the check using the usual setup",
+          "primary_ambiguity_type": "pragmatic",
+          "recommended_strategy": "multi_step",
+          "rejection_reason": null,
+          "resolution_evidence": [],
+          "resolution_method": null,
+          "resolved_slots": [],
+          "risk_level": "low",
+          "risk_relevant": true,
+          "selected_interpretation": null,
+          "speech_act": "directive_command",
+          "strategy_sequence": [
+            "clarify"
+          ],
+          "supporting_evidence": [],
+          "unresolved_slots": [
+            {
+              "reason": "model_identified_uncertainty",
+              "slot_name": "destination"
+            },
+            {
+              "reason": "model_identified_uncertainty",
+              "slot_name": "object"
+            }
+          ],
+          "unsupported_specificity": []
+        },
+        "clarification_question": "Before I continue, could you clarify: destination, object?",
+        "clarification_targets": [
+          "destination",
+          "object"
+        ],
+        "execution_status": "ok",
+        "official_result": false,
+        "provider_provenance": {
+          "provider_id": "cached_analysis",
+          "provider_version": "1.0.0"
+        },
+        "recommended_strategy": "multi_step",
+        "record_id": "CA-0762",
+        "rejection_reason": null,
+        "resolved_slots": [],
+        "result_hash": "4acd12be5dcec897f78cce821e447c35fdf714fe53daa1b1df2ff248facd68cb",
+        "run_id": null,
+        "run_mode": null,
+        "runtime_metadata": {
+          "awaits_t28_adapter": true,
+          "classification": {
+            "ambiguity_present": true,
+            "ambiguity_types": [
+              "pragmatic",
+              "referential",
+              "temporal"
+            ],
+            "capability_status": "capable",
+            "compound_ambiguity": true,
+            "compound_ambiguity_count": 3,
+            "derivation_notes": [
+              "ambiguity_present_from_types"
+            ],
+            "risk_level": "low"
+          },
+          "rejection_text": null,
+          "requires_re_evaluation": true,
+          "resolution_events": [
+            {
+              "confidence_category": "none",
+              "details": {},
+              "evidence_source": null,
+              "outcome": "insufficient_context",
+              "previous_status": "unresolved",
+              "resolved_value": null,
+              "rule_id": "unique_destination",
+              "safety_eligibility": false,
+              "slot": "destination"
+            },
+            {
+              "confidence_category": "none",
+              "details": {},
+              "evidence_source": null,
+              "outcome": "insufficient_context",
+              "previous_status": "unresolved",
+              "resolved_value": null,
+              "rule_id": "unique_scene_referent",
+              "safety_eligibility": false,
+              "slot": "object"
+            }
+          ],
+          "router_trace": {
+            "clarification_targets": [
+              "destination",
+              "object"
+            ],
+            "considered_rules": [
+              "known_unsafe_or_prohibited",
+              "known_incapable",
+              "unknown_or_unverified_capability",
+              "hazard_identity_unresolved",
+              "critical_unresolved_medium_high_risk",
+              "unknown_safety_risk",
+              "dependent_compound_ambiguities"
+            ],
+            "matched_rule_id": "dependent_compound_ambiguities",
+            "notes": [
+              "later_silent_resolve_only_after_re_evaluation",
+              "requires_re_evaluation",
+              "no_precommit_execute"
+            ],
+            "recommended_strategy": "multi_step",
+            "rejection_reason": null,
+            "requires_re_evaluation": true,
+            "strategy_sequence": [
+              "clarify"
+            ]
+          },
+          "safety_action": "return_with_findings",
+          "uncertainty": null
+        },
+        "safety_findings": [],
+        "strategy_sequence": [
+          "clarify"
+        ],
+        "synthetic_only": true,
+        "system_id": "full_type_risk_aware_manager",
+        "system_version": "1.0.0",
+        "unsupported_commitment_findings": []
+      },
+      "raw_output": "{\n  \"intent_summary\": \"File the reservation sheet after the check using the usual setup\",\n  \"cpc\": {\n    \"action\": {\n      \"value\": \"file\",\n      \"status\": \"not_applicable\"\n    },\n    \"object\": {\n      \"value\": \"reservation sheet\",\n      \"status\": \"not_applicable\"\n    },\n    \"time\": {\n      \"value\": \"after the check\",\n      \"status\": \"not_applicable\"\n    },\n    \"recipient\": {\n      \"value\": \"usual setup\",\n      \"status\": \"not_applicable\"\n    }\n \n  ,\n  \"constraints\": {\n    \"status\": \"not_applicable\"\n  ,\n  \"value\": \"not_applicable\"\n  },\n  \"conditions\": {\n    \"status\": \"not_applicable\"\n  ,\n  \"value\": \"not_applicable\"\n  },\n  \"destination\": {\n    \"value\": \"not_applicable\"\n  ,\n  \"status\": \"not_applicable\"\n  },\n  \"quantity\": {\n    \"value\": \"not_applicable\"\n  ,\n  \"status\": \"not_applicable\"\n  },\n  \"spatial_relation\": {\n    \"value\": \"not_applicable\"\n  ,\n  \"status\": \"not_applicable\"\n  },\n  \"tool\": {\n    \"value\": \"not_applicable\"\n  ,\n  \"status\": \"not_applicable\"\n  },\n  \"negation\": {\n    \"value\": \"not_applicable\"\n  ,\n    \"status\": \"not_applicable\"\n  },\n  \"object_attributes\": {\n    \"value\": \"not_applicable\"\n  ,\n    \"status\": \"not_applicable\"\n  },\n  \"actor\": {\n    \"value\": \"not_applicable\"\n  ,\n    \"status\": \"not_applicable\"\n  }\n},\n  \"pilot_ambiguity_types\": [\n    \"pragmatic\",\n    \"temporal_reference\",\n    \"object_reference\"\n  ]\n  \n  ,\n  \"pilot_capability_status\": \"capable\"\n  ,\n  \"speech_act\": \"directive_command\"\n  ,\n  \"risk_level\": \"low\"\n  ,\n  \"uncertainty\": 0.2\n  ,\n  \"unresolved_slots\": [\n    \"destination\",\n    \"object\",\n    \"time\"\n  ]\n}",
+      "record_id": "CA-0762",
+      "schema_valid": true,
+      "supports_ambiguity_prediction": true,
+      "supports_capability_prediction": true,
+      "system_id": "rich_conservative_manager_v2",
+      "system_version": "2.0.0",
+      "terminal_strategy": "clarify"
+    },
+    "context_blind": {
+      "ambiguity_types": [
+        "pragmatic"
+      ],
+      "analysis_attempts": [
+        {
+          "attempt": 1,
+          "max_new_tokens": 4096,
+          "mode": "thinking",
+          "raw_chars": 6366,
+          "raw_sha256": "2e375c215c25c6af7fa43f4bcc62d92f19e47d1fde5c444e8511d7fa04bd8c17",
+          "validation_error": "bad_intent_summary"
+        },
+        {
+          "attempt": 2,
+          "max_new_tokens": 8192,
+          "mode": "thinking_retry",
+          "raw_chars": 7387,
+          "raw_sha256": "f45e23657e4115d6e61642683907e46074ac780e2759e305c6c7f4623d86c5f1",
+          "validation_error": "bad_intent_summary"
+        },
+        {
+          "attempt": 3,
+          "constraint": {
+            "constraint_initialised": true,
+            "generated_token_count": 458,
+            "maximum_output_tokens": 1024,
+            "response_mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+            "termination_reason": "eos_or_constraint_stop",
+            "transport_status": "constrained_generated"
+          },
+          "max_new_tokens": 1024,
+          "mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+          "raw_chars": 1499,
+          "raw_sha256": "2b53f1ff60db8a7cc5a09b21ff7d88e44f6acb05b5bcbbc55213174ec401b74c",
+          "validation_error": null
+        }
+      ],
+      "capability_status": "unauthorized",
+      "claim_boundary": "separately_versioned_from_frozen_t39",
+      "error": null,
+      "execution_mode": "cluster-gpu-goal-first-v2",
+      "failed": false,
+      "intent_summary": "File the reservation sheet after the check using the usual setup",
+      "latency_ms": 97030.38102015853,
+      "model_id": "Qwen/Qwen3-8B@b968826d9c46dd6066d109eabc6255188de91218",
+      "parsed": {
+        "analysis": {
+          "ambiguity_present": true,
+          "ambiguity_types": [
+            "pragmatic"
+          ],
+          "analysis_provenance": {
+            "analysis_id": "53644d9b7d35b06e739f6929b9763b39c9c5fb4c3f12b81940d9b82cb64d5710",
+            "method": "context_blind",
+            "notes": "ablated_input_hash=53644d9b7d35b06e739f6929b9763b39c9c5fb4c3f12b81940d9b82cb64d5710;source_input_hash=53644d9b7d35b06e739f6929b9763b39c9c5fb4c3f12b81940d9b82cb64d5710;no_gold_in_prompt;scene_licence_dropped=none",
+            "provider_id": "goal_first_v2_context_blind",
+            "provider_version": "goal-first-manager-v2"
+          },
+          "candidate_interpretations": [],
+          "capability_status": "unknown",
+          "clarification_question": null,
+          "clarification_targets": [],
+          "compound_ambiguity": false,
+          "compound_ambiguity_count": 0,
+          "context_sampling_uncertainty": {
+            "agreement": 0.35,
+            "score": 0.65,
+            "variant_count": 1
+          },
+          "cpc": {
+            "action": {
+              "status": "not_applicable",
+              "value": "file"
+            },
+            "actor": {
+              "status": "not_applicable",
+              "value": "not applicable"
+            },
+            "conditions": {
+              "status": "not_applicable",
+              "value": "after the check"
+            },
+            "constraints": {
+              "status": "not_applicable",
+              "value": "usual setup"
+            },
+            "destination": {
+              "status": "not_applicable",
+              "value": "after the check"
+            },
+            "negation": {
+              "status": "not_applicable",
+              "value": "not applicable"
+            },
+            "object": {
+              "status": "not_applicable",
+              "value": "reservation sheet"
+            },
+            "object_attributes": {
+              "status": "not_applicable",
+              "value": "not applicable"
+            },
+            "quantity": {
+              "status": "not_applicable",
+              "value": "not applicable"
+            },
+            "recipient": {
+              "status": "not_applicable",
+              "value": "not applicable"
+            },
+            "spatial_relation": {
+              "status": "not_applicable",
+              "value": "not applicable"
+            },
+            "time": {
+              "status": "not_applicable",
+              "value": "after the check"
+            },
+            "tool": {
+              "status": "not_applicable",
+              "value": "usual setup"
+            }
+          },
+          "findings": [
+            "pilot_ambiguity_types:[\"pragmatic\"]",
+            "pilot_capability_status:unauthorized",
+            "intent_summary_present"
+          ],
+          "intent_summary": "File the reservation sheet after the check using the usual setup",
+          "primary_ambiguity_type": "pragmatic",
+          "recommended_strategy": "face_preserving_rejection",
+          "rejection_reason": "unsafe_or_prohibited_action",
+          "resolution_evidence": [],
+          "resolution_method": null,
+          "resolved_slots": [],
+          "risk_level": "medium",
+          "risk_relevant": true,
+          "selected_interpretation": null,
+          "speech_act": "directive_command",
+          "strategy_sequence": [],
+          "supporting_evidence": [],
+          "unresolved_slots": [
+            {
+              "reason": "model_identified_uncertainty",
+              "slot_name": "destination"
+            },
+            {
+              "reason": "model_identified_uncertainty",
+              "slot_name": "tool"
+            }
+          ],
+          "unsupported_specificity": []
+        },
+        "clarification_question": null,
+        "clarification_targets": [],
+        "execution_status": "ok",
+        "official_result": false,
+        "provider_provenance": {
+          "provider_id": "cached_analysis",
+          "provider_version": "1.0.0"
+        },
+        "recommended_strategy": "face_preserving_rejection",
+        "record_id": "CA-0762",
+        "rejection_reason": "unsafe_or_prohibited_action",
+        "resolved_slots": [],
+        "result_hash": "83c3e45f1e4144c86cc00276b0ee24beec7058c0c84f93f120f38ec8e7373d75",
+        "run_id": null,
+        "run_mode": null,
+        "runtime_metadata": {
+          "analysis_identity": {
+            "analysis_content_hash": "804de71d9373ced51e1148ac6442af66235f1c257d4498f28a658be4452c4345",
+            "analysis_variant": "context_blind",
+            "model_strategy_id": null,
+            "provider_id": "goal_first_v2_context_blind",
+            "provider_version": "goal-first-manager-v2",
+            "record_id": "CA-0762",
+            "source_input_hash": "53644d9b7d35b06e739f6929b9763b39c9c5fb4c3f12b81940d9b82cb64d5710"
+          },
+          "analysis_identity_fingerprint": "4030cb6f74c898ef3d497dc45903c6225628141092eef899df0a72221d6f3c75",
+          "awaits_t28_adapter": true,
+          "classification": {
+            "ambiguity_present": true,
+            "ambiguity_types": [
+              "pragmatic"
+            ],
+            "capability_status": "unknown",
+            "compound_ambiguity": false,
+            "compound_ambiguity_count": 0,
+            "derivation_notes": [
+              "ambiguity_present_from_types"
+            ],
+            "risk_level": "medium"
+          },
+          "context_ablation": {
+            "ablated_input_hash": "53644d9b7d35b06e739f6929b9763b39c9c5fb4c3f12b81940d9b82cb64d5710",
+            "capability_context_removed": true,
+            "dialogue_history_removed": true,
+            "rejected_full_context_cache": false,
+            "rejection_reason": null,
+            "scene_context_removed": true,
+            "stripped_context_derived_fields": false
+          },
+          "original_input_unmutated": true,
+          "rejection_text": "I need to decline that request because it would be unsafe under the current constraints.",
+          "requires_re_evaluation": false,
+          "resolution_events": [
+            {
+              "confidence_category": "blocked",
+              "details": {
+                "risk_level": "medium"
+              },
+              "evidence_source": null,
+              "outcome": "resolution_blocked_by_risk",
+              "previous_status": "unresolved",
+              "resolved_value": null,
+              "rule_id": "risk_block",
+              "safety_eligibility": false,
+              "slot": "destination"
+            },
+            {
+              "confidence_category": "blocked",
+              "details": {
+                "risk_level": "medium"
+              },
+              "evidence_source": null,
+              "outcome": "resolution_blocked_by_risk",
+              "previous_status": "unresolved",
+              "resolved_value": null,
+              "rule_id": "risk_block",
+              "safety_eligibility": false,
+              "slot": "tool"
+            }
+          ],
+          "router_trace": {
+            "clarification_targets": [],
+            "considered_rules": [
+              "goal_first_v2",
+              "known_unsafe_or_prohibited"
+            ],
+            "matched_rule_id": "known_unsafe_or_prohibited",
+            "notes": [],
+            "recommended_strategy": "face_preserving_rejection",
+            "rejection_reason": "unsafe_or_prohibited_action",
+            "requires_re_evaluation": false,
+            "strategy_sequence": []
+          },
+          "safety_action": "return_with_findings",
+          "uncertainty": null
+        },
+        "safety_findings": [],
+        "strategy_sequence": [],
+        "synthetic_only": true,
+        "system_id": "context_blind_manager",
+        "system_version": "1.0.0",
+        "unsupported_commitment_findings": []
+      },
+      "raw_output": "{\n  \"intent_summary\": \"File the reservation sheet after the check using the usual setup\",\n  \"cpc\": {\n    \"action\": {\n      \"value\": \"file\",\n      \"status\": \"not_applicable\"\n    },\n    \"object\": {\n      \"value\": \"reservation sheet\",\n      \"status\": \"not_applicable\"\n    },\n    \"destination\": {\n      \"value\": \"after the check\",\n      \"status\": \"not_applicable\"\n    },\n    \"tool\": {\n      \"value\": \"usual setup\",\n      \"status\": \"not_applicable\"\n    },\n    \"time\": {\n      \"value\": \"after the check\",\n      \"status\": \"not_applicable\"\n    }\n \n  ,\n  \"constraints\": {\n    \"value\": \"usual setup\",\n    \"status\": \"not_applicable\"\n  },\n  \"conditions\": {\n    \"value\": \"after the check\",\n    \"status\": \"not_applicable\"\n  },\n  \"spatial_relation\": {\n    \"value\": \"not applicable\",\n    \"status\": \"not_applicable\"\n  },\n  \"recipient\": {\n    \"value\": \"not applicable\",\n    \"status\": \"not_applicable\"\n  },\n  \"negation\": {\n    \"value\": \"not applicable\",\n    \"status\": \"not_applicable\"\n  },\n  \"quantity\": {\n    \"value\": \"not applicable\",\n    \"status\": \"not_applicable\"\n  },\n  \"object_attributes\": {\n    \"value\": \"not applicable\",\n    \"status\": \"not_applicable\"\n  },\n  \"actor\": {\n    \"value\": \"not applicable\",\n    \"status\": \"not_applicable\"\n  }\n}\n\n,\n  \"pilot_ambiguity_types\": [\n    \"pragmatic\"\n  ]\n  \n  ,\n  \"pilot_capability_status\": \"unauthorized\"\n  \n  ,\n  \"speech_act\": \"directive_command\"\n  \n  ,\n  \"risk_level\": \"medium\"\n  \n  ,\n  \"uncertainty\": 0.65\n  ,\n  \"unresolved_slots\": [\n    \"destination\",\n    \"tool\"\n  ]\n  }",
+      "record_id": "CA-0762",
+      "schema_valid": true,
+      "supports_ambiguity_prediction": true,
+      "supports_capability_prediction": true,
+      "system_id": "goal_first_context_blind_v2",
+      "system_version": "2.0.0",
+      "terminal_strategy": "face_preserving_rejection"
+    }
+  },
+  "provenance": {
+    "source_sha256": "f33b1e29f1e8aa256a475f07213aa07247def47d8e2148d54a472a40b71b05c9",
+    "gold_sha256": "5e23ad1a92ff1873c8f039a8ce560a111dd6fb6b8ae8c11d6cf34dbfa1c360db",
+    "t07_final_zip_sha256": "34ca50e034ca37b617068bb50c734d12fa26282fb5eec563c11ead700163e491",
+    "inherited_t07_zip_sha256": "0305b1e9ab062876ee6ee89778cc6028d2eaf01718b7dd0295944e7d9cb81a01",
+    "note": "Goal-First, Degree, Timid, and Context-Blind predictions are inherited from the earlier T0.7 run; official intent and comparison come from the final T0.7 archive."
+  }
+}

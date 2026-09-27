@@ -1,0 +1,1361 @@
+{
+  "record_id": "CA-0552",
+  "frozen_source": {
+    "capability_context": "Library service robot can move ordinary books and equipment, scan catalogue tags, and clean approved non-archival surfaces.",
+    "command": "Do the same with the second archive box, then place it in the archive cage using the usual setup.",
+    "dialogue_history": [
+      "assistant: I inspected the first archive box and cleaned the tablet case.",
+      "Robot: Both tasks are complete.",
+      "assistant: The new item is another archive box in the inspection batch."
+    ],
+    "record_id": "CA-0552",
+    "scene_context": "Circulation area in a library. The second archive box carries Work order WO-634. The setup table states that the archive transfer applies to a different work-order prefix, while Work order WO-634 maps to the closing sweep. Two archive cages are authorized and empty, one at the catalogue terminal and one at the display corner. The work order names neither unit. Secure placement requires the unit identifier."
+  },
+  "frozen_gold": {
+    "ambiguity_types": [
+      "destination_reference",
+      "discourse_ellipsis",
+      "routine_reference"
+    ],
+    "annotator_b_era": "claude_era",
+    "annotator_b_model": "claude-4.6-sonnet-medium-thinking",
+    "capability_status": "capable",
+    "field_status": {
+      "ambiguity_types": "auto_agree",
+      "capability_status": "human_auditor:independent_from_route",
+      "record_validity": "auto_agree",
+      "strategy_sequence": "from_A_matching_terminal",
+      "terminal_strategy": "auto_agree"
+    },
+    "gold_lifecycle": "final_gold",
+    "gold_status": "auto_agree",
+    "human_gate_required": false,
+    "provenance": {
+      "agreement_label": "pilot_annotation_agreement",
+      "annotator_a_sha256": "dee3f145ccc5afee74d2fcbd166d5eed6138dab12a7085fec442486aca60310d",
+      "annotator_b_sha256": "2f68c2da8bbafa1bbe7be6d750623b24215b6da271ebacf35164fcd8eae3f411",
+      "capability_route_decouple": "conditionally_capable remapped to capable: no evidenced external capability precondition; linguistic silently_resolve/clarify is not a capability condition",
+      "gold_policy": "use_existing_pilot_adjudicated_gold",
+      "input_sha256": "90ba1aa2d3b1c829caa450f33c3bd1d3698537db78bf143fcec63b53ecc6116e",
+      "pilot_gold_sha256": "39ba72f3a852baef56cf637bd9f546f60cc85fe2ff47f6306cf19e8976c49b2b",
+      "protocol": "pilot_adjudicated_gold_on_capability_repaired_source",
+      "repaired_input_sha256": "8bc1542f9b720df859846d9dcba4886812c0c6ca22a04ae00505e2afc6180c77"
+    },
+    "record_id": "CA-0552",
+    "record_validity": "valid",
+    "strategy_sequence": [
+      "resolve_discourse",
+      "resolve_reference",
+      "clarify"
+    ],
+    "terminal_strategy": "clarify"
+  },
+  "t07_comparison": {
+    "record_id": "CA-0552",
+    "gold_route": "clarify",
+    "raw_route": "clarify",
+    "ft_route": "clarify",
+    "gf_route": "refuse",
+    "raw_route_ok": "True",
+    "ft_route_ok": "True",
+    "gf_route_ok": "False",
+    "raw_official_intent": "True",
+    "ft_official_intent": "True",
+    "gf_official_intent": "True",
+    "blind_official_intent": "True"
+  },
+  "t07_official_intent": {
+    "context_blind_official_intent": true,
+    "degree_official_intent_shared_gf": true,
+    "finetune_official_intent": true,
+    "goal_first_official_intent": true,
+    "raw_official_intent": true,
+    "record_id": "CA-0552",
+    "timid_official_intent_shared_gf": true
+  },
+  "t07_predictions": {
+    "raw_qwen": {
+      "ambiguity_types": [
+        "destination_reference",
+        "object_reference",
+        "routine_reference"
+      ],
+      "capability_status": "conditionally_capable",
+      "error": null,
+      "execution_mode": "final_close_intent_box",
+      "failed": false,
+      "intent_summary": "Process the second archive box by inspecting it and placing it in an archive cage following the same procedure as the first box.",
+      "latency_ms": 7894.3309327587485,
+      "parsed": {
+        "ambiguity_types": [
+          "destination_reference",
+          "object_reference",
+          "routine_reference"
+        ],
+        "capability_status": "conditionally_capable",
+        "intent_summary": "Process the second archive box by inspecting it and placing it in an archive cage following the same procedure as the first box.",
+        "speech_act": "directive_command",
+        "terminal_strategy": "clarify"
+      },
+      "raw_output": "<think>\nOkay, let's tackle this query. The user wants me to evaluate the robot's command based on the given scenario. First, I need to parse the command and the context.\n\nThe command is: \"Do the same with the second archive box, then place it in the archive cage using the usual setup.\" The dialogue history shows that the assistant inspected the first box and cleaned the tablet case. The robot said both tasks are complete, and the assistant mentions another archive box in the inspection batch.\n\nNow, the scene context is a library circulation area. The second box is WO-634, which maps to the closing sweep. There are two authorized empty cages. The work orders don't name the units, so secure placement needs the unit ID. The robot's capabilities include moving items, scanning tags, and cleaning non-archival surfaces.\n\nThe main intent here is to process the second archive box similarly to the first. The user wants the robot to perform the same actions: inspect and clean, then place it in the cage. But there's ambiguity. The command says \"the usual setup,\" but the setup table mentions a different work-order prefix. However, WO-634 is a closing sweep. The robot might not know the unit ID since the work order doesn't name it. Also, the cage locations are specified (catalogue terminal and display corner), but the command doesn't specify which one. So, the robot might need clarification on the destination cage and the unit ID. \n\nLooking at the keys: intent_summary should capture the job. The speech act is a directive command. Ambiguity types include object_reference (since the unit isn't named), destination_reference (which cage?), and maybe routine_reference if \"usual setup\" is unclear. Capability-wise, the robot can move items but might need the unit ID for secure placement, so maybe conditionally_capable. The terminal strategy would be clarify because the robot needs more info on the unit ID and destination cage.\n</think>\n\n{\n  \"intent_summary\": \"Process the second archive box by inspecting it and placing it in an archive cage following the same procedure as the first box.\",\n  \"speech_act\": \"directive_command\",\n  \"ambiguity_types\": [\"object_reference\", \"destination_reference\", \"routine_reference\"],\n  \"capability_status\": \"conditionally_capable\",\n  \"terminal_strategy\": \"clarify\"\n}",
+      "record_id": "CA-0552",
+      "schema_valid": true,
+      "speech_act": "directive_command",
+      "system_id": "direct_base_llm",
+      "terminal_strategy": "clarify"
+    },
+    "finetune": {
+      "ambiguity_types": [
+        "endpoint_vagueness",
+        "pragmatic",
+        "pronoun_reference"
+      ],
+      "capability_status": "conditionally_capable",
+      "error": null,
+      "execution_mode": "final_close_intent_box",
+      "failed": false,
+      "intent_summary": "Process the second archive box by inspecting it and placing it in the archive cage using the usual setup.",
+      "latency_ms": 16090.000462252647,
+      "parsed": {
+        "ambiguity_types": [
+          "endpoint_vagueness",
+          "pragmatic",
+          "pronoun_reference"
+        ],
+        "capability_status": "conditionally_capable",
+        "intent_summary": "Process the second archive box by inspecting it and placing it in the archive cage using the usual setup.",
+        "speech_act": "directive_command",
+        "terminal_strategy": "clarify"
+      },
+      "raw_output": "<think>\nOkay, let's break down this command. The user wants the robot to do two things: first, perform the same action as with the first archive box, which was inspecting and cleaning the tablet case. Then, place the second archive box into the archive cage using the usual setup.\n\nBut wait, the dialogue history shows that the assistant mentioned the new item is another archive box in the inspection batch. The robot responded that both tasks are complete. Now, the assistant is providing more context. The scene context mentions that the second archive box has Work order WO-634, which maps to the closing sweep. There are two authorized archive cages, but the setup table says the transfer applies to a different work-order prefix. The work order names neither unit, so secure placement needs the unit identifier. \n\nThe robot's capability includes moving items, scanning tags, and cleaning. But here, the problem is that the work order doesn't name the unit, so the robot might not know where to place it. Also, the setup table mentions a different work-order prefix, which might mean the usual setup isn't applicable. The user's command says \"using the usual setup,\" but if the usual setup is for a different prefix, then this could be a conflict. \n\nSo, the ambiguity here is about the \"usual setup\" and the work order prefix. The robot might not have the necessary information (unit identifier) to securely place the box. Also, the command is a bit vague on the exact steps. The capability status might be conditionally capable because the robot can move the box but needs the unit identifier. The speech act is a directive command, but there's ambiguity in the setup and the required information. The terminal strategy would be to clarify because the robot needs more info. \n\nAmbiguity types: the usual setup might be unclear (pragmatic), the work order prefix mismatch (pragmatic or discourse_ellipsis), and the unit identifier missing (fuzzy_quantity or endpoint_vagueness). Also, the \"second archive box\" refers to the unit, which is a pronoun (pronoun_reference). But the main issues are the setup and the missing unit info. So the ambiguity types would include pragmatic, pronoun_reference, and maybe endpoint_vagueness. \n\nPutting it all together, the intent is to process the second archive box, but the robot needs clarification on the setup and the unit identifier. So the capability is conditionally capable, and the terminal strategy is clarify.\n</think>\n\n{\n  \"intent_summary\": \"Process the second archive box by inspecting it and placing it in the archive cage using the usual setup.\",\n  \"speech_act\": \"directive_command\",\n  \"ambiguity_types\": [\"pragmatic\", \"pronoun_reference\", \"endpoint_vagueness\"],\n  \"capability_status\": \"conditionally_capable\",\n  \"terminal_strategy\": \"clarify\"\n}",
+      "record_id": "CA-0552",
+      "schema_valid": true,
+      "speech_act": "directive_command",
+      "system_id": "t28_selected_adapter_llm",
+      "terminal_strategy": "clarify"
+    },
+    "goal_first": {
+      "ambiguity_types": [
+        "endpoint_vagueness",
+        "object_reference",
+        "pragmatic",
+        "routine_reference"
+      ],
+      "analysis_attempts": [
+        {
+          "attempt": 1,
+          "max_new_tokens": 4096,
+          "mode": "thinking",
+          "raw_chars": 6747,
+          "raw_sha256": "6983ef438ff77e43d6e2122347971071638173f0d7a7b2650c24e7e2adda0122",
+          "validation_error": "bad_intent_summary"
+        },
+        {
+          "attempt": 2,
+          "max_new_tokens": 8192,
+          "mode": "thinking_retry",
+          "raw_chars": 8729,
+          "raw_sha256": "910272f8638091fadc68346b5de9210de3aea90d1e4e143d0409482ec517c5ad",
+          "validation_error": "bad_intent_summary"
+        },
+        {
+          "attempt": 3,
+          "constraint": {
+            "constraint_initialised": true,
+            "generated_token_count": 467,
+            "maximum_output_tokens": 1024,
+            "response_mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+            "termination_reason": "eos_or_constraint_stop",
+            "transport_status": "constrained_generated"
+          },
+          "max_new_tokens": 1024,
+          "mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+          "raw_chars": 1512,
+          "raw_sha256": "32bd785407f89c8da6e331bf8a5751971ce084c29fb31e1144705ff3fc71f59c",
+          "validation_error": null
+        }
+      ],
+      "capability_status": "unauthorized",
+      "claim_boundary": "separately_versioned_from_frozen_t39",
+      "error": null,
+      "execution_mode": "cluster-gpu-goal-first-v2",
+      "failed": false,
+      "intent_summary": "Perform the same task on the second archive box and then put it in the archive cage using the standard setup procedure",
+      "latency_ms": 78942.18798400834,
+      "model_id": "Qwen/Qwen3-8B@b968826d9c46dd6066d109eabc6255188de91218",
+      "parsed": {
+        "analysis": {
+          "ambiguity_present": true,
+          "ambiguity_types": [
+            "contextual",
+            "pragmatic",
+            "referential",
+            "spatial"
+          ],
+          "analysis_provenance": {
+            "analysis_id": "76f93dcf5019c824522c602508b3574e51d62417b302cc0627348afff1133df0",
+            "method": "model_generated",
+            "notes": "source_input_hash=76f93dcf5019c824522c602508b3574e51d62417b302cc0627348afff1133df0;no_gold_in_prompt;scene_licence_dropped=destination,tool,object,action",
+            "provider_id": "goal_first_v2_full_context",
+            "provider_version": "goal-first-manager-v2"
+          },
+          "candidate_interpretations": [],
+          "capability_status": "unknown",
+          "clarification_question": null,
+          "clarification_targets": [],
+          "compound_ambiguity": true,
+          "compound_ambiguity_count": 4,
+          "context_sampling_uncertainty": {
+            "agreement": 0.35,
+            "score": 0.65,
+            "variant_count": 1
+          },
+          "cpc": {
+            "action": {
+              "status": "filled",
+              "value": "Place"
+            },
+            "actor": {
+              "status": "filled",
+              "value": "Robot"
+            },
+            "conditions": {
+              "status": "filled",
+              "value": "Secure placement"
+            },
+            "constraints": {
+              "status": "filled",
+              "value": "Secure placement requires the unit identifier"
+            },
+            "destination": {
+              "status": "filled",
+              "value": "Archive cage"
+            },
+            "negation": {
+              "status": "filled",
+              "value": "No"
+            },
+            "object": {
+              "status": "filled",
+              "value": "Second archive box"
+            },
+            "object_attributes": {
+              "status": "filled",
+              "value": "Archive box"
+            },
+            "quantity": {
+              "status": "filled",
+              "value": "Second"
+            },
+            "recipient": {
+              "status": "filled",
+              "value": "Archive cage"
+            },
+            "spatial_relation": {
+              "status": "filled",
+              "value": "Using the usual setup"
+            },
+            "time": {
+              "status": "filled",
+              "value": "Now"
+            },
+            "tool": {
+              "status": "filled",
+              "value": "Usual setup"
+            }
+          },
+          "findings": [
+            "pilot_ambiguity_types:[\"endpoint_vagueness\",\"object_reference\",\"pragmatic\",\"routine_reference\"]",
+            "pilot_capability_status:unauthorized",
+            "intent_summary_present"
+          ],
+          "intent_summary": "Perform the same task on the second archive box and then put it in the archive cage using the standard setup procedure",
+          "primary_ambiguity_type": "contextual",
+          "recommended_strategy": "face_preserving_rejection",
+          "rejection_reason": "unsafe_or_prohibited_action",
+          "resolution_evidence": [],
+          "resolution_method": null,
+          "resolved_slots": [
+            {
+              "slot_name": "action",
+              "value": "Place"
+            },
+            {
+              "slot_name": "actor",
+              "value": "Robot"
+            },
+            {
+              "slot_name": "object",
+              "value": "Second archive box"
+            },
+            {
+              "slot_name": "object_attributes",
+              "value": "Archive box"
+            },
+            {
+              "slot_name": "destination",
+              "value": "Archive cage"
+            },
+            {
+              "slot_name": "spatial_relation",
+              "value": "Using the usual setup"
+            },
+            {
+              "slot_name": "quantity",
+              "value": "Second"
+            },
+            {
+              "slot_name": "time",
+              "value": "Now"
+            },
+            {
+              "slot_name": "recipient",
+              "value": "Archive cage"
+            },
+            {
+              "slot_name": "tool",
+              "value": "Usual setup"
+            },
+            {
+              "slot_name": "conditions",
+              "value": "Secure placement"
+            },
+            {
+              "slot_name": "constraints",
+              "value": "Secure placement requires the unit identifier"
+            },
+            {
+              "slot_name": "negation",
+              "value": "No"
+            }
+          ],
+          "risk_level": "medium",
+          "risk_relevant": true,
+          "selected_interpretation": null,
+          "speech_act": "directive_command",
+          "strategy_sequence": [],
+          "supporting_evidence": [],
+          "unresolved_slots": [],
+          "unsupported_specificity": []
+        },
+        "clarification_question": null,
+        "clarification_targets": [],
+        "execution_status": "ok",
+        "official_result": false,
+        "provider_provenance": {
+          "provider_id": "cached_analysis",
+          "provider_version": "1.0.0"
+        },
+        "recommended_strategy": "face_preserving_rejection",
+        "record_id": "CA-0552",
+        "rejection_reason": "unsafe_or_prohibited_action",
+        "resolved_slots": [
+          {
+            "slot_name": "action",
+            "value": "Place"
+          },
+          {
+            "slot_name": "actor",
+            "value": "Robot"
+          },
+          {
+            "slot_name": "object",
+            "value": "Second archive box"
+          },
+          {
+            "slot_name": "object_attributes",
+            "value": "Archive box"
+          },
+          {
+            "slot_name": "destination",
+            "value": "Archive cage"
+          },
+          {
+            "slot_name": "spatial_relation",
+            "value": "Using the usual setup"
+          },
+          {
+            "slot_name": "quantity",
+            "value": "Second"
+          },
+          {
+            "slot_name": "time",
+            "value": "Now"
+          },
+          {
+            "slot_name": "recipient",
+            "value": "Archive cage"
+          },
+          {
+            "slot_name": "tool",
+            "value": "Usual setup"
+          },
+          {
+            "slot_name": "conditions",
+            "value": "Secure placement"
+          },
+          {
+            "slot_name": "constraints",
+            "value": "Secure placement requires the unit identifier"
+          },
+          {
+            "slot_name": "negation",
+            "value": "No"
+          }
+        ],
+        "result_hash": "cf7a455c0df9a2316bb8505a4b2854ef99d1a8f79b0356dde0cfd0421e55aea0",
+        "run_id": null,
+        "run_mode": null,
+        "runtime_metadata": {
+          "awaits_t28_adapter": true,
+          "classification": {
+            "ambiguity_present": true,
+            "ambiguity_types": [
+              "contextual",
+              "pragmatic",
+              "referential",
+              "spatial"
+            ],
+            "capability_status": "unknown",
+            "compound_ambiguity": true,
+            "compound_ambiguity_count": 4,
+            "derivation_notes": [
+              "ambiguity_present_from_types"
+            ],
+            "risk_level": "medium"
+          },
+          "rejection_text": "I need to decline that request because it would be unsafe under the current constraints.",
+          "requires_re_evaluation": false,
+          "resolution_events": [],
+          "router_trace": {
+            "clarification_targets": [],
+            "considered_rules": [
+              "goal_first_v2",
+              "known_unsafe_or_prohibited"
+            ],
+            "matched_rule_id": "known_unsafe_or_prohibited",
+            "notes": [],
+            "recommended_strategy": "face_preserving_rejection",
+            "rejection_reason": "unsafe_or_prohibited_action",
+            "requires_re_evaluation": false,
+            "strategy_sequence": []
+          },
+          "safety_action": "return_with_findings",
+          "uncertainty": null
+        },
+        "safety_findings": [],
+        "strategy_sequence": [],
+        "synthetic_only": true,
+        "system_id": "goal_first_manager_v2",
+        "system_version": "2.0.0",
+        "unsupported_commitment_findings": []
+      },
+      "raw_output": "{\n  \"intent_summary\": \"Perform the same task on the second archive box and then put it in the archive cage using the standard setup procedure\",\n  \"cpc\": {\n    \"action\": {\n      \"value\": \"Place\",\n      \"status\": \"unknown\"\n    },\n    \"object\": {\n      \"value\": \"Second archive box\",\n      \"status\": \"unknown\"\n    },\n    \"destination\": {\n      \"value\": \"Archive cage\",\n      \"status\": \"unknown\"\n    },\n    \"tool\": {\n      \"value\": \"Usual setup\",\n      \"status\": \"unknown\"\n    }\n  ,\n  \"constraints\": {\n    \"value\": \"Secure placement requires the unit identifier\",\n    \"status\": \"unknown\"\n  },\n  \"spatial_relation\": {\n    \"value\": \"Using the usual setup\",\n    \"status\": \"unknown\"\n  },\n  \"time\": {\n    \"value\": \"Now\",\n    \"status\": \"unknown\"\n  },\n  \"recipient\": {\n    \"value\": \"Archive cage\",\n    \"status\": \"unknown\"\n  },\n  \"object_attributes\": {\n    \"value\": \"Archive box\",\n    \"status\": \"unknown\"\n  },\n  \"quantity\": {\n    \"value\": \"Second\",\n    \"status\": \"unknown\"\n  },\n  \"negation\": {\n    \"value\": \"No\",\n    \"status\": \"unknown\"\n  },\n  \"conditions\": {\n    \"value\": \"Secure placement\",\n    \"status\": \"unknown\"\n  },\n  \"actor\": {\n    \"value\": \"Robot\",\n    \"status\": \"unknown\"\n  }\n} \n\n, \"pilot_ambiguity_types\": [\n  \"pragmatic\",\n  \"object_reference\",\n  \"routine_reference\",\n  \"endpoint_vagueness\"\n] \n\n, \"pilot_capability_status\": \"unauthorized\",\n  \"speech_act\": \"directive_command\",\n  \"risk_level\": \"medium\",\n  \"uncertainty\": 0.65\n  , \"unresolved_slots\": [\n    \"destination\",\n    \"tool\",\n    \"object\",\n    \"action\"\n  ]\n}",
+      "record_id": "CA-0552",
+      "schema_valid": true,
+      "supports_ambiguity_prediction": true,
+      "supports_capability_prediction": true,
+      "system_id": "goal_first_manager_v2",
+      "system_version": "2.0.0",
+      "terminal_strategy": "face_preserving_rejection"
+    },
+    "degree": {
+      "ambiguity_types": [
+        "endpoint_vagueness",
+        "object_reference",
+        "pragmatic",
+        "routine_reference"
+      ],
+      "analysis_attempts": [
+        {
+          "attempt": 1,
+          "max_new_tokens": 4096,
+          "mode": "thinking",
+          "raw_chars": 6747,
+          "raw_sha256": "6983ef438ff77e43d6e2122347971071638173f0d7a7b2650c24e7e2adda0122",
+          "validation_error": "bad_intent_summary"
+        },
+        {
+          "attempt": 2,
+          "max_new_tokens": 8192,
+          "mode": "thinking_retry",
+          "raw_chars": 8729,
+          "raw_sha256": "910272f8638091fadc68346b5de9210de3aea90d1e4e143d0409482ec517c5ad",
+          "validation_error": "bad_intent_summary"
+        },
+        {
+          "attempt": 3,
+          "constraint": {
+            "constraint_initialised": true,
+            "generated_token_count": 467,
+            "maximum_output_tokens": 1024,
+            "response_mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+            "termination_reason": "eos_or_constraint_stop",
+            "transport_status": "constrained_generated"
+          },
+          "max_new_tokens": 1024,
+          "mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+          "raw_chars": 1512,
+          "raw_sha256": "32bd785407f89c8da6e331bf8a5751971ce084c29fb31e1144705ff3fc71f59c",
+          "validation_error": null
+        }
+      ],
+      "capability_status": "unauthorized",
+      "claim_boundary": "separately_versioned_from_frozen_t39",
+      "error": null,
+      "execution_mode": "cluster-gpu-goal-first-v2",
+      "failed": false,
+      "intent_summary": "Perform the same task on the second archive box and then put it in the archive cage using the standard setup procedure",
+      "latency_ms": 78942.18798400834,
+      "model_id": "Qwen/Qwen3-8B@b968826d9c46dd6066d109eabc6255188de91218",
+      "parsed": {
+        "analysis": {
+          "ambiguity_present": true,
+          "ambiguity_types": [
+            "contextual",
+            "pragmatic",
+            "referential",
+            "spatial"
+          ],
+          "analysis_provenance": {
+            "analysis_id": "76f93dcf5019c824522c602508b3574e51d62417b302cc0627348afff1133df0",
+            "method": "model_generated",
+            "notes": "source_input_hash=76f93dcf5019c824522c602508b3574e51d62417b302cc0627348afff1133df0;no_gold_in_prompt;scene_licence_dropped=destination,tool,object,action",
+            "provider_id": "goal_first_v2_full_context",
+            "provider_version": "goal-first-manager-v2"
+          },
+          "candidate_interpretations": [],
+          "capability_status": "unknown",
+          "clarification_question": "Could you clarify what you would like me to do?",
+          "clarification_targets": [
+            "intent"
+          ],
+          "compound_ambiguity": true,
+          "compound_ambiguity_count": 4,
+          "context_sampling_uncertainty": {
+            "agreement": 0.35,
+            "score": 0.65,
+            "variant_count": 1
+          },
+          "cpc": {
+            "action": {
+              "status": "filled",
+              "value": "Place"
+            },
+            "actor": {
+              "status": "filled",
+              "value": "Robot"
+            },
+            "conditions": {
+              "status": "filled",
+              "value": "Secure placement"
+            },
+            "constraints": {
+              "status": "filled",
+              "value": "Secure placement requires the unit identifier"
+            },
+            "destination": {
+              "status": "filled",
+              "value": "Archive cage"
+            },
+            "negation": {
+              "status": "filled",
+              "value": "No"
+            },
+            "object": {
+              "status": "filled",
+              "value": "Second archive box"
+            },
+            "object_attributes": {
+              "status": "filled",
+              "value": "Archive box"
+            },
+            "quantity": {
+              "status": "filled",
+              "value": "Second"
+            },
+            "recipient": {
+              "status": "filled",
+              "value": "Archive cage"
+            },
+            "spatial_relation": {
+              "status": "filled",
+              "value": "Using the usual setup"
+            },
+            "time": {
+              "status": "filled",
+              "value": "Now"
+            },
+            "tool": {
+              "status": "filled",
+              "value": "Usual setup"
+            }
+          },
+          "findings": [
+            "pilot_ambiguity_types:[\"endpoint_vagueness\",\"object_reference\",\"pragmatic\",\"routine_reference\"]",
+            "pilot_capability_status:unauthorized",
+            "intent_summary_present"
+          ],
+          "intent_summary": "Perform the same task on the second archive box and then put it in the archive cage using the standard setup procedure",
+          "primary_ambiguity_type": "contextual",
+          "recommended_strategy": "clarify",
+          "rejection_reason": null,
+          "resolution_evidence": [],
+          "resolution_method": null,
+          "resolved_slots": [
+            {
+              "slot_name": "action",
+              "value": "Place"
+            },
+            {
+              "slot_name": "actor",
+              "value": "Robot"
+            },
+            {
+              "slot_name": "object",
+              "value": "Second archive box"
+            },
+            {
+              "slot_name": "object_attributes",
+              "value": "Archive box"
+            },
+            {
+              "slot_name": "destination",
+              "value": "Archive cage"
+            },
+            {
+              "slot_name": "spatial_relation",
+              "value": "Using the usual setup"
+            },
+            {
+              "slot_name": "quantity",
+              "value": "Second"
+            },
+            {
+              "slot_name": "time",
+              "value": "Now"
+            },
+            {
+              "slot_name": "recipient",
+              "value": "Archive cage"
+            },
+            {
+              "slot_name": "tool",
+              "value": "Usual setup"
+            },
+            {
+              "slot_name": "conditions",
+              "value": "Secure placement"
+            },
+            {
+              "slot_name": "constraints",
+              "value": "Secure placement requires the unit identifier"
+            },
+            {
+              "slot_name": "negation",
+              "value": "No"
+            }
+          ],
+          "risk_level": "medium",
+          "risk_relevant": true,
+          "selected_interpretation": null,
+          "speech_act": "directive_command",
+          "strategy_sequence": [],
+          "supporting_evidence": [],
+          "unresolved_slots": [],
+          "unsupported_specificity": []
+        },
+        "clarification_question": "Could you clarify what you would like me to do?",
+        "clarification_targets": [
+          "intent"
+        ],
+        "execution_status": "ok",
+        "official_result": false,
+        "provider_provenance": {
+          "shared_analysis_fingerprint": "659ece0f777824aa330a8e90f963a7dae5e8e91971faa0c061910b868c04b87b"
+        },
+        "recommended_strategy": "clarify",
+        "record_id": "CA-0552",
+        "rejection_reason": null,
+        "resolved_slots": [
+          {
+            "slot_name": "action",
+            "value": "Place"
+          },
+          {
+            "slot_name": "actor",
+            "value": "Robot"
+          },
+          {
+            "slot_name": "object",
+            "value": "Second archive box"
+          },
+          {
+            "slot_name": "object_attributes",
+            "value": "Archive box"
+          },
+          {
+            "slot_name": "destination",
+            "value": "Archive cage"
+          },
+          {
+            "slot_name": "spatial_relation",
+            "value": "Using the usual setup"
+          },
+          {
+            "slot_name": "quantity",
+            "value": "Second"
+          },
+          {
+            "slot_name": "time",
+            "value": "Now"
+          },
+          {
+            "slot_name": "recipient",
+            "value": "Archive cage"
+          },
+          {
+            "slot_name": "tool",
+            "value": "Usual setup"
+          },
+          {
+            "slot_name": "conditions",
+            "value": "Secure placement"
+          },
+          {
+            "slot_name": "constraints",
+            "value": "Secure placement requires the unit identifier"
+          },
+          {
+            "slot_name": "negation",
+            "value": "No"
+          }
+        ],
+        "result_hash": "2143f087d4a094ee7bdc85dbbccaaad6b6895e3dbef2a18ceb1593536e3a75a1",
+        "run_id": null,
+        "run_mode": null,
+        "runtime_metadata": {
+          "shared_analysis_fingerprint": "659ece0f777824aa330a8e90f963a7dae5e8e91971faa0c061910b868c04b87b",
+          "thresholds_status": "unfrozen",
+          "thresholds_valid_for_official_use": false,
+          "uncertainty_score": 0.65,
+          "uses_type_risk_capability_precedence": false
+        },
+        "safety_findings": [],
+        "strategy_sequence": [],
+        "synthetic_only": true,
+        "system_id": "degree_based_router",
+        "system_version": "1.0.0",
+        "unsupported_commitment_findings": []
+      },
+      "raw_output": "{\n  \"intent_summary\": \"Perform the same task on the second archive box and then put it in the archive cage using the standard setup procedure\",\n  \"cpc\": {\n    \"action\": {\n      \"value\": \"Place\",\n      \"status\": \"unknown\"\n    },\n    \"object\": {\n      \"value\": \"Second archive box\",\n      \"status\": \"unknown\"\n    },\n    \"destination\": {\n      \"value\": \"Archive cage\",\n      \"status\": \"unknown\"\n    },\n    \"tool\": {\n      \"value\": \"Usual setup\",\n      \"status\": \"unknown\"\n    }\n  ,\n  \"constraints\": {\n    \"value\": \"Secure placement requires the unit identifier\",\n    \"status\": \"unknown\"\n  },\n  \"spatial_relation\": {\n    \"value\": \"Using the usual setup\",\n    \"status\": \"unknown\"\n  },\n  \"time\": {\n    \"value\": \"Now\",\n    \"status\": \"unknown\"\n  },\n  \"recipient\": {\n    \"value\": \"Archive cage\",\n    \"status\": \"unknown\"\n  },\n  \"object_attributes\": {\n    \"value\": \"Archive box\",\n    \"status\": \"unknown\"\n  },\n  \"quantity\": {\n    \"value\": \"Second\",\n    \"status\": \"unknown\"\n  },\n  \"negation\": {\n    \"value\": \"No\",\n    \"status\": \"unknown\"\n  },\n  \"conditions\": {\n    \"value\": \"Secure placement\",\n    \"status\": \"unknown\"\n  },\n  \"actor\": {\n    \"value\": \"Robot\",\n    \"status\": \"unknown\"\n  }\n} \n\n, \"pilot_ambiguity_types\": [\n  \"pragmatic\",\n  \"object_reference\",\n  \"routine_reference\",\n  \"endpoint_vagueness\"\n] \n\n, \"pilot_capability_status\": \"unauthorized\",\n  \"speech_act\": \"directive_command\",\n  \"risk_level\": \"medium\",\n  \"uncertainty\": 0.65\n  , \"unresolved_slots\": [\n    \"destination\",\n    \"tool\",\n    \"object\",\n    \"action\"\n  ]\n}",
+      "record_id": "CA-0552",
+      "schema_valid": true,
+      "supports_ambiguity_prediction": true,
+      "supports_capability_prediction": true,
+      "system_id": "degree_based_router_v2",
+      "system_version": "2.0.0",
+      "terminal_strategy": "clarify"
+    },
+    "timid": {
+      "ambiguity_types": [
+        "endpoint_vagueness",
+        "object_reference",
+        "pragmatic",
+        "routine_reference"
+      ],
+      "analysis_attempts": [
+        {
+          "attempt": 1,
+          "max_new_tokens": 4096,
+          "mode": "thinking",
+          "raw_chars": 6747,
+          "raw_sha256": "6983ef438ff77e43d6e2122347971071638173f0d7a7b2650c24e7e2adda0122",
+          "validation_error": "bad_intent_summary"
+        },
+        {
+          "attempt": 2,
+          "max_new_tokens": 8192,
+          "mode": "thinking_retry",
+          "raw_chars": 8729,
+          "raw_sha256": "910272f8638091fadc68346b5de9210de3aea90d1e4e143d0409482ec517c5ad",
+          "validation_error": "bad_intent_summary"
+        },
+        {
+          "attempt": 3,
+          "constraint": {
+            "constraint_initialised": true,
+            "generated_token_count": 467,
+            "maximum_output_tokens": 1024,
+            "response_mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+            "termination_reason": "eos_or_constraint_stop",
+            "transport_status": "constrained_generated"
+          },
+          "max_new_tokens": 1024,
+          "mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+          "raw_chars": 1512,
+          "raw_sha256": "32bd785407f89c8da6e331bf8a5751971ce084c29fb31e1144705ff3fc71f59c",
+          "validation_error": null
+        }
+      ],
+      "capability_status": "unauthorized",
+      "claim_boundary": "separately_versioned_from_frozen_t39",
+      "error": null,
+      "execution_mode": "cluster-gpu-goal-first-v2",
+      "failed": false,
+      "intent_summary": "Perform the same task on the second archive box and then put it in the archive cage using the standard setup procedure",
+      "latency_ms": 78942.18798400834,
+      "model_id": "Qwen/Qwen3-8B@b968826d9c46dd6066d109eabc6255188de91218",
+      "parsed": {
+        "analysis": {
+          "ambiguity_present": true,
+          "ambiguity_types": [
+            "contextual",
+            "pragmatic",
+            "referential",
+            "spatial"
+          ],
+          "analysis_provenance": {
+            "analysis_id": "76f93dcf5019c824522c602508b3574e51d62417b302cc0627348afff1133df0",
+            "method": "model_generated",
+            "notes": "source_input_hash=76f93dcf5019c824522c602508b3574e51d62417b302cc0627348afff1133df0;no_gold_in_prompt;scene_licence_dropped=destination,tool,object,action",
+            "provider_id": "goal_first_v2_full_context",
+            "provider_version": "goal-first-manager-v2"
+          },
+          "candidate_interpretations": [],
+          "capability_status": "unknown",
+          "clarification_question": "Before I continue, could you clarify: contextual, pragmatic, referential, spatial?",
+          "clarification_targets": [
+            "contextual",
+            "pragmatic",
+            "referential",
+            "spatial"
+          ],
+          "compound_ambiguity": true,
+          "compound_ambiguity_count": 4,
+          "context_sampling_uncertainty": {
+            "agreement": 0.35,
+            "score": 0.65,
+            "variant_count": 1
+          },
+          "cpc": {
+            "action": {
+              "status": "filled",
+              "value": "Place"
+            },
+            "actor": {
+              "status": "filled",
+              "value": "Robot"
+            },
+            "conditions": {
+              "status": "filled",
+              "value": "Secure placement"
+            },
+            "constraints": {
+              "status": "filled",
+              "value": "Secure placement requires the unit identifier"
+            },
+            "destination": {
+              "status": "filled",
+              "value": "Archive cage"
+            },
+            "negation": {
+              "status": "filled",
+              "value": "No"
+            },
+            "object": {
+              "status": "filled",
+              "value": "Second archive box"
+            },
+            "object_attributes": {
+              "status": "filled",
+              "value": "Archive box"
+            },
+            "quantity": {
+              "status": "filled",
+              "value": "Second"
+            },
+            "recipient": {
+              "status": "filled",
+              "value": "Archive cage"
+            },
+            "spatial_relation": {
+              "status": "filled",
+              "value": "Using the usual setup"
+            },
+            "time": {
+              "status": "filled",
+              "value": "Now"
+            },
+            "tool": {
+              "status": "filled",
+              "value": "Usual setup"
+            }
+          },
+          "findings": [
+            "pilot_ambiguity_types:[\"endpoint_vagueness\",\"object_reference\",\"pragmatic\",\"routine_reference\"]",
+            "pilot_capability_status:unauthorized",
+            "intent_summary_present"
+          ],
+          "intent_summary": "Perform the same task on the second archive box and then put it in the archive cage using the standard setup procedure",
+          "primary_ambiguity_type": "contextual",
+          "recommended_strategy": "clarify",
+          "rejection_reason": null,
+          "resolution_evidence": [],
+          "resolution_method": null,
+          "resolved_slots": [
+            {
+              "slot_name": "action",
+              "value": "Place"
+            },
+            {
+              "slot_name": "actor",
+              "value": "Robot"
+            },
+            {
+              "slot_name": "object",
+              "value": "Second archive box"
+            },
+            {
+              "slot_name": "object_attributes",
+              "value": "Archive box"
+            },
+            {
+              "slot_name": "destination",
+              "value": "Archive cage"
+            },
+            {
+              "slot_name": "spatial_relation",
+              "value": "Using the usual setup"
+            },
+            {
+              "slot_name": "quantity",
+              "value": "Second"
+            },
+            {
+              "slot_name": "time",
+              "value": "Now"
+            },
+            {
+              "slot_name": "recipient",
+              "value": "Archive cage"
+            },
+            {
+              "slot_name": "tool",
+              "value": "Usual setup"
+            },
+            {
+              "slot_name": "conditions",
+              "value": "Secure placement"
+            },
+            {
+              "slot_name": "constraints",
+              "value": "Secure placement requires the unit identifier"
+            },
+            {
+              "slot_name": "negation",
+              "value": "No"
+            }
+          ],
+          "risk_level": "medium",
+          "risk_relevant": true,
+          "selected_interpretation": null,
+          "speech_act": "directive_command",
+          "strategy_sequence": [],
+          "supporting_evidence": [],
+          "unresolved_slots": [],
+          "unsupported_specificity": []
+        },
+        "clarification_question": "Before I continue, could you clarify: contextual, pragmatic, referential, spatial?",
+        "clarification_targets": [
+          "contextual",
+          "pragmatic",
+          "referential",
+          "spatial"
+        ],
+        "execution_status": "ok",
+        "official_result": false,
+        "provider_provenance": {
+          "provider_id": "cached_analysis",
+          "provider_version": "1.0.0"
+        },
+        "recommended_strategy": "clarify",
+        "record_id": "CA-0552",
+        "rejection_reason": null,
+        "resolved_slots": [
+          {
+            "slot_name": "action",
+            "value": "Place"
+          },
+          {
+            "slot_name": "actor",
+            "value": "Robot"
+          },
+          {
+            "slot_name": "object",
+            "value": "Second archive box"
+          },
+          {
+            "slot_name": "object_attributes",
+            "value": "Archive box"
+          },
+          {
+            "slot_name": "destination",
+            "value": "Archive cage"
+          },
+          {
+            "slot_name": "spatial_relation",
+            "value": "Using the usual setup"
+          },
+          {
+            "slot_name": "quantity",
+            "value": "Second"
+          },
+          {
+            "slot_name": "time",
+            "value": "Now"
+          },
+          {
+            "slot_name": "recipient",
+            "value": "Archive cage"
+          },
+          {
+            "slot_name": "tool",
+            "value": "Usual setup"
+          },
+          {
+            "slot_name": "conditions",
+            "value": "Secure placement"
+          },
+          {
+            "slot_name": "constraints",
+            "value": "Secure placement requires the unit identifier"
+          },
+          {
+            "slot_name": "negation",
+            "value": "No"
+          }
+        ],
+        "result_hash": "da4923dc7c4323bf3fa8f00df8f50b32ca84339f36b2f3cd3f4a65c013ccf1da",
+        "run_id": null,
+        "run_mode": null,
+        "runtime_metadata": {
+          "awaits_t28_adapter": true,
+          "classification": {
+            "ambiguity_present": true,
+            "ambiguity_types": [
+              "contextual",
+              "pragmatic",
+              "referential",
+              "spatial"
+            ],
+            "capability_status": "unknown",
+            "compound_ambiguity": true,
+            "compound_ambiguity_count": 4,
+            "derivation_notes": [
+              "ambiguity_present_from_types"
+            ],
+            "risk_level": "medium"
+          },
+          "rejection_text": null,
+          "requires_re_evaluation": false,
+          "resolution_events": [],
+          "router_trace": {
+            "clarification_targets": [
+              "contextual",
+              "pragmatic",
+              "referential",
+              "spatial"
+            ],
+            "considered_rules": [
+              "known_unsafe_or_prohibited",
+              "known_incapable",
+              "unknown_or_unverified_capability"
+            ],
+            "matched_rule_id": "unknown_capability",
+            "notes": [
+              "unknown_capability_cannot_execute"
+            ],
+            "recommended_strategy": "clarify",
+            "rejection_reason": null,
+            "requires_re_evaluation": false,
+            "strategy_sequence": []
+          },
+          "safety_action": "return_with_findings",
+          "uncertainty": null
+        },
+        "safety_findings": [],
+        "strategy_sequence": [],
+        "synthetic_only": true,
+        "system_id": "full_type_risk_aware_manager",
+        "system_version": "1.0.0",
+        "unsupported_commitment_findings": []
+      },
+      "raw_output": "{\n  \"intent_summary\": \"Perform the same task on the second archive box and then put it in the archive cage using the standard setup procedure\",\n  \"cpc\": {\n    \"action\": {\n      \"value\": \"Place\",\n      \"status\": \"unknown\"\n    },\n    \"object\": {\n      \"value\": \"Second archive box\",\n      \"status\": \"unknown\"\n    },\n    \"destination\": {\n      \"value\": \"Archive cage\",\n      \"status\": \"unknown\"\n    },\n    \"tool\": {\n      \"value\": \"Usual setup\",\n      \"status\": \"unknown\"\n    }\n  ,\n  \"constraints\": {\n    \"value\": \"Secure placement requires the unit identifier\",\n    \"status\": \"unknown\"\n  },\n  \"spatial_relation\": {\n    \"value\": \"Using the usual setup\",\n    \"status\": \"unknown\"\n  },\n  \"time\": {\n    \"value\": \"Now\",\n    \"status\": \"unknown\"\n  },\n  \"recipient\": {\n    \"value\": \"Archive cage\",\n    \"status\": \"unknown\"\n  },\n  \"object_attributes\": {\n    \"value\": \"Archive box\",\n    \"status\": \"unknown\"\n  },\n  \"quantity\": {\n    \"value\": \"Second\",\n    \"status\": \"unknown\"\n  },\n  \"negation\": {\n    \"value\": \"No\",\n    \"status\": \"unknown\"\n  },\n  \"conditions\": {\n    \"value\": \"Secure placement\",\n    \"status\": \"unknown\"\n  },\n  \"actor\": {\n    \"value\": \"Robot\",\n    \"status\": \"unknown\"\n  }\n} \n\n, \"pilot_ambiguity_types\": [\n  \"pragmatic\",\n  \"object_reference\",\n  \"routine_reference\",\n  \"endpoint_vagueness\"\n] \n\n, \"pilot_capability_status\": \"unauthorized\",\n  \"speech_act\": \"directive_command\",\n  \"risk_level\": \"medium\",\n  \"uncertainty\": 0.65\n  , \"unresolved_slots\": [\n    \"destination\",\n    \"tool\",\n    \"object\",\n    \"action\"\n  ]\n}",
+      "record_id": "CA-0552",
+      "schema_valid": true,
+      "supports_ambiguity_prediction": true,
+      "supports_capability_prediction": true,
+      "system_id": "rich_conservative_manager_v2",
+      "system_version": "2.0.0",
+      "terminal_strategy": "clarify"
+    },
+    "context_blind": {
+      "ambiguity_types": [
+        "pragmatic"
+      ],
+      "analysis_attempts": [
+        {
+          "attempt": 1,
+          "max_new_tokens": 4096,
+          "mode": "thinking",
+          "raw_chars": 4443,
+          "raw_sha256": "b2932a408184b7c76324a10fc1dd358d4c388c277468691a56df74dfcc9a19b5",
+          "validation_error": "bad_intent_summary"
+        },
+        {
+          "attempt": 2,
+          "max_new_tokens": 8192,
+          "mode": "thinking_retry",
+          "raw_chars": 8634,
+          "raw_sha256": "9f9cfe589e51f8dc34a60f79533cdcd46f7aed7ab85390c97ff40b273eb6619b",
+          "validation_error": "bad_pilot_ambiguity_types"
+        },
+        {
+          "attempt": 3,
+          "constraint": {
+            "constraint_initialised": true,
+            "generated_token_count": 448,
+            "maximum_output_tokens": 1024,
+            "response_mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+            "termination_reason": "eos_or_constraint_stop",
+            "transport_status": "constrained_generated"
+          },
+          "max_new_tokens": 1024,
+          "mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+          "raw_chars": 1482,
+          "raw_sha256": "81f4f2a41af1446cf7c00674aa9e4c12e9be2275ec5bd78540b926a6c7dcec0f",
+          "validation_error": null
+        }
+      ],
+      "capability_status": "incapable",
+      "claim_boundary": "separately_versioned_from_frozen_t39",
+      "error": null,
+      "execution_mode": "cluster-gpu-goal-first-v2",
+      "failed": false,
+      "intent_summary": "Repeat the same action on the second archive box and then place it in the archive cage with the usual setup",
+      "latency_ms": 65391.52159914374,
+      "model_id": "Qwen/Qwen3-8B@b968826d9c46dd6066d109eabc6255188de91218",
+      "parsed": {
+        "analysis": {
+          "ambiguity_present": true,
+          "ambiguity_types": [
+            "pragmatic"
+          ],
+          "analysis_provenance": {
+            "analysis_id": "d50472100e85d034108ef8d3bb92e8f7e6719d74c028ddbde8f96d9edaec5c2b",
+            "method": "context_blind",
+            "notes": "ablated_input_hash=d50472100e85d034108ef8d3bb92e8f7e6719d74c028ddbde8f96d9edaec5c2b;source_input_hash=d50472100e85d034108ef8d3bb92e8f7e6719d74c028ddbde8f96d9edaec5c2b;no_gold_in_prompt;scene_licence_dropped=none",
+            "provider_id": "goal_first_v2_context_blind",
+            "provider_version": "goal-first-manager-v2"
+          },
+          "candidate_interpretations": [],
+          "capability_status": "incapable",
+          "clarification_question": null,
+          "clarification_targets": [],
+          "compound_ambiguity": false,
+          "compound_ambiguity_count": 0,
+          "context_sampling_uncertainty": {
+            "agreement": 0.8,
+            "score": 0.2,
+            "variant_count": 1
+          },
+          "cpc": {
+            "action": {
+              "status": "not_applicable",
+              "value": "place"
+            },
+            "actor": {
+              "status": "not_applicable",
+              "value": "not applicable"
+            },
+            "conditions": {
+              "status": "not_applicable",
+              "value": "same as the first archive box"
+            },
+            "constraints": {
+              "status": "not_applicable",
+              "value": "usual setup"
+            },
+            "destination": {
+              "status": "not_applicable",
+              "value": "archive cage"
+            },
+            "negation": {
+              "status": "not_applicable",
+              "value": "not applicable"
+            },
+            "object": {
+              "status": "not_applicable",
+              "value": "second archive box"
+            },
+            "object_attributes": {
+              "status": "not_applicable",
+              "value": "not applicable"
+            },
+            "quantity": {
+              "status": "not_applicable",
+              "value": "not specified"
+            },
+            "recipient": {
+              "status": "not_applicable",
+              "value": "not applicable"
+            },
+            "spatial_relation": {
+              "status": "not_applicable",
+              "value": "not specified"
+            },
+            "time": {
+              "status": "not_applicable",
+              "value": "not specified"
+            },
+            "tool": {
+              "status": "not_applicable",
+              "value": "usual setup"
+            }
+          },
+          "findings": [
+            "pilot_ambiguity_types:[\"pragmatic\"]",
+            "pilot_capability_status:incapable",
+            "intent_summary_present"
+          ],
+          "intent_summary": "Repeat the same action on the second archive box and then place it in the archive cage with the usual setup",
+          "primary_ambiguity_type": "pragmatic",
+          "recommended_strategy": "face_preserving_rejection",
+          "rejection_reason": "known_incapability",
+          "resolution_evidence": [],
+          "resolution_method": null,
+          "resolved_slots": [],
+          "risk_level": "medium",
+          "risk_relevant": true,
+          "selected_interpretation": null,
+          "speech_act": "directive_command",
+          "strategy_sequence": [],
+          "supporting_evidence": [],
+          "unresolved_slots": [
+            {
+              "reason": "model_identified_uncertainty",
+              "slot_name": "destination"
+            }
+          ],
+          "unsupported_specificity": []
+        },
+        "clarification_question": null,
+        "clarification_targets": [],
+        "execution_status": "ok",
+        "official_result": false,
+        "provider_provenance": {
+          "provider_id": "cached_analysis",
+          "provider_version": "1.0.0"
+        },
+        "recommended_strategy": "face_preserving_rejection",
+        "record_id": "CA-0552",
+        "rejection_reason": "known_incapability",
+        "resolved_slots": [],
+        "result_hash": "28c660d46e95abb4869f3cc06851307e035e0a1ef8b82bd74ade9fea7e47b663",
+        "run_id": null,
+        "run_mode": null,
+        "runtime_metadata": {
+          "analysis_identity": {
+            "analysis_content_hash": "7e6a5302ce7d523633cc3cad4d17f9d3e7ae253daa461e6afe9c278b3c5eea2c",
+            "analysis_variant": "context_blind",
+            "model_strategy_id": null,
+            "provider_id": "goal_first_v2_context_blind",
+            "provider_version": "goal-first-manager-v2",
+            "record_id": "CA-0552",
+            "source_input_hash": "d50472100e85d034108ef8d3bb92e8f7e6719d74c028ddbde8f96d9edaec5c2b"
+          },
+          "analysis_identity_fingerprint": "dd6540163b3588b7083775887c32b1e29a51dc9d0876124694f54ed48de60c8e",
+          "awaits_t28_adapter": true,
+          "classification": {
+            "ambiguity_present": true,
+            "ambiguity_types": [
+              "pragmatic"
+            ],
+            "capability_status": "incapable",
+            "compound_ambiguity": false,
+            "compound_ambiguity_count": 0,
+            "derivation_notes": [
+              "ambiguity_present_from_types"
+            ],
+            "risk_level": "medium"
+          },
+          "context_ablation": {
+            "ablated_input_hash": "d50472100e85d034108ef8d3bb92e8f7e6719d74c028ddbde8f96d9edaec5c2b",
+            "capability_context_removed": true,
+            "dialogue_history_removed": true,
+            "rejected_full_context_cache": false,
+            "rejection_reason": null,
+            "scene_context_removed": true,
+            "stripped_context_derived_fields": false
+          },
+          "original_input_unmutated": true,
+          "rejection_text": "I am not able to perform that action with my current capabilities. I will not invent an alternative that is not supported.",
+          "requires_re_evaluation": false,
+          "resolution_events": [
+            {
+              "confidence_category": "blocked",
+              "details": {
+                "risk_level": "medium"
+              },
+              "evidence_source": null,
+              "outcome": "resolution_blocked_by_risk",
+              "previous_status": "unresolved",
+              "resolved_value": null,
+              "rule_id": "risk_block",
+              "safety_eligibility": false,
+              "slot": "destination"
+            }
+          ],
+          "router_trace": {
+            "clarification_targets": [],
+            "considered_rules": [
+              "goal_first_v2",
+              "known_unsafe_or_prohibited",
+              "known_incapable"
+            ],
+            "matched_rule_id": "known_incapable",
+            "notes": [],
+            "recommended_strategy": "face_preserving_rejection",
+            "rejection_reason": "known_incapability",
+            "requires_re_evaluation": false,
+            "strategy_sequence": []
+          },
+          "safety_action": "return_with_findings",
+          "uncertainty": null
+        },
+        "safety_findings": [],
+        "strategy_sequence": [],
+        "synthetic_only": true,
+        "system_id": "context_blind_manager",
+        "system_version": "1.0.0",
+        "unsupported_commitment_findings": []
+      },
+      "raw_output": "{\n  \"intent_summary\": \"Repeat the same action on the second archive box and then place it in the archive cage with the usual setup\",\n  \"cpc\": {\n    \"action\": {\n      \"value\": \"place\",\n      \"status\": \"not_applicable\"\n    },\n    \"object\": {\n      \"value\": \"second archive box\",\n      \"status\": \"not_applicable\"\n    },\n    \"destination\": {\n      \"value\": \"archive cage\",\n      \"status\": \"not_applicable\"\n    },\n    \"tool\": {\n      \"value\": \"usual setup\",\n      \"status\": \"not_applicable\"\n    }\n  ,\n  \"constraints\": {\n    \"value\": \"usual setup\",\n    \"status\": \"not_applicable\"\n  },\n  \"conditions\": {\n    \"value\": \"same as the first archive box\",\n    \"status\": \"not_applicable\"\n  },\n  \"time\": {\n    \"value\": \"not specified\",\n    \"status\": \"not_applicable\"\n  },\n  \"quantity\": {\n    \"value\": \"not specified\",\n    \"status\": \"not_applicable\"\n  },\n  \"spatial_relation\": {\n    \"value\": \"not specified\",\n    \"status\": \"not_applicable\"\n  },\n  \"recipient\": {\n    \"value\": \"not applicable\",\n    \"status\": \"not_applicable\"\n  },\n  \"negation\": {\n    \"value\": \"not applicable\",\n    \"status\": \"not_applicable\"\n  },\n  \"object_attributes\": {\n    \"value\": \"not applicable\",\n    \"status\": \"not_applicable\"\n  },\n  \"actor\": {\n    \"value\": \"not applicable\",\n    \"status\": \"not_applicable\"\n  }\n}\n, \"pilot_ambiguity_types\": [\n  \"pragmatic\"\n] \n, \"pilot_capability_status\": \"incapable\"\n, \"speech_act\": \"directive_command\"\n, \"risk_level\": \"medium\"\n, \"uncertainty\": 0.2\n, \"unresolved_slots\": [\n  \"destination\"\n] \n}",
+      "record_id": "CA-0552",
+      "schema_valid": true,
+      "supports_ambiguity_prediction": true,
+      "supports_capability_prediction": true,
+      "system_id": "goal_first_context_blind_v2",
+      "system_version": "2.0.0",
+      "terminal_strategy": "face_preserving_rejection"
+    }
+  },
+  "provenance": {
+    "source_sha256": "f33b1e29f1e8aa256a475f07213aa07247def47d8e2148d54a472a40b71b05c9",
+    "gold_sha256": "5e23ad1a92ff1873c8f039a8ce560a111dd6fb6b8ae8c11d6cf34dbfa1c360db",
+    "t07_final_zip_sha256": "34ca50e034ca37b617068bb50c734d12fa26282fb5eec563c11ead700163e491",
+    "inherited_t07_zip_sha256": "0305b1e9ab062876ee6ee89778cc6028d2eaf01718b7dd0295944e7d9cb81a01",
+    "note": "Goal-First, Degree, Timid, and Context-Blind predictions are inherited from the earlier T0.7 run; official intent and comparison come from the final T0.7 archive."
+  }
+}

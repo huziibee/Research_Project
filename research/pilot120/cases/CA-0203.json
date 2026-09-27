@@ -1,0 +1,1417 @@
+{
+  "record_id": "CA-0203",
+  "frozen_source": {
+    "capability_context": "Office service robot can transport documents, scan barcodes, operate standard peripherals, and place files in authorized storage locations.",
+    "command": "Stock the selected stationery tray with enough for one shift using the usual setup.",
+    "dialogue_history": [],
+    "record_id": "CA-0203",
+    "scene_context": "Records room in an office. Two stationery trays carry work-order marks: the black one beside the meeting-room shelf has a yellow PENDING tag, while the amber one near the copy station has a blue COMPLETE tag. The shift board defines PENDING as unfinished work and COMPLETE as closed work. The shift plan contains eight standard uses. The stock table assigns three standard packs per use and a two-pack reserve. The PENDING stock tag belongs to Work order WO-663. The setup table states that the audit preparation applies to a different work-order prefix, while Work order WO-663 maps to the courier intake."
+  },
+  "frozen_gold": {
+    "ambiguity_types": [
+      "fuzzy_quantity",
+      "object_reference",
+      "routine_reference"
+    ],
+    "annotator_b_era": "claude_era",
+    "annotator_b_model": "claude-4.6-sonnet-medium-thinking",
+    "capability_status": "capable",
+    "field_status": {
+      "ambiguity_types": "auto_agree",
+      "capability_status": "human_auditor:independent_from_route",
+      "record_validity": "auto_agree",
+      "strategy_sequence": "from_A_matching_terminal",
+      "terminal_strategy": "auto_agree"
+    },
+    "gold_lifecycle": "final_gold",
+    "gold_status": "auto_agree",
+    "human_gate_required": false,
+    "provenance": {
+      "agreement_label": "pilot_annotation_agreement",
+      "annotator_a_sha256": "d28db97705fc51ff12362462f11fb5dac26c4afc85f54f0feae144e7650bde82",
+      "annotator_b_sha256": "aacaf5814cddf51dd0d36fffff93358b671a7a14a289a370dce0850be098c5e6",
+      "capability_route_decouple": "conditionally_capable remapped to capable: no evidenced external capability precondition; linguistic silently_resolve/clarify is not a capability condition",
+      "gold_policy": "use_existing_pilot_adjudicated_gold",
+      "input_sha256": "ff6e2c306e50355f6fd2d68dd3fe0f172cdf44fabdef2fbe89df0b31a7d50e72",
+      "pilot_gold_sha256": "e9d56c4e0e294243c377e65fb5160f34118d89f66dc5db6e75b714e31b9f647d",
+      "protocol": "pilot_adjudicated_gold_on_capability_repaired_source",
+      "repaired_input_sha256": "06207568c2a506d2672a39bb82630e227c098d20fb19ba38c11d381f1ad1d0f3"
+    },
+    "record_id": "CA-0203",
+    "record_validity": "valid",
+    "strategy_sequence": [
+      "silently_resolve",
+      "execute"
+    ],
+    "terminal_strategy": "execute"
+  },
+  "t07_comparison": {
+    "record_id": "CA-0203",
+    "gold_route": "execute",
+    "raw_route": "execute",
+    "ft_route": "execute",
+    "gf_route": "refuse",
+    "raw_route_ok": "True",
+    "ft_route_ok": "True",
+    "gf_route_ok": "False",
+    "raw_official_intent": "True",
+    "ft_official_intent": "True",
+    "gf_official_intent": "True",
+    "blind_official_intent": "True"
+  },
+  "t07_official_intent": {
+    "context_blind_official_intent": true,
+    "degree_official_intent_shared_gf": true,
+    "finetune_official_intent": true,
+    "goal_first_official_intent": true,
+    "raw_official_intent": true,
+    "record_id": "CA-0203",
+    "timid_official_intent_shared_gf": true
+  },
+  "t07_predictions": {
+    "raw_qwen": {
+      "ambiguity_types": [
+        "destination_reference",
+        "pronoun_reference"
+      ],
+      "capability_status": "capable",
+      "error": null,
+      "execution_mode": "final_close_intent_box",
+      "failed": false,
+      "intent_summary": "Restock the PENDING stationery tray with supplies sufficient for one shift according to the standard setup for work order WO-663.",
+      "latency_ms": 10294.7435695678,
+      "parsed": {
+        "ambiguity_types": [
+          "destination_reference",
+          "pronoun_reference"
+        ],
+        "capability_status": "capable",
+        "intent_summary": "Restock the PENDING stationery tray with supplies sufficient for one shift according to the standard setup for work order WO-663.",
+        "speech_act": "directive_command",
+        "terminal_strategy": "execute"
+      },
+      "raw_output": "<think>\nOkay, let's tackle this query. The user wants the robot to \"Stock the selected stationery tray with enough for one shift using the usual setup.\" \n\nFirst, I need to parse the intent. The main job here is restocking a stationery tray for a shift. The key elements are the selected tray, enough supplies for one shift, and the usual setup. \n\nLooking at the dialogue history, it's empty, so no prior context. The scene context mentions two stationery trays with specific tags: PENDING and COMPLETE. The shift board defines PENDING as unfinished, so the PENDING tray (black one) is the relevant one here. The stock table says three packs per use and a two-pack reserve. The shift plan has eight standard uses, so 3*8=24 plus 2 reserve equals 26 packs total.\n\nThe capability context allows the robot to transport, scan, operate peripherals, and place files. Restocking involves transporting and placing, so the robot is capable. But wait, the command says \"selected stationery tray\"—which one is selected? The dialogue history doesn't specify, but the scene mentions two trays. However, the PENDING tag is associated with WO-663, which maps to courier intake. The setup table says audit prep is for a different prefix, so maybe the selected tray is the PENDING one. The robot can handle that.\n\nAmbiguity types: The command refers to \"selected\" tray, but the scene has two. However, the PENDING tag is linked to a specific work order, so maybe the selection is implied. But the user didn't specify which, so that's a pronoun reference (selected) and maybe a destination_reference since it's about where to stock. Also, \"usual setup\" might be a routine_reference. \n\nSpeech act is a directive_command because it's a direct instruction. The capability status is capable since the robot can transport and place items. Terminal strategy is execute because the robot can perform the task once the selection is clear. Wait, but if the selected tray isn't specified, maybe there's ambiguity. However, the scene context gives context that the PENDING tray is associated with WO-663, so the robot can infer that. So no ambiguity? Or is \"selected\" ambiguous? The user might mean the PENDING one, but the command says \"selected,\" which could be unclear. So maybe pronoun_reference (selected) and destination_reference. \n\nSo the JSON should have intent_summary as restocking the PENDING stationery tray with supplies for a shift. Speech act is directive_command. Ambiguity types include pronoun_reference and destination_reference. Capability is capable. Terminal strategy is execute.\n</think>\n\n{\n  \"intent_summary\": \"Restock the PENDING stationery tray with supplies sufficient for one shift according to the standard setup for work order WO-663.\",\n  \"speech_act\": \"directive_command\",\n  \"ambiguity_types\": [\"pronoun_reference\", \"destination_reference\"],\n  \"capability_status\": \"capable\",\n  \"terminal_strategy\": \"execute\"\n}",
+      "record_id": "CA-0203",
+      "schema_valid": true,
+      "speech_act": "directive_command",
+      "system_id": "direct_base_llm",
+      "terminal_strategy": "execute"
+    },
+    "finetune": {
+      "ambiguity_types": [
+        "object_reference"
+      ],
+      "capability_status": "capable",
+      "error": null,
+      "execution_mode": "final_close_intent_box",
+      "failed": false,
+      "intent_summary": "Restock the PENDING stationery tray for the current shift using the standard setup for courier intake.",
+      "latency_ms": 23108.989358879626,
+      "parsed": {
+        "ambiguity_types": [
+          "object_reference"
+        ],
+        "capability_status": "capable",
+        "intent_summary": "Restock the PENDING stationery tray for the current shift using the standard setup for courier intake.",
+        "speech_act": "directive_command",
+        "terminal_strategy": "execute"
+      },
+      "raw_output": "<think>\nOkay, let's break this down. The user's command is to \"Stock the selected stationery tray with enough for one shift using the usual setup.\" First, I need to understand the intent. The key points here are restocking a stationery tray for a shift, using the usual setup. The dialogue history is empty, so no prior context. The scene context mentions two stationery trays with specific tags: black with yellow PENDING and amber with blue COMPLETE. The shift board defines PENDING as unfinished, so the black tray is the one needing restocking. The stock table says three packs per use and a two-pack reserve. Since the shift plan has eight uses, that's 3*8=24 packs plus 2, totaling 26. But the command says \"enough for one shift,\" which likely refers to the current shift's needs. The setup table mentions audit preparation is for a different prefix, but WO-663 is for courier intake. So the robot needs to stock the black tray (PENDING) with the usual setup. The robot can transport and place files, so it's capable. But the command is specific about the setup, which the robot might know from the setup table. So the capability status is capable. The ambiguity types: the command says \"selected stationery tray,\" but which one? The scene mentions two, but the PENDING one is the one needing stock. However, the command might be ambiguous if the user didn't specify, but since the dialogue history is empty, maybe the robot is supposed to know based on context. But the user might be referring to the selected one, which could be the PENDING. However, the setup table says the usual setup applies to the courier intake (WO-663), so the robot should know to use that setup. So the ambiguity here might be about which tray is selected, but the scene context gives the PENDING as the one needing stock. So maybe there's no ambiguity here. Wait, the command says \"selected stationery tray,\" but the scene has two. Unless the user has already selected one, but the dialogue history is empty. So that's a possible ambiguity. But the scene context says the black one is PENDING, which is the one that's unfinished. So maybe the robot is supposed to infer that. So the ambiguity type here could be object_reference because it's unclear which tray is selected. Also, \"usual setup\" might be a reference to the setup table, which the robot knows. So the ambiguity types might include object_reference. Also, \"enough for one shift\" could be vague in terms of quantity, but the stock table specifies three per use and reserve. So maybe the robot can calculate that. But the command is to use the usual setup, which is defined. So the capability status is capable. The speech act is a directive command. The terminal strategy would be to execute if the robot can do it. So the JSON should have intent_summary as restocking the PENDING stationery tray for the current shift with the usual setup. Speech act is directive_command. Ambiguity types: object_reference (selected tray) and maybe others? Wait, the command mentions \"selected stationery tray,\" but which one? The scene has two, but the PENDING one is the one that's unfinished. So the robot might need to infer that the selected one is the PENDING. But if the user didn't specify, that's an ambiguity. So object_reference. Also, \"enough for one shift\" could be ambiguous in terms of quantity, but the stock table gives the numbers, so maybe not. So ambiguity_types: object_reference. The capability is capable, as the robot can transport and place files. So the JSON should reflect that.\n</think>\n\n{\n  \"intent_summary\": \"Restock the PENDING stationery tray for the current shift using the standard setup for courier intake.\",\n  \"speech_act\": \"directive_command\",\n  \"ambiguity_types\": [\"object_reference\"],\n  \"capability_status\": \"capable\",\n  \"terminal_strategy\": \"execute\"\n}",
+      "record_id": "CA-0203",
+      "schema_valid": true,
+      "speech_act": "directive_command",
+      "system_id": "t28_selected_adapter_llm",
+      "terminal_strategy": "execute"
+    },
+    "goal_first": {
+      "ambiguity_types": [
+        "fuzzy_quantity",
+        "object_reference",
+        "pragmatic"
+      ],
+      "analysis_attempts": [
+        {
+          "attempt": 1,
+          "max_new_tokens": 4096,
+          "mode": "thinking",
+          "raw_chars": 5090,
+          "raw_sha256": "2d0808dcb8a7a2f0f23a9236838d014b3b1435e5b4c208fe77a2c86c663a3eb1",
+          "validation_error": "bad_pilot_ambiguity_types"
+        },
+        {
+          "attempt": 2,
+          "max_new_tokens": 8192,
+          "mode": "thinking_retry",
+          "raw_chars": 6853,
+          "raw_sha256": "f12bee6f3330f98f9397764bc1e69df518f06f6bb1e32cde07fae1a82face887",
+          "validation_error": "bad_pilot_ambiguity_types"
+        },
+        {
+          "attempt": 3,
+          "constraint": {
+            "constraint_initialised": true,
+            "generated_token_count": 490,
+            "maximum_output_tokens": 1024,
+            "response_mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+            "termination_reason": "eos_or_constraint_stop",
+            "transport_status": "constrained_generated"
+          },
+          "max_new_tokens": 1024,
+          "mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+          "raw_chars": 1519,
+          "raw_sha256": "34d7abd729b4fa415f3930329cd0b1575e71f900ba39722449102cedf7507efe",
+          "validation_error": null
+        }
+      ],
+      "capability_status": "incapable",
+      "claim_boundary": "separately_versioned_from_frozen_t39",
+      "error": null,
+      "execution_mode": "cluster-gpu-goal-first-v2",
+      "failed": false,
+      "intent_summary": "Stock the selected stationery tray with enough supplies for one shift using the usual setup",
+      "latency_ms": 57921.57650133595,
+      "model_id": "Qwen/Qwen3-8B@b968826d9c46dd6066d109eabc6255188de91218",
+      "parsed": {
+        "analysis": {
+          "ambiguity_present": true,
+          "ambiguity_types": [
+            "pragmatic",
+            "quantitative",
+            "referential"
+          ],
+          "analysis_provenance": {
+            "analysis_id": "c7f40bb8e6f911bb3dfab27f43e5e1ea70f29d10b7e8b97d8a39cecc6781b7c2",
+            "method": "model_generated",
+            "notes": "source_input_hash=c7f40bb8e6f911bb3dfab27f43e5e1ea70f29d10b7e8b97d8a39cecc6781b7c2;no_gold_in_prompt;scene_licence_dropped=object,quantity,recipient,time",
+            "provider_id": "goal_first_v2_full_context",
+            "provider_version": "goal-first-manager-v2"
+          },
+          "candidate_interpretations": [],
+          "capability_status": "incapable",
+          "clarification_question": null,
+          "clarification_targets": [],
+          "compound_ambiguity": true,
+          "compound_ambiguity_count": 3,
+          "context_sampling_uncertainty": {
+            "agreement": 0.15000000000000002,
+            "score": 0.85,
+            "variant_count": 1
+          },
+          "cpc": {
+            "action": {
+              "status": "filled",
+              "value": "stock"
+            },
+            "actor": {
+              "status": "filled",
+              "value": "robot"
+            },
+            "conditions": {
+              "status": "filled",
+              "value": "PENDING"
+            },
+            "constraints": {
+              "status": "filled",
+              "value": "Work order WO-663"
+            },
+            "destination": {
+              "status": "filled",
+              "value": "selected stationery tray"
+            },
+            "negation": {
+              "status": "filled",
+              "value": "enough"
+            },
+            "object": {
+              "status": "filled",
+              "value": "selected stationery tray"
+            },
+            "object_attributes": {
+              "status": "filled",
+              "value": "standard packs"
+            },
+            "quantity": {
+              "status": "filled",
+              "value": "enough for one shift"
+            },
+            "recipient": {
+              "status": "filled",
+              "value": "usual setup"
+            },
+            "spatial_relation": {
+              "status": "filled",
+              "value": "near the copy station"
+            },
+            "time": {
+              "status": "filled",
+              "value": "shift"
+            },
+            "tool": {
+              "status": "filled",
+              "value": "standard packs"
+            }
+          },
+          "findings": [
+            "pilot_ambiguity_types:[\"fuzzy_quantity\",\"object_reference\",\"pragmatic\"]",
+            "pilot_capability_status:incapable",
+            "intent_summary_present"
+          ],
+          "intent_summary": "Stock the selected stationery tray with enough supplies for one shift using the usual setup",
+          "primary_ambiguity_type": "pragmatic",
+          "recommended_strategy": "face_preserving_rejection",
+          "rejection_reason": "known_incapability",
+          "resolution_evidence": [],
+          "resolution_method": null,
+          "resolved_slots": [
+            {
+              "slot_name": "action",
+              "value": "stock"
+            },
+            {
+              "slot_name": "actor",
+              "value": "robot"
+            },
+            {
+              "slot_name": "object",
+              "value": "selected stationery tray"
+            },
+            {
+              "slot_name": "object_attributes",
+              "value": "standard packs"
+            },
+            {
+              "slot_name": "destination",
+              "value": "selected stationery tray"
+            },
+            {
+              "slot_name": "spatial_relation",
+              "value": "near the copy station"
+            },
+            {
+              "slot_name": "quantity",
+              "value": "enough for one shift"
+            },
+            {
+              "slot_name": "time",
+              "value": "shift"
+            },
+            {
+              "slot_name": "recipient",
+              "value": "usual setup"
+            },
+            {
+              "slot_name": "tool",
+              "value": "standard packs"
+            },
+            {
+              "slot_name": "conditions",
+              "value": "PENDING"
+            },
+            {
+              "slot_name": "constraints",
+              "value": "Work order WO-663"
+            },
+            {
+              "slot_name": "negation",
+              "value": "enough"
+            }
+          ],
+          "risk_level": "high",
+          "risk_relevant": true,
+          "selected_interpretation": null,
+          "speech_act": "directive_command",
+          "strategy_sequence": [],
+          "supporting_evidence": [],
+          "unresolved_slots": [],
+          "unsupported_specificity": []
+        },
+        "clarification_question": null,
+        "clarification_targets": [],
+        "execution_status": "ok",
+        "official_result": false,
+        "provider_provenance": {
+          "provider_id": "cached_analysis",
+          "provider_version": "1.0.0"
+        },
+        "recommended_strategy": "face_preserving_rejection",
+        "record_id": "CA-0203",
+        "rejection_reason": "known_incapability",
+        "resolved_slots": [
+          {
+            "slot_name": "action",
+            "value": "stock"
+          },
+          {
+            "slot_name": "actor",
+            "value": "robot"
+          },
+          {
+            "slot_name": "object",
+            "value": "selected stationery tray"
+          },
+          {
+            "slot_name": "object_attributes",
+            "value": "standard packs"
+          },
+          {
+            "slot_name": "destination",
+            "value": "selected stationery tray"
+          },
+          {
+            "slot_name": "spatial_relation",
+            "value": "near the copy station"
+          },
+          {
+            "slot_name": "quantity",
+            "value": "enough for one shift"
+          },
+          {
+            "slot_name": "time",
+            "value": "shift"
+          },
+          {
+            "slot_name": "recipient",
+            "value": "usual setup"
+          },
+          {
+            "slot_name": "tool",
+            "value": "standard packs"
+          },
+          {
+            "slot_name": "conditions",
+            "value": "PENDING"
+          },
+          {
+            "slot_name": "constraints",
+            "value": "Work order WO-663"
+          },
+          {
+            "slot_name": "negation",
+            "value": "enough"
+          }
+        ],
+        "result_hash": "82d97241af7108cd4809bc1a5963c1da435728243531bf69d12b2c929bdb2b69",
+        "run_id": null,
+        "run_mode": null,
+        "runtime_metadata": {
+          "awaits_t28_adapter": true,
+          "classification": {
+            "ambiguity_present": true,
+            "ambiguity_types": [
+              "pragmatic",
+              "quantitative",
+              "referential"
+            ],
+            "capability_status": "incapable",
+            "compound_ambiguity": true,
+            "compound_ambiguity_count": 3,
+            "derivation_notes": [
+              "ambiguity_present_from_types"
+            ],
+            "risk_level": "high"
+          },
+          "rejection_text": "I am not able to perform that action with my current capabilities. I will not invent an alternative that is not supported.",
+          "requires_re_evaluation": false,
+          "resolution_events": [],
+          "router_trace": {
+            "clarification_targets": [],
+            "considered_rules": [
+              "goal_first_v2",
+              "known_unsafe_or_prohibited",
+              "known_incapable"
+            ],
+            "matched_rule_id": "known_incapable",
+            "notes": [],
+            "recommended_strategy": "face_preserving_rejection",
+            "rejection_reason": "known_incapability",
+            "requires_re_evaluation": false,
+            "strategy_sequence": []
+          },
+          "safety_action": "return_with_findings",
+          "uncertainty": null
+        },
+        "safety_findings": [],
+        "strategy_sequence": [],
+        "synthetic_only": true,
+        "system_id": "goal_first_manager_v2",
+        "system_version": "2.0.0",
+        "unsupported_commitment_findings": []
+      },
+      "raw_output": "{\n  \"intent_summary\": \"Stock the selected stationery tray with enough supplies for one shift using the usual setup\",\n  \"cpc\": {\n    \"action\": {\n      \"value\": \"stock\",\n      \"status\": \"unknown\"\n    },\n    \"object\": {\n      \"value\": \"selected stationery tray\",\n      \"status\": \"unknown\"\n    },\n    \"quantity\": {\n      \"value\": \"enough for one shift\",\n      \"status\": \"unknown\"\n    },\n    \"recipient\": {\n      \"value\": \"usual setup\",\n      \"status\": \"unknown\"\n    }\n  ,\n  \"conditions\": {\n    \"status\": \"unknown\"\n  ,\n  \"value\": \"PENDING\"\n  },\n  \"constraints\": {\n    \"status\": \"unknown\"\n  ,\n  \"value\": \"Work order WO-663\"\n  }\n,\n  \"time\": {\n    \"status\": \"unknown\"\n  ,\n  \"value\": \"shift\"\n  }\n,\n  \"spatial_relation\": {\n    \"status\": \"unknown\"\n  ,\n  \"value\": \"near the copy station\"\n  }\n,\n  \"destination\": {\n    \"status\": \"unknown\"\n  ,\n  \"value\": \"selected stationery tray\"\n  }\n,\n  \"tool\": {\n    \"status\": \"unknown\"\n  ,\n  \"value\": \"standard packs\"\n  }\n,\n  \"object_attributes\": {\n    \"status\": \"unknown\"\n  ,\n    \"value\": \"standard packs\"\n  }\n,\n  \"negation\": {\n    \"status\": \"unknown\"\n  ,\n    \"value\": \"enough\"\n  }\n,\n  \"actor\": {\n    \"status\": \"unknown\"\n  ,\n    \"value\": \"robot\"\n  }\n}\n,  \n  \"pilot_ambiguity_types\": [\n    \"object_reference\",\n    \"pragmatic\",\n    \"fuzzy_quantity\"\n  ]\n  \n  ,\n  \"pilot_capability_status\": \"incapable\"\n  \n  ,\n  \"risk_level\": \"high\"\n  \n  ,\n  \"speech_act\": \"directive_command\"\n  \n  ,\n  \"unresolved_slots\": [\n    \"object\",\n    \"quantity\",\n    \"recipient\",\n    \"time\"\n  ]\n  \n  ,\n  \"uncertainty\": 0.85\n}",
+      "record_id": "CA-0203",
+      "schema_valid": true,
+      "supports_ambiguity_prediction": true,
+      "supports_capability_prediction": true,
+      "system_id": "goal_first_manager_v2",
+      "system_version": "2.0.0",
+      "terminal_strategy": "face_preserving_rejection"
+    },
+    "degree": {
+      "ambiguity_types": [
+        "fuzzy_quantity",
+        "object_reference",
+        "pragmatic"
+      ],
+      "analysis_attempts": [
+        {
+          "attempt": 1,
+          "max_new_tokens": 4096,
+          "mode": "thinking",
+          "raw_chars": 5090,
+          "raw_sha256": "2d0808dcb8a7a2f0f23a9236838d014b3b1435e5b4c208fe77a2c86c663a3eb1",
+          "validation_error": "bad_pilot_ambiguity_types"
+        },
+        {
+          "attempt": 2,
+          "max_new_tokens": 8192,
+          "mode": "thinking_retry",
+          "raw_chars": 6853,
+          "raw_sha256": "f12bee6f3330f98f9397764bc1e69df518f06f6bb1e32cde07fae1a82face887",
+          "validation_error": "bad_pilot_ambiguity_types"
+        },
+        {
+          "attempt": 3,
+          "constraint": {
+            "constraint_initialised": true,
+            "generated_token_count": 490,
+            "maximum_output_tokens": 1024,
+            "response_mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+            "termination_reason": "eos_or_constraint_stop",
+            "transport_status": "constrained_generated"
+          },
+          "max_new_tokens": 1024,
+          "mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+          "raw_chars": 1519,
+          "raw_sha256": "34d7abd729b4fa415f3930329cd0b1575e71f900ba39722449102cedf7507efe",
+          "validation_error": null
+        }
+      ],
+      "capability_status": "incapable",
+      "claim_boundary": "separately_versioned_from_frozen_t39",
+      "error": null,
+      "execution_mode": "cluster-gpu-goal-first-v2",
+      "failed": false,
+      "intent_summary": "Stock the selected stationery tray with enough supplies for one shift using the usual setup",
+      "latency_ms": 57921.57650133595,
+      "model_id": "Qwen/Qwen3-8B@b968826d9c46dd6066d109eabc6255188de91218",
+      "parsed": {
+        "analysis": {
+          "ambiguity_present": true,
+          "ambiguity_types": [
+            "pragmatic",
+            "quantitative",
+            "referential"
+          ],
+          "analysis_provenance": {
+            "analysis_id": "c7f40bb8e6f911bb3dfab27f43e5e1ea70f29d10b7e8b97d8a39cecc6781b7c2",
+            "method": "model_generated",
+            "notes": "source_input_hash=c7f40bb8e6f911bb3dfab27f43e5e1ea70f29d10b7e8b97d8a39cecc6781b7c2;no_gold_in_prompt;scene_licence_dropped=object,quantity,recipient,time",
+            "provider_id": "goal_first_v2_full_context",
+            "provider_version": "goal-first-manager-v2"
+          },
+          "candidate_interpretations": [],
+          "capability_status": "incapable",
+          "clarification_question": "Could you clarify what you would like me to do?",
+          "clarification_targets": [
+            "intent"
+          ],
+          "compound_ambiguity": true,
+          "compound_ambiguity_count": 3,
+          "context_sampling_uncertainty": {
+            "agreement": 0.15000000000000002,
+            "score": 0.85,
+            "variant_count": 1
+          },
+          "cpc": {
+            "action": {
+              "status": "filled",
+              "value": "stock"
+            },
+            "actor": {
+              "status": "filled",
+              "value": "robot"
+            },
+            "conditions": {
+              "status": "filled",
+              "value": "PENDING"
+            },
+            "constraints": {
+              "status": "filled",
+              "value": "Work order WO-663"
+            },
+            "destination": {
+              "status": "filled",
+              "value": "selected stationery tray"
+            },
+            "negation": {
+              "status": "filled",
+              "value": "enough"
+            },
+            "object": {
+              "status": "filled",
+              "value": "selected stationery tray"
+            },
+            "object_attributes": {
+              "status": "filled",
+              "value": "standard packs"
+            },
+            "quantity": {
+              "status": "filled",
+              "value": "enough for one shift"
+            },
+            "recipient": {
+              "status": "filled",
+              "value": "usual setup"
+            },
+            "spatial_relation": {
+              "status": "filled",
+              "value": "near the copy station"
+            },
+            "time": {
+              "status": "filled",
+              "value": "shift"
+            },
+            "tool": {
+              "status": "filled",
+              "value": "standard packs"
+            }
+          },
+          "findings": [
+            "pilot_ambiguity_types:[\"fuzzy_quantity\",\"object_reference\",\"pragmatic\"]",
+            "pilot_capability_status:incapable",
+            "intent_summary_present"
+          ],
+          "intent_summary": "Stock the selected stationery tray with enough supplies for one shift using the usual setup",
+          "primary_ambiguity_type": "pragmatic",
+          "recommended_strategy": "clarify",
+          "rejection_reason": null,
+          "resolution_evidence": [],
+          "resolution_method": null,
+          "resolved_slots": [
+            {
+              "slot_name": "action",
+              "value": "stock"
+            },
+            {
+              "slot_name": "actor",
+              "value": "robot"
+            },
+            {
+              "slot_name": "object",
+              "value": "selected stationery tray"
+            },
+            {
+              "slot_name": "object_attributes",
+              "value": "standard packs"
+            },
+            {
+              "slot_name": "destination",
+              "value": "selected stationery tray"
+            },
+            {
+              "slot_name": "spatial_relation",
+              "value": "near the copy station"
+            },
+            {
+              "slot_name": "quantity",
+              "value": "enough for one shift"
+            },
+            {
+              "slot_name": "time",
+              "value": "shift"
+            },
+            {
+              "slot_name": "recipient",
+              "value": "usual setup"
+            },
+            {
+              "slot_name": "tool",
+              "value": "standard packs"
+            },
+            {
+              "slot_name": "conditions",
+              "value": "PENDING"
+            },
+            {
+              "slot_name": "constraints",
+              "value": "Work order WO-663"
+            },
+            {
+              "slot_name": "negation",
+              "value": "enough"
+            }
+          ],
+          "risk_level": "high",
+          "risk_relevant": true,
+          "selected_interpretation": null,
+          "speech_act": "directive_command",
+          "strategy_sequence": [],
+          "supporting_evidence": [],
+          "unresolved_slots": [],
+          "unsupported_specificity": []
+        },
+        "clarification_question": "Could you clarify what you would like me to do?",
+        "clarification_targets": [
+          "intent"
+        ],
+        "execution_status": "ok",
+        "official_result": false,
+        "provider_provenance": {
+          "shared_analysis_fingerprint": "5e22be7d0df34f73ad5ff4510ef7c3c0f2a3a7dab8098135b4890e73f363b187"
+        },
+        "recommended_strategy": "clarify",
+        "record_id": "CA-0203",
+        "rejection_reason": null,
+        "resolved_slots": [
+          {
+            "slot_name": "action",
+            "value": "stock"
+          },
+          {
+            "slot_name": "actor",
+            "value": "robot"
+          },
+          {
+            "slot_name": "object",
+            "value": "selected stationery tray"
+          },
+          {
+            "slot_name": "object_attributes",
+            "value": "standard packs"
+          },
+          {
+            "slot_name": "destination",
+            "value": "selected stationery tray"
+          },
+          {
+            "slot_name": "spatial_relation",
+            "value": "near the copy station"
+          },
+          {
+            "slot_name": "quantity",
+            "value": "enough for one shift"
+          },
+          {
+            "slot_name": "time",
+            "value": "shift"
+          },
+          {
+            "slot_name": "recipient",
+            "value": "usual setup"
+          },
+          {
+            "slot_name": "tool",
+            "value": "standard packs"
+          },
+          {
+            "slot_name": "conditions",
+            "value": "PENDING"
+          },
+          {
+            "slot_name": "constraints",
+            "value": "Work order WO-663"
+          },
+          {
+            "slot_name": "negation",
+            "value": "enough"
+          }
+        ],
+        "result_hash": "313bbcee45345eef67ecdd45e704878c628241f2d5646825a326e72ba6c86416",
+        "run_id": null,
+        "run_mode": null,
+        "runtime_metadata": {
+          "shared_analysis_fingerprint": "5e22be7d0df34f73ad5ff4510ef7c3c0f2a3a7dab8098135b4890e73f363b187",
+          "thresholds_status": "unfrozen",
+          "thresholds_valid_for_official_use": false,
+          "uncertainty_score": 0.85,
+          "uses_type_risk_capability_precedence": false
+        },
+        "safety_findings": [],
+        "strategy_sequence": [],
+        "synthetic_only": true,
+        "system_id": "degree_based_router",
+        "system_version": "1.0.0",
+        "unsupported_commitment_findings": []
+      },
+      "raw_output": "{\n  \"intent_summary\": \"Stock the selected stationery tray with enough supplies for one shift using the usual setup\",\n  \"cpc\": {\n    \"action\": {\n      \"value\": \"stock\",\n      \"status\": \"unknown\"\n    },\n    \"object\": {\n      \"value\": \"selected stationery tray\",\n      \"status\": \"unknown\"\n    },\n    \"quantity\": {\n      \"value\": \"enough for one shift\",\n      \"status\": \"unknown\"\n    },\n    \"recipient\": {\n      \"value\": \"usual setup\",\n      \"status\": \"unknown\"\n    }\n  ,\n  \"conditions\": {\n    \"status\": \"unknown\"\n  ,\n  \"value\": \"PENDING\"\n  },\n  \"constraints\": {\n    \"status\": \"unknown\"\n  ,\n  \"value\": \"Work order WO-663\"\n  }\n,\n  \"time\": {\n    \"status\": \"unknown\"\n  ,\n  \"value\": \"shift\"\n  }\n,\n  \"spatial_relation\": {\n    \"status\": \"unknown\"\n  ,\n  \"value\": \"near the copy station\"\n  }\n,\n  \"destination\": {\n    \"status\": \"unknown\"\n  ,\n  \"value\": \"selected stationery tray\"\n  }\n,\n  \"tool\": {\n    \"status\": \"unknown\"\n  ,\n  \"value\": \"standard packs\"\n  }\n,\n  \"object_attributes\": {\n    \"status\": \"unknown\"\n  ,\n    \"value\": \"standard packs\"\n  }\n,\n  \"negation\": {\n    \"status\": \"unknown\"\n  ,\n    \"value\": \"enough\"\n  }\n,\n  \"actor\": {\n    \"status\": \"unknown\"\n  ,\n    \"value\": \"robot\"\n  }\n}\n,  \n  \"pilot_ambiguity_types\": [\n    \"object_reference\",\n    \"pragmatic\",\n    \"fuzzy_quantity\"\n  ]\n  \n  ,\n  \"pilot_capability_status\": \"incapable\"\n  \n  ,\n  \"risk_level\": \"high\"\n  \n  ,\n  \"speech_act\": \"directive_command\"\n  \n  ,\n  \"unresolved_slots\": [\n    \"object\",\n    \"quantity\",\n    \"recipient\",\n    \"time\"\n  ]\n  \n  ,\n  \"uncertainty\": 0.85\n}",
+      "record_id": "CA-0203",
+      "schema_valid": true,
+      "supports_ambiguity_prediction": true,
+      "supports_capability_prediction": true,
+      "system_id": "degree_based_router_v2",
+      "system_version": "2.0.0",
+      "terminal_strategy": "clarify"
+    },
+    "timid": {
+      "ambiguity_types": [
+        "fuzzy_quantity",
+        "object_reference",
+        "pragmatic"
+      ],
+      "analysis_attempts": [
+        {
+          "attempt": 1,
+          "max_new_tokens": 4096,
+          "mode": "thinking",
+          "raw_chars": 5090,
+          "raw_sha256": "2d0808dcb8a7a2f0f23a9236838d014b3b1435e5b4c208fe77a2c86c663a3eb1",
+          "validation_error": "bad_pilot_ambiguity_types"
+        },
+        {
+          "attempt": 2,
+          "max_new_tokens": 8192,
+          "mode": "thinking_retry",
+          "raw_chars": 6853,
+          "raw_sha256": "f12bee6f3330f98f9397764bc1e69df518f06f6bb1e32cde07fae1a82face887",
+          "validation_error": "bad_pilot_ambiguity_types"
+        },
+        {
+          "attempt": 3,
+          "constraint": {
+            "constraint_initialised": true,
+            "generated_token_count": 490,
+            "maximum_output_tokens": 1024,
+            "response_mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+            "termination_reason": "eos_or_constraint_stop",
+            "transport_status": "constrained_generated"
+          },
+          "max_new_tokens": 1024,
+          "mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+          "raw_chars": 1519,
+          "raw_sha256": "34d7abd729b4fa415f3930329cd0b1575e71f900ba39722449102cedf7507efe",
+          "validation_error": null
+        }
+      ],
+      "capability_status": "incapable",
+      "claim_boundary": "separately_versioned_from_frozen_t39",
+      "error": null,
+      "execution_mode": "cluster-gpu-goal-first-v2",
+      "failed": false,
+      "intent_summary": "Stock the selected stationery tray with enough supplies for one shift using the usual setup",
+      "latency_ms": 57921.57650133595,
+      "model_id": "Qwen/Qwen3-8B@b968826d9c46dd6066d109eabc6255188de91218",
+      "parsed": {
+        "analysis": {
+          "ambiguity_present": true,
+          "ambiguity_types": [
+            "pragmatic",
+            "quantitative",
+            "referential"
+          ],
+          "analysis_provenance": {
+            "analysis_id": "c7f40bb8e6f911bb3dfab27f43e5e1ea70f29d10b7e8b97d8a39cecc6781b7c2",
+            "method": "model_generated",
+            "notes": "source_input_hash=c7f40bb8e6f911bb3dfab27f43e5e1ea70f29d10b7e8b97d8a39cecc6781b7c2;no_gold_in_prompt;scene_licence_dropped=object,quantity,recipient,time",
+            "provider_id": "goal_first_v2_full_context",
+            "provider_version": "goal-first-manager-v2"
+          },
+          "candidate_interpretations": [],
+          "capability_status": "incapable",
+          "clarification_question": null,
+          "clarification_targets": [],
+          "compound_ambiguity": true,
+          "compound_ambiguity_count": 3,
+          "context_sampling_uncertainty": {
+            "agreement": 0.15000000000000002,
+            "score": 0.85,
+            "variant_count": 1
+          },
+          "cpc": {
+            "action": {
+              "status": "filled",
+              "value": "stock"
+            },
+            "actor": {
+              "status": "filled",
+              "value": "robot"
+            },
+            "conditions": {
+              "status": "filled",
+              "value": "PENDING"
+            },
+            "constraints": {
+              "status": "filled",
+              "value": "Work order WO-663"
+            },
+            "destination": {
+              "status": "filled",
+              "value": "selected stationery tray"
+            },
+            "negation": {
+              "status": "filled",
+              "value": "enough"
+            },
+            "object": {
+              "status": "filled",
+              "value": "selected stationery tray"
+            },
+            "object_attributes": {
+              "status": "filled",
+              "value": "standard packs"
+            },
+            "quantity": {
+              "status": "filled",
+              "value": "enough for one shift"
+            },
+            "recipient": {
+              "status": "filled",
+              "value": "usual setup"
+            },
+            "spatial_relation": {
+              "status": "filled",
+              "value": "near the copy station"
+            },
+            "time": {
+              "status": "filled",
+              "value": "shift"
+            },
+            "tool": {
+              "status": "filled",
+              "value": "standard packs"
+            }
+          },
+          "findings": [
+            "pilot_ambiguity_types:[\"fuzzy_quantity\",\"object_reference\",\"pragmatic\"]",
+            "pilot_capability_status:incapable",
+            "intent_summary_present"
+          ],
+          "intent_summary": "Stock the selected stationery tray with enough supplies for one shift using the usual setup",
+          "primary_ambiguity_type": "pragmatic",
+          "recommended_strategy": "face_preserving_rejection",
+          "rejection_reason": "known_incapability",
+          "resolution_evidence": [],
+          "resolution_method": null,
+          "resolved_slots": [
+            {
+              "slot_name": "action",
+              "value": "stock"
+            },
+            {
+              "slot_name": "actor",
+              "value": "robot"
+            },
+            {
+              "slot_name": "object",
+              "value": "selected stationery tray"
+            },
+            {
+              "slot_name": "object_attributes",
+              "value": "standard packs"
+            },
+            {
+              "slot_name": "destination",
+              "value": "selected stationery tray"
+            },
+            {
+              "slot_name": "spatial_relation",
+              "value": "near the copy station"
+            },
+            {
+              "slot_name": "quantity",
+              "value": "enough for one shift"
+            },
+            {
+              "slot_name": "time",
+              "value": "shift"
+            },
+            {
+              "slot_name": "recipient",
+              "value": "usual setup"
+            },
+            {
+              "slot_name": "tool",
+              "value": "standard packs"
+            },
+            {
+              "slot_name": "conditions",
+              "value": "PENDING"
+            },
+            {
+              "slot_name": "constraints",
+              "value": "Work order WO-663"
+            },
+            {
+              "slot_name": "negation",
+              "value": "enough"
+            }
+          ],
+          "risk_level": "high",
+          "risk_relevant": true,
+          "selected_interpretation": null,
+          "speech_act": "directive_command",
+          "strategy_sequence": [],
+          "supporting_evidence": [],
+          "unresolved_slots": [],
+          "unsupported_specificity": []
+        },
+        "clarification_question": null,
+        "clarification_targets": [],
+        "execution_status": "ok",
+        "official_result": false,
+        "provider_provenance": {
+          "provider_id": "cached_analysis",
+          "provider_version": "1.0.0"
+        },
+        "recommended_strategy": "face_preserving_rejection",
+        "record_id": "CA-0203",
+        "rejection_reason": "known_incapability",
+        "resolved_slots": [
+          {
+            "slot_name": "action",
+            "value": "stock"
+          },
+          {
+            "slot_name": "actor",
+            "value": "robot"
+          },
+          {
+            "slot_name": "object",
+            "value": "selected stationery tray"
+          },
+          {
+            "slot_name": "object_attributes",
+            "value": "standard packs"
+          },
+          {
+            "slot_name": "destination",
+            "value": "selected stationery tray"
+          },
+          {
+            "slot_name": "spatial_relation",
+            "value": "near the copy station"
+          },
+          {
+            "slot_name": "quantity",
+            "value": "enough for one shift"
+          },
+          {
+            "slot_name": "time",
+            "value": "shift"
+          },
+          {
+            "slot_name": "recipient",
+            "value": "usual setup"
+          },
+          {
+            "slot_name": "tool",
+            "value": "standard packs"
+          },
+          {
+            "slot_name": "conditions",
+            "value": "PENDING"
+          },
+          {
+            "slot_name": "constraints",
+            "value": "Work order WO-663"
+          },
+          {
+            "slot_name": "negation",
+            "value": "enough"
+          }
+        ],
+        "result_hash": "53691a6619b1cfc4ec4378899acbcf065c61b003a0118f56da40f81f7219a831",
+        "run_id": null,
+        "run_mode": null,
+        "runtime_metadata": {
+          "awaits_t28_adapter": true,
+          "classification": {
+            "ambiguity_present": true,
+            "ambiguity_types": [
+              "pragmatic",
+              "quantitative",
+              "referential"
+            ],
+            "capability_status": "incapable",
+            "compound_ambiguity": true,
+            "compound_ambiguity_count": 3,
+            "derivation_notes": [
+              "ambiguity_present_from_types"
+            ],
+            "risk_level": "high"
+          },
+          "rejection_text": "I am not able to perform that action with my current capabilities. I will not invent an alternative that is not supported.",
+          "requires_re_evaluation": false,
+          "resolution_events": [],
+          "router_trace": {
+            "clarification_targets": [],
+            "considered_rules": [
+              "known_unsafe_or_prohibited",
+              "known_incapable"
+            ],
+            "matched_rule_id": "known_incapable",
+            "notes": [],
+            "recommended_strategy": "face_preserving_rejection",
+            "rejection_reason": "known_incapability",
+            "requires_re_evaluation": false,
+            "strategy_sequence": []
+          },
+          "safety_action": "return_with_findings",
+          "uncertainty": null
+        },
+        "safety_findings": [],
+        "strategy_sequence": [],
+        "synthetic_only": true,
+        "system_id": "full_type_risk_aware_manager",
+        "system_version": "1.0.0",
+        "unsupported_commitment_findings": []
+      },
+      "raw_output": "{\n  \"intent_summary\": \"Stock the selected stationery tray with enough supplies for one shift using the usual setup\",\n  \"cpc\": {\n    \"action\": {\n      \"value\": \"stock\",\n      \"status\": \"unknown\"\n    },\n    \"object\": {\n      \"value\": \"selected stationery tray\",\n      \"status\": \"unknown\"\n    },\n    \"quantity\": {\n      \"value\": \"enough for one shift\",\n      \"status\": \"unknown\"\n    },\n    \"recipient\": {\n      \"value\": \"usual setup\",\n      \"status\": \"unknown\"\n    }\n  ,\n  \"conditions\": {\n    \"status\": \"unknown\"\n  ,\n  \"value\": \"PENDING\"\n  },\n  \"constraints\": {\n    \"status\": \"unknown\"\n  ,\n  \"value\": \"Work order WO-663\"\n  }\n,\n  \"time\": {\n    \"status\": \"unknown\"\n  ,\n  \"value\": \"shift\"\n  }\n,\n  \"spatial_relation\": {\n    \"status\": \"unknown\"\n  ,\n  \"value\": \"near the copy station\"\n  }\n,\n  \"destination\": {\n    \"status\": \"unknown\"\n  ,\n  \"value\": \"selected stationery tray\"\n  }\n,\n  \"tool\": {\n    \"status\": \"unknown\"\n  ,\n  \"value\": \"standard packs\"\n  }\n,\n  \"object_attributes\": {\n    \"status\": \"unknown\"\n  ,\n    \"value\": \"standard packs\"\n  }\n,\n  \"negation\": {\n    \"status\": \"unknown\"\n  ,\n    \"value\": \"enough\"\n  }\n,\n  \"actor\": {\n    \"status\": \"unknown\"\n  ,\n    \"value\": \"robot\"\n  }\n}\n,  \n  \"pilot_ambiguity_types\": [\n    \"object_reference\",\n    \"pragmatic\",\n    \"fuzzy_quantity\"\n  ]\n  \n  ,\n  \"pilot_capability_status\": \"incapable\"\n  \n  ,\n  \"risk_level\": \"high\"\n  \n  ,\n  \"speech_act\": \"directive_command\"\n  \n  ,\n  \"unresolved_slots\": [\n    \"object\",\n    \"quantity\",\n    \"recipient\",\n    \"time\"\n  ]\n  \n  ,\n  \"uncertainty\": 0.85\n}",
+      "record_id": "CA-0203",
+      "schema_valid": true,
+      "supports_ambiguity_prediction": true,
+      "supports_capability_prediction": true,
+      "system_id": "rich_conservative_manager_v2",
+      "system_version": "2.0.0",
+      "terminal_strategy": "face_preserving_rejection"
+    },
+    "context_blind": {
+      "ambiguity_types": [
+        "object_reference",
+        "pragmatic",
+        "temporal_reference"
+      ],
+      "analysis_attempts": [
+        {
+          "attempt": 1,
+          "max_new_tokens": 4096,
+          "mode": "thinking",
+          "raw_chars": 5630,
+          "raw_sha256": "4aa18d91196b948db864a66b3600d5fa9ac8ff1a6fa337b92c78218b2ea179de",
+          "validation_error": "bad_pilot_ambiguity_types"
+        },
+        {
+          "attempt": 2,
+          "max_new_tokens": 8192,
+          "mode": "thinking_retry",
+          "raw_chars": 9467,
+          "raw_sha256": "b7c8d1d67f996bc2e6299f7ec979242ff9d023f8aac865e1130a2b112571df34",
+          "validation_error": "bad_pilot_ambiguity_types"
+        },
+        {
+          "attempt": 3,
+          "constraint": {
+            "constraint_initialised": true,
+            "generated_token_count": 460,
+            "maximum_output_tokens": 1024,
+            "response_mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+            "termination_reason": "eos_or_constraint_stop",
+            "transport_status": "constrained_generated"
+          },
+          "max_new_tokens": 1024,
+          "mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+          "raw_chars": 1536,
+          "raw_sha256": "fe3006356014dff9eceda375753e410267d545ef359f1646b745b0f922f82c6a",
+          "validation_error": null
+        }
+      ],
+      "capability_status": "unauthorized",
+      "claim_boundary": "separately_versioned_from_frozen_t39",
+      "error": null,
+      "execution_mode": "cluster-gpu-goal-first-v2",
+      "failed": false,
+      "intent_summary": "Stock the selected stationery tray with sufficient supplies for one shift using the standard configuration",
+      "latency_ms": 68839.97713122517,
+      "model_id": "Qwen/Qwen3-8B@b968826d9c46dd6066d109eabc6255188de91218",
+      "parsed": {
+        "analysis": {
+          "ambiguity_present": true,
+          "ambiguity_types": [
+            "pragmatic",
+            "referential",
+            "temporal"
+          ],
+          "analysis_provenance": {
+            "analysis_id": "6e6f33719bdbba9b43e947c7eea779c3376f0dae3b10117fe8726798e0a9a6b6",
+            "method": "context_blind",
+            "notes": "ablated_input_hash=6e6f33719bdbba9b43e947c7eea779c3376f0dae3b10117fe8726798e0a9a6b6;source_input_hash=6e6f33719bdbba9b43e947c7eea779c3376f0dae3b10117fe8726798e0a9a6b6;no_gold_in_prompt;scene_licence_dropped=quantity,recipient,object,time",
+            "provider_id": "goal_first_v2_context_blind",
+            "provider_version": "goal-first-manager-v2"
+          },
+          "candidate_interpretations": [],
+          "capability_status": "unknown",
+          "clarification_question": null,
+          "clarification_targets": [],
+          "compound_ambiguity": true,
+          "compound_ambiguity_count": 3,
+          "context_sampling_uncertainty": {
+            "agreement": 0.25,
+            "score": 0.75,
+            "variant_count": 1
+          },
+          "cpc": {
+            "action": {
+              "status": "filled",
+              "value": "stock"
+            },
+            "actor": {
+              "status": "filled",
+              "value": "none"
+            },
+            "conditions": {
+              "status": "filled",
+              "value": "enough for one shift"
+            },
+            "constraints": {
+              "status": "filled",
+              "value": "usual setup"
+            },
+            "destination": {
+              "status": "filled",
+              "value": "selected stationery tray"
+            },
+            "negation": {
+              "status": "filled",
+              "value": "none"
+            },
+            "object": {
+              "status": "filled",
+              "value": "stationery tray"
+            },
+            "object_attributes": {
+              "status": "filled",
+              "value": "none"
+            },
+            "quantity": {
+              "status": "filled",
+              "value": "enough for one shift"
+            },
+            "recipient": {
+              "status": "filled",
+              "value": "selected"
+            },
+            "spatial_relation": {
+              "status": "filled",
+              "value": "selected stationery tray"
+            },
+            "time": {
+              "status": "filled",
+              "value": "one shift"
+            },
+            "tool": {
+              "status": "filled",
+              "value": "usual setup"
+            }
+          },
+          "findings": [
+            "pilot_ambiguity_types:[\"object_reference\",\"pragmatic\",\"temporal_reference\"]",
+            "pilot_capability_status:unauthorized",
+            "intent_summary_present"
+          ],
+          "intent_summary": "Stock the selected stationery tray with sufficient supplies for one shift using the standard configuration",
+          "primary_ambiguity_type": "pragmatic",
+          "recommended_strategy": "face_preserving_rejection",
+          "rejection_reason": "unsafe_or_prohibited_action",
+          "resolution_evidence": [],
+          "resolution_method": null,
+          "resolved_slots": [
+            {
+              "slot_name": "action",
+              "value": "stock"
+            },
+            {
+              "slot_name": "actor",
+              "value": "none"
+            },
+            {
+              "slot_name": "object",
+              "value": "stationery tray"
+            },
+            {
+              "slot_name": "object_attributes",
+              "value": "none"
+            },
+            {
+              "slot_name": "destination",
+              "value": "selected stationery tray"
+            },
+            {
+              "slot_name": "spatial_relation",
+              "value": "selected stationery tray"
+            },
+            {
+              "slot_name": "quantity",
+              "value": "enough for one shift"
+            },
+            {
+              "slot_name": "time",
+              "value": "one shift"
+            },
+            {
+              "slot_name": "recipient",
+              "value": "selected"
+            },
+            {
+              "slot_name": "tool",
+              "value": "usual setup"
+            },
+            {
+              "slot_name": "conditions",
+              "value": "enough for one shift"
+            },
+            {
+              "slot_name": "constraints",
+              "value": "usual setup"
+            },
+            {
+              "slot_name": "negation",
+              "value": "none"
+            }
+          ],
+          "risk_level": "medium",
+          "risk_relevant": true,
+          "selected_interpretation": null,
+          "speech_act": "directive_command",
+          "strategy_sequence": [],
+          "supporting_evidence": [],
+          "unresolved_slots": [],
+          "unsupported_specificity": []
+        },
+        "clarification_question": null,
+        "clarification_targets": [],
+        "execution_status": "ok",
+        "official_result": false,
+        "provider_provenance": {
+          "provider_id": "cached_analysis",
+          "provider_version": "1.0.0"
+        },
+        "recommended_strategy": "face_preserving_rejection",
+        "record_id": "CA-0203",
+        "rejection_reason": "unsafe_or_prohibited_action",
+        "resolved_slots": [
+          {
+            "slot_name": "action",
+            "value": "stock"
+          },
+          {
+            "slot_name": "actor",
+            "value": "none"
+          },
+          {
+            "slot_name": "object",
+            "value": "stationery tray"
+          },
+          {
+            "slot_name": "object_attributes",
+            "value": "none"
+          },
+          {
+            "slot_name": "destination",
+            "value": "selected stationery tray"
+          },
+          {
+            "slot_name": "spatial_relation",
+            "value": "selected stationery tray"
+          },
+          {
+            "slot_name": "quantity",
+            "value": "enough for one shift"
+          },
+          {
+            "slot_name": "time",
+            "value": "one shift"
+          },
+          {
+            "slot_name": "recipient",
+            "value": "selected"
+          },
+          {
+            "slot_name": "tool",
+            "value": "usual setup"
+          },
+          {
+            "slot_name": "conditions",
+            "value": "enough for one shift"
+          },
+          {
+            "slot_name": "constraints",
+            "value": "usual setup"
+          },
+          {
+            "slot_name": "negation",
+            "value": "none"
+          }
+        ],
+        "result_hash": "8706f427a7ed028d1f39decbbee8241e10d9eae8a86fda127f325b432a4ebf6a",
+        "run_id": null,
+        "run_mode": null,
+        "runtime_metadata": {
+          "analysis_identity": {
+            "analysis_content_hash": "eb87d3dc6a81dcaea8933cdede758a09cc0130917432760ebe4f606c68dc46ff",
+            "analysis_variant": "context_blind",
+            "model_strategy_id": null,
+            "provider_id": "goal_first_v2_context_blind",
+            "provider_version": "goal-first-manager-v2",
+            "record_id": "CA-0203",
+            "source_input_hash": "6e6f33719bdbba9b43e947c7eea779c3376f0dae3b10117fe8726798e0a9a6b6"
+          },
+          "analysis_identity_fingerprint": "3358d73aab71851f5830b18c1b59a7d3be758a0eb4d8f856ed3b07edbbf3268e",
+          "awaits_t28_adapter": true,
+          "classification": {
+            "ambiguity_present": true,
+            "ambiguity_types": [
+              "pragmatic",
+              "referential",
+              "temporal"
+            ],
+            "capability_status": "unknown",
+            "compound_ambiguity": true,
+            "compound_ambiguity_count": 3,
+            "derivation_notes": [
+              "ambiguity_present_from_types"
+            ],
+            "risk_level": "medium"
+          },
+          "context_ablation": {
+            "ablated_input_hash": "6e6f33719bdbba9b43e947c7eea779c3376f0dae3b10117fe8726798e0a9a6b6",
+            "capability_context_removed": true,
+            "dialogue_history_removed": true,
+            "rejected_full_context_cache": false,
+            "rejection_reason": null,
+            "scene_context_removed": true,
+            "stripped_context_derived_fields": false
+          },
+          "original_input_unmutated": true,
+          "rejection_text": "I need to decline that request because it would be unsafe under the current constraints.",
+          "requires_re_evaluation": false,
+          "resolution_events": [],
+          "router_trace": {
+            "clarification_targets": [],
+            "considered_rules": [
+              "goal_first_v2",
+              "known_unsafe_or_prohibited"
+            ],
+            "matched_rule_id": "known_unsafe_or_prohibited",
+            "notes": [],
+            "recommended_strategy": "face_preserving_rejection",
+            "rejection_reason": "unsafe_or_prohibited_action",
+            "requires_re_evaluation": false,
+            "strategy_sequence": []
+          },
+          "safety_action": "return_with_findings",
+          "uncertainty": null
+        },
+        "safety_findings": [],
+        "strategy_sequence": [],
+        "synthetic_only": true,
+        "system_id": "context_blind_manager",
+        "system_version": "1.0.0",
+        "unsupported_commitment_findings": []
+      },
+      "raw_output": "{\n  \"intent_summary\": \"Stock the selected stationery tray with sufficient supplies for one shift using the standard configuration\",\n  \"cpc\": {\n    \"action\": {\n      \"value\": \"stock\",\n      \"status\": \"unknown\"\n    },\n    \"object\": {\n      \"value\": \"stationery tray\",\n      \"status\": \"unknown\"\n    },\n    \"quantity\": {\n      \"value\": \"enough for one shift\",\n      \"status\": \"unknown\"\n    },\n    \"recipient\": {\n      \"value\": \"selected\",\n      \"status\": \"unknown\"\n    },\n    \"destination\": {\n      \"value\": \"selected stationery tray\",\n      \"status\": \"unknown\"\n    },\n    \"time\": {\n      \"value\": \"one shift\",\n      \"status\": \"unknown\"\n    },\n    \"tool\": {\n      \"value\": \"usual setup\",\n      \"status\": \"unknown\"\n    }\n \n  ,\n  \"constraints\": {\n    \"value\": \"usual setup\",\n    \"status\": \"unknown\"\n  },\n  \"conditions\": {\n    \"value\": \"enough for one shift\",\n    \"status\": \"unknown\"\n  },\n  \"spatial_relation\": {\n    \"value\": \"selected stationery tray\",\n    \"status\": \"unknown\"\n  },\n  \"negation\": {\n    \"value\": \"none\",\n    \"status\": \"unknown\"\n  },\n  \"actor\": {\n    \"value\": \"none\",\n    \"status\": \"unknown\"\n  },\n  \"object_attributes\": {\n    \"value\": \"none\",\n    \"status\": \"unknown\"\n  }\n},\n  \"pilot_ambiguity_types\": [\n    \"pragmatic\",\n    \"temporal_reference\",\n    \"object_reference\"\n  ]\n  \n  ,\n  \"pilot_capability_status\": \"unauthorized\"\n  \n  ,\n  \"speech_act\": \"directive_command\"\n  \n  ,\n  \"risk_level\": \"medium\"\n  \n  ,\n  \"uncertainty\": 0.75\n  \n\n\n\n  \n  ,\n  \"unresolved_slots\": [\n    \"quantity\",\n    \"recipient\",\n    \"object\",\n    \"time\"\n  ]\n}",
+      "record_id": "CA-0203",
+      "schema_valid": true,
+      "supports_ambiguity_prediction": true,
+      "supports_capability_prediction": true,
+      "system_id": "goal_first_context_blind_v2",
+      "system_version": "2.0.0",
+      "terminal_strategy": "face_preserving_rejection"
+    }
+  },
+  "provenance": {
+    "source_sha256": "f33b1e29f1e8aa256a475f07213aa07247def47d8e2148d54a472a40b71b05c9",
+    "gold_sha256": "5e23ad1a92ff1873c8f039a8ce560a111dd6fb6b8ae8c11d6cf34dbfa1c360db",
+    "t07_final_zip_sha256": "34ca50e034ca37b617068bb50c734d12fa26282fb5eec563c11ead700163e491",
+    "inherited_t07_zip_sha256": "0305b1e9ab062876ee6ee89778cc6028d2eaf01718b7dd0295944e7d9cb81a01",
+    "note": "Goal-First, Degree, Timid, and Context-Blind predictions are inherited from the earlier T0.7 run; official intent and comparison come from the final T0.7 archive."
+  }
+}

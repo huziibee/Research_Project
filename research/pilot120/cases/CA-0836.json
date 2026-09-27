@@ -1,0 +1,1443 @@
+{
+  "record_id": "CA-0836",
+  "frozen_source": {
+    "capability_context": "Retail service robot can carry stock, scan items, print labels, and update approved inventory terminals.",
+    "command": "Can the selected cash pouch be delivered after a scheduled public opening?",
+    "dialogue_history": [
+      "floor manager: Yes—treat that as a request to perform the delivery, not a capability question."
+    ],
+    "record_id": "CA-0836",
+    "scene_context": "Stockroom in a retail shop. Two cash pouches are selected and pending, one for cashier and one for floor manager. The current time is 13:30. The public opening is scheduled at 14:00 and again at 18:00. The active delivery batch links both pending selected items to the 14:00 occurrence. Each selected item is already paired with its named recipient. The command provides no assignment code or recipient name. Both pending assignments are pre-authorized handoffs within the robot's certified transport and access limits; either is executable once selected."
+  },
+  "frozen_gold": {
+    "ambiguity_types": [
+      "object_reference",
+      "pragmatic",
+      "temporal_reference"
+    ],
+    "annotator_b_era": "glm_era",
+    "annotator_b_model": "glm-5.2-high",
+    "capability_status": "capable",
+    "field_status": {
+      "ambiguity_types": "auto_agree",
+      "capability_status": "human_auditor:independent_from_route",
+      "record_validity": "auto_agree",
+      "strategy_sequence": "auto_agree",
+      "terminal_strategy": "auto_agree"
+    },
+    "gold_lifecycle": "final_gold",
+    "gold_status": "auto_agree",
+    "human_gate_required": false,
+    "provenance": {
+      "agreement_label": "pilot_annotation_agreement",
+      "annotator_a_sha256": "4905d64fba2a751e3ed3f795e6115ce05d65c68e145d425608428cdb9cfdbeb8",
+      "annotator_b_sha256": "5f1b7f2ee260af309a546801c4c0073c3f04687cab4f88bab991465eb0b620aa",
+      "capability_route_decouple": "conditionally_capable remapped to capable: no evidenced external capability precondition; linguistic silently_resolve/clarify is not a capability condition",
+      "gold_policy": "use_existing_pilot_adjudicated_gold",
+      "input_sha256": "2796f6a2775cd0a3b9e1e92ba2a4631be7967145d0be2f978512353389de9a19",
+      "pilot_gold_sha256": "7d2625cb3f90a519955454a3020aaa23b44bc55c09107f04ec50fd726f6c114b",
+      "protocol": "pilot_adjudicated_gold_on_capability_repaired_source",
+      "repaired_input_sha256": "c047c39c04d8fbc2a0aa6290b1537f11b4689443b1e392790228cc42d303079a"
+    },
+    "record_id": "CA-0836",
+    "record_validity": "valid",
+    "strategy_sequence": [
+      "reinterpret_indirect_request",
+      "clarify"
+    ],
+    "terminal_strategy": "clarify"
+  },
+  "t07_comparison": {
+    "record_id": "CA-0836",
+    "gold_route": "clarify",
+    "raw_route": "execute",
+    "ft_route": "execute",
+    "gf_route": "refuse",
+    "raw_route_ok": "False",
+    "ft_route_ok": "False",
+    "gf_route_ok": "False",
+    "raw_official_intent": "True",
+    "ft_official_intent": "True",
+    "gf_official_intent": "True",
+    "blind_official_intent": "True"
+  },
+  "t07_official_intent": {
+    "context_blind_official_intent": true,
+    "degree_official_intent_shared_gf": true,
+    "finetune_official_intent": true,
+    "goal_first_official_intent": true,
+    "raw_official_intent": true,
+    "record_id": "CA-0836",
+    "timid_official_intent_shared_gf": true
+  },
+  "t07_predictions": {
+    "raw_qwen": {
+      "ambiguity_types": [
+        "pronoun_reference",
+        "temporal_reference"
+      ],
+      "capability_status": "conditionally_capable",
+      "error": null,
+      "execution_mode": "final_close_intent_box",
+      "failed": false,
+      "intent_summary": "The user wants to deliver the selected cash pouch after the scheduled public opening at 14:00.",
+      "latency_ms": 25719.72366515547,
+      "parsed": {
+        "ambiguity_types": [
+          "pronoun_reference",
+          "temporal_reference"
+        ],
+        "capability_status": "conditionally_capable",
+        "intent_summary": "The user wants to deliver the selected cash pouch after the scheduled public opening at 14:00.",
+        "speech_act": "indirect_request",
+        "terminal_strategy": "execute"
+      },
+      "raw_output": "<think>\nOkay, let's tackle this. The user's command is asking if the selected cash pouch can be delivered after a scheduled public opening. The dialogue history shows the floor manager treated it as a request to perform the delivery, not a capability question. \n\nFirst, I need to determine the intent. The person wants to deliver the cash pouch after the public opening. The speech act here is a request, but the floor manager already treated it as a directive. Wait, the original command is phrased as a question, but the history says they treated it as a request. So maybe the speech act is an indirect request? Or is it a directive command? Hmm.\n\nLooking at the options for speech_act: directive_command is a direct command, indirect_request is when the request is implied. The user is asking if it's possible, but the floor manager responded as if it's a request. So maybe the speech act is an indirect request. But the command itself is a question. Wait, the user is asking if it can be done, but the floor manager is treating it as a request. So maybe the original intent is a request, but the phrasing is a question. So the speech_act would be indirect_request.\n\nNext, ambiguity types. The command mentions \"after a scheduled public opening\" but the scene context says there are two openings at 14:00 and 18:00. The active delivery batch is linked to the 14:00 occurrence. The command doesn't specify which opening, so that's a temporal reference ambiguity. Also, the command doesn't assign a recipient, but the items are already paired with their recipients. So maybe there's a pronoun_reference? Or maybe object_reference? Wait, the command says \"the selected cash pouch\" which is already selected, so maybe no ambiguity there. But the time is ambiguous between 14:00 and 18:00. So temporal_reference. Also, the command doesn't specify which delivery batch, but the active one is linked to 14:00. But the user is asking about after the opening, which could be after 14:00. So maybe that's a fuzzy_temporal? Or is it a temporal_reference? Also, the command doesn't mention which pouch, but they are already selected. So maybe no ambiguity here. Wait, the command says \"the selected cash pouch\" which is clear since there are two selected, but the dialogue history mentions both are pending. Wait, the scene context says two cash pouches are selected, one for cashier and one for floor manager. The command refers to \"the selected cash pouch\" but doesn't specify which. So that's a pronoun_reference ambiguity because \"the selected\" could refer to either. So that's a pronoun_reference. Also, the time is after the scheduled opening, which is at 14:00 and 18:00. The active batch is linked to 14:00. So the user is asking if it can be delivered after the opening, which is at 14:00. But the public opening is scheduled at both times. So the user might mean after 14:00, but the active batch is for 14:00. So that's a temporal_reference ambiguity. So ambiguity_types would include pronoun_reference and temporal_reference.\n\nCapability status: The robot can carry, scan, print labels, update inventory. The delivery is pre-authorized, so capable. But the command is about delivering after the opening. The active batch is linked to 14:00. The user is asking if it can be delivered after the opening. But the public opening is at 14:00. So if the delivery is scheduled for 14:00, then after that would be after the opening. But the robot can deliver once selected. So the capability is conditionally_capable? Wait, the capability_context says the robot can do the delivery once selected. The items are already selected. So the capability status is capable. But the timing is after the scheduled opening. The active batch is for 14:00. So if the user wants to deliver after 14:00, but the active batch is for 14:00. So maybe the capability is conditionally_capable because it depends on the timing. But the scene context says that the active delivery batch is linked to the 14:00 occurrence. So if the user wants to deliver after that, maybe the robot can't because it's already scheduled. But the command is about after the opening, which is at 14:00. So the capability might be conditionally_capable based on the timing. Or maybe the robot can do it as long as it's within the allowed time. The scene context says the delivery is pre-authorized. So the capability is capable. Hmm.\n\nTerminal strategy: The floor manager treated it as a request, so the robot would execute it. But the user is asking if it can be done. The dialogue history says to treat it as a request. So the terminal strategy is execute. But the command is a question. Wait, the original command is a question, but the floor manager's response is a directive. So the robot's response would be to clarify? Wait, the user is asking if it can be done. The floor manager says to treat it as a request. So the robot's capability is to do it, but the user is asking if it's possible. The capability status is capable, so the terminal strategy would be execute. But the user's command is a question, but the floor manager's response is a directive. So the robot's strategy would be to execute the request. So terminal_strategy is execute.\n</think>\n\n{\n  \"intent_summary\": \"The user wants to deliver the selected cash pouch after the scheduled public opening at 14:00.\",\n  \"speech_act\": \"indirect_request\",\n  \"ambiguity_types\": [\"pronoun_reference\", \"temporal_reference\"],\n  \"capability_status\": \"conditionally_capable\",\n  \"terminal_strategy\": \"execute\"\n}",
+      "record_id": "CA-0836",
+      "schema_valid": true,
+      "speech_act": "indirect_request",
+      "system_id": "direct_base_llm",
+      "terminal_strategy": "execute"
+    },
+    "finetune": {
+      "ambiguity_types": [
+        "pronoun_reference",
+        "temporal_reference"
+      ],
+      "capability_status": "capable",
+      "error": null,
+      "execution_mode": "final_close_intent_box",
+      "failed": false,
+      "intent_summary": "The user wants to deliver the selected cash pouch after the scheduled public opening at 14:00.",
+      "latency_ms": 26880.172740202397,
+      "parsed": {
+        "ambiguity_types": [
+          "pronoun_reference",
+          "temporal_reference"
+        ],
+        "capability_status": "capable",
+        "intent_summary": "The user wants to deliver the selected cash pouch after the scheduled public opening at 14:00.",
+        "speech_act": "information_question",
+        "terminal_strategy": "execute"
+      },
+      "raw_output": "<think>\nOkay, let's break down this query. The user is asking if the selected cash pouch can be delivered after a scheduled public opening. The dialogue history shows that the floor manager treated it as a request, not a capability question. \n\nFirst, the intent summary. The main job here is to deliver the cash pouch after the public opening. The user wants to confirm if that's possible. \n\nSpeech act: The original command is a question, but the floor manager's response treated it as a request. However, the user's actual command is a question about capability. Wait, the dialogue history says the floor manager said to treat it as a request, not a capability question. So maybe the speech act here is an indirect request? Or is it a capability question? The original command is \"Can the selected cash pouch be delivered...\" which is a capability question. But the floor manager's response treated it as a request. But the user's command is still a question. Hmm, the options are directive_command, indirect_request, etc. The user is asking if it's possible, so maybe it's an information question? But the floor manager's response was to treat it as a request. Wait, the user's command is a question, but the floor manager's answer was to treat it as a request. So the original command is a capability question, but the floor manager's response was to treat it as a request. So the speech act here is an information question? Or maybe the user's intent is to request delivery, but the question is about capability. Wait, the speech_act options include information_question, which is when someone asks for information. So the user is asking if it's possible, which is an information question. But the floor manager's response was to treat it as a request. However, the user's command is the one being evaluated here. So the speech act is information_question.\n\nAmbiguity types: The command refers to \"the selected cash pouch\" but doesn't specify which one. There are two cash pouches selected. So that's a pronoun reference ambiguity. Also, the public opening is scheduled at 14:00 and again at 18:00. The command says \"after a scheduled public opening\"—does that mean after the first one (14:00) or the next one (18:00)? That's a temporal reference ambiguity. Also, the command doesn't specify the recipient, but both pouches are already paired with their recipients. However, the command doesn't mention the recipient name. But the scene context says that each selected item is already paired with its named recipient. So maybe the ambiguity is about which one? Wait, the command doesn't specify which pouch, so that's a pronoun reference (the selected cash pouch refers to which one). So ambiguity_types would include pronoun_reference and temporal_reference.\n\nCapability status: The robot can carry stock, scan items, etc. The delivery is pre-authorized, so the robot is capable. So capability_status is capable.\n\nTerminal strategy: Since the robot is capable and the command is a request, the terminal strategy would be to execute. But the user is asking if it can be done. Wait, the dialogue history says the floor manager treated it as a request. But the user's command is a question. However, the scene context says that the delivery is pre-authorized. So the capability is there. So the terminal strategy would be execute, but the user is asking if it can be done. Wait, but the capability status is capable, so the robot can do it. So the terminal strategy would be execute. But the command is a question. However, the speech act is an information question. But the terminal strategy is about how to respond. Since the robot is capable, the answer would be to execute. Wait, but the user is asking if it can be done. So the response would be to confirm that it can be done, so the terminal strategy is execute. Or maybe clarify? Wait, the dialogue history says the floor manager treated it as a request. The user's command is a question, but the floor manager's answer was to treat it as a request. So the robot should execute the delivery. So the terminal strategy is execute.\n\nPutting it all together:\n\nintent_summary: The user wants to deliver the selected cash pouch after the scheduled public opening at 14:00.\n\nspeech_act: information_question\n\nambiguity_types: pronoun_reference, temporal_reference\n\ncapability_status: capable\n\nterminal_strategy: execute\n</think>\n\n{\"intent_summary\": \"The user wants to deliver the selected cash pouch after the scheduled public opening at 14:00.\", \"speech_act\": \"information_question\", \"ambiguity_types\": [\"pronoun_reference\", \"temporal_reference\"], \"capability_status\": \"capable\", \"terminal_strategy\": \"execute\"}",
+      "record_id": "CA-0836",
+      "schema_valid": true,
+      "speech_act": "information_question",
+      "system_id": "t28_selected_adapter_llm",
+      "terminal_strategy": "execute"
+    },
+    "goal_first": {
+      "ambiguity_types": [
+        "destination_reference",
+        "pragmatic",
+        "recipient_reference",
+        "temporal_reference"
+      ],
+      "analysis_attempts": [
+        {
+          "attempt": 1,
+          "max_new_tokens": 4096,
+          "mode": "thinking",
+          "raw_chars": 15792,
+          "raw_sha256": "0627eb4f067a1846ef6a1f9650fa085f5f7739e9cb40efba6f3b1e35eb93d4be",
+          "validation_error": "bad_pilot_ambiguity_types"
+        },
+        {
+          "attempt": 2,
+          "max_new_tokens": 8192,
+          "mode": "thinking_retry",
+          "raw_chars": 15432,
+          "raw_sha256": "3ed701baee14b99fef3c4537fa86e39c438d7f8a1b7b58bd4ca0ca61dbd1d993",
+          "validation_error": "bad_pilot_ambiguity_types"
+        },
+        {
+          "attempt": 3,
+          "constraint": {
+            "constraint_initialised": true,
+            "generated_token_count": 477,
+            "maximum_output_tokens": 1024,
+            "response_mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+            "termination_reason": "eos_or_constraint_stop",
+            "transport_status": "constrained_generated"
+          },
+          "max_new_tokens": 1024,
+          "mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+          "raw_chars": 1540,
+          "raw_sha256": "61e2e2fbd04be4c83c2140fb8cb6957f444f225e513cdbcc87ef97db70cddfa7",
+          "validation_error": null
+        }
+      ],
+      "capability_status": "unauthorized",
+      "claim_boundary": "separately_versioned_from_frozen_t39",
+      "error": null,
+      "execution_mode": "cluster-gpu-goal-first-v2",
+      "failed": false,
+      "intent_summary": "Deliver the selected cash pouch after the scheduled public opening at 14:00",
+      "latency_ms": 261455.1546149887,
+      "model_id": "Qwen/Qwen3-8B@b968826d9c46dd6066d109eabc6255188de91218",
+      "parsed": {
+        "analysis": {
+          "ambiguity_present": true,
+          "ambiguity_types": [
+            "pragmatic",
+            "referential",
+            "spatial",
+            "temporal"
+          ],
+          "analysis_provenance": {
+            "analysis_id": "43e08943ae5dde4edd1c080e3007f2dc433f21b982ad0573bcf6c4c97a90c4ce",
+            "method": "model_generated",
+            "notes": "source_input_hash=43e08943ae5dde4edd1c080e3007f2dc433f21b982ad0573bcf6c4c97a90c4ce;no_gold_in_prompt;scene_licence_dropped=recipient,destination,time,action",
+            "provider_id": "goal_first_v2_full_context",
+            "provider_version": "goal-first-manager-v2"
+          },
+          "candidate_interpretations": [],
+          "capability_status": "unknown",
+          "clarification_question": null,
+          "clarification_targets": [],
+          "compound_ambiguity": true,
+          "compound_ambiguity_count": 4,
+          "context_sampling_uncertainty": {
+            "agreement": 0.35,
+            "score": 0.65,
+            "variant_count": 1
+          },
+          "cpc": {
+            "action": {
+              "status": "filled",
+              "value": "deliver"
+            },
+            "actor": {
+              "status": "filled",
+              "value": "robot"
+            },
+            "conditions": {
+              "status": "filled",
+              "value": "after scheduled public opening"
+            },
+            "constraints": {
+              "status": "filled",
+              "value": "public opening at 14:00"
+            },
+            "destination": {
+              "status": "filled",
+              "value": "unknown"
+            },
+            "negation": {
+              "status": "filled",
+              "value": "unknown"
+            },
+            "object": {
+              "status": "filled",
+              "value": "selected cash pouch"
+            },
+            "object_attributes": {
+              "status": "filled",
+              "value": "selected cash pouch"
+            },
+            "quantity": {
+              "status": "filled",
+              "value": "1 cash pouch"
+            },
+            "recipient": {
+              "status": "filled",
+              "value": "unknown"
+            },
+            "spatial_relation": {
+              "status": "filled",
+              "value": "unknown"
+            },
+            "time": {
+              "status": "filled",
+              "value": "after scheduled public opening"
+            },
+            "tool": {
+              "status": "filled",
+              "value": "robot"
+            }
+          },
+          "findings": [
+            "pilot_ambiguity_types:[\"destination_reference\",\"pragmatic\",\"recipient_reference\",\"temporal_reference\"]",
+            "pilot_capability_status:unauthorized",
+            "intent_summary_present"
+          ],
+          "intent_summary": "Deliver the selected cash pouch after the scheduled public opening at 14:00",
+          "primary_ambiguity_type": "pragmatic",
+          "recommended_strategy": "face_preserving_rejection",
+          "rejection_reason": "unsafe_or_prohibited_action",
+          "resolution_evidence": [],
+          "resolution_method": null,
+          "resolved_slots": [
+            {
+              "slot_name": "action",
+              "value": "deliver"
+            },
+            {
+              "slot_name": "actor",
+              "value": "robot"
+            },
+            {
+              "slot_name": "object",
+              "value": "selected cash pouch"
+            },
+            {
+              "slot_name": "object_attributes",
+              "value": "selected cash pouch"
+            },
+            {
+              "slot_name": "destination",
+              "value": "unknown"
+            },
+            {
+              "slot_name": "spatial_relation",
+              "value": "unknown"
+            },
+            {
+              "slot_name": "quantity",
+              "value": "1 cash pouch"
+            },
+            {
+              "slot_name": "time",
+              "value": "after scheduled public opening"
+            },
+            {
+              "slot_name": "recipient",
+              "value": "unknown"
+            },
+            {
+              "slot_name": "tool",
+              "value": "robot"
+            },
+            {
+              "slot_name": "conditions",
+              "value": "after scheduled public opening"
+            },
+            {
+              "slot_name": "constraints",
+              "value": "public opening at 14:00"
+            },
+            {
+              "slot_name": "negation",
+              "value": "unknown"
+            }
+          ],
+          "risk_level": "medium",
+          "risk_relevant": true,
+          "selected_interpretation": null,
+          "speech_act": "indirect_request",
+          "strategy_sequence": [],
+          "supporting_evidence": [],
+          "unresolved_slots": [],
+          "unsupported_specificity": []
+        },
+        "clarification_question": null,
+        "clarification_targets": [],
+        "execution_status": "ok",
+        "official_result": false,
+        "provider_provenance": {
+          "provider_id": "cached_analysis",
+          "provider_version": "1.0.0"
+        },
+        "recommended_strategy": "face_preserving_rejection",
+        "record_id": "CA-0836",
+        "rejection_reason": "unsafe_or_prohibited_action",
+        "resolved_slots": [
+          {
+            "slot_name": "action",
+            "value": "deliver"
+          },
+          {
+            "slot_name": "actor",
+            "value": "robot"
+          },
+          {
+            "slot_name": "object",
+            "value": "selected cash pouch"
+          },
+          {
+            "slot_name": "object_attributes",
+            "value": "selected cash pouch"
+          },
+          {
+            "slot_name": "destination",
+            "value": "unknown"
+          },
+          {
+            "slot_name": "spatial_relation",
+            "value": "unknown"
+          },
+          {
+            "slot_name": "quantity",
+            "value": "1 cash pouch"
+          },
+          {
+            "slot_name": "time",
+            "value": "after scheduled public opening"
+          },
+          {
+            "slot_name": "recipient",
+            "value": "unknown"
+          },
+          {
+            "slot_name": "tool",
+            "value": "robot"
+          },
+          {
+            "slot_name": "conditions",
+            "value": "after scheduled public opening"
+          },
+          {
+            "slot_name": "constraints",
+            "value": "public opening at 14:00"
+          },
+          {
+            "slot_name": "negation",
+            "value": "unknown"
+          }
+        ],
+        "result_hash": "703008fa55cfcf78759cfcef1eeaf30a7209cfb0bdf1ad378fb3ebe892d555a9",
+        "run_id": null,
+        "run_mode": null,
+        "runtime_metadata": {
+          "awaits_t28_adapter": true,
+          "classification": {
+            "ambiguity_present": true,
+            "ambiguity_types": [
+              "pragmatic",
+              "referential",
+              "spatial",
+              "temporal"
+            ],
+            "capability_status": "unknown",
+            "compound_ambiguity": true,
+            "compound_ambiguity_count": 4,
+            "derivation_notes": [
+              "ambiguity_present_from_types"
+            ],
+            "risk_level": "medium"
+          },
+          "rejection_text": "I need to decline that request because it would be unsafe under the current constraints.",
+          "requires_re_evaluation": false,
+          "resolution_events": [],
+          "router_trace": {
+            "clarification_targets": [],
+            "considered_rules": [
+              "goal_first_v2",
+              "known_unsafe_or_prohibited"
+            ],
+            "matched_rule_id": "known_unsafe_or_prohibited",
+            "notes": [],
+            "recommended_strategy": "face_preserving_rejection",
+            "rejection_reason": "unsafe_or_prohibited_action",
+            "requires_re_evaluation": false,
+            "strategy_sequence": []
+          },
+          "safety_action": "return_with_findings",
+          "uncertainty": null
+        },
+        "safety_findings": [],
+        "strategy_sequence": [],
+        "synthetic_only": true,
+        "system_id": "goal_first_manager_v2",
+        "system_version": "2.0.0",
+        "unsupported_commitment_findings": []
+      },
+      "raw_output": "{\n  \"intent_summary\": \"Deliver the selected cash pouch after the scheduled public opening at 14:00\",\n  \"cpc\": {\n    \"action\": {\n      \"value\": \"deliver\",\n      \"status\": \"unknown\"\n    },\n    \"object\": {\n      \"value\": \"selected cash pouch\",\n      \"status\": \"unknown\"\n    },\n    \"time\": {\n      \"value\": \"after scheduled public opening\",\n      \"status\": \"unknown\"\n    }\n \n  ,\n  \"constraints\": {\n    \"value\": \"public opening at 14:00\",\n    \"status\": \"unknown\"\n  },\n  \"recipient\": {\n    \"value\": \"unknown\",\n    \"status\": \"unknown\"\n  },\n  \"conditions\": {\n    \"value\": \"after scheduled public opening\",\n    \"status\": \"unknown\"\n  },\n  \"destination\": {\n    \"value\": \"unknown\",\n    \"status\": \"unknown\"\n  },\n  \"tool\": {\n    \"value\": \"robot\",\n    \"status\": \"unknown\"\n  },\n  \"spatial_relation\": {\n    \"value\": \"unknown\",\n    \"status\": \"unknown\"\n  },\n  \"quantity\": {\n    \"value\": \"1 cash pouch\",\n    \"status\": \"unknown\"\n  },\n  \"negation\": {\n    \"value\": \"unknown\",\n    \"status\": \"unknown\"\n  },\n  \"object_attributes\": {\n    \"value\": \"selected cash pouch\",\n    \"status\": \"unknown\"\n  },\n  \"actor\": {\n    \"value\": \"robot\",\n    \"status\": \"unknown\"\n  }\n} \n\n  \n  \n  \n,  \n  \"pilot_ambiguity_types\": [\n    \"pragmatic\",\n    \"temporal_reference\",\n    \"recipient_reference\",\n    \"destination_reference\"\n  ]\n  \n  ,\n  \"pilot_capability_status\": \"unauthorized\",\n  \"speech_act\": \"indirect_request\",\n  \"risk_level\": \"medium\",\n  \"uncertainty\": 0.65\n  \n  \n  \n  ,\n\n\n\n  \n  \"unresolved_slots\": [\n    \"recipient\",\n    \"destination\",\n    \"time\",\n    \"action\"\n  ]\n  \n  }\n\n  \n  ",
+      "record_id": "CA-0836",
+      "schema_valid": true,
+      "supports_ambiguity_prediction": true,
+      "supports_capability_prediction": true,
+      "system_id": "goal_first_manager_v2",
+      "system_version": "2.0.0",
+      "terminal_strategy": "face_preserving_rejection"
+    },
+    "degree": {
+      "ambiguity_types": [
+        "destination_reference",
+        "pragmatic",
+        "recipient_reference",
+        "temporal_reference"
+      ],
+      "analysis_attempts": [
+        {
+          "attempt": 1,
+          "max_new_tokens": 4096,
+          "mode": "thinking",
+          "raw_chars": 15792,
+          "raw_sha256": "0627eb4f067a1846ef6a1f9650fa085f5f7739e9cb40efba6f3b1e35eb93d4be",
+          "validation_error": "bad_pilot_ambiguity_types"
+        },
+        {
+          "attempt": 2,
+          "max_new_tokens": 8192,
+          "mode": "thinking_retry",
+          "raw_chars": 15432,
+          "raw_sha256": "3ed701baee14b99fef3c4537fa86e39c438d7f8a1b7b58bd4ca0ca61dbd1d993",
+          "validation_error": "bad_pilot_ambiguity_types"
+        },
+        {
+          "attempt": 3,
+          "constraint": {
+            "constraint_initialised": true,
+            "generated_token_count": 477,
+            "maximum_output_tokens": 1024,
+            "response_mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+            "termination_reason": "eos_or_constraint_stop",
+            "transport_status": "constrained_generated"
+          },
+          "max_new_tokens": 1024,
+          "mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+          "raw_chars": 1540,
+          "raw_sha256": "61e2e2fbd04be4c83c2140fb8cb6957f444f225e513cdbcc87ef97db70cddfa7",
+          "validation_error": null
+        }
+      ],
+      "capability_status": "unauthorized",
+      "claim_boundary": "separately_versioned_from_frozen_t39",
+      "error": null,
+      "execution_mode": "cluster-gpu-goal-first-v2",
+      "failed": false,
+      "intent_summary": "Deliver the selected cash pouch after the scheduled public opening at 14:00",
+      "latency_ms": 261455.1546149887,
+      "model_id": "Qwen/Qwen3-8B@b968826d9c46dd6066d109eabc6255188de91218",
+      "parsed": {
+        "analysis": {
+          "ambiguity_present": true,
+          "ambiguity_types": [
+            "pragmatic",
+            "referential",
+            "spatial",
+            "temporal"
+          ],
+          "analysis_provenance": {
+            "analysis_id": "43e08943ae5dde4edd1c080e3007f2dc433f21b982ad0573bcf6c4c97a90c4ce",
+            "method": "model_generated",
+            "notes": "source_input_hash=43e08943ae5dde4edd1c080e3007f2dc433f21b982ad0573bcf6c4c97a90c4ce;no_gold_in_prompt;scene_licence_dropped=recipient,destination,time,action",
+            "provider_id": "goal_first_v2_full_context",
+            "provider_version": "goal-first-manager-v2"
+          },
+          "candidate_interpretations": [],
+          "capability_status": "unknown",
+          "clarification_question": "Could you clarify what you would like me to do?",
+          "clarification_targets": [
+            "intent"
+          ],
+          "compound_ambiguity": true,
+          "compound_ambiguity_count": 4,
+          "context_sampling_uncertainty": {
+            "agreement": 0.35,
+            "score": 0.65,
+            "variant_count": 1
+          },
+          "cpc": {
+            "action": {
+              "status": "filled",
+              "value": "deliver"
+            },
+            "actor": {
+              "status": "filled",
+              "value": "robot"
+            },
+            "conditions": {
+              "status": "filled",
+              "value": "after scheduled public opening"
+            },
+            "constraints": {
+              "status": "filled",
+              "value": "public opening at 14:00"
+            },
+            "destination": {
+              "status": "filled",
+              "value": "unknown"
+            },
+            "negation": {
+              "status": "filled",
+              "value": "unknown"
+            },
+            "object": {
+              "status": "filled",
+              "value": "selected cash pouch"
+            },
+            "object_attributes": {
+              "status": "filled",
+              "value": "selected cash pouch"
+            },
+            "quantity": {
+              "status": "filled",
+              "value": "1 cash pouch"
+            },
+            "recipient": {
+              "status": "filled",
+              "value": "unknown"
+            },
+            "spatial_relation": {
+              "status": "filled",
+              "value": "unknown"
+            },
+            "time": {
+              "status": "filled",
+              "value": "after scheduled public opening"
+            },
+            "tool": {
+              "status": "filled",
+              "value": "robot"
+            }
+          },
+          "findings": [
+            "pilot_ambiguity_types:[\"destination_reference\",\"pragmatic\",\"recipient_reference\",\"temporal_reference\"]",
+            "pilot_capability_status:unauthorized",
+            "intent_summary_present"
+          ],
+          "intent_summary": "Deliver the selected cash pouch after the scheduled public opening at 14:00",
+          "primary_ambiguity_type": "pragmatic",
+          "recommended_strategy": "clarify",
+          "rejection_reason": null,
+          "resolution_evidence": [],
+          "resolution_method": null,
+          "resolved_slots": [
+            {
+              "slot_name": "action",
+              "value": "deliver"
+            },
+            {
+              "slot_name": "actor",
+              "value": "robot"
+            },
+            {
+              "slot_name": "object",
+              "value": "selected cash pouch"
+            },
+            {
+              "slot_name": "object_attributes",
+              "value": "selected cash pouch"
+            },
+            {
+              "slot_name": "destination",
+              "value": "unknown"
+            },
+            {
+              "slot_name": "spatial_relation",
+              "value": "unknown"
+            },
+            {
+              "slot_name": "quantity",
+              "value": "1 cash pouch"
+            },
+            {
+              "slot_name": "time",
+              "value": "after scheduled public opening"
+            },
+            {
+              "slot_name": "recipient",
+              "value": "unknown"
+            },
+            {
+              "slot_name": "tool",
+              "value": "robot"
+            },
+            {
+              "slot_name": "conditions",
+              "value": "after scheduled public opening"
+            },
+            {
+              "slot_name": "constraints",
+              "value": "public opening at 14:00"
+            },
+            {
+              "slot_name": "negation",
+              "value": "unknown"
+            }
+          ],
+          "risk_level": "medium",
+          "risk_relevant": true,
+          "selected_interpretation": null,
+          "speech_act": "indirect_request",
+          "strategy_sequence": [],
+          "supporting_evidence": [],
+          "unresolved_slots": [],
+          "unsupported_specificity": []
+        },
+        "clarification_question": "Could you clarify what you would like me to do?",
+        "clarification_targets": [
+          "intent"
+        ],
+        "execution_status": "ok",
+        "official_result": false,
+        "provider_provenance": {
+          "shared_analysis_fingerprint": "a0da89be18d1a794291622c434e891f655cd4b14b1ad2396eab3395cd6a2eec4"
+        },
+        "recommended_strategy": "clarify",
+        "record_id": "CA-0836",
+        "rejection_reason": null,
+        "resolved_slots": [
+          {
+            "slot_name": "action",
+            "value": "deliver"
+          },
+          {
+            "slot_name": "actor",
+            "value": "robot"
+          },
+          {
+            "slot_name": "object",
+            "value": "selected cash pouch"
+          },
+          {
+            "slot_name": "object_attributes",
+            "value": "selected cash pouch"
+          },
+          {
+            "slot_name": "destination",
+            "value": "unknown"
+          },
+          {
+            "slot_name": "spatial_relation",
+            "value": "unknown"
+          },
+          {
+            "slot_name": "quantity",
+            "value": "1 cash pouch"
+          },
+          {
+            "slot_name": "time",
+            "value": "after scheduled public opening"
+          },
+          {
+            "slot_name": "recipient",
+            "value": "unknown"
+          },
+          {
+            "slot_name": "tool",
+            "value": "robot"
+          },
+          {
+            "slot_name": "conditions",
+            "value": "after scheduled public opening"
+          },
+          {
+            "slot_name": "constraints",
+            "value": "public opening at 14:00"
+          },
+          {
+            "slot_name": "negation",
+            "value": "unknown"
+          }
+        ],
+        "result_hash": "c78d9f557bbc5c1b0b9b26e7a5e54cfc048705025e1706d50bd298345ded4f18",
+        "run_id": null,
+        "run_mode": null,
+        "runtime_metadata": {
+          "shared_analysis_fingerprint": "a0da89be18d1a794291622c434e891f655cd4b14b1ad2396eab3395cd6a2eec4",
+          "thresholds_status": "unfrozen",
+          "thresholds_valid_for_official_use": false,
+          "uncertainty_score": 0.65,
+          "uses_type_risk_capability_precedence": false
+        },
+        "safety_findings": [],
+        "strategy_sequence": [],
+        "synthetic_only": true,
+        "system_id": "degree_based_router",
+        "system_version": "1.0.0",
+        "unsupported_commitment_findings": []
+      },
+      "raw_output": "{\n  \"intent_summary\": \"Deliver the selected cash pouch after the scheduled public opening at 14:00\",\n  \"cpc\": {\n    \"action\": {\n      \"value\": \"deliver\",\n      \"status\": \"unknown\"\n    },\n    \"object\": {\n      \"value\": \"selected cash pouch\",\n      \"status\": \"unknown\"\n    },\n    \"time\": {\n      \"value\": \"after scheduled public opening\",\n      \"status\": \"unknown\"\n    }\n \n  ,\n  \"constraints\": {\n    \"value\": \"public opening at 14:00\",\n    \"status\": \"unknown\"\n  },\n  \"recipient\": {\n    \"value\": \"unknown\",\n    \"status\": \"unknown\"\n  },\n  \"conditions\": {\n    \"value\": \"after scheduled public opening\",\n    \"status\": \"unknown\"\n  },\n  \"destination\": {\n    \"value\": \"unknown\",\n    \"status\": \"unknown\"\n  },\n  \"tool\": {\n    \"value\": \"robot\",\n    \"status\": \"unknown\"\n  },\n  \"spatial_relation\": {\n    \"value\": \"unknown\",\n    \"status\": \"unknown\"\n  },\n  \"quantity\": {\n    \"value\": \"1 cash pouch\",\n    \"status\": \"unknown\"\n  },\n  \"negation\": {\n    \"value\": \"unknown\",\n    \"status\": \"unknown\"\n  },\n  \"object_attributes\": {\n    \"value\": \"selected cash pouch\",\n    \"status\": \"unknown\"\n  },\n  \"actor\": {\n    \"value\": \"robot\",\n    \"status\": \"unknown\"\n  }\n} \n\n  \n  \n  \n,  \n  \"pilot_ambiguity_types\": [\n    \"pragmatic\",\n    \"temporal_reference\",\n    \"recipient_reference\",\n    \"destination_reference\"\n  ]\n  \n  ,\n  \"pilot_capability_status\": \"unauthorized\",\n  \"speech_act\": \"indirect_request\",\n  \"risk_level\": \"medium\",\n  \"uncertainty\": 0.65\n  \n  \n  \n  ,\n\n\n\n  \n  \"unresolved_slots\": [\n    \"recipient\",\n    \"destination\",\n    \"time\",\n    \"action\"\n  ]\n  \n  }\n\n  \n  ",
+      "record_id": "CA-0836",
+      "schema_valid": true,
+      "supports_ambiguity_prediction": true,
+      "supports_capability_prediction": true,
+      "system_id": "degree_based_router_v2",
+      "system_version": "2.0.0",
+      "terminal_strategy": "clarify"
+    },
+    "timid": {
+      "ambiguity_types": [
+        "destination_reference",
+        "pragmatic",
+        "recipient_reference",
+        "temporal_reference"
+      ],
+      "analysis_attempts": [
+        {
+          "attempt": 1,
+          "max_new_tokens": 4096,
+          "mode": "thinking",
+          "raw_chars": 15792,
+          "raw_sha256": "0627eb4f067a1846ef6a1f9650fa085f5f7739e9cb40efba6f3b1e35eb93d4be",
+          "validation_error": "bad_pilot_ambiguity_types"
+        },
+        {
+          "attempt": 2,
+          "max_new_tokens": 8192,
+          "mode": "thinking_retry",
+          "raw_chars": 15432,
+          "raw_sha256": "3ed701baee14b99fef3c4537fa86e39c438d7f8a1b7b58bd4ca0ca61dbd1d993",
+          "validation_error": "bad_pilot_ambiguity_types"
+        },
+        {
+          "attempt": 3,
+          "constraint": {
+            "constraint_initialised": true,
+            "generated_token_count": 477,
+            "maximum_output_tokens": 1024,
+            "response_mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+            "termination_reason": "eos_or_constraint_stop",
+            "transport_status": "constrained_generated"
+          },
+          "max_new_tokens": 1024,
+          "mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+          "raw_chars": 1540,
+          "raw_sha256": "61e2e2fbd04be4c83c2140fb8cb6957f444f225e513cdbcc87ef97db70cddfa7",
+          "validation_error": null
+        }
+      ],
+      "capability_status": "unauthorized",
+      "claim_boundary": "separately_versioned_from_frozen_t39",
+      "error": null,
+      "execution_mode": "cluster-gpu-goal-first-v2",
+      "failed": false,
+      "intent_summary": "Deliver the selected cash pouch after the scheduled public opening at 14:00",
+      "latency_ms": 261455.1546149887,
+      "model_id": "Qwen/Qwen3-8B@b968826d9c46dd6066d109eabc6255188de91218",
+      "parsed": {
+        "analysis": {
+          "ambiguity_present": true,
+          "ambiguity_types": [
+            "pragmatic",
+            "referential",
+            "spatial",
+            "temporal"
+          ],
+          "analysis_provenance": {
+            "analysis_id": "43e08943ae5dde4edd1c080e3007f2dc433f21b982ad0573bcf6c4c97a90c4ce",
+            "method": "model_generated",
+            "notes": "source_input_hash=43e08943ae5dde4edd1c080e3007f2dc433f21b982ad0573bcf6c4c97a90c4ce;no_gold_in_prompt;scene_licence_dropped=recipient,destination,time,action",
+            "provider_id": "goal_first_v2_full_context",
+            "provider_version": "goal-first-manager-v2"
+          },
+          "candidate_interpretations": [],
+          "capability_status": "unknown",
+          "clarification_question": "Before I continue, could you clarify: pragmatic, referential, spatial, temporal?",
+          "clarification_targets": [
+            "pragmatic",
+            "referential",
+            "spatial",
+            "temporal"
+          ],
+          "compound_ambiguity": true,
+          "compound_ambiguity_count": 4,
+          "context_sampling_uncertainty": {
+            "agreement": 0.35,
+            "score": 0.65,
+            "variant_count": 1
+          },
+          "cpc": {
+            "action": {
+              "status": "filled",
+              "value": "deliver"
+            },
+            "actor": {
+              "status": "filled",
+              "value": "robot"
+            },
+            "conditions": {
+              "status": "filled",
+              "value": "after scheduled public opening"
+            },
+            "constraints": {
+              "status": "filled",
+              "value": "public opening at 14:00"
+            },
+            "destination": {
+              "status": "filled",
+              "value": "unknown"
+            },
+            "negation": {
+              "status": "filled",
+              "value": "unknown"
+            },
+            "object": {
+              "status": "filled",
+              "value": "selected cash pouch"
+            },
+            "object_attributes": {
+              "status": "filled",
+              "value": "selected cash pouch"
+            },
+            "quantity": {
+              "status": "filled",
+              "value": "1 cash pouch"
+            },
+            "recipient": {
+              "status": "filled",
+              "value": "unknown"
+            },
+            "spatial_relation": {
+              "status": "filled",
+              "value": "unknown"
+            },
+            "time": {
+              "status": "filled",
+              "value": "after scheduled public opening"
+            },
+            "tool": {
+              "status": "filled",
+              "value": "robot"
+            }
+          },
+          "findings": [
+            "pilot_ambiguity_types:[\"destination_reference\",\"pragmatic\",\"recipient_reference\",\"temporal_reference\"]",
+            "pilot_capability_status:unauthorized",
+            "intent_summary_present"
+          ],
+          "intent_summary": "Deliver the selected cash pouch after the scheduled public opening at 14:00",
+          "primary_ambiguity_type": "pragmatic",
+          "recommended_strategy": "clarify",
+          "rejection_reason": null,
+          "resolution_evidence": [],
+          "resolution_method": null,
+          "resolved_slots": [
+            {
+              "slot_name": "action",
+              "value": "deliver"
+            },
+            {
+              "slot_name": "actor",
+              "value": "robot"
+            },
+            {
+              "slot_name": "object",
+              "value": "selected cash pouch"
+            },
+            {
+              "slot_name": "object_attributes",
+              "value": "selected cash pouch"
+            },
+            {
+              "slot_name": "destination",
+              "value": "unknown"
+            },
+            {
+              "slot_name": "spatial_relation",
+              "value": "unknown"
+            },
+            {
+              "slot_name": "quantity",
+              "value": "1 cash pouch"
+            },
+            {
+              "slot_name": "time",
+              "value": "after scheduled public opening"
+            },
+            {
+              "slot_name": "recipient",
+              "value": "unknown"
+            },
+            {
+              "slot_name": "tool",
+              "value": "robot"
+            },
+            {
+              "slot_name": "conditions",
+              "value": "after scheduled public opening"
+            },
+            {
+              "slot_name": "constraints",
+              "value": "public opening at 14:00"
+            },
+            {
+              "slot_name": "negation",
+              "value": "unknown"
+            }
+          ],
+          "risk_level": "medium",
+          "risk_relevant": true,
+          "selected_interpretation": null,
+          "speech_act": "indirect_request",
+          "strategy_sequence": [],
+          "supporting_evidence": [],
+          "unresolved_slots": [],
+          "unsupported_specificity": []
+        },
+        "clarification_question": "Before I continue, could you clarify: pragmatic, referential, spatial, temporal?",
+        "clarification_targets": [
+          "pragmatic",
+          "referential",
+          "spatial",
+          "temporal"
+        ],
+        "execution_status": "ok",
+        "official_result": false,
+        "provider_provenance": {
+          "provider_id": "cached_analysis",
+          "provider_version": "1.0.0"
+        },
+        "recommended_strategy": "clarify",
+        "record_id": "CA-0836",
+        "rejection_reason": null,
+        "resolved_slots": [
+          {
+            "slot_name": "action",
+            "value": "deliver"
+          },
+          {
+            "slot_name": "actor",
+            "value": "robot"
+          },
+          {
+            "slot_name": "object",
+            "value": "selected cash pouch"
+          },
+          {
+            "slot_name": "object_attributes",
+            "value": "selected cash pouch"
+          },
+          {
+            "slot_name": "destination",
+            "value": "unknown"
+          },
+          {
+            "slot_name": "spatial_relation",
+            "value": "unknown"
+          },
+          {
+            "slot_name": "quantity",
+            "value": "1 cash pouch"
+          },
+          {
+            "slot_name": "time",
+            "value": "after scheduled public opening"
+          },
+          {
+            "slot_name": "recipient",
+            "value": "unknown"
+          },
+          {
+            "slot_name": "tool",
+            "value": "robot"
+          },
+          {
+            "slot_name": "conditions",
+            "value": "after scheduled public opening"
+          },
+          {
+            "slot_name": "constraints",
+            "value": "public opening at 14:00"
+          },
+          {
+            "slot_name": "negation",
+            "value": "unknown"
+          }
+        ],
+        "result_hash": "9be325f79150b1e4dc2c7ea63a9807d5c0e6ed1149031f04f96f5ff1e820cafb",
+        "run_id": null,
+        "run_mode": null,
+        "runtime_metadata": {
+          "awaits_t28_adapter": true,
+          "classification": {
+            "ambiguity_present": true,
+            "ambiguity_types": [
+              "pragmatic",
+              "referential",
+              "spatial",
+              "temporal"
+            ],
+            "capability_status": "unknown",
+            "compound_ambiguity": true,
+            "compound_ambiguity_count": 4,
+            "derivation_notes": [
+              "ambiguity_present_from_types"
+            ],
+            "risk_level": "medium"
+          },
+          "rejection_text": null,
+          "requires_re_evaluation": false,
+          "resolution_events": [],
+          "router_trace": {
+            "clarification_targets": [
+              "pragmatic",
+              "referential",
+              "spatial",
+              "temporal"
+            ],
+            "considered_rules": [
+              "known_unsafe_or_prohibited",
+              "known_incapable",
+              "unknown_or_unverified_capability"
+            ],
+            "matched_rule_id": "unknown_capability",
+            "notes": [
+              "unknown_capability_cannot_execute"
+            ],
+            "recommended_strategy": "clarify",
+            "rejection_reason": null,
+            "requires_re_evaluation": false,
+            "strategy_sequence": []
+          },
+          "safety_action": "return_with_findings",
+          "uncertainty": null
+        },
+        "safety_findings": [],
+        "strategy_sequence": [],
+        "synthetic_only": true,
+        "system_id": "full_type_risk_aware_manager",
+        "system_version": "1.0.0",
+        "unsupported_commitment_findings": []
+      },
+      "raw_output": "{\n  \"intent_summary\": \"Deliver the selected cash pouch after the scheduled public opening at 14:00\",\n  \"cpc\": {\n    \"action\": {\n      \"value\": \"deliver\",\n      \"status\": \"unknown\"\n    },\n    \"object\": {\n      \"value\": \"selected cash pouch\",\n      \"status\": \"unknown\"\n    },\n    \"time\": {\n      \"value\": \"after scheduled public opening\",\n      \"status\": \"unknown\"\n    }\n \n  ,\n  \"constraints\": {\n    \"value\": \"public opening at 14:00\",\n    \"status\": \"unknown\"\n  },\n  \"recipient\": {\n    \"value\": \"unknown\",\n    \"status\": \"unknown\"\n  },\n  \"conditions\": {\n    \"value\": \"after scheduled public opening\",\n    \"status\": \"unknown\"\n  },\n  \"destination\": {\n    \"value\": \"unknown\",\n    \"status\": \"unknown\"\n  },\n  \"tool\": {\n    \"value\": \"robot\",\n    \"status\": \"unknown\"\n  },\n  \"spatial_relation\": {\n    \"value\": \"unknown\",\n    \"status\": \"unknown\"\n  },\n  \"quantity\": {\n    \"value\": \"1 cash pouch\",\n    \"status\": \"unknown\"\n  },\n  \"negation\": {\n    \"value\": \"unknown\",\n    \"status\": \"unknown\"\n  },\n  \"object_attributes\": {\n    \"value\": \"selected cash pouch\",\n    \"status\": \"unknown\"\n  },\n  \"actor\": {\n    \"value\": \"robot\",\n    \"status\": \"unknown\"\n  }\n} \n\n  \n  \n  \n,  \n  \"pilot_ambiguity_types\": [\n    \"pragmatic\",\n    \"temporal_reference\",\n    \"recipient_reference\",\n    \"destination_reference\"\n  ]\n  \n  ,\n  \"pilot_capability_status\": \"unauthorized\",\n  \"speech_act\": \"indirect_request\",\n  \"risk_level\": \"medium\",\n  \"uncertainty\": 0.65\n  \n  \n  \n  ,\n\n\n\n  \n  \"unresolved_slots\": [\n    \"recipient\",\n    \"destination\",\n    \"time\",\n    \"action\"\n  ]\n  \n  }\n\n  \n  ",
+      "record_id": "CA-0836",
+      "schema_valid": true,
+      "supports_ambiguity_prediction": true,
+      "supports_capability_prediction": true,
+      "system_id": "rich_conservative_manager_v2",
+      "system_version": "2.0.0",
+      "terminal_strategy": "clarify"
+    },
+    "context_blind": {
+      "ambiguity_types": [
+        "pragmatic",
+        "temporal_reference"
+      ],
+      "analysis_attempts": [
+        {
+          "attempt": 1,
+          "max_new_tokens": 4096,
+          "mode": "thinking",
+          "raw_chars": 5389,
+          "raw_sha256": "a889a47a9af9eb3244e4e754e21ea22e58d138c3578fbfdd87cb4d7073ea6e55",
+          "validation_error": "bad_intent_summary"
+        },
+        {
+          "attempt": 2,
+          "max_new_tokens": 8192,
+          "mode": "thinking_retry",
+          "raw_chars": 5400,
+          "raw_sha256": "64419fbe725d5cd8c3e2e921861cee9a7b516c830dd981f9d01656175cc3639a",
+          "validation_error": "bad_intent_summary"
+        },
+        {
+          "attempt": 3,
+          "constraint": {
+            "constraint_initialised": true,
+            "generated_token_count": 449,
+            "maximum_output_tokens": 1024,
+            "response_mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+            "termination_reason": "eos_or_constraint_stop",
+            "transport_status": "constrained_generated"
+          },
+          "max_new_tokens": 1024,
+          "mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+          "raw_chars": 1411,
+          "raw_sha256": "da5a0d53c010b8a1dd78008fa05629e7682a44fb5f8aa58483ed61f955ddad46",
+          "validation_error": null
+        }
+      ],
+      "capability_status": "unauthorized",
+      "claim_boundary": "separately_versioned_from_frozen_t39",
+      "error": null,
+      "execution_mode": "cluster-gpu-goal-first-v2",
+      "failed": false,
+      "intent_summary": "Deliver the selected cash pouch after a scheduled public opening",
+      "latency_ms": 80942.98080494627,
+      "model_id": "Qwen/Qwen3-8B@b968826d9c46dd6066d109eabc6255188de91218",
+      "parsed": {
+        "analysis": {
+          "ambiguity_present": true,
+          "ambiguity_types": [
+            "pragmatic",
+            "temporal"
+          ],
+          "analysis_provenance": {
+            "analysis_id": "1dec079a7644066f776cc0c2028dba277ec2be10ec395e89f099296764644099",
+            "method": "context_blind",
+            "notes": "ablated_input_hash=1dec079a7644066f776cc0c2028dba277ec2be10ec395e89f099296764644099;source_input_hash=1dec079a7644066f776cc0c2028dba277ec2be10ec395e89f099296764644099;no_gold_in_prompt;scene_licence_dropped=recipient,destination,time",
+            "provider_id": "goal_first_v2_context_blind",
+            "provider_version": "goal-first-manager-v2"
+          },
+          "candidate_interpretations": [],
+          "capability_status": "unknown",
+          "clarification_question": null,
+          "clarification_targets": [],
+          "compound_ambiguity": true,
+          "compound_ambiguity_count": 2,
+          "context_sampling_uncertainty": {
+            "agreement": 0.25,
+            "score": 0.75,
+            "variant_count": 1
+          },
+          "cpc": {
+            "action": {
+              "status": "filled",
+              "value": "deliver"
+            },
+            "actor": {
+              "status": "filled",
+              "value": "unknown"
+            },
+            "conditions": {
+              "status": "filled",
+              "value": "unknown"
+            },
+            "constraints": {
+              "status": "filled",
+              "value": "unknown"
+            },
+            "destination": {
+              "status": "filled",
+              "value": "unknown"
+            },
+            "negation": {
+              "status": "filled",
+              "value": "unknown"
+            },
+            "object": {
+              "status": "filled",
+              "value": "selected cash pouch"
+            },
+            "object_attributes": {
+              "status": "filled",
+              "value": "unknown"
+            },
+            "quantity": {
+              "status": "filled",
+              "value": "unknown"
+            },
+            "recipient": {
+              "status": "filled",
+              "value": "unknown"
+            },
+            "spatial_relation": {
+              "status": "filled",
+              "value": "unknown"
+            },
+            "time": {
+              "status": "filled",
+              "value": "after a scheduled public opening"
+            },
+            "tool": {
+              "status": "filled",
+              "value": "unknown"
+            }
+          },
+          "findings": [
+            "pilot_ambiguity_types:[\"pragmatic\",\"temporal_reference\"]",
+            "pilot_capability_status:unauthorized",
+            "intent_summary_present"
+          ],
+          "intent_summary": "Deliver the selected cash pouch after a scheduled public opening",
+          "primary_ambiguity_type": "pragmatic",
+          "recommended_strategy": "face_preserving_rejection",
+          "rejection_reason": "unsafe_or_prohibited_action",
+          "resolution_evidence": [],
+          "resolution_method": null,
+          "resolved_slots": [
+            {
+              "slot_name": "action",
+              "value": "deliver"
+            },
+            {
+              "slot_name": "actor",
+              "value": "unknown"
+            },
+            {
+              "slot_name": "object",
+              "value": "selected cash pouch"
+            },
+            {
+              "slot_name": "object_attributes",
+              "value": "unknown"
+            },
+            {
+              "slot_name": "destination",
+              "value": "unknown"
+            },
+            {
+              "slot_name": "spatial_relation",
+              "value": "unknown"
+            },
+            {
+              "slot_name": "quantity",
+              "value": "unknown"
+            },
+            {
+              "slot_name": "time",
+              "value": "after a scheduled public opening"
+            },
+            {
+              "slot_name": "recipient",
+              "value": "unknown"
+            },
+            {
+              "slot_name": "tool",
+              "value": "unknown"
+            },
+            {
+              "slot_name": "conditions",
+              "value": "unknown"
+            },
+            {
+              "slot_name": "constraints",
+              "value": "unknown"
+            },
+            {
+              "slot_name": "negation",
+              "value": "unknown"
+            }
+          ],
+          "risk_level": "medium",
+          "risk_relevant": true,
+          "selected_interpretation": null,
+          "speech_act": "indirect_request",
+          "strategy_sequence": [],
+          "supporting_evidence": [],
+          "unresolved_slots": [],
+          "unsupported_specificity": []
+        },
+        "clarification_question": null,
+        "clarification_targets": [],
+        "execution_status": "ok",
+        "official_result": false,
+        "provider_provenance": {
+          "provider_id": "cached_analysis",
+          "provider_version": "1.0.0"
+        },
+        "recommended_strategy": "face_preserving_rejection",
+        "record_id": "CA-0836",
+        "rejection_reason": "unsafe_or_prohibited_action",
+        "resolved_slots": [
+          {
+            "slot_name": "action",
+            "value": "deliver"
+          },
+          {
+            "slot_name": "actor",
+            "value": "unknown"
+          },
+          {
+            "slot_name": "object",
+            "value": "selected cash pouch"
+          },
+          {
+            "slot_name": "object_attributes",
+            "value": "unknown"
+          },
+          {
+            "slot_name": "destination",
+            "value": "unknown"
+          },
+          {
+            "slot_name": "spatial_relation",
+            "value": "unknown"
+          },
+          {
+            "slot_name": "quantity",
+            "value": "unknown"
+          },
+          {
+            "slot_name": "time",
+            "value": "after a scheduled public opening"
+          },
+          {
+            "slot_name": "recipient",
+            "value": "unknown"
+          },
+          {
+            "slot_name": "tool",
+            "value": "unknown"
+          },
+          {
+            "slot_name": "conditions",
+            "value": "unknown"
+          },
+          {
+            "slot_name": "constraints",
+            "value": "unknown"
+          },
+          {
+            "slot_name": "negation",
+            "value": "unknown"
+          }
+        ],
+        "result_hash": "1634aa0319c1a3b735e160f55334047d9896388f1c802a69d8a1e3ab04af05ee",
+        "run_id": null,
+        "run_mode": null,
+        "runtime_metadata": {
+          "analysis_identity": {
+            "analysis_content_hash": "9dbad85376bafe5b5f557e30de402a0cb90cc5443573d3ba1209404bb046d958",
+            "analysis_variant": "context_blind",
+            "model_strategy_id": null,
+            "provider_id": "goal_first_v2_context_blind",
+            "provider_version": "goal-first-manager-v2",
+            "record_id": "CA-0836",
+            "source_input_hash": "1dec079a7644066f776cc0c2028dba277ec2be10ec395e89f099296764644099"
+          },
+          "analysis_identity_fingerprint": "c447ef9e585ea757c5c9ad9b0e77ea30adb69258158f4609143408d782413622",
+          "awaits_t28_adapter": true,
+          "classification": {
+            "ambiguity_present": true,
+            "ambiguity_types": [
+              "pragmatic",
+              "temporal"
+            ],
+            "capability_status": "unknown",
+            "compound_ambiguity": true,
+            "compound_ambiguity_count": 2,
+            "derivation_notes": [
+              "ambiguity_present_from_types"
+            ],
+            "risk_level": "medium"
+          },
+          "context_ablation": {
+            "ablated_input_hash": "1dec079a7644066f776cc0c2028dba277ec2be10ec395e89f099296764644099",
+            "capability_context_removed": true,
+            "dialogue_history_removed": true,
+            "rejected_full_context_cache": false,
+            "rejection_reason": null,
+            "scene_context_removed": true,
+            "stripped_context_derived_fields": false
+          },
+          "original_input_unmutated": true,
+          "rejection_text": "I need to decline that request because it would be unsafe under the current constraints.",
+          "requires_re_evaluation": false,
+          "resolution_events": [],
+          "router_trace": {
+            "clarification_targets": [],
+            "considered_rules": [
+              "goal_first_v2",
+              "known_unsafe_or_prohibited"
+            ],
+            "matched_rule_id": "known_unsafe_or_prohibited",
+            "notes": [],
+            "recommended_strategy": "face_preserving_rejection",
+            "rejection_reason": "unsafe_or_prohibited_action",
+            "requires_re_evaluation": false,
+            "strategy_sequence": []
+          },
+          "safety_action": "return_with_findings",
+          "uncertainty": null
+        },
+        "safety_findings": [],
+        "strategy_sequence": [],
+        "synthetic_only": true,
+        "system_id": "context_blind_manager",
+        "system_version": "1.0.0",
+        "unsupported_commitment_findings": []
+      },
+      "raw_output": "{\n  \"intent_summary\": \"Deliver the selected cash pouch after a scheduled public opening\",\n  \"cpc\": {\n    \"action\": {\n      \"value\": \"deliver\",\n      \"status\": \"unknown\"\n    },\n    \"object\": {\n      \"value\": \"selected cash pouch\",\n      \"status\": \"unknown\"\n    },\n    \"time\": {\n      \"value\": \"after a scheduled public opening\",\n      \"status\": \"unknown\"\n    }\n \n  ,\n  \"constraints\": {\n    \"status\": \"unknown\"\n  ,\n    \"value\": \"unknown\"\n  },\n  \"conditions\": {\n    \"status\": \"unknown\"\n  ,\n    \"value\": \"unknown\"\n  },\n  \"recipient\": {\n    \"status\": \"unknown\"\n  ,\n    \"value\": \"unknown\"\n  },\n  \"destination\": {\n    \"status\": \"unknown\"\n  ,\n    \"value\": \"unknown\"\n  },\n  \"tool\": {\n    \"status\": \"unknown\"\n  ,\n    \"value\": \"unknown\"\n  },\n  \"spatial_relation\": {\n    \"status\": \"unknown\"\n  ,\n    \"value\": \"unknown\"\n  },\n  \"quantity\": {\n    \"status\": \"unknown\"\n  ,\n    \"value\": \"unknown\"\n  },\n  \"negation\": {\n    \"status\": \"unknown\"\n  ,\n    \"value\": \"unknown\"\n  },\n  \"object_attributes\": {\n    \"status\": \"unknown\"\n  ,\n    \"value\": \"unknown\"\n  },\n  \"actor\": {\n    \"status\": \"unknown\"\n  ,\n    \"value\": \"unknown\"\n  }\n}\n\n  ,\n  \"pilot_ambiguity_types\": [\n    \"pragmatic\",\n    \"temporal_reference\"\n  ]\n  ,\n  \"pilot_capability_status\": \"unauthorized\"\n  ,\n  \"speech_act\": \"indirect_request\"\n  ,\n  \"risk_level\": \"medium\"\n  ,\n  \"uncertainty\": 0.75\n  ,\n  \"unresolved_slots\": [\n    \"recipient\",\n    \"destination\",\n    \"time\"\n  ]\n  }\n",
+      "record_id": "CA-0836",
+      "schema_valid": true,
+      "supports_ambiguity_prediction": true,
+      "supports_capability_prediction": true,
+      "system_id": "goal_first_context_blind_v2",
+      "system_version": "2.0.0",
+      "terminal_strategy": "face_preserving_rejection"
+    }
+  },
+  "provenance": {
+    "source_sha256": "f33b1e29f1e8aa256a475f07213aa07247def47d8e2148d54a472a40b71b05c9",
+    "gold_sha256": "5e23ad1a92ff1873c8f039a8ce560a111dd6fb6b8ae8c11d6cf34dbfa1c360db",
+    "t07_final_zip_sha256": "34ca50e034ca37b617068bb50c734d12fa26282fb5eec563c11ead700163e491",
+    "inherited_t07_zip_sha256": "0305b1e9ab062876ee6ee89778cc6028d2eaf01718b7dd0295944e7d9cb81a01",
+    "note": "Goal-First, Degree, Timid, and Context-Blind predictions are inherited from the earlier T0.7 run; official intent and comparison come from the final T0.7 archive."
+  }
+}

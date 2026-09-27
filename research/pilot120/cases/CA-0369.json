@@ -1,0 +1,1427 @@
+{
+  "record_id": "CA-0369",
+  "frozen_source": {
+    "capability_context": "Indoor service robot with a gripper and wheeled base; it can inspect, label, carry, place, and clean ordinary household items.",
+    "command": "Stock the selected supply basket with enough for one shift using the usual setup.",
+    "dialogue_history": [],
+    "record_id": "CA-0369",
+    "scene_context": "Entry hall in a home. Two supply baskets carry work-order marks: the yellow one beside the hall shelf has an orange PENDING tag, while the black one near the front door has a yellow COMPLETE tag. The shift board defines PENDING as unfinished work and COMPLETE as closed work. The shift plan contains eight standard uses. The stock table assigns three standard packs per use and a two-pack reserve. The PENDING stock tag belongs to Work order WO-581. The setup table states that the morning reset applies to a different work-order prefix, while Work order WO-581 maps to the guest-arrival setup."
+  },
+  "frozen_gold": {
+    "ambiguity_types": [
+      "fuzzy_quantity",
+      "object_reference",
+      "routine_reference"
+    ],
+    "annotator_b_era": "claude_era",
+    "annotator_b_model": "claude-4.6-sonnet-medium-thinking",
+    "capability_status": "capable",
+    "field_status": {
+      "ambiguity_types": "auto_agree",
+      "capability_status": "human_auditor:independent_from_route",
+      "record_validity": "auto_agree",
+      "strategy_sequence": "auto_agree",
+      "terminal_strategy": "auto_agree"
+    },
+    "gold_lifecycle": "final_gold",
+    "gold_status": "auto_agree",
+    "human_gate_required": false,
+    "provenance": {
+      "agreement_label": "pilot_annotation_agreement",
+      "annotator_a_sha256": "6be80abd5db555bf0fecd4ee38dd6e70c20a4c207ba651c4f4bfa18e03d1f973",
+      "annotator_b_sha256": "b1c26f473727c77d3971bc64f8c9540eb741e341c66df929d7135490c20f9e99",
+      "capability_route_decouple": "conditionally_capable remapped to capable: no evidenced external capability precondition; linguistic silently_resolve/clarify is not a capability condition",
+      "gold_policy": "use_existing_pilot_adjudicated_gold",
+      "input_sha256": "88e0d8c2223ef4155a3aea759c343f97c6a8055ce3bf3c9e33b98e45df56f3fb",
+      "pilot_gold_sha256": "a4081c279207d747014b93a69cee6d21da417eccb74de0912822983f40b1f77b",
+      "protocol": "pilot_adjudicated_gold_on_capability_repaired_source",
+      "repaired_input_sha256": "ecbba38cc17d9b69e9321654e2b99090b392ade7d1c0e38e339c9273f4d36e8d"
+    },
+    "record_id": "CA-0369",
+    "record_validity": "valid",
+    "strategy_sequence": [
+      "silently_resolve",
+      "execute"
+    ],
+    "terminal_strategy": "execute"
+  },
+  "t07_comparison": {
+    "record_id": "CA-0369",
+    "gold_route": "execute",
+    "raw_route": "execute",
+    "ft_route": "execute",
+    "gf_route": "refuse",
+    "raw_route_ok": "True",
+    "ft_route_ok": "True",
+    "gf_route_ok": "False",
+    "raw_official_intent": "True",
+    "ft_official_intent": "True",
+    "gf_official_intent": "True",
+    "blind_official_intent": "True"
+  },
+  "t07_official_intent": {
+    "context_blind_official_intent": true,
+    "degree_official_intent_shared_gf": true,
+    "finetune_official_intent": true,
+    "goal_first_official_intent": true,
+    "raw_official_intent": true,
+    "record_id": "CA-0369",
+    "timid_official_intent_shared_gf": true
+  },
+  "t07_predictions": {
+    "raw_qwen": {
+      "ambiguity_types": [
+        "fuzzy_quantity",
+        "object_reference",
+        "pronoun_reference"
+      ],
+      "capability_status": "conditionally_capable",
+      "error": null,
+      "execution_mode": "final_close_intent_box",
+      "failed": false,
+      "intent_summary": "Restock the PENDING supply basket for one shift using the guest-arrival setup, which requires 26 standard packs (8 uses × 3 packs + 2-pack reserve).",
+      "latency_ms": 12984.385041054338,
+      "parsed": {
+        "ambiguity_types": [
+          "fuzzy_quantity",
+          "object_reference",
+          "pronoun_reference"
+        ],
+        "capability_status": "conditionally_capable",
+        "intent_summary": "Restock the PENDING supply basket for one shift using the guest-arrival setup, which requires 26 standard packs (8 uses × 3 packs + 2-pack reserve).",
+        "speech_act": "directive_command",
+        "terminal_strategy": "execute"
+      },
+      "raw_output": "<think>\nOkay, let's break this down. The user's command is to \"Stock the selected supply basket with enough for one shift using the usual setup.\" First, I need to figure out the intent. The main job here is restocking a supply basket according to the shift's needs and the usual setup. The dialogue history is empty, so there's no prior context, but the scene context gives details about two baskets with different tags. The PENDING tag is for WO-581, which maps to guest-arrival setup. The shift plan has eight uses, each needing three packs plus a reserve. \n\nSo, the robot needs to determine which basket is selected. The user mentions \"selected,\" but the scene context doesn't specify which one. However, the PENDING basket (yellow) is for WO-581, which is the guest-arrival setup. The usual setup might refer to that. The command says \"enough for one shift,\" which is eight uses, each needing three packs, so 8*3=24, plus two-pack reserve, total 26 packs. But the robot needs to check if it can carry that. The capability context says it can carry items, but how much? The problem doesn't specify capacity, so maybe it's conditionally capable. Also, the setup table mentions morning reset for a different prefix, so the usual setup for WO-581 is guest-arrival. The robot must stock the PENDING basket with the required packs. \n\nAmbiguity types: The command refers to \"selected supply basket,\" but the scene has two baskets. The user didn't specify which one, so that's a pronoun reference (selected) and maybe object_reference. Also, \"usual setup\" might be ambiguous if there are multiple setups, but the context says WO-581 maps to guest-arrival, so maybe that's clear. The \"enough for one shift\" could be a fuzzy_quantity if the exact number isn't specified, but the shift plan says eight uses, so maybe it's clear. Wait, the user says \"using the usual setup,\" which might refer to the guest-arrival setup, so that's specific. \n\nCapability status: The robot can carry and place items, but can it handle 26 packs? If the robot's capacity is unknown, then conditionally_capable. Also, the setup might involve specific items, but the capability context mentions ordinary household items, so maybe it's capable. But since the exact number isn't specified, maybe conditionally_capable. \n\nTerminal strategy: If the robot can do it, execute. But if there's ambiguity, maybe clarify. However, the command is specific enough once the basket is identified. But since the user didn't specify which basket, the robot might need to clarify, but the scene context might have the selected basket as the PENDING one. But the user might have selected it, so maybe the robot can proceed. \n\nSo, the JSON would have intent_summary as restocking the PENDING basket for one shift, speech_act as directive_command, ambiguity_types as pronoun_reference (selected basket) and maybe object_reference (supply basket), capability_status as conditionally_capable (due to quantity), terminal_strategy as execute.\n</think>\n\n{\n  \"intent_summary\": \"Restock the PENDING supply basket for one shift using the guest-arrival setup, which requires 26 standard packs (8 uses × 3 packs + 2-pack reserve).\",\n  \"speech_act\": \"directive_command\",\n  \"ambiguity_types\": [\"pronoun_reference\", \"object_reference\", \"fuzzy_quantity\"],\n  \"capability_status\": \"conditionally_capable\",\n  \"terminal_strategy\": \"execute\"\n}",
+      "record_id": "CA-0369",
+      "schema_valid": true,
+      "speech_act": "directive_command",
+      "system_id": "direct_base_llm",
+      "terminal_strategy": "execute"
+    },
+    "finetune": {
+      "ambiguity_types": [
+        "object_reference"
+      ],
+      "capability_status": "conditionally_capable",
+      "error": null,
+      "execution_mode": "final_close_intent_box",
+      "failed": false,
+      "intent_summary": "Restock the yellow supply basket (PENDING tag) with supplies for one shift using the guest-arrival setup.",
+      "latency_ms": 22238.09898691252,
+      "parsed": {
+        "ambiguity_types": [
+          "object_reference"
+        ],
+        "capability_status": "conditionally_capable",
+        "intent_summary": "Restock the yellow supply basket (PENDING tag) with supplies for one shift using the guest-arrival setup.",
+        "speech_act": "directive_command",
+        "terminal_strategy": "execute"
+      },
+      "raw_output": "<think>\nOkay, let's break this down. The user's command is to \"Stock the selected supply basket with enough for one shift using the usual setup.\" First, I need to understand the intent here. The key points are stocking a supply basket, enough for one shift, and using the usual setup.\n\nLooking at the scene context, there are two baskets: one yellow with a PENDING tag (WO-581) and a black one with COMPLETE. The shift board defines PENDING as unfinished, so the yellow basket is the one that needs restocking. The shift plan has eight standard uses, and each use requires three packs, plus a two-pack reserve. The usual setup for WO-581 is guest-arrival, which might involve specific items. \n\nThe robot's capabilities include carrying, placing, and inspecting items. It can handle labeling and cleaning. But does it know the exact contents for the guest-arrival setup? The command mentions \"usual setup,\" which might be standard for that work order. The ambiguity here is whether the robot can determine the exact setup based on the work order. Since the setup table says morning reset is for a different prefix, but WO-581 maps to guest-arrival, the robot might need to infer the setup. However, the command says \"usual setup,\" which could be a standard configuration. \n\nAmbiguity types: The command refers to \"usual setup\" which might not be explicitly defined, leading to a possible ambiguity in the setup details. Also, \"selected supply basket\" refers to the yellow one with PENDING tag, but does the robot know which one is selected? Since the dialogue history is empty, the user might be referring to the yellow basket. But the command's phrasing could be ambiguous if the selection isn't clear. However, the scene context specifies that the yellow basket has the PENDING tag, so maybe that's the selected one. \n\nCapability status: The robot can carry and place items, but does it know the exact setup for guest-arrival? If the setup details are not part of its knowledge, it might be conditionally capable. The \"usual setup\" might require specific items that the robot isn't programmed to handle. Also, the stock table mentions three packs per use and a reserve, so the robot might need to calculate the quantity. However, the robot can inspect and carry, so if the setup is standard, it could be capable. But since the exact setup isn't specified, maybe it's conditionally capable based on the work order. \n\nTerminal strategy: If the robot can't determine the setup, it should clarify. But since the setup table links WO-581 to guest-arrival, and the robot can handle standard items, it might be able to proceed. However, the ambiguity in the setup details could mean it needs to clarify. But the command says \"usual setup,\" which might be known. Alternatively, the robot might need to execute based on available info. \n\nSo, the intent is to restock the yellow basket (PENDING) with supplies for one shift using the guest-arrival setup. The speech act is a directive command. Ambiguity types might include setup details (if not specified) and object_reference (which basket is selected). Capability status could be conditionally_capable if the setup details aren't known. Terminal strategy would be execute if it can proceed, or clarify if unsure. But given the context, the robot can infer the setup from the work order, so maybe capable. But since the exact items aren't specified, maybe it's conditionally_capable. The answer would need to check these factors.\n</think>\n\n{\n  \"intent_summary\": \"Restock the yellow supply basket (PENDING tag) with supplies for one shift using the guest-arrival setup.\",\n  \"speech_act\": \"directive_command\",\n  \"ambiguity_types\": [\"object_reference\", \"setup_details\"],\n  \"capability_status\": \"conditionally_capable\",\n  \"terminal_strategy\": \"execute\"\n}",
+      "record_id": "CA-0369",
+      "schema_valid": true,
+      "speech_act": "directive_command",
+      "system_id": "t28_selected_adapter_llm",
+      "terminal_strategy": "execute"
+    },
+    "goal_first": {
+      "ambiguity_types": [
+        "object_reference",
+        "pragmatic",
+        "routine_reference"
+      ],
+      "analysis_attempts": [
+        {
+          "attempt": 1,
+          "max_new_tokens": 4096,
+          "mode": "thinking",
+          "raw_chars": 7920,
+          "raw_sha256": "2881924747ad93e08bc51179f80f8d3e498168f2fbb468e9d220609f521a3d20",
+          "validation_error": "bad_intent_summary"
+        },
+        {
+          "attempt": 2,
+          "max_new_tokens": 8192,
+          "mode": "thinking_retry",
+          "raw_chars": 14283,
+          "raw_sha256": "b65d7acfe7846dd30f13f919e36d493a2a20ce79d783834a7ff731696902427d",
+          "validation_error": "bad_pilot_ambiguity_types"
+        },
+        {
+          "attempt": 3,
+          "constraint": {
+            "constraint_initialised": true,
+            "generated_token_count": 458,
+            "maximum_output_tokens": 1024,
+            "response_mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+            "termination_reason": "eos_or_constraint_stop",
+            "transport_status": "constrained_generated"
+          },
+          "max_new_tokens": 1024,
+          "mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+          "raw_chars": 1461,
+          "raw_sha256": "51433a08ead9f103d09f08e4b4548bd38f8b64ea6f41cee89f17169b6a80041f",
+          "validation_error": null
+        }
+      ],
+      "capability_status": "unauthorized",
+      "claim_boundary": "separately_versioned_from_frozen_t39",
+      "error": null,
+      "execution_mode": "cluster-gpu-goal-first-v2",
+      "failed": false,
+      "intent_summary": "Stock the selected supply basket with enough supplies for one shift using the standard setup method",
+      "latency_ms": 115398.62260175869,
+      "model_id": "Qwen/Qwen3-8B@b968826d9c46dd6066d109eabc6255188de91218",
+      "parsed": {
+        "analysis": {
+          "ambiguity_present": true,
+          "ambiguity_types": [
+            "contextual",
+            "pragmatic",
+            "referential"
+          ],
+          "analysis_provenance": {
+            "analysis_id": "a13c331b443af4874c5107c8fcf96ac635a35a7b3147c4f5c31c93b18183bc32",
+            "method": "model_generated",
+            "notes": "source_input_hash=a13c331b443af4874c5107c8fcf96ac635a35a7b3147c4f5c31c93b18183bc32;no_gold_in_prompt;scene_licence_dropped=object,quantity,destination",
+            "provider_id": "goal_first_v2_full_context",
+            "provider_version": "goal-first-manager-v2"
+          },
+          "candidate_interpretations": [],
+          "capability_status": "unknown",
+          "clarification_question": null,
+          "clarification_targets": [],
+          "compound_ambiguity": true,
+          "compound_ambiguity_count": 3,
+          "context_sampling_uncertainty": {
+            "agreement": 0.25,
+            "score": 0.75,
+            "variant_count": 1
+          },
+          "cpc": {
+            "action": {
+              "status": "filled",
+              "value": "stock"
+            },
+            "actor": {
+              "status": "filled",
+              "value": "unknown"
+            },
+            "conditions": {
+              "status": "filled",
+              "value": "unknown"
+            },
+            "constraints": {
+              "status": "filled",
+              "value": "unknown"
+            },
+            "destination": {
+              "status": "filled",
+              "value": "using the usual setup"
+            },
+            "negation": {
+              "status": "filled",
+              "value": "unknown"
+            },
+            "object": {
+              "status": "filled",
+              "value": "selected supply basket"
+            },
+            "object_attributes": {
+              "status": "filled",
+              "value": "unknown"
+            },
+            "quantity": {
+              "status": "filled",
+              "value": "enough for one shift"
+            },
+            "recipient": {
+              "status": "filled",
+              "value": "unknown"
+            },
+            "spatial_relation": {
+              "status": "filled",
+              "value": "unknown"
+            },
+            "time": {
+              "status": "filled",
+              "value": "unknown"
+            },
+            "tool": {
+              "status": "filled",
+              "value": "unknown"
+            }
+          },
+          "findings": [
+            "pilot_ambiguity_types:[\"object_reference\",\"pragmatic\",\"routine_reference\"]",
+            "pilot_capability_status:unauthorized",
+            "intent_summary_present"
+          ],
+          "intent_summary": "Stock the selected supply basket with enough supplies for one shift using the standard setup method",
+          "primary_ambiguity_type": "contextual",
+          "recommended_strategy": "face_preserving_rejection",
+          "rejection_reason": "unsafe_or_prohibited_action",
+          "resolution_evidence": [],
+          "resolution_method": null,
+          "resolved_slots": [
+            {
+              "slot_name": "action",
+              "value": "stock"
+            },
+            {
+              "slot_name": "actor",
+              "value": "unknown"
+            },
+            {
+              "slot_name": "object",
+              "value": "selected supply basket"
+            },
+            {
+              "slot_name": "object_attributes",
+              "value": "unknown"
+            },
+            {
+              "slot_name": "destination",
+              "value": "using the usual setup"
+            },
+            {
+              "slot_name": "spatial_relation",
+              "value": "unknown"
+            },
+            {
+              "slot_name": "quantity",
+              "value": "enough for one shift"
+            },
+            {
+              "slot_name": "time",
+              "value": "unknown"
+            },
+            {
+              "slot_name": "recipient",
+              "value": "unknown"
+            },
+            {
+              "slot_name": "tool",
+              "value": "unknown"
+            },
+            {
+              "slot_name": "conditions",
+              "value": "unknown"
+            },
+            {
+              "slot_name": "constraints",
+              "value": "unknown"
+            },
+            {
+              "slot_name": "negation",
+              "value": "unknown"
+            }
+          ],
+          "risk_level": "medium",
+          "risk_relevant": true,
+          "selected_interpretation": null,
+          "speech_act": "directive_command",
+          "strategy_sequence": [],
+          "supporting_evidence": [],
+          "unresolved_slots": [],
+          "unsupported_specificity": []
+        },
+        "clarification_question": null,
+        "clarification_targets": [],
+        "execution_status": "ok",
+        "official_result": false,
+        "provider_provenance": {
+          "provider_id": "cached_analysis",
+          "provider_version": "1.0.0"
+        },
+        "recommended_strategy": "face_preserving_rejection",
+        "record_id": "CA-0369",
+        "rejection_reason": "unsafe_or_prohibited_action",
+        "resolved_slots": [
+          {
+            "slot_name": "action",
+            "value": "stock"
+          },
+          {
+            "slot_name": "actor",
+            "value": "unknown"
+          },
+          {
+            "slot_name": "object",
+            "value": "selected supply basket"
+          },
+          {
+            "slot_name": "object_attributes",
+            "value": "unknown"
+          },
+          {
+            "slot_name": "destination",
+            "value": "using the usual setup"
+          },
+          {
+            "slot_name": "spatial_relation",
+            "value": "unknown"
+          },
+          {
+            "slot_name": "quantity",
+            "value": "enough for one shift"
+          },
+          {
+            "slot_name": "time",
+            "value": "unknown"
+          },
+          {
+            "slot_name": "recipient",
+            "value": "unknown"
+          },
+          {
+            "slot_name": "tool",
+            "value": "unknown"
+          },
+          {
+            "slot_name": "conditions",
+            "value": "unknown"
+          },
+          {
+            "slot_name": "constraints",
+            "value": "unknown"
+          },
+          {
+            "slot_name": "negation",
+            "value": "unknown"
+          }
+        ],
+        "result_hash": "78f48c07bd0a709c204bd895b1232f7792fbe3340587047fa606791323a1b304",
+        "run_id": null,
+        "run_mode": null,
+        "runtime_metadata": {
+          "awaits_t28_adapter": true,
+          "classification": {
+            "ambiguity_present": true,
+            "ambiguity_types": [
+              "contextual",
+              "pragmatic",
+              "referential"
+            ],
+            "capability_status": "unknown",
+            "compound_ambiguity": true,
+            "compound_ambiguity_count": 3,
+            "derivation_notes": [
+              "ambiguity_present_from_types"
+            ],
+            "risk_level": "medium"
+          },
+          "rejection_text": "I need to decline that request because it would be unsafe under the current constraints.",
+          "requires_re_evaluation": false,
+          "resolution_events": [],
+          "router_trace": {
+            "clarification_targets": [],
+            "considered_rules": [
+              "goal_first_v2",
+              "known_unsafe_or_prohibited"
+            ],
+            "matched_rule_id": "known_unsafe_or_prohibited",
+            "notes": [],
+            "recommended_strategy": "face_preserving_rejection",
+            "rejection_reason": "unsafe_or_prohibited_action",
+            "requires_re_evaluation": false,
+            "strategy_sequence": []
+          },
+          "safety_action": "return_with_findings",
+          "uncertainty": null
+        },
+        "safety_findings": [],
+        "strategy_sequence": [],
+        "synthetic_only": true,
+        "system_id": "goal_first_manager_v2",
+        "system_version": "2.0.0",
+        "unsupported_commitment_findings": []
+      },
+      "raw_output": "{\n  \"intent_summary\": \"Stock the selected supply basket with enough supplies for one shift using the standard setup method\",\n  \"cpc\": {\n    \"action\": {\n      \"value\": \"stock\",\n      \"status\": \"unknown\"\n    },\n    \"object\": {\n      \"value\": \"selected supply basket\",\n      \"status\": \"unknown\"\n    },\n    \"quantity\": {\n      \"value\": \"enough for one shift\",\n      \"status\": \"unknown\"\n    },\n    \"destination\": {\n      \"value\": \"using the usual setup\",\n      \"status\": \"unknown\"\n    }\n  ,\n  \"constraints\": {\n    \"status\": \"unknown\"\n  ,\n  \"value\": \"unknown\"\n  },\n  \"conditions\": {\n    \"status\": \"unknown\"\n  ,\n  \"value\": \"unknown\"\n  },\n  \"time\": {\n    \"status\": \"unknown\"\n  ,\n  \"value\": \"unknown\"\n  },\n  \"spatial_relation\": {\n    \"status\": \"unknown\"\n  ,\n  \"value\": \"unknown\"\n  },\n  \"object_attributes\": {\n    \"status\": \"unknown\"\n  ,\n  \"value\": \"unknown\"\n  },\n  \"recipient\": {\n    \"status\": \"unknown\"\n  ,\n  \"value\": \"unknown\"\n  },\n  \"tool\": {\n    \"status\": \"unknown\"\n  ,\n  \"value\": \"unknown\"\n  },\n  \"negation\": {\n    \"status\": \"unknown\"\n  ,\n  \"value\": \"unknown\"\n  },\n  \"actor\": {\n    \"status\": \"unknown\"\n  ,\n  \"value\": \"unknown\"\n  }\n}\n, \n  \"pilot_ambiguity_types\": [\n    \"pragmatic\",\n    \"object_reference\",\n    \"routine_reference\"\n  ]\n  \n  ,\n  \"pilot_capability_status\": \"unauthorized\"\n  ,\n  \"speech_act\": \"directive_command\"\n  ,\n  \"unresolved_slots\": [\n    \"object\",\n    \"quantity\",\n    \"destination\"\n  ]\n  ,\n  \"uncertainty\": 0.75\n  ,\n  \"risk_level\":  \"medium\"\n  }\n",
+      "record_id": "CA-0369",
+      "schema_valid": true,
+      "supports_ambiguity_prediction": true,
+      "supports_capability_prediction": true,
+      "system_id": "goal_first_manager_v2",
+      "system_version": "2.0.0",
+      "terminal_strategy": "face_preserving_rejection"
+    },
+    "degree": {
+      "ambiguity_types": [
+        "object_reference",
+        "pragmatic",
+        "routine_reference"
+      ],
+      "analysis_attempts": [
+        {
+          "attempt": 1,
+          "max_new_tokens": 4096,
+          "mode": "thinking",
+          "raw_chars": 7920,
+          "raw_sha256": "2881924747ad93e08bc51179f80f8d3e498168f2fbb468e9d220609f521a3d20",
+          "validation_error": "bad_intent_summary"
+        },
+        {
+          "attempt": 2,
+          "max_new_tokens": 8192,
+          "mode": "thinking_retry",
+          "raw_chars": 14283,
+          "raw_sha256": "b65d7acfe7846dd30f13f919e36d493a2a20ce79d783834a7ff731696902427d",
+          "validation_error": "bad_pilot_ambiguity_types"
+        },
+        {
+          "attempt": 3,
+          "constraint": {
+            "constraint_initialised": true,
+            "generated_token_count": 458,
+            "maximum_output_tokens": 1024,
+            "response_mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+            "termination_reason": "eos_or_constraint_stop",
+            "transport_status": "constrained_generated"
+          },
+          "max_new_tokens": 1024,
+          "mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+          "raw_chars": 1461,
+          "raw_sha256": "51433a08ead9f103d09f08e4b4548bd38f8b64ea6f41cee89f17169b6a80041f",
+          "validation_error": null
+        }
+      ],
+      "capability_status": "unauthorized",
+      "claim_boundary": "separately_versioned_from_frozen_t39",
+      "error": null,
+      "execution_mode": "cluster-gpu-goal-first-v2",
+      "failed": false,
+      "intent_summary": "Stock the selected supply basket with enough supplies for one shift using the standard setup method",
+      "latency_ms": 115398.62260175869,
+      "model_id": "Qwen/Qwen3-8B@b968826d9c46dd6066d109eabc6255188de91218",
+      "parsed": {
+        "analysis": {
+          "ambiguity_present": true,
+          "ambiguity_types": [
+            "contextual",
+            "pragmatic",
+            "referential"
+          ],
+          "analysis_provenance": {
+            "analysis_id": "a13c331b443af4874c5107c8fcf96ac635a35a7b3147c4f5c31c93b18183bc32",
+            "method": "model_generated",
+            "notes": "source_input_hash=a13c331b443af4874c5107c8fcf96ac635a35a7b3147c4f5c31c93b18183bc32;no_gold_in_prompt;scene_licence_dropped=object,quantity,destination",
+            "provider_id": "goal_first_v2_full_context",
+            "provider_version": "goal-first-manager-v2"
+          },
+          "candidate_interpretations": [],
+          "capability_status": "unknown",
+          "clarification_question": "Could you clarify what you would like me to do?",
+          "clarification_targets": [
+            "intent"
+          ],
+          "compound_ambiguity": true,
+          "compound_ambiguity_count": 3,
+          "context_sampling_uncertainty": {
+            "agreement": 0.25,
+            "score": 0.75,
+            "variant_count": 1
+          },
+          "cpc": {
+            "action": {
+              "status": "filled",
+              "value": "stock"
+            },
+            "actor": {
+              "status": "filled",
+              "value": "unknown"
+            },
+            "conditions": {
+              "status": "filled",
+              "value": "unknown"
+            },
+            "constraints": {
+              "status": "filled",
+              "value": "unknown"
+            },
+            "destination": {
+              "status": "filled",
+              "value": "using the usual setup"
+            },
+            "negation": {
+              "status": "filled",
+              "value": "unknown"
+            },
+            "object": {
+              "status": "filled",
+              "value": "selected supply basket"
+            },
+            "object_attributes": {
+              "status": "filled",
+              "value": "unknown"
+            },
+            "quantity": {
+              "status": "filled",
+              "value": "enough for one shift"
+            },
+            "recipient": {
+              "status": "filled",
+              "value": "unknown"
+            },
+            "spatial_relation": {
+              "status": "filled",
+              "value": "unknown"
+            },
+            "time": {
+              "status": "filled",
+              "value": "unknown"
+            },
+            "tool": {
+              "status": "filled",
+              "value": "unknown"
+            }
+          },
+          "findings": [
+            "pilot_ambiguity_types:[\"object_reference\",\"pragmatic\",\"routine_reference\"]",
+            "pilot_capability_status:unauthorized",
+            "intent_summary_present"
+          ],
+          "intent_summary": "Stock the selected supply basket with enough supplies for one shift using the standard setup method",
+          "primary_ambiguity_type": "contextual",
+          "recommended_strategy": "clarify",
+          "rejection_reason": null,
+          "resolution_evidence": [],
+          "resolution_method": null,
+          "resolved_slots": [
+            {
+              "slot_name": "action",
+              "value": "stock"
+            },
+            {
+              "slot_name": "actor",
+              "value": "unknown"
+            },
+            {
+              "slot_name": "object",
+              "value": "selected supply basket"
+            },
+            {
+              "slot_name": "object_attributes",
+              "value": "unknown"
+            },
+            {
+              "slot_name": "destination",
+              "value": "using the usual setup"
+            },
+            {
+              "slot_name": "spatial_relation",
+              "value": "unknown"
+            },
+            {
+              "slot_name": "quantity",
+              "value": "enough for one shift"
+            },
+            {
+              "slot_name": "time",
+              "value": "unknown"
+            },
+            {
+              "slot_name": "recipient",
+              "value": "unknown"
+            },
+            {
+              "slot_name": "tool",
+              "value": "unknown"
+            },
+            {
+              "slot_name": "conditions",
+              "value": "unknown"
+            },
+            {
+              "slot_name": "constraints",
+              "value": "unknown"
+            },
+            {
+              "slot_name": "negation",
+              "value": "unknown"
+            }
+          ],
+          "risk_level": "medium",
+          "risk_relevant": true,
+          "selected_interpretation": null,
+          "speech_act": "directive_command",
+          "strategy_sequence": [],
+          "supporting_evidence": [],
+          "unresolved_slots": [],
+          "unsupported_specificity": []
+        },
+        "clarification_question": "Could you clarify what you would like me to do?",
+        "clarification_targets": [
+          "intent"
+        ],
+        "execution_status": "ok",
+        "official_result": false,
+        "provider_provenance": {
+          "shared_analysis_fingerprint": "5ca95cc457f151ca39886fa8b85bac38ec6777458cf40f913f2c30150e2b303a"
+        },
+        "recommended_strategy": "clarify",
+        "record_id": "CA-0369",
+        "rejection_reason": null,
+        "resolved_slots": [
+          {
+            "slot_name": "action",
+            "value": "stock"
+          },
+          {
+            "slot_name": "actor",
+            "value": "unknown"
+          },
+          {
+            "slot_name": "object",
+            "value": "selected supply basket"
+          },
+          {
+            "slot_name": "object_attributes",
+            "value": "unknown"
+          },
+          {
+            "slot_name": "destination",
+            "value": "using the usual setup"
+          },
+          {
+            "slot_name": "spatial_relation",
+            "value": "unknown"
+          },
+          {
+            "slot_name": "quantity",
+            "value": "enough for one shift"
+          },
+          {
+            "slot_name": "time",
+            "value": "unknown"
+          },
+          {
+            "slot_name": "recipient",
+            "value": "unknown"
+          },
+          {
+            "slot_name": "tool",
+            "value": "unknown"
+          },
+          {
+            "slot_name": "conditions",
+            "value": "unknown"
+          },
+          {
+            "slot_name": "constraints",
+            "value": "unknown"
+          },
+          {
+            "slot_name": "negation",
+            "value": "unknown"
+          }
+        ],
+        "result_hash": "6d70c2d811f15c7b486b6fda0ac5fa2138f36252e04670d6be4a3308a72e237d",
+        "run_id": null,
+        "run_mode": null,
+        "runtime_metadata": {
+          "shared_analysis_fingerprint": "5ca95cc457f151ca39886fa8b85bac38ec6777458cf40f913f2c30150e2b303a",
+          "thresholds_status": "unfrozen",
+          "thresholds_valid_for_official_use": false,
+          "uncertainty_score": 0.75,
+          "uses_type_risk_capability_precedence": false
+        },
+        "safety_findings": [],
+        "strategy_sequence": [],
+        "synthetic_only": true,
+        "system_id": "degree_based_router",
+        "system_version": "1.0.0",
+        "unsupported_commitment_findings": []
+      },
+      "raw_output": "{\n  \"intent_summary\": \"Stock the selected supply basket with enough supplies for one shift using the standard setup method\",\n  \"cpc\": {\n    \"action\": {\n      \"value\": \"stock\",\n      \"status\": \"unknown\"\n    },\n    \"object\": {\n      \"value\": \"selected supply basket\",\n      \"status\": \"unknown\"\n    },\n    \"quantity\": {\n      \"value\": \"enough for one shift\",\n      \"status\": \"unknown\"\n    },\n    \"destination\": {\n      \"value\": \"using the usual setup\",\n      \"status\": \"unknown\"\n    }\n  ,\n  \"constraints\": {\n    \"status\": \"unknown\"\n  ,\n  \"value\": \"unknown\"\n  },\n  \"conditions\": {\n    \"status\": \"unknown\"\n  ,\n  \"value\": \"unknown\"\n  },\n  \"time\": {\n    \"status\": \"unknown\"\n  ,\n  \"value\": \"unknown\"\n  },\n  \"spatial_relation\": {\n    \"status\": \"unknown\"\n  ,\n  \"value\": \"unknown\"\n  },\n  \"object_attributes\": {\n    \"status\": \"unknown\"\n  ,\n  \"value\": \"unknown\"\n  },\n  \"recipient\": {\n    \"status\": \"unknown\"\n  ,\n  \"value\": \"unknown\"\n  },\n  \"tool\": {\n    \"status\": \"unknown\"\n  ,\n  \"value\": \"unknown\"\n  },\n  \"negation\": {\n    \"status\": \"unknown\"\n  ,\n  \"value\": \"unknown\"\n  },\n  \"actor\": {\n    \"status\": \"unknown\"\n  ,\n  \"value\": \"unknown\"\n  }\n}\n, \n  \"pilot_ambiguity_types\": [\n    \"pragmatic\",\n    \"object_reference\",\n    \"routine_reference\"\n  ]\n  \n  ,\n  \"pilot_capability_status\": \"unauthorized\"\n  ,\n  \"speech_act\": \"directive_command\"\n  ,\n  \"unresolved_slots\": [\n    \"object\",\n    \"quantity\",\n    \"destination\"\n  ]\n  ,\n  \"uncertainty\": 0.75\n  ,\n  \"risk_level\":  \"medium\"\n  }\n",
+      "record_id": "CA-0369",
+      "schema_valid": true,
+      "supports_ambiguity_prediction": true,
+      "supports_capability_prediction": true,
+      "system_id": "degree_based_router_v2",
+      "system_version": "2.0.0",
+      "terminal_strategy": "clarify"
+    },
+    "timid": {
+      "ambiguity_types": [
+        "object_reference",
+        "pragmatic",
+        "routine_reference"
+      ],
+      "analysis_attempts": [
+        {
+          "attempt": 1,
+          "max_new_tokens": 4096,
+          "mode": "thinking",
+          "raw_chars": 7920,
+          "raw_sha256": "2881924747ad93e08bc51179f80f8d3e498168f2fbb468e9d220609f521a3d20",
+          "validation_error": "bad_intent_summary"
+        },
+        {
+          "attempt": 2,
+          "max_new_tokens": 8192,
+          "mode": "thinking_retry",
+          "raw_chars": 14283,
+          "raw_sha256": "b65d7acfe7846dd30f13f919e36d493a2a20ce79d783834a7ff731696902427d",
+          "validation_error": "bad_pilot_ambiguity_types"
+        },
+        {
+          "attempt": 3,
+          "constraint": {
+            "constraint_initialised": true,
+            "generated_token_count": 458,
+            "maximum_output_tokens": 1024,
+            "response_mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+            "termination_reason": "eos_or_constraint_stop",
+            "transport_status": "constrained_generated"
+          },
+          "max_new_tokens": 1024,
+          "mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+          "raw_chars": 1461,
+          "raw_sha256": "51433a08ead9f103d09f08e4b4548bd38f8b64ea6f41cee89f17169b6a80041f",
+          "validation_error": null
+        }
+      ],
+      "capability_status": "unauthorized",
+      "claim_boundary": "separately_versioned_from_frozen_t39",
+      "error": null,
+      "execution_mode": "cluster-gpu-goal-first-v2",
+      "failed": false,
+      "intent_summary": "Stock the selected supply basket with enough supplies for one shift using the standard setup method",
+      "latency_ms": 115398.62260175869,
+      "model_id": "Qwen/Qwen3-8B@b968826d9c46dd6066d109eabc6255188de91218",
+      "parsed": {
+        "analysis": {
+          "ambiguity_present": true,
+          "ambiguity_types": [
+            "contextual",
+            "pragmatic",
+            "referential"
+          ],
+          "analysis_provenance": {
+            "analysis_id": "a13c331b443af4874c5107c8fcf96ac635a35a7b3147c4f5c31c93b18183bc32",
+            "method": "model_generated",
+            "notes": "source_input_hash=a13c331b443af4874c5107c8fcf96ac635a35a7b3147c4f5c31c93b18183bc32;no_gold_in_prompt;scene_licence_dropped=object,quantity,destination",
+            "provider_id": "goal_first_v2_full_context",
+            "provider_version": "goal-first-manager-v2"
+          },
+          "candidate_interpretations": [],
+          "capability_status": "unknown",
+          "clarification_question": "Before I continue, could you clarify: contextual, pragmatic, referential?",
+          "clarification_targets": [
+            "contextual",
+            "pragmatic",
+            "referential"
+          ],
+          "compound_ambiguity": true,
+          "compound_ambiguity_count": 3,
+          "context_sampling_uncertainty": {
+            "agreement": 0.25,
+            "score": 0.75,
+            "variant_count": 1
+          },
+          "cpc": {
+            "action": {
+              "status": "filled",
+              "value": "stock"
+            },
+            "actor": {
+              "status": "filled",
+              "value": "unknown"
+            },
+            "conditions": {
+              "status": "filled",
+              "value": "unknown"
+            },
+            "constraints": {
+              "status": "filled",
+              "value": "unknown"
+            },
+            "destination": {
+              "status": "filled",
+              "value": "using the usual setup"
+            },
+            "negation": {
+              "status": "filled",
+              "value": "unknown"
+            },
+            "object": {
+              "status": "filled",
+              "value": "selected supply basket"
+            },
+            "object_attributes": {
+              "status": "filled",
+              "value": "unknown"
+            },
+            "quantity": {
+              "status": "filled",
+              "value": "enough for one shift"
+            },
+            "recipient": {
+              "status": "filled",
+              "value": "unknown"
+            },
+            "spatial_relation": {
+              "status": "filled",
+              "value": "unknown"
+            },
+            "time": {
+              "status": "filled",
+              "value": "unknown"
+            },
+            "tool": {
+              "status": "filled",
+              "value": "unknown"
+            }
+          },
+          "findings": [
+            "pilot_ambiguity_types:[\"object_reference\",\"pragmatic\",\"routine_reference\"]",
+            "pilot_capability_status:unauthorized",
+            "intent_summary_present"
+          ],
+          "intent_summary": "Stock the selected supply basket with enough supplies for one shift using the standard setup method",
+          "primary_ambiguity_type": "contextual",
+          "recommended_strategy": "clarify",
+          "rejection_reason": null,
+          "resolution_evidence": [],
+          "resolution_method": null,
+          "resolved_slots": [
+            {
+              "slot_name": "action",
+              "value": "stock"
+            },
+            {
+              "slot_name": "actor",
+              "value": "unknown"
+            },
+            {
+              "slot_name": "object",
+              "value": "selected supply basket"
+            },
+            {
+              "slot_name": "object_attributes",
+              "value": "unknown"
+            },
+            {
+              "slot_name": "destination",
+              "value": "using the usual setup"
+            },
+            {
+              "slot_name": "spatial_relation",
+              "value": "unknown"
+            },
+            {
+              "slot_name": "quantity",
+              "value": "enough for one shift"
+            },
+            {
+              "slot_name": "time",
+              "value": "unknown"
+            },
+            {
+              "slot_name": "recipient",
+              "value": "unknown"
+            },
+            {
+              "slot_name": "tool",
+              "value": "unknown"
+            },
+            {
+              "slot_name": "conditions",
+              "value": "unknown"
+            },
+            {
+              "slot_name": "constraints",
+              "value": "unknown"
+            },
+            {
+              "slot_name": "negation",
+              "value": "unknown"
+            }
+          ],
+          "risk_level": "medium",
+          "risk_relevant": true,
+          "selected_interpretation": null,
+          "speech_act": "directive_command",
+          "strategy_sequence": [],
+          "supporting_evidence": [],
+          "unresolved_slots": [],
+          "unsupported_specificity": []
+        },
+        "clarification_question": "Before I continue, could you clarify: contextual, pragmatic, referential?",
+        "clarification_targets": [
+          "contextual",
+          "pragmatic",
+          "referential"
+        ],
+        "execution_status": "ok",
+        "official_result": false,
+        "provider_provenance": {
+          "provider_id": "cached_analysis",
+          "provider_version": "1.0.0"
+        },
+        "recommended_strategy": "clarify",
+        "record_id": "CA-0369",
+        "rejection_reason": null,
+        "resolved_slots": [
+          {
+            "slot_name": "action",
+            "value": "stock"
+          },
+          {
+            "slot_name": "actor",
+            "value": "unknown"
+          },
+          {
+            "slot_name": "object",
+            "value": "selected supply basket"
+          },
+          {
+            "slot_name": "object_attributes",
+            "value": "unknown"
+          },
+          {
+            "slot_name": "destination",
+            "value": "using the usual setup"
+          },
+          {
+            "slot_name": "spatial_relation",
+            "value": "unknown"
+          },
+          {
+            "slot_name": "quantity",
+            "value": "enough for one shift"
+          },
+          {
+            "slot_name": "time",
+            "value": "unknown"
+          },
+          {
+            "slot_name": "recipient",
+            "value": "unknown"
+          },
+          {
+            "slot_name": "tool",
+            "value": "unknown"
+          },
+          {
+            "slot_name": "conditions",
+            "value": "unknown"
+          },
+          {
+            "slot_name": "constraints",
+            "value": "unknown"
+          },
+          {
+            "slot_name": "negation",
+            "value": "unknown"
+          }
+        ],
+        "result_hash": "f6e84182fbc7fdafe68ccc224503b20c0972454046f4e35caafd04b23f0aaae8",
+        "run_id": null,
+        "run_mode": null,
+        "runtime_metadata": {
+          "awaits_t28_adapter": true,
+          "classification": {
+            "ambiguity_present": true,
+            "ambiguity_types": [
+              "contextual",
+              "pragmatic",
+              "referential"
+            ],
+            "capability_status": "unknown",
+            "compound_ambiguity": true,
+            "compound_ambiguity_count": 3,
+            "derivation_notes": [
+              "ambiguity_present_from_types"
+            ],
+            "risk_level": "medium"
+          },
+          "rejection_text": null,
+          "requires_re_evaluation": false,
+          "resolution_events": [],
+          "router_trace": {
+            "clarification_targets": [
+              "contextual",
+              "pragmatic",
+              "referential"
+            ],
+            "considered_rules": [
+              "known_unsafe_or_prohibited",
+              "known_incapable",
+              "unknown_or_unverified_capability"
+            ],
+            "matched_rule_id": "unknown_capability",
+            "notes": [
+              "unknown_capability_cannot_execute"
+            ],
+            "recommended_strategy": "clarify",
+            "rejection_reason": null,
+            "requires_re_evaluation": false,
+            "strategy_sequence": []
+          },
+          "safety_action": "return_with_findings",
+          "uncertainty": null
+        },
+        "safety_findings": [],
+        "strategy_sequence": [],
+        "synthetic_only": true,
+        "system_id": "full_type_risk_aware_manager",
+        "system_version": "1.0.0",
+        "unsupported_commitment_findings": []
+      },
+      "raw_output": "{\n  \"intent_summary\": \"Stock the selected supply basket with enough supplies for one shift using the standard setup method\",\n  \"cpc\": {\n    \"action\": {\n      \"value\": \"stock\",\n      \"status\": \"unknown\"\n    },\n    \"object\": {\n      \"value\": \"selected supply basket\",\n      \"status\": \"unknown\"\n    },\n    \"quantity\": {\n      \"value\": \"enough for one shift\",\n      \"status\": \"unknown\"\n    },\n    \"destination\": {\n      \"value\": \"using the usual setup\",\n      \"status\": \"unknown\"\n    }\n  ,\n  \"constraints\": {\n    \"status\": \"unknown\"\n  ,\n  \"value\": \"unknown\"\n  },\n  \"conditions\": {\n    \"status\": \"unknown\"\n  ,\n  \"value\": \"unknown\"\n  },\n  \"time\": {\n    \"status\": \"unknown\"\n  ,\n  \"value\": \"unknown\"\n  },\n  \"spatial_relation\": {\n    \"status\": \"unknown\"\n  ,\n  \"value\": \"unknown\"\n  },\n  \"object_attributes\": {\n    \"status\": \"unknown\"\n  ,\n  \"value\": \"unknown\"\n  },\n  \"recipient\": {\n    \"status\": \"unknown\"\n  ,\n  \"value\": \"unknown\"\n  },\n  \"tool\": {\n    \"status\": \"unknown\"\n  ,\n  \"value\": \"unknown\"\n  },\n  \"negation\": {\n    \"status\": \"unknown\"\n  ,\n  \"value\": \"unknown\"\n  },\n  \"actor\": {\n    \"status\": \"unknown\"\n  ,\n  \"value\": \"unknown\"\n  }\n}\n, \n  \"pilot_ambiguity_types\": [\n    \"pragmatic\",\n    \"object_reference\",\n    \"routine_reference\"\n  ]\n  \n  ,\n  \"pilot_capability_status\": \"unauthorized\"\n  ,\n  \"speech_act\": \"directive_command\"\n  ,\n  \"unresolved_slots\": [\n    \"object\",\n    \"quantity\",\n    \"destination\"\n  ]\n  ,\n  \"uncertainty\": 0.75\n  ,\n  \"risk_level\":  \"medium\"\n  }\n",
+      "record_id": "CA-0369",
+      "schema_valid": true,
+      "supports_ambiguity_prediction": true,
+      "supports_capability_prediction": true,
+      "system_id": "rich_conservative_manager_v2",
+      "system_version": "2.0.0",
+      "terminal_strategy": "clarify"
+    },
+    "context_blind": {
+      "ambiguity_types": [
+        "pragmatic"
+      ],
+      "analysis_attempts": [
+        {
+          "attempt": 1,
+          "max_new_tokens": 4096,
+          "mode": "thinking",
+          "raw_chars": 5556,
+          "raw_sha256": "bee9fadb171ba48724472ed06badeebb7adecc6c1a9854f1f706ff73b861d8cd",
+          "validation_error": "bad_pilot_ambiguity_types"
+        },
+        {
+          "attempt": 2,
+          "max_new_tokens": 8192,
+          "mode": "thinking_retry",
+          "raw_chars": 5583,
+          "raw_sha256": "acdcc1bcf6943717b3747a8eb9cdb032f58ad885f5f8db557e1e442b18cb209b",
+          "validation_error": "bad_pilot_ambiguity_types"
+        },
+        {
+          "attempt": 3,
+          "constraint": {
+            "constraint_initialised": true,
+            "generated_token_count": 451,
+            "maximum_output_tokens": 1024,
+            "response_mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+            "termination_reason": "eos_or_constraint_stop",
+            "transport_status": "constrained_generated"
+          },
+          "max_new_tokens": 1024,
+          "mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+          "raw_chars": 1436,
+          "raw_sha256": "9815b7c29b99db51c43ed0787cf8b412e1308b5e7751995e80a3298008ee6993",
+          "validation_error": null
+        }
+      ],
+      "capability_status": "unauthorized",
+      "claim_boundary": "separately_versioned_from_frozen_t39",
+      "error": null,
+      "execution_mode": "cluster-gpu-goal-first-v2",
+      "failed": false,
+      "intent_summary": "Fill the selected supply basket with sufficient supplies for one shift using the standard configuration",
+      "latency_ms": 53488.04047284648,
+      "model_id": "Qwen/Qwen3-8B@b968826d9c46dd6066d109eabc6255188de91218",
+      "parsed": {
+        "analysis": {
+          "ambiguity_present": true,
+          "ambiguity_types": [
+            "pragmatic"
+          ],
+          "analysis_provenance": {
+            "analysis_id": "6125eb66bca08d0648336a775b1ff7a632d9782352e859de8b878af7810a5308",
+            "method": "context_blind",
+            "notes": "ablated_input_hash=6125eb66bca08d0648336a775b1ff7a632d9782352e859de8b878af7810a5308;source_input_hash=6125eb66bca08d0648336a775b1ff7a632d9782352e859de8b878af7810a5308;no_gold_in_prompt;scene_licence_dropped=quantity,recipient,destination,tool,spatial_relation",
+            "provider_id": "goal_first_v2_context_blind",
+            "provider_version": "goal-first-manager-v2"
+          },
+          "candidate_interpretations": [],
+          "capability_status": "unknown",
+          "clarification_question": null,
+          "clarification_targets": [],
+          "compound_ambiguity": false,
+          "compound_ambiguity_count": 0,
+          "context_sampling_uncertainty": {
+            "agreement": 0.35,
+            "score": 0.65,
+            "variant_count": 1
+          },
+          "cpc": {
+            "action": {
+              "status": "filled",
+              "value": "Stock"
+            },
+            "actor": {
+              "status": "filled",
+              "value": "none"
+            },
+            "conditions": {
+              "status": "filled",
+              "value": "none"
+            },
+            "constraints": {
+              "status": "filled",
+              "value": "none"
+            },
+            "destination": {
+              "status": "filled",
+              "value": "none"
+            },
+            "negation": {
+              "status": "filled",
+              "value": "none"
+            },
+            "object": {
+              "status": "filled",
+              "value": "selected supply basket"
+            },
+            "object_attributes": {
+              "status": "filled",
+              "value": "none"
+            },
+            "quantity": {
+              "status": "filled",
+              "value": "enough for one shift"
+            },
+            "recipient": {
+              "status": "filled",
+              "value": "none"
+            },
+            "spatial_relation": {
+              "status": "filled",
+              "value": "none"
+            },
+            "time": {
+              "status": "filled",
+              "value": "none"
+            },
+            "tool": {
+              "status": "filled",
+              "value": "usual setup"
+            }
+          },
+          "findings": [
+            "pilot_ambiguity_types:[\"pragmatic\"]",
+            "pilot_capability_status:unauthorized",
+            "intent_summary_present"
+          ],
+          "intent_summary": "Fill the selected supply basket with sufficient supplies for one shift using the standard configuration",
+          "primary_ambiguity_type": "pragmatic",
+          "recommended_strategy": "face_preserving_rejection",
+          "rejection_reason": "unsafe_or_prohibited_action",
+          "resolution_evidence": [],
+          "resolution_method": null,
+          "resolved_slots": [
+            {
+              "slot_name": "action",
+              "value": "Stock"
+            },
+            {
+              "slot_name": "actor",
+              "value": "none"
+            },
+            {
+              "slot_name": "object",
+              "value": "selected supply basket"
+            },
+            {
+              "slot_name": "object_attributes",
+              "value": "none"
+            },
+            {
+              "slot_name": "destination",
+              "value": "none"
+            },
+            {
+              "slot_name": "spatial_relation",
+              "value": "none"
+            },
+            {
+              "slot_name": "quantity",
+              "value": "enough for one shift"
+            },
+            {
+              "slot_name": "time",
+              "value": "none"
+            },
+            {
+              "slot_name": "recipient",
+              "value": "none"
+            },
+            {
+              "slot_name": "tool",
+              "value": "usual setup"
+            },
+            {
+              "slot_name": "conditions",
+              "value": "none"
+            },
+            {
+              "slot_name": "constraints",
+              "value": "none"
+            },
+            {
+              "slot_name": "negation",
+              "value": "none"
+            }
+          ],
+          "risk_level": "medium",
+          "risk_relevant": true,
+          "selected_interpretation": null,
+          "speech_act": "directive_command",
+          "strategy_sequence": [],
+          "supporting_evidence": [],
+          "unresolved_slots": [],
+          "unsupported_specificity": []
+        },
+        "clarification_question": null,
+        "clarification_targets": [],
+        "execution_status": "ok",
+        "official_result": false,
+        "provider_provenance": {
+          "provider_id": "cached_analysis",
+          "provider_version": "1.0.0"
+        },
+        "recommended_strategy": "face_preserving_rejection",
+        "record_id": "CA-0369",
+        "rejection_reason": "unsafe_or_prohibited_action",
+        "resolved_slots": [
+          {
+            "slot_name": "action",
+            "value": "Stock"
+          },
+          {
+            "slot_name": "actor",
+            "value": "none"
+          },
+          {
+            "slot_name": "object",
+            "value": "selected supply basket"
+          },
+          {
+            "slot_name": "object_attributes",
+            "value": "none"
+          },
+          {
+            "slot_name": "destination",
+            "value": "none"
+          },
+          {
+            "slot_name": "spatial_relation",
+            "value": "none"
+          },
+          {
+            "slot_name": "quantity",
+            "value": "enough for one shift"
+          },
+          {
+            "slot_name": "time",
+            "value": "none"
+          },
+          {
+            "slot_name": "recipient",
+            "value": "none"
+          },
+          {
+            "slot_name": "tool",
+            "value": "usual setup"
+          },
+          {
+            "slot_name": "conditions",
+            "value": "none"
+          },
+          {
+            "slot_name": "constraints",
+            "value": "none"
+          },
+          {
+            "slot_name": "negation",
+            "value": "none"
+          }
+        ],
+        "result_hash": "70d92a27bdf024ebfde87de71cc35543a2d2b3138a06b609627d2f3aaf21765f",
+        "run_id": null,
+        "run_mode": null,
+        "runtime_metadata": {
+          "analysis_identity": {
+            "analysis_content_hash": "6c68033dde5bdd44cff47adbe0a616b916fb811e3b0f44cceca70ff320febb43",
+            "analysis_variant": "context_blind",
+            "model_strategy_id": null,
+            "provider_id": "goal_first_v2_context_blind",
+            "provider_version": "goal-first-manager-v2",
+            "record_id": "CA-0369",
+            "source_input_hash": "6125eb66bca08d0648336a775b1ff7a632d9782352e859de8b878af7810a5308"
+          },
+          "analysis_identity_fingerprint": "09f9aa3a078927f9418f323c3c938a92db1e884b94c2980201bc466245365f83",
+          "awaits_t28_adapter": true,
+          "classification": {
+            "ambiguity_present": true,
+            "ambiguity_types": [
+              "pragmatic"
+            ],
+            "capability_status": "unknown",
+            "compound_ambiguity": false,
+            "compound_ambiguity_count": 0,
+            "derivation_notes": [
+              "ambiguity_present_from_types"
+            ],
+            "risk_level": "medium"
+          },
+          "context_ablation": {
+            "ablated_input_hash": "6125eb66bca08d0648336a775b1ff7a632d9782352e859de8b878af7810a5308",
+            "capability_context_removed": true,
+            "dialogue_history_removed": true,
+            "rejected_full_context_cache": false,
+            "rejection_reason": null,
+            "scene_context_removed": true,
+            "stripped_context_derived_fields": false
+          },
+          "original_input_unmutated": true,
+          "rejection_text": "I need to decline that request because it would be unsafe under the current constraints.",
+          "requires_re_evaluation": false,
+          "resolution_events": [],
+          "router_trace": {
+            "clarification_targets": [],
+            "considered_rules": [
+              "goal_first_v2",
+              "known_unsafe_or_prohibited"
+            ],
+            "matched_rule_id": "known_unsafe_or_prohibited",
+            "notes": [],
+            "recommended_strategy": "face_preserving_rejection",
+            "rejection_reason": "unsafe_or_prohibited_action",
+            "requires_re_evaluation": false,
+            "strategy_sequence": []
+          },
+          "safety_action": "return_with_findings",
+          "uncertainty": null
+        },
+        "safety_findings": [],
+        "strategy_sequence": [],
+        "synthetic_only": true,
+        "system_id": "context_blind_manager",
+        "system_version": "1.0.0",
+        "unsupported_commitment_findings": []
+      },
+      "raw_output": "{\n  \"intent_summary\": \"Fill the selected supply basket with sufficient supplies for one shift using the standard configuration\",\n  \"cpc\": {\n    \"action\": {\n      \"value\": \"Stock\",\n      \"status\": \"unknown\"\n    },\n    \"object\": {\n      \"value\": \"selected supply basket\",\n      \"status\": \"unknown\"\n    },\n    \"quantity\": {\n      \"value\": \"enough for one shift\",\n      \"status\": \"unknown\"\n    },\n    \"recipient\": {\n      \"value\": \"none\",\n      \"status\": \"unknown\"\n    },\n    \"destination\": {\n      \"value\": \"none\",\n      \"status\": \"unknown\"\n    },\n    \"tool\": {\n      \"value\": \"usual setup\",\n      \"status\": \"unknown\"\n    }\n \n  ,\n  \"constraints\": {\n    \"status\": \"unknown\"\n  ,\n    \"value\": \"none\"\n  },\n  \"conditions\": {\n    \"status\": \"unknown\"\n  ,\n    \"value\": \"none\"\n  },\n  \"time\": {\n    \"status\": \"unknown\"\n  ,\n    \"value\": \"none\"\n  },\n  \"spatial_relation\": {\n    \"status\": \"unknown\"\n  ,\n    \"value\": \"none\"\n  },\n  \"object_attributes\": {\n    \"status\": \"unknown\"\n  ,\n    \"value\": \"none\"\n  },\n  \"negation\": {\n    \"status\": \"unknown\"\n  ,\n    \"value\": \"none\"\n  },\n  \"actor\": {\n    \"status\": \"unknown\"\n  ,\n    \"value\": \"none\"\n  }\n}\n, \"pilot_ambiguity_types\": [\n  \"pragmatic\"\n]  \n  ,\n  \"pilot_capability_status\": \"unauthorized\"\n  ,\n  \"risk_level\": \"medium\"\n  ,\n  \"speech_act\": \"directive_command\"\n  ,\n  \"unresolved_slots\": [\n    \"quantity\",\n    \"recipient\",\n    \"destination\",\n    \"tool\",\n    \"spatial_relation\"\n  ]\n  ,\n  \"uncertainty\": 0.65\n}",
+      "record_id": "CA-0369",
+      "schema_valid": true,
+      "supports_ambiguity_prediction": true,
+      "supports_capability_prediction": true,
+      "system_id": "goal_first_context_blind_v2",
+      "system_version": "2.0.0",
+      "terminal_strategy": "face_preserving_rejection"
+    }
+  },
+  "provenance": {
+    "source_sha256": "f33b1e29f1e8aa256a475f07213aa07247def47d8e2148d54a472a40b71b05c9",
+    "gold_sha256": "5e23ad1a92ff1873c8f039a8ce560a111dd6fb6b8ae8c11d6cf34dbfa1c360db",
+    "t07_final_zip_sha256": "34ca50e034ca37b617068bb50c734d12fa26282fb5eec563c11ead700163e491",
+    "inherited_t07_zip_sha256": "0305b1e9ab062876ee6ee89778cc6028d2eaf01718b7dd0295944e7d9cb81a01",
+    "note": "Goal-First, Degree, Timid, and Context-Blind predictions are inherited from the earlier T0.7 run; official intent and comparison come from the final T0.7 archive."
+  }
+}

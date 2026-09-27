@@ -1,0 +1,1339 @@
+{
+  "record_id": "CA-0239",
+  "frozen_source": {
+    "capability_context": "Station service robot can move signs and light barriers, scan tags, and deliver sealed items in public and staff zones.",
+    "command": "Move only the marked cleaning cart after the last train.",
+    "dialogue_history": [
+      "cleaner: The information stand is excluded from the work order; the word only applies to the marked cleaning cart."
+    ],
+    "record_id": "CA-0239",
+    "scene_context": "Service zone in a train-station concourse. Two cleaning carts carry work-order marks: the grey one near the ticket gate has a yellow COMPLETE tag, while the amber one beside the information desk has an orange PENDING tag. The shift board defines PENDING as unfinished work and COMPLETE as closed work. The current time is 14:33. The work-order note names the last train at 15:00, not the later occurrence at 19:00."
+  },
+  "frozen_gold": {
+    "ambiguity_types": [
+      "object_reference",
+      "scope",
+      "temporal_reference"
+    ],
+    "annotator_b_era": "claude_era",
+    "annotator_b_model": "claude-4.6-sonnet-medium-thinking",
+    "capability_status": "capable",
+    "field_status": {
+      "ambiguity_types": "auto_agree",
+      "capability_status": "auto_agree",
+      "record_validity": "auto_agree",
+      "strategy_sequence": "from_A_matching_terminal",
+      "terminal_strategy": "auto_agree"
+    },
+    "gold_lifecycle": "final_gold",
+    "gold_status": "auto_agree",
+    "human_gate_required": false,
+    "provenance": {
+      "agreement_label": "pilot_annotation_agreement",
+      "annotator_a_sha256": "cf982b97d5094cb3264e283e4db6a8f92edba1b3d6be739c9dc13ca3341928c7",
+      "annotator_b_sha256": "33ce6dd7a1a44f76aab42ffe03dae5eeaf2d781dcd2292eec10aa3eeec25391b",
+      "gold_policy": "use_existing_pilot_adjudicated_gold",
+      "input_sha256": "3144cd0ba9769b3cd11d9103e2b42ed99ebe3248038d6ac7ebe41b2c1c558d91",
+      "pilot_gold_sha256": "392b17ffd29683eeb01233c8e191885c14dee7c8710aa065c085cf78db5650f0",
+      "protocol": "pilot_adjudicated_gold_on_capability_repaired_source",
+      "repaired_input_sha256": "6778da6b9c0b9e87a6d49f131a16932414cd70dcedfdac18a6b3486fab135f8f"
+    },
+    "record_id": "CA-0239",
+    "record_validity": "valid",
+    "strategy_sequence": [
+      "execute"
+    ],
+    "terminal_strategy": "execute"
+  },
+  "t07_comparison": {
+    "record_id": "CA-0239",
+    "gold_route": "execute",
+    "raw_route": "execute",
+    "ft_route": "execute",
+    "gf_route": "refuse",
+    "raw_route_ok": "True",
+    "ft_route_ok": "True",
+    "gf_route_ok": "False",
+    "raw_official_intent": "True",
+    "ft_official_intent": "True",
+    "gf_official_intent": "True",
+    "blind_official_intent": "True"
+  },
+  "t07_official_intent": {
+    "context_blind_official_intent": true,
+    "degree_official_intent_shared_gf": true,
+    "finetune_official_intent": true,
+    "goal_first_official_intent": true,
+    "raw_official_intent": true,
+    "record_id": "CA-0239",
+    "timid_official_intent_shared_gf": true
+  },
+  "t07_predictions": {
+    "raw_qwen": {
+      "ambiguity_types": [
+        "fuzzy_temporal",
+        "temporal_reference"
+      ],
+      "capability_status": "capable",
+      "error": null,
+      "execution_mode": "final_close_intent_box",
+      "failed": false,
+      "intent_summary": "Move the marked cleaning cart (PENDING-tagged amber cart) after the last train departs at 15:00.",
+      "latency_ms": 10018.852950073779,
+      "parsed": {
+        "ambiguity_types": [
+          "fuzzy_temporal",
+          "temporal_reference"
+        ],
+        "capability_status": "capable",
+        "intent_summary": "Move the marked cleaning cart (PENDING-tagged amber cart) after the last train departs at 15:00.",
+        "speech_act": "directive_command",
+        "terminal_strategy": "execute"
+      },
+      "raw_output": "<think>\nOkay, let's break this down. The user's command is \"Move only the marked cleaning cart after the last train.\" The dialogue history mentions that the information stand is excluded, and \"only\" applies to the marked cleaning cart. So the key here is identifying which cart is marked and the condition about the last train.\n\nFirst, the scene context says there are two cleaning carts: grey near the ticket gate with a yellow COMPLETE tag, and amber beside the info desk with an orange PENDING tag. The work order defines PENDING as unfinished and COMPLETE as closed. The current time is 14:33, and the last train is at 15:00. The note refers to the last train at 15:00, not 19:00. \n\nSo the user wants the marked cart (which is the amber one with PENDING) moved after the last train. But the ambiguity here is whether \"after the last train\" means after the train has passed or after the train's arrival. Since the last train is at 15:00, maybe they mean after that time. However, the command is a bit vague on the exact timing. Also, the \"only\" in the command refers to the marked cart, which is the amber one. \n\nLooking at the ambiguity types, there's temporal_reference because of \"after the last train\" and maybe fuzzy_temporal since the exact time isn't specified beyond 15:00. Also, the reference to the marked cart could involve object_reference or pronoun_reference, but since the cart is explicitly described, maybe object_reference. But the main ambiguity is the timing. \n\nThe capability status: the robot can move cleaning carts, so it's capable. The terminal strategy would be execute since the command is clear once the ambiguity is resolved. The speech act is a directive command. The intent summary is to move the marked cart after the last train. \n\nWait, the dialogue history clarifies that \"only\" applies to the marked cart, so the user is specifying that the other cart isn't to be moved. So the ambiguity might be in the reference to the marked cart, but since the scene context specifies the two carts, maybe there's no pronoun reference here. The main ambiguity is the temporal aspect of \"after the last train.\" So the ambiguity types would include temporal_reference and maybe fuzzy_temporal. \n\nSo the JSON would have intent_summary as moving the marked cart after the last train, speech_act as directive_command, ambiguity_types with temporal_reference and fuzzy_temporal, capability_status as capable, and terminal_strategy as execute.\n</think>\n\n{\n  \"intent_summary\": \"Move the marked cleaning cart (PENDING-tagged amber cart) after the last train departs at 15:00.\",\n  \"speech_act\": \"directive_command\",\n  \"ambiguity_types\": [\"temporal_reference\", \"fuzzy_temporal\"],\n  \"capability_status\": \"capable\",\n  \"terminal_strategy\": \"execute\"\n}",
+      "record_id": "CA-0239",
+      "schema_valid": true,
+      "speech_act": "directive_command",
+      "system_id": "direct_base_llm",
+      "terminal_strategy": "execute"
+    },
+    "finetune": {
+      "ambiguity_types": [
+        "object_reference"
+      ],
+      "capability_status": "capable",
+      "error": null,
+      "execution_mode": "final_close_intent_box",
+      "failed": false,
+      "intent_summary": "Move the marked cleaning cart after the last train at 15:00.",
+      "latency_ms": 28373.37156618014,
+      "parsed": {
+        "ambiguity_types": [
+          "object_reference"
+        ],
+        "capability_status": "capable",
+        "intent_summary": "Move the marked cleaning cart after the last train at 15:00.",
+        "speech_act": "directive_command",
+        "terminal_strategy": "execute"
+      },
+      "raw_output": "<think>\nOkay, let's break down this command. The user says, \"Move only the marked cleaning cart after the last train.\" The dialogue history mentions that the information stand is excluded, and \"only\" applies to the marked cart. So, the key here is identifying which cart is marked and the condition of moving it after the last train.\n\nFirst, the scene context explains there are two carts: grey near the ticket gate with a yellow COMPLETE tag, and amber beside the info desk with an orange PENDING tag. The work order note refers to the last train at 15:00, not the 19:00 one. The current time is 14:33. \n\nThe command's ambiguity might be in determining which cart is \"marked.\" The dialogue clarifies that \"only\" applies to the marked one, so the user is specifying that the action is only for the marked cart. The ambiguity types here could involve object_reference because the \"marked cleaning cart\" refers to a specific object. Also, there's a spatial_reference since the carts are in different locations. The temporal part is about \"after the last train,\" which is at 15:00. The robot needs to check the time and the cart's status. \n\nThe capability status: the robot can move carts, so it's capable. The terminal strategy would be to execute if the conditions are met. The speech act is a directive command. The intent summary is moving the marked cart after the last train. Checking for other ambiguities, maybe scope? But the main ones are object_reference and spatial_reference. Wait, the user mentioned the work order note names the last train at 15:00. So the time is clear. The marked cart is the one with the tag, which is the amber one with PENDING (since PENDING is unfinished). So the robot should move that cart after the last train (at 15:00). The ambiguity types here might be object_reference (which cart is marked) and spatial_reference (where to move it). Also, maybe temporal_reference? But the time is specified as 15:00, so not vague. So the ambiguity types would be object_reference and spatial_reference. Wait, the command says \"move... after the last train,\" which is a temporal reference. But the time is given as 15:00, so maybe no ambiguity there. The main ambiguity is which cart is marked. The dialogue history clarifies that the \"only\" applies to the marked cart, so the user is specifying that the action is only for the marked one. So the ambiguity is resolved by the dialogue, but the original command's ambiguity is in identifying which cart is marked. Hence, object_reference. Also, the instruction says \"after the last train,\" which is a spatial reference? Or temporal. Maybe temporal_reference. But the time is clear. So maybe no ambiguity. The main ambiguity is object_reference (which cart is marked). So the ambiguity_types would be object_reference. Wait, the user's command is \"Move only the marked cleaning cart after the last train.\" The marked cart is specified in the scene context. The grey one is COMPLETE, the amber is PENDING. The work order note says PENDING is unfinished, so the amber cart is the one that needs moving. But the robot needs to know which one is marked. The dialogue history says the information stand is excluded, so the marked cart is the one that's not the information stand. The user clarifies that \"only applies to the marked cleaning cart,\" so the robot must identify which cart is marked. Therefore, the ambiguity is object_reference (which cart is marked). Also, the command says \"after the last train,\" which is a temporal reference. But since the time is given as 15:00, there's no vagueness. So the ambiguity_types would be object_reference. Wait, but the original command might have multiple ambiguities. Let me check the possible ambiguity types again. The options include object_reference, which applies here. Also, the instruction is to move the cart \"after the last train,\" which is a temporal reference. But the time is specified as 15:00, so that's clear. So no temporal ambiguity. Therefore, the main ambiguity is object_reference. So the JSON should have ambiguity_types as [\"object_reference\"]. \n\nThe capability_status is capable because the robot can move carts. The speech_act is a directive command. The terminal_strategy would be execute, since the robot can perform the task once it identifies the correct cart and the time. The intent_summary is moving the marked cart after the last train. So putting it all together.\n</think>\n\n{\n  \"intent_summary\": \"Move the marked cleaning cart after the last train at 15:00.\",\n  \"speech_act\": \"directive_command\",\n  \"ambiguity_types\": [\"object_reference\"],\n  \"capability_status\": \"capable\",\n  \"terminal_strategy\": \"execute\"\n}",
+      "record_id": "CA-0239",
+      "schema_valid": true,
+      "speech_act": "directive_command",
+      "system_id": "t28_selected_adapter_llm",
+      "terminal_strategy": "execute"
+    },
+    "goal_first": {
+      "ambiguity_types": [
+        "object_reference",
+        "pragmatic",
+        "temporal_reference"
+      ],
+      "analysis_attempts": [
+        {
+          "attempt": 1,
+          "max_new_tokens": 4096,
+          "mode": "thinking",
+          "raw_chars": 16221,
+          "raw_sha256": "0a625c1f0119ea7216eb26cdc770c085585e2c4942ae89506d1f2d0108fd74f0",
+          "validation_error": "bad_intent_summary"
+        },
+        {
+          "attempt": 2,
+          "max_new_tokens": 8192,
+          "mode": "thinking_retry",
+          "raw_chars": 8812,
+          "raw_sha256": "49e53f2ac7d16f6d44aee95e6ede8c385e23b661e777c645780f4881f853b20a",
+          "validation_error": "bad_pilot_ambiguity_types"
+        },
+        {
+          "attempt": 3,
+          "constraint": {
+            "constraint_initialised": true,
+            "generated_token_count": 438,
+            "maximum_output_tokens": 1024,
+            "response_mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+            "termination_reason": "eos_or_constraint_stop",
+            "transport_status": "constrained_generated"
+          },
+          "max_new_tokens": 1024,
+          "mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+          "raw_chars": 1383,
+          "raw_sha256": "e4f709b9f9ef9e3fa34a531958273a3387e4cbc8c44be2fcef7446233657ac1f",
+          "validation_error": null
+        }
+      ],
+      "capability_status": "unauthorized",
+      "claim_boundary": "separately_versioned_from_frozen_t39",
+      "error": null,
+      "execution_mode": "cluster-gpu-goal-first-v2",
+      "failed": false,
+      "intent_summary": "Move the marked cleaning cart after the last train",
+      "latency_ms": 134445.77014399692,
+      "model_id": "Qwen/Qwen3-8B@b968826d9c46dd6066d109eabc6255188de91218",
+      "parsed": {
+        "analysis": {
+          "ambiguity_present": true,
+          "ambiguity_types": [
+            "pragmatic",
+            "referential",
+            "temporal"
+          ],
+          "analysis_provenance": {
+            "analysis_id": "3db77989f96aa64d11b8cc12c8159a44b9fdc5c2e07c599439f53cf25ab05462",
+            "method": "model_generated",
+            "notes": "source_input_hash=3db77989f96aa64d11b8cc12c8159a44b9fdc5c2e07c599439f53cf25ab05462;no_gold_in_prompt;scene_licence_dropped=destination,object,time",
+            "provider_id": "goal_first_v2_full_context",
+            "provider_version": "goal-first-manager-v2"
+          },
+          "candidate_interpretations": [],
+          "capability_status": "unknown",
+          "clarification_question": null,
+          "clarification_targets": [],
+          "compound_ambiguity": true,
+          "compound_ambiguity_count": 3,
+          "context_sampling_uncertainty": {
+            "agreement": 0.35,
+            "score": 0.65,
+            "variant_count": 1
+          },
+          "cpc": {
+            "action": {
+              "status": "filled",
+              "value": "move"
+            },
+            "actor": {
+              "status": "filled",
+              "value": "unknown"
+            },
+            "conditions": {
+              "status": "filled",
+              "value": "unknown"
+            },
+            "constraints": {
+              "status": "filled",
+              "value": "unknown"
+            },
+            "destination": {
+              "status": "filled",
+              "value": "after the last train"
+            },
+            "negation": {
+              "status": "filled",
+              "value": "unknown"
+            },
+            "object": {
+              "status": "filled",
+              "value": "marked cleaning cart"
+            },
+            "object_attributes": {
+              "status": "filled",
+              "value": "unknown"
+            },
+            "quantity": {
+              "status": "filled",
+              "value": "unknown"
+            },
+            "recipient": {
+              "status": "filled",
+              "value": "unknown"
+            },
+            "spatial_relation": {
+              "status": "filled",
+              "value": "unknown"
+            },
+            "time": {
+              "status": "filled",
+              "value": "unknown"
+            },
+            "tool": {
+              "status": "filled",
+              "value": "unknown"
+            }
+          },
+          "findings": [
+            "pilot_ambiguity_types:[\"object_reference\",\"pragmatic\",\"temporal_reference\"]",
+            "pilot_capability_status:unauthorized",
+            "intent_summary_present"
+          ],
+          "intent_summary": "Move the marked cleaning cart after the last train",
+          "primary_ambiguity_type": "pragmatic",
+          "recommended_strategy": "face_preserving_rejection",
+          "rejection_reason": "unsafe_or_prohibited_action",
+          "resolution_evidence": [],
+          "resolution_method": null,
+          "resolved_slots": [
+            {
+              "slot_name": "action",
+              "value": "move"
+            },
+            {
+              "slot_name": "actor",
+              "value": "unknown"
+            },
+            {
+              "slot_name": "object",
+              "value": "marked cleaning cart"
+            },
+            {
+              "slot_name": "object_attributes",
+              "value": "unknown"
+            },
+            {
+              "slot_name": "destination",
+              "value": "after the last train"
+            },
+            {
+              "slot_name": "spatial_relation",
+              "value": "unknown"
+            },
+            {
+              "slot_name": "quantity",
+              "value": "unknown"
+            },
+            {
+              "slot_name": "time",
+              "value": "unknown"
+            },
+            {
+              "slot_name": "recipient",
+              "value": "unknown"
+            },
+            {
+              "slot_name": "tool",
+              "value": "unknown"
+            },
+            {
+              "slot_name": "conditions",
+              "value": "unknown"
+            },
+            {
+              "slot_name": "constraints",
+              "value": "unknown"
+            },
+            {
+              "slot_name": "negation",
+              "value": "unknown"
+            }
+          ],
+          "risk_level": "medium",
+          "risk_relevant": true,
+          "selected_interpretation": null,
+          "speech_act": "directive_command",
+          "strategy_sequence": [],
+          "supporting_evidence": [],
+          "unresolved_slots": [],
+          "unsupported_specificity": []
+        },
+        "clarification_question": null,
+        "clarification_targets": [],
+        "execution_status": "ok",
+        "official_result": false,
+        "provider_provenance": {
+          "provider_id": "cached_analysis",
+          "provider_version": "1.0.0"
+        },
+        "recommended_strategy": "face_preserving_rejection",
+        "record_id": "CA-0239",
+        "rejection_reason": "unsafe_or_prohibited_action",
+        "resolved_slots": [
+          {
+            "slot_name": "action",
+            "value": "move"
+          },
+          {
+            "slot_name": "actor",
+            "value": "unknown"
+          },
+          {
+            "slot_name": "object",
+            "value": "marked cleaning cart"
+          },
+          {
+            "slot_name": "object_attributes",
+            "value": "unknown"
+          },
+          {
+            "slot_name": "destination",
+            "value": "after the last train"
+          },
+          {
+            "slot_name": "spatial_relation",
+            "value": "unknown"
+          },
+          {
+            "slot_name": "quantity",
+            "value": "unknown"
+          },
+          {
+            "slot_name": "time",
+            "value": "unknown"
+          },
+          {
+            "slot_name": "recipient",
+            "value": "unknown"
+          },
+          {
+            "slot_name": "tool",
+            "value": "unknown"
+          },
+          {
+            "slot_name": "conditions",
+            "value": "unknown"
+          },
+          {
+            "slot_name": "constraints",
+            "value": "unknown"
+          },
+          {
+            "slot_name": "negation",
+            "value": "unknown"
+          }
+        ],
+        "result_hash": "a46028ab91bc3b260a5a8d38532d663e459641096f2f56ce3e0d8201c87513a0",
+        "run_id": null,
+        "run_mode": null,
+        "runtime_metadata": {
+          "awaits_t28_adapter": true,
+          "classification": {
+            "ambiguity_present": true,
+            "ambiguity_types": [
+              "pragmatic",
+              "referential",
+              "temporal"
+            ],
+            "capability_status": "unknown",
+            "compound_ambiguity": true,
+            "compound_ambiguity_count": 3,
+            "derivation_notes": [
+              "ambiguity_present_from_types"
+            ],
+            "risk_level": "medium"
+          },
+          "rejection_text": "I need to decline that request because it would be unsafe under the current constraints.",
+          "requires_re_evaluation": false,
+          "resolution_events": [],
+          "router_trace": {
+            "clarification_targets": [],
+            "considered_rules": [
+              "goal_first_v2",
+              "known_unsafe_or_prohibited"
+            ],
+            "matched_rule_id": "known_unsafe_or_prohibited",
+            "notes": [],
+            "recommended_strategy": "face_preserving_rejection",
+            "rejection_reason": "unsafe_or_prohibited_action",
+            "requires_re_evaluation": false,
+            "strategy_sequence": []
+          },
+          "safety_action": "return_with_findings",
+          "uncertainty": null
+        },
+        "safety_findings": [],
+        "strategy_sequence": [],
+        "synthetic_only": true,
+        "system_id": "goal_first_manager_v2",
+        "system_version": "2.0.0",
+        "unsupported_commitment_findings": []
+      },
+      "raw_output": "{\n  \"intent_summary\": \"Move the marked cleaning cart after the last train\",\n  \"cpc\": {\n    \"action\": {\n      \"value\": \"move\",\n      \"status\": \"unknown\"\n    },\n    \"object\": {\n      \"value\": \"marked cleaning cart\",\n      \"status\": \"unknown\"\n    },\n    \"destination\": {\n      \"value\": \"after the last train\",\n      \"status\": \"unknown\"\n    }\n \n  ,\n  \"constraints\": {\n    \"status\": \"unknown\",\n    \"value\": \"unknown\"\n  },\n  \"conditions\": {\n    \"status\": \"unknown\",\n    \"value\": \"unknown\"\n  },\n  \"time\": {\n    \"status\": \"unknown\",\n    \"value\": \"unknown\"\n  },\n  \"spatial_relation\": {\n    \"status\": \"unknown\",\n    \"value\": \"unknown\"\n  },\n  \"object_attributes\": {\n    \"status\": \"unknown\",\n    \"value\": \"unknown\"\n  },\n  \"recipient\": {\n    \"status\": \"unknown\",\n    \"value\": \"unknown\"\n  },\n  \"tool\": {\n    \"status\": \"unknown\",\n    \"value\": \"unknown\"\n  },\n  \"negation\": {\n    \"status\": \"unknown\",\n    \"value\": \"unknown\"\n  },\n  \"quantity\": {\n    \"status\": \"unknown\",\n    \"value\": \"unknown\"\n  },\n  \"actor\": {\n    \"status\": \"unknown\",\n    \"value\": \"unknown\"\n  }\n}\n\n,\n  \"pilot_ambiguity_types\": [\n    \"pragmatic\",\n    \"temporal_reference\",\n    \"object_reference\"\n  ]\n  \n  ,\n  \"pilot_capability_status\": \"unauthorized\",\n  \"risk_level\": \"medium\"\n  \n  ,\n  \"speech_act\": \"directive_command\"\n  \n  ,\n  \"uncertainty\": 0.65\n   ,\n  \"unresolved_slots\":  [\n    \"destination\",\n    \"object\",\n    \"time\"\n  ]\n  \n  }",
+      "record_id": "CA-0239",
+      "schema_valid": true,
+      "supports_ambiguity_prediction": true,
+      "supports_capability_prediction": true,
+      "system_id": "goal_first_manager_v2",
+      "system_version": "2.0.0",
+      "terminal_strategy": "face_preserving_rejection"
+    },
+    "degree": {
+      "ambiguity_types": [
+        "object_reference",
+        "pragmatic",
+        "temporal_reference"
+      ],
+      "analysis_attempts": [
+        {
+          "attempt": 1,
+          "max_new_tokens": 4096,
+          "mode": "thinking",
+          "raw_chars": 16221,
+          "raw_sha256": "0a625c1f0119ea7216eb26cdc770c085585e2c4942ae89506d1f2d0108fd74f0",
+          "validation_error": "bad_intent_summary"
+        },
+        {
+          "attempt": 2,
+          "max_new_tokens": 8192,
+          "mode": "thinking_retry",
+          "raw_chars": 8812,
+          "raw_sha256": "49e53f2ac7d16f6d44aee95e6ede8c385e23b661e777c645780f4881f853b20a",
+          "validation_error": "bad_pilot_ambiguity_types"
+        },
+        {
+          "attempt": 3,
+          "constraint": {
+            "constraint_initialised": true,
+            "generated_token_count": 438,
+            "maximum_output_tokens": 1024,
+            "response_mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+            "termination_reason": "eos_or_constraint_stop",
+            "transport_status": "constrained_generated"
+          },
+          "max_new_tokens": 1024,
+          "mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+          "raw_chars": 1383,
+          "raw_sha256": "e4f709b9f9ef9e3fa34a531958273a3387e4cbc8c44be2fcef7446233657ac1f",
+          "validation_error": null
+        }
+      ],
+      "capability_status": "unauthorized",
+      "claim_boundary": "separately_versioned_from_frozen_t39",
+      "error": null,
+      "execution_mode": "cluster-gpu-goal-first-v2",
+      "failed": false,
+      "intent_summary": "Move the marked cleaning cart after the last train",
+      "latency_ms": 134445.77014399692,
+      "model_id": "Qwen/Qwen3-8B@b968826d9c46dd6066d109eabc6255188de91218",
+      "parsed": {
+        "analysis": {
+          "ambiguity_present": true,
+          "ambiguity_types": [
+            "pragmatic",
+            "referential",
+            "temporal"
+          ],
+          "analysis_provenance": {
+            "analysis_id": "3db77989f96aa64d11b8cc12c8159a44b9fdc5c2e07c599439f53cf25ab05462",
+            "method": "model_generated",
+            "notes": "source_input_hash=3db77989f96aa64d11b8cc12c8159a44b9fdc5c2e07c599439f53cf25ab05462;no_gold_in_prompt;scene_licence_dropped=destination,object,time",
+            "provider_id": "goal_first_v2_full_context",
+            "provider_version": "goal-first-manager-v2"
+          },
+          "candidate_interpretations": [],
+          "capability_status": "unknown",
+          "clarification_question": "Could you clarify what you would like me to do?",
+          "clarification_targets": [
+            "intent"
+          ],
+          "compound_ambiguity": true,
+          "compound_ambiguity_count": 3,
+          "context_sampling_uncertainty": {
+            "agreement": 0.35,
+            "score": 0.65,
+            "variant_count": 1
+          },
+          "cpc": {
+            "action": {
+              "status": "filled",
+              "value": "move"
+            },
+            "actor": {
+              "status": "filled",
+              "value": "unknown"
+            },
+            "conditions": {
+              "status": "filled",
+              "value": "unknown"
+            },
+            "constraints": {
+              "status": "filled",
+              "value": "unknown"
+            },
+            "destination": {
+              "status": "filled",
+              "value": "after the last train"
+            },
+            "negation": {
+              "status": "filled",
+              "value": "unknown"
+            },
+            "object": {
+              "status": "filled",
+              "value": "marked cleaning cart"
+            },
+            "object_attributes": {
+              "status": "filled",
+              "value": "unknown"
+            },
+            "quantity": {
+              "status": "filled",
+              "value": "unknown"
+            },
+            "recipient": {
+              "status": "filled",
+              "value": "unknown"
+            },
+            "spatial_relation": {
+              "status": "filled",
+              "value": "unknown"
+            },
+            "time": {
+              "status": "filled",
+              "value": "unknown"
+            },
+            "tool": {
+              "status": "filled",
+              "value": "unknown"
+            }
+          },
+          "findings": [
+            "pilot_ambiguity_types:[\"object_reference\",\"pragmatic\",\"temporal_reference\"]",
+            "pilot_capability_status:unauthorized",
+            "intent_summary_present"
+          ],
+          "intent_summary": "Move the marked cleaning cart after the last train",
+          "primary_ambiguity_type": "pragmatic",
+          "recommended_strategy": "clarify",
+          "rejection_reason": null,
+          "resolution_evidence": [],
+          "resolution_method": null,
+          "resolved_slots": [
+            {
+              "slot_name": "action",
+              "value": "move"
+            },
+            {
+              "slot_name": "actor",
+              "value": "unknown"
+            },
+            {
+              "slot_name": "object",
+              "value": "marked cleaning cart"
+            },
+            {
+              "slot_name": "object_attributes",
+              "value": "unknown"
+            },
+            {
+              "slot_name": "destination",
+              "value": "after the last train"
+            },
+            {
+              "slot_name": "spatial_relation",
+              "value": "unknown"
+            },
+            {
+              "slot_name": "quantity",
+              "value": "unknown"
+            },
+            {
+              "slot_name": "time",
+              "value": "unknown"
+            },
+            {
+              "slot_name": "recipient",
+              "value": "unknown"
+            },
+            {
+              "slot_name": "tool",
+              "value": "unknown"
+            },
+            {
+              "slot_name": "conditions",
+              "value": "unknown"
+            },
+            {
+              "slot_name": "constraints",
+              "value": "unknown"
+            },
+            {
+              "slot_name": "negation",
+              "value": "unknown"
+            }
+          ],
+          "risk_level": "medium",
+          "risk_relevant": true,
+          "selected_interpretation": null,
+          "speech_act": "directive_command",
+          "strategy_sequence": [],
+          "supporting_evidence": [],
+          "unresolved_slots": [],
+          "unsupported_specificity": []
+        },
+        "clarification_question": "Could you clarify what you would like me to do?",
+        "clarification_targets": [
+          "intent"
+        ],
+        "execution_status": "ok",
+        "official_result": false,
+        "provider_provenance": {
+          "shared_analysis_fingerprint": "ce159f0baff02c8c2d2cdc9e11b4744802cc21641c066822dd6c1e0a7ae97e2c"
+        },
+        "recommended_strategy": "clarify",
+        "record_id": "CA-0239",
+        "rejection_reason": null,
+        "resolved_slots": [
+          {
+            "slot_name": "action",
+            "value": "move"
+          },
+          {
+            "slot_name": "actor",
+            "value": "unknown"
+          },
+          {
+            "slot_name": "object",
+            "value": "marked cleaning cart"
+          },
+          {
+            "slot_name": "object_attributes",
+            "value": "unknown"
+          },
+          {
+            "slot_name": "destination",
+            "value": "after the last train"
+          },
+          {
+            "slot_name": "spatial_relation",
+            "value": "unknown"
+          },
+          {
+            "slot_name": "quantity",
+            "value": "unknown"
+          },
+          {
+            "slot_name": "time",
+            "value": "unknown"
+          },
+          {
+            "slot_name": "recipient",
+            "value": "unknown"
+          },
+          {
+            "slot_name": "tool",
+            "value": "unknown"
+          },
+          {
+            "slot_name": "conditions",
+            "value": "unknown"
+          },
+          {
+            "slot_name": "constraints",
+            "value": "unknown"
+          },
+          {
+            "slot_name": "negation",
+            "value": "unknown"
+          }
+        ],
+        "result_hash": "987c58073a44fa40f65e1bb052d78a21cb853757357d068404b76571065524f6",
+        "run_id": null,
+        "run_mode": null,
+        "runtime_metadata": {
+          "shared_analysis_fingerprint": "ce159f0baff02c8c2d2cdc9e11b4744802cc21641c066822dd6c1e0a7ae97e2c",
+          "thresholds_status": "unfrozen",
+          "thresholds_valid_for_official_use": false,
+          "uncertainty_score": 0.65,
+          "uses_type_risk_capability_precedence": false
+        },
+        "safety_findings": [],
+        "strategy_sequence": [],
+        "synthetic_only": true,
+        "system_id": "degree_based_router",
+        "system_version": "1.0.0",
+        "unsupported_commitment_findings": []
+      },
+      "raw_output": "{\n  \"intent_summary\": \"Move the marked cleaning cart after the last train\",\n  \"cpc\": {\n    \"action\": {\n      \"value\": \"move\",\n      \"status\": \"unknown\"\n    },\n    \"object\": {\n      \"value\": \"marked cleaning cart\",\n      \"status\": \"unknown\"\n    },\n    \"destination\": {\n      \"value\": \"after the last train\",\n      \"status\": \"unknown\"\n    }\n \n  ,\n  \"constraints\": {\n    \"status\": \"unknown\",\n    \"value\": \"unknown\"\n  },\n  \"conditions\": {\n    \"status\": \"unknown\",\n    \"value\": \"unknown\"\n  },\n  \"time\": {\n    \"status\": \"unknown\",\n    \"value\": \"unknown\"\n  },\n  \"spatial_relation\": {\n    \"status\": \"unknown\",\n    \"value\": \"unknown\"\n  },\n  \"object_attributes\": {\n    \"status\": \"unknown\",\n    \"value\": \"unknown\"\n  },\n  \"recipient\": {\n    \"status\": \"unknown\",\n    \"value\": \"unknown\"\n  },\n  \"tool\": {\n    \"status\": \"unknown\",\n    \"value\": \"unknown\"\n  },\n  \"negation\": {\n    \"status\": \"unknown\",\n    \"value\": \"unknown\"\n  },\n  \"quantity\": {\n    \"status\": \"unknown\",\n    \"value\": \"unknown\"\n  },\n  \"actor\": {\n    \"status\": \"unknown\",\n    \"value\": \"unknown\"\n  }\n}\n\n,\n  \"pilot_ambiguity_types\": [\n    \"pragmatic\",\n    \"temporal_reference\",\n    \"object_reference\"\n  ]\n  \n  ,\n  \"pilot_capability_status\": \"unauthorized\",\n  \"risk_level\": \"medium\"\n  \n  ,\n  \"speech_act\": \"directive_command\"\n  \n  ,\n  \"uncertainty\": 0.65\n   ,\n  \"unresolved_slots\":  [\n    \"destination\",\n    \"object\",\n    \"time\"\n  ]\n  \n  }",
+      "record_id": "CA-0239",
+      "schema_valid": true,
+      "supports_ambiguity_prediction": true,
+      "supports_capability_prediction": true,
+      "system_id": "degree_based_router_v2",
+      "system_version": "2.0.0",
+      "terminal_strategy": "clarify"
+    },
+    "timid": {
+      "ambiguity_types": [
+        "object_reference",
+        "pragmatic",
+        "temporal_reference"
+      ],
+      "analysis_attempts": [
+        {
+          "attempt": 1,
+          "max_new_tokens": 4096,
+          "mode": "thinking",
+          "raw_chars": 16221,
+          "raw_sha256": "0a625c1f0119ea7216eb26cdc770c085585e2c4942ae89506d1f2d0108fd74f0",
+          "validation_error": "bad_intent_summary"
+        },
+        {
+          "attempt": 2,
+          "max_new_tokens": 8192,
+          "mode": "thinking_retry",
+          "raw_chars": 8812,
+          "raw_sha256": "49e53f2ac7d16f6d44aee95e6ede8c385e23b661e777c645780f4881f853b20a",
+          "validation_error": "bad_pilot_ambiguity_types"
+        },
+        {
+          "attempt": 3,
+          "constraint": {
+            "constraint_initialised": true,
+            "generated_token_count": 438,
+            "maximum_output_tokens": 1024,
+            "response_mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+            "termination_reason": "eos_or_constraint_stop",
+            "transport_status": "constrained_generated"
+          },
+          "max_new_tokens": 1024,
+          "mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+          "raw_chars": 1383,
+          "raw_sha256": "e4f709b9f9ef9e3fa34a531958273a3387e4cbc8c44be2fcef7446233657ac1f",
+          "validation_error": null
+        }
+      ],
+      "capability_status": "unauthorized",
+      "claim_boundary": "separately_versioned_from_frozen_t39",
+      "error": null,
+      "execution_mode": "cluster-gpu-goal-first-v2",
+      "failed": false,
+      "intent_summary": "Move the marked cleaning cart after the last train",
+      "latency_ms": 134445.77014399692,
+      "model_id": "Qwen/Qwen3-8B@b968826d9c46dd6066d109eabc6255188de91218",
+      "parsed": {
+        "analysis": {
+          "ambiguity_present": true,
+          "ambiguity_types": [
+            "pragmatic",
+            "referential",
+            "temporal"
+          ],
+          "analysis_provenance": {
+            "analysis_id": "3db77989f96aa64d11b8cc12c8159a44b9fdc5c2e07c599439f53cf25ab05462",
+            "method": "model_generated",
+            "notes": "source_input_hash=3db77989f96aa64d11b8cc12c8159a44b9fdc5c2e07c599439f53cf25ab05462;no_gold_in_prompt;scene_licence_dropped=destination,object,time",
+            "provider_id": "goal_first_v2_full_context",
+            "provider_version": "goal-first-manager-v2"
+          },
+          "candidate_interpretations": [],
+          "capability_status": "unknown",
+          "clarification_question": "Before I continue, could you clarify: pragmatic, referential, temporal?",
+          "clarification_targets": [
+            "pragmatic",
+            "referential",
+            "temporal"
+          ],
+          "compound_ambiguity": true,
+          "compound_ambiguity_count": 3,
+          "context_sampling_uncertainty": {
+            "agreement": 0.35,
+            "score": 0.65,
+            "variant_count": 1
+          },
+          "cpc": {
+            "action": {
+              "status": "filled",
+              "value": "move"
+            },
+            "actor": {
+              "status": "filled",
+              "value": "unknown"
+            },
+            "conditions": {
+              "status": "filled",
+              "value": "unknown"
+            },
+            "constraints": {
+              "status": "filled",
+              "value": "unknown"
+            },
+            "destination": {
+              "status": "filled",
+              "value": "after the last train"
+            },
+            "negation": {
+              "status": "filled",
+              "value": "unknown"
+            },
+            "object": {
+              "status": "filled",
+              "value": "marked cleaning cart"
+            },
+            "object_attributes": {
+              "status": "filled",
+              "value": "unknown"
+            },
+            "quantity": {
+              "status": "filled",
+              "value": "unknown"
+            },
+            "recipient": {
+              "status": "filled",
+              "value": "unknown"
+            },
+            "spatial_relation": {
+              "status": "filled",
+              "value": "unknown"
+            },
+            "time": {
+              "status": "filled",
+              "value": "unknown"
+            },
+            "tool": {
+              "status": "filled",
+              "value": "unknown"
+            }
+          },
+          "findings": [
+            "pilot_ambiguity_types:[\"object_reference\",\"pragmatic\",\"temporal_reference\"]",
+            "pilot_capability_status:unauthorized",
+            "intent_summary_present"
+          ],
+          "intent_summary": "Move the marked cleaning cart after the last train",
+          "primary_ambiguity_type": "pragmatic",
+          "recommended_strategy": "clarify",
+          "rejection_reason": null,
+          "resolution_evidence": [],
+          "resolution_method": null,
+          "resolved_slots": [
+            {
+              "slot_name": "action",
+              "value": "move"
+            },
+            {
+              "slot_name": "actor",
+              "value": "unknown"
+            },
+            {
+              "slot_name": "object",
+              "value": "marked cleaning cart"
+            },
+            {
+              "slot_name": "object_attributes",
+              "value": "unknown"
+            },
+            {
+              "slot_name": "destination",
+              "value": "after the last train"
+            },
+            {
+              "slot_name": "spatial_relation",
+              "value": "unknown"
+            },
+            {
+              "slot_name": "quantity",
+              "value": "unknown"
+            },
+            {
+              "slot_name": "time",
+              "value": "unknown"
+            },
+            {
+              "slot_name": "recipient",
+              "value": "unknown"
+            },
+            {
+              "slot_name": "tool",
+              "value": "unknown"
+            },
+            {
+              "slot_name": "conditions",
+              "value": "unknown"
+            },
+            {
+              "slot_name": "constraints",
+              "value": "unknown"
+            },
+            {
+              "slot_name": "negation",
+              "value": "unknown"
+            }
+          ],
+          "risk_level": "medium",
+          "risk_relevant": true,
+          "selected_interpretation": null,
+          "speech_act": "directive_command",
+          "strategy_sequence": [],
+          "supporting_evidence": [],
+          "unresolved_slots": [],
+          "unsupported_specificity": []
+        },
+        "clarification_question": "Before I continue, could you clarify: pragmatic, referential, temporal?",
+        "clarification_targets": [
+          "pragmatic",
+          "referential",
+          "temporal"
+        ],
+        "execution_status": "ok",
+        "official_result": false,
+        "provider_provenance": {
+          "provider_id": "cached_analysis",
+          "provider_version": "1.0.0"
+        },
+        "recommended_strategy": "clarify",
+        "record_id": "CA-0239",
+        "rejection_reason": null,
+        "resolved_slots": [
+          {
+            "slot_name": "action",
+            "value": "move"
+          },
+          {
+            "slot_name": "actor",
+            "value": "unknown"
+          },
+          {
+            "slot_name": "object",
+            "value": "marked cleaning cart"
+          },
+          {
+            "slot_name": "object_attributes",
+            "value": "unknown"
+          },
+          {
+            "slot_name": "destination",
+            "value": "after the last train"
+          },
+          {
+            "slot_name": "spatial_relation",
+            "value": "unknown"
+          },
+          {
+            "slot_name": "quantity",
+            "value": "unknown"
+          },
+          {
+            "slot_name": "time",
+            "value": "unknown"
+          },
+          {
+            "slot_name": "recipient",
+            "value": "unknown"
+          },
+          {
+            "slot_name": "tool",
+            "value": "unknown"
+          },
+          {
+            "slot_name": "conditions",
+            "value": "unknown"
+          },
+          {
+            "slot_name": "constraints",
+            "value": "unknown"
+          },
+          {
+            "slot_name": "negation",
+            "value": "unknown"
+          }
+        ],
+        "result_hash": "ed4201bf936e81ff101eaf0d3fb01d1929251b79c8254197f41f255ee17ed199",
+        "run_id": null,
+        "run_mode": null,
+        "runtime_metadata": {
+          "awaits_t28_adapter": true,
+          "classification": {
+            "ambiguity_present": true,
+            "ambiguity_types": [
+              "pragmatic",
+              "referential",
+              "temporal"
+            ],
+            "capability_status": "unknown",
+            "compound_ambiguity": true,
+            "compound_ambiguity_count": 3,
+            "derivation_notes": [
+              "ambiguity_present_from_types"
+            ],
+            "risk_level": "medium"
+          },
+          "rejection_text": null,
+          "requires_re_evaluation": false,
+          "resolution_events": [],
+          "router_trace": {
+            "clarification_targets": [
+              "pragmatic",
+              "referential",
+              "temporal"
+            ],
+            "considered_rules": [
+              "known_unsafe_or_prohibited",
+              "known_incapable",
+              "unknown_or_unverified_capability"
+            ],
+            "matched_rule_id": "unknown_capability",
+            "notes": [
+              "unknown_capability_cannot_execute"
+            ],
+            "recommended_strategy": "clarify",
+            "rejection_reason": null,
+            "requires_re_evaluation": false,
+            "strategy_sequence": []
+          },
+          "safety_action": "return_with_findings",
+          "uncertainty": null
+        },
+        "safety_findings": [],
+        "strategy_sequence": [],
+        "synthetic_only": true,
+        "system_id": "full_type_risk_aware_manager",
+        "system_version": "1.0.0",
+        "unsupported_commitment_findings": []
+      },
+      "raw_output": "{\n  \"intent_summary\": \"Move the marked cleaning cart after the last train\",\n  \"cpc\": {\n    \"action\": {\n      \"value\": \"move\",\n      \"status\": \"unknown\"\n    },\n    \"object\": {\n      \"value\": \"marked cleaning cart\",\n      \"status\": \"unknown\"\n    },\n    \"destination\": {\n      \"value\": \"after the last train\",\n      \"status\": \"unknown\"\n    }\n \n  ,\n  \"constraints\": {\n    \"status\": \"unknown\",\n    \"value\": \"unknown\"\n  },\n  \"conditions\": {\n    \"status\": \"unknown\",\n    \"value\": \"unknown\"\n  },\n  \"time\": {\n    \"status\": \"unknown\",\n    \"value\": \"unknown\"\n  },\n  \"spatial_relation\": {\n    \"status\": \"unknown\",\n    \"value\": \"unknown\"\n  },\n  \"object_attributes\": {\n    \"status\": \"unknown\",\n    \"value\": \"unknown\"\n  },\n  \"recipient\": {\n    \"status\": \"unknown\",\n    \"value\": \"unknown\"\n  },\n  \"tool\": {\n    \"status\": \"unknown\",\n    \"value\": \"unknown\"\n  },\n  \"negation\": {\n    \"status\": \"unknown\",\n    \"value\": \"unknown\"\n  },\n  \"quantity\": {\n    \"status\": \"unknown\",\n    \"value\": \"unknown\"\n  },\n  \"actor\": {\n    \"status\": \"unknown\",\n    \"value\": \"unknown\"\n  }\n}\n\n,\n  \"pilot_ambiguity_types\": [\n    \"pragmatic\",\n    \"temporal_reference\",\n    \"object_reference\"\n  ]\n  \n  ,\n  \"pilot_capability_status\": \"unauthorized\",\n  \"risk_level\": \"medium\"\n  \n  ,\n  \"speech_act\": \"directive_command\"\n  \n  ,\n  \"uncertainty\": 0.65\n   ,\n  \"unresolved_slots\":  [\n    \"destination\",\n    \"object\",\n    \"time\"\n  ]\n  \n  }",
+      "record_id": "CA-0239",
+      "schema_valid": true,
+      "supports_ambiguity_prediction": true,
+      "supports_capability_prediction": true,
+      "system_id": "rich_conservative_manager_v2",
+      "system_version": "2.0.0",
+      "terminal_strategy": "clarify"
+    },
+    "context_blind": {
+      "ambiguity_types": [
+        "spatial_reference"
+      ],
+      "analysis_attempts": [
+        {
+          "attempt": 1,
+          "max_new_tokens": 4096,
+          "mode": "thinking",
+          "raw_chars": 10713,
+          "raw_sha256": "eb836c11a0605eb7c10807444f7ece1ed65656e16bd6328f8f98d8ccb66b9706",
+          "validation_error": "bad_intent_summary"
+        },
+        {
+          "attempt": 2,
+          "max_new_tokens": 8192,
+          "mode": "thinking_retry",
+          "raw_chars": 3821,
+          "raw_sha256": "092a1ac58518cba05d24d64b49c4a97b4fd8a55f4ade7fddef27ea4f89da639a",
+          "validation_error": "bad_pilot_ambiguity_types"
+        },
+        {
+          "attempt": 3,
+          "constraint": {
+            "constraint_initialised": true,
+            "generated_token_count": 480,
+            "maximum_output_tokens": 1024,
+            "response_mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+            "termination_reason": "eos_or_constraint_stop",
+            "transport_status": "constrained_generated"
+          },
+          "max_new_tokens": 1024,
+          "mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+          "raw_chars": 1479,
+          "raw_sha256": "4238e3bafd2ede28c304c90b8ab5f0bb34e148e0738f25583467fd98248a4a77",
+          "validation_error": null
+        }
+      ],
+      "capability_status": "incapable",
+      "claim_boundary": "separately_versioned_from_frozen_t39",
+      "error": null,
+      "execution_mode": "cluster-gpu-goal-first-v2",
+      "failed": false,
+      "intent_summary": "Move the marked cleaning cart after the last train",
+      "latency_ms": 70383.00765305758,
+      "model_id": "Qwen/Qwen3-8B@b968826d9c46dd6066d109eabc6255188de91218",
+      "parsed": {
+        "analysis": {
+          "ambiguity_present": true,
+          "ambiguity_types": [
+            "spatial"
+          ],
+          "analysis_provenance": {
+            "analysis_id": "0b0aff2053ea16cdeda2ba2083f4f5fa099ec9f754e004809265ece61a4e78fa",
+            "method": "context_blind",
+            "notes": "ablated_input_hash=0b0aff2053ea16cdeda2ba2083f4f5fa099ec9f754e004809265ece61a4e78fa;source_input_hash=0b0aff2053ea16cdeda2ba2083f4f5fa099ec9f754e004809265ece61a4e78fa;no_gold_in_prompt;scene_licence_dropped=none",
+            "provider_id": "goal_first_v2_context_blind",
+            "provider_version": "goal-first-manager-v2"
+          },
+          "candidate_interpretations": [],
+          "capability_status": "incapable",
+          "clarification_question": null,
+          "clarification_targets": [],
+          "compound_ambiguity": false,
+          "compound_ambiguity_count": 0,
+          "context_sampling_uncertainty": {
+            "agreement": 0.4,
+            "score": 0.6,
+            "variant_count": 1
+          },
+          "cpc": {
+            "action": {
+              "status": "not_applicable",
+              "value": "move"
+            },
+            "actor": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "conditions": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "constraints": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "destination": {
+              "status": "not_applicable",
+              "value": "after the last train"
+            },
+            "negation": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "object": {
+              "status": "not_applicable",
+              "value": "marked cleaning cart"
+            },
+            "object_attributes": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "quantity": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "recipient": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "spatial_relation": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "time": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "tool": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            }
+          },
+          "findings": [
+            "pilot_ambiguity_types:[\"spatial_reference\"]",
+            "pilot_capability_status:incapable",
+            "intent_summary_present"
+          ],
+          "intent_summary": "Move the marked cleaning cart after the last train",
+          "primary_ambiguity_type": "spatial",
+          "recommended_strategy": "face_preserving_rejection",
+          "rejection_reason": "known_incapability",
+          "resolution_evidence": [],
+          "resolution_method": null,
+          "resolved_slots": [],
+          "risk_level": "medium",
+          "risk_relevant": true,
+          "selected_interpretation": null,
+          "speech_act": "directive_command",
+          "strategy_sequence": [],
+          "supporting_evidence": [],
+          "unresolved_slots": [
+            {
+              "reason": "model_identified_uncertainty",
+              "slot_name": "spatial_relation"
+            }
+          ],
+          "unsupported_specificity": []
+        },
+        "clarification_question": null,
+        "clarification_targets": [],
+        "execution_status": "ok",
+        "official_result": false,
+        "provider_provenance": {
+          "provider_id": "cached_analysis",
+          "provider_version": "1.0.0"
+        },
+        "recommended_strategy": "face_preserving_rejection",
+        "record_id": "CA-0239",
+        "rejection_reason": "known_incapability",
+        "resolved_slots": [],
+        "result_hash": "f37b610b7fd91dc3aff8e0433e483754db77cff6768be365bcb92fb14be938c2",
+        "run_id": null,
+        "run_mode": null,
+        "runtime_metadata": {
+          "analysis_identity": {
+            "analysis_content_hash": "7be6c102ab3a3ef03f7b038bb193b5db6b5229fb19b2b64b3b6f82bc96e191c3",
+            "analysis_variant": "context_blind",
+            "model_strategy_id": null,
+            "provider_id": "goal_first_v2_context_blind",
+            "provider_version": "goal-first-manager-v2",
+            "record_id": "CA-0239",
+            "source_input_hash": "0b0aff2053ea16cdeda2ba2083f4f5fa099ec9f754e004809265ece61a4e78fa"
+          },
+          "analysis_identity_fingerprint": "fec652c4fddb060dc85b0fb2fa5c8cc50801aab97b256fb2b359fafb36a72873",
+          "awaits_t28_adapter": true,
+          "classification": {
+            "ambiguity_present": true,
+            "ambiguity_types": [
+              "spatial"
+            ],
+            "capability_status": "incapable",
+            "compound_ambiguity": false,
+            "compound_ambiguity_count": 0,
+            "derivation_notes": [
+              "ambiguity_present_from_types"
+            ],
+            "risk_level": "medium"
+          },
+          "context_ablation": {
+            "ablated_input_hash": "0b0aff2053ea16cdeda2ba2083f4f5fa099ec9f754e004809265ece61a4e78fa",
+            "capability_context_removed": true,
+            "dialogue_history_removed": true,
+            "rejected_full_context_cache": false,
+            "rejection_reason": null,
+            "scene_context_removed": true,
+            "stripped_context_derived_fields": false
+          },
+          "original_input_unmutated": true,
+          "rejection_text": "I am not able to perform that action with my current capabilities. I will not invent an alternative that is not supported.",
+          "requires_re_evaluation": false,
+          "resolution_events": [
+            {
+              "confidence_category": "blocked",
+              "details": {
+                "risk_level": "medium"
+              },
+              "evidence_source": null,
+              "outcome": "resolution_blocked_by_risk",
+              "previous_status": "unresolved",
+              "resolved_value": null,
+              "rule_id": "risk_block",
+              "safety_eligibility": false,
+              "slot": "spatial_relation"
+            }
+          ],
+          "router_trace": {
+            "clarification_targets": [],
+            "considered_rules": [
+              "goal_first_v2",
+              "known_unsafe_or_prohibited",
+              "known_incapable"
+            ],
+            "matched_rule_id": "known_incapable",
+            "notes": [],
+            "recommended_strategy": "face_preserving_rejection",
+            "rejection_reason": "known_incapability",
+            "requires_re_evaluation": false,
+            "strategy_sequence": []
+          },
+          "safety_action": "return_with_findings",
+          "uncertainty": null
+        },
+        "safety_findings": [],
+        "strategy_sequence": [],
+        "synthetic_only": true,
+        "system_id": "context_blind_manager",
+        "system_version": "1.0.0",
+        "unsupported_commitment_findings": []
+      },
+      "raw_output": "{\n  \"intent_summary\": \"Move the marked cleaning cart after the last train\",\n  \"cpc\": {\n    \"action\": {\n      \"value\": \"move\",\n      \"status\": \"not_applicable\"\n    },\n    \"object\": {\n      \"value\": \"marked cleaning cart\",\n      \"status\": \"not_applicable\"\n    },\n    \"destination\": {\n      \"value\": \"after the last train\",\n      \"status\": \"not_applicable\"\n    }\n \n  ,\n  \"constraints\": {\n    \"status\": \"not_applicable\"\n  ,\n  \"value\": \"not_applicable\"\n  },\n  \"conditions\": {\n    \"status\": \"not_applicable\"\n  ,\n  \"value\": \"not_applicable\"\n  },\n  \"time\": {\n    \"status\": \"not_applicable\"\n  ,\n  \"value\": \"not_applicable\"\n  },\n  \"quantity\": {\n    \"status\": \"not_applicable\"\n  ,\n  \"value\": \"not_applicable\"\n  },\n  \"spatial_relation\": {\n    \"status\": \"not_applicable\"\n  ,\n  \"value\": \"not_applicable\"\n  },\n  \"negation\": {\n    \"status\": \"not_applicable\"\n  ,\n  \"value\": \"not_applicable\"\n  },\n  \"recipient\": {\n    \"status\": \"not_applicable\"\n  ,\n  \"value\": \"not_applicable\"\n  },\n  \"tool\": {\n    \"status\": \"not_applicable\"\n  ,\n  \"value\": \"not_applicable\"\n  },\n  \"object_attributes\": {\n    \"status\": \"not_applicable\"\n  ,\n  \"value\": \"not_applicable\"\n  },\n  \"actor\": {\n    \"status\": \"not_applicable\"\n  ,\n  \"value\": \"not_applicable\"\n  }\n}\n,\n  \"pilot_ambiguity_types\": [\n    \"spatial_reference\"\n  ]\n  \n  ,\n  \"pilot_capability_status\": \"incapable\",\n  \"uncertainty\": 0.6\n  ,\n  \"risk_level\": \"medium\"\n  ,\n  \"speech_act\": \"directive_command\"\n  ,\n  \"unresolved_slots\": [\n    \"spatial_relation\"\n  ]\n  \n  }\n",
+      "record_id": "CA-0239",
+      "schema_valid": true,
+      "supports_ambiguity_prediction": true,
+      "supports_capability_prediction": true,
+      "system_id": "goal_first_context_blind_v2",
+      "system_version": "2.0.0",
+      "terminal_strategy": "face_preserving_rejection"
+    }
+  },
+  "provenance": {
+    "source_sha256": "f33b1e29f1e8aa256a475f07213aa07247def47d8e2148d54a472a40b71b05c9",
+    "gold_sha256": "5e23ad1a92ff1873c8f039a8ce560a111dd6fb6b8ae8c11d6cf34dbfa1c360db",
+    "t07_final_zip_sha256": "34ca50e034ca37b617068bb50c734d12fa26282fb5eec563c11ead700163e491",
+    "inherited_t07_zip_sha256": "0305b1e9ab062876ee6ee89778cc6028d2eaf01718b7dd0295944e7d9cb81a01",
+    "note": "Goal-First, Degree, Timid, and Context-Blind predictions are inherited from the earlier T0.7 run; official intent and comparison come from the final T0.7 archive."
+  }
+}

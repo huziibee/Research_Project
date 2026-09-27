@@ -1,0 +1,28 @@
+job_id: 54150
+name: temp-sweep
+partition: biggpu
+state_at_submit: PD then R on mscluster112
+grid: idx = temp_i * 3 + replica_i for idx in 0..11
+slurm_array: not used
+slurm_array_attempt: sbatch --array=0-11 rejected with QOSMaxSubmitJobPerUserLimit
+qos: mss_biggpu MaxSubmitJobsPerUser=6 MaxJobsPerUser=1
+packaging: one exclusive 3-day job walks all 12 slices; skip-if-exists on requeue
+output_root: /home-mscluster/mbangie/t12-hpc/results/temp_sweep-20260913
+slice_layout: ${output_root}/T{0.0,0.3,0.7,1.0}/R{1,2,3}/
+code_root: /home-mscluster/mbangie/t12-hpc/code/temp_sweep-20260913
+native_root: /home-mscluster/mbangie/t12-hpc/code/temp_sweep-native-20260913
+logs: /home-mscluster/mbangie/t12-hpc/logs/temp-sweep-54150.out
+seed_formula: 20260913 + replica_i * 1000 + int(temp * 100)
+native_row_seed: slice_seed + row_index
+
+temps: 0.0 0.3 0.7 1.0
+replicas: R1 R2 R3
+idx 0-2: T0.0 R1-R3 seeds 20260913 20261913 20262913
+idx 3-5: T0.3 R1-R3 seeds 20260943 20261943 20262943
+idx 6-8: T0.7 R1-R3 seeds 20260983 20261983 20262983
+idx 9-11: T1.0 R1-R3 seeds 20261013 20262013 20263013
+
+claim_boundary: Generation temperature sweep only. New versioned dirs. Adapter unofficial. No official two-judge SGC. Do not mint task success from routes. Do not gold-fill empty native outputs. Does not overwrite T39/T41, goal_first_v2-20260911, or goal_first_followon-20260912b.
+
+submit_command: bash /home-mscluster/mbangie/t12-hpc/code/temp_sweep-20260913/cluster/temp_sweep_20260913/submit.sh
+confirmed_squeue: 54150 biggpu temp-swe mbangie PD (Priority)

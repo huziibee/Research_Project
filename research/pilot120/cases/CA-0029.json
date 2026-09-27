@@ -1,0 +1,1430 @@
+{
+  "record_id": "CA-0029",
+  "frozen_source": {
+    "capability_context": "Library service robot can move ordinary books and equipment, scan catalogue tags, and clean approved non-archival surfaces.",
+    "command": "Move only the marked display stand after the reservation deadline.",
+    "dialogue_history": [
+      "courier: The reservation cart is excluded from the work order; the word only applies to the marked display stand."
+    ],
+    "record_id": "CA-0029",
+    "scene_context": "Circulation area in a library. An unrelated archive box is logged for later work at the staff shelf. Two display stands carry work-order marks: the amber one beside the staff shelf has a white PENDING tag, while the red one near the return desk has an orange COMPLETE tag. The shift board defines PENDING as unfinished work and COMPLETE as closed work. The current time is 13:26. The work-order note names the reservation deadline at 14:00, not the later occurrence at 18:00."
+  },
+  "frozen_gold": {
+    "ambiguity_types": [
+      "object_reference",
+      "scope",
+      "temporal_reference"
+    ],
+    "annotator_b_era": "claude_era",
+    "annotator_b_model": "claude-4.6-sonnet-medium-thinking",
+    "capability_status": "capable",
+    "field_status": {
+      "ambiguity_types": "auto_agree",
+      "capability_status": "auto_agree",
+      "record_validity": "auto_agree",
+      "strategy_sequence": "auto_agree",
+      "terminal_strategy": "auto_agree"
+    },
+    "gold_lifecycle": "final_gold",
+    "gold_status": "auto_agree",
+    "human_gate_required": false,
+    "provenance": {
+      "agreement_label": "pilot_annotation_agreement",
+      "annotator_a_sha256": "5c6a69b5c3d60b4ff963a32fc9c1bf244e453bd2188581b12737a498e72f3631",
+      "annotator_b_sha256": "ad88600db0d05ce5a6ea873552cdb2a87b188209e6b999fa4d79defa3eaff113",
+      "gold_policy": "use_existing_pilot_adjudicated_gold",
+      "input_sha256": "9f068123a8a8969d475b426a98ad1ee9ce13ecddf6ddcd9a3294debd8f934e8d",
+      "pilot_gold_sha256": "67ef08ec9af02ef92af13b6800b3311099386e86479e99de19d2c88d78f9f667",
+      "protocol": "pilot_adjudicated_gold_on_capability_repaired_source",
+      "repaired_input_sha256": "0734033a8de43f4dcd4d907ee23467bb8613f81d7fd960ad2ceb80909d1ddf3d"
+    },
+    "record_id": "CA-0029",
+    "record_validity": "valid",
+    "strategy_sequence": [
+      "execute"
+    ],
+    "terminal_strategy": "execute"
+  },
+  "t07_comparison": {
+    "record_id": "CA-0029",
+    "gold_route": "execute",
+    "raw_route": "execute",
+    "ft_route": "clarify",
+    "gf_route": "refuse",
+    "raw_route_ok": "True",
+    "ft_route_ok": "False",
+    "gf_route_ok": "False",
+    "raw_official_intent": "True",
+    "ft_official_intent": "True",
+    "gf_official_intent": "True",
+    "blind_official_intent": "True"
+  },
+  "t07_official_intent": {
+    "context_blind_official_intent": true,
+    "degree_official_intent_shared_gf": true,
+    "finetune_official_intent": true,
+    "goal_first_official_intent": true,
+    "raw_official_intent": true,
+    "record_id": "CA-0029",
+    "timid_official_intent_shared_gf": true
+  },
+  "t07_predictions": {
+    "raw_qwen": {
+      "ambiguity_types": [
+        "object_reference",
+        "temporal_reference"
+      ],
+      "capability_status": "conditionally_capable",
+      "error": null,
+      "execution_mode": "final_close_intent_box",
+      "failed": false,
+      "intent_summary": "Move the marked display stand (amber with PENDING tag) after the reservation deadline at 14:00.",
+      "latency_ms": 11980.345178861171,
+      "parsed": {
+        "ambiguity_types": [
+          "object_reference",
+          "temporal_reference"
+        ],
+        "capability_status": "conditionally_capable",
+        "intent_summary": "Move the marked display stand (amber with PENDING tag) after the reservation deadline at 14:00.",
+        "speech_act": "directive_command",
+        "terminal_strategy": "execute"
+      },
+      "raw_output": "<think>\nOkay, let's tackle this. The user's command is \"Move only the marked display stand after the reservation deadline.\" First, I need to parse the intent. The main job here is to move a specific display stand after a certain time. The dialogue history mentions that the reservation cart is excluded, and the 'only' applies to the marked display stand. So the key points are moving the marked stand (which are the amber and red ones) after the deadline.\n\nLooking at the scene context, the reservation deadline is at 14:00, and the current time is 13:26. The work-order note specifies the deadline as 14:00, not 18:00. The display stands have tags: amber with PENDING (unfinished) and red with COMPLETE (closed). The command says \"after the reservation deadline,\" which is 14:00. So the action should happen after that time. But the current time is 13:26, so the deadline hasn't passed yet. \n\nThe capability context says the robot can move equipment, so moving the display stand is possible. But the ambiguity here is about which display stand. The command says \"the marked display stand,\" but there are two. However, the dialogue history clarifies that \"only applies to the marked display stand,\" which refers to the amber one with PENDING. Wait, the red one has COMPLETE. The work order note mentions the reservation deadline, so maybe the PENDING one (amber) is the one that's still active. The red one is already closed. So the intended target is the amber display stand. \n\nBut the command says \"after the reservation deadline,\" which is 14:00. The robot can move it once that time has passed. But the current time is 13:26, so the action is conditional on time. The capability status is capable since moving is allowed. The ambiguity types might include temporal_reference because of the deadline time. Also, there's a possible object_reference ambiguity between the two display stands, but the dialogue history clarifies that 'only' applies to the marked one, which is the amber. So maybe the ambiguity is resolved. \n\nSpeech act is a directive_command. The robot can execute it once the time is right. So the terminal strategy is execute. But wait, the deadline hasn't passed yet. The current time is 13:26, so the action is conditional. The capability status would be conditionally_capable because it depends on time. But the robot can move the stand once the deadline is met. So the capability is conditionally_capable. The terminal strategy would be to execute once the condition is met, but since the current time is before, maybe the strategy is to clarify or wait. Wait, the command is to move it after the deadline. The robot can't move it before. So the capability is conditionally_capable, and the terminal strategy is to execute when the condition is met. But the user's command is to move it after the deadline, so the robot can do it once the time is right. So the capability status is conditionally_capable. The ambiguity types would include temporal_reference because of the deadline. Also, maybe action_order since the timing is specified. So the JSON should have those keys.\n</think>\n\n{\n  \"intent_summary\": \"Move the marked display stand (amber with PENDING tag) after the reservation deadline at 14:00.\",\n  \"speech_act\": \"directive_command\",\n  \"ambiguity_types\": [\"temporal_reference\", \"object_reference\"],\n  \"capability_status\": \"conditionally_capable\",\n  \"terminal_strategy\": \"execute\"\n}",
+      "record_id": "CA-0029",
+      "schema_valid": true,
+      "speech_act": "directive_command",
+      "system_id": "direct_base_llm",
+      "terminal_strategy": "execute"
+    },
+    "finetune": {
+      "ambiguity_types": [
+        "object_reference",
+        "temporal_reference"
+      ],
+      "capability_status": "conditionally_capable",
+      "error": null,
+      "execution_mode": "final_close_intent_box",
+      "failed": false,
+      "intent_summary": "Move the marked display stand after the reservation deadline.",
+      "latency_ms": 49672.9280911386,
+      "parsed": {
+        "ambiguity_types": [
+          "object_reference",
+          "temporal_reference"
+        ],
+        "capability_status": "conditionally_capable",
+        "intent_summary": "Move the marked display stand after the reservation deadline.",
+        "speech_act": "directive_command",
+        "terminal_strategy": "clarify"
+      },
+      "raw_output": "<think>\nOkay, let's break down this command. The user says, \"Move only the marked display stand after the reservation deadline.\" First, I need to understand the intent. The key here is that they want the display stand moved, but only after a specific time—after the reservation deadline. The dialogue history mentions that the reservation cart is excluded, so the focus is on the marked display stands.\n\nLooking at the scene context, there are two display stands: amber with a PENDING tag and red with a COMPLETE tag. The shift board defines PENDING as unfinished and COMPLETE as closed. The current time is 13:26, and the reservation deadline is at 14:00. The work-order note specifies the deadline as 14:00, not the later 18:00. So, the deadline is 14:00. The command says to move the marked display stand after that deadline. \n\nThe ambiguity here might be about which display stand to move. The amber one is PENDING (unfinished), and the red is COMPLETE (closed). The deadline is 14:00. Since the deadline is at 14:00, moving after that would mean after 14:00. The user might be referring to the red display stand (COMPLETE) since it's closed, but the command says \"marked display stand,\" which could refer to both. However, the dialogue history clarifies that the word \"only\" applies to the marked display stand, so perhaps the amber one is the one to move after the deadline. Wait, but the amber is PENDING, which is unfinished. The deadline is when the work is due. So moving after the deadline might mean moving the amber one once it's past 14:00. But the user is asking to move it after the deadline, so maybe they want to move it once the deadline has passed. \n\nNow, the capability of the robot: it can move equipment, so moving a display stand is possible. However, the command specifies moving after the reservation deadline, which is 14:00. The current time is 13:26, so the deadline hasn't passed yet. The robot can't move it before the deadline. So the capability status might be conditionally_capable, as it depends on the time. \n\nAmbiguity types: The command refers to \"the marked display stand,\" but there are two marked ones. The user might be referring to the amber one (PENDING) or the red one (COMPLETE). The deadline is at 14:00, so the command is to move it after that time. The ambiguity here could be about which display stand to move (pragmatic or object_reference) and whether the deadline is the 14:00 or 18:00 (fuzzy_temporal or temporal_reference). Also, the command says \"after the reservation deadline,\" which is a specific time, so maybe the ambiguity is about the time. \n\nSpeech act: This is a directive command because the user is telling the robot to perform an action. \n\nTerminal strategy: Since the robot can move the display stand, but the time hasn't arrived yet, the strategy might be to clarify when to move it. But the user is giving a command, so maybe execute if the time is met. However, since the current time is before the deadline, the robot can't act yet. So the capability status is conditionally_capable, and the terminal strategy would be to clarify if the user wants to move it after the deadline. Wait, but the user's command is to move after the deadline. So the robot might need to wait until that time. But the capability is there, so maybe the capability is conditionally_capable. \n\nPutting it all together: The intent is to move the marked display stand after the deadline. The speech act is a directive. Ambiguity types include object_reference (which display stand) and temporal_reference (when the deadline is). Capability status is conditionally_capable because the robot can move it, but only after the deadline. Terminal strategy is to execute once the deadline is passed, but since the current time is before, maybe the strategy is to clarify when. Wait, the user is giving a command, so the robot should execute once the condition is met. But since the current time is before, the robot can't do it yet. So the capability status is conditionally_capable, and the terminal strategy is to clarify if the user wants to move it after the deadline. But the user's command is to move after the deadline, so the robot might need to wait. Therefore, the terminal strategy would be to clarify if the user wants to proceed after the deadline. Alternatively, if the robot can wait, the terminal strategy is execute. Hmm. \n\nBut the user's command is to move after the deadline. The robot can't do that yet. So the capability status is conditionally_capable because the robot can move the display stand, but only after the deadline. So the capability is there, but the timing is a condition. Therefore, the capability status is conditionally_capable. The terminal strategy would be to execute once the deadline is met. But since the current time is before, the robot can't act yet. So the terminal strategy might be to clarify, but the user's command is a directive. So maybe the terminal strategy is to face-preserving rejection if the time isn't met, but the user might not be aware. Alternatively, the robot could be instructed to wait. But the JSON requires the capability status and terminal strategy. \n\nSo, the JSON would have intent_summary as moving the marked display stand after the reservation deadline. Speech act is directive_command. Ambiguity types include object_reference (which display stand) and temporal_reference (when the deadline is). Capability status is conditionally_capable. Terminal strategy is execute, but since the time isn't met, maybe the robot can't execute yet, so terminal strategy might be clarify. Wait, the user is giving the command, so the robot's capability is there, but the timing is a condition. So the capability status is conditionally_capable, and the terminal strategy is to execute once the condition is met. But the current time is before the deadline, so the robot can't execute yet. Therefore, the terminal strategy would be to clarify if the user wants to proceed after the deadline. But the user's command is to move after the deadline, so the robot can't do it yet. So the terminal strategy would be to clarify. But the user might not have intended that. \n\nAlternatively, the capability status is conditionally_capable, and the terminal strategy is to execute once the condition is met. But the JSON requires the terminal strategy to be one of the options. So, the answer would be: capability status is conditionally_capable, terminal strategy is execute (if the condition is met). But the user's command is to move after the deadline, so the robot would execute when the time is right. But the current time is before, so the capability is conditional. Therefore, the terminal strategy is execute. \n\nBut I'm getting stuck. Let's try to outline:\n\nintent_summary: The user wants to move the marked display stand after the reservation deadline.\n\nspeech_act: directive_command.\n\nambiguity_types: object_reference (which display stand) and temporal_reference (when the deadline is).\n\ncapability_status: conditionally_capable (can move, but only after deadline).\n\nterminal_strategy: clarify (since the time isn't met yet, the robot can't execute immediately, so it needs to clarify when to proceed).\n\nBut the user's command is to move after the deadline. The robot can't do it yet. So the capability is there, but the timing is a condition. So the capability status is conditionally_capable. The terminal strategy would be to clarify if the user wants to proceed after the deadline. But the user's command is to move after the deadline, so the robot can't act now. Therefore, the terminal strategy is clarify. \n\nBut the options for terminal_strategy are execute, clarify, or face_preserving_rejection. Since the user's command is to move after the deadline, and the robot can't do it yet, the terminal strategy would be to clarify, because the robot needs to know when to proceed. So the terminal strategy is clarify. \n\nPutting it all together, the JSON should have:\n\nintent_summary: Move the marked display stand after the reservation deadline.\n\nspeech_act: directive_command.\n\nambiguity_types: object_reference, temporal_reference.\n\ncapability_status: conditionally_capable.\n\nterminal_strategy: clarify.\n</think>\n\n{\n  \"intent_summary\": \"Move the marked display stand after the reservation deadline.\",\n  \"speech_act\": \"directive_command\",\n  \"ambiguity_types\": [\"object_reference\", \"temporal_reference\"],\n  \"capability_status\": \"conditionally_capable\",\n  \"terminal_strategy\": \"clarify\"\n}",
+      "record_id": "CA-0029",
+      "schema_valid": true,
+      "speech_act": "directive_command",
+      "system_id": "t28_selected_adapter_llm",
+      "terminal_strategy": "clarify"
+    },
+    "goal_first": {
+      "ambiguity_types": [
+        "object_reference",
+        "pragmatic",
+        "temporal_reference"
+      ],
+      "analysis_attempts": [
+        {
+          "attempt": 1,
+          "max_new_tokens": 4096,
+          "mode": "thinking",
+          "raw_chars": 7110,
+          "raw_sha256": "f000e38b622710ea0b4d4781d2b20b2cd77e65749d749ec84f1fd9ff2802db61",
+          "validation_error": "bad_intent_summary"
+        },
+        {
+          "attempt": 2,
+          "max_new_tokens": 8192,
+          "mode": "thinking_retry",
+          "raw_chars": 7616,
+          "raw_sha256": "53ecfaa3ee2ebeacc3a3d2a224471a5fce8b6e850e17f53828bd5daa8dffd5ad",
+          "validation_error": "bad_intent_summary"
+        },
+        {
+          "attempt": 3,
+          "constraint": {
+            "constraint_initialised": true,
+            "generated_token_count": 453,
+            "maximum_output_tokens": 1024,
+            "response_mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+            "termination_reason": "eos_or_constraint_stop",
+            "transport_status": "constrained_generated"
+          },
+          "max_new_tokens": 1024,
+          "mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+          "raw_chars": 1446,
+          "raw_sha256": "65ab520bbfdb74b66129d58826c847ad02fe42f7c0d5205133dbcbc7ca258785",
+          "validation_error": null
+        }
+      ],
+      "capability_status": "unauthorized",
+      "claim_boundary": "separately_versioned_from_frozen_t39",
+      "error": null,
+      "execution_mode": "cluster-gpu-goal-first-v2",
+      "failed": false,
+      "intent_summary": "Move the marked display stand after the reservation deadline",
+      "latency_ms": 70890.2176306583,
+      "model_id": "Qwen/Qwen3-8B@b968826d9c46dd6066d109eabc6255188de91218",
+      "parsed": {
+        "analysis": {
+          "ambiguity_present": true,
+          "ambiguity_types": [
+            "pragmatic",
+            "referential",
+            "temporal"
+          ],
+          "analysis_provenance": {
+            "analysis_id": "75997e7e009a94faf2108757894c86dd280bc3eae91ac5ca0deeba3147d84a9e",
+            "method": "model_generated",
+            "notes": "source_input_hash=75997e7e009a94faf2108757894c86dd280bc3eae91ac5ca0deeba3147d84a9e;no_gold_in_prompt;scene_licence_dropped=destination,time,object",
+            "provider_id": "goal_first_v2_full_context",
+            "provider_version": "goal-first-manager-v2"
+          },
+          "candidate_interpretations": [],
+          "capability_status": "unknown",
+          "clarification_question": null,
+          "clarification_targets": [],
+          "compound_ambiguity": true,
+          "compound_ambiguity_count": 3,
+          "context_sampling_uncertainty": {
+            "agreement": 0.25,
+            "score": 0.75,
+            "variant_count": 1
+          },
+          "cpc": {
+            "action": {
+              "status": "filled",
+              "value": "move"
+            },
+            "actor": {
+              "status": "filled",
+              "value": "library service robot"
+            },
+            "conditions": {
+              "status": "filled",
+              "value": "reservation deadline"
+            },
+            "constraints": {
+              "status": "filled",
+              "value": "only"
+            },
+            "destination": {
+              "status": "filled",
+              "value": "unknown"
+            },
+            "negation": {
+              "status": "filled",
+              "value": "only"
+            },
+            "object": {
+              "status": "filled",
+              "value": "display stand"
+            },
+            "object_attributes": {
+              "status": "filled",
+              "value": "marked"
+            },
+            "quantity": {
+              "status": "filled",
+              "value": "only"
+            },
+            "recipient": {
+              "status": "filled",
+              "value": "library service robot"
+            },
+            "spatial_relation": {
+              "status": "filled",
+              "value": "after"
+            },
+            "time": {
+              "status": "filled",
+              "value": "after the reservation deadline"
+            },
+            "tool": {
+              "status": "filled",
+              "value": "library service robot"
+            }
+          },
+          "findings": [
+            "pilot_ambiguity_types:[\"object_reference\",\"pragmatic\",\"temporal_reference\"]",
+            "pilot_capability_status:unauthorized",
+            "intent_summary_present"
+          ],
+          "intent_summary": "Move the marked display stand after the reservation deadline",
+          "primary_ambiguity_type": "pragmatic",
+          "recommended_strategy": "face_preserving_rejection",
+          "rejection_reason": "unsafe_or_prohibited_action",
+          "resolution_evidence": [],
+          "resolution_method": null,
+          "resolved_slots": [
+            {
+              "slot_name": "action",
+              "value": "move"
+            },
+            {
+              "slot_name": "actor",
+              "value": "library service robot"
+            },
+            {
+              "slot_name": "object",
+              "value": "display stand"
+            },
+            {
+              "slot_name": "object_attributes",
+              "value": "marked"
+            },
+            {
+              "slot_name": "destination",
+              "value": "unknown"
+            },
+            {
+              "slot_name": "spatial_relation",
+              "value": "after"
+            },
+            {
+              "slot_name": "quantity",
+              "value": "only"
+            },
+            {
+              "slot_name": "time",
+              "value": "after the reservation deadline"
+            },
+            {
+              "slot_name": "recipient",
+              "value": "library service robot"
+            },
+            {
+              "slot_name": "tool",
+              "value": "library service robot"
+            },
+            {
+              "slot_name": "conditions",
+              "value": "reservation deadline"
+            },
+            {
+              "slot_name": "constraints",
+              "value": "only"
+            },
+            {
+              "slot_name": "negation",
+              "value": "only"
+            }
+          ],
+          "risk_level": "medium",
+          "risk_relevant": true,
+          "selected_interpretation": null,
+          "speech_act": "directive_command",
+          "strategy_sequence": [],
+          "supporting_evidence": [],
+          "unresolved_slots": [],
+          "unsupported_specificity": []
+        },
+        "clarification_question": null,
+        "clarification_targets": [],
+        "execution_status": "ok",
+        "official_result": false,
+        "provider_provenance": {
+          "provider_id": "cached_analysis",
+          "provider_version": "1.0.0"
+        },
+        "recommended_strategy": "face_preserving_rejection",
+        "record_id": "CA-0029",
+        "rejection_reason": "unsafe_or_prohibited_action",
+        "resolved_slots": [
+          {
+            "slot_name": "action",
+            "value": "move"
+          },
+          {
+            "slot_name": "actor",
+            "value": "library service robot"
+          },
+          {
+            "slot_name": "object",
+            "value": "display stand"
+          },
+          {
+            "slot_name": "object_attributes",
+            "value": "marked"
+          },
+          {
+            "slot_name": "destination",
+            "value": "unknown"
+          },
+          {
+            "slot_name": "spatial_relation",
+            "value": "after"
+          },
+          {
+            "slot_name": "quantity",
+            "value": "only"
+          },
+          {
+            "slot_name": "time",
+            "value": "after the reservation deadline"
+          },
+          {
+            "slot_name": "recipient",
+            "value": "library service robot"
+          },
+          {
+            "slot_name": "tool",
+            "value": "library service robot"
+          },
+          {
+            "slot_name": "conditions",
+            "value": "reservation deadline"
+          },
+          {
+            "slot_name": "constraints",
+            "value": "only"
+          },
+          {
+            "slot_name": "negation",
+            "value": "only"
+          }
+        ],
+        "result_hash": "e5e45cd0dfbcfc63b3ea976b552f5596d5ddde0d69dcb0feda1b97b6a8af72fc",
+        "run_id": null,
+        "run_mode": null,
+        "runtime_metadata": {
+          "awaits_t28_adapter": true,
+          "classification": {
+            "ambiguity_present": true,
+            "ambiguity_types": [
+              "pragmatic",
+              "referential",
+              "temporal"
+            ],
+            "capability_status": "unknown",
+            "compound_ambiguity": true,
+            "compound_ambiguity_count": 3,
+            "derivation_notes": [
+              "ambiguity_present_from_types"
+            ],
+            "risk_level": "medium"
+          },
+          "rejection_text": "I need to decline that request because it would be unsafe under the current constraints.",
+          "requires_re_evaluation": false,
+          "resolution_events": [],
+          "router_trace": {
+            "clarification_targets": [],
+            "considered_rules": [
+              "goal_first_v2",
+              "known_unsafe_or_prohibited"
+            ],
+            "matched_rule_id": "known_unsafe_or_prohibited",
+            "notes": [],
+            "recommended_strategy": "face_preserving_rejection",
+            "rejection_reason": "unsafe_or_prohibited_action",
+            "requires_re_evaluation": false,
+            "strategy_sequence": []
+          },
+          "safety_action": "return_with_findings",
+          "uncertainty": null
+        },
+        "safety_findings": [],
+        "strategy_sequence": [],
+        "synthetic_only": true,
+        "system_id": "goal_first_manager_v2",
+        "system_version": "2.0.0",
+        "unsupported_commitment_findings": []
+      },
+      "raw_output": "{\n  \"intent_summary\": \"Move the marked display stand after the reservation deadline\",\n  \"cpc\": {\n    \"action\": {\n      \"value\": \"move\",\n      \"status\": \"unknown\"\n    },\n    \"object\": {\n      \"value\": \"display stand\",\n      \"status\": \"unknown\"\n    },\n    \"time\": {\n      \"value\": \"after the reservation deadline\",\n      \"status\": \"unknown\"\n    }\n \n  ,\n  \"constraints\": {\n    \"value\": \"only\",\n    \"status\": \"unknown\"\n  },\n  \"spatial_relation\": {\n    \"value\": \"after\",\n    \"status\": \"unknown\"\n  },\n  \"recipient\": {\n    \"value\": \"library service robot\",\n    \"status\": \"unknown\"\n  },\n  \"conditions\": {\n    \"value\": \"reservation deadline\",\n    \"status\": \"unknown\"\n  },\n  \"destination\": {\n    \"value\": \"unknown\",\n    \"status\": \"unknown\"\n  }\n  ,\n  \"object_attributes\": {\n    \"value\": \"marked\",\n    \"status\": \"unknown\"\n  }\n  ,\n  \"negation\": {\n    \"value\": \"only\",\n    \"status\": \"unknown\"\n  }\n  ,\n  \"tool\": {\n    \"value\": \"library service robot\",\n    \"status\": \"unknown\"\n  }\n  ,\n  \"quantity\": {\n    \"value\": \"only\",\n    \"status\": \"unknown\"\n  }\n  ,\n  \"actor\": {\n    \"value\": \"library service robot\",\n    \"status\": \"unknown\"\n  }\n  },\n  \"pilot_ambiguity_types\": [\n    \"pragmatic\",\n    \"temporal_reference\",\n    \"object_reference\"\n  ]\n  ,\n  \"pilot_capability_status\": \"unauthorized\"\n  ,\n  \"speech_act\": \"directive_command\"\n  ,\n  \"risk_level\": \"medium\"\n  ,\n  \"uncertainty\": 0.75\n  ,\n  \"unresolved_slots\": [\n    \"destination\",\n    \"time\",\n    \"object\"\n  ]\n  }\n  ",
+      "record_id": "CA-0029",
+      "schema_valid": true,
+      "supports_ambiguity_prediction": true,
+      "supports_capability_prediction": true,
+      "system_id": "goal_first_manager_v2",
+      "system_version": "2.0.0",
+      "terminal_strategy": "face_preserving_rejection"
+    },
+    "degree": {
+      "ambiguity_types": [
+        "object_reference",
+        "pragmatic",
+        "temporal_reference"
+      ],
+      "analysis_attempts": [
+        {
+          "attempt": 1,
+          "max_new_tokens": 4096,
+          "mode": "thinking",
+          "raw_chars": 7110,
+          "raw_sha256": "f000e38b622710ea0b4d4781d2b20b2cd77e65749d749ec84f1fd9ff2802db61",
+          "validation_error": "bad_intent_summary"
+        },
+        {
+          "attempt": 2,
+          "max_new_tokens": 8192,
+          "mode": "thinking_retry",
+          "raw_chars": 7616,
+          "raw_sha256": "53ecfaa3ee2ebeacc3a3d2a224471a5fce8b6e850e17f53828bd5daa8dffd5ad",
+          "validation_error": "bad_intent_summary"
+        },
+        {
+          "attempt": 3,
+          "constraint": {
+            "constraint_initialised": true,
+            "generated_token_count": 453,
+            "maximum_output_tokens": 1024,
+            "response_mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+            "termination_reason": "eos_or_constraint_stop",
+            "transport_status": "constrained_generated"
+          },
+          "max_new_tokens": 1024,
+          "mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+          "raw_chars": 1446,
+          "raw_sha256": "65ab520bbfdb74b66129d58826c847ad02fe42f7c0d5205133dbcbc7ca258785",
+          "validation_error": null
+        }
+      ],
+      "capability_status": "unauthorized",
+      "claim_boundary": "separately_versioned_from_frozen_t39",
+      "error": null,
+      "execution_mode": "cluster-gpu-goal-first-v2",
+      "failed": false,
+      "intent_summary": "Move the marked display stand after the reservation deadline",
+      "latency_ms": 70890.2176306583,
+      "model_id": "Qwen/Qwen3-8B@b968826d9c46dd6066d109eabc6255188de91218",
+      "parsed": {
+        "analysis": {
+          "ambiguity_present": true,
+          "ambiguity_types": [
+            "pragmatic",
+            "referential",
+            "temporal"
+          ],
+          "analysis_provenance": {
+            "analysis_id": "75997e7e009a94faf2108757894c86dd280bc3eae91ac5ca0deeba3147d84a9e",
+            "method": "model_generated",
+            "notes": "source_input_hash=75997e7e009a94faf2108757894c86dd280bc3eae91ac5ca0deeba3147d84a9e;no_gold_in_prompt;scene_licence_dropped=destination,time,object",
+            "provider_id": "goal_first_v2_full_context",
+            "provider_version": "goal-first-manager-v2"
+          },
+          "candidate_interpretations": [],
+          "capability_status": "unknown",
+          "clarification_question": "Could you clarify what you would like me to do?",
+          "clarification_targets": [
+            "intent"
+          ],
+          "compound_ambiguity": true,
+          "compound_ambiguity_count": 3,
+          "context_sampling_uncertainty": {
+            "agreement": 0.25,
+            "score": 0.75,
+            "variant_count": 1
+          },
+          "cpc": {
+            "action": {
+              "status": "filled",
+              "value": "move"
+            },
+            "actor": {
+              "status": "filled",
+              "value": "library service robot"
+            },
+            "conditions": {
+              "status": "filled",
+              "value": "reservation deadline"
+            },
+            "constraints": {
+              "status": "filled",
+              "value": "only"
+            },
+            "destination": {
+              "status": "filled",
+              "value": "unknown"
+            },
+            "negation": {
+              "status": "filled",
+              "value": "only"
+            },
+            "object": {
+              "status": "filled",
+              "value": "display stand"
+            },
+            "object_attributes": {
+              "status": "filled",
+              "value": "marked"
+            },
+            "quantity": {
+              "status": "filled",
+              "value": "only"
+            },
+            "recipient": {
+              "status": "filled",
+              "value": "library service robot"
+            },
+            "spatial_relation": {
+              "status": "filled",
+              "value": "after"
+            },
+            "time": {
+              "status": "filled",
+              "value": "after the reservation deadline"
+            },
+            "tool": {
+              "status": "filled",
+              "value": "library service robot"
+            }
+          },
+          "findings": [
+            "pilot_ambiguity_types:[\"object_reference\",\"pragmatic\",\"temporal_reference\"]",
+            "pilot_capability_status:unauthorized",
+            "intent_summary_present"
+          ],
+          "intent_summary": "Move the marked display stand after the reservation deadline",
+          "primary_ambiguity_type": "pragmatic",
+          "recommended_strategy": "clarify",
+          "rejection_reason": null,
+          "resolution_evidence": [],
+          "resolution_method": null,
+          "resolved_slots": [
+            {
+              "slot_name": "action",
+              "value": "move"
+            },
+            {
+              "slot_name": "actor",
+              "value": "library service robot"
+            },
+            {
+              "slot_name": "object",
+              "value": "display stand"
+            },
+            {
+              "slot_name": "object_attributes",
+              "value": "marked"
+            },
+            {
+              "slot_name": "destination",
+              "value": "unknown"
+            },
+            {
+              "slot_name": "spatial_relation",
+              "value": "after"
+            },
+            {
+              "slot_name": "quantity",
+              "value": "only"
+            },
+            {
+              "slot_name": "time",
+              "value": "after the reservation deadline"
+            },
+            {
+              "slot_name": "recipient",
+              "value": "library service robot"
+            },
+            {
+              "slot_name": "tool",
+              "value": "library service robot"
+            },
+            {
+              "slot_name": "conditions",
+              "value": "reservation deadline"
+            },
+            {
+              "slot_name": "constraints",
+              "value": "only"
+            },
+            {
+              "slot_name": "negation",
+              "value": "only"
+            }
+          ],
+          "risk_level": "medium",
+          "risk_relevant": true,
+          "selected_interpretation": null,
+          "speech_act": "directive_command",
+          "strategy_sequence": [],
+          "supporting_evidence": [],
+          "unresolved_slots": [],
+          "unsupported_specificity": []
+        },
+        "clarification_question": "Could you clarify what you would like me to do?",
+        "clarification_targets": [
+          "intent"
+        ],
+        "execution_status": "ok",
+        "official_result": false,
+        "provider_provenance": {
+          "shared_analysis_fingerprint": "16665e5501582746f1c252254dc81f1d599fefaf52f6cb61607e1f920881cc6d"
+        },
+        "recommended_strategy": "clarify",
+        "record_id": "CA-0029",
+        "rejection_reason": null,
+        "resolved_slots": [
+          {
+            "slot_name": "action",
+            "value": "move"
+          },
+          {
+            "slot_name": "actor",
+            "value": "library service robot"
+          },
+          {
+            "slot_name": "object",
+            "value": "display stand"
+          },
+          {
+            "slot_name": "object_attributes",
+            "value": "marked"
+          },
+          {
+            "slot_name": "destination",
+            "value": "unknown"
+          },
+          {
+            "slot_name": "spatial_relation",
+            "value": "after"
+          },
+          {
+            "slot_name": "quantity",
+            "value": "only"
+          },
+          {
+            "slot_name": "time",
+            "value": "after the reservation deadline"
+          },
+          {
+            "slot_name": "recipient",
+            "value": "library service robot"
+          },
+          {
+            "slot_name": "tool",
+            "value": "library service robot"
+          },
+          {
+            "slot_name": "conditions",
+            "value": "reservation deadline"
+          },
+          {
+            "slot_name": "constraints",
+            "value": "only"
+          },
+          {
+            "slot_name": "negation",
+            "value": "only"
+          }
+        ],
+        "result_hash": "d59d65877c8afc3319f748bc48cc63fdaccba52763b942ab5c2883b3423303bc",
+        "run_id": null,
+        "run_mode": null,
+        "runtime_metadata": {
+          "shared_analysis_fingerprint": "16665e5501582746f1c252254dc81f1d599fefaf52f6cb61607e1f920881cc6d",
+          "thresholds_status": "unfrozen",
+          "thresholds_valid_for_official_use": false,
+          "uncertainty_score": 0.75,
+          "uses_type_risk_capability_precedence": false
+        },
+        "safety_findings": [],
+        "strategy_sequence": [],
+        "synthetic_only": true,
+        "system_id": "degree_based_router",
+        "system_version": "1.0.0",
+        "unsupported_commitment_findings": []
+      },
+      "raw_output": "{\n  \"intent_summary\": \"Move the marked display stand after the reservation deadline\",\n  \"cpc\": {\n    \"action\": {\n      \"value\": \"move\",\n      \"status\": \"unknown\"\n    },\n    \"object\": {\n      \"value\": \"display stand\",\n      \"status\": \"unknown\"\n    },\n    \"time\": {\n      \"value\": \"after the reservation deadline\",\n      \"status\": \"unknown\"\n    }\n \n  ,\n  \"constraints\": {\n    \"value\": \"only\",\n    \"status\": \"unknown\"\n  },\n  \"spatial_relation\": {\n    \"value\": \"after\",\n    \"status\": \"unknown\"\n  },\n  \"recipient\": {\n    \"value\": \"library service robot\",\n    \"status\": \"unknown\"\n  },\n  \"conditions\": {\n    \"value\": \"reservation deadline\",\n    \"status\": \"unknown\"\n  },\n  \"destination\": {\n    \"value\": \"unknown\",\n    \"status\": \"unknown\"\n  }\n  ,\n  \"object_attributes\": {\n    \"value\": \"marked\",\n    \"status\": \"unknown\"\n  }\n  ,\n  \"negation\": {\n    \"value\": \"only\",\n    \"status\": \"unknown\"\n  }\n  ,\n  \"tool\": {\n    \"value\": \"library service robot\",\n    \"status\": \"unknown\"\n  }\n  ,\n  \"quantity\": {\n    \"value\": \"only\",\n    \"status\": \"unknown\"\n  }\n  ,\n  \"actor\": {\n    \"value\": \"library service robot\",\n    \"status\": \"unknown\"\n  }\n  },\n  \"pilot_ambiguity_types\": [\n    \"pragmatic\",\n    \"temporal_reference\",\n    \"object_reference\"\n  ]\n  ,\n  \"pilot_capability_status\": \"unauthorized\"\n  ,\n  \"speech_act\": \"directive_command\"\n  ,\n  \"risk_level\": \"medium\"\n  ,\n  \"uncertainty\": 0.75\n  ,\n  \"unresolved_slots\": [\n    \"destination\",\n    \"time\",\n    \"object\"\n  ]\n  }\n  ",
+      "record_id": "CA-0029",
+      "schema_valid": true,
+      "supports_ambiguity_prediction": true,
+      "supports_capability_prediction": true,
+      "system_id": "degree_based_router_v2",
+      "system_version": "2.0.0",
+      "terminal_strategy": "clarify"
+    },
+    "timid": {
+      "ambiguity_types": [
+        "object_reference",
+        "pragmatic",
+        "temporal_reference"
+      ],
+      "analysis_attempts": [
+        {
+          "attempt": 1,
+          "max_new_tokens": 4096,
+          "mode": "thinking",
+          "raw_chars": 7110,
+          "raw_sha256": "f000e38b622710ea0b4d4781d2b20b2cd77e65749d749ec84f1fd9ff2802db61",
+          "validation_error": "bad_intent_summary"
+        },
+        {
+          "attempt": 2,
+          "max_new_tokens": 8192,
+          "mode": "thinking_retry",
+          "raw_chars": 7616,
+          "raw_sha256": "53ecfaa3ee2ebeacc3a3d2a224471a5fce8b6e850e17f53828bd5daa8dffd5ad",
+          "validation_error": "bad_intent_summary"
+        },
+        {
+          "attempt": 3,
+          "constraint": {
+            "constraint_initialised": true,
+            "generated_token_count": 453,
+            "maximum_output_tokens": 1024,
+            "response_mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+            "termination_reason": "eos_or_constraint_stop",
+            "transport_status": "constrained_generated"
+          },
+          "max_new_tokens": 1024,
+          "mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+          "raw_chars": 1446,
+          "raw_sha256": "65ab520bbfdb74b66129d58826c847ad02fe42f7c0d5205133dbcbc7ca258785",
+          "validation_error": null
+        }
+      ],
+      "capability_status": "unauthorized",
+      "claim_boundary": "separately_versioned_from_frozen_t39",
+      "error": null,
+      "execution_mode": "cluster-gpu-goal-first-v2",
+      "failed": false,
+      "intent_summary": "Move the marked display stand after the reservation deadline",
+      "latency_ms": 70890.2176306583,
+      "model_id": "Qwen/Qwen3-8B@b968826d9c46dd6066d109eabc6255188de91218",
+      "parsed": {
+        "analysis": {
+          "ambiguity_present": true,
+          "ambiguity_types": [
+            "pragmatic",
+            "referential",
+            "temporal"
+          ],
+          "analysis_provenance": {
+            "analysis_id": "75997e7e009a94faf2108757894c86dd280bc3eae91ac5ca0deeba3147d84a9e",
+            "method": "model_generated",
+            "notes": "source_input_hash=75997e7e009a94faf2108757894c86dd280bc3eae91ac5ca0deeba3147d84a9e;no_gold_in_prompt;scene_licence_dropped=destination,time,object",
+            "provider_id": "goal_first_v2_full_context",
+            "provider_version": "goal-first-manager-v2"
+          },
+          "candidate_interpretations": [],
+          "capability_status": "unknown",
+          "clarification_question": "Before I continue, could you clarify: pragmatic, referential, temporal?",
+          "clarification_targets": [
+            "pragmatic",
+            "referential",
+            "temporal"
+          ],
+          "compound_ambiguity": true,
+          "compound_ambiguity_count": 3,
+          "context_sampling_uncertainty": {
+            "agreement": 0.25,
+            "score": 0.75,
+            "variant_count": 1
+          },
+          "cpc": {
+            "action": {
+              "status": "filled",
+              "value": "move"
+            },
+            "actor": {
+              "status": "filled",
+              "value": "library service robot"
+            },
+            "conditions": {
+              "status": "filled",
+              "value": "reservation deadline"
+            },
+            "constraints": {
+              "status": "filled",
+              "value": "only"
+            },
+            "destination": {
+              "status": "filled",
+              "value": "unknown"
+            },
+            "negation": {
+              "status": "filled",
+              "value": "only"
+            },
+            "object": {
+              "status": "filled",
+              "value": "display stand"
+            },
+            "object_attributes": {
+              "status": "filled",
+              "value": "marked"
+            },
+            "quantity": {
+              "status": "filled",
+              "value": "only"
+            },
+            "recipient": {
+              "status": "filled",
+              "value": "library service robot"
+            },
+            "spatial_relation": {
+              "status": "filled",
+              "value": "after"
+            },
+            "time": {
+              "status": "filled",
+              "value": "after the reservation deadline"
+            },
+            "tool": {
+              "status": "filled",
+              "value": "library service robot"
+            }
+          },
+          "findings": [
+            "pilot_ambiguity_types:[\"object_reference\",\"pragmatic\",\"temporal_reference\"]",
+            "pilot_capability_status:unauthorized",
+            "intent_summary_present"
+          ],
+          "intent_summary": "Move the marked display stand after the reservation deadline",
+          "primary_ambiguity_type": "pragmatic",
+          "recommended_strategy": "clarify",
+          "rejection_reason": null,
+          "resolution_evidence": [],
+          "resolution_method": null,
+          "resolved_slots": [
+            {
+              "slot_name": "action",
+              "value": "move"
+            },
+            {
+              "slot_name": "actor",
+              "value": "library service robot"
+            },
+            {
+              "slot_name": "object",
+              "value": "display stand"
+            },
+            {
+              "slot_name": "object_attributes",
+              "value": "marked"
+            },
+            {
+              "slot_name": "destination",
+              "value": "unknown"
+            },
+            {
+              "slot_name": "spatial_relation",
+              "value": "after"
+            },
+            {
+              "slot_name": "quantity",
+              "value": "only"
+            },
+            {
+              "slot_name": "time",
+              "value": "after the reservation deadline"
+            },
+            {
+              "slot_name": "recipient",
+              "value": "library service robot"
+            },
+            {
+              "slot_name": "tool",
+              "value": "library service robot"
+            },
+            {
+              "slot_name": "conditions",
+              "value": "reservation deadline"
+            },
+            {
+              "slot_name": "constraints",
+              "value": "only"
+            },
+            {
+              "slot_name": "negation",
+              "value": "only"
+            }
+          ],
+          "risk_level": "medium",
+          "risk_relevant": true,
+          "selected_interpretation": null,
+          "speech_act": "directive_command",
+          "strategy_sequence": [],
+          "supporting_evidence": [],
+          "unresolved_slots": [],
+          "unsupported_specificity": []
+        },
+        "clarification_question": "Before I continue, could you clarify: pragmatic, referential, temporal?",
+        "clarification_targets": [
+          "pragmatic",
+          "referential",
+          "temporal"
+        ],
+        "execution_status": "ok",
+        "official_result": false,
+        "provider_provenance": {
+          "provider_id": "cached_analysis",
+          "provider_version": "1.0.0"
+        },
+        "recommended_strategy": "clarify",
+        "record_id": "CA-0029",
+        "rejection_reason": null,
+        "resolved_slots": [
+          {
+            "slot_name": "action",
+            "value": "move"
+          },
+          {
+            "slot_name": "actor",
+            "value": "library service robot"
+          },
+          {
+            "slot_name": "object",
+            "value": "display stand"
+          },
+          {
+            "slot_name": "object_attributes",
+            "value": "marked"
+          },
+          {
+            "slot_name": "destination",
+            "value": "unknown"
+          },
+          {
+            "slot_name": "spatial_relation",
+            "value": "after"
+          },
+          {
+            "slot_name": "quantity",
+            "value": "only"
+          },
+          {
+            "slot_name": "time",
+            "value": "after the reservation deadline"
+          },
+          {
+            "slot_name": "recipient",
+            "value": "library service robot"
+          },
+          {
+            "slot_name": "tool",
+            "value": "library service robot"
+          },
+          {
+            "slot_name": "conditions",
+            "value": "reservation deadline"
+          },
+          {
+            "slot_name": "constraints",
+            "value": "only"
+          },
+          {
+            "slot_name": "negation",
+            "value": "only"
+          }
+        ],
+        "result_hash": "2737f2b6e91d0f3c0854f87b0b55c4839f603755c4814a32a12af801b1bdd33f",
+        "run_id": null,
+        "run_mode": null,
+        "runtime_metadata": {
+          "awaits_t28_adapter": true,
+          "classification": {
+            "ambiguity_present": true,
+            "ambiguity_types": [
+              "pragmatic",
+              "referential",
+              "temporal"
+            ],
+            "capability_status": "unknown",
+            "compound_ambiguity": true,
+            "compound_ambiguity_count": 3,
+            "derivation_notes": [
+              "ambiguity_present_from_types"
+            ],
+            "risk_level": "medium"
+          },
+          "rejection_text": null,
+          "requires_re_evaluation": false,
+          "resolution_events": [],
+          "router_trace": {
+            "clarification_targets": [
+              "pragmatic",
+              "referential",
+              "temporal"
+            ],
+            "considered_rules": [
+              "known_unsafe_or_prohibited",
+              "known_incapable",
+              "unknown_or_unverified_capability"
+            ],
+            "matched_rule_id": "unknown_capability",
+            "notes": [
+              "unknown_capability_cannot_execute"
+            ],
+            "recommended_strategy": "clarify",
+            "rejection_reason": null,
+            "requires_re_evaluation": false,
+            "strategy_sequence": []
+          },
+          "safety_action": "return_with_findings",
+          "uncertainty": null
+        },
+        "safety_findings": [],
+        "strategy_sequence": [],
+        "synthetic_only": true,
+        "system_id": "full_type_risk_aware_manager",
+        "system_version": "1.0.0",
+        "unsupported_commitment_findings": []
+      },
+      "raw_output": "{\n  \"intent_summary\": \"Move the marked display stand after the reservation deadline\",\n  \"cpc\": {\n    \"action\": {\n      \"value\": \"move\",\n      \"status\": \"unknown\"\n    },\n    \"object\": {\n      \"value\": \"display stand\",\n      \"status\": \"unknown\"\n    },\n    \"time\": {\n      \"value\": \"after the reservation deadline\",\n      \"status\": \"unknown\"\n    }\n \n  ,\n  \"constraints\": {\n    \"value\": \"only\",\n    \"status\": \"unknown\"\n  },\n  \"spatial_relation\": {\n    \"value\": \"after\",\n    \"status\": \"unknown\"\n  },\n  \"recipient\": {\n    \"value\": \"library service robot\",\n    \"status\": \"unknown\"\n  },\n  \"conditions\": {\n    \"value\": \"reservation deadline\",\n    \"status\": \"unknown\"\n  },\n  \"destination\": {\n    \"value\": \"unknown\",\n    \"status\": \"unknown\"\n  }\n  ,\n  \"object_attributes\": {\n    \"value\": \"marked\",\n    \"status\": \"unknown\"\n  }\n  ,\n  \"negation\": {\n    \"value\": \"only\",\n    \"status\": \"unknown\"\n  }\n  ,\n  \"tool\": {\n    \"value\": \"library service robot\",\n    \"status\": \"unknown\"\n  }\n  ,\n  \"quantity\": {\n    \"value\": \"only\",\n    \"status\": \"unknown\"\n  }\n  ,\n  \"actor\": {\n    \"value\": \"library service robot\",\n    \"status\": \"unknown\"\n  }\n  },\n  \"pilot_ambiguity_types\": [\n    \"pragmatic\",\n    \"temporal_reference\",\n    \"object_reference\"\n  ]\n  ,\n  \"pilot_capability_status\": \"unauthorized\"\n  ,\n  \"speech_act\": \"directive_command\"\n  ,\n  \"risk_level\": \"medium\"\n  ,\n  \"uncertainty\": 0.75\n  ,\n  \"unresolved_slots\": [\n    \"destination\",\n    \"time\",\n    \"object\"\n  ]\n  }\n  ",
+      "record_id": "CA-0029",
+      "schema_valid": true,
+      "supports_ambiguity_prediction": true,
+      "supports_capability_prediction": true,
+      "system_id": "rich_conservative_manager_v2",
+      "system_version": "2.0.0",
+      "terminal_strategy": "clarify"
+    },
+    "context_blind": {
+      "ambiguity_types": [
+        "fuzzy_temporal",
+        "pragmatic"
+      ],
+      "analysis_attempts": [
+        {
+          "attempt": 1,
+          "max_new_tokens": 4096,
+          "mode": "thinking",
+          "raw_chars": 4369,
+          "raw_sha256": "7ef2945566da89a0458749d0d515c583566ebfa7a54c4659e5b16729e7837d87",
+          "validation_error": "bad_intent_summary"
+        },
+        {
+          "attempt": 2,
+          "max_new_tokens": 8192,
+          "mode": "thinking_retry",
+          "raw_chars": 6758,
+          "raw_sha256": "84f00d2871f1a863d34cab6d9a1d62727dad617c5a9dfa9d8f2fceea0b67bf6b",
+          "validation_error": "bad_pilot_ambiguity_types"
+        },
+        {
+          "attempt": 3,
+          "constraint": {
+            "constraint_initialised": true,
+            "generated_token_count": 428,
+            "maximum_output_tokens": 1024,
+            "response_mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+            "termination_reason": "eos_or_constraint_stop",
+            "transport_status": "constrained_generated"
+          },
+          "max_new_tokens": 1024,
+          "mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+          "raw_chars": 1362,
+          "raw_sha256": "cd73475ad579b357fb37d4a43d318fb8e60c64e954fb76e4af1a754c0ad8353d",
+          "validation_error": null
+        }
+      ],
+      "capability_status": "unauthorized",
+      "claim_boundary": "separately_versioned_from_frozen_t39",
+      "error": null,
+      "execution_mode": "cluster-gpu-goal-first-v2",
+      "failed": false,
+      "intent_summary": "Move the marked display stand after the reservation deadline",
+      "latency_ms": 49725.71414988488,
+      "model_id": "Qwen/Qwen3-8B@b968826d9c46dd6066d109eabc6255188de91218",
+      "parsed": {
+        "analysis": {
+          "ambiguity_present": true,
+          "ambiguity_types": [
+            "pragmatic",
+            "temporal"
+          ],
+          "analysis_provenance": {
+            "analysis_id": "e74740e7bb54f0e4dedffc32d8bb937e58ed16fae254ab8adb03bf99d38cd382",
+            "method": "context_blind",
+            "notes": "ablated_input_hash=e74740e7bb54f0e4dedffc32d8bb937e58ed16fae254ab8adb03bf99d38cd382;source_input_hash=e74740e7bb54f0e4dedffc32d8bb937e58ed16fae254ab8adb03bf99d38cd382;no_gold_in_prompt;scene_licence_dropped=time,quantity,object",
+            "provider_id": "goal_first_v2_context_blind",
+            "provider_version": "goal-first-manager-v2"
+          },
+          "candidate_interpretations": [],
+          "capability_status": "unknown",
+          "clarification_question": null,
+          "clarification_targets": [],
+          "compound_ambiguity": true,
+          "compound_ambiguity_count": 2,
+          "context_sampling_uncertainty": {
+            "agreement": 0.25,
+            "score": 0.75,
+            "variant_count": 1
+          },
+          "cpc": {
+            "action": {
+              "status": "filled",
+              "value": "Move"
+            },
+            "actor": {
+              "status": "filled",
+              "value": "none"
+            },
+            "conditions": {
+              "status": "filled",
+              "value": "after the reservation deadline"
+            },
+            "constraints": {
+              "status": "filled",
+              "value": "only the marked"
+            },
+            "destination": {
+              "status": "filled",
+              "value": "none"
+            },
+            "negation": {
+              "status": "filled",
+              "value": "none"
+            },
+            "object": {
+              "status": "filled",
+              "value": "display stand"
+            },
+            "object_attributes": {
+              "status": "filled",
+              "value": "none"
+            },
+            "quantity": {
+              "status": "filled",
+              "value": "only the marked"
+            },
+            "recipient": {
+              "status": "filled",
+              "value": "none"
+            },
+            "spatial_relation": {
+              "status": "filled",
+              "value": "none"
+            },
+            "time": {
+              "status": "filled",
+              "value": "after the reservation deadline"
+            },
+            "tool": {
+              "status": "filled",
+              "value": "none"
+            }
+          },
+          "findings": [
+            "pilot_ambiguity_types:[\"fuzzy_temporal\",\"pragmatic\"]",
+            "pilot_capability_status:unauthorized",
+            "intent_summary_present"
+          ],
+          "intent_summary": "Move the marked display stand after the reservation deadline",
+          "primary_ambiguity_type": "pragmatic",
+          "recommended_strategy": "face_preserving_rejection",
+          "rejection_reason": "unsafe_or_prohibited_action",
+          "resolution_evidence": [],
+          "resolution_method": null,
+          "resolved_slots": [
+            {
+              "slot_name": "action",
+              "value": "Move"
+            },
+            {
+              "slot_name": "actor",
+              "value": "none"
+            },
+            {
+              "slot_name": "object",
+              "value": "display stand"
+            },
+            {
+              "slot_name": "object_attributes",
+              "value": "none"
+            },
+            {
+              "slot_name": "destination",
+              "value": "none"
+            },
+            {
+              "slot_name": "spatial_relation",
+              "value": "none"
+            },
+            {
+              "slot_name": "quantity",
+              "value": "only the marked"
+            },
+            {
+              "slot_name": "time",
+              "value": "after the reservation deadline"
+            },
+            {
+              "slot_name": "recipient",
+              "value": "none"
+            },
+            {
+              "slot_name": "tool",
+              "value": "none"
+            },
+            {
+              "slot_name": "conditions",
+              "value": "after the reservation deadline"
+            },
+            {
+              "slot_name": "constraints",
+              "value": "only the marked"
+            },
+            {
+              "slot_name": "negation",
+              "value": "none"
+            }
+          ],
+          "risk_level": "medium",
+          "risk_relevant": true,
+          "selected_interpretation": null,
+          "speech_act": "directive_command",
+          "strategy_sequence": [],
+          "supporting_evidence": [],
+          "unresolved_slots": [],
+          "unsupported_specificity": []
+        },
+        "clarification_question": null,
+        "clarification_targets": [],
+        "execution_status": "ok",
+        "official_result": false,
+        "provider_provenance": {
+          "provider_id": "cached_analysis",
+          "provider_version": "1.0.0"
+        },
+        "recommended_strategy": "face_preserving_rejection",
+        "record_id": "CA-0029",
+        "rejection_reason": "unsafe_or_prohibited_action",
+        "resolved_slots": [
+          {
+            "slot_name": "action",
+            "value": "Move"
+          },
+          {
+            "slot_name": "actor",
+            "value": "none"
+          },
+          {
+            "slot_name": "object",
+            "value": "display stand"
+          },
+          {
+            "slot_name": "object_attributes",
+            "value": "none"
+          },
+          {
+            "slot_name": "destination",
+            "value": "none"
+          },
+          {
+            "slot_name": "spatial_relation",
+            "value": "none"
+          },
+          {
+            "slot_name": "quantity",
+            "value": "only the marked"
+          },
+          {
+            "slot_name": "time",
+            "value": "after the reservation deadline"
+          },
+          {
+            "slot_name": "recipient",
+            "value": "none"
+          },
+          {
+            "slot_name": "tool",
+            "value": "none"
+          },
+          {
+            "slot_name": "conditions",
+            "value": "after the reservation deadline"
+          },
+          {
+            "slot_name": "constraints",
+            "value": "only the marked"
+          },
+          {
+            "slot_name": "negation",
+            "value": "none"
+          }
+        ],
+        "result_hash": "02e32da3563db8103ac977868856d13a00e80dffaed4ae8bda0cd9586cd07e61",
+        "run_id": null,
+        "run_mode": null,
+        "runtime_metadata": {
+          "analysis_identity": {
+            "analysis_content_hash": "66a34ed853f2546b73b733ae9c0f5abf8a4b2cc8f346728bdccc886b75b41a85",
+            "analysis_variant": "context_blind",
+            "model_strategy_id": null,
+            "provider_id": "goal_first_v2_context_blind",
+            "provider_version": "goal-first-manager-v2",
+            "record_id": "CA-0029",
+            "source_input_hash": "e74740e7bb54f0e4dedffc32d8bb937e58ed16fae254ab8adb03bf99d38cd382"
+          },
+          "analysis_identity_fingerprint": "7d787a0ca2c60fb63741066ac8b147e2d5cbe72f1428c88466b3dd622bd0fe3a",
+          "awaits_t28_adapter": true,
+          "classification": {
+            "ambiguity_present": true,
+            "ambiguity_types": [
+              "pragmatic",
+              "temporal"
+            ],
+            "capability_status": "unknown",
+            "compound_ambiguity": true,
+            "compound_ambiguity_count": 2,
+            "derivation_notes": [
+              "ambiguity_present_from_types"
+            ],
+            "risk_level": "medium"
+          },
+          "context_ablation": {
+            "ablated_input_hash": "e74740e7bb54f0e4dedffc32d8bb937e58ed16fae254ab8adb03bf99d38cd382",
+            "capability_context_removed": true,
+            "dialogue_history_removed": true,
+            "rejected_full_context_cache": false,
+            "rejection_reason": null,
+            "scene_context_removed": true,
+            "stripped_context_derived_fields": false
+          },
+          "original_input_unmutated": true,
+          "rejection_text": "I need to decline that request because it would be unsafe under the current constraints.",
+          "requires_re_evaluation": false,
+          "resolution_events": [],
+          "router_trace": {
+            "clarification_targets": [],
+            "considered_rules": [
+              "goal_first_v2",
+              "known_unsafe_or_prohibited"
+            ],
+            "matched_rule_id": "known_unsafe_or_prohibited",
+            "notes": [],
+            "recommended_strategy": "face_preserving_rejection",
+            "rejection_reason": "unsafe_or_prohibited_action",
+            "requires_re_evaluation": false,
+            "strategy_sequence": []
+          },
+          "safety_action": "return_with_findings",
+          "uncertainty": null
+        },
+        "safety_findings": [],
+        "strategy_sequence": [],
+        "synthetic_only": true,
+        "system_id": "context_blind_manager",
+        "system_version": "1.0.0",
+        "unsupported_commitment_findings": []
+      },
+      "raw_output": "{\n  \"intent_summary\": \"Move the marked display stand after the reservation deadline\",\n  \"cpc\": {\n    \"action\": {\n      \"value\": \"Move\",\n      \"status\": \"unknown\"\n    },\n    \"object\": {\n      \"value\": \"display stand\",\n      \"status\": \"unknown\"\n    },\n    \"time\": {\n      \"value\": \"after the reservation deadline\",\n      \"status\": \"unknown\"\n    }\n \n  ,\n  \"constraints\": {\n    \"value\": \"only the marked\",\n    \"status\": \"unknown\"\n  },\n  \"conditions\": {\n    \"value\": \"after the reservation deadline\",\n    \"status\": \"unknown\"\n  },\n  \"spatial_relation\": {\n    \"value\": \"none\",\n    \"status\": \"unknown\"\n  },\n  \"quantity\": {\n    \"value\": \"only the marked\",\n    \"status\": \"unknown\"\n  },\n  \"negation\": {\n    \"value\": \"none\",\n    \"status\": \"unknown\"\n  },\n  \"recipient\": {\n    \"value\": \"none\",\n    \"status\": \"unknown\"\n  },\n  \"destination\": {\n    \"value\": \"none\",\n    \"status\": \"unknown\"\n  },\n  \"tool\": {\n    \"value\": \"none\",\n    \"status\": \"unknown\"\n  },\n  \"object_attributes\": {\n    \"value\": \"none\",\n    \"status\": \"unknown\"\n  },\n  \"actor\": {\n    \"value\": \"none\",\n    \"status\": \"unknown\"\n  }\n} \n\n,\n  \"pilot_ambiguity_types\": [\n    \"pragmatic\",\n    \"fuzzy_temporal\"\n  ]\n  \n  ,\n  \"pilot_capability_status\": \"unauthorized\",\n  \"speech_act\": \"directive_command\",\n  \"risk_level\": \"medium\",\n  \"unresolved_slots\": [\n    \"time\",\n    \"quantity\",\n    \"object\"\n  ],\n  \"uncertainty\": 0.75\n}",
+      "record_id": "CA-0029",
+      "schema_valid": true,
+      "supports_ambiguity_prediction": true,
+      "supports_capability_prediction": true,
+      "system_id": "goal_first_context_blind_v2",
+      "system_version": "2.0.0",
+      "terminal_strategy": "face_preserving_rejection"
+    }
+  },
+  "provenance": {
+    "source_sha256": "f33b1e29f1e8aa256a475f07213aa07247def47d8e2148d54a472a40b71b05c9",
+    "gold_sha256": "5e23ad1a92ff1873c8f039a8ce560a111dd6fb6b8ae8c11d6cf34dbfa1c360db",
+    "t07_final_zip_sha256": "34ca50e034ca37b617068bb50c734d12fa26282fb5eec563c11ead700163e491",
+    "inherited_t07_zip_sha256": "0305b1e9ab062876ee6ee89778cc6028d2eaf01718b7dd0295944e7d9cb81a01",
+    "note": "Goal-First, Degree, Timid, and Context-Blind predictions are inherited from the earlier T0.7 run; official intent and comparison come from the final T0.7 archive."
+  }
+}

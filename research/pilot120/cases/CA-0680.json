@@ -1,0 +1,1127 @@
+{
+  "record_id": "CA-0680",
+  "frozen_source": {
+    "capability_context": "Hotel service robot can deliver sealed guest items, move linen, scan room tags, and clean approved floor equipment.",
+    "command": "Do the same with the green room-service tray using the usual setup.",
+    "dialogue_history": [
+      "housekeeper: I scanned the first room-service tray and moved the floor sign after a separate damage alert.",
+      "Robot: Both tasks are complete.",
+      "housekeeper: The next item is another room-service tray; the floor sign was a one-off interruption."
+    ],
+    "record_id": "CA-0680",
+    "scene_context": "Housekeeping store on a hotel floor. Two green room-service trays are present. One has an open work order and the other carries a completed barcode. The open task on the active item is Work order WO-187. The setup table states that the room turnaround applies to a different work-order prefix, while Work order WO-187 maps to the guest delivery. The batch board shows that each open room-service tray in this run is scanned before release."
+  },
+  "frozen_gold": {
+    "ambiguity_types": [
+      "discourse_ellipsis",
+      "object_reference",
+      "routine_reference"
+    ],
+    "annotator_b_era": "glm_era",
+    "annotator_b_model": "glm-5.2-high",
+    "capability_status": "capable",
+    "field_status": {
+      "ambiguity_types": "auto_agree",
+      "capability_status": "auto_agree",
+      "record_validity": "auto_agree",
+      "strategy_sequence": "from_A_matching_terminal",
+      "terminal_strategy": "auto_agree"
+    },
+    "gold_lifecycle": "final_gold",
+    "gold_status": "auto_agree",
+    "human_gate_required": false,
+    "provenance": {
+      "agreement_label": "pilot_annotation_agreement",
+      "annotator_a_sha256": "b6b3c239ab4aba5f5dbd80d4a713a0c298bac43f22a01d6cc4b8a8d774953866",
+      "annotator_b_sha256": "f93dee58e9487e6de883fb8b0120ed5a27647e620e9a1ae1ac170b2061a409af",
+      "gold_policy": "use_existing_pilot_adjudicated_gold",
+      "input_sha256": "3b43a9d7abc0f9f79810b1e72d34b264a91885aec84e3234422dc5cad7b119fd",
+      "pilot_gold_sha256": "eb008cbd339259e9e1df306aec84bda63839a6d1ad277c9be7a95503e711c9ba",
+      "protocol": "pilot_adjudicated_gold_on_capability_repaired_source",
+      "repaired_input_sha256": "c4dca32ad555b25fa592f79de9fcfee6240e0c6fa362aa0698e7a30542c5fee4"
+    },
+    "record_id": "CA-0680",
+    "record_validity": "valid",
+    "strategy_sequence": [
+      "resolve_discourse",
+      "resolve_reference",
+      "execute"
+    ],
+    "terminal_strategy": "execute"
+  },
+  "t07_comparison": {
+    "record_id": "CA-0680",
+    "gold_route": "execute",
+    "raw_route": "clarify",
+    "ft_route": "clarify",
+    "gf_route": "execute",
+    "raw_route_ok": "False",
+    "ft_route_ok": "False",
+    "gf_route_ok": "True",
+    "raw_official_intent": "True",
+    "ft_official_intent": "True",
+    "gf_official_intent": "True",
+    "blind_official_intent": "True"
+  },
+  "t07_official_intent": {
+    "context_blind_official_intent": true,
+    "degree_official_intent_shared_gf": true,
+    "finetune_official_intent": true,
+    "goal_first_official_intent": true,
+    "raw_official_intent": true,
+    "record_id": "CA-0680",
+    "timid_official_intent_shared_gf": true
+  },
+  "t07_predictions": {
+    "raw_qwen": {
+      "ambiguity_types": [
+        "object_reference",
+        "routine_reference"
+      ],
+      "capability_status": "conditionally_capable",
+      "error": null,
+      "execution_mode": "final_close_intent_box",
+      "failed": false,
+      "intent_summary": "Scan the second green room-service tray and move the floor sign as done previously.",
+      "latency_ms": 7708.719532936811,
+      "parsed": {
+        "ambiguity_types": [
+          "object_reference",
+          "routine_reference"
+        ],
+        "capability_status": "conditionally_capable",
+        "intent_summary": "Scan the second green room-service tray and move the floor sign as done previously.",
+        "speech_act": "directive_command",
+        "terminal_strategy": "clarify"
+      },
+      "raw_output": "<think>\nOkay, let's break this down. The user's command is \"Do the same with the green room-service tray using the usual setup.\" So first, I need to figure out what \"do the same\" refers to. Looking at the dialogue history, the housekeeper mentioned scanning the first room-service tray and moving the floor sign after a damage alert. The robot confirmed both tasks were complete. Then the housekeeper says the next item is another room-service tray, with the floor sign being a one-off interruption.\n\nSo \"do the same\" likely means repeat the previous actions: scan the tray and move the floor sign. But the second tray's setup might differ. The scene context mentions two green trays, one with an open work order (WO-187) and another with a completed barcode. The setup table says the room turnaround applies to a different prefix, but WO-187 is for guest delivery. The batch board indicates each open tray is scanned before release.\n\nThe robot's capabilities include delivering items, moving linen, scanning tags, and cleaning floor equipment. The previous action involved scanning and moving a floor sign. Now, the command is to do the same with the green tray. But the second tray might not have the same setup. The work order might be different, so maybe the floor sign isn't needed here. The ambiguity here is whether \"the usual setup\" refers to the same steps as before, but the context suggests that the second tray's setup could vary based on the work order. \n\nSo the intent is to scan the second tray and move the floor sign again, but there's ambiguity about if the setup is the same. The capability status might be conditionally capable because the setup could differ. The speech act is a directive command. Ambiguity types might include object_reference (which tray?) and maybe routine_reference (usual setup). The capability is conditionally_capable because it depends on the setup. The terminal strategy would be clarify if there's uncertainty.\n</think>\n\n{\n  \"intent_summary\": \"Scan the second green room-service tray and move the floor sign as done previously.\",\n  \"speech_act\": \"directive_command\",\n  \"ambiguity_types\": [\"object_reference\", \"routine_reference\"],\n  \"capability_status\": \"conditionally_capable\",\n  \"terminal_strategy\": \"clarify\"\n}",
+      "record_id": "CA-0680",
+      "schema_valid": true,
+      "speech_act": "directive_command",
+      "system_id": "direct_base_llm",
+      "terminal_strategy": "clarify"
+    },
+    "finetune": {
+      "ambiguity_types": [
+        "fuzzy_quantity",
+        "pragmatic"
+      ],
+      "capability_status": "conditionally_capable",
+      "error": null,
+      "execution_mode": "final_close_intent_box",
+      "failed": false,
+      "intent_summary": "Scan the next green room-service tray and perform the same action as before, which may include moving the floor sign.",
+      "latency_ms": 8560.572005808353,
+      "parsed": {
+        "ambiguity_types": [
+          "fuzzy_quantity",
+          "pragmatic"
+        ],
+        "capability_status": "conditionally_capable",
+        "intent_summary": "Scan the next green room-service tray and perform the same action as before, which may include moving the floor sign.",
+        "speech_act": "directive_command",
+        "terminal_strategy": "clarify"
+      },
+      "raw_output": "<think>\nOkay, let's break down this command. The user says, \"Do the same with the green room-service tray using the usual setup.\" The previous dialogue mentions that the housekeeper scanned a room-service tray and moved a floor sign after a damage alert. The robot confirmed both tasks were complete. Now, the housekeeper is pointing to another tray, indicating the next item.\n\nFirst, I need to understand what \"do the same\" refers to. The initial task involved scanning the tray and moving the floor sign. But the second tray might not need the floor sign action since the housekeeper mentioned it was a one-off interruption. The robot's previous response was that both tasks were complete, but maybe the second tray only requires the scan. However, the exact action isn't clear here. The ambiguity types might include 'pragmatic' because the instruction is vague. Also, 'fuzzy_quantity' since it's not clear if both trays need the same actions. The capability status is 'conditionally_capable' because the robot can scan but not sure about moving the floor sign again. The terminal strategy would be 'clarify' since the instruction is ambiguous.\n</think>\n\n{\n  \"intent_summary\": \"Scan the next green room-service tray and perform the same action as before, which may include moving the floor sign.\",\n  \"speech_act\": \"directive_command\",\n  \"ambiguity_types\": [\"pragmatic\", \"fuzzy_quantity\"],\n  \"capability_status\": \"conditionally_capable\",\n  \"terminal_strategy\": \"clarify\"\n}",
+      "record_id": "CA-0680",
+      "schema_valid": true,
+      "speech_act": "directive_command",
+      "system_id": "t28_selected_adapter_llm",
+      "terminal_strategy": "clarify"
+    },
+    "goal_first": {
+      "ambiguity_types": [
+        "object_reference",
+        "pragmatic",
+        "routine_reference"
+      ],
+      "analysis_attempts": [
+        {
+          "attempt": 1,
+          "max_new_tokens": 4096,
+          "mode": "thinking",
+          "raw_chars": 8849,
+          "raw_sha256": "11f9bd5a42dbc684182431b9900badf97255e40d2a0ec2975b190612a8b66398",
+          "validation_error": "bad_intent_summary"
+        },
+        {
+          "attempt": 2,
+          "max_new_tokens": 8192,
+          "mode": "thinking_retry",
+          "raw_chars": 7843,
+          "raw_sha256": "8c819080c60916267b7870789872f2cee34fe125fde82b27d6d7ff47ebf07409",
+          "validation_error": "bad_pilot_ambiguity_types"
+        },
+        {
+          "attempt": 3,
+          "constraint": {
+            "constraint_initialised": true,
+            "generated_token_count": 508,
+            "maximum_output_tokens": 1024,
+            "response_mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+            "termination_reason": "eos_or_constraint_stop",
+            "transport_status": "constrained_generated"
+          },
+          "max_new_tokens": 1024,
+          "mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+          "raw_chars": 1721,
+          "raw_sha256": "4a1d2a597eae48a45d9c57038b59f07c7caf9ef5997d621e10d63e763bba1144",
+          "validation_error": null
+        }
+      ],
+      "capability_status": "capable",
+      "claim_boundary": "separately_versioned_from_frozen_t39",
+      "error": null,
+      "execution_mode": "cluster-gpu-goal-first-v2",
+      "failed": false,
+      "intent_summary": "Perform the same action on the green room-service tray using the standard setup procedure",
+      "latency_ms": 125007.97788891941,
+      "model_id": "Qwen/Qwen3-8B@b968826d9c46dd6066d109eabc6255188de91218",
+      "parsed": {
+        "analysis": {
+          "ambiguity_present": true,
+          "ambiguity_types": [
+            "contextual",
+            "pragmatic",
+            "referential"
+          ],
+          "analysis_provenance": {
+            "analysis_id": "77dcc027fefee71d14699000ab76f399a3b6545e57527b0b54043afa3360e055",
+            "method": "model_generated",
+            "notes": "source_input_hash=77dcc027fefee71d14699000ab76f399a3b6545e57527b0b54043afa3360e055;no_gold_in_prompt;scene_licence_dropped=none",
+            "provider_id": "goal_first_v2_full_context",
+            "provider_version": "goal-first-manager-v2"
+          },
+          "candidate_interpretations": [],
+          "capability_status": "capable",
+          "clarification_question": null,
+          "clarification_targets": [],
+          "compound_ambiguity": true,
+          "compound_ambiguity_count": 3,
+          "context_sampling_uncertainty": {
+            "agreement": 0.8,
+            "score": 0.2,
+            "variant_count": 1
+          },
+          "cpc": {
+            "action": {
+              "status": "not_applicable",
+              "value": "Do the same with the green room-service tray using the usual setup"
+            },
+            "actor": {
+              "status": "not_applicable",
+              "value": "robot"
+            },
+            "conditions": {
+              "status": "not_applicable",
+              "value": "usual setup"
+            },
+            "constraints": {
+              "status": "not_applicable",
+              "value": "standard procedure"
+            },
+            "destination": {
+              "status": "not_applicable",
+              "value": "hotel floor"
+            },
+            "negation": {
+              "status": "not_applicable",
+              "value": "none"
+            },
+            "object": {
+              "status": "not_applicable",
+              "value": "green room-service tray"
+            },
+            "object_attributes": {
+              "status": "not_applicable",
+              "value": "green, room-service tray"
+            },
+            "quantity": {
+              "status": "not_applicable",
+              "value": "not applicable"
+            },
+            "recipient": {
+              "status": "not_applicable",
+              "value": "robot"
+            },
+            "spatial_relation": {
+              "status": "not_applicable",
+              "value": "not applicable"
+            },
+            "time": {
+              "status": "not_applicable",
+              "value": "now"
+            },
+            "tool": {
+              "status": "not_applicable",
+              "value": "not applicable"
+            }
+          },
+          "findings": [
+            "pilot_ambiguity_types:[\"object_reference\",\"pragmatic\",\"routine_reference\"]",
+            "pilot_capability_status:capable",
+            "intent_summary_present"
+          ],
+          "intent_summary": "Perform the same action on the green room-service tray using the standard setup procedure",
+          "primary_ambiguity_type": "contextual",
+          "recommended_strategy": "execute",
+          "rejection_reason": null,
+          "resolution_evidence": [],
+          "resolution_method": null,
+          "resolved_slots": [],
+          "risk_level": "low",
+          "risk_relevant": true,
+          "selected_interpretation": null,
+          "speech_act": "directive_command",
+          "strategy_sequence": [],
+          "supporting_evidence": [],
+          "unresolved_slots": [],
+          "unsupported_specificity": []
+        },
+        "clarification_question": null,
+        "clarification_targets": [],
+        "execution_status": "ok",
+        "official_result": false,
+        "provider_provenance": {
+          "provider_id": "cached_analysis",
+          "provider_version": "1.0.0"
+        },
+        "recommended_strategy": "execute",
+        "record_id": "CA-0680",
+        "rejection_reason": null,
+        "resolved_slots": [],
+        "result_hash": "8a2a75beef04b8ea7942ffae621bc86db28ee195c43cea5b31ff14cd1b09ff8c",
+        "run_id": null,
+        "run_mode": null,
+        "runtime_metadata": {
+          "awaits_t28_adapter": true,
+          "classification": {
+            "ambiguity_present": true,
+            "ambiguity_types": [
+              "contextual",
+              "pragmatic",
+              "referential"
+            ],
+            "capability_status": "capable",
+            "compound_ambiguity": true,
+            "compound_ambiguity_count": 3,
+            "derivation_notes": [
+              "ambiguity_present_from_types"
+            ],
+            "risk_level": "low"
+          },
+          "rejection_text": null,
+          "requires_re_evaluation": false,
+          "resolution_events": [],
+          "router_trace": {
+            "clarification_targets": [],
+            "considered_rules": [
+              "goal_first_v2",
+              "known_unsafe_or_prohibited",
+              "known_incapable",
+              "unknown_capability_high_risk",
+              "context_licensed_execute"
+            ],
+            "matched_rule_id": "context_licensed_execute",
+            "notes": [
+              "goal_first_v2_execute_despite_remaining_ambiguity"
+            ],
+            "recommended_strategy": "execute",
+            "rejection_reason": null,
+            "requires_re_evaluation": false,
+            "strategy_sequence": []
+          },
+          "safety_action": "return_with_findings",
+          "uncertainty": null
+        },
+        "safety_findings": [],
+        "strategy_sequence": [],
+        "synthetic_only": true,
+        "system_id": "goal_first_manager_v2",
+        "system_version": "2.0.0",
+        "unsupported_commitment_findings": []
+      },
+      "raw_output": "{\n  \"intent_summary\": \"Perform the same action on the green room-service tray using the standard setup procedure\",\n  \"cpc\": {\n    \"action\": {\n      \"value\": \"Do the same with the green room-service tray using the usual setup\"\n    ,\n      \"status\": \"not_applicable\"\n    },\n    \"object\": {\n      \"value\": \"green room-service tray\"\n    ,\n      \"status\": \"not_applicable\"\n    },\n    \"recipient\": {\n      \"value\": \"robot\"\n    ,\n      \"status\": \"not_applicable\"\n    },\n    \"destination\": {\n      \"value\": \"hotel floor\"\n    ,\n      \"status\": \"not_applicable\"\n    },\n    \"time\": {\n      \"value\": \"now\"\n    ,\n      \"status\": \"not_applicable\"\n    }\n  ,\n    \"conditions\": {\n      \"value\": \"usual setup\"\n    ,\n      \"status\": \"not_applicable\"\n    }\n  ,\n    \"constraints\": {\n      \"value\": \"standard procedure\"\n    ,\n      \"status\": \"not_applicable\"\n    }\n  ,\n    \"negation\": {\n      \"value\": \"none\"\n    ,\n      \"status\": \"not_applicable\"\n    }\n  ,\n    \"spatial_relation\": {\n      \"value\": \"not applicable\"\n    ,\n      \"status\": \"not_applicable\"\n    }\n  ,\n    \"quantity\": {\n      \"value\": \"not applicable\"\n    ,\n      \"status\": \"not_applicable\"\n    }\n  ,\n    \"tool\": {\n      \"value\": \"not applicable\"\n    ,\n      \"status\": \"not_applicable\"\n    }\n  ,\n    \"object_attributes\": {\n      \"value\": \"green, room-service tray\"\n    ,\n      \"status\": \"not_applicable\"\n    }\n  ,\n    \"actor\": {\n      \"value\": \"robot\"\n    ,\n      \"status\": \"not_applicable\"\n    }\n  }\n,\n  \"pilot_ambiguity_types\": [\n    \"pragmatic\",\n    \"object_reference\",\n    \"routine_reference\"\n  ]\n  \n  ,\n  \"pilot_capability_status\": \"capable\"\n  \n  ,\n  \"risk_level\": \"low\"\n  \n  ,\n  \"speech_act\": \"directive_command\"\n  \n  ,\n  \"unresolved_slots\": []\n  \n  ,\n  \"uncertainty\": 0.2\n}",
+      "record_id": "CA-0680",
+      "schema_valid": true,
+      "supports_ambiguity_prediction": true,
+      "supports_capability_prediction": true,
+      "system_id": "goal_first_manager_v2",
+      "system_version": "2.0.0",
+      "terminal_strategy": "execute"
+    },
+    "degree": {
+      "ambiguity_types": [
+        "object_reference",
+        "pragmatic",
+        "routine_reference"
+      ],
+      "analysis_attempts": [
+        {
+          "attempt": 1,
+          "max_new_tokens": 4096,
+          "mode": "thinking",
+          "raw_chars": 8849,
+          "raw_sha256": "11f9bd5a42dbc684182431b9900badf97255e40d2a0ec2975b190612a8b66398",
+          "validation_error": "bad_intent_summary"
+        },
+        {
+          "attempt": 2,
+          "max_new_tokens": 8192,
+          "mode": "thinking_retry",
+          "raw_chars": 7843,
+          "raw_sha256": "8c819080c60916267b7870789872f2cee34fe125fde82b27d6d7ff47ebf07409",
+          "validation_error": "bad_pilot_ambiguity_types"
+        },
+        {
+          "attempt": 3,
+          "constraint": {
+            "constraint_initialised": true,
+            "generated_token_count": 508,
+            "maximum_output_tokens": 1024,
+            "response_mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+            "termination_reason": "eos_or_constraint_stop",
+            "transport_status": "constrained_generated"
+          },
+          "max_new_tokens": 1024,
+          "mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+          "raw_chars": 1721,
+          "raw_sha256": "4a1d2a597eae48a45d9c57038b59f07c7caf9ef5997d621e10d63e763bba1144",
+          "validation_error": null
+        }
+      ],
+      "capability_status": "capable",
+      "claim_boundary": "separately_versioned_from_frozen_t39",
+      "error": null,
+      "execution_mode": "cluster-gpu-goal-first-v2",
+      "failed": false,
+      "intent_summary": "Perform the same action on the green room-service tray using the standard setup procedure",
+      "latency_ms": 125007.97788891941,
+      "model_id": "Qwen/Qwen3-8B@b968826d9c46dd6066d109eabc6255188de91218",
+      "parsed": {
+        "analysis": {
+          "ambiguity_present": true,
+          "ambiguity_types": [
+            "contextual",
+            "pragmatic",
+            "referential"
+          ],
+          "analysis_provenance": {
+            "analysis_id": "77dcc027fefee71d14699000ab76f399a3b6545e57527b0b54043afa3360e055",
+            "method": "model_generated",
+            "notes": "source_input_hash=77dcc027fefee71d14699000ab76f399a3b6545e57527b0b54043afa3360e055;no_gold_in_prompt;scene_licence_dropped=none",
+            "provider_id": "goal_first_v2_full_context",
+            "provider_version": "goal-first-manager-v2"
+          },
+          "candidate_interpretations": [],
+          "capability_status": "capable",
+          "clarification_question": null,
+          "clarification_targets": [],
+          "compound_ambiguity": true,
+          "compound_ambiguity_count": 3,
+          "context_sampling_uncertainty": {
+            "agreement": 0.8,
+            "score": 0.2,
+            "variant_count": 1
+          },
+          "cpc": {
+            "action": {
+              "status": "not_applicable",
+              "value": "Do the same with the green room-service tray using the usual setup"
+            },
+            "actor": {
+              "status": "not_applicable",
+              "value": "robot"
+            },
+            "conditions": {
+              "status": "not_applicable",
+              "value": "usual setup"
+            },
+            "constraints": {
+              "status": "not_applicable",
+              "value": "standard procedure"
+            },
+            "destination": {
+              "status": "not_applicable",
+              "value": "hotel floor"
+            },
+            "negation": {
+              "status": "not_applicable",
+              "value": "none"
+            },
+            "object": {
+              "status": "not_applicable",
+              "value": "green room-service tray"
+            },
+            "object_attributes": {
+              "status": "not_applicable",
+              "value": "green, room-service tray"
+            },
+            "quantity": {
+              "status": "not_applicable",
+              "value": "not applicable"
+            },
+            "recipient": {
+              "status": "not_applicable",
+              "value": "robot"
+            },
+            "spatial_relation": {
+              "status": "not_applicable",
+              "value": "not applicable"
+            },
+            "time": {
+              "status": "not_applicable",
+              "value": "now"
+            },
+            "tool": {
+              "status": "not_applicable",
+              "value": "not applicable"
+            }
+          },
+          "findings": [
+            "pilot_ambiguity_types:[\"object_reference\",\"pragmatic\",\"routine_reference\"]",
+            "pilot_capability_status:capable",
+            "intent_summary_present"
+          ],
+          "intent_summary": "Perform the same action on the green room-service tray using the standard setup procedure",
+          "primary_ambiguity_type": "contextual",
+          "recommended_strategy": "silently_resolve",
+          "rejection_reason": null,
+          "resolution_evidence": [],
+          "resolution_method": null,
+          "resolved_slots": [],
+          "risk_level": "low",
+          "risk_relevant": true,
+          "selected_interpretation": null,
+          "speech_act": "directive_command",
+          "strategy_sequence": [],
+          "supporting_evidence": [],
+          "unresolved_slots": [],
+          "unsupported_specificity": []
+        },
+        "clarification_question": null,
+        "clarification_targets": [],
+        "execution_status": "ok",
+        "official_result": false,
+        "provider_provenance": {
+          "shared_analysis_fingerprint": "bf95ec6b50b939c93d41ec387b6df3d1b925576049d2f629bb8511643efb0cc9"
+        },
+        "recommended_strategy": "silently_resolve",
+        "record_id": "CA-0680",
+        "rejection_reason": null,
+        "resolved_slots": [],
+        "result_hash": "d56a8719e958143d88e99bd3e2b541ab017af7c8cf3b6b917f5c815ad7380c54",
+        "run_id": null,
+        "run_mode": null,
+        "runtime_metadata": {
+          "shared_analysis_fingerprint": "bf95ec6b50b939c93d41ec387b6df3d1b925576049d2f629bb8511643efb0cc9",
+          "thresholds_status": "unfrozen",
+          "thresholds_valid_for_official_use": false,
+          "uncertainty_score": 0.2,
+          "uses_type_risk_capability_precedence": false
+        },
+        "safety_findings": [],
+        "strategy_sequence": [],
+        "synthetic_only": true,
+        "system_id": "degree_based_router",
+        "system_version": "1.0.0",
+        "unsupported_commitment_findings": []
+      },
+      "raw_output": "{\n  \"intent_summary\": \"Perform the same action on the green room-service tray using the standard setup procedure\",\n  \"cpc\": {\n    \"action\": {\n      \"value\": \"Do the same with the green room-service tray using the usual setup\"\n    ,\n      \"status\": \"not_applicable\"\n    },\n    \"object\": {\n      \"value\": \"green room-service tray\"\n    ,\n      \"status\": \"not_applicable\"\n    },\n    \"recipient\": {\n      \"value\": \"robot\"\n    ,\n      \"status\": \"not_applicable\"\n    },\n    \"destination\": {\n      \"value\": \"hotel floor\"\n    ,\n      \"status\": \"not_applicable\"\n    },\n    \"time\": {\n      \"value\": \"now\"\n    ,\n      \"status\": \"not_applicable\"\n    }\n  ,\n    \"conditions\": {\n      \"value\": \"usual setup\"\n    ,\n      \"status\": \"not_applicable\"\n    }\n  ,\n    \"constraints\": {\n      \"value\": \"standard procedure\"\n    ,\n      \"status\": \"not_applicable\"\n    }\n  ,\n    \"negation\": {\n      \"value\": \"none\"\n    ,\n      \"status\": \"not_applicable\"\n    }\n  ,\n    \"spatial_relation\": {\n      \"value\": \"not applicable\"\n    ,\n      \"status\": \"not_applicable\"\n    }\n  ,\n    \"quantity\": {\n      \"value\": \"not applicable\"\n    ,\n      \"status\": \"not_applicable\"\n    }\n  ,\n    \"tool\": {\n      \"value\": \"not applicable\"\n    ,\n      \"status\": \"not_applicable\"\n    }\n  ,\n    \"object_attributes\": {\n      \"value\": \"green, room-service tray\"\n    ,\n      \"status\": \"not_applicable\"\n    }\n  ,\n    \"actor\": {\n      \"value\": \"robot\"\n    ,\n      \"status\": \"not_applicable\"\n    }\n  }\n,\n  \"pilot_ambiguity_types\": [\n    \"pragmatic\",\n    \"object_reference\",\n    \"routine_reference\"\n  ]\n  \n  ,\n  \"pilot_capability_status\": \"capable\"\n  \n  ,\n  \"risk_level\": \"low\"\n  \n  ,\n  \"speech_act\": \"directive_command\"\n  \n  ,\n  \"unresolved_slots\": []\n  \n  ,\n  \"uncertainty\": 0.2\n}",
+      "record_id": "CA-0680",
+      "schema_valid": true,
+      "supports_ambiguity_prediction": true,
+      "supports_capability_prediction": true,
+      "system_id": "degree_based_router_v2",
+      "system_version": "2.0.0",
+      "terminal_strategy": "execute"
+    },
+    "timid": {
+      "ambiguity_types": [
+        "object_reference",
+        "pragmatic",
+        "routine_reference"
+      ],
+      "analysis_attempts": [
+        {
+          "attempt": 1,
+          "max_new_tokens": 4096,
+          "mode": "thinking",
+          "raw_chars": 8849,
+          "raw_sha256": "11f9bd5a42dbc684182431b9900badf97255e40d2a0ec2975b190612a8b66398",
+          "validation_error": "bad_intent_summary"
+        },
+        {
+          "attempt": 2,
+          "max_new_tokens": 8192,
+          "mode": "thinking_retry",
+          "raw_chars": 7843,
+          "raw_sha256": "8c819080c60916267b7870789872f2cee34fe125fde82b27d6d7ff47ebf07409",
+          "validation_error": "bad_pilot_ambiguity_types"
+        },
+        {
+          "attempt": 3,
+          "constraint": {
+            "constraint_initialised": true,
+            "generated_token_count": 508,
+            "maximum_output_tokens": 1024,
+            "response_mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+            "termination_reason": "eos_or_constraint_stop",
+            "transport_status": "constrained_generated"
+          },
+          "max_new_tokens": 1024,
+          "mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+          "raw_chars": 1721,
+          "raw_sha256": "4a1d2a597eae48a45d9c57038b59f07c7caf9ef5997d621e10d63e763bba1144",
+          "validation_error": null
+        }
+      ],
+      "capability_status": "capable",
+      "claim_boundary": "separately_versioned_from_frozen_t39",
+      "error": null,
+      "execution_mode": "cluster-gpu-goal-first-v2",
+      "failed": false,
+      "intent_summary": "Perform the same action on the green room-service tray using the standard setup procedure",
+      "latency_ms": 125007.97788891941,
+      "model_id": "Qwen/Qwen3-8B@b968826d9c46dd6066d109eabc6255188de91218",
+      "parsed": {
+        "analysis": {
+          "ambiguity_present": true,
+          "ambiguity_types": [
+            "contextual",
+            "pragmatic",
+            "referential"
+          ],
+          "analysis_provenance": {
+            "analysis_id": "77dcc027fefee71d14699000ab76f399a3b6545e57527b0b54043afa3360e055",
+            "method": "model_generated",
+            "notes": "source_input_hash=77dcc027fefee71d14699000ab76f399a3b6545e57527b0b54043afa3360e055;no_gold_in_prompt;scene_licence_dropped=none",
+            "provider_id": "goal_first_v2_full_context",
+            "provider_version": "goal-first-manager-v2"
+          },
+          "candidate_interpretations": [],
+          "capability_status": "capable",
+          "clarification_question": "Before I continue, could you clarify: contextual, pragmatic, referential?",
+          "clarification_targets": [
+            "contextual",
+            "pragmatic",
+            "referential"
+          ],
+          "compound_ambiguity": true,
+          "compound_ambiguity_count": 3,
+          "context_sampling_uncertainty": {
+            "agreement": 0.8,
+            "score": 0.2,
+            "variant_count": 1
+          },
+          "cpc": {
+            "action": {
+              "status": "not_applicable",
+              "value": "Do the same with the green room-service tray using the usual setup"
+            },
+            "actor": {
+              "status": "not_applicable",
+              "value": "robot"
+            },
+            "conditions": {
+              "status": "not_applicable",
+              "value": "usual setup"
+            },
+            "constraints": {
+              "status": "not_applicable",
+              "value": "standard procedure"
+            },
+            "destination": {
+              "status": "not_applicable",
+              "value": "hotel floor"
+            },
+            "negation": {
+              "status": "not_applicable",
+              "value": "none"
+            },
+            "object": {
+              "status": "not_applicable",
+              "value": "green room-service tray"
+            },
+            "object_attributes": {
+              "status": "not_applicable",
+              "value": "green, room-service tray"
+            },
+            "quantity": {
+              "status": "not_applicable",
+              "value": "not applicable"
+            },
+            "recipient": {
+              "status": "not_applicable",
+              "value": "robot"
+            },
+            "spatial_relation": {
+              "status": "not_applicable",
+              "value": "not applicable"
+            },
+            "time": {
+              "status": "not_applicable",
+              "value": "now"
+            },
+            "tool": {
+              "status": "not_applicable",
+              "value": "not applicable"
+            }
+          },
+          "findings": [
+            "pilot_ambiguity_types:[\"object_reference\",\"pragmatic\",\"routine_reference\"]",
+            "pilot_capability_status:capable",
+            "intent_summary_present"
+          ],
+          "intent_summary": "Perform the same action on the green room-service tray using the standard setup procedure",
+          "primary_ambiguity_type": "contextual",
+          "recommended_strategy": "clarify",
+          "rejection_reason": null,
+          "resolution_evidence": [],
+          "resolution_method": null,
+          "resolved_slots": [],
+          "risk_level": "low",
+          "risk_relevant": true,
+          "selected_interpretation": null,
+          "speech_act": "directive_command",
+          "strategy_sequence": [],
+          "supporting_evidence": [],
+          "unresolved_slots": [],
+          "unsupported_specificity": []
+        },
+        "clarification_question": "Before I continue, could you clarify: contextual, pragmatic, referential?",
+        "clarification_targets": [
+          "contextual",
+          "pragmatic",
+          "referential"
+        ],
+        "execution_status": "ok",
+        "official_result": false,
+        "provider_provenance": {
+          "provider_id": "cached_analysis",
+          "provider_version": "1.0.0"
+        },
+        "recommended_strategy": "clarify",
+        "record_id": "CA-0680",
+        "rejection_reason": null,
+        "resolved_slots": [],
+        "result_hash": "50bedcdf632039bda2ee9643b8929913b05a6bd2727e290da10846ce8daa9a5c",
+        "run_id": null,
+        "run_mode": null,
+        "runtime_metadata": {
+          "awaits_t28_adapter": true,
+          "classification": {
+            "ambiguity_present": true,
+            "ambiguity_types": [
+              "contextual",
+              "pragmatic",
+              "referential"
+            ],
+            "capability_status": "capable",
+            "compound_ambiguity": true,
+            "compound_ambiguity_count": 3,
+            "derivation_notes": [
+              "ambiguity_present_from_types"
+            ],
+            "risk_level": "low"
+          },
+          "rejection_text": null,
+          "requires_re_evaluation": false,
+          "resolution_events": [],
+          "router_trace": {
+            "clarification_targets": [
+              "contextual",
+              "pragmatic",
+              "referential"
+            ],
+            "considered_rules": [
+              "known_unsafe_or_prohibited",
+              "known_incapable",
+              "unknown_or_unverified_capability",
+              "hazard_identity_unresolved",
+              "critical_unresolved_medium_high_risk",
+              "unknown_safety_risk",
+              "dependent_compound_ambiguities",
+              "unique_low_risk_resolvable",
+              "clear_safe_capable",
+              "default_clarify"
+            ],
+            "matched_rule_id": "default_clarify",
+            "notes": [
+              "default_clarify_no_unsupported_specificity"
+            ],
+            "recommended_strategy": "clarify",
+            "rejection_reason": null,
+            "requires_re_evaluation": false,
+            "strategy_sequence": []
+          },
+          "safety_action": "return_with_findings",
+          "uncertainty": null
+        },
+        "safety_findings": [],
+        "strategy_sequence": [],
+        "synthetic_only": true,
+        "system_id": "full_type_risk_aware_manager",
+        "system_version": "1.0.0",
+        "unsupported_commitment_findings": []
+      },
+      "raw_output": "{\n  \"intent_summary\": \"Perform the same action on the green room-service tray using the standard setup procedure\",\n  \"cpc\": {\n    \"action\": {\n      \"value\": \"Do the same with the green room-service tray using the usual setup\"\n    ,\n      \"status\": \"not_applicable\"\n    },\n    \"object\": {\n      \"value\": \"green room-service tray\"\n    ,\n      \"status\": \"not_applicable\"\n    },\n    \"recipient\": {\n      \"value\": \"robot\"\n    ,\n      \"status\": \"not_applicable\"\n    },\n    \"destination\": {\n      \"value\": \"hotel floor\"\n    ,\n      \"status\": \"not_applicable\"\n    },\n    \"time\": {\n      \"value\": \"now\"\n    ,\n      \"status\": \"not_applicable\"\n    }\n  ,\n    \"conditions\": {\n      \"value\": \"usual setup\"\n    ,\n      \"status\": \"not_applicable\"\n    }\n  ,\n    \"constraints\": {\n      \"value\": \"standard procedure\"\n    ,\n      \"status\": \"not_applicable\"\n    }\n  ,\n    \"negation\": {\n      \"value\": \"none\"\n    ,\n      \"status\": \"not_applicable\"\n    }\n  ,\n    \"spatial_relation\": {\n      \"value\": \"not applicable\"\n    ,\n      \"status\": \"not_applicable\"\n    }\n  ,\n    \"quantity\": {\n      \"value\": \"not applicable\"\n    ,\n      \"status\": \"not_applicable\"\n    }\n  ,\n    \"tool\": {\n      \"value\": \"not applicable\"\n    ,\n      \"status\": \"not_applicable\"\n    }\n  ,\n    \"object_attributes\": {\n      \"value\": \"green, room-service tray\"\n    ,\n      \"status\": \"not_applicable\"\n    }\n  ,\n    \"actor\": {\n      \"value\": \"robot\"\n    ,\n      \"status\": \"not_applicable\"\n    }\n  }\n,\n  \"pilot_ambiguity_types\": [\n    \"pragmatic\",\n    \"object_reference\",\n    \"routine_reference\"\n  ]\n  \n  ,\n  \"pilot_capability_status\": \"capable\"\n  \n  ,\n  \"risk_level\": \"low\"\n  \n  ,\n  \"speech_act\": \"directive_command\"\n  \n  ,\n  \"unresolved_slots\": []\n  \n  ,\n  \"uncertainty\": 0.2\n}",
+      "record_id": "CA-0680",
+      "schema_valid": true,
+      "supports_ambiguity_prediction": true,
+      "supports_capability_prediction": true,
+      "system_id": "rich_conservative_manager_v2",
+      "system_version": "2.0.0",
+      "terminal_strategy": "clarify"
+    },
+    "context_blind": {
+      "ambiguity_types": [
+        "object_reference",
+        "pragmatic",
+        "routine_reference"
+      ],
+      "analysis_attempts": [
+        {
+          "attempt": 1,
+          "max_new_tokens": 4096,
+          "mode": "thinking",
+          "raw_chars": 4730,
+          "raw_sha256": "86a7bf6de653ab946b3f54951de9472c3ac70f965d6b542646465cdc2078b264",
+          "validation_error": "bad_pilot_ambiguity_types"
+        },
+        {
+          "attempt": 2,
+          "max_new_tokens": 8192,
+          "mode": "thinking_retry",
+          "raw_chars": 4450,
+          "raw_sha256": "6b6f4ebce51b9d20b25243f55d0652295e92e9aed5cd9b0984bbdcbb6e8931de",
+          "validation_error": "bad_pilot_ambiguity_types"
+        },
+        {
+          "attempt": 3,
+          "constraint": {
+            "constraint_initialised": true,
+            "generated_token_count": 471,
+            "maximum_output_tokens": 1024,
+            "response_mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+            "termination_reason": "eos_or_constraint_stop",
+            "transport_status": "constrained_generated"
+          },
+          "max_new_tokens": 1024,
+          "mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+          "raw_chars": 1545,
+          "raw_sha256": "487e75bfe648b7bf252487011e8b9fc914f4846269153cad514553fc8d33c93d",
+          "validation_error": null
+        }
+      ],
+      "capability_status": "unauthorized",
+      "claim_boundary": "separately_versioned_from_frozen_t39",
+      "error": null,
+      "execution_mode": "cluster-gpu-goal-first-v2",
+      "failed": false,
+      "intent_summary": "Perform the same action as before with the green room-service tray using the standard setup",
+      "latency_ms": 62832.18893408775,
+      "model_id": "Qwen/Qwen3-8B@b968826d9c46dd6066d109eabc6255188de91218",
+      "parsed": {
+        "analysis": {
+          "ambiguity_present": true,
+          "ambiguity_types": [
+            "contextual",
+            "pragmatic",
+            "referential"
+          ],
+          "analysis_provenance": {
+            "analysis_id": "42cabb32bb7bbb41eea10c009e31531da60b498728389153c8e3338d03731616",
+            "method": "context_blind",
+            "notes": "ablated_input_hash=42cabb32bb7bbb41eea10c009e31531da60b498728389153c8e3338d03731616;source_input_hash=42cabb32bb7bbb41eea10c009e31531da60b498728389153c8e3338d03731616;no_gold_in_prompt;scene_licence_dropped=recipient,destination,tool,spatial_relation,time,quantity,negation,actor",
+            "provider_id": "goal_first_v2_context_blind",
+            "provider_version": "goal-first-manager-v2"
+          },
+          "candidate_interpretations": [],
+          "capability_status": "unknown",
+          "clarification_question": null,
+          "clarification_targets": [],
+          "compound_ambiguity": true,
+          "compound_ambiguity_count": 3,
+          "context_sampling_uncertainty": {
+            "agreement": 0.25,
+            "score": 0.75,
+            "variant_count": 1
+          },
+          "cpc": {
+            "action": {
+              "status": "filled",
+              "value": "Prepare and deliver room-service tray"
+            },
+            "actor": {
+              "status": "filled",
+              "value": "unknown"
+            },
+            "conditions": {
+              "status": "filled",
+              "value": "Do the same"
+            },
+            "constraints": {
+              "status": "filled",
+              "value": "using the usual setup"
+            },
+            "destination": {
+              "status": "filled",
+              "value": "unknown"
+            },
+            "negation": {
+              "status": "filled",
+              "value": "unknown"
+            },
+            "object": {
+              "status": "filled",
+              "value": "green room-service tray"
+            },
+            "object_attributes": {
+              "status": "filled",
+              "value": "green"
+            },
+            "quantity": {
+              "status": "filled",
+              "value": "unknown"
+            },
+            "recipient": {
+              "status": "filled",
+              "value": "unknown"
+            },
+            "spatial_relation": {
+              "status": "filled",
+              "value": "unknown"
+            },
+            "time": {
+              "status": "filled",
+              "value": "unknown"
+            },
+            "tool": {
+              "status": "filled",
+              "value": "unknown"
+            }
+          },
+          "findings": [
+            "pilot_ambiguity_types:[\"object_reference\",\"pragmatic\",\"routine_reference\"]",
+            "pilot_capability_status:unauthorized",
+            "intent_summary_present"
+          ],
+          "intent_summary": "Perform the same action as before with the green room-service tray using the standard setup",
+          "primary_ambiguity_type": "contextual",
+          "recommended_strategy": "face_preserving_rejection",
+          "rejection_reason": "unsafe_or_prohibited_action",
+          "resolution_evidence": [],
+          "resolution_method": null,
+          "resolved_slots": [
+            {
+              "slot_name": "action",
+              "value": "Prepare and deliver room-service tray"
+            },
+            {
+              "slot_name": "actor",
+              "value": "unknown"
+            },
+            {
+              "slot_name": "object",
+              "value": "green room-service tray"
+            },
+            {
+              "slot_name": "object_attributes",
+              "value": "green"
+            },
+            {
+              "slot_name": "destination",
+              "value": "unknown"
+            },
+            {
+              "slot_name": "spatial_relation",
+              "value": "unknown"
+            },
+            {
+              "slot_name": "quantity",
+              "value": "unknown"
+            },
+            {
+              "slot_name": "time",
+              "value": "unknown"
+            },
+            {
+              "slot_name": "recipient",
+              "value": "unknown"
+            },
+            {
+              "slot_name": "tool",
+              "value": "unknown"
+            },
+            {
+              "slot_name": "conditions",
+              "value": "Do the same"
+            },
+            {
+              "slot_name": "constraints",
+              "value": "using the usual setup"
+            },
+            {
+              "slot_name": "negation",
+              "value": "unknown"
+            }
+          ],
+          "risk_level": "medium",
+          "risk_relevant": true,
+          "selected_interpretation": null,
+          "speech_act": "directive_command",
+          "strategy_sequence": [],
+          "supporting_evidence": [],
+          "unresolved_slots": [],
+          "unsupported_specificity": []
+        },
+        "clarification_question": null,
+        "clarification_targets": [],
+        "execution_status": "ok",
+        "official_result": false,
+        "provider_provenance": {
+          "provider_id": "cached_analysis",
+          "provider_version": "1.0.0"
+        },
+        "recommended_strategy": "face_preserving_rejection",
+        "record_id": "CA-0680",
+        "rejection_reason": "unsafe_or_prohibited_action",
+        "resolved_slots": [
+          {
+            "slot_name": "action",
+            "value": "Prepare and deliver room-service tray"
+          },
+          {
+            "slot_name": "actor",
+            "value": "unknown"
+          },
+          {
+            "slot_name": "object",
+            "value": "green room-service tray"
+          },
+          {
+            "slot_name": "object_attributes",
+            "value": "green"
+          },
+          {
+            "slot_name": "destination",
+            "value": "unknown"
+          },
+          {
+            "slot_name": "spatial_relation",
+            "value": "unknown"
+          },
+          {
+            "slot_name": "quantity",
+            "value": "unknown"
+          },
+          {
+            "slot_name": "time",
+            "value": "unknown"
+          },
+          {
+            "slot_name": "recipient",
+            "value": "unknown"
+          },
+          {
+            "slot_name": "tool",
+            "value": "unknown"
+          },
+          {
+            "slot_name": "conditions",
+            "value": "Do the same"
+          },
+          {
+            "slot_name": "constraints",
+            "value": "using the usual setup"
+          },
+          {
+            "slot_name": "negation",
+            "value": "unknown"
+          }
+        ],
+        "result_hash": "7085ffbb24a6369510757abb7236ed30c4fc7d28cfb7df02c10467b8788776ba",
+        "run_id": null,
+        "run_mode": null,
+        "runtime_metadata": {
+          "analysis_identity": {
+            "analysis_content_hash": "d592b9bd99628e4591dd391ffa6c7844e6b86ec4329f396cb35069397b1b1f9a",
+            "analysis_variant": "context_blind",
+            "model_strategy_id": null,
+            "provider_id": "goal_first_v2_context_blind",
+            "provider_version": "goal-first-manager-v2",
+            "record_id": "CA-0680",
+            "source_input_hash": "42cabb32bb7bbb41eea10c009e31531da60b498728389153c8e3338d03731616"
+          },
+          "analysis_identity_fingerprint": "6a6a60ee3aaf2dc4f9d8670e8b2032bfe195de8ece8d4e1dc31419d9640d32fa",
+          "awaits_t28_adapter": true,
+          "classification": {
+            "ambiguity_present": true,
+            "ambiguity_types": [
+              "contextual",
+              "pragmatic",
+              "referential"
+            ],
+            "capability_status": "unknown",
+            "compound_ambiguity": true,
+            "compound_ambiguity_count": 3,
+            "derivation_notes": [
+              "ambiguity_present_from_types"
+            ],
+            "risk_level": "medium"
+          },
+          "context_ablation": {
+            "ablated_input_hash": "42cabb32bb7bbb41eea10c009e31531da60b498728389153c8e3338d03731616",
+            "capability_context_removed": true,
+            "dialogue_history_removed": true,
+            "rejected_full_context_cache": false,
+            "rejection_reason": null,
+            "scene_context_removed": true,
+            "stripped_context_derived_fields": false
+          },
+          "original_input_unmutated": true,
+          "rejection_text": "I need to decline that request because it would be unsafe under the current constraints.",
+          "requires_re_evaluation": false,
+          "resolution_events": [],
+          "router_trace": {
+            "clarification_targets": [],
+            "considered_rules": [
+              "goal_first_v2",
+              "known_unsafe_or_prohibited"
+            ],
+            "matched_rule_id": "known_unsafe_or_prohibited",
+            "notes": [],
+            "recommended_strategy": "face_preserving_rejection",
+            "rejection_reason": "unsafe_or_prohibited_action",
+            "requires_re_evaluation": false,
+            "strategy_sequence": []
+          },
+          "safety_action": "return_with_findings",
+          "uncertainty": null
+        },
+        "safety_findings": [],
+        "strategy_sequence": [],
+        "synthetic_only": true,
+        "system_id": "context_blind_manager",
+        "system_version": "1.0.0",
+        "unsupported_commitment_findings": []
+      },
+      "raw_output": "{\n  \"intent_summary\": \"Perform the same action as before with the green room-service tray using the standard setup\",\n  \"cpc\": {\n    \"action\": {\n      \"value\": \"Prepare and deliver room-service tray\",\n      \"status\": \"unknown\"\n    },\n    \"object\": {\n      \"value\": \"green room-service tray\",\n      \"status\": \"unknown\"\n    },\n    \"recipient\": {\n      \"value\": \"unknown\",\n      \"status\": \"unknown\"\n    },\n    \"destination\": {\n      \"value\": \"unknown\",\n      \"status\": \"unknown\"\n    }\n  ,\n  \"constraints\": {\n    \"value\": \"using the usual setup\",\n    \"status\": \"unknown\"\n  },\n  \"conditions\": {\n    \"value\": \"Do the same\",\n    \"status\": \"unknown\"\n  },\n  \"spatial_relation\": {\n    \"value\": \"unknown\",\n    \"status\": \"unknown\"\n  },\n  \"time\": {\n    \"value\": \"unknown\",\n    \"status\": \"unknown\"\n  },\n  \"tool\": {\n    \"value\": \"unknown\",\n    \"status\": \"unknown\"\n  },\n  \"quantity\": {\n    \"value\": \"unknown\",\n    \"status\": \"unknown\"\n  },\n  \"negation\": {\n    \"value\": \"unknown\",\n    \"status\": \"unknown\"\n  },\n  \"object_attributes\": {\n    \"value\": \"green\",\n    \"status\": \"unknown\"\n  },\n  \"actor\": {\n    \"value\": \"unknown\",\n    \"status\": \"unknown\"\n  }\n} \n\n,\n  \"pilot_ambiguity_types\": [\n    \"pragmatic\",\n    \"object_reference\",\n    \"routine_reference\"\n  ]\n  ,\n  \"pilot_capability_status\": \"unauthorized\"\n  ,\n  \"speech_act\": \"directive_command\"\n  ,\n  \"risk_level\": \"medium\"\n  ,\n  \"uncertainty\": 0.75\n  ,\n  \"unresolved_slots\":  [\n    \"recipient\",\n    \"destination\",\n    \"tool\",\n    \"spatial_relation\",\n    \"time\",\n    \"quantity\",\n    \"negation\",\n    \"actor\"\n  ]\n  }\n ",
+      "record_id": "CA-0680",
+      "schema_valid": true,
+      "supports_ambiguity_prediction": true,
+      "supports_capability_prediction": true,
+      "system_id": "goal_first_context_blind_v2",
+      "system_version": "2.0.0",
+      "terminal_strategy": "face_preserving_rejection"
+    }
+  },
+  "provenance": {
+    "source_sha256": "f33b1e29f1e8aa256a475f07213aa07247def47d8e2148d54a472a40b71b05c9",
+    "gold_sha256": "5e23ad1a92ff1873c8f039a8ce560a111dd6fb6b8ae8c11d6cf34dbfa1c360db",
+    "t07_final_zip_sha256": "34ca50e034ca37b617068bb50c734d12fa26282fb5eec563c11ead700163e491",
+    "inherited_t07_zip_sha256": "0305b1e9ab062876ee6ee89778cc6028d2eaf01718b7dd0295944e7d9cb81a01",
+    "note": "Goal-First, Degree, Timid, and Context-Blind predictions are inherited from the earlier T0.7 run; official intent and comparison come from the final T0.7 archive."
+  }
+}

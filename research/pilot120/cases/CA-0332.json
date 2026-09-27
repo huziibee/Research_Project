@@ -1,0 +1,1067 @@
+{
+  "record_id": "CA-0332",
+  "frozen_source": {
+    "capability_context": "Hospital delivery robot can move sealed supplies, scan identifiers, and operate approved carts outside direct clinical treatment.",
+    "command": "Do the same with the green record folder using the usual setup.",
+    "dialogue_history": [
+      "nurse: I scanned the first record folder and moved the supply tote after a separate damage alert.",
+      "Robot: Both tasks are complete.",
+      "nurse: The next item is another record folder; the supply tote was a one-off interruption."
+    ],
+    "record_id": "CA-0332",
+    "scene_context": "Supply room in a hospital. Two green record folders are present. One has an open work order and the other carries a completed barcode. The open task on the active item is Work order WO-902. The setup table states that the infection-control round applies to a different work-order prefix, while Work order WO-902 maps to the meal service. The batch board shows that each open record folder in this run is scanned before release."
+  },
+  "frozen_gold": {
+    "ambiguity_types": [
+      "discourse_ellipsis",
+      "object_reference",
+      "routine_reference"
+    ],
+    "annotator_b_era": "claude_era",
+    "annotator_b_model": "claude-4.6-sonnet-medium-thinking",
+    "capability_status": "capable",
+    "field_status": {
+      "ambiguity_types": "auto_agree",
+      "capability_status": "auto_agree",
+      "record_validity": "auto_agree",
+      "strategy_sequence": "auto_agree",
+      "terminal_strategy": "auto_agree"
+    },
+    "gold_lifecycle": "final_gold",
+    "gold_status": "auto_agree",
+    "human_gate_required": false,
+    "provenance": {
+      "agreement_label": "pilot_annotation_agreement",
+      "annotator_a_sha256": "667b5efe5a3ee132103a4d7bc23e824dd7b7bba58146564a9831b6a00a6891d2",
+      "annotator_b_sha256": "b2713613e28cd60cb04059d17e0e336ea41bd7a3d3ee98bd93dde6123242ad65",
+      "gold_policy": "use_existing_pilot_adjudicated_gold",
+      "input_sha256": "c4fcfa6afbe7565ac62be9df83968351673024e0b0afb67b7a8a32e1632a0f37",
+      "pilot_gold_sha256": "337d0ed3928e07ee7554f9328232c9c910ade98469261cf4e4afe494108deccc",
+      "protocol": "pilot_adjudicated_gold_on_capability_repaired_source",
+      "repaired_input_sha256": "d22163409c0b5fd0b851042580fd63e5e0f085db04eb51aafa1b8a14d328db01"
+    },
+    "record_id": "CA-0332",
+    "record_validity": "valid",
+    "strategy_sequence": [
+      "resolve_discourse",
+      "resolve_reference",
+      "execute"
+    ],
+    "terminal_strategy": "execute"
+  },
+  "t07_comparison": {
+    "record_id": "CA-0332",
+    "gold_route": "execute",
+    "raw_route": "clarify",
+    "ft_route": "clarify",
+    "gf_route": "clarify",
+    "raw_route_ok": "False",
+    "ft_route_ok": "False",
+    "gf_route_ok": "False",
+    "raw_official_intent": "True",
+    "ft_official_intent": "True",
+    "gf_official_intent": "True",
+    "blind_official_intent": "True"
+  },
+  "t07_official_intent": {
+    "context_blind_official_intent": true,
+    "degree_official_intent_shared_gf": true,
+    "finetune_official_intent": true,
+    "goal_first_official_intent": true,
+    "raw_official_intent": true,
+    "record_id": "CA-0332",
+    "timid_official_intent_shared_gf": true
+  },
+  "t07_predictions": {
+    "raw_qwen": {
+      "ambiguity_types": [
+        "object_reference",
+        "routine_reference"
+      ],
+      "capability_status": "capable",
+      "error": null,
+      "execution_mode": "final_close_intent_box",
+      "failed": false,
+      "intent_summary": "Scan the green record folder and move the supply tote as done previously.",
+      "latency_ms": 17119.767569936812,
+      "parsed": {
+        "ambiguity_types": [
+          "object_reference",
+          "routine_reference"
+        ],
+        "capability_status": "capable",
+        "intent_summary": "Scan the green record folder and move the supply tote as done previously.",
+        "speech_act": "directive_command",
+        "terminal_strategy": "clarify"
+      },
+      "raw_output": "<think>\nOkay, let's break this down. The user's command is \"Do the same with the green record folder using the usual setup.\" I need to evaluate this.\n\nFirst, the intent summary. The nurse mentioned scanning the first record folder and moving the supply tote after a damage alert. The robot confirmed both tasks were done. Now the nurse is referring to another record folder. The \"usual setup\" likely refers to the previous steps: scanning and moving. So the intent is to scan the green record folder and move the supply tote again, similar to before.\n\nSpeech act: The command is a directive to perform a specific action, so it's a directive_command.\n\nAmbiguity types: The phrase \"the usual setup\" might be vague. The nurse might mean the same steps as before, but the robot needs to clarify if that's the case. Also, \"the green record folder\" could refer to one of the two present. But since the scene context mentions two green folders, maybe there's a pronoun reference. However, the dialogue history mentions \"the next item is another record folder,\" so maybe the ambiguity is about which one. But the user hasn't specified which, so maybe object_reference or pronoun_reference. Wait, the command says \"the green record folder,\" but there are two. So that's an object_reference ambiguity. Also, \"usual setup\" might be a routine_reference. But the user might be referring to the same setup as before, which was scanning and moving. However, the setup table mentions infection-control round and work order prefixes. The robot's capability includes scanning and moving supplies. So maybe the ambiguity is in the setup steps. But the ambiguity types include routine_reference. However, the command is specific, so maybe not. Alternatively, the \"usual setup\" could be a fuzzy_quantity if it's unclear how many steps. But the main ambiguity here is the object_reference because there are two green folders. Also, \"the usual setup\" might be a routine_reference. So ambiguity_types would include object_reference and routine_reference.\n\nCapability status: The robot can scan identifiers and move supplies. The task involves scanning the record folder (which it can do) and moving the supply tote. But the previous step had a supply tote movement. However, the current command says \"using the usual setup,\" which might involve moving the supply tote again. The capability includes moving sealed supplies, so moving the supply tote is allowed. So the robot is capable. But wait, the setup table mentions that the infection-control round applies to a different work-order prefix, while WO-902 maps to meal service. The current task is for WO-902. The batch board says each open record folder is scanned before release. The robot's capability includes moving supplies, so moving the supply tote is okay. So capability_status is capable.\n\nTerminal strategy: Since the command is clear but might need clarification on \"usual setup,\" but the robot's previous actions were to scan and move. However, the nurse mentioned that the supply tote was a one-off interruption. The current command says \"using the usual setup,\" which might mean the same as before. But the robot's previous action was moving the supply tote after a damage alert. Now, the nurse is referring to the next record folder, so maybe the setup is to scan and move again. But the ambiguity is whether \"usual setup\" refers to the same steps. However, the robot might need to clarify if \"usual setup\" includes moving the supply tote again. But the command is to do the same, so the robot might proceed. But if there's ambiguity, the terminal strategy would be to clarify. However, the user's command is to evaluate the robot's capability. Since the robot can scan and move, and the setup is part of its capability, the terminal strategy is execute. Wait, but the ambiguity types include routine_reference. If the setup is unclear, the robot might need to clarify. But the command is a directive, so the terminal strategy is execute. But the ambiguity in \"usual setup\" might mean that the robot can't be sure, so the terminal strategy could be clarify. Hmm. The capability_status is capable, so the robot can perform the task. The ambiguity is in the setup steps. However, the terminal strategy is about whether the robot should execute, clarify, or reject. Since the command is a directive and the robot is capable, but there's ambiguity in the setup, the terminal strategy would be clarify. Wait, the ambiguity_types include routine_reference, which might be the case here. So the terminal strategy would be to clarify because the setup steps are ambiguous. But the user's command is to evaluate the robot's command. The robot might need to clarify the setup steps. Therefore, the terminal strategy is clarify.\n</think>\n\n{\n  \"intent_summary\": \"Scan the green record folder and move the supply tote as done previously.\",\n  \"speech_act\": \"directive_command\",\n  \"ambiguity_types\": [\"object_reference\", \"routine_reference\"],\n  \"capability_status\": \"capable\",\n  \"terminal_strategy\": \"clarify\"\n}",
+      "record_id": "CA-0332",
+      "schema_valid": true,
+      "speech_act": "directive_command",
+      "system_id": "direct_base_llm",
+      "terminal_strategy": "clarify"
+    },
+    "finetune": {
+      "ambiguity_types": [
+        "action_order",
+        "pragmatic"
+      ],
+      "capability_status": "conditionally_capable",
+      "error": null,
+      "execution_mode": "final_close_intent_box",
+      "failed": false,
+      "intent_summary": "Scan the green record folder and follow the usual setup process, which may include moving the supply tote.",
+      "latency_ms": 9718.78216136247,
+      "parsed": {
+        "ambiguity_types": [
+          "action_order",
+          "pragmatic"
+        ],
+        "capability_status": "conditionally_capable",
+        "intent_summary": "Scan the green record folder and follow the usual setup process, which may include moving the supply tote.",
+        "speech_act": "directive_command",
+        "terminal_strategy": "clarify"
+      },
+      "raw_output": "<think>\nOkay, let's break down this command. The user says, \"Do the same with the green record folder using the usual setup.\" The previous dialogue mentions that the nurse scanned the first record folder and moved the supply tote after a damage alert. The robot confirmed both tasks were complete, and the nurse explains the next item is another record folder, with the supply tote being a one-off.\n\nSo, the main task here is to scan the next green record folder. The \"usual setup\" probably refers to the process of scanning and moving the supply tote, but since the nurse mentioned the supply tote was a one-off, maybe the current task is just scanning. However, the robot's capability includes scanning identifiers, so that's doable. The ambiguity here is whether \"do the same\" includes moving the supply tote again. The nurse said the supply tote was a one-off interruption, so maybe that's not part of the usual setup now. \n\nThe speech act is a directive command because the user is telling the robot to perform an action. The ambiguity types might include pragmatic because \"usual setup\" could be interpreted differently. Also, there's a possible action_order ambiguity since the tasks are part of a sequence. The capability status is conditionally_capable because the robot can scan but not sure about moving supplies now. The terminal strategy would be clarify since there's ambiguity in the setup.\n</think>\n\n{\n  \"intent_summary\": \"Scan the green record folder and follow the usual setup process, which may include moving the supply tote.\",\n  \"speech_act\": \"directive_command\",\n  \"ambiguity_types\": [\"pragmatic\", \"action_order\"],\n  \"capability_status\": \"conditionally_capable\",\n  \"terminal_strategy\": \"clarify\"\n}",
+      "record_id": "CA-0332",
+      "schema_valid": true,
+      "speech_act": "directive_command",
+      "system_id": "t28_selected_adapter_llm",
+      "terminal_strategy": "clarify"
+    },
+    "goal_first": {
+      "ambiguity_types": [
+        "pragmatic"
+      ],
+      "analysis_attempts": [
+        {
+          "attempt": 1,
+          "max_new_tokens": 4096,
+          "mode": "thinking",
+          "raw_chars": 7830,
+          "raw_sha256": "c4afb91ac4a801a96e2bcf1ad0c678badf6a1eb5038a1e107f2c8619566485eb",
+          "validation_error": "bad_intent_summary"
+        },
+        {
+          "attempt": 2,
+          "max_new_tokens": 8192,
+          "mode": "thinking_retry",
+          "raw_chars": 6302,
+          "raw_sha256": "c3a7f460042f54e10e14b5a62db7d291bcead5a7b0efe014f75f18f8af11a788",
+          "validation_error": "bad_pilot_ambiguity_types"
+        },
+        {
+          "attempt": 3,
+          "constraint": {
+            "constraint_initialised": true,
+            "generated_token_count": 467,
+            "maximum_output_tokens": 1024,
+            "response_mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+            "termination_reason": "eos_or_constraint_stop",
+            "transport_status": "constrained_generated"
+          },
+          "max_new_tokens": 1024,
+          "mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+          "raw_chars": 1481,
+          "raw_sha256": "48fa9ce60690b7ea68725c1e183507e9c99d2dc07a646fe85ab4df00bb288611",
+          "validation_error": null
+        }
+      ],
+      "capability_status": "capable",
+      "claim_boundary": "separately_versioned_from_frozen_t39",
+      "error": null,
+      "execution_mode": "cluster-gpu-goal-first-v2",
+      "failed": false,
+      "intent_summary": "Scan and move the green record folder using the standard setup procedure",
+      "latency_ms": 67048.50728111342,
+      "model_id": "Qwen/Qwen3-8B@b968826d9c46dd6066d109eabc6255188de91218",
+      "parsed": {
+        "analysis": {
+          "ambiguity_present": true,
+          "ambiguity_types": [
+            "pragmatic"
+          ],
+          "analysis_provenance": {
+            "analysis_id": "eb5f80cc6724a8e8d0106978141a603517500a0a0db6062064bcf1eea5dd6a1b",
+            "method": "model_generated",
+            "notes": "source_input_hash=eb5f80cc6724a8e8d0106978141a603517500a0a0db6062064bcf1eea5dd6a1b;no_gold_in_prompt;scene_licence_dropped=object",
+            "provider_id": "goal_first_v2_full_context",
+            "provider_version": "goal-first-manager-v2"
+          },
+          "candidate_interpretations": [],
+          "capability_status": "capable",
+          "clarification_question": "Could you clarify the pragmatic?",
+          "clarification_targets": [
+            "pragmatic"
+          ],
+          "compound_ambiguity": false,
+          "compound_ambiguity_count": 0,
+          "context_sampling_uncertainty": {
+            "agreement": 0.75,
+            "score": 0.25,
+            "variant_count": 1
+          },
+          "cpc": {
+            "action": {
+              "status": "not_applicable",
+              "value": "scan and move"
+            },
+            "actor": {
+              "status": "not_applicable",
+              "value": "robot"
+            },
+            "conditions": {
+              "status": "not_applicable",
+              "value": "open work order WO-902"
+            },
+            "constraints": {
+              "status": "not_applicable",
+              "value": "usual setup"
+            },
+            "destination": {
+              "status": "not_applicable",
+              "value": "release point"
+            },
+            "negation": {
+              "status": "not_applicable",
+              "value": "not applicable"
+            },
+            "object": {
+              "status": "not_applicable",
+              "value": "green record folder"
+            },
+            "object_attributes": {
+              "status": "not_applicable",
+              "value": "green, open, with work order WO-902"
+            },
+            "quantity": {
+              "status": "not_applicable",
+              "value": "one"
+            },
+            "recipient": {
+              "status": "not_applicable",
+              "value": "robot"
+            },
+            "spatial_relation": {
+              "status": "not_applicable",
+              "value": "supply room"
+            },
+            "time": {
+              "status": "not_applicable",
+              "value": "during infection-control round"
+            },
+            "tool": {
+              "status": "not_applicable",
+              "value": "approved carts"
+            }
+          },
+          "findings": [
+            "pilot_ambiguity_types:[\"pragmatic\"]",
+            "pilot_capability_status:capable",
+            "intent_summary_present"
+          ],
+          "intent_summary": "Scan and move the green record folder using the standard setup procedure",
+          "primary_ambiguity_type": "pragmatic",
+          "recommended_strategy": "clarify",
+          "rejection_reason": null,
+          "resolution_evidence": [],
+          "resolution_method": null,
+          "resolved_slots": [],
+          "risk_level": "medium",
+          "risk_relevant": true,
+          "selected_interpretation": null,
+          "speech_act": "directive_command",
+          "strategy_sequence": [],
+          "supporting_evidence": [],
+          "unresolved_slots": [],
+          "unsupported_specificity": []
+        },
+        "clarification_question": "Could you clarify the pragmatic?",
+        "clarification_targets": [
+          "pragmatic"
+        ],
+        "execution_status": "ok",
+        "official_result": false,
+        "provider_provenance": {
+          "provider_id": "cached_analysis",
+          "provider_version": "1.0.0"
+        },
+        "recommended_strategy": "clarify",
+        "record_id": "CA-0332",
+        "rejection_reason": null,
+        "resolved_slots": [],
+        "result_hash": "05c6d4d801df27d19c85cf09ee4518365070785d3015fe0187a2aaa57f40498c",
+        "run_id": null,
+        "run_mode": null,
+        "runtime_metadata": {
+          "awaits_t28_adapter": true,
+          "classification": {
+            "ambiguity_present": true,
+            "ambiguity_types": [
+              "pragmatic"
+            ],
+            "capability_status": "capable",
+            "compound_ambiguity": false,
+            "compound_ambiguity_count": 0,
+            "derivation_notes": [
+              "ambiguity_present_from_types"
+            ],
+            "risk_level": "medium"
+          },
+          "rejection_text": null,
+          "requires_re_evaluation": false,
+          "resolution_events": [],
+          "router_trace": {
+            "clarification_targets": [
+              "pragmatic"
+            ],
+            "considered_rules": [
+              "goal_first_v2",
+              "known_unsafe_or_prohibited",
+              "known_incapable",
+              "unknown_capability_high_risk",
+              "context_licensed_execute",
+              "default_clarify"
+            ],
+            "matched_rule_id": "default_clarify",
+            "notes": [
+              "goal_first_v2_insufficient_licence_to_execute"
+            ],
+            "recommended_strategy": "clarify",
+            "rejection_reason": null,
+            "requires_re_evaluation": false,
+            "strategy_sequence": []
+          },
+          "safety_action": "return_with_findings",
+          "uncertainty": null
+        },
+        "safety_findings": [],
+        "strategy_sequence": [],
+        "synthetic_only": true,
+        "system_id": "goal_first_manager_v2",
+        "system_version": "2.0.0",
+        "unsupported_commitment_findings": []
+      },
+      "raw_output": "{\n  \"intent_summary\": \"Scan and move the green record folder using the standard setup procedure\",\n  \"cpc\": {\n    \"action\": {\n      \"value\": \"scan and move\",\n      \"status\": \"not_applicable\"\n    },\n    \"object\": {\n      \"value\": \"green record folder\",\n      \"status\": \"not_applicable\"\n    },\n    \"recipient\": {\n      \"value\": \"robot\",\n      \"status\": \"not_applicable\"\n    }\n \n  ,\n  \"constraints\": {\n    \"value\": \"usual setup\",\n    \"status\": \"not_applicable\"\n  },\n  \"conditions\": {\n    \"value\": \"open work order WO-902\",\n    \"status\": \"not_applicable\"\n  },\n  \"spatial_relation\": {\n    \"value\": \"supply room\",\n    \"status\": \"not_applicable\"\n  },\n  \"time\": {\n    \"value\": \"during infection-control round\",\n    \"status\": \"not_applicable\"\n  },\n  \"tool\": {\n    \"value\": \"approved carts\",\n    \"status\": \"not_applicable\"\n  },\n  \"destination\": {\n    \"value\": \"release point\",\n    \"status\": \"not_applicable\"\n  },\n  \"negation\": {\n    \"value\": \"not applicable\",\n    \"status\": \"not_applicable\"\n  },\n  \"quantity\": {\n    \"value\": \"one\",\n    \"status\": \"not_applicable\"\n  },\n  \"object_attributes\": {\n    \"value\": \"green, open, with work order WO-902\",\n    \"status\": \"not_applicable\"\n  },\n  \"actor\": {\n    \"value\": \"robot\",\n    \"status\": \"not_applicable\"\n  }\n}\n\n,\n  \"pilot_ambiguity_types\": [\n    \"pragmatic\"\n  ]\n  \n  ,\n  \"pilot_capability_status\": \"capable\"\n  ,\n  \"speech_act\": \"directive_command\"\n  ,\n  \"risk_level\": \"medium\"\n  ,\n  \"uncertainty\": 0.25\n  ,\n  \"unresolved_slots\": [\n    \"object\"\n  ]\n}",
+      "record_id": "CA-0332",
+      "schema_valid": true,
+      "supports_ambiguity_prediction": true,
+      "supports_capability_prediction": true,
+      "system_id": "goal_first_manager_v2",
+      "system_version": "2.0.0",
+      "terminal_strategy": "clarify"
+    },
+    "degree": {
+      "ambiguity_types": [
+        "pragmatic"
+      ],
+      "analysis_attempts": [
+        {
+          "attempt": 1,
+          "max_new_tokens": 4096,
+          "mode": "thinking",
+          "raw_chars": 7830,
+          "raw_sha256": "c4afb91ac4a801a96e2bcf1ad0c678badf6a1eb5038a1e107f2c8619566485eb",
+          "validation_error": "bad_intent_summary"
+        },
+        {
+          "attempt": 2,
+          "max_new_tokens": 8192,
+          "mode": "thinking_retry",
+          "raw_chars": 6302,
+          "raw_sha256": "c3a7f460042f54e10e14b5a62db7d291bcead5a7b0efe014f75f18f8af11a788",
+          "validation_error": "bad_pilot_ambiguity_types"
+        },
+        {
+          "attempt": 3,
+          "constraint": {
+            "constraint_initialised": true,
+            "generated_token_count": 467,
+            "maximum_output_tokens": 1024,
+            "response_mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+            "termination_reason": "eos_or_constraint_stop",
+            "transport_status": "constrained_generated"
+          },
+          "max_new_tokens": 1024,
+          "mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+          "raw_chars": 1481,
+          "raw_sha256": "48fa9ce60690b7ea68725c1e183507e9c99d2dc07a646fe85ab4df00bb288611",
+          "validation_error": null
+        }
+      ],
+      "capability_status": "capable",
+      "claim_boundary": "separately_versioned_from_frozen_t39",
+      "error": null,
+      "execution_mode": "cluster-gpu-goal-first-v2",
+      "failed": false,
+      "intent_summary": "Scan and move the green record folder using the standard setup procedure",
+      "latency_ms": 67048.50728111342,
+      "model_id": "Qwen/Qwen3-8B@b968826d9c46dd6066d109eabc6255188de91218",
+      "parsed": {
+        "analysis": {
+          "ambiguity_present": true,
+          "ambiguity_types": [
+            "pragmatic"
+          ],
+          "analysis_provenance": {
+            "analysis_id": "eb5f80cc6724a8e8d0106978141a603517500a0a0db6062064bcf1eea5dd6a1b",
+            "method": "model_generated",
+            "notes": "source_input_hash=eb5f80cc6724a8e8d0106978141a603517500a0a0db6062064bcf1eea5dd6a1b;no_gold_in_prompt;scene_licence_dropped=object",
+            "provider_id": "goal_first_v2_full_context",
+            "provider_version": "goal-first-manager-v2"
+          },
+          "candidate_interpretations": [],
+          "capability_status": "capable",
+          "clarification_question": null,
+          "clarification_targets": [],
+          "compound_ambiguity": false,
+          "compound_ambiguity_count": 1,
+          "context_sampling_uncertainty": {
+            "agreement": 0.75,
+            "score": 0.25,
+            "variant_count": 1
+          },
+          "cpc": {
+            "action": {
+              "status": "not_applicable",
+              "value": "scan and move"
+            },
+            "actor": {
+              "status": "not_applicable",
+              "value": "robot"
+            },
+            "conditions": {
+              "status": "not_applicable",
+              "value": "open work order WO-902"
+            },
+            "constraints": {
+              "status": "not_applicable",
+              "value": "usual setup"
+            },
+            "destination": {
+              "status": "not_applicable",
+              "value": "release point"
+            },
+            "negation": {
+              "status": "not_applicable",
+              "value": "not applicable"
+            },
+            "object": {
+              "status": "not_applicable",
+              "value": "green record folder"
+            },
+            "object_attributes": {
+              "status": "not_applicable",
+              "value": "green, open, with work order WO-902"
+            },
+            "quantity": {
+              "status": "not_applicable",
+              "value": "one"
+            },
+            "recipient": {
+              "status": "not_applicable",
+              "value": "robot"
+            },
+            "spatial_relation": {
+              "status": "not_applicable",
+              "value": "supply room"
+            },
+            "time": {
+              "status": "not_applicable",
+              "value": "during infection-control round"
+            },
+            "tool": {
+              "status": "not_applicable",
+              "value": "approved carts"
+            }
+          },
+          "findings": [
+            "pilot_ambiguity_types:[\"pragmatic\"]",
+            "pilot_capability_status:capable",
+            "intent_summary_present"
+          ],
+          "intent_summary": "Scan and move the green record folder using the standard setup procedure",
+          "primary_ambiguity_type": "pragmatic",
+          "recommended_strategy": "silently_resolve",
+          "rejection_reason": null,
+          "resolution_evidence": [],
+          "resolution_method": null,
+          "resolved_slots": [],
+          "risk_level": "medium",
+          "risk_relevant": true,
+          "selected_interpretation": null,
+          "speech_act": "directive_command",
+          "strategy_sequence": [],
+          "supporting_evidence": [],
+          "unresolved_slots": [],
+          "unsupported_specificity": []
+        },
+        "clarification_question": null,
+        "clarification_targets": [],
+        "execution_status": "ok",
+        "official_result": false,
+        "provider_provenance": {
+          "shared_analysis_fingerprint": "989a1f687f985cb69b33568744543f190249e938e8d6ee578ebe0f564fb413b3"
+        },
+        "recommended_strategy": "silently_resolve",
+        "record_id": "CA-0332",
+        "rejection_reason": null,
+        "resolved_slots": [],
+        "result_hash": "9cf4666c6870f9fd38b54e7328cde43d19666d6d08b1238012ec92ee57e7147e",
+        "run_id": null,
+        "run_mode": null,
+        "runtime_metadata": {
+          "shared_analysis_fingerprint": "989a1f687f985cb69b33568744543f190249e938e8d6ee578ebe0f564fb413b3",
+          "thresholds_status": "unfrozen",
+          "thresholds_valid_for_official_use": false,
+          "uncertainty_score": 0.25,
+          "uses_type_risk_capability_precedence": false
+        },
+        "safety_findings": [],
+        "strategy_sequence": [],
+        "synthetic_only": true,
+        "system_id": "degree_based_router",
+        "system_version": "1.0.0",
+        "unsupported_commitment_findings": []
+      },
+      "raw_output": "{\n  \"intent_summary\": \"Scan and move the green record folder using the standard setup procedure\",\n  \"cpc\": {\n    \"action\": {\n      \"value\": \"scan and move\",\n      \"status\": \"not_applicable\"\n    },\n    \"object\": {\n      \"value\": \"green record folder\",\n      \"status\": \"not_applicable\"\n    },\n    \"recipient\": {\n      \"value\": \"robot\",\n      \"status\": \"not_applicable\"\n    }\n \n  ,\n  \"constraints\": {\n    \"value\": \"usual setup\",\n    \"status\": \"not_applicable\"\n  },\n  \"conditions\": {\n    \"value\": \"open work order WO-902\",\n    \"status\": \"not_applicable\"\n  },\n  \"spatial_relation\": {\n    \"value\": \"supply room\",\n    \"status\": \"not_applicable\"\n  },\n  \"time\": {\n    \"value\": \"during infection-control round\",\n    \"status\": \"not_applicable\"\n  },\n  \"tool\": {\n    \"value\": \"approved carts\",\n    \"status\": \"not_applicable\"\n  },\n  \"destination\": {\n    \"value\": \"release point\",\n    \"status\": \"not_applicable\"\n  },\n  \"negation\": {\n    \"value\": \"not applicable\",\n    \"status\": \"not_applicable\"\n  },\n  \"quantity\": {\n    \"value\": \"one\",\n    \"status\": \"not_applicable\"\n  },\n  \"object_attributes\": {\n    \"value\": \"green, open, with work order WO-902\",\n    \"status\": \"not_applicable\"\n  },\n  \"actor\": {\n    \"value\": \"robot\",\n    \"status\": \"not_applicable\"\n  }\n}\n\n,\n  \"pilot_ambiguity_types\": [\n    \"pragmatic\"\n  ]\n  \n  ,\n  \"pilot_capability_status\": \"capable\"\n  ,\n  \"speech_act\": \"directive_command\"\n  ,\n  \"risk_level\": \"medium\"\n  ,\n  \"uncertainty\": 0.25\n  ,\n  \"unresolved_slots\": [\n    \"object\"\n  ]\n}",
+      "record_id": "CA-0332",
+      "schema_valid": true,
+      "supports_ambiguity_prediction": true,
+      "supports_capability_prediction": true,
+      "system_id": "degree_based_router_v2",
+      "system_version": "2.0.0",
+      "terminal_strategy": "execute"
+    },
+    "timid": {
+      "ambiguity_types": [
+        "pragmatic"
+      ],
+      "analysis_attempts": [
+        {
+          "attempt": 1,
+          "max_new_tokens": 4096,
+          "mode": "thinking",
+          "raw_chars": 7830,
+          "raw_sha256": "c4afb91ac4a801a96e2bcf1ad0c678badf6a1eb5038a1e107f2c8619566485eb",
+          "validation_error": "bad_intent_summary"
+        },
+        {
+          "attempt": 2,
+          "max_new_tokens": 8192,
+          "mode": "thinking_retry",
+          "raw_chars": 6302,
+          "raw_sha256": "c3a7f460042f54e10e14b5a62db7d291bcead5a7b0efe014f75f18f8af11a788",
+          "validation_error": "bad_pilot_ambiguity_types"
+        },
+        {
+          "attempt": 3,
+          "constraint": {
+            "constraint_initialised": true,
+            "generated_token_count": 467,
+            "maximum_output_tokens": 1024,
+            "response_mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+            "termination_reason": "eos_or_constraint_stop",
+            "transport_status": "constrained_generated"
+          },
+          "max_new_tokens": 1024,
+          "mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+          "raw_chars": 1481,
+          "raw_sha256": "48fa9ce60690b7ea68725c1e183507e9c99d2dc07a646fe85ab4df00bb288611",
+          "validation_error": null
+        }
+      ],
+      "capability_status": "capable",
+      "claim_boundary": "separately_versioned_from_frozen_t39",
+      "error": null,
+      "execution_mode": "cluster-gpu-goal-first-v2",
+      "failed": false,
+      "intent_summary": "Scan and move the green record folder using the standard setup procedure",
+      "latency_ms": 67048.50728111342,
+      "model_id": "Qwen/Qwen3-8B@b968826d9c46dd6066d109eabc6255188de91218",
+      "parsed": {
+        "analysis": {
+          "ambiguity_present": true,
+          "ambiguity_types": [
+            "pragmatic"
+          ],
+          "analysis_provenance": {
+            "analysis_id": "eb5f80cc6724a8e8d0106978141a603517500a0a0db6062064bcf1eea5dd6a1b",
+            "method": "model_generated",
+            "notes": "source_input_hash=eb5f80cc6724a8e8d0106978141a603517500a0a0db6062064bcf1eea5dd6a1b;no_gold_in_prompt;scene_licence_dropped=object",
+            "provider_id": "goal_first_v2_full_context",
+            "provider_version": "goal-first-manager-v2"
+          },
+          "candidate_interpretations": [],
+          "capability_status": "capable",
+          "clarification_question": "Could you clarify the pragmatic?",
+          "clarification_targets": [
+            "pragmatic"
+          ],
+          "compound_ambiguity": false,
+          "compound_ambiguity_count": 0,
+          "context_sampling_uncertainty": {
+            "agreement": 0.75,
+            "score": 0.25,
+            "variant_count": 1
+          },
+          "cpc": {
+            "action": {
+              "status": "not_applicable",
+              "value": "scan and move"
+            },
+            "actor": {
+              "status": "not_applicable",
+              "value": "robot"
+            },
+            "conditions": {
+              "status": "not_applicable",
+              "value": "open work order WO-902"
+            },
+            "constraints": {
+              "status": "not_applicable",
+              "value": "usual setup"
+            },
+            "destination": {
+              "status": "not_applicable",
+              "value": "release point"
+            },
+            "negation": {
+              "status": "not_applicable",
+              "value": "not applicable"
+            },
+            "object": {
+              "status": "not_applicable",
+              "value": "green record folder"
+            },
+            "object_attributes": {
+              "status": "not_applicable",
+              "value": "green, open, with work order WO-902"
+            },
+            "quantity": {
+              "status": "not_applicable",
+              "value": "one"
+            },
+            "recipient": {
+              "status": "not_applicable",
+              "value": "robot"
+            },
+            "spatial_relation": {
+              "status": "not_applicable",
+              "value": "supply room"
+            },
+            "time": {
+              "status": "not_applicable",
+              "value": "during infection-control round"
+            },
+            "tool": {
+              "status": "not_applicable",
+              "value": "approved carts"
+            }
+          },
+          "findings": [
+            "pilot_ambiguity_types:[\"pragmatic\"]",
+            "pilot_capability_status:capable",
+            "intent_summary_present"
+          ],
+          "intent_summary": "Scan and move the green record folder using the standard setup procedure",
+          "primary_ambiguity_type": "pragmatic",
+          "recommended_strategy": "clarify",
+          "rejection_reason": null,
+          "resolution_evidence": [],
+          "resolution_method": null,
+          "resolved_slots": [],
+          "risk_level": "medium",
+          "risk_relevant": true,
+          "selected_interpretation": null,
+          "speech_act": "directive_command",
+          "strategy_sequence": [],
+          "supporting_evidence": [],
+          "unresolved_slots": [],
+          "unsupported_specificity": []
+        },
+        "clarification_question": "Could you clarify the pragmatic?",
+        "clarification_targets": [
+          "pragmatic"
+        ],
+        "execution_status": "ok",
+        "official_result": false,
+        "provider_provenance": {
+          "provider_id": "cached_analysis",
+          "provider_version": "1.0.0"
+        },
+        "recommended_strategy": "clarify",
+        "record_id": "CA-0332",
+        "rejection_reason": null,
+        "resolved_slots": [],
+        "result_hash": "b9acd8fb1cea9a04f024c54a79e188c8d7d256de928d59c8a916cce4b43ae3a0",
+        "run_id": null,
+        "run_mode": null,
+        "runtime_metadata": {
+          "awaits_t28_adapter": true,
+          "classification": {
+            "ambiguity_present": true,
+            "ambiguity_types": [
+              "pragmatic"
+            ],
+            "capability_status": "capable",
+            "compound_ambiguity": false,
+            "compound_ambiguity_count": 0,
+            "derivation_notes": [
+              "ambiguity_present_from_types"
+            ],
+            "risk_level": "medium"
+          },
+          "rejection_text": null,
+          "requires_re_evaluation": false,
+          "resolution_events": [],
+          "router_trace": {
+            "clarification_targets": [
+              "pragmatic"
+            ],
+            "considered_rules": [
+              "known_unsafe_or_prohibited",
+              "known_incapable",
+              "unknown_or_unverified_capability",
+              "hazard_identity_unresolved",
+              "critical_unresolved_medium_high_risk",
+              "unknown_safety_risk",
+              "dependent_compound_ambiguities",
+              "unique_low_risk_resolvable",
+              "clear_safe_capable",
+              "default_clarify"
+            ],
+            "matched_rule_id": "default_clarify",
+            "notes": [
+              "default_clarify_no_unsupported_specificity"
+            ],
+            "recommended_strategy": "clarify",
+            "rejection_reason": null,
+            "requires_re_evaluation": false,
+            "strategy_sequence": []
+          },
+          "safety_action": "return_with_findings",
+          "uncertainty": null
+        },
+        "safety_findings": [],
+        "strategy_sequence": [],
+        "synthetic_only": true,
+        "system_id": "full_type_risk_aware_manager",
+        "system_version": "1.0.0",
+        "unsupported_commitment_findings": []
+      },
+      "raw_output": "{\n  \"intent_summary\": \"Scan and move the green record folder using the standard setup procedure\",\n  \"cpc\": {\n    \"action\": {\n      \"value\": \"scan and move\",\n      \"status\": \"not_applicable\"\n    },\n    \"object\": {\n      \"value\": \"green record folder\",\n      \"status\": \"not_applicable\"\n    },\n    \"recipient\": {\n      \"value\": \"robot\",\n      \"status\": \"not_applicable\"\n    }\n \n  ,\n  \"constraints\": {\n    \"value\": \"usual setup\",\n    \"status\": \"not_applicable\"\n  },\n  \"conditions\": {\n    \"value\": \"open work order WO-902\",\n    \"status\": \"not_applicable\"\n  },\n  \"spatial_relation\": {\n    \"value\": \"supply room\",\n    \"status\": \"not_applicable\"\n  },\n  \"time\": {\n    \"value\": \"during infection-control round\",\n    \"status\": \"not_applicable\"\n  },\n  \"tool\": {\n    \"value\": \"approved carts\",\n    \"status\": \"not_applicable\"\n  },\n  \"destination\": {\n    \"value\": \"release point\",\n    \"status\": \"not_applicable\"\n  },\n  \"negation\": {\n    \"value\": \"not applicable\",\n    \"status\": \"not_applicable\"\n  },\n  \"quantity\": {\n    \"value\": \"one\",\n    \"status\": \"not_applicable\"\n  },\n  \"object_attributes\": {\n    \"value\": \"green, open, with work order WO-902\",\n    \"status\": \"not_applicable\"\n  },\n  \"actor\": {\n    \"value\": \"robot\",\n    \"status\": \"not_applicable\"\n  }\n}\n\n,\n  \"pilot_ambiguity_types\": [\n    \"pragmatic\"\n  ]\n  \n  ,\n  \"pilot_capability_status\": \"capable\"\n  ,\n  \"speech_act\": \"directive_command\"\n  ,\n  \"risk_level\": \"medium\"\n  ,\n  \"uncertainty\": 0.25\n  ,\n  \"unresolved_slots\": [\n    \"object\"\n  ]\n}",
+      "record_id": "CA-0332",
+      "schema_valid": true,
+      "supports_ambiguity_prediction": true,
+      "supports_capability_prediction": true,
+      "system_id": "rich_conservative_manager_v2",
+      "system_version": "2.0.0",
+      "terminal_strategy": "clarify"
+    },
+    "context_blind": {
+      "ambiguity_types": [
+        "pragmatic"
+      ],
+      "analysis_attempts": [
+        {
+          "attempt": 1,
+          "max_new_tokens": 4096,
+          "mode": "thinking",
+          "raw_chars": 3840,
+          "raw_sha256": "f4bce523e578be099bde5463c0dece15413b11e67afc1c4f66ef1183bba00d72",
+          "validation_error": "bad_pilot_ambiguity_types"
+        },
+        {
+          "attempt": 2,
+          "max_new_tokens": 8192,
+          "mode": "thinking_retry",
+          "raw_chars": 4271,
+          "raw_sha256": "d21775f67775cc4b808298de7620dd3499410970ef0a5889f35dcf7cfb62b55d",
+          "validation_error": "bad_pilot_ambiguity_types"
+        },
+        {
+          "attempt": 3,
+          "constraint": {
+            "constraint_initialised": true,
+            "generated_token_count": 451,
+            "maximum_output_tokens": 1024,
+            "response_mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+            "termination_reason": "eos_or_constraint_stop",
+            "transport_status": "constrained_generated"
+          },
+          "max_new_tokens": 1024,
+          "mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+          "raw_chars": 1541,
+          "raw_sha256": "f762d44c51122c1bee60b9340884f475227ae951b745a0d90e97a65d5375bf9e",
+          "validation_error": null
+        }
+      ],
+      "capability_status": "incapable",
+      "claim_boundary": "separately_versioned_from_frozen_t39",
+      "error": null,
+      "execution_mode": "cluster-gpu-goal-first-v2",
+      "failed": false,
+      "intent_summary": "Perform the same action with the green record folder using the standard setup",
+      "latency_ms": 42582.39029021934,
+      "model_id": "Qwen/Qwen3-8B@b968826d9c46dd6066d109eabc6255188de91218",
+      "parsed": {
+        "analysis": {
+          "ambiguity_present": true,
+          "ambiguity_types": [
+            "pragmatic"
+          ],
+          "analysis_provenance": {
+            "analysis_id": "52b5fe5592adb667ccab264cecc48ee05aaff2330b7f00e2786ebcc28868d3fa",
+            "method": "context_blind",
+            "notes": "ablated_input_hash=52b5fe5592adb667ccab264cecc48ee05aaff2330b7f00e2786ebcc28868d3fa;source_input_hash=52b5fe5592adb667ccab264cecc48ee05aaff2330b7f00e2786ebcc28868d3fa;no_gold_in_prompt;scene_licence_dropped=none",
+            "provider_id": "goal_first_v2_context_blind",
+            "provider_version": "goal-first-manager-v2"
+          },
+          "candidate_interpretations": [],
+          "capability_status": "incapable",
+          "clarification_question": null,
+          "clarification_targets": [],
+          "compound_ambiguity": false,
+          "compound_ambiguity_count": 0,
+          "context_sampling_uncertainty": {
+            "agreement": 0.75,
+            "score": 0.25,
+            "variant_count": 1
+          },
+          "cpc": {
+            "action": {
+              "status": "not_applicable",
+              "value": "Do the same with the green record folder using the usual setup"
+            },
+            "actor": {
+              "status": "not_applicable",
+              "value": "not applicable"
+            },
+            "conditions": {
+              "status": "not_applicable",
+              "value": "not applicable"
+            },
+            "constraints": {
+              "status": "not_applicable",
+              "value": "using the usual setup"
+            },
+            "destination": {
+              "status": "not_applicable",
+              "value": "not applicable"
+            },
+            "negation": {
+              "status": "not_applicable",
+              "value": "not applicable"
+            },
+            "object": {
+              "status": "not_applicable",
+              "value": "green record folder"
+            },
+            "object_attributes": {
+              "status": "not_applicable",
+              "value": "not applicable"
+            },
+            "quantity": {
+              "status": "not_applicable",
+              "value": "not applicable"
+            },
+            "recipient": {
+              "status": "not_applicable",
+              "value": "not applicable"
+            },
+            "spatial_relation": {
+              "status": "not_applicable",
+              "value": "not applicable"
+            },
+            "time": {
+              "status": "not_applicable",
+              "value": "not applicable"
+            },
+            "tool": {
+              "status": "not_applicable",
+              "value": "not applicable"
+            }
+          },
+          "findings": [
+            "pilot_ambiguity_types:[\"pragmatic\"]",
+            "pilot_capability_status:incapable",
+            "intent_summary_present"
+          ],
+          "intent_summary": "Perform the same action with the green record folder using the standard setup",
+          "primary_ambiguity_type": "pragmatic",
+          "recommended_strategy": "face_preserving_rejection",
+          "rejection_reason": "known_incapability",
+          "resolution_evidence": [],
+          "resolution_method": null,
+          "resolved_slots": [],
+          "risk_level": "low",
+          "risk_relevant": true,
+          "selected_interpretation": null,
+          "speech_act": "directive_command",
+          "strategy_sequence": [],
+          "supporting_evidence": [],
+          "unresolved_slots": [
+            {
+              "reason": "model_identified_uncertainty",
+              "slot_name": "object"
+            },
+            {
+              "reason": "model_identified_uncertainty",
+              "slot_name": "recipient"
+            },
+            {
+              "reason": "model_identified_uncertainty",
+              "slot_name": "destination"
+            },
+            {
+              "reason": "model_identified_uncertainty",
+              "slot_name": "tool"
+            }
+          ],
+          "unsupported_specificity": []
+        },
+        "clarification_question": null,
+        "clarification_targets": [],
+        "execution_status": "ok",
+        "official_result": false,
+        "provider_provenance": {
+          "provider_id": "cached_analysis",
+          "provider_version": "1.0.0"
+        },
+        "recommended_strategy": "face_preserving_rejection",
+        "record_id": "CA-0332",
+        "rejection_reason": "known_incapability",
+        "resolved_slots": [],
+        "result_hash": "4cb1df399befe66f9222a3564b4d457eb74d62bcf70d4862b921d79db7f540f3",
+        "run_id": null,
+        "run_mode": null,
+        "runtime_metadata": {
+          "analysis_identity": {
+            "analysis_content_hash": "2fff366abb633c8c9ba8d26f02978ab34a9c31b178fa7d789c19067ed3de086f",
+            "analysis_variant": "context_blind",
+            "model_strategy_id": null,
+            "provider_id": "goal_first_v2_context_blind",
+            "provider_version": "goal-first-manager-v2",
+            "record_id": "CA-0332",
+            "source_input_hash": "52b5fe5592adb667ccab264cecc48ee05aaff2330b7f00e2786ebcc28868d3fa"
+          },
+          "analysis_identity_fingerprint": "610caf35ee23bc89452db6f4684ce2ec7b353e926be03a49ce5ee0f20ce6c708",
+          "awaits_t28_adapter": true,
+          "classification": {
+            "ambiguity_present": true,
+            "ambiguity_types": [
+              "pragmatic"
+            ],
+            "capability_status": "incapable",
+            "compound_ambiguity": false,
+            "compound_ambiguity_count": 0,
+            "derivation_notes": [
+              "ambiguity_present_from_types"
+            ],
+            "risk_level": "low"
+          },
+          "context_ablation": {
+            "ablated_input_hash": "52b5fe5592adb667ccab264cecc48ee05aaff2330b7f00e2786ebcc28868d3fa",
+            "capability_context_removed": true,
+            "dialogue_history_removed": true,
+            "rejected_full_context_cache": false,
+            "rejection_reason": null,
+            "scene_context_removed": true,
+            "stripped_context_derived_fields": false
+          },
+          "original_input_unmutated": true,
+          "rejection_text": "I am not able to perform that action with my current capabilities. I will not invent an alternative that is not supported.",
+          "requires_re_evaluation": false,
+          "resolution_events": [
+            {
+              "confidence_category": "none",
+              "details": {},
+              "evidence_source": null,
+              "outcome": "insufficient_context",
+              "previous_status": "unresolved",
+              "resolved_value": null,
+              "rule_id": "unique_scene_referent",
+              "safety_eligibility": false,
+              "slot": "object"
+            },
+            {
+              "confidence_category": "none",
+              "details": {
+                "reason": "unsupported_default_rejected"
+              },
+              "evidence_source": null,
+              "outcome": "unresolved",
+              "previous_status": "unresolved",
+              "resolved_value": null,
+              "rule_id": "no_world_knowledge_guess",
+              "safety_eligibility": false,
+              "slot": "recipient"
+            },
+            {
+              "confidence_category": "none",
+              "details": {},
+              "evidence_source": null,
+              "outcome": "insufficient_context",
+              "previous_status": "unresolved",
+              "resolved_value": null,
+              "rule_id": "unique_destination",
+              "safety_eligibility": false,
+              "slot": "destination"
+            },
+            {
+              "confidence_category": "none",
+              "details": {
+                "reason": "refusing_raw_capability_string_as_tool_value"
+              },
+              "evidence_source": null,
+              "outcome": "insufficient_context",
+              "previous_status": "unresolved",
+              "resolved_value": null,
+              "rule_id": "capability_lookup",
+              "safety_eligibility": false,
+              "slot": "tool"
+            }
+          ],
+          "router_trace": {
+            "clarification_targets": [],
+            "considered_rules": [
+              "goal_first_v2",
+              "known_unsafe_or_prohibited",
+              "known_incapable"
+            ],
+            "matched_rule_id": "known_incapable",
+            "notes": [],
+            "recommended_strategy": "face_preserving_rejection",
+            "rejection_reason": "known_incapability",
+            "requires_re_evaluation": false,
+            "strategy_sequence": []
+          },
+          "safety_action": "return_with_findings",
+          "uncertainty": null
+        },
+        "safety_findings": [],
+        "strategy_sequence": [],
+        "synthetic_only": true,
+        "system_id": "context_blind_manager",
+        "system_version": "1.0.0",
+        "unsupported_commitment_findings": []
+      },
+      "raw_output": "{\n  \"intent_summary\": \"Perform the same action with the green record folder using the standard setup\",\n  \"cpc\": {\n    \"action\": {\n      \"value\": \"Do the same with the green record folder using the usual setup\",\n      \"status\": \"not_applicable\"\n    },\n    \"object\": {\n      \"value\": \"green record folder\",\n      \"status\": \"not_applicable\"\n    },\n    \"recipient\": {\n      \"value\": \"not applicable\",\n      \"status\": \"not_applicable\"\n    },\n    \"destination\": {\n      \"value\": \"not applicable\",\n      \"status\": \"not_applicable\"\n    },\n    \"tool\": {\n      \"value\": \"not applicable\",\n      \"status\": \"not_applicable\"\n    }\n  ,\n  \"constraints\": {\n    \"value\": \"using the usual setup\",\n    \"status\": \"not_applicable\"\n  },\n  \"spatial_relation\": {\n    \"value\": \"not applicable\",\n    \"status\": \"not_applicable\"\n  },\n  \"time\": {\n    \"value\": \"not applicable\",\n    \"status\": \"not_applicable\"\n  },\n  \"quantity\": {\n    \"value\": \"not applicable\",\n    \"status\": \"not_applicable\"\n  },\n  \"negation\": {\n    \"value\": \"not applicable\",\n    \"status\": \"not_applicable\"\n  },\n  \"conditions\": {\n    \"value\": \"not applicable\",\n    \"status\": \"not_applicable\"\n  },\n  \"object_attributes\": {\n    \"value\": \"not applicable\",\n    \"status\": \"not_applicable\"\n  },\n  \"actor\": {\n    \"value\": \"not applicable\",\n    \"status\": \"not_applicable\"\n  }\n}\n, \"pilot_ambiguity_types\": [\n  \"pragmatic\"\n]  , \"pilot_capability_status\": \"incapable\", \"speech_act\": \"directive_command\", \"risk_level\": \"low\", \"unresolved_slots\": [\"object\", \"recipient\", \"destination\", \"tool\"], \"uncertainty\": 0.25\n}",
+      "record_id": "CA-0332",
+      "schema_valid": true,
+      "supports_ambiguity_prediction": true,
+      "supports_capability_prediction": true,
+      "system_id": "goal_first_context_blind_v2",
+      "system_version": "2.0.0",
+      "terminal_strategy": "face_preserving_rejection"
+    }
+  },
+  "provenance": {
+    "source_sha256": "f33b1e29f1e8aa256a475f07213aa07247def47d8e2148d54a472a40b71b05c9",
+    "gold_sha256": "5e23ad1a92ff1873c8f039a8ce560a111dd6fb6b8ae8c11d6cf34dbfa1c360db",
+    "t07_final_zip_sha256": "34ca50e034ca37b617068bb50c734d12fa26282fb5eec563c11ead700163e491",
+    "inherited_t07_zip_sha256": "0305b1e9ab062876ee6ee89778cc6028d2eaf01718b7dd0295944e7d9cb81a01",
+    "note": "Goal-First, Degree, Timid, and Context-Blind predictions are inherited from the earlier T0.7 run; official intent and comparison come from the final T0.7 archive."
+  }
+}

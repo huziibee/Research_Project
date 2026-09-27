@@ -64,6 +64,8 @@ register for rights decisions.
 ## Pilot-120
 
 Pilot-120 is a separately frozen, 120-record evaluation set, not a downloadable
-upstream dataset. Its provenance and hash-only public description are in
-`docs/PILOT120.md`. Access to the full source/gold text requires a separate
-rights review; it must not be reconstructed by mixing newer upstream versions.
+upstream dataset. Its exact source, gold, and per-case T0.7 outputs are included
+in the current repository under `data/annotations/pilot_120_v1/` and
+`research/pilot120/`. Read `docs/PILOT120.md` for the hash and claim boundary.
+Do not reconstruct it by mixing newer upstream versions. This inclusion does
+not settle the upstream redistribution permissions recorded above.

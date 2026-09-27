@@ -133,7 +133,7 @@ def main() -> int:
         "--intent-refs",
         type=Path,
         default=ROOT
-        / "pilot120_intent_evaluation_20260902/pilot120_intent_evaluation_20260902/data/intent_gold_references_120.jsonl",
+        / "data/annotations/pilot_120_v1/intent_gold_references_120.jsonl",
     )
     parser.add_argument(
         "--gf-preds",

@@ -1,94 +1,85 @@
 # Risk-Aware Ambiguity Manager
 
-This project studies how a language-based robot assistant should interpret an
-ambiguous command and choose among execution, clarification, and refusal. It
-contains the manager implementation, evaluation code, frozen research protocols,
-and provenance records. It does not implement robot motion or hardware control.
+This repository contains the research code, evaluation contracts, frozen
+Pilot-120 cases, case-level outputs, result archives, and provenance for a
+language-based robot-command ambiguity manager. It evaluates interpretation,
+clarification, refusal, and routing; it does not control robot hardware.
 
 ## Start here
 
-| If you need to... | Read |
+| Goal | Go to |
 | --- | --- |
-| Understand the system and run code-only checks | This README, then `docs/RESEARCH_WORKFLOWS.md` |
-| Obtain the upstream datasets | `docs/DATASETS.md` |
-| Understand or verify Pilot-120 | `docs/PILOT120.md` |
-| Check what can enter a public release | `docs/PUBLIC_RELEASE_AUDIT.md` and `configs/licences/dataset_licence_register.json` |
-| Find historical execution decisions | `cursor_plan/README.md` and `handover/` |
+| See a case and its outputs | [Pilot-120 case index](research/pilot120/INDEX.md), including [CA-0007](research/pilot120/cases/CA-0007.json) |
+| Read the T0.7 and historical result packages | [Pilot-120 research record](research/pilot120/README.md) |
+| Set up a new computer and continue the project | [Setup and recovery guide](docs/SETUP_AND_RECOVERY.md) |
+| Obtain the upstream datasets | [Dataset guide](docs/DATASETS.md) |
+| Understand experiment status and limitations | [Pilot-120 guide](docs/PILOT120.md) and [workflow guide](docs/RESEARCH_WORKFLOWS.md) |
+| Check what is in Git and review rights | [Repository audit](docs/PUBLIC_RELEASE_AUDIT.md) and [rights register](configs/licences/dataset_licence_register.json) |
+| Find older decisions and reports | [Documentation index](docs/INDEX.md) and [historical execution plan](cursor_plan/README.md) |
 
-The current Git history includes upstream dataset payloads and derived
-Pilot-120 text. The latest tree keeps those local inputs out of the tracked
-release files, but a fresh clone still receives the older Git objects. See the
-release audit for the exact boundary before mirroring the repository.
+**Access and rights:** the case files and preserved ZIPs include text derived
+from upstream datasets. Several exact-artifact redistribution permissions are
+unresolved in the rights register. The project owner asked for these files to
+be preserved in the current repository so that deleting the local checkout
+does not lose them. Their presence in Git is not a claim that unrestricted
+public redistribution is licensed. Review the rights register before making
+the repository public, forking, or mirroring it. Older Git history also
+contains upstream payloads.
 
-## Install and check the code
+## Clone and run the code checks
 
-Use Python 3.10 or newer. Python 3.11 is the most relevant local and cluster
-baseline for this project. In PowerShell:
+You need Git and Python 3.11. GitHub access is required while the repository
+is private. On Windows PowerShell:
 
 ```powershell
+git clone https://github.com/huziibee/Research_Project.git
+Set-Location Research_Project
 python -m venv .venv
 .\.venv\Scripts\python.exe -m pip install -e ".[dev]"
+.\.venv\Scripts\python.exe scripts/release/check_repository.py
 .\.venv\Scripts\python.exe -m pytest -q tests/test_schema_validation.py
 ```
 
 On Linux or macOS:
 
 ```sh
-python3 -m venv .venv
+git clone https://github.com/huziibee/Research_Project.git
+cd Research_Project
+python3.11 -m venv .venv
 .venv/bin/python -m pip install -e '.[dev]'
+.venv/bin/python scripts/release/check_repository.py
 .venv/bin/python -m pytest -q tests/test_schema_validation.py
 ```
 
-These are code and schema checks. The full suite includes tests that require
-locally acquired datasets, frozen Pilot-120 files, or optional model packages.
-Run `python -m pytest -q` only after those inputs are present and report any
-skips or unavailable dependencies separately. `pyproject.toml` declares the
-core package and development extras; GPU inference uses additional pinned
-cluster/container dependencies described in `docs/RESEARCH_WORKFLOWS.md`.
+The repository check verifies tracked-file layout, the 120 case links, ZIP
+integrity, and SHA-256 of the central frozen artifacts. The schema test checks
+the code without GPU inference. See the [setup guide](docs/SETUP_AND_RECOVERY.md)
+for restoring datasets, model dependencies, and cluster work. The full test
+suite needs additional model packages and, for some tests, upstream datasets.
 
-## Repository map
+## Repository layout
 
-| Path | Purpose |
+| Folder | Contents |
 | --- | --- |
-| `src/ambiguity_manager/` | Schemas, data handling, systems, and evaluation library |
-| `tests/` | Unit, contract, and frozen-evidence checks |
-| `scripts/` | Builders, evaluators, scorers, and audits |
-| `cluster/` | Slurm jobs and launch scripts; inspect before submission |
-| `configs/` | Evaluation contracts, model settings, dataset and rights registers |
-| `docs/` | Research workflow, dataset, licence, and result explanations |
-| `data/raw/` | Locally obtained upstream material; no new payloads should be committed |
-| `data/annotations/` | Project annotation and frozen evaluation work; release rights vary |
-| `outputs/` | Generated results and large archives, normally ignored by Git |
-| `cursor_plan/`, `handover/` | Historical decisions and operational handovers |
+| `research/pilot120/` | Browsable cases, result archives, provenance, and links |
+| `data/annotations/pilot_120_v1/` | Canonical frozen source/gold files and official annotation versions used by code |
+| `src/ambiguity_manager/` | Core library, schemas, model interfaces, routing, evaluation |
+| `scripts/` | Reproducible builders, evaluators, scorers, and release checks; see [script index](scripts/README.md) |
+| `cluster/` | Slurm launchers and historical cluster templates; see [cluster guide](cluster/README.md) |
+| `configs/` | Versioned contracts, model/environment declarations, and rights records |
+| `tests/` | Code and contract tests |
+| `docs/` | Setup, datasets, methods, decisions, rights, and historical reports |
+| `data/raw/`, `data/development/`, `data/processed/`, `outputs/` | Local workspaces; upstream payloads and generated outputs remain ignored |
+| `cursor_plan/` | Frozen historical ticket plan; read as history, not current status |
 
-External data is acquired from its original provider. Exact source versions,
-local paths, hashes, and rights status are in `docs/DATASETS.md`.
-
-## Running research workflows
-
-First verify the dataset and model inputs, then select the versioned protocol in
-`docs/RESEARCH_WORKFLOWS.md`. CPU scorers and schema checks run locally; model
-inference needs a separately provisioned GPU environment. Do not run an old
-Slurm script merely because it is present: many scripts preserve historical
-jobs and fixed inputs. Pilot-120 v1 is frozen and evaluation-only; do not train,
-tune, or select a model on its 120 cases.
-
-The most recent T0.7 result is described in `docs/PILOT120.md`. The ABLE IX
-temperature jobs are a separate exploratory study, with an automatic intent
-screen rather than the official two-judge metric. No T0.3 result is part of the
-T0.7 official package.
-
-## Data and release boundary
-
-Project code, schemas, hashes, and aggregate results can be reviewed without
-copying upstream records. Dataset access and publication depend on the exact
-source rights recorded in `configs/licences/dataset_licence_register.json`.
-The internal academic-use decision does **not** grant public redistribution of
-source text, transformed records, or adapter weights. A public release must use
-a separately reviewed, clean Git history; the current history is not suitable
-for publication as-is.
+Pilot-120 v1 remains evaluation-only. Do not train, tune, or choose models on
+its 120 cases. T39/T41 evidence is frozen; new experiments need new versioned
+protocols. The T0.7 final archive includes failed cases in denominators and
+excludes T0.3. ABLE IX was still running at the dated status check in the
+[workflow guide](docs/RESEARCH_WORKFLOWS.md), so do not treat it as a final
+five-seed result.
 
 Project code should resolve paths through `ambiguity_manager.paths.ProjectPaths`.
 Project-owned writes should pass through
 `ambiguity_manager.io_guard.resolve_writable_path`, which rejects writes to
-`data/raw`. This guard cannot stop a direct write by other software.
+`data/raw`; direct writes by other software are outside that guard.

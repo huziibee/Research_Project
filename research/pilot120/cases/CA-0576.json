@@ -1,0 +1,1392 @@
+{
+  "record_id": "CA-0576",
+  "frozen_source": {
+    "capability_context": "Hotel service robot can deliver sealed guest items, move linen, scan room tags, and clean approved floor equipment.",
+    "command": "Move the selected floor sign to its assigned destination shortly.",
+    "dialogue_history": [],
+    "record_id": "CA-0576",
+    "scene_context": "Housekeeping store on a hotel floor. Two floor signs are visible. The yellow one has an active MOVE tag and the black one has a completed tag. The active tag assigns the laundry chute as its destination. For ordinary low-risk moves, the local handbook defines 'shortly' as within three minutes."
+  },
+  "frozen_gold": {
+    "ambiguity_types": [
+      "fuzzy_temporal",
+      "object_reference"
+    ],
+    "annotator_b_era": "claude_era",
+    "annotator_b_model": "claude-4.6-sonnet-medium-thinking",
+    "capability_status": "capable",
+    "field_status": {
+      "ambiguity_types": "auto_agree",
+      "capability_status": "human_auditor:independent_from_route",
+      "record_validity": "auto_agree",
+      "strategy_sequence": "auto_agree",
+      "terminal_strategy": "auto_agree"
+    },
+    "gold_lifecycle": "final_gold",
+    "gold_status": "auto_agree",
+    "human_gate_required": false,
+    "provenance": {
+      "agreement_label": "pilot_annotation_agreement",
+      "annotator_a_sha256": "b94f3b0060356a020b8bdae3b897e5a944f43ab36baa3bd5fca7d7649aa9cf1b",
+      "annotator_b_sha256": "88ed73f3bbc978df54abb449cc8e908cda7c4f712a911d3dc3de3d675be6aa2b",
+      "capability_route_decouple": "conditionally_capable remapped to capable: no evidenced external capability precondition; linguistic silently_resolve/clarify is not a capability condition",
+      "gold_policy": "use_existing_pilot_adjudicated_gold",
+      "input_sha256": "486de8218bd383350a90fc2864d98e6757da7168bf6e859bdd5c63a2c7245cf3",
+      "pilot_gold_sha256": "f2d23f850a61849a7611a136327233c9d20af74673e4c8bd16e2d8cb9c47862b",
+      "protocol": "pilot_adjudicated_gold_on_capability_repaired_source",
+      "repaired_input_sha256": "d64f2cbf7d4068634dc965583bd39322ddb0724b6341db256a5b7e7c15335cbb"
+    },
+    "record_id": "CA-0576",
+    "record_validity": "valid",
+    "strategy_sequence": [
+      "silently_resolve",
+      "execute"
+    ],
+    "terminal_strategy": "execute"
+  },
+  "t07_comparison": {
+    "record_id": "CA-0576",
+    "gold_route": "execute",
+    "raw_route": "execute",
+    "ft_route": "execute",
+    "gf_route": "refuse",
+    "raw_route_ok": "True",
+    "ft_route_ok": "True",
+    "gf_route_ok": "False",
+    "raw_official_intent": "True",
+    "ft_official_intent": "True",
+    "gf_official_intent": "True",
+    "blind_official_intent": "True"
+  },
+  "t07_official_intent": {
+    "context_blind_official_intent": true,
+    "degree_official_intent_shared_gf": true,
+    "finetune_official_intent": true,
+    "goal_first_official_intent": true,
+    "raw_official_intent": true,
+    "record_id": "CA-0576",
+    "timid_official_intent_shared_gf": true
+  },
+  "t07_predictions": {
+    "raw_qwen": {
+      "ambiguity_types": [
+        "pronoun_reference"
+      ],
+      "capability_status": "capable",
+      "error": null,
+      "execution_mode": "final_close_intent_box",
+      "failed": false,
+      "intent_summary": "Move the yellow floor sign with an active MOVE tag to the laundry chute within three minutes.",
+      "latency_ms": 7360.11114763096,
+      "parsed": {
+        "ambiguity_types": [
+          "pronoun_reference"
+        ],
+        "capability_status": "capable",
+        "intent_summary": "Move the yellow floor sign with an active MOVE tag to the laundry chute within three minutes.",
+        "speech_act": "directive_command",
+        "terminal_strategy": "execute"
+      },
+      "raw_output": "<think>\nOkay, let's break this down. The user wants to evaluate the robot command: \"Move the selected floor sign to its assigned destination shortly.\" \n\nFirst, the intent summary. The main job here is moving a floor sign to its destination, which is the laundry chute since the active tag is there. The key point is that it needs to be done 'shortly,' which the handbook defines as within three minutes. So the intent is to move the sign quickly.\n\nNext, the speech act. The command is direct, telling the robot to perform an action. So it's a directive_command. \n\nAmbiguity types: Let's check. The command mentions 'selected floor sign,' but there are two signs. However, the context says the yellow one has an active MOVE tag, so maybe the selection is implied. But is there ambiguity? The 'selected' might refer to the active one, but if the robot isn't sure which is selected, that's a pronoun_reference. Also, 'shortly' is defined, so no vagueness there. Maybe 'assigned destination' refers to the laundry chute, which is clear. So possible ambiguity types: pronoun_reference (if 'selected' is unclear) and maybe destination_reference if the destination isn't clear. Wait, the active tag assigns the destination, so the destination is the laundry chute. So maybe no ambiguity here. Hmm. Maybe no ambiguity types needed.\n\nCapability status: The robot can move linen, which includes floor signs. The task is moving a sign, which is part of moving linen. So capable. \n\nTerminal strategy: Since the command is clear and the robot can do it, the strategy is execute. \n\nWait, but the command says 'shortly' which is defined as three minutes. The robot can handle time-based tasks. So no issues. So all checks out. The JSON should have these keys with the determined values.\n</think>\n\n{\n  \"intent_summary\": \"Move the yellow floor sign with an active MOVE tag to the laundry chute within three minutes.\",\n  \"speech_act\": \"directive_command\",\n  \"ambiguity_types\": [\"pronoun_reference\"],\n  \"capability_status\": \"capable\",\n  \"terminal_strategy\": \"execute\"\n}",
+      "record_id": "CA-0576",
+      "schema_valid": true,
+      "speech_act": "directive_command",
+      "system_id": "direct_base_llm",
+      "terminal_strategy": "execute"
+    },
+    "finetune": {
+      "ambiguity_types": [],
+      "capability_status": "capable",
+      "error": null,
+      "execution_mode": "final_close_intent_box",
+      "failed": false,
+      "intent_summary": "Move the yellow floor sign with an active MOVE tag to the laundry chute within three minutes.",
+      "latency_ms": 10910.25553504005,
+      "parsed": {
+        "ambiguity_types": [],
+        "capability_status": "capable",
+        "intent_summary": "Move the yellow floor sign with an active MOVE tag to the laundry chute within three minutes.",
+        "speech_act": "directive_command",
+        "terminal_strategy": "execute"
+      },
+      "raw_output": "<think>\nOkay, let's break this down. The user's command is to move the selected floor sign to its assigned destination shortly. The scene context mentions a hotel housekeeping store with two floor signs. The yellow one has an active MOVE tag, and the black one is completed. The active tag's destination is the laundry chute. The handbook defines 'shortly' as within three minutes for low-risk moves.\n\nFirst, the intent summary needs to capture the main job. The user wants the yellow sign moved to the laundry chute soon. So, the intent is moving the sign to the designated destination quickly.\n\nNext, the speech act. The command is direct, telling the robot to move something. So it's a directive_command. \n\nAmbiguity types: The term 'shortly' is defined, so no vagueness there. The destination is specified as the laundry chute via the active tag. Are there any pronouns or references? The 'selected floor sign' refers to the yellow one, which is clear. The destination is explicitly mentioned. So maybe no ambiguity here. But wait, the command says 'assigned destination,' which is the laundry chute. So the destination is clear. No pronoun or object reference issues. So ambiguity_types might be empty.\n\nCapability status: The robot can move linen, which includes floor signs. So it's capable. \n\nTerminal strategy: Since the robot can do it, it should execute the command. But wait, the user said 'shortly' which is three minutes. The robot needs to check if it can do that. But the capability context says it can move linen, so it's capable. So terminal strategy is execute.\n</think>\n\n{\n  \"intent_summary\": \"Move the yellow floor sign with an active MOVE tag to the laundry chute within three minutes.\",\n  \"speech_act\": \"directive_command\",\n  \"ambiguity_types\": [],\n  \"capability_status\": \"capable\",\n  \"terminal_strategy\": \"execute\"\n}",
+      "record_id": "CA-0576",
+      "schema_valid": true,
+      "speech_act": "directive_command",
+      "system_id": "t28_selected_adapter_llm",
+      "terminal_strategy": "execute"
+    },
+    "goal_first": {
+      "ambiguity_types": [
+        "fuzzy_temporal"
+      ],
+      "analysis_attempts": [
+        {
+          "attempt": 1,
+          "max_new_tokens": 4096,
+          "mode": "thinking",
+          "raw_chars": 8097,
+          "raw_sha256": "91da11d564011a53f129523c384e1992e62f67c3e38262d556f532677a315179",
+          "validation_error": "bad_intent_summary"
+        },
+        {
+          "attempt": 2,
+          "max_new_tokens": 8192,
+          "mode": "thinking_retry",
+          "raw_chars": 9357,
+          "raw_sha256": "21db279190f2f8b1915d003de3729d2df0a4d199abeee08dc1b9ee2e3bed4a40",
+          "validation_error": "bad_intent_summary"
+        },
+        {
+          "attempt": 3,
+          "constraint": {
+            "constraint_initialised": true,
+            "generated_token_count": 479,
+            "maximum_output_tokens": 1024,
+            "response_mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+            "termination_reason": "eos_or_constraint_stop",
+            "transport_status": "constrained_generated"
+          },
+          "max_new_tokens": 1024,
+          "mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+          "raw_chars": 1384,
+          "raw_sha256": "f0da7063a2908212a15abee26cb3fe2a7431a3da854e89720ede4059d40196a6",
+          "validation_error": null
+        }
+      ],
+      "capability_status": "unauthorized",
+      "claim_boundary": "separately_versioned_from_frozen_t39",
+      "error": null,
+      "execution_mode": "cluster-gpu-goal-first-v2",
+      "failed": false,
+      "intent_summary": "Move the selected floor sign to its assigned destination soon",
+      "latency_ms": 118669.84701389447,
+      "model_id": "Qwen/Qwen3-8B@b968826d9c46dd6066d109eabc6255188de91218",
+      "parsed": {
+        "analysis": {
+          "ambiguity_present": true,
+          "ambiguity_types": [
+            "temporal"
+          ],
+          "analysis_provenance": {
+            "analysis_id": "9cc1770e92abb9c3d9d6ae1c89d060417cc3d3a0385b999c222c5a63e2a55bb5",
+            "method": "model_generated",
+            "notes": "source_input_hash=9cc1770e92abb9c3d9d6ae1c89d060417cc3d3a0385b999c222c5a63e2a55bb5;no_gold_in_prompt;scene_licence_dropped=destination,time",
+            "provider_id": "goal_first_v2_full_context",
+            "provider_version": "goal-first-manager-v2"
+          },
+          "candidate_interpretations": [],
+          "capability_status": "unknown",
+          "clarification_question": null,
+          "clarification_targets": [],
+          "compound_ambiguity": false,
+          "compound_ambiguity_count": 0,
+          "context_sampling_uncertainty": {
+            "agreement": 0.6,
+            "score": 0.4,
+            "variant_count": 1
+          },
+          "cpc": {
+            "action": {
+              "status": "filled",
+              "value": "move"
+            },
+            "actor": {
+              "status": "filled",
+              "value": "unknown"
+            },
+            "conditions": {
+              "status": "filled",
+              "value": "unknown"
+            },
+            "constraints": {
+              "status": "filled",
+              "value": "unknown"
+            },
+            "destination": {
+              "status": "filled",
+              "value": "assigned destination"
+            },
+            "negation": {
+              "status": "filled",
+              "value": "unknown"
+            },
+            "object": {
+              "status": "filled",
+              "value": "selected floor sign"
+            },
+            "object_attributes": {
+              "status": "filled",
+              "value": "unknown"
+            },
+            "quantity": {
+              "status": "filled",
+              "value": "unknown"
+            },
+            "recipient": {
+              "status": "filled",
+              "value": "unknown"
+            },
+            "spatial_relation": {
+              "status": "filled",
+              "value": "unknown"
+            },
+            "time": {
+              "status": "filled",
+              "value": "shortly"
+            },
+            "tool": {
+              "status": "filled",
+              "value": "unknown"
+            }
+          },
+          "findings": [
+            "pilot_ambiguity_types:[\"fuzzy_temporal\"]",
+            "pilot_capability_status:unauthorized",
+            "intent_summary_present"
+          ],
+          "intent_summary": "Move the selected floor sign to its assigned destination soon",
+          "primary_ambiguity_type": "temporal",
+          "recommended_strategy": "face_preserving_rejection",
+          "rejection_reason": "unsafe_or_prohibited_action",
+          "resolution_evidence": [],
+          "resolution_method": null,
+          "resolved_slots": [
+            {
+              "slot_name": "action",
+              "value": "move"
+            },
+            {
+              "slot_name": "actor",
+              "value": "unknown"
+            },
+            {
+              "slot_name": "object",
+              "value": "selected floor sign"
+            },
+            {
+              "slot_name": "object_attributes",
+              "value": "unknown"
+            },
+            {
+              "slot_name": "destination",
+              "value": "assigned destination"
+            },
+            {
+              "slot_name": "spatial_relation",
+              "value": "unknown"
+            },
+            {
+              "slot_name": "quantity",
+              "value": "unknown"
+            },
+            {
+              "slot_name": "time",
+              "value": "shortly"
+            },
+            {
+              "slot_name": "recipient",
+              "value": "unknown"
+            },
+            {
+              "slot_name": "tool",
+              "value": "unknown"
+            },
+            {
+              "slot_name": "conditions",
+              "value": "unknown"
+            },
+            {
+              "slot_name": "constraints",
+              "value": "unknown"
+            },
+            {
+              "slot_name": "negation",
+              "value": "unknown"
+            }
+          ],
+          "risk_level": "low",
+          "risk_relevant": true,
+          "selected_interpretation": null,
+          "speech_act": "directive_command",
+          "strategy_sequence": [],
+          "supporting_evidence": [],
+          "unresolved_slots": [],
+          "unsupported_specificity": []
+        },
+        "clarification_question": null,
+        "clarification_targets": [],
+        "execution_status": "ok",
+        "official_result": false,
+        "provider_provenance": {
+          "provider_id": "cached_analysis",
+          "provider_version": "1.0.0"
+        },
+        "recommended_strategy": "face_preserving_rejection",
+        "record_id": "CA-0576",
+        "rejection_reason": "unsafe_or_prohibited_action",
+        "resolved_slots": [
+          {
+            "slot_name": "action",
+            "value": "move"
+          },
+          {
+            "slot_name": "actor",
+            "value": "unknown"
+          },
+          {
+            "slot_name": "object",
+            "value": "selected floor sign"
+          },
+          {
+            "slot_name": "object_attributes",
+            "value": "unknown"
+          },
+          {
+            "slot_name": "destination",
+            "value": "assigned destination"
+          },
+          {
+            "slot_name": "spatial_relation",
+            "value": "unknown"
+          },
+          {
+            "slot_name": "quantity",
+            "value": "unknown"
+          },
+          {
+            "slot_name": "time",
+            "value": "shortly"
+          },
+          {
+            "slot_name": "recipient",
+            "value": "unknown"
+          },
+          {
+            "slot_name": "tool",
+            "value": "unknown"
+          },
+          {
+            "slot_name": "conditions",
+            "value": "unknown"
+          },
+          {
+            "slot_name": "constraints",
+            "value": "unknown"
+          },
+          {
+            "slot_name": "negation",
+            "value": "unknown"
+          }
+        ],
+        "result_hash": "ba9b9bbc105cd7fcc2b575eb48a4f9f4c781aa2eae5b356d8fa2897a9ee7abbc",
+        "run_id": null,
+        "run_mode": null,
+        "runtime_metadata": {
+          "awaits_t28_adapter": true,
+          "classification": {
+            "ambiguity_present": true,
+            "ambiguity_types": [
+              "temporal"
+            ],
+            "capability_status": "unknown",
+            "compound_ambiguity": false,
+            "compound_ambiguity_count": 0,
+            "derivation_notes": [
+              "ambiguity_present_from_types"
+            ],
+            "risk_level": "low"
+          },
+          "rejection_text": "I need to decline that request because it would be unsafe under the current constraints.",
+          "requires_re_evaluation": false,
+          "resolution_events": [],
+          "router_trace": {
+            "clarification_targets": [],
+            "considered_rules": [
+              "goal_first_v2",
+              "known_unsafe_or_prohibited"
+            ],
+            "matched_rule_id": "known_unsafe_or_prohibited",
+            "notes": [],
+            "recommended_strategy": "face_preserving_rejection",
+            "rejection_reason": "unsafe_or_prohibited_action",
+            "requires_re_evaluation": false,
+            "strategy_sequence": []
+          },
+          "safety_action": "return_with_findings",
+          "uncertainty": null
+        },
+        "safety_findings": [],
+        "strategy_sequence": [],
+        "synthetic_only": true,
+        "system_id": "goal_first_manager_v2",
+        "system_version": "2.0.0",
+        "unsupported_commitment_findings": []
+      },
+      "raw_output": "{\n  \"intent_summary\": \"Move the selected floor sign to its assigned destination soon\",\n  \"cpc\": {\n    \"action\": {\n      \"value\": \"move\",\n      \"status\": \"unknown\"\n    },\n    \"object\": {\n      \"value\": \"selected floor sign\",\n      \"status\": \"unknown\"\n    },\n    \"destination\": {\n      \"value\": \"assigned destination\",\n      \"status\": \"unknown\"\n    },\n    \"time\": {\n      \"value\": \"shortly\",\n      \"status\": \"unknown\"\n    }\n \n  ,\n  \"constraints\": {\n    \"status\": \"unknown\"\n  ,\n    \"value\": \"unknown\"\n  }\n  ,\n  \"conditions\": {\n    \"status\": \"unknown\"\n  ,\n    \"value\": \"unknown\"\n  }\n  ,\n  \"recipient\": {\n    \"status\": \"unknown\"\n  ,\n    \"value\": \"unknown\"\n  }\n  ,\n  \"object_attributes\": {\n    \"status\": \"unknown\"\n  ,\n    \"value\": \"unknown\"\n  }\n  ,\n  \"spatial_relation\": {\n    \"status\": \"unknown\"\n  ,\n    \"value\": \"unknown\"\n  }\n  ,\n  \"quantity\": {\n    \"status\": \"unknown\"\n  ,\n    \"value\": \"unknown\"\n  }\n  ,\n  \"negation\": {\n    \"status\": \"unknown\"\n  ,\n    \"value\": \"unknown\"\n  }\n  ,\n  \"tool\": {\n    \"status\": \"unknown\"\n  ,\n    \"value\": \"unknown\"\n  }\n  ,\n  \"actor\": {\n    \"status\": \"unknown\"\n  ,\n    \"value\": \"unknown\"\n  }\n  }\n  ,\n  \"pilot_ambiguity_types\": [\n    \"fuzzy_temporal\"\n  ]\n  ,\n  \"pilot_capability_status\": \"unauthorized\"\n  ,\n  \"speech_act\": \"directive_command\"\n  ,\n  \"unresolved_slots\": [\n    \"destination\",\n    \"time\"\n  ]\n  ,\n  \"uncertainty\": 0.4\n  ,\n  \"risk_level\": \"low\"\n  }\n  ",
+      "record_id": "CA-0576",
+      "schema_valid": true,
+      "supports_ambiguity_prediction": true,
+      "supports_capability_prediction": true,
+      "system_id": "goal_first_manager_v2",
+      "system_version": "2.0.0",
+      "terminal_strategy": "face_preserving_rejection"
+    },
+    "degree": {
+      "ambiguity_types": [
+        "fuzzy_temporal"
+      ],
+      "analysis_attempts": [
+        {
+          "attempt": 1,
+          "max_new_tokens": 4096,
+          "mode": "thinking",
+          "raw_chars": 8097,
+          "raw_sha256": "91da11d564011a53f129523c384e1992e62f67c3e38262d556f532677a315179",
+          "validation_error": "bad_intent_summary"
+        },
+        {
+          "attempt": 2,
+          "max_new_tokens": 8192,
+          "mode": "thinking_retry",
+          "raw_chars": 9357,
+          "raw_sha256": "21db279190f2f8b1915d003de3729d2df0a4d199abeee08dc1b9ee2e3bed4a40",
+          "validation_error": "bad_intent_summary"
+        },
+        {
+          "attempt": 3,
+          "constraint": {
+            "constraint_initialised": true,
+            "generated_token_count": 479,
+            "maximum_output_tokens": 1024,
+            "response_mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+            "termination_reason": "eos_or_constraint_stop",
+            "transport_status": "constrained_generated"
+          },
+          "max_new_tokens": 1024,
+          "mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+          "raw_chars": 1384,
+          "raw_sha256": "f0da7063a2908212a15abee26cb3fe2a7431a3da854e89720ede4059d40196a6",
+          "validation_error": null
+        }
+      ],
+      "capability_status": "unauthorized",
+      "claim_boundary": "separately_versioned_from_frozen_t39",
+      "error": null,
+      "execution_mode": "cluster-gpu-goal-first-v2",
+      "failed": false,
+      "intent_summary": "Move the selected floor sign to its assigned destination soon",
+      "latency_ms": 118669.84701389447,
+      "model_id": "Qwen/Qwen3-8B@b968826d9c46dd6066d109eabc6255188de91218",
+      "parsed": {
+        "analysis": {
+          "ambiguity_present": true,
+          "ambiguity_types": [
+            "temporal"
+          ],
+          "analysis_provenance": {
+            "analysis_id": "9cc1770e92abb9c3d9d6ae1c89d060417cc3d3a0385b999c222c5a63e2a55bb5",
+            "method": "model_generated",
+            "notes": "source_input_hash=9cc1770e92abb9c3d9d6ae1c89d060417cc3d3a0385b999c222c5a63e2a55bb5;no_gold_in_prompt;scene_licence_dropped=destination,time",
+            "provider_id": "goal_first_v2_full_context",
+            "provider_version": "goal-first-manager-v2"
+          },
+          "candidate_interpretations": [],
+          "capability_status": "unknown",
+          "clarification_question": null,
+          "clarification_targets": [],
+          "compound_ambiguity": false,
+          "compound_ambiguity_count": 1,
+          "context_sampling_uncertainty": {
+            "agreement": 0.6,
+            "score": 0.4,
+            "variant_count": 1
+          },
+          "cpc": {
+            "action": {
+              "status": "filled",
+              "value": "move"
+            },
+            "actor": {
+              "status": "filled",
+              "value": "unknown"
+            },
+            "conditions": {
+              "status": "filled",
+              "value": "unknown"
+            },
+            "constraints": {
+              "status": "filled",
+              "value": "unknown"
+            },
+            "destination": {
+              "status": "filled",
+              "value": "assigned destination"
+            },
+            "negation": {
+              "status": "filled",
+              "value": "unknown"
+            },
+            "object": {
+              "status": "filled",
+              "value": "selected floor sign"
+            },
+            "object_attributes": {
+              "status": "filled",
+              "value": "unknown"
+            },
+            "quantity": {
+              "status": "filled",
+              "value": "unknown"
+            },
+            "recipient": {
+              "status": "filled",
+              "value": "unknown"
+            },
+            "spatial_relation": {
+              "status": "filled",
+              "value": "unknown"
+            },
+            "time": {
+              "status": "filled",
+              "value": "shortly"
+            },
+            "tool": {
+              "status": "filled",
+              "value": "unknown"
+            }
+          },
+          "findings": [
+            "pilot_ambiguity_types:[\"fuzzy_temporal\"]",
+            "pilot_capability_status:unauthorized",
+            "intent_summary_present"
+          ],
+          "intent_summary": "Move the selected floor sign to its assigned destination soon",
+          "primary_ambiguity_type": "temporal",
+          "recommended_strategy": "silently_resolve",
+          "rejection_reason": null,
+          "resolution_evidence": [],
+          "resolution_method": null,
+          "resolved_slots": [
+            {
+              "slot_name": "action",
+              "value": "move"
+            },
+            {
+              "slot_name": "actor",
+              "value": "unknown"
+            },
+            {
+              "slot_name": "object",
+              "value": "selected floor sign"
+            },
+            {
+              "slot_name": "object_attributes",
+              "value": "unknown"
+            },
+            {
+              "slot_name": "destination",
+              "value": "assigned destination"
+            },
+            {
+              "slot_name": "spatial_relation",
+              "value": "unknown"
+            },
+            {
+              "slot_name": "quantity",
+              "value": "unknown"
+            },
+            {
+              "slot_name": "time",
+              "value": "shortly"
+            },
+            {
+              "slot_name": "recipient",
+              "value": "unknown"
+            },
+            {
+              "slot_name": "tool",
+              "value": "unknown"
+            },
+            {
+              "slot_name": "conditions",
+              "value": "unknown"
+            },
+            {
+              "slot_name": "constraints",
+              "value": "unknown"
+            },
+            {
+              "slot_name": "negation",
+              "value": "unknown"
+            }
+          ],
+          "risk_level": "low",
+          "risk_relevant": true,
+          "selected_interpretation": null,
+          "speech_act": "directive_command",
+          "strategy_sequence": [],
+          "supporting_evidence": [],
+          "unresolved_slots": [],
+          "unsupported_specificity": []
+        },
+        "clarification_question": null,
+        "clarification_targets": [],
+        "execution_status": "ok",
+        "official_result": false,
+        "provider_provenance": {
+          "shared_analysis_fingerprint": "1f74b745e2dd1c3265e53b859a68f8e74d60b05bdf30e6ab5e795557fd5fef15"
+        },
+        "recommended_strategy": "silently_resolve",
+        "record_id": "CA-0576",
+        "rejection_reason": null,
+        "resolved_slots": [
+          {
+            "slot_name": "action",
+            "value": "move"
+          },
+          {
+            "slot_name": "actor",
+            "value": "unknown"
+          },
+          {
+            "slot_name": "object",
+            "value": "selected floor sign"
+          },
+          {
+            "slot_name": "object_attributes",
+            "value": "unknown"
+          },
+          {
+            "slot_name": "destination",
+            "value": "assigned destination"
+          },
+          {
+            "slot_name": "spatial_relation",
+            "value": "unknown"
+          },
+          {
+            "slot_name": "quantity",
+            "value": "unknown"
+          },
+          {
+            "slot_name": "time",
+            "value": "shortly"
+          },
+          {
+            "slot_name": "recipient",
+            "value": "unknown"
+          },
+          {
+            "slot_name": "tool",
+            "value": "unknown"
+          },
+          {
+            "slot_name": "conditions",
+            "value": "unknown"
+          },
+          {
+            "slot_name": "constraints",
+            "value": "unknown"
+          },
+          {
+            "slot_name": "negation",
+            "value": "unknown"
+          }
+        ],
+        "result_hash": "959ea8fcd0f01e30bd3ac06846eaccd6579008cf83749d5df168214216d47612",
+        "run_id": null,
+        "run_mode": null,
+        "runtime_metadata": {
+          "shared_analysis_fingerprint": "1f74b745e2dd1c3265e53b859a68f8e74d60b05bdf30e6ab5e795557fd5fef15",
+          "thresholds_status": "unfrozen",
+          "thresholds_valid_for_official_use": false,
+          "uncertainty_score": 0.4,
+          "uses_type_risk_capability_precedence": false
+        },
+        "safety_findings": [],
+        "strategy_sequence": [],
+        "synthetic_only": true,
+        "system_id": "degree_based_router",
+        "system_version": "1.0.0",
+        "unsupported_commitment_findings": []
+      },
+      "raw_output": "{\n  \"intent_summary\": \"Move the selected floor sign to its assigned destination soon\",\n  \"cpc\": {\n    \"action\": {\n      \"value\": \"move\",\n      \"status\": \"unknown\"\n    },\n    \"object\": {\n      \"value\": \"selected floor sign\",\n      \"status\": \"unknown\"\n    },\n    \"destination\": {\n      \"value\": \"assigned destination\",\n      \"status\": \"unknown\"\n    },\n    \"time\": {\n      \"value\": \"shortly\",\n      \"status\": \"unknown\"\n    }\n \n  ,\n  \"constraints\": {\n    \"status\": \"unknown\"\n  ,\n    \"value\": \"unknown\"\n  }\n  ,\n  \"conditions\": {\n    \"status\": \"unknown\"\n  ,\n    \"value\": \"unknown\"\n  }\n  ,\n  \"recipient\": {\n    \"status\": \"unknown\"\n  ,\n    \"value\": \"unknown\"\n  }\n  ,\n  \"object_attributes\": {\n    \"status\": \"unknown\"\n  ,\n    \"value\": \"unknown\"\n  }\n  ,\n  \"spatial_relation\": {\n    \"status\": \"unknown\"\n  ,\n    \"value\": \"unknown\"\n  }\n  ,\n  \"quantity\": {\n    \"status\": \"unknown\"\n  ,\n    \"value\": \"unknown\"\n  }\n  ,\n  \"negation\": {\n    \"status\": \"unknown\"\n  ,\n    \"value\": \"unknown\"\n  }\n  ,\n  \"tool\": {\n    \"status\": \"unknown\"\n  ,\n    \"value\": \"unknown\"\n  }\n  ,\n  \"actor\": {\n    \"status\": \"unknown\"\n  ,\n    \"value\": \"unknown\"\n  }\n  }\n  ,\n  \"pilot_ambiguity_types\": [\n    \"fuzzy_temporal\"\n  ]\n  ,\n  \"pilot_capability_status\": \"unauthorized\"\n  ,\n  \"speech_act\": \"directive_command\"\n  ,\n  \"unresolved_slots\": [\n    \"destination\",\n    \"time\"\n  ]\n  ,\n  \"uncertainty\": 0.4\n  ,\n  \"risk_level\": \"low\"\n  }\n  ",
+      "record_id": "CA-0576",
+      "schema_valid": true,
+      "supports_ambiguity_prediction": true,
+      "supports_capability_prediction": true,
+      "system_id": "degree_based_router_v2",
+      "system_version": "2.0.0",
+      "terminal_strategy": "execute"
+    },
+    "timid": {
+      "ambiguity_types": [
+        "fuzzy_temporal"
+      ],
+      "analysis_attempts": [
+        {
+          "attempt": 1,
+          "max_new_tokens": 4096,
+          "mode": "thinking",
+          "raw_chars": 8097,
+          "raw_sha256": "91da11d564011a53f129523c384e1992e62f67c3e38262d556f532677a315179",
+          "validation_error": "bad_intent_summary"
+        },
+        {
+          "attempt": 2,
+          "max_new_tokens": 8192,
+          "mode": "thinking_retry",
+          "raw_chars": 9357,
+          "raw_sha256": "21db279190f2f8b1915d003de3729d2df0a4d199abeee08dc1b9ee2e3bed4a40",
+          "validation_error": "bad_intent_summary"
+        },
+        {
+          "attempt": 3,
+          "constraint": {
+            "constraint_initialised": true,
+            "generated_token_count": 479,
+            "maximum_output_tokens": 1024,
+            "response_mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+            "termination_reason": "eos_or_constraint_stop",
+            "transport_status": "constrained_generated"
+          },
+          "max_new_tokens": 1024,
+          "mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+          "raw_chars": 1384,
+          "raw_sha256": "f0da7063a2908212a15abee26cb3fe2a7431a3da854e89720ede4059d40196a6",
+          "validation_error": null
+        }
+      ],
+      "capability_status": "unauthorized",
+      "claim_boundary": "separately_versioned_from_frozen_t39",
+      "error": null,
+      "execution_mode": "cluster-gpu-goal-first-v2",
+      "failed": false,
+      "intent_summary": "Move the selected floor sign to its assigned destination soon",
+      "latency_ms": 118669.84701389447,
+      "model_id": "Qwen/Qwen3-8B@b968826d9c46dd6066d109eabc6255188de91218",
+      "parsed": {
+        "analysis": {
+          "ambiguity_present": true,
+          "ambiguity_types": [
+            "temporal"
+          ],
+          "analysis_provenance": {
+            "analysis_id": "9cc1770e92abb9c3d9d6ae1c89d060417cc3d3a0385b999c222c5a63e2a55bb5",
+            "method": "model_generated",
+            "notes": "source_input_hash=9cc1770e92abb9c3d9d6ae1c89d060417cc3d3a0385b999c222c5a63e2a55bb5;no_gold_in_prompt;scene_licence_dropped=destination,time",
+            "provider_id": "goal_first_v2_full_context",
+            "provider_version": "goal-first-manager-v2"
+          },
+          "candidate_interpretations": [],
+          "capability_status": "unknown",
+          "clarification_question": "Could you clarify the temporal?",
+          "clarification_targets": [
+            "temporal"
+          ],
+          "compound_ambiguity": false,
+          "compound_ambiguity_count": 0,
+          "context_sampling_uncertainty": {
+            "agreement": 0.6,
+            "score": 0.4,
+            "variant_count": 1
+          },
+          "cpc": {
+            "action": {
+              "status": "filled",
+              "value": "move"
+            },
+            "actor": {
+              "status": "filled",
+              "value": "unknown"
+            },
+            "conditions": {
+              "status": "filled",
+              "value": "unknown"
+            },
+            "constraints": {
+              "status": "filled",
+              "value": "unknown"
+            },
+            "destination": {
+              "status": "filled",
+              "value": "assigned destination"
+            },
+            "negation": {
+              "status": "filled",
+              "value": "unknown"
+            },
+            "object": {
+              "status": "filled",
+              "value": "selected floor sign"
+            },
+            "object_attributes": {
+              "status": "filled",
+              "value": "unknown"
+            },
+            "quantity": {
+              "status": "filled",
+              "value": "unknown"
+            },
+            "recipient": {
+              "status": "filled",
+              "value": "unknown"
+            },
+            "spatial_relation": {
+              "status": "filled",
+              "value": "unknown"
+            },
+            "time": {
+              "status": "filled",
+              "value": "shortly"
+            },
+            "tool": {
+              "status": "filled",
+              "value": "unknown"
+            }
+          },
+          "findings": [
+            "pilot_ambiguity_types:[\"fuzzy_temporal\"]",
+            "pilot_capability_status:unauthorized",
+            "intent_summary_present"
+          ],
+          "intent_summary": "Move the selected floor sign to its assigned destination soon",
+          "primary_ambiguity_type": "temporal",
+          "recommended_strategy": "clarify",
+          "rejection_reason": null,
+          "resolution_evidence": [],
+          "resolution_method": null,
+          "resolved_slots": [
+            {
+              "slot_name": "action",
+              "value": "move"
+            },
+            {
+              "slot_name": "actor",
+              "value": "unknown"
+            },
+            {
+              "slot_name": "object",
+              "value": "selected floor sign"
+            },
+            {
+              "slot_name": "object_attributes",
+              "value": "unknown"
+            },
+            {
+              "slot_name": "destination",
+              "value": "assigned destination"
+            },
+            {
+              "slot_name": "spatial_relation",
+              "value": "unknown"
+            },
+            {
+              "slot_name": "quantity",
+              "value": "unknown"
+            },
+            {
+              "slot_name": "time",
+              "value": "shortly"
+            },
+            {
+              "slot_name": "recipient",
+              "value": "unknown"
+            },
+            {
+              "slot_name": "tool",
+              "value": "unknown"
+            },
+            {
+              "slot_name": "conditions",
+              "value": "unknown"
+            },
+            {
+              "slot_name": "constraints",
+              "value": "unknown"
+            },
+            {
+              "slot_name": "negation",
+              "value": "unknown"
+            }
+          ],
+          "risk_level": "low",
+          "risk_relevant": true,
+          "selected_interpretation": null,
+          "speech_act": "directive_command",
+          "strategy_sequence": [],
+          "supporting_evidence": [],
+          "unresolved_slots": [],
+          "unsupported_specificity": []
+        },
+        "clarification_question": "Could you clarify the temporal?",
+        "clarification_targets": [
+          "temporal"
+        ],
+        "execution_status": "ok",
+        "official_result": false,
+        "provider_provenance": {
+          "provider_id": "cached_analysis",
+          "provider_version": "1.0.0"
+        },
+        "recommended_strategy": "clarify",
+        "record_id": "CA-0576",
+        "rejection_reason": null,
+        "resolved_slots": [
+          {
+            "slot_name": "action",
+            "value": "move"
+          },
+          {
+            "slot_name": "actor",
+            "value": "unknown"
+          },
+          {
+            "slot_name": "object",
+            "value": "selected floor sign"
+          },
+          {
+            "slot_name": "object_attributes",
+            "value": "unknown"
+          },
+          {
+            "slot_name": "destination",
+            "value": "assigned destination"
+          },
+          {
+            "slot_name": "spatial_relation",
+            "value": "unknown"
+          },
+          {
+            "slot_name": "quantity",
+            "value": "unknown"
+          },
+          {
+            "slot_name": "time",
+            "value": "shortly"
+          },
+          {
+            "slot_name": "recipient",
+            "value": "unknown"
+          },
+          {
+            "slot_name": "tool",
+            "value": "unknown"
+          },
+          {
+            "slot_name": "conditions",
+            "value": "unknown"
+          },
+          {
+            "slot_name": "constraints",
+            "value": "unknown"
+          },
+          {
+            "slot_name": "negation",
+            "value": "unknown"
+          }
+        ],
+        "result_hash": "2a73da9a1b6ae948a4f96889a50ac5714b5ef0e604c86af33df110528e014949",
+        "run_id": null,
+        "run_mode": null,
+        "runtime_metadata": {
+          "awaits_t28_adapter": true,
+          "classification": {
+            "ambiguity_present": true,
+            "ambiguity_types": [
+              "temporal"
+            ],
+            "capability_status": "unknown",
+            "compound_ambiguity": false,
+            "compound_ambiguity_count": 0,
+            "derivation_notes": [
+              "ambiguity_present_from_types"
+            ],
+            "risk_level": "low"
+          },
+          "rejection_text": null,
+          "requires_re_evaluation": false,
+          "resolution_events": [],
+          "router_trace": {
+            "clarification_targets": [
+              "temporal"
+            ],
+            "considered_rules": [
+              "known_unsafe_or_prohibited",
+              "known_incapable",
+              "unknown_or_unverified_capability"
+            ],
+            "matched_rule_id": "unknown_capability",
+            "notes": [
+              "unknown_capability_cannot_execute"
+            ],
+            "recommended_strategy": "clarify",
+            "rejection_reason": null,
+            "requires_re_evaluation": false,
+            "strategy_sequence": []
+          },
+          "safety_action": "return_with_findings",
+          "uncertainty": null
+        },
+        "safety_findings": [],
+        "strategy_sequence": [],
+        "synthetic_only": true,
+        "system_id": "full_type_risk_aware_manager",
+        "system_version": "1.0.0",
+        "unsupported_commitment_findings": []
+      },
+      "raw_output": "{\n  \"intent_summary\": \"Move the selected floor sign to its assigned destination soon\",\n  \"cpc\": {\n    \"action\": {\n      \"value\": \"move\",\n      \"status\": \"unknown\"\n    },\n    \"object\": {\n      \"value\": \"selected floor sign\",\n      \"status\": \"unknown\"\n    },\n    \"destination\": {\n      \"value\": \"assigned destination\",\n      \"status\": \"unknown\"\n    },\n    \"time\": {\n      \"value\": \"shortly\",\n      \"status\": \"unknown\"\n    }\n \n  ,\n  \"constraints\": {\n    \"status\": \"unknown\"\n  ,\n    \"value\": \"unknown\"\n  }\n  ,\n  \"conditions\": {\n    \"status\": \"unknown\"\n  ,\n    \"value\": \"unknown\"\n  }\n  ,\n  \"recipient\": {\n    \"status\": \"unknown\"\n  ,\n    \"value\": \"unknown\"\n  }\n  ,\n  \"object_attributes\": {\n    \"status\": \"unknown\"\n  ,\n    \"value\": \"unknown\"\n  }\n  ,\n  \"spatial_relation\": {\n    \"status\": \"unknown\"\n  ,\n    \"value\": \"unknown\"\n  }\n  ,\n  \"quantity\": {\n    \"status\": \"unknown\"\n  ,\n    \"value\": \"unknown\"\n  }\n  ,\n  \"negation\": {\n    \"status\": \"unknown\"\n  ,\n    \"value\": \"unknown\"\n  }\n  ,\n  \"tool\": {\n    \"status\": \"unknown\"\n  ,\n    \"value\": \"unknown\"\n  }\n  ,\n  \"actor\": {\n    \"status\": \"unknown\"\n  ,\n    \"value\": \"unknown\"\n  }\n  }\n  ,\n  \"pilot_ambiguity_types\": [\n    \"fuzzy_temporal\"\n  ]\n  ,\n  \"pilot_capability_status\": \"unauthorized\"\n  ,\n  \"speech_act\": \"directive_command\"\n  ,\n  \"unresolved_slots\": [\n    \"destination\",\n    \"time\"\n  ]\n  ,\n  \"uncertainty\": 0.4\n  ,\n  \"risk_level\": \"low\"\n  }\n  ",
+      "record_id": "CA-0576",
+      "schema_valid": true,
+      "supports_ambiguity_prediction": true,
+      "supports_capability_prediction": true,
+      "system_id": "rich_conservative_manager_v2",
+      "system_version": "2.0.0",
+      "terminal_strategy": "clarify"
+    },
+    "context_blind": {
+      "ambiguity_types": [
+        "fuzzy_temporal"
+      ],
+      "analysis_attempts": [
+        {
+          "attempt": 1,
+          "max_new_tokens": 4096,
+          "mode": "thinking",
+          "raw_chars": 5151,
+          "raw_sha256": "6498ff5f5baa8331c1a3c495877c3e85c17d4b95f02bd0cb4545b0da6f2ee5a2",
+          "validation_error": "bad_pilot_ambiguity_types"
+        },
+        {
+          "attempt": 2,
+          "max_new_tokens": 8192,
+          "mode": "thinking_retry",
+          "raw_chars": 5882,
+          "raw_sha256": "494b20840f957bafa769268fbd77564b79e6204d0c8e2a614223112c5025faf9",
+          "validation_error": "bad_pilot_ambiguity_types"
+        },
+        {
+          "attempt": 3,
+          "constraint": {
+            "constraint_initialised": true,
+            "generated_token_count": 462,
+            "maximum_output_tokens": 1024,
+            "response_mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+            "termination_reason": "eos_or_constraint_stop",
+            "transport_status": "constrained_generated"
+          },
+          "max_new_tokens": 1024,
+          "mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+          "raw_chars": 1380,
+          "raw_sha256": "46549bda8c0ddb4b243fa9930e05c9e6df36c56560f7cfc25920d4fa1f1d94a0",
+          "validation_error": null
+        }
+      ],
+      "capability_status": "unauthorized",
+      "claim_boundary": "separately_versioned_from_frozen_t39",
+      "error": null,
+      "execution_mode": "cluster-gpu-goal-first-v2",
+      "failed": false,
+      "intent_summary": "Move the selected floor sign to its assigned destination soon",
+      "latency_ms": 64350.333370734006,
+      "model_id": "Qwen/Qwen3-8B@b968826d9c46dd6066d109eabc6255188de91218",
+      "parsed": {
+        "analysis": {
+          "ambiguity_present": true,
+          "ambiguity_types": [
+            "temporal"
+          ],
+          "analysis_provenance": {
+            "analysis_id": "ff71bf52601363faed51703736142f5add6acdf386a6fb98a8009019a2a7c551",
+            "method": "context_blind",
+            "notes": "ablated_input_hash=ff71bf52601363faed51703736142f5add6acdf386a6fb98a8009019a2a7c551;source_input_hash=ff71bf52601363faed51703736142f5add6acdf386a6fb98a8009019a2a7c551;no_gold_in_prompt;scene_licence_dropped=destination,time",
+            "provider_id": "goal_first_v2_context_blind",
+            "provider_version": "goal-first-manager-v2"
+          },
+          "candidate_interpretations": [],
+          "capability_status": "unknown",
+          "clarification_question": null,
+          "clarification_targets": [],
+          "compound_ambiguity": false,
+          "compound_ambiguity_count": 0,
+          "context_sampling_uncertainty": {
+            "agreement": 0.09999999999999998,
+            "score": 0.9,
+            "variant_count": 1
+          },
+          "cpc": {
+            "action": {
+              "status": "filled",
+              "value": "Move"
+            },
+            "actor": {
+              "status": "filled",
+              "value": "unspecified"
+            },
+            "conditions": {
+              "status": "filled",
+              "value": "unspecified"
+            },
+            "constraints": {
+              "status": "filled",
+              "value": "unspecified"
+            },
+            "destination": {
+              "status": "filled",
+              "value": "its assigned destination"
+            },
+            "negation": {
+              "status": "filled",
+              "value": "unspecified"
+            },
+            "object": {
+              "status": "filled",
+              "value": "selected floor sign"
+            },
+            "object_attributes": {
+              "status": "filled",
+              "value": "unspecified"
+            },
+            "quantity": {
+              "status": "filled",
+              "value": "unspecified"
+            },
+            "recipient": {
+              "status": "filled",
+              "value": "unspecified"
+            },
+            "spatial_relation": {
+              "status": "filled",
+              "value": "unspecified"
+            },
+            "time": {
+              "status": "filled",
+              "value": "shortly"
+            },
+            "tool": {
+              "status": "filled",
+              "value": "unspecified"
+            }
+          },
+          "findings": [
+            "pilot_ambiguity_types:[\"fuzzy_temporal\"]",
+            "pilot_capability_status:unauthorized",
+            "intent_summary_present"
+          ],
+          "intent_summary": "Move the selected floor sign to its assigned destination soon",
+          "primary_ambiguity_type": "temporal",
+          "recommended_strategy": "face_preserving_rejection",
+          "rejection_reason": "unsafe_or_prohibited_action",
+          "resolution_evidence": [],
+          "resolution_method": null,
+          "resolved_slots": [
+            {
+              "slot_name": "action",
+              "value": "Move"
+            },
+            {
+              "slot_name": "actor",
+              "value": "unspecified"
+            },
+            {
+              "slot_name": "object",
+              "value": "selected floor sign"
+            },
+            {
+              "slot_name": "object_attributes",
+              "value": "unspecified"
+            },
+            {
+              "slot_name": "destination",
+              "value": "its assigned destination"
+            },
+            {
+              "slot_name": "spatial_relation",
+              "value": "unspecified"
+            },
+            {
+              "slot_name": "quantity",
+              "value": "unspecified"
+            },
+            {
+              "slot_name": "time",
+              "value": "shortly"
+            },
+            {
+              "slot_name": "recipient",
+              "value": "unspecified"
+            },
+            {
+              "slot_name": "tool",
+              "value": "unspecified"
+            },
+            {
+              "slot_name": "conditions",
+              "value": "unspecified"
+            },
+            {
+              "slot_name": "constraints",
+              "value": "unspecified"
+            },
+            {
+              "slot_name": "negation",
+              "value": "unspecified"
+            }
+          ],
+          "risk_level": "low",
+          "risk_relevant": true,
+          "selected_interpretation": null,
+          "speech_act": "indirect_request",
+          "strategy_sequence": [],
+          "supporting_evidence": [],
+          "unresolved_slots": [],
+          "unsupported_specificity": []
+        },
+        "clarification_question": null,
+        "clarification_targets": [],
+        "execution_status": "ok",
+        "official_result": false,
+        "provider_provenance": {
+          "provider_id": "cached_analysis",
+          "provider_version": "1.0.0"
+        },
+        "recommended_strategy": "face_preserving_rejection",
+        "record_id": "CA-0576",
+        "rejection_reason": "unsafe_or_prohibited_action",
+        "resolved_slots": [
+          {
+            "slot_name": "action",
+            "value": "Move"
+          },
+          {
+            "slot_name": "actor",
+            "value": "unspecified"
+          },
+          {
+            "slot_name": "object",
+            "value": "selected floor sign"
+          },
+          {
+            "slot_name": "object_attributes",
+            "value": "unspecified"
+          },
+          {
+            "slot_name": "destination",
+            "value": "its assigned destination"
+          },
+          {
+            "slot_name": "spatial_relation",
+            "value": "unspecified"
+          },
+          {
+            "slot_name": "quantity",
+            "value": "unspecified"
+          },
+          {
+            "slot_name": "time",
+            "value": "shortly"
+          },
+          {
+            "slot_name": "recipient",
+            "value": "unspecified"
+          },
+          {
+            "slot_name": "tool",
+            "value": "unspecified"
+          },
+          {
+            "slot_name": "conditions",
+            "value": "unspecified"
+          },
+          {
+            "slot_name": "constraints",
+            "value": "unspecified"
+          },
+          {
+            "slot_name": "negation",
+            "value": "unspecified"
+          }
+        ],
+        "result_hash": "2ae90c0c7c4813291905c08136b555e309b33000d7544a9b1a19ff494a136822",
+        "run_id": null,
+        "run_mode": null,
+        "runtime_metadata": {
+          "analysis_identity": {
+            "analysis_content_hash": "e1c1dbf0f87c65c40b1638e6e533d90cf3004d81e45f94d13c26ab0189c2504e",
+            "analysis_variant": "context_blind",
+            "model_strategy_id": null,
+            "provider_id": "goal_first_v2_context_blind",
+            "provider_version": "goal-first-manager-v2",
+            "record_id": "CA-0576",
+            "source_input_hash": "ff71bf52601363faed51703736142f5add6acdf386a6fb98a8009019a2a7c551"
+          },
+          "analysis_identity_fingerprint": "e7503c9790d96fff7511225493f3ae8c519cb7a301286055036a5a3d354d796a",
+          "awaits_t28_adapter": true,
+          "classification": {
+            "ambiguity_present": true,
+            "ambiguity_types": [
+              "temporal"
+            ],
+            "capability_status": "unknown",
+            "compound_ambiguity": false,
+            "compound_ambiguity_count": 0,
+            "derivation_notes": [
+              "ambiguity_present_from_types"
+            ],
+            "risk_level": "low"
+          },
+          "context_ablation": {
+            "ablated_input_hash": "ff71bf52601363faed51703736142f5add6acdf386a6fb98a8009019a2a7c551",
+            "capability_context_removed": true,
+            "dialogue_history_removed": true,
+            "rejected_full_context_cache": false,
+            "rejection_reason": null,
+            "scene_context_removed": true,
+            "stripped_context_derived_fields": false
+          },
+          "original_input_unmutated": true,
+          "rejection_text": "I need to decline that request because it would be unsafe under the current constraints.",
+          "requires_re_evaluation": false,
+          "resolution_events": [],
+          "router_trace": {
+            "clarification_targets": [],
+            "considered_rules": [
+              "goal_first_v2",
+              "known_unsafe_or_prohibited"
+            ],
+            "matched_rule_id": "known_unsafe_or_prohibited",
+            "notes": [],
+            "recommended_strategy": "face_preserving_rejection",
+            "rejection_reason": "unsafe_or_prohibited_action",
+            "requires_re_evaluation": false,
+            "strategy_sequence": []
+          },
+          "safety_action": "return_with_findings",
+          "uncertainty": null
+        },
+        "safety_findings": [],
+        "strategy_sequence": [],
+        "synthetic_only": true,
+        "system_id": "context_blind_manager",
+        "system_version": "1.0.0",
+        "unsupported_commitment_findings": []
+      },
+      "raw_output": "{\n  \"intent_summary\": \"Move the selected floor sign to its assigned destination soon\",\n  \"cpc\": {\n    \"action\": {\n      \"value\": \"Move\",\n      \"status\": \"unknown\"\n    },\n    \"object\": {\n      \"value\": \"selected floor sign\",\n      \"status\": \"unknown\"\n    },\n    \"destination\": {\n      \"value\": \"its assigned destination\",\n      \"status\": \"unknown\"\n    },\n    \"time\": {\n      \"value\": \"shortly\",\n      \"status\": \"unknown\"\n    }\n \n  ,\n  \"constraints\": {\n    \"status\": \"unknown\"\n  ,\n  \"value\": \"unspecified\"\n  },\n  \"recipient\": {\n    \"status\": \"unknown\"\n  ,\n  \"value\": \"unspecified\"\n  },\n  \"tool\": {\n    \"status\": \"unknown\"\n  ,\n  \"value\": \"unspecified\"\n  },\n  \"spatial_relation\": {\n    \"status\": \"unknown\"\n  ,\n  \"value\": \"unspecified\"\n  },\n  \"quantity\": {\n    \"status\": \"unknown\"\n  ,\n  \"value\": \"unspecified\"\n  },\n  \"conditions\": {\n    \"status\": \"unknown\"\n  ,\n  \"value\": \"unspecified\"\n  },\n  \"negation\": {\n    \"status\": \"unknown\"\n  ,\n  \"value\": \"unspecified\"\n  },\n  \"object_attributes\": {\n    \"status\": \"unknown\"\n  ,\n  \"value\": \"unspecified\"\n  },\n  \"actor\": {\n    \"status\": \"unknown\"\n  ,\n  \"value\": \"unspecified\"\n  }\n  },\n  \"pilot_ambiguity_types\": [\n    \"fuzzy_temporal\"\n  ]\n  ,\n  \"pilot_capability_status\": \"unauthorized\"\n  ,\n  \"uncertainty\": 0.9\n  ,\n  \"speech_act\": \"indirect_request\"\n  ,\n  \"unresolved_slots\": [\n    \"destination\"\n  ,\n    \"time\"\n  ]\n  ,\n  \"risk_level\": \"low\"\n  }\n ",
+      "record_id": "CA-0576",
+      "schema_valid": true,
+      "supports_ambiguity_prediction": true,
+      "supports_capability_prediction": true,
+      "system_id": "goal_first_context_blind_v2",
+      "system_version": "2.0.0",
+      "terminal_strategy": "face_preserving_rejection"
+    }
+  },
+  "provenance": {
+    "source_sha256": "f33b1e29f1e8aa256a475f07213aa07247def47d8e2148d54a472a40b71b05c9",
+    "gold_sha256": "5e23ad1a92ff1873c8f039a8ce560a111dd6fb6b8ae8c11d6cf34dbfa1c360db",
+    "t07_final_zip_sha256": "34ca50e034ca37b617068bb50c734d12fa26282fb5eec563c11ead700163e491",
+    "inherited_t07_zip_sha256": "0305b1e9ab062876ee6ee89778cc6028d2eaf01718b7dd0295944e7d9cb81a01",
+    "note": "Goal-First, Degree, Timid, and Context-Blind predictions are inherited from the earlier T0.7 run; official intent and comparison come from the final T0.7 archive."
+  }
+}

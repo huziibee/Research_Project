@@ -1,0 +1,1329 @@
+{
+  "record_id": "CA-0361",
+  "frozen_source": {
+    "capability_context": "Data-center maintenance robot can transport non-live components, scan asset tags, and inspect equipment without opening energized cabinets.",
+    "command": "Could you place the patch-cord bundle on the component scale beside the server rack, then handle it by returning it to the battery room?",
+    "dialogue_history": [
+      "technician: Treat this as an instruction, and use 'handle it' to mean move the patch-cord bundle after weighing it."
+    ],
+    "record_id": "CA-0361",
+    "scene_context": "Maintenance aisle in a data center. The server rack is fixed to the floor. Both the patch-cord bundle and the assigned component scale are movable at the work point. The work-order return field contains the patch-cord bundle's asset tag; the component scale's return point is the calibration rack. An unrelated cable tray is logged for later work at the parts cabinet. Two locations are labelled battery room; the work order names the one beside the network cage. Two component scales are present. The unit assigned to this work order is calibrated; the other is reserved for a different load. The assigned component scale must first verify that the loaded patch-cord bundle is below 18 kilograms. It displays 12 kilograms. The robot's handling certificate permits this target below the stated 18-kilogram limit."
+  },
+  "frozen_gold": {
+    "ambiguity_types": [
+      "destination_reference",
+      "instrument_reference",
+      "lexical",
+      "pragmatic",
+      "pronoun_reference"
+    ],
+    "annotator_b_era": "claude_era",
+    "annotator_b_model": "claude-4.6-sonnet-medium-thinking",
+    "capability_status": "capable",
+    "field_status": {
+      "ambiguity_types": "auto_agree",
+      "capability_status": "auto_agree",
+      "record_validity": "auto_agree",
+      "strategy_sequence": "auto_agree",
+      "terminal_strategy": "auto_agree"
+    },
+    "gold_lifecycle": "final_gold",
+    "gold_status": "auto_agree",
+    "human_gate_required": false,
+    "provenance": {
+      "agreement_label": "pilot_annotation_agreement",
+      "annotator_a_sha256": "c8d9c487d20303efb29b05fb25fe7dc65cef1d324168c7fab300c7b1a1018217",
+      "annotator_b_sha256": "569469cd88cc37735cb17fd1ecd0e277dd6fca691414a23f0815b0e1af688832",
+      "gold_policy": "use_existing_pilot_adjudicated_gold",
+      "input_sha256": "285574f6a882aeb8fd2aafb1fcad231dc1512060c329511469d878721e3e2e6f",
+      "pilot_gold_sha256": "682dde12a6753b0be1185e7028e4dbb0b45376426bd289153bf191d2a329fb6a",
+      "protocol": "pilot_adjudicated_gold_on_capability_repaired_source",
+      "repaired_input_sha256": "dc26eeed0d86fb59433bfbd0b4b4f2b653f590b3075359acc899b50ac6bbd202"
+    },
+    "record_id": "CA-0361",
+    "record_validity": "valid",
+    "strategy_sequence": [
+      "reinterpret_indirect_request",
+      "resolve_lexical",
+      "resolve_reference",
+      "execute"
+    ],
+    "terminal_strategy": "execute"
+  },
+  "t07_comparison": {
+    "record_id": "CA-0361",
+    "gold_route": "execute",
+    "raw_route": "execute",
+    "ft_route": "execute",
+    "gf_route": "refuse",
+    "raw_route_ok": "True",
+    "ft_route_ok": "True",
+    "gf_route_ok": "False",
+    "raw_official_intent": "True",
+    "ft_official_intent": "True",
+    "gf_official_intent": "True",
+    "blind_official_intent": "True"
+  },
+  "t07_official_intent": {
+    "context_blind_official_intent": true,
+    "degree_official_intent_shared_gf": true,
+    "finetune_official_intent": true,
+    "goal_first_official_intent": true,
+    "raw_official_intent": true,
+    "record_id": "CA-0361",
+    "timid_official_intent_shared_gf": true
+  },
+  "t07_predictions": {
+    "raw_qwen": {
+      "ambiguity_types": [
+        "destination_reference"
+      ],
+      "capability_status": "capable",
+      "error": null,
+      "execution_mode": "final_close_intent_box",
+      "failed": false,
+      "intent_summary": "Weigh the patch-cord bundle on the component scale beside the server rack, then move it to the specified battery room.",
+      "latency_ms": 27687.432114966214,
+      "parsed": {
+        "ambiguity_types": [
+          "destination_reference"
+        ],
+        "capability_status": "capable",
+        "intent_summary": "Weigh the patch-cord bundle on the component scale beside the server rack, then move it to the specified battery room.",
+        "speech_act": "directive_command",
+        "terminal_strategy": "execute"
+      },
+      "raw_output": "<think>\nOkay, let's break this down. The user's command is asking the robot to place the patch-cord bundle on the component scale beside the server rack, then handle it by returning it to the battery room. The dialogue history mentions that \"handle it\" means moving the bundle after weighing it. \n\nFirst, the intent summary needs to capture the main job. The user wants the patch-cord bundle weighed (since they mention placing it on the scale) and then moved to the battery room. So the summary should mention both actions.\n\nNext, the speech act. The command is direct but uses \"Could you\" which is a bit indirect. However, the dialogue history clarifies that \"handle it\" is a directive. The original command structure is a request but with a directive intent. So maybe it's a directive_command, but the speech act could be indirect_request. Wait, the user is giving instructions, but the phrasing is a request. However, considering the context, the main action is a command to perform tasks. The dialogue history treats it as an instruction, so perhaps it's a directive_command. But the original command starts with \"Could you,\" which is a polite request. However, the speech_act options include directive_command, which is for direct commands. Hmm. The dialogue history says to treat it as an instruction, so maybe the speech act is directive_command. But the initial phrasing is a request. This might be a bit ambiguous. Let me check the options again. The speech_act options include directive_command, indirect_request, etc. Since the user is giving a command but phrased as a request, it's an indirect request. But the dialogue history says to treat it as an instruction, which might mean the speech act is directive_command. Wait, the original command is \"Could you place... then handle it...\" which is a request, but the dialogue history says to use 'handle it' as move after weighing. So the main action is a command. Maybe the speech act is directive_command. But the initial phrasing is a request. This is a bit confusing. Let me think again. The user is asking the robot to perform tasks, but the structure is a request. So the speech_act would be indirect_request. But the dialogue history clarifies that 'handle it' is a directive. So maybe the main action is a directive_command. I'm a bit torn here. Let me check the definitions. Directive_command is a direct command, while indirect_request is a polite request. The original command uses \"Could you,\" which is a polite request, but the dialogue history says to treat it as an instruction. So perhaps the speech_act is directive_command because the user is giving instructions, even though the phrasing is a request. Alternatively, it's an indirect_request. Hmm. Maybe the answer here is indirect_request, but I'm not sure. Let me proceed and check other parts.\n\nAmbiguity types: The command mentions \"the component scale beside the server rack,\" but there are two component scales. The work order specifies the one beside the network cage, but the scene context says the assigned scale is the one that's calibrated. Also, the user mentions \"the component scale\" which might refer to the assigned one. However, there's a possibility of ambiguity here. Also, the destination is \"battery room,\" but there are two labeled. The work order specifies the one beside the network cage. So that's a possible ambiguity in object_reference (since the scale's return point is the calibration rack, but the command says to return to battery room). Wait, the work order's return field is the patch-cord bundle's asset tag, but the component scale's return point is the calibration rack. Wait, the scene context says the component scale's return point is the calibration rack, but the command says to return the patch-cord bundle to the battery room. So the ambiguity here is about the destination. Also, the component scale's return point is the calibration rack, but the command is about the patch-cord bundle. So the ambiguity types might include destination_reference (since the destination is battery room, but there are two locations). Also, the component scale's return point is the calibration rack, but the command is about the patch-cord bundle. So maybe object_reference (since the component scale is mentioned, but the work order specifies which one). Also, the \"handle it\" part refers to moving the bundle after weighing. So the ambiguity could be in object_reference (which scale to use) and destination_reference (which battery room). Also, the command says \"then handle it by returning it to the battery room\"—so the object is the patch-cord bundle. So maybe the ambiguity types here are destination_reference and object_reference. Also, the component scale's return point is the calibration rack, but the command says to return the patch-cord bundle to battery room. So the destination is clear, but the component scale's return point is fixed. So the ambiguity is about the destination (battery room) and the object (patch-cord bundle). Also, the command mentions \"the component scale\" but there are two. The assigned scale is the calibrated one. So the component scale is the assigned one. So maybe there's no ambiguity here. Wait, the scene context says the assigned component scale must be used. So the ambiguity might be resolved. But the command says \"the component scale beside the server rack\"—but there are two component scales. Wait, the scene context says \"two component scales are present. The unit assigned to this work order is calibrated; the other is reserved for a different load.\" So the assigned scale is the calibrated one. The command says to place the patch-cord bundle on the component scale (assigned) beside the server rack. So the ambiguity here is if \"beside the server rack\" refers to the assigned scale. But the scene context says the server rack is fixed to the floor. The component scale is movable. So the component scale is beside the server rack. So that's clear. So maybe the ambiguity types here are not present. Wait, but there are two battery rooms. The work order names the one beside the network cage. But the scene context mentions two battery rooms. So the ambiguity is destination_reference (which battery room). So that's one ambiguity type. Also, the component scale's return point is the calibration rack, but the command says to return the patch-cord bundle to the battery room. So that's a possible ambiguity in destination_reference. Also, the command mentions \"the component scale\" which is the assigned one. So no ambiguity there. So the ambiguity types would be destination_reference. But the user also mentions \"the component scale beside the server rack\"—but the scene context says the server rack is fixed. The component scale is movable. So the component scale is beside the server rack. So that's clear. So the only ambiguity is the destination (battery room) since there are two. So destination_reference. Also, the work order says to return the patch-cord bundle to the battery room, but the component scale's return point is the calibration rack. So the ambiguity here is about the destination. So that's one ambiguity type. Also, the command says \"handle it by returning it\"—so the object is the patch-cord bundle. So no object reference ambiguity. So the ambiguity_types would be destination_reference. \n\nCapability status: The robot's handling certificate allows moving up to 18 kg, and the scale shows 12 kg. So the robot is capable. So capability_status is capable. \n\nTerminal strategy: Since the robot can perform the task (capable), it should execute. So terminal_strategy is execute. \n\nPutting it all together: The intent_summary is placing and moving the patch-cord bundle after weighing. The speech_act is directive_command because the dialogue history treats it as an instruction. Ambiguity_types includes destination_reference. Capability_status is capable. Terminal_strategy is execute.\n</think>\n\n{\n  \"intent_summary\": \"Weigh the patch-cord bundle on the component scale beside the server rack, then move it to the specified battery room.\",\n  \"speech_act\": \"directive_command\",\n  \"ambiguity_types\": [\"destination_reference\"],\n  \"capability_status\": \"capable\",\n  \"terminal_strategy\": \"execute\"\n}",
+      "record_id": "CA-0361",
+      "schema_valid": true,
+      "speech_act": "directive_command",
+      "system_id": "direct_base_llm",
+      "terminal_strategy": "execute"
+    },
+    "finetune": {
+      "ambiguity_types": [
+        "destination_reference",
+        "object_reference",
+        "spatial_reference"
+      ],
+      "capability_status": "capable",
+      "error": null,
+      "execution_mode": "final_close_intent_box",
+      "failed": false,
+      "intent_summary": "Place the patch-cord bundle on the component scale beside the server rack, then move it to the battery room after weighing.",
+      "latency_ms": 9057.49745387584,
+      "parsed": {
+        "ambiguity_types": [
+          "destination_reference",
+          "object_reference",
+          "spatial_reference"
+        ],
+        "capability_status": "capable",
+        "intent_summary": "Place the patch-cord bundle on the component scale beside the server rack, then move it to the battery room after weighing.",
+        "speech_act": "directive_command",
+        "terminal_strategy": "execute"
+      },
+      "raw_output": "<think>\nOkay, let's break this down. The user's command is to place the patch-cord bundle on the component scale beside the server rack, then handle it by returning it to the battery room. The dialogue history mentions that \"handle it\" means move after weighing.\n\nFirst, the intent_summary needs to capture the main actions: placing the bundle on the scale and then moving it to the battery room. The speech_act is a directive_command because it's a direct instruction. \n\nLooking at ambiguity_types, there's potential for object_reference since \"it\" refers to the patch-cord bundle. Also, there's a spatial_reference with \"beside the server rack\" and \"battery room.\" The component scale's return point is the calibration rack, but the command mentions the battery room, so that's a possible confusion. Also, there are two battery rooms, so that's a destination_reference ambiguity. \n\nThe capability_status: The robot can transport non-live components, and the patch-cord is non-live. The scale is calibrated, and the weight is under 18kg. The robot's certificate allows this, so it's capable. \n\nTerminal_strategy would be execute since the robot can perform the task as per the context.\n</think>\n\n{\n  \"intent_summary\": \"Place the patch-cord bundle on the component scale beside the server rack, then move it to the battery room after weighing.\",\n  \"speech_act\": \"directive_command\",\n  \"ambiguity_types\": [\"object_reference\", \"spatial_reference\", \"destination_reference\"],\n  \"capability_status\": \"capable\",\n  \"terminal_strategy\": \"execute\"\n}",
+      "record_id": "CA-0361",
+      "schema_valid": true,
+      "speech_act": "directive_command",
+      "system_id": "t28_selected_adapter_llm",
+      "terminal_strategy": "execute"
+    },
+    "goal_first": {
+      "ambiguity_types": [
+        "object_reference",
+        "pragmatic",
+        "recipient_reference",
+        "spatial_reference"
+      ],
+      "analysis_attempts": [
+        {
+          "attempt": 1,
+          "max_new_tokens": 4096,
+          "mode": "thinking",
+          "raw_chars": 7361,
+          "raw_sha256": "fe6efbcd17e295366fe2bbbd52268f126c16ea4499708db4fe857d9a43619db5",
+          "validation_error": "bad_pilot_ambiguity_types"
+        },
+        {
+          "attempt": 2,
+          "max_new_tokens": 8192,
+          "mode": "thinking_retry",
+          "raw_chars": 13378,
+          "raw_sha256": "ffa818e61a4cf3d7669fdd9f3986a995de311814c47a0c7829f186f0e65e26a0",
+          "validation_error": "bad_intent_summary"
+        },
+        {
+          "attempt": 3,
+          "constraint": {
+            "constraint_initialised": true,
+            "generated_token_count": 489,
+            "maximum_output_tokens": 1024,
+            "response_mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+            "termination_reason": "eos_or_constraint_stop",
+            "transport_status": "constrained_generated"
+          },
+          "max_new_tokens": 1024,
+          "mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+          "raw_chars": 1472,
+          "raw_sha256": "138d48b1c45db984bb530b213fb8613ae965973086e1012a1ff9174b4dcbaee9",
+          "validation_error": null
+        }
+      ],
+      "capability_status": "unauthorized",
+      "claim_boundary": "separately_versioned_from_frozen_t39",
+      "error": null,
+      "execution_mode": "cluster-gpu-goal-first-v2",
+      "failed": false,
+      "intent_summary": "Place the patch-cord bundle on the component scale beside the server rack, then return it to the battery room after handling it",
+      "latency_ms": 104728.93949691206,
+      "model_id": "Qwen/Qwen3-8B@b968826d9c46dd6066d109eabc6255188de91218",
+      "parsed": {
+        "analysis": {
+          "ambiguity_present": true,
+          "ambiguity_types": [
+            "pragmatic",
+            "referential",
+            "spatial"
+          ],
+          "analysis_provenance": {
+            "analysis_id": "c0195eabfb6cf9a942558cdd1c8a7e28b3560925426ba70522bcb342b2914ec6",
+            "method": "model_generated",
+            "notes": "source_input_hash=c0195eabfb6cf9a942558cdd1c8a7e28b3560925426ba70522bcb342b2914ec6;no_gold_in_prompt;scene_licence_dropped=destination,tool,spatial_relation",
+            "provider_id": "goal_first_v2_full_context",
+            "provider_version": "goal-first-manager-v2"
+          },
+          "candidate_interpretations": [],
+          "capability_status": "unknown",
+          "clarification_question": null,
+          "clarification_targets": [],
+          "compound_ambiguity": true,
+          "compound_ambiguity_count": 3,
+          "context_sampling_uncertainty": {
+            "agreement": 0.35,
+            "score": 0.65,
+            "variant_count": 1
+          },
+          "cpc": {
+            "action": {
+              "status": "filled",
+              "value": "move"
+            },
+            "actor": {
+              "status": "filled",
+              "value": "technician"
+            },
+            "conditions": {
+              "status": "filled",
+              "value": "weight check"
+            },
+            "constraints": {
+              "status": "filled",
+              "value": "weight limit"
+            },
+            "destination": {
+              "status": "filled",
+              "value": "battery room"
+            },
+            "negation": {
+              "status": "filled",
+              "value": "none"
+            },
+            "object": {
+              "status": "filled",
+              "value": "patch-cord bundle"
+            },
+            "object_attributes": {
+              "status": "filled",
+              "value": "non-live components"
+            },
+            "quantity": {
+              "status": "filled",
+              "value": "12 kilograms"
+            },
+            "recipient": {
+              "status": "filled",
+              "value": "robot"
+            },
+            "spatial_relation": {
+              "status": "filled",
+              "value": "beside"
+            },
+            "time": {
+              "status": "filled",
+              "value": "immediate"
+            },
+            "tool": {
+              "status": "filled",
+              "value": "component scale"
+            }
+          },
+          "findings": [
+            "pilot_ambiguity_types:[\"object_reference\",\"pragmatic\",\"recipient_reference\",\"spatial_reference\"]",
+            "pilot_capability_status:unauthorized",
+            "intent_summary_present"
+          ],
+          "intent_summary": "Place the patch-cord bundle on the component scale beside the server rack, then return it to the battery room after handling it",
+          "primary_ambiguity_type": "pragmatic",
+          "recommended_strategy": "face_preserving_rejection",
+          "rejection_reason": "unsafe_or_prohibited_action",
+          "resolution_evidence": [],
+          "resolution_method": null,
+          "resolved_slots": [
+            {
+              "slot_name": "action",
+              "value": "move"
+            },
+            {
+              "slot_name": "actor",
+              "value": "technician"
+            },
+            {
+              "slot_name": "object",
+              "value": "patch-cord bundle"
+            },
+            {
+              "slot_name": "object_attributes",
+              "value": "non-live components"
+            },
+            {
+              "slot_name": "destination",
+              "value": "battery room"
+            },
+            {
+              "slot_name": "spatial_relation",
+              "value": "beside"
+            },
+            {
+              "slot_name": "quantity",
+              "value": "12 kilograms"
+            },
+            {
+              "slot_name": "time",
+              "value": "immediate"
+            },
+            {
+              "slot_name": "recipient",
+              "value": "robot"
+            },
+            {
+              "slot_name": "tool",
+              "value": "component scale"
+            },
+            {
+              "slot_name": "conditions",
+              "value": "weight check"
+            },
+            {
+              "slot_name": "constraints",
+              "value": "weight limit"
+            },
+            {
+              "slot_name": "negation",
+              "value": "none"
+            }
+          ],
+          "risk_level": "medium",
+          "risk_relevant": true,
+          "selected_interpretation": null,
+          "speech_act": "directive_command",
+          "strategy_sequence": [],
+          "supporting_evidence": [],
+          "unresolved_slots": [],
+          "unsupported_specificity": []
+        },
+        "clarification_question": null,
+        "clarification_targets": [],
+        "execution_status": "ok",
+        "official_result": false,
+        "provider_provenance": {
+          "provider_id": "cached_analysis",
+          "provider_version": "1.0.0"
+        },
+        "recommended_strategy": "face_preserving_rejection",
+        "record_id": "CA-0361",
+        "rejection_reason": "unsafe_or_prohibited_action",
+        "resolved_slots": [
+          {
+            "slot_name": "action",
+            "value": "move"
+          },
+          {
+            "slot_name": "actor",
+            "value": "technician"
+          },
+          {
+            "slot_name": "object",
+            "value": "patch-cord bundle"
+          },
+          {
+            "slot_name": "object_attributes",
+            "value": "non-live components"
+          },
+          {
+            "slot_name": "destination",
+            "value": "battery room"
+          },
+          {
+            "slot_name": "spatial_relation",
+            "value": "beside"
+          },
+          {
+            "slot_name": "quantity",
+            "value": "12 kilograms"
+          },
+          {
+            "slot_name": "time",
+            "value": "immediate"
+          },
+          {
+            "slot_name": "recipient",
+            "value": "robot"
+          },
+          {
+            "slot_name": "tool",
+            "value": "component scale"
+          },
+          {
+            "slot_name": "conditions",
+            "value": "weight check"
+          },
+          {
+            "slot_name": "constraints",
+            "value": "weight limit"
+          },
+          {
+            "slot_name": "negation",
+            "value": "none"
+          }
+        ],
+        "result_hash": "9e222682c1faf476747c25d5232a35498df38e71e1299ed8f94efb1c70ff9e7b",
+        "run_id": null,
+        "run_mode": null,
+        "runtime_metadata": {
+          "awaits_t28_adapter": true,
+          "classification": {
+            "ambiguity_present": true,
+            "ambiguity_types": [
+              "pragmatic",
+              "referential",
+              "spatial"
+            ],
+            "capability_status": "unknown",
+            "compound_ambiguity": true,
+            "compound_ambiguity_count": 3,
+            "derivation_notes": [
+              "ambiguity_present_from_types"
+            ],
+            "risk_level": "medium"
+          },
+          "rejection_text": "I need to decline that request because it would be unsafe under the current constraints.",
+          "requires_re_evaluation": false,
+          "resolution_events": [],
+          "router_trace": {
+            "clarification_targets": [],
+            "considered_rules": [
+              "goal_first_v2",
+              "known_unsafe_or_prohibited"
+            ],
+            "matched_rule_id": "known_unsafe_or_prohibited",
+            "notes": [],
+            "recommended_strategy": "face_preserving_rejection",
+            "rejection_reason": "unsafe_or_prohibited_action",
+            "requires_re_evaluation": false,
+            "strategy_sequence": []
+          },
+          "safety_action": "return_with_findings",
+          "uncertainty": null
+        },
+        "safety_findings": [],
+        "strategy_sequence": [],
+        "synthetic_only": true,
+        "system_id": "goal_first_manager_v2",
+        "system_version": "2.0.0",
+        "unsupported_commitment_findings": []
+      },
+      "raw_output": "{\n  \"intent_summary\": \"Place the patch-cord bundle on the component scale beside the server rack, then return it to the battery room after handling it\",\n  \"cpc\": {\n    \"action\": {\n      \"status\": \"unknown\",\n      \"value\": \"move\"\n    },\n    \"object\": {\n      \"status\": \"unknown\",\n      \"value\": \"patch-cord bundle\"\n    },\n    \"destination\": {\n      \"status\": \"unknown\",\n      \"value\": \"battery room\"\n    }\n  ,\n  \"conditions\": {\n    \"status\": \"unknown\",\n    \"value\": \"weight check\"\n  },\n  \"constraints\": {\n    \"status\": \"unknown\",\n    \"value\": \"weight limit\"\n  },\n  \"spatial_relation\": {\n    \"status\": \"unknown\",\n    \"value\": \"beside\"\n  },\n  \"time\": {\n    \"status\": \"unknown\",\n    \"value\": \"immediate\"\n  },\n  \"tool\": {\n    \"status\": \"unknown\",\n    \"value\": \"component scale\"\n  },\n  \"recipient\": {\n    \"status\": \"unknown\",\n    \"value\": \"robot\"\n  },\n  \"negation\": {\n    \"status\": \"unknown\",\n    \"value\": \"none\"\n  },\n  \"quantity\": {\n    \"status\": \"unknown\",\n    \"value\": \"12 kilograms\"\n  },\n  \"object_attributes\": {\n    \"status\": \"unknown\",\n    \"value\": \"non-live components\"\n  },\n  \"actor\": {\n    \"status\": \"unknown\",\n    \"value\": \"technician\"\n  }\n} \n\n, \"pilot_ambiguity_types\": [\n  \"pragmatic\",\n  \"spatial_reference\",\n  \"object_reference\",\n  \"recipient_reference\"\n] \n\n, \"pilot_capability_status\": \"unauthorized\" \n, \"speech_act\": \"directive_command\" \n, \"risk_level\": \"medium\" \n, \"uncertainty\": 0.65 \n, \"unresolved_slots\": [\n  \"destination\",\n  \"tool\",\n  \"spatial_relation\"\n] \n}",
+      "record_id": "CA-0361",
+      "schema_valid": true,
+      "supports_ambiguity_prediction": true,
+      "supports_capability_prediction": true,
+      "system_id": "goal_first_manager_v2",
+      "system_version": "2.0.0",
+      "terminal_strategy": "face_preserving_rejection"
+    },
+    "degree": {
+      "ambiguity_types": [
+        "object_reference",
+        "pragmatic",
+        "recipient_reference",
+        "spatial_reference"
+      ],
+      "analysis_attempts": [
+        {
+          "attempt": 1,
+          "max_new_tokens": 4096,
+          "mode": "thinking",
+          "raw_chars": 7361,
+          "raw_sha256": "fe6efbcd17e295366fe2bbbd52268f126c16ea4499708db4fe857d9a43619db5",
+          "validation_error": "bad_pilot_ambiguity_types"
+        },
+        {
+          "attempt": 2,
+          "max_new_tokens": 8192,
+          "mode": "thinking_retry",
+          "raw_chars": 13378,
+          "raw_sha256": "ffa818e61a4cf3d7669fdd9f3986a995de311814c47a0c7829f186f0e65e26a0",
+          "validation_error": "bad_intent_summary"
+        },
+        {
+          "attempt": 3,
+          "constraint": {
+            "constraint_initialised": true,
+            "generated_token_count": 489,
+            "maximum_output_tokens": 1024,
+            "response_mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+            "termination_reason": "eos_or_constraint_stop",
+            "transport_status": "constrained_generated"
+          },
+          "max_new_tokens": 1024,
+          "mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+          "raw_chars": 1472,
+          "raw_sha256": "138d48b1c45db984bb530b213fb8613ae965973086e1012a1ff9174b4dcbaee9",
+          "validation_error": null
+        }
+      ],
+      "capability_status": "unauthorized",
+      "claim_boundary": "separately_versioned_from_frozen_t39",
+      "error": null,
+      "execution_mode": "cluster-gpu-goal-first-v2",
+      "failed": false,
+      "intent_summary": "Place the patch-cord bundle on the component scale beside the server rack, then return it to the battery room after handling it",
+      "latency_ms": 104728.93949691206,
+      "model_id": "Qwen/Qwen3-8B@b968826d9c46dd6066d109eabc6255188de91218",
+      "parsed": {
+        "analysis": {
+          "ambiguity_present": true,
+          "ambiguity_types": [
+            "pragmatic",
+            "referential",
+            "spatial"
+          ],
+          "analysis_provenance": {
+            "analysis_id": "c0195eabfb6cf9a942558cdd1c8a7e28b3560925426ba70522bcb342b2914ec6",
+            "method": "model_generated",
+            "notes": "source_input_hash=c0195eabfb6cf9a942558cdd1c8a7e28b3560925426ba70522bcb342b2914ec6;no_gold_in_prompt;scene_licence_dropped=destination,tool,spatial_relation",
+            "provider_id": "goal_first_v2_full_context",
+            "provider_version": "goal-first-manager-v2"
+          },
+          "candidate_interpretations": [],
+          "capability_status": "unknown",
+          "clarification_question": "Could you clarify what you would like me to do?",
+          "clarification_targets": [
+            "intent"
+          ],
+          "compound_ambiguity": true,
+          "compound_ambiguity_count": 4,
+          "context_sampling_uncertainty": {
+            "agreement": 0.35,
+            "score": 0.65,
+            "variant_count": 1
+          },
+          "cpc": {
+            "action": {
+              "status": "filled",
+              "value": "move"
+            },
+            "actor": {
+              "status": "filled",
+              "value": "technician"
+            },
+            "conditions": {
+              "status": "filled",
+              "value": "weight check"
+            },
+            "constraints": {
+              "status": "filled",
+              "value": "weight limit"
+            },
+            "destination": {
+              "status": "filled",
+              "value": "battery room"
+            },
+            "negation": {
+              "status": "filled",
+              "value": "none"
+            },
+            "object": {
+              "status": "filled",
+              "value": "patch-cord bundle"
+            },
+            "object_attributes": {
+              "status": "filled",
+              "value": "non-live components"
+            },
+            "quantity": {
+              "status": "filled",
+              "value": "12 kilograms"
+            },
+            "recipient": {
+              "status": "filled",
+              "value": "robot"
+            },
+            "spatial_relation": {
+              "status": "filled",
+              "value": "beside"
+            },
+            "time": {
+              "status": "filled",
+              "value": "immediate"
+            },
+            "tool": {
+              "status": "filled",
+              "value": "component scale"
+            }
+          },
+          "findings": [
+            "pilot_ambiguity_types:[\"object_reference\",\"pragmatic\",\"recipient_reference\",\"spatial_reference\"]",
+            "pilot_capability_status:unauthorized",
+            "intent_summary_present"
+          ],
+          "intent_summary": "Place the patch-cord bundle on the component scale beside the server rack, then return it to the battery room after handling it",
+          "primary_ambiguity_type": "pragmatic",
+          "recommended_strategy": "clarify",
+          "rejection_reason": null,
+          "resolution_evidence": [],
+          "resolution_method": null,
+          "resolved_slots": [
+            {
+              "slot_name": "action",
+              "value": "move"
+            },
+            {
+              "slot_name": "actor",
+              "value": "technician"
+            },
+            {
+              "slot_name": "object",
+              "value": "patch-cord bundle"
+            },
+            {
+              "slot_name": "object_attributes",
+              "value": "non-live components"
+            },
+            {
+              "slot_name": "destination",
+              "value": "battery room"
+            },
+            {
+              "slot_name": "spatial_relation",
+              "value": "beside"
+            },
+            {
+              "slot_name": "quantity",
+              "value": "12 kilograms"
+            },
+            {
+              "slot_name": "time",
+              "value": "immediate"
+            },
+            {
+              "slot_name": "recipient",
+              "value": "robot"
+            },
+            {
+              "slot_name": "tool",
+              "value": "component scale"
+            },
+            {
+              "slot_name": "conditions",
+              "value": "weight check"
+            },
+            {
+              "slot_name": "constraints",
+              "value": "weight limit"
+            },
+            {
+              "slot_name": "negation",
+              "value": "none"
+            }
+          ],
+          "risk_level": "medium",
+          "risk_relevant": true,
+          "selected_interpretation": null,
+          "speech_act": "directive_command",
+          "strategy_sequence": [],
+          "supporting_evidence": [],
+          "unresolved_slots": [],
+          "unsupported_specificity": []
+        },
+        "clarification_question": "Could you clarify what you would like me to do?",
+        "clarification_targets": [
+          "intent"
+        ],
+        "execution_status": "ok",
+        "official_result": false,
+        "provider_provenance": {
+          "shared_analysis_fingerprint": "cdaf33c2e0ca869c2a460e29def02a90ae493b00c640a958471afbc40e63956c"
+        },
+        "recommended_strategy": "clarify",
+        "record_id": "CA-0361",
+        "rejection_reason": null,
+        "resolved_slots": [
+          {
+            "slot_name": "action",
+            "value": "move"
+          },
+          {
+            "slot_name": "actor",
+            "value": "technician"
+          },
+          {
+            "slot_name": "object",
+            "value": "patch-cord bundle"
+          },
+          {
+            "slot_name": "object_attributes",
+            "value": "non-live components"
+          },
+          {
+            "slot_name": "destination",
+            "value": "battery room"
+          },
+          {
+            "slot_name": "spatial_relation",
+            "value": "beside"
+          },
+          {
+            "slot_name": "quantity",
+            "value": "12 kilograms"
+          },
+          {
+            "slot_name": "time",
+            "value": "immediate"
+          },
+          {
+            "slot_name": "recipient",
+            "value": "robot"
+          },
+          {
+            "slot_name": "tool",
+            "value": "component scale"
+          },
+          {
+            "slot_name": "conditions",
+            "value": "weight check"
+          },
+          {
+            "slot_name": "constraints",
+            "value": "weight limit"
+          },
+          {
+            "slot_name": "negation",
+            "value": "none"
+          }
+        ],
+        "result_hash": "75a0a78d44c58f6ed10660c296b160408ebe7ec2170c5f92e0d2ce62b2c87d17",
+        "run_id": null,
+        "run_mode": null,
+        "runtime_metadata": {
+          "shared_analysis_fingerprint": "cdaf33c2e0ca869c2a460e29def02a90ae493b00c640a958471afbc40e63956c",
+          "thresholds_status": "unfrozen",
+          "thresholds_valid_for_official_use": false,
+          "uncertainty_score": 0.65,
+          "uses_type_risk_capability_precedence": false
+        },
+        "safety_findings": [],
+        "strategy_sequence": [],
+        "synthetic_only": true,
+        "system_id": "degree_based_router",
+        "system_version": "1.0.0",
+        "unsupported_commitment_findings": []
+      },
+      "raw_output": "{\n  \"intent_summary\": \"Place the patch-cord bundle on the component scale beside the server rack, then return it to the battery room after handling it\",\n  \"cpc\": {\n    \"action\": {\n      \"status\": \"unknown\",\n      \"value\": \"move\"\n    },\n    \"object\": {\n      \"status\": \"unknown\",\n      \"value\": \"patch-cord bundle\"\n    },\n    \"destination\": {\n      \"status\": \"unknown\",\n      \"value\": \"battery room\"\n    }\n  ,\n  \"conditions\": {\n    \"status\": \"unknown\",\n    \"value\": \"weight check\"\n  },\n  \"constraints\": {\n    \"status\": \"unknown\",\n    \"value\": \"weight limit\"\n  },\n  \"spatial_relation\": {\n    \"status\": \"unknown\",\n    \"value\": \"beside\"\n  },\n  \"time\": {\n    \"status\": \"unknown\",\n    \"value\": \"immediate\"\n  },\n  \"tool\": {\n    \"status\": \"unknown\",\n    \"value\": \"component scale\"\n  },\n  \"recipient\": {\n    \"status\": \"unknown\",\n    \"value\": \"robot\"\n  },\n  \"negation\": {\n    \"status\": \"unknown\",\n    \"value\": \"none\"\n  },\n  \"quantity\": {\n    \"status\": \"unknown\",\n    \"value\": \"12 kilograms\"\n  },\n  \"object_attributes\": {\n    \"status\": \"unknown\",\n    \"value\": \"non-live components\"\n  },\n  \"actor\": {\n    \"status\": \"unknown\",\n    \"value\": \"technician\"\n  }\n} \n\n, \"pilot_ambiguity_types\": [\n  \"pragmatic\",\n  \"spatial_reference\",\n  \"object_reference\",\n  \"recipient_reference\"\n] \n\n, \"pilot_capability_status\": \"unauthorized\" \n, \"speech_act\": \"directive_command\" \n, \"risk_level\": \"medium\" \n, \"uncertainty\": 0.65 \n, \"unresolved_slots\": [\n  \"destination\",\n  \"tool\",\n  \"spatial_relation\"\n] \n}",
+      "record_id": "CA-0361",
+      "schema_valid": true,
+      "supports_ambiguity_prediction": true,
+      "supports_capability_prediction": true,
+      "system_id": "degree_based_router_v2",
+      "system_version": "2.0.0",
+      "terminal_strategy": "clarify"
+    },
+    "timid": {
+      "ambiguity_types": [
+        "object_reference",
+        "pragmatic",
+        "recipient_reference",
+        "spatial_reference"
+      ],
+      "analysis_attempts": [
+        {
+          "attempt": 1,
+          "max_new_tokens": 4096,
+          "mode": "thinking",
+          "raw_chars": 7361,
+          "raw_sha256": "fe6efbcd17e295366fe2bbbd52268f126c16ea4499708db4fe857d9a43619db5",
+          "validation_error": "bad_pilot_ambiguity_types"
+        },
+        {
+          "attempt": 2,
+          "max_new_tokens": 8192,
+          "mode": "thinking_retry",
+          "raw_chars": 13378,
+          "raw_sha256": "ffa818e61a4cf3d7669fdd9f3986a995de311814c47a0c7829f186f0e65e26a0",
+          "validation_error": "bad_intent_summary"
+        },
+        {
+          "attempt": 3,
+          "constraint": {
+            "constraint_initialised": true,
+            "generated_token_count": 489,
+            "maximum_output_tokens": 1024,
+            "response_mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+            "termination_reason": "eos_or_constraint_stop",
+            "transport_status": "constrained_generated"
+          },
+          "max_new_tokens": 1024,
+          "mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+          "raw_chars": 1472,
+          "raw_sha256": "138d48b1c45db984bb530b213fb8613ae965973086e1012a1ff9174b4dcbaee9",
+          "validation_error": null
+        }
+      ],
+      "capability_status": "unauthorized",
+      "claim_boundary": "separately_versioned_from_frozen_t39",
+      "error": null,
+      "execution_mode": "cluster-gpu-goal-first-v2",
+      "failed": false,
+      "intent_summary": "Place the patch-cord bundle on the component scale beside the server rack, then return it to the battery room after handling it",
+      "latency_ms": 104728.93949691206,
+      "model_id": "Qwen/Qwen3-8B@b968826d9c46dd6066d109eabc6255188de91218",
+      "parsed": {
+        "analysis": {
+          "ambiguity_present": true,
+          "ambiguity_types": [
+            "pragmatic",
+            "referential",
+            "spatial"
+          ],
+          "analysis_provenance": {
+            "analysis_id": "c0195eabfb6cf9a942558cdd1c8a7e28b3560925426ba70522bcb342b2914ec6",
+            "method": "model_generated",
+            "notes": "source_input_hash=c0195eabfb6cf9a942558cdd1c8a7e28b3560925426ba70522bcb342b2914ec6;no_gold_in_prompt;scene_licence_dropped=destination,tool,spatial_relation",
+            "provider_id": "goal_first_v2_full_context",
+            "provider_version": "goal-first-manager-v2"
+          },
+          "candidate_interpretations": [],
+          "capability_status": "unknown",
+          "clarification_question": "Before I continue, could you clarify: pragmatic, referential, spatial?",
+          "clarification_targets": [
+            "pragmatic",
+            "referential",
+            "spatial"
+          ],
+          "compound_ambiguity": true,
+          "compound_ambiguity_count": 3,
+          "context_sampling_uncertainty": {
+            "agreement": 0.35,
+            "score": 0.65,
+            "variant_count": 1
+          },
+          "cpc": {
+            "action": {
+              "status": "filled",
+              "value": "move"
+            },
+            "actor": {
+              "status": "filled",
+              "value": "technician"
+            },
+            "conditions": {
+              "status": "filled",
+              "value": "weight check"
+            },
+            "constraints": {
+              "status": "filled",
+              "value": "weight limit"
+            },
+            "destination": {
+              "status": "filled",
+              "value": "battery room"
+            },
+            "negation": {
+              "status": "filled",
+              "value": "none"
+            },
+            "object": {
+              "status": "filled",
+              "value": "patch-cord bundle"
+            },
+            "object_attributes": {
+              "status": "filled",
+              "value": "non-live components"
+            },
+            "quantity": {
+              "status": "filled",
+              "value": "12 kilograms"
+            },
+            "recipient": {
+              "status": "filled",
+              "value": "robot"
+            },
+            "spatial_relation": {
+              "status": "filled",
+              "value": "beside"
+            },
+            "time": {
+              "status": "filled",
+              "value": "immediate"
+            },
+            "tool": {
+              "status": "filled",
+              "value": "component scale"
+            }
+          },
+          "findings": [
+            "pilot_ambiguity_types:[\"object_reference\",\"pragmatic\",\"recipient_reference\",\"spatial_reference\"]",
+            "pilot_capability_status:unauthorized",
+            "intent_summary_present"
+          ],
+          "intent_summary": "Place the patch-cord bundle on the component scale beside the server rack, then return it to the battery room after handling it",
+          "primary_ambiguity_type": "pragmatic",
+          "recommended_strategy": "clarify",
+          "rejection_reason": null,
+          "resolution_evidence": [],
+          "resolution_method": null,
+          "resolved_slots": [
+            {
+              "slot_name": "action",
+              "value": "move"
+            },
+            {
+              "slot_name": "actor",
+              "value": "technician"
+            },
+            {
+              "slot_name": "object",
+              "value": "patch-cord bundle"
+            },
+            {
+              "slot_name": "object_attributes",
+              "value": "non-live components"
+            },
+            {
+              "slot_name": "destination",
+              "value": "battery room"
+            },
+            {
+              "slot_name": "spatial_relation",
+              "value": "beside"
+            },
+            {
+              "slot_name": "quantity",
+              "value": "12 kilograms"
+            },
+            {
+              "slot_name": "time",
+              "value": "immediate"
+            },
+            {
+              "slot_name": "recipient",
+              "value": "robot"
+            },
+            {
+              "slot_name": "tool",
+              "value": "component scale"
+            },
+            {
+              "slot_name": "conditions",
+              "value": "weight check"
+            },
+            {
+              "slot_name": "constraints",
+              "value": "weight limit"
+            },
+            {
+              "slot_name": "negation",
+              "value": "none"
+            }
+          ],
+          "risk_level": "medium",
+          "risk_relevant": true,
+          "selected_interpretation": null,
+          "speech_act": "directive_command",
+          "strategy_sequence": [],
+          "supporting_evidence": [],
+          "unresolved_slots": [],
+          "unsupported_specificity": []
+        },
+        "clarification_question": "Before I continue, could you clarify: pragmatic, referential, spatial?",
+        "clarification_targets": [
+          "pragmatic",
+          "referential",
+          "spatial"
+        ],
+        "execution_status": "ok",
+        "official_result": false,
+        "provider_provenance": {
+          "provider_id": "cached_analysis",
+          "provider_version": "1.0.0"
+        },
+        "recommended_strategy": "clarify",
+        "record_id": "CA-0361",
+        "rejection_reason": null,
+        "resolved_slots": [
+          {
+            "slot_name": "action",
+            "value": "move"
+          },
+          {
+            "slot_name": "actor",
+            "value": "technician"
+          },
+          {
+            "slot_name": "object",
+            "value": "patch-cord bundle"
+          },
+          {
+            "slot_name": "object_attributes",
+            "value": "non-live components"
+          },
+          {
+            "slot_name": "destination",
+            "value": "battery room"
+          },
+          {
+            "slot_name": "spatial_relation",
+            "value": "beside"
+          },
+          {
+            "slot_name": "quantity",
+            "value": "12 kilograms"
+          },
+          {
+            "slot_name": "time",
+            "value": "immediate"
+          },
+          {
+            "slot_name": "recipient",
+            "value": "robot"
+          },
+          {
+            "slot_name": "tool",
+            "value": "component scale"
+          },
+          {
+            "slot_name": "conditions",
+            "value": "weight check"
+          },
+          {
+            "slot_name": "constraints",
+            "value": "weight limit"
+          },
+          {
+            "slot_name": "negation",
+            "value": "none"
+          }
+        ],
+        "result_hash": "1099e0a01ad536832e0c3336638aacf7c1ceb7fea9eecb4b2e2ede5d6a28c6ed",
+        "run_id": null,
+        "run_mode": null,
+        "runtime_metadata": {
+          "awaits_t28_adapter": true,
+          "classification": {
+            "ambiguity_present": true,
+            "ambiguity_types": [
+              "pragmatic",
+              "referential",
+              "spatial"
+            ],
+            "capability_status": "unknown",
+            "compound_ambiguity": true,
+            "compound_ambiguity_count": 3,
+            "derivation_notes": [
+              "ambiguity_present_from_types"
+            ],
+            "risk_level": "medium"
+          },
+          "rejection_text": null,
+          "requires_re_evaluation": false,
+          "resolution_events": [],
+          "router_trace": {
+            "clarification_targets": [
+              "pragmatic",
+              "referential",
+              "spatial"
+            ],
+            "considered_rules": [
+              "known_unsafe_or_prohibited",
+              "known_incapable",
+              "unknown_or_unverified_capability"
+            ],
+            "matched_rule_id": "unknown_capability",
+            "notes": [
+              "unknown_capability_cannot_execute"
+            ],
+            "recommended_strategy": "clarify",
+            "rejection_reason": null,
+            "requires_re_evaluation": false,
+            "strategy_sequence": []
+          },
+          "safety_action": "return_with_findings",
+          "uncertainty": null
+        },
+        "safety_findings": [],
+        "strategy_sequence": [],
+        "synthetic_only": true,
+        "system_id": "full_type_risk_aware_manager",
+        "system_version": "1.0.0",
+        "unsupported_commitment_findings": []
+      },
+      "raw_output": "{\n  \"intent_summary\": \"Place the patch-cord bundle on the component scale beside the server rack, then return it to the battery room after handling it\",\n  \"cpc\": {\n    \"action\": {\n      \"status\": \"unknown\",\n      \"value\": \"move\"\n    },\n    \"object\": {\n      \"status\": \"unknown\",\n      \"value\": \"patch-cord bundle\"\n    },\n    \"destination\": {\n      \"status\": \"unknown\",\n      \"value\": \"battery room\"\n    }\n  ,\n  \"conditions\": {\n    \"status\": \"unknown\",\n    \"value\": \"weight check\"\n  },\n  \"constraints\": {\n    \"status\": \"unknown\",\n    \"value\": \"weight limit\"\n  },\n  \"spatial_relation\": {\n    \"status\": \"unknown\",\n    \"value\": \"beside\"\n  },\n  \"time\": {\n    \"status\": \"unknown\",\n    \"value\": \"immediate\"\n  },\n  \"tool\": {\n    \"status\": \"unknown\",\n    \"value\": \"component scale\"\n  },\n  \"recipient\": {\n    \"status\": \"unknown\",\n    \"value\": \"robot\"\n  },\n  \"negation\": {\n    \"status\": \"unknown\",\n    \"value\": \"none\"\n  },\n  \"quantity\": {\n    \"status\": \"unknown\",\n    \"value\": \"12 kilograms\"\n  },\n  \"object_attributes\": {\n    \"status\": \"unknown\",\n    \"value\": \"non-live components\"\n  },\n  \"actor\": {\n    \"status\": \"unknown\",\n    \"value\": \"technician\"\n  }\n} \n\n, \"pilot_ambiguity_types\": [\n  \"pragmatic\",\n  \"spatial_reference\",\n  \"object_reference\",\n  \"recipient_reference\"\n] \n\n, \"pilot_capability_status\": \"unauthorized\" \n, \"speech_act\": \"directive_command\" \n, \"risk_level\": \"medium\" \n, \"uncertainty\": 0.65 \n, \"unresolved_slots\": [\n  \"destination\",\n  \"tool\",\n  \"spatial_relation\"\n] \n}",
+      "record_id": "CA-0361",
+      "schema_valid": true,
+      "supports_ambiguity_prediction": true,
+      "supports_capability_prediction": true,
+      "system_id": "rich_conservative_manager_v2",
+      "system_version": "2.0.0",
+      "terminal_strategy": "clarify"
+    },
+    "context_blind": {
+      "ambiguity_types": [
+        "action_order"
+      ],
+      "analysis_attempts": [
+        {
+          "attempt": 1,
+          "max_new_tokens": 4096,
+          "mode": "thinking",
+          "raw_chars": 7347,
+          "raw_sha256": "19bfa6875f68878c6ddb1a62ad7a60855e680f911d399748f4c15d97c588d108",
+          "validation_error": "bad_intent_summary"
+        },
+        {
+          "attempt": 2,
+          "max_new_tokens": 8192,
+          "mode": "thinking_retry",
+          "raw_chars": 6357,
+          "raw_sha256": "3cae4c229ccabb7e8c937c33d3e9158a967061ba81a5c1ec9e27be7a411cc699",
+          "validation_error": "bad_intent_summary"
+        },
+        {
+          "attempt": 3,
+          "constraint": {
+            "constraint_initialised": true,
+            "generated_token_count": 448,
+            "maximum_output_tokens": 1024,
+            "response_mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+            "termination_reason": "eos_or_constraint_stop",
+            "transport_status": "constrained_generated"
+          },
+          "max_new_tokens": 1024,
+          "mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+          "raw_chars": 1452,
+          "raw_sha256": "b36795193ec32c1d34083e0dcc435e8e871874c3fd47e5c28771d0a5084d5903",
+          "validation_error": null
+        }
+      ],
+      "capability_status": "unauthorized",
+      "claim_boundary": "separately_versioned_from_frozen_t39",
+      "error": null,
+      "execution_mode": "cluster-gpu-goal-first-v2",
+      "failed": false,
+      "intent_summary": "Place the patch-cord bundle on the component scale beside the server rack and return it to the battery room",
+      "latency_ms": 66162.73740679026,
+      "model_id": "Qwen/Qwen3-8B@b968826d9c46dd6066d109eabc6255188de91218",
+      "parsed": {
+        "analysis": {
+          "ambiguity_present": true,
+          "ambiguity_types": [
+            "temporal"
+          ],
+          "analysis_provenance": {
+            "analysis_id": "b2ce9c76664074a62628a30fab1b80b4db8ccf0135b053b843bd5a668a309d36",
+            "method": "context_blind",
+            "notes": "ablated_input_hash=b2ce9c76664074a62628a30fab1b80b4db8ccf0135b053b843bd5a668a309d36;source_input_hash=b2ce9c76664074a62628a30fab1b80b4db8ccf0135b053b843bd5a668a309d36;no_gold_in_prompt;scene_licence_dropped=none",
+            "provider_id": "goal_first_v2_context_blind",
+            "provider_version": "goal-first-manager-v2"
+          },
+          "candidate_interpretations": [],
+          "capability_status": "unknown",
+          "clarification_question": null,
+          "clarification_targets": [],
+          "compound_ambiguity": false,
+          "compound_ambiguity_count": 0,
+          "context_sampling_uncertainty": {
+            "agreement": 0.7,
+            "score": 0.3,
+            "variant_count": 1
+          },
+          "cpc": {
+            "action": {
+              "status": "not_applicable",
+              "value": "place"
+            },
+            "actor": {
+              "status": "not_applicable",
+              "value": "none"
+            },
+            "conditions": {
+              "status": "not_applicable",
+              "value": "none"
+            },
+            "constraints": {
+              "status": "not_applicable",
+              "value": "return to battery room"
+            },
+            "destination": {
+              "status": "not_applicable",
+              "value": "component scale beside server rack"
+            },
+            "negation": {
+              "status": "not_applicable",
+              "value": "none"
+            },
+            "object": {
+              "status": "not_applicable",
+              "value": "patch-cord bundle"
+            },
+            "object_attributes": {
+              "status": "not_applicable",
+              "value": "none"
+            },
+            "quantity": {
+              "status": "not_applicable",
+              "value": "none"
+            },
+            "recipient": {
+              "status": "not_applicable",
+              "value": "none"
+            },
+            "spatial_relation": {
+              "status": "not_applicable",
+              "value": "beside"
+            },
+            "time": {
+              "status": "not_applicable",
+              "value": "none"
+            },
+            "tool": {
+              "status": "not_applicable",
+              "value": "none"
+            }
+          },
+          "findings": [
+            "pilot_ambiguity_types:[\"action_order\"]",
+            "pilot_capability_status:unauthorized",
+            "intent_summary_present"
+          ],
+          "intent_summary": "Place the patch-cord bundle on the component scale beside the server rack and return it to the battery room",
+          "primary_ambiguity_type": "temporal",
+          "recommended_strategy": "face_preserving_rejection",
+          "rejection_reason": "unsafe_or_prohibited_action",
+          "resolution_evidence": [],
+          "resolution_method": null,
+          "resolved_slots": [],
+          "risk_level": "medium",
+          "risk_relevant": true,
+          "selected_interpretation": null,
+          "speech_act": "directive_command",
+          "strategy_sequence": [],
+          "supporting_evidence": [],
+          "unresolved_slots": [],
+          "unsupported_specificity": []
+        },
+        "clarification_question": null,
+        "clarification_targets": [],
+        "execution_status": "ok",
+        "official_result": false,
+        "provider_provenance": {
+          "provider_id": "cached_analysis",
+          "provider_version": "1.0.0"
+        },
+        "recommended_strategy": "face_preserving_rejection",
+        "record_id": "CA-0361",
+        "rejection_reason": "unsafe_or_prohibited_action",
+        "resolved_slots": [],
+        "result_hash": "660abf2d29291dfec1cf593a504c5abdd8a58fd12921a6480e586a656b34c895",
+        "run_id": null,
+        "run_mode": null,
+        "runtime_metadata": {
+          "analysis_identity": {
+            "analysis_content_hash": "3a2ebfbb332c7a816e4c105f6b1d9185cb840630e2f276ae5c6a6e6dfef897fb",
+            "analysis_variant": "context_blind",
+            "model_strategy_id": null,
+            "provider_id": "goal_first_v2_context_blind",
+            "provider_version": "goal-first-manager-v2",
+            "record_id": "CA-0361",
+            "source_input_hash": "b2ce9c76664074a62628a30fab1b80b4db8ccf0135b053b843bd5a668a309d36"
+          },
+          "analysis_identity_fingerprint": "a1a478574c9e0d807addd8cdcde63836414462c9698df0bfeb2a6b632fbb6471",
+          "awaits_t28_adapter": true,
+          "classification": {
+            "ambiguity_present": true,
+            "ambiguity_types": [
+              "temporal"
+            ],
+            "capability_status": "unknown",
+            "compound_ambiguity": false,
+            "compound_ambiguity_count": 0,
+            "derivation_notes": [
+              "ambiguity_present_from_types"
+            ],
+            "risk_level": "medium"
+          },
+          "context_ablation": {
+            "ablated_input_hash": "b2ce9c76664074a62628a30fab1b80b4db8ccf0135b053b843bd5a668a309d36",
+            "capability_context_removed": true,
+            "dialogue_history_removed": true,
+            "rejected_full_context_cache": false,
+            "rejection_reason": null,
+            "scene_context_removed": true,
+            "stripped_context_derived_fields": false
+          },
+          "original_input_unmutated": true,
+          "rejection_text": "I need to decline that request because it would be unsafe under the current constraints.",
+          "requires_re_evaluation": false,
+          "resolution_events": [],
+          "router_trace": {
+            "clarification_targets": [],
+            "considered_rules": [
+              "goal_first_v2",
+              "known_unsafe_or_prohibited"
+            ],
+            "matched_rule_id": "known_unsafe_or_prohibited",
+            "notes": [],
+            "recommended_strategy": "face_preserving_rejection",
+            "rejection_reason": "unsafe_or_prohibited_action",
+            "requires_re_evaluation": false,
+            "strategy_sequence": []
+          },
+          "safety_action": "return_with_findings",
+          "uncertainty": null
+        },
+        "safety_findings": [],
+        "strategy_sequence": [],
+        "synthetic_only": true,
+        "system_id": "context_blind_manager",
+        "system_version": "1.0.0",
+        "unsupported_commitment_findings": []
+      },
+      "raw_output": "{\n  \"intent_summary\": \"Place the patch-cord bundle on the component scale beside the server rack and return it to the battery room\",\n  \"cpc\": {\n    \"action\": {\n      \"value\": \"place\",\n      \"status\": \"not_applicable\"\n    },\n    \"object\": {\n      \"value\": \"patch-cord bundle\",\n      \"status\": \"not_applicable\"\n    },\n    \"destination\": {\n      \"value\": \"component scale beside server rack\",\n      \"status\": \"not_applicable\"\n    },\n    \"recipient\": {\n      \"value\": \"none\",\n      \"status\": \"not_applicable\"\n    },\n    \"negation\": {\n      \"value\": \"none\",\n      \"status\": \"not_applicable\"\n    }\n \n  ,\n  \"constraints\": {\n    \"value\": \"return to battery room\",\n    \"status\": \"not_applicable\"\n  },\n  \"time\": {\n    \"value\": \"none\",\n    \"status\": \"not_applicable\"\n  },\n  \"quantity\": {\n    \"value\": \"none\",\n    \"status\": \"not_applicable\"\n  },\n  \"spatial_relation\": {\n    \"value\": \"beside\",\n    \"status\": \"not_applicable\"\n  },\n  \"tool\": {\n    \"value\": \"none\",\n    \"status\": \"not_applicable\"\n  },\n  \"conditions\": {\n    \"value\": \"none\",\n    \"status\": \"not_applicable\"\n  },\n  \"object_attributes\": {\n    \"value\": \"none\",\n    \"status\": \"not_applicable\"\n  },\n  \"actor\": {\n    \"value\": \"none\",\n    \"status\": \"not_applicable\"\n  }\n}\n,\n  \"pilot_ambiguity_types\": [\n    \"action_order\"\n  ]\n  \n  ,\n  \"pilot_capability_status\": \"unauthorized\"\n  \n  ,\n  \"speech_act\": \"directive_command\"\n  \n  ,\n  \"risk_level\": \"medium\"\n  \n  ,\n  \"uncertainty\": 0.3\n  ,\n  \"unresolved_slots\": []\n}",
+      "record_id": "CA-0361",
+      "schema_valid": true,
+      "supports_ambiguity_prediction": true,
+      "supports_capability_prediction": true,
+      "system_id": "goal_first_context_blind_v2",
+      "system_version": "2.0.0",
+      "terminal_strategy": "face_preserving_rejection"
+    }
+  },
+  "provenance": {
+    "source_sha256": "f33b1e29f1e8aa256a475f07213aa07247def47d8e2148d54a472a40b71b05c9",
+    "gold_sha256": "5e23ad1a92ff1873c8f039a8ce560a111dd6fb6b8ae8c11d6cf34dbfa1c360db",
+    "t07_final_zip_sha256": "34ca50e034ca37b617068bb50c734d12fa26282fb5eec563c11ead700163e491",
+    "inherited_t07_zip_sha256": "0305b1e9ab062876ee6ee89778cc6028d2eaf01718b7dd0295944e7d9cb81a01",
+    "note": "Goal-First, Degree, Timid, and Context-Blind predictions are inherited from the earlier T0.7 run; official intent and comparison come from the final T0.7 archive."
+  }
+}

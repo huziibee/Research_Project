@@ -1,0 +1,1215 @@
+{
+  "record_id": "CA-0218",
+  "frozen_source": {
+    "capability_context": "Public-service robot can navigate crowds, carry light objects, scan tags, and deploy approved signs and barriers. It can perform visual inspections of approved items with calibrated inspection cameras or assigned inspection probes.",
+    "command": "Inspect the queue barrier near the information desk with the inspection camera carefully enough for routine release.",
+    "dialogue_history": [],
+    "record_id": "CA-0218",
+    "scene_context": "Airport service area in a public concourse. An unrelated display case is logged for later work at the service corridor. Two locations are labelled information desk. The work order names the one beside the ticket gate. The handheld inspection camera is calibrated for this item class. A fixed inspection camera at the other information desk is outside calibration. Routine release requires a complete surface scan with no uninspected patch larger than two square centimetres. The handheld inspection camera is authorized for this work order."
+  },
+  "frozen_gold": {
+    "ambiguity_types": [
+      "endpoint_vagueness",
+      "instrument_reference",
+      "spatial_reference"
+    ],
+    "annotator_b_era": "claude_era",
+    "annotator_b_model": "claude-4.6-sonnet-medium-thinking",
+    "capability_status": "capable",
+    "field_status": {
+      "ambiguity_types": "auto_agree",
+      "capability_status": "human_auditor:independent_from_route",
+      "record_validity": "auto_agree",
+      "strategy_sequence": "from_A_matching_terminal",
+      "terminal_strategy": "auto_agree"
+    },
+    "gold_lifecycle": "final_gold",
+    "gold_status": "auto_agree_with_rule",
+    "human_gate_required": false,
+    "provenance": {
+      "agreement_label": "pilot_annotation_agreement",
+      "annotator_a_sha256": "7bc6f14d43269ba9d7057448737fa63e47b188857290e0d4a3bfc5b69c75b362",
+      "annotator_b_sha256": "dd11125be145cdcfc8cf18ea2fd87f73cb86efa22c820751c6c5112720d98759",
+      "capability_route_decouple": "conditionally_capable remapped to capable: no evidenced external capability precondition; linguistic silently_resolve/clarify is not a capability condition",
+      "gold_policy": "use_existing_pilot_adjudicated_gold",
+      "input_sha256": "667a3023dbe298993bc0fe09507e893164dfd32a5935875dc7405a5ad5f9ab41",
+      "pilot_gold_sha256": "7204f9411f49d109a974a64d65c299444a8bb6e690ec1637555b1b212f9ffe00",
+      "protocol": "pilot_adjudicated_gold_on_capability_repaired_source",
+      "repaired_input_sha256": "2a2d55f86801673f25beac1c38253d4ddc21c784b2abef64dc59dbd9c55c1433"
+    },
+    "record_id": "CA-0218",
+    "record_validity": "valid",
+    "strategy_sequence": [
+      "silently_resolve",
+      "execute"
+    ],
+    "terminal_strategy": "execute"
+  },
+  "t07_comparison": {
+    "record_id": "CA-0218",
+    "gold_route": "execute",
+    "raw_route": "execute",
+    "ft_route": "execute",
+    "gf_route": "execute",
+    "raw_route_ok": "True",
+    "ft_route_ok": "True",
+    "gf_route_ok": "True",
+    "raw_official_intent": "True",
+    "ft_official_intent": "True",
+    "gf_official_intent": "True",
+    "blind_official_intent": "True"
+  },
+  "t07_official_intent": {
+    "context_blind_official_intent": true,
+    "degree_official_intent_shared_gf": true,
+    "finetune_official_intent": true,
+    "goal_first_official_intent": true,
+    "raw_official_intent": true,
+    "record_id": "CA-0218",
+    "timid_official_intent_shared_gf": true
+  },
+  "t07_predictions": {
+    "raw_qwen": {
+      "ambiguity_types": [
+        "degree_vagueness",
+        "object_reference"
+      ],
+      "capability_status": "capable",
+      "error": null,
+      "execution_mode": "final_close_intent_box",
+      "failed": false,
+      "intent_summary": "Inspect the queue barrier near the information desk (beside the ticket gate) using the handheld inspection camera to meet routine release standards.",
+      "latency_ms": 14855.472810100764,
+      "parsed": {
+        "ambiguity_types": [
+          "degree_vagueness",
+          "object_reference"
+        ],
+        "capability_status": "capable",
+        "intent_summary": "Inspect the queue barrier near the information desk (beside the ticket gate) using the handheld inspection camera to meet routine release standards.",
+        "speech_act": "directive_command",
+        "terminal_strategy": "execute"
+      },
+      "raw_output": "<think>\nOkay, let's break this down. The user wants me to evaluate the robot command based on the given scenario. First, I need to understand the command: \"Inspect the queue barrier near the information desk with the inspection camera carefully enough for routine release.\" \n\nThe key points here are inspecting a queue barrier near the information desk using the inspection camera, ensuring it's done carefully for routine release. The dialogue history is empty, so no prior context. The scene context mentions an airport service area with two information desks. The work order specifies the one beside the ticket gate. The handheld camera is calibrated, while the fixed one isn't. Routine release requires a complete surface scan with no large uninspected patches.\n\nNow, the intent_summary should capture the job: inspecting the barrier near the information desk with the camera for routine release. The speech_act is a directive_command because the user is giving a direct instruction. \n\nFor ambiguity_types, I need to check for any ambiguities. The command mentions \"the information desk\" but there are two labeled. However, the work order specifies the one beside the ticket gate, so maybe that's resolved. But the command doesn't explicitly mention the ticket gate, so there's a possible reference ambiguity. Also, \"carefully enough for routine release\" might be vague in terms of degree, so degree_vagueness. Also, \"inspection camera\" could refer to either the handheld or fixed one, but the fixed is out of calibration. However, the handheld is authorized. So maybe object_reference ambiguity since it's unclear which camera, but the context says the handheld is authorized. Wait, the command says \"with the inspection camera\"—but the fixed one is not calibrated. However, the handheld is authorized. So maybe the ambiguity is about which camera to use. But the work order specifies using the handheld since it's calibrated. So maybe no ambiguity here? Or is there a reference to the camera? The capability context says the robot can use calibrated cameras. So the command is using the handheld, which is calibrated. So maybe no ambiguity in that. \n\nWait, the command says \"with the inspection camera\"—but the fixed one is not calibrated. However, the handheld is authorized. So the robot is allowed to use the handheld. So the ambiguity here might be about which camera, but the context clarifies that the handheld is the correct one. So maybe no ambiguity. However, the command doesn't specify which camera, so could there be an object_reference ambiguity? Or is it resolved by the context? Since the work order is for the handheld camera, maybe the ambiguity is resolved. So maybe no ambiguity types here. But the user might think that \"inspection camera\" refers to the fixed one, but the fixed is not calibrated. However, the robot is allowed to use the handheld. So the command is clear. Wait, but the command says \"with the inspection camera\"—but the fixed one is not calibrated. So the robot is supposed to use the handheld. But the command doesn't specify that. So is there an ambiguity in which camera to use? That would be an object_reference ambiguity. But the work order is for the handheld, so the robot would know to use that. But the command itself doesn't specify, so maybe that's an ambiguity. Alternatively, maybe the user intended to use the handheld, but the command is ambiguous. So that's an object_reference ambiguity. Also, the term \"carefully enough for routine release\" might be a degree_vagueness because it's not clear how careful is enough. So those are two ambiguity types.\n\nCapability_status: The robot can perform visual inspections with calibrated cameras. The handheld is calibrated, so it's capable. So capability_status is capable. \n\nTerminal_strategy: Since the command is clear and the robot can perform the task, the terminal strategy is execute. \n\nSo putting it all together: intent_summary is about inspecting the barrier with the camera for routine release. Speech_act is directive_command. Ambiguity_types include object_reference (which camera) and degree_vagueness (how careful). Capability is capable, terminal strategy execute.\n</think>\n\n{\n  \"intent_summary\": \"Inspect the queue barrier near the information desk (beside the ticket gate) using the handheld inspection camera to meet routine release standards.\",\n  \"speech_act\": \"directive_command\",\n  \"ambiguity_types\": [\"object_reference\", \"degree_vagueness\"],\n  \"capability_status\": \"capable\",\n  \"terminal_strategy\": \"execute\"\n}",
+      "record_id": "CA-0218",
+      "schema_valid": true,
+      "speech_act": "directive_command",
+      "system_id": "direct_base_llm",
+      "terminal_strategy": "execute"
+    },
+    "finetune": {
+      "ambiguity_types": [
+        "degree_vagueness",
+        "instrument_reference",
+        "object_reference"
+      ],
+      "capability_status": "capable",
+      "error": null,
+      "execution_mode": "final_close_intent_box",
+      "failed": false,
+      "intent_summary": "Inspect the queue barrier near the information desk using the inspection camera to meet routine release standards.",
+      "latency_ms": 26560.552213340998,
+      "parsed": {
+        "ambiguity_types": [
+          "degree_vagueness",
+          "instrument_reference",
+          "object_reference"
+        ],
+        "capability_status": "capable",
+        "intent_summary": "Inspect the queue barrier near the information desk using the inspection camera to meet routine release standards.",
+        "speech_act": "directive_command",
+        "terminal_strategy": "execute"
+      },
+      "raw_output": "<think>\nOkay, let me try to figure this out. The user wants me to evaluate the robot command based on the given scenario.\n\nFirst, the command is: \"Inspect the queue barrier near the information desk with the inspection camera carefully enough for routine release.\" \n\nSo the main intent here is to inspect a queue barrier near the information desk. The user mentions using the inspection camera, and they want it done carefully for routine release. \n\nLooking at the keys needed for the JSON response. The intent_summary should be a one or two-sentence summary of the job. So maybe \"Inspect the queue barrier near the information desk using the inspection camera to meet routine release standards.\" That covers the main action and the purpose.\n\nNext, speech_act. The command is a directive, so it's a directive_command. The user is giving a direct instruction to perform an action.\n\nAmbiguity_types: Let's check for possible ambiguities. The command mentions \"the information desk\" but there are two labeled ones. The work order specifies the one beside the ticket gate. So there's a possible ambiguity in object_reference because the information desk might be unclear which one. Also, \"carefully enough for routine release\" might be a bit vague in terms of degree_vagueness. Are they specifying the level of care required? The routine release requires a complete scan with no patches larger than two square centimeters. So the instruction might be a bit vague on how careful to be, which could be degree_vagueness. Also, \"inspection camera\" could refer to the handheld one or the fixed one. But the context says the fixed one is out of calibration, and the handheld is authorized. So the user is specifying the handheld camera, but the command might be ambiguous in instrument_reference. Wait, the command says \"with the inspection camera\"—does that refer to the handheld or the fixed one? Since the fixed is not calibrated, the user probably means the handheld. But the command might not specify which camera, leading to instrument_reference ambiguity. Also, the \"queue barrier\" might be a specific object, but maybe there's a spatial_reference ambiguity. Hmm. So possible ambiguity types could be object_reference (which information desk), instrument_reference (which camera), and maybe degree_vagueness in \"carefully enough.\" Also, maybe spatial_reference if the location isn't clear. But the scene context says the work order names the one beside the ticket gate, so maybe that's resolved. But the command itself might still have ambiguity. Let me check again. The ambiguity_types allowed include object_reference, instrument_reference, spatial_reference, and degree_vagueness. So I need to list these if present.\n\nCapability_status: The robot can navigate crowds, carry light objects, scan with calibrated cameras. The handheld camera is authorized. The fixed camera is not calibrated. The task requires using the inspection camera, which is the handheld. So the robot is capable. But wait, the command says \"with the inspection camera\"—but the robot can deploy approved signs and barriers. Wait, the capability_context says the robot can perform visual inspections with calibrated cameras. The handheld is calibrated, so the robot can do that. So capability_status is capable.\n\nTerminal_strategy: The command is clear enough. The robot can execute the inspection with the handheld camera. So terminal_strategy is execute.\n\nPutting it all together:\n\nintent_summary: \"Inspect the queue barrier near the information desk using the inspection camera to meet routine release standards.\"\n\nspeech_act: directive_command\n\nambiguity_types: object_reference (since there are two information desks), instrument_reference (which camera to use?), maybe spatial_reference if the location is unclear. But the work order specifies the one beside the ticket gate, so maybe that's resolved. However, the command itself might still be ambiguous about which camera. So instrument_reference and object_reference. Also, degree_vagueness in \"carefully enough\" as it's not quantified. So ambiguity_types would be [object_reference, instrument_reference, degree_vagueness].\n\nWait, the user said to use only the names provided. Let me check the allowed ambiguity types again. The allowed ones include object_reference, instrument_reference, and degree_vagueness. So those three.\n\nCapability_status: capable\n\nterminal_strategy: execute\n\nSo the JSON should have these keys.\n</think>\n\n{\n  \"intent_summary\": \"Inspect the queue barrier near the information desk using the inspection camera to meet routine release standards.\",\n  \"speech_act\": \"directive_command\",\n  \"ambiguity_types\": [\"object_reference\", \"instrument_reference\", \"degree_vagueness\"],\n  \"capability_status\": \"capable\",\n  \"terminal_strategy\": \"execute\"\n}",
+      "record_id": "CA-0218",
+      "schema_valid": true,
+      "speech_act": "directive_command",
+      "system_id": "t28_selected_adapter_llm",
+      "terminal_strategy": "execute"
+    },
+    "goal_first": {
+      "ambiguity_types": [
+        "endpoint_vagueness",
+        "pragmatic",
+        "scope"
+      ],
+      "analysis_attempts": [
+        {
+          "attempt": 1,
+          "max_new_tokens": 4096,
+          "mode": "thinking",
+          "raw_chars": 10030,
+          "raw_sha256": "918fc1f806d155d2f338767d94e03663b328bec6364cd6d1ab6f47d4d7ca6c19",
+          "validation_error": "bad_intent_summary"
+        },
+        {
+          "attempt": 2,
+          "max_new_tokens": 8192,
+          "mode": "thinking_retry",
+          "raw_chars": 7627,
+          "raw_sha256": "83b50177f632b16a54619b90c3ead86ddf7235e453e3d52e9cf18874dc6caa17",
+          "validation_error": "bad_pilot_ambiguity_types"
+        },
+        {
+          "attempt": 3,
+          "constraint": {
+            "constraint_initialised": true,
+            "generated_token_count": 527,
+            "maximum_output_tokens": 1024,
+            "response_mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+            "termination_reason": "eos_or_constraint_stop",
+            "transport_status": "constrained_generated"
+          },
+          "max_new_tokens": 1024,
+          "mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+          "raw_chars": 1879,
+          "raw_sha256": "056f5fedbb846ba09a8e0d9fcb58a0ffb938bafa717b47098bc3f0e1c6205ecb",
+          "validation_error": null
+        }
+      ],
+      "capability_status": "capable",
+      "claim_boundary": "separately_versioned_from_frozen_t39",
+      "error": null,
+      "execution_mode": "cluster-gpu-goal-first-v2",
+      "failed": false,
+      "intent_summary": "Use the handheld inspection camera to carefully inspect the queue barrier near the information desk for routine release, ensuring no uninspected patches larger than two square centimetres are present",
+      "latency_ms": 82522.96533994377,
+      "model_id": "Qwen/Qwen3-8B@b968826d9c46dd6066d109eabc6255188de91218",
+      "parsed": {
+        "analysis": {
+          "ambiguity_present": true,
+          "ambiguity_types": [
+            "pragmatic",
+            "referential",
+            "spatial"
+          ],
+          "analysis_provenance": {
+            "analysis_id": "5024c6f993abea394b8edf7418882758b43e528c499fcca30c6d71a163e0c1ab",
+            "method": "model_generated",
+            "notes": "source_input_hash=5024c6f993abea394b8edf7418882758b43e528c499fcca30c6d71a163e0c1ab;no_gold_in_prompt;scene_licence_dropped=object,destination",
+            "provider_id": "goal_first_v2_full_context",
+            "provider_version": "goal-first-manager-v2"
+          },
+          "candidate_interpretations": [],
+          "capability_status": "capable",
+          "clarification_question": null,
+          "clarification_targets": [],
+          "compound_ambiguity": true,
+          "compound_ambiguity_count": 3,
+          "context_sampling_uncertainty": {
+            "agreement": 0.85,
+            "score": 0.15,
+            "variant_count": 1
+          },
+          "cpc": {
+            "action": {
+              "status": "not_applicable",
+              "value": "Inspect queue barrier"
+            },
+            "actor": {
+              "status": "not_applicable",
+              "value": "public-service robot"
+            },
+            "conditions": {
+              "status": "not_applicable",
+              "value": "handheld inspection camera is calibrated"
+            },
+            "constraints": {
+              "status": "not_applicable",
+              "value": "no uninspected patch larger than two square centimetres"
+            },
+            "destination": {
+              "status": "not_applicable",
+              "value": "surface scan output"
+            },
+            "negation": {
+              "status": "not_applicable",
+              "value": "no uninspected patch"
+            },
+            "object": {
+              "status": "not_applicable",
+              "value": "queue barrier near information desk"
+            },
+            "object_attributes": {
+              "status": "not_applicable",
+              "value": "queue barrier"
+            },
+            "quantity": {
+              "status": "not_applicable",
+              "value": "two square centimetres"
+            },
+            "recipient": {
+              "status": "not_applicable",
+              "value": "routine release system"
+            },
+            "spatial_relation": {
+              "status": "not_applicable",
+              "value": "near the information desk"
+            },
+            "time": {
+              "status": "not_applicable",
+              "value": "not applicable"
+            },
+            "tool": {
+              "status": "not_applicable",
+              "value": "handheld inspection camera"
+            }
+          },
+          "findings": [
+            "pilot_ambiguity_types:[\"endpoint_vagueness\",\"pragmatic\",\"scope\"]",
+            "pilot_capability_status:capable",
+            "intent_summary_present",
+            "router_validation:execute blocked with unresolved critical safety slots"
+          ],
+          "intent_summary": "Use the handheld inspection camera to carefully inspect the queue barrier near the information desk for routine release, ensuring no uninspected patches larger than two square centimetres are present",
+          "primary_ambiguity_type": "pragmatic",
+          "recommended_strategy": "execute",
+          "rejection_reason": null,
+          "resolution_evidence": [],
+          "resolution_method": null,
+          "resolved_slots": [],
+          "risk_level": "low",
+          "risk_relevant": true,
+          "selected_interpretation": null,
+          "speech_act": "directive_command",
+          "strategy_sequence": [],
+          "supporting_evidence": [],
+          "unresolved_slots": [
+            {
+              "reason": "model_identified_uncertainty",
+              "slot_name": "action"
+            },
+            {
+              "reason": "model_identified_uncertainty",
+              "slot_name": "tool"
+            },
+            {
+              "reason": "model_identified_uncertainty",
+              "slot_name": "recipient"
+            },
+            {
+              "reason": "model_identified_uncertainty",
+              "slot_name": "time"
+            }
+          ],
+          "unsupported_specificity": []
+        },
+        "clarification_question": null,
+        "clarification_targets": [],
+        "execution_status": "ok",
+        "official_result": false,
+        "provider_provenance": {
+          "provider_id": "cached_analysis",
+          "provider_version": "1.0.0"
+        },
+        "recommended_strategy": "execute",
+        "record_id": "CA-0218",
+        "rejection_reason": null,
+        "resolved_slots": [],
+        "result_hash": "c7828d80e63bc43f8c9569bf36930ba588983b6bdd5b239d8edf04fe090559e1",
+        "run_id": null,
+        "run_mode": null,
+        "runtime_metadata": {
+          "awaits_t28_adapter": true,
+          "classification": {
+            "ambiguity_present": true,
+            "ambiguity_types": [
+              "pragmatic",
+              "referential",
+              "spatial"
+            ],
+            "capability_status": "capable",
+            "compound_ambiguity": true,
+            "compound_ambiguity_count": 3,
+            "derivation_notes": [
+              "ambiguity_present_from_types"
+            ],
+            "risk_level": "low"
+          },
+          "rejection_text": null,
+          "requires_re_evaluation": false,
+          "resolution_events": [
+            {
+              "confidence_category": "none",
+              "details": {
+                "reason": "unsupported_default_rejected"
+              },
+              "evidence_source": null,
+              "outcome": "unresolved",
+              "previous_status": "unresolved",
+              "resolved_value": null,
+              "rule_id": "no_world_knowledge_guess",
+              "safety_eligibility": false,
+              "slot": "action"
+            },
+            {
+              "confidence_category": "none",
+              "details": {
+                "reason": "refusing_raw_capability_string_as_tool_value"
+              },
+              "evidence_source": null,
+              "outcome": "insufficient_context",
+              "previous_status": "unresolved",
+              "resolved_value": null,
+              "rule_id": "capability_lookup",
+              "safety_eligibility": false,
+              "slot": "tool"
+            },
+            {
+              "confidence_category": "none",
+              "details": {
+                "reason": "unsupported_default_rejected"
+              },
+              "evidence_source": null,
+              "outcome": "unresolved",
+              "previous_status": "unresolved",
+              "resolved_value": null,
+              "rule_id": "no_world_knowledge_guess",
+              "safety_eligibility": false,
+              "slot": "recipient"
+            },
+            {
+              "confidence_category": "none",
+              "details": {
+                "reason": "unsupported_default_rejected"
+              },
+              "evidence_source": null,
+              "outcome": "unresolved",
+              "previous_status": "unresolved",
+              "resolved_value": null,
+              "rule_id": "no_world_knowledge_guess",
+              "safety_eligibility": false,
+              "slot": "time"
+            }
+          ],
+          "router_trace": {
+            "clarification_targets": [],
+            "considered_rules": [
+              "goal_first_v2",
+              "known_unsafe_or_prohibited",
+              "known_incapable",
+              "unknown_capability_high_risk",
+              "context_licensed_execute"
+            ],
+            "matched_rule_id": "context_licensed_execute",
+            "notes": [
+              "goal_first_v2_execute_despite_remaining_ambiguity"
+            ],
+            "recommended_strategy": "execute",
+            "rejection_reason": null,
+            "requires_re_evaluation": false,
+            "strategy_sequence": []
+          },
+          "safety_action": "return_with_findings",
+          "uncertainty": null
+        },
+        "safety_findings": [
+          {
+            "details": {
+              "unresolved": [
+                "action",
+                "tool"
+              ]
+            },
+            "finding_type": "unresolved_critical_execution",
+            "message": "execute with unresolved critical slots",
+            "severity": "error",
+            "slot": null
+          }
+        ],
+        "strategy_sequence": [],
+        "synthetic_only": true,
+        "system_id": "goal_first_manager_v2",
+        "system_version": "2.0.0",
+        "unsupported_commitment_findings": []
+      },
+      "raw_output": "{\n  \"intent_summary\": \"Use the handheld inspection camera to carefully inspect the queue barrier near the information desk for routine release, ensuring no uninspected patches larger than two square centimetres are present\",\n  \"cpc\": {\n    \"action\": {\n      \"value\": \"Inspect queue barrier\",\n      \"status\": \"not_applicable\"\n    },\n    \"object\": {\n      \"value\": \"queue barrier near information desk\",\n      \"status\": \"not_applicable\"\n    },\n    \"tool\": {\n      \"value\": \"handheld inspection camera\",\n      \"status\": \"not_applicable\"\n    },\n    \"recipient\": {\n      \"value\": \"routine release system\",\n      \"status\": \"not_applicable\"\n    },\n    \"destination\": {\n      \"value\": \"surface scan output\",\n      \"status\": \"not_applicable\"\n    },\n    \"time\": {\n      \"value\": \"not applicable\",\n      \"status\": \"not_applicable\"\n    }\n \n  ,\n  \"constraints\": {\n    \"value\": \"no uninspected patch larger than two square centimetres\",\n    \"status\": \"not_applicable\"\n  },\n  \"conditions\": {\n    \"value\": \"handheld inspection camera is calibrated\",\n    \"status\": \"not_applicable\"\n  },\n  \"spatial_relation\": {\n    \"value\": \"near the information desk\",\n    \"status\": \"not_applicable\"\n  },\n  \"quantity\": {\n    \"value\": \"two square centimetres\",\n    \"status\": \"not_applicable\"\n  },\n  \"negation\": {\n    \"value\": \"no uninspected patch\",\n    \"status\": \"not_applicable\"\n  },\n  \"object_attributes\": {\n    \"value\": \"queue barrier\",\n    \"status\": \"not_applicable\"\n  },\n  \"actor\": {\n    \"value\": \"public-service robot\",\n    \"status\": \"not_applicable\"\n  }\n},\n  \"pilot_ambiguity_types\": [\n    \"pragmatic\",\n    \"scope\",\n    \"endpoint_vagueness\"\n  ]\n  \n  ,\n  \"pilot_capability_status\": \"capable\",\n  \"speech_act\": \"directive_command\"\n  \n  ,\n  \"risk_level\": \"low\",\n  \"uncertainty\": 0.15\n  ,\n  \"unresolved_slots\": [\n    \"action\",\n    \"object\",\n    \"tool\",\n    \"recipient\",\n    \"destination\",\n    \"time\"\n  ]\n  \n  }",
+      "record_id": "CA-0218",
+      "schema_valid": true,
+      "supports_ambiguity_prediction": true,
+      "supports_capability_prediction": true,
+      "system_id": "goal_first_manager_v2",
+      "system_version": "2.0.0",
+      "terminal_strategy": "execute"
+    },
+    "degree": {
+      "ambiguity_types": [
+        "endpoint_vagueness",
+        "pragmatic",
+        "scope"
+      ],
+      "analysis_attempts": [
+        {
+          "attempt": 1,
+          "max_new_tokens": 4096,
+          "mode": "thinking",
+          "raw_chars": 10030,
+          "raw_sha256": "918fc1f806d155d2f338767d94e03663b328bec6364cd6d1ab6f47d4d7ca6c19",
+          "validation_error": "bad_intent_summary"
+        },
+        {
+          "attempt": 2,
+          "max_new_tokens": 8192,
+          "mode": "thinking_retry",
+          "raw_chars": 7627,
+          "raw_sha256": "83b50177f632b16a54619b90c3ead86ddf7235e453e3d52e9cf18874dc6caa17",
+          "validation_error": "bad_pilot_ambiguity_types"
+        },
+        {
+          "attempt": 3,
+          "constraint": {
+            "constraint_initialised": true,
+            "generated_token_count": 527,
+            "maximum_output_tokens": 1024,
+            "response_mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+            "termination_reason": "eos_or_constraint_stop",
+            "transport_status": "constrained_generated"
+          },
+          "max_new_tokens": 1024,
+          "mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+          "raw_chars": 1879,
+          "raw_sha256": "056f5fedbb846ba09a8e0d9fcb58a0ffb938bafa717b47098bc3f0e1c6205ecb",
+          "validation_error": null
+        }
+      ],
+      "capability_status": "capable",
+      "claim_boundary": "separately_versioned_from_frozen_t39",
+      "error": null,
+      "execution_mode": "cluster-gpu-goal-first-v2",
+      "failed": false,
+      "intent_summary": "Use the handheld inspection camera to carefully inspect the queue barrier near the information desk for routine release, ensuring no uninspected patches larger than two square centimetres are present",
+      "latency_ms": 82522.96533994377,
+      "model_id": "Qwen/Qwen3-8B@b968826d9c46dd6066d109eabc6255188de91218",
+      "parsed": {
+        "analysis": {
+          "ambiguity_present": true,
+          "ambiguity_types": [
+            "pragmatic",
+            "referential",
+            "spatial"
+          ],
+          "analysis_provenance": {
+            "analysis_id": "5024c6f993abea394b8edf7418882758b43e528c499fcca30c6d71a163e0c1ab",
+            "method": "model_generated",
+            "notes": "source_input_hash=5024c6f993abea394b8edf7418882758b43e528c499fcca30c6d71a163e0c1ab;no_gold_in_prompt;scene_licence_dropped=object,destination",
+            "provider_id": "goal_first_v2_full_context",
+            "provider_version": "goal-first-manager-v2"
+          },
+          "candidate_interpretations": [],
+          "capability_status": "capable",
+          "clarification_question": null,
+          "clarification_targets": [],
+          "compound_ambiguity": true,
+          "compound_ambiguity_count": 3,
+          "context_sampling_uncertainty": {
+            "agreement": 0.85,
+            "score": 0.15,
+            "variant_count": 1
+          },
+          "cpc": {
+            "action": {
+              "status": "not_applicable",
+              "value": "Inspect queue barrier"
+            },
+            "actor": {
+              "status": "not_applicable",
+              "value": "public-service robot"
+            },
+            "conditions": {
+              "status": "not_applicable",
+              "value": "handheld inspection camera is calibrated"
+            },
+            "constraints": {
+              "status": "not_applicable",
+              "value": "no uninspected patch larger than two square centimetres"
+            },
+            "destination": {
+              "status": "not_applicable",
+              "value": "surface scan output"
+            },
+            "negation": {
+              "status": "not_applicable",
+              "value": "no uninspected patch"
+            },
+            "object": {
+              "status": "not_applicable",
+              "value": "queue barrier near information desk"
+            },
+            "object_attributes": {
+              "status": "not_applicable",
+              "value": "queue barrier"
+            },
+            "quantity": {
+              "status": "not_applicable",
+              "value": "two square centimetres"
+            },
+            "recipient": {
+              "status": "not_applicable",
+              "value": "routine release system"
+            },
+            "spatial_relation": {
+              "status": "not_applicable",
+              "value": "near the information desk"
+            },
+            "time": {
+              "status": "not_applicable",
+              "value": "not applicable"
+            },
+            "tool": {
+              "status": "not_applicable",
+              "value": "handheld inspection camera"
+            }
+          },
+          "findings": [
+            "pilot_ambiguity_types:[\"endpoint_vagueness\",\"pragmatic\",\"scope\"]",
+            "pilot_capability_status:capable",
+            "intent_summary_present"
+          ],
+          "intent_summary": "Use the handheld inspection camera to carefully inspect the queue barrier near the information desk for routine release, ensuring no uninspected patches larger than two square centimetres are present",
+          "primary_ambiguity_type": "pragmatic",
+          "recommended_strategy": "execute",
+          "rejection_reason": null,
+          "resolution_evidence": [],
+          "resolution_method": null,
+          "resolved_slots": [],
+          "risk_level": "low",
+          "risk_relevant": true,
+          "selected_interpretation": null,
+          "speech_act": "directive_command",
+          "strategy_sequence": [],
+          "supporting_evidence": [],
+          "unresolved_slots": [
+            {
+              "reason": "model_identified_uncertainty",
+              "slot_name": "action"
+            },
+            {
+              "reason": "model_identified_uncertainty",
+              "slot_name": "tool"
+            },
+            {
+              "reason": "model_identified_uncertainty",
+              "slot_name": "recipient"
+            },
+            {
+              "reason": "model_identified_uncertainty",
+              "slot_name": "time"
+            }
+          ],
+          "unsupported_specificity": []
+        },
+        "clarification_question": null,
+        "clarification_targets": [],
+        "execution_status": "ok",
+        "official_result": false,
+        "provider_provenance": {
+          "shared_analysis_fingerprint": "33781e43f8e374ec9503b0703655d75d01d0b59a9521f2cc7220ca54fe2d3626"
+        },
+        "recommended_strategy": "execute",
+        "record_id": "CA-0218",
+        "rejection_reason": null,
+        "resolved_slots": [],
+        "result_hash": "d678a67d67a3845ab6bdd9f1563fcc76e762f5ac8cd64f8bbfb78196b2123ec9",
+        "run_id": null,
+        "run_mode": null,
+        "runtime_metadata": {
+          "shared_analysis_fingerprint": "33781e43f8e374ec9503b0703655d75d01d0b59a9521f2cc7220ca54fe2d3626",
+          "thresholds_status": "unfrozen",
+          "thresholds_valid_for_official_use": false,
+          "uncertainty_score": 0.15,
+          "uses_type_risk_capability_precedence": false
+        },
+        "safety_findings": [],
+        "strategy_sequence": [],
+        "synthetic_only": true,
+        "system_id": "degree_based_router",
+        "system_version": "1.0.0",
+        "unsupported_commitment_findings": []
+      },
+      "raw_output": "{\n  \"intent_summary\": \"Use the handheld inspection camera to carefully inspect the queue barrier near the information desk for routine release, ensuring no uninspected patches larger than two square centimetres are present\",\n  \"cpc\": {\n    \"action\": {\n      \"value\": \"Inspect queue barrier\",\n      \"status\": \"not_applicable\"\n    },\n    \"object\": {\n      \"value\": \"queue barrier near information desk\",\n      \"status\": \"not_applicable\"\n    },\n    \"tool\": {\n      \"value\": \"handheld inspection camera\",\n      \"status\": \"not_applicable\"\n    },\n    \"recipient\": {\n      \"value\": \"routine release system\",\n      \"status\": \"not_applicable\"\n    },\n    \"destination\": {\n      \"value\": \"surface scan output\",\n      \"status\": \"not_applicable\"\n    },\n    \"time\": {\n      \"value\": \"not applicable\",\n      \"status\": \"not_applicable\"\n    }\n \n  ,\n  \"constraints\": {\n    \"value\": \"no uninspected patch larger than two square centimetres\",\n    \"status\": \"not_applicable\"\n  },\n  \"conditions\": {\n    \"value\": \"handheld inspection camera is calibrated\",\n    \"status\": \"not_applicable\"\n  },\n  \"spatial_relation\": {\n    \"value\": \"near the information desk\",\n    \"status\": \"not_applicable\"\n  },\n  \"quantity\": {\n    \"value\": \"two square centimetres\",\n    \"status\": \"not_applicable\"\n  },\n  \"negation\": {\n    \"value\": \"no uninspected patch\",\n    \"status\": \"not_applicable\"\n  },\n  \"object_attributes\": {\n    \"value\": \"queue barrier\",\n    \"status\": \"not_applicable\"\n  },\n  \"actor\": {\n    \"value\": \"public-service robot\",\n    \"status\": \"not_applicable\"\n  }\n},\n  \"pilot_ambiguity_types\": [\n    \"pragmatic\",\n    \"scope\",\n    \"endpoint_vagueness\"\n  ]\n  \n  ,\n  \"pilot_capability_status\": \"capable\",\n  \"speech_act\": \"directive_command\"\n  \n  ,\n  \"risk_level\": \"low\",\n  \"uncertainty\": 0.15\n  ,\n  \"unresolved_slots\": [\n    \"action\",\n    \"object\",\n    \"tool\",\n    \"recipient\",\n    \"destination\",\n    \"time\"\n  ]\n  \n  }",
+      "record_id": "CA-0218",
+      "schema_valid": true,
+      "supports_ambiguity_prediction": true,
+      "supports_capability_prediction": true,
+      "system_id": "degree_based_router_v2",
+      "system_version": "2.0.0",
+      "terminal_strategy": "execute"
+    },
+    "timid": {
+      "ambiguity_types": [
+        "endpoint_vagueness",
+        "pragmatic",
+        "scope"
+      ],
+      "analysis_attempts": [
+        {
+          "attempt": 1,
+          "max_new_tokens": 4096,
+          "mode": "thinking",
+          "raw_chars": 10030,
+          "raw_sha256": "918fc1f806d155d2f338767d94e03663b328bec6364cd6d1ab6f47d4d7ca6c19",
+          "validation_error": "bad_intent_summary"
+        },
+        {
+          "attempt": 2,
+          "max_new_tokens": 8192,
+          "mode": "thinking_retry",
+          "raw_chars": 7627,
+          "raw_sha256": "83b50177f632b16a54619b90c3ead86ddf7235e453e3d52e9cf18874dc6caa17",
+          "validation_error": "bad_pilot_ambiguity_types"
+        },
+        {
+          "attempt": 3,
+          "constraint": {
+            "constraint_initialised": true,
+            "generated_token_count": 527,
+            "maximum_output_tokens": 1024,
+            "response_mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+            "termination_reason": "eos_or_constraint_stop",
+            "transport_status": "constrained_generated"
+          },
+          "max_new_tokens": 1024,
+          "mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+          "raw_chars": 1879,
+          "raw_sha256": "056f5fedbb846ba09a8e0d9fcb58a0ffb938bafa717b47098bc3f0e1c6205ecb",
+          "validation_error": null
+        }
+      ],
+      "capability_status": "capable",
+      "claim_boundary": "separately_versioned_from_frozen_t39",
+      "error": null,
+      "execution_mode": "cluster-gpu-goal-first-v2",
+      "failed": false,
+      "intent_summary": "Use the handheld inspection camera to carefully inspect the queue barrier near the information desk for routine release, ensuring no uninspected patches larger than two square centimetres are present",
+      "latency_ms": 82522.96533994377,
+      "model_id": "Qwen/Qwen3-8B@b968826d9c46dd6066d109eabc6255188de91218",
+      "parsed": {
+        "analysis": {
+          "ambiguity_present": true,
+          "ambiguity_types": [
+            "pragmatic",
+            "referential",
+            "spatial"
+          ],
+          "analysis_provenance": {
+            "analysis_id": "5024c6f993abea394b8edf7418882758b43e528c499fcca30c6d71a163e0c1ab",
+            "method": "model_generated",
+            "notes": "source_input_hash=5024c6f993abea394b8edf7418882758b43e528c499fcca30c6d71a163e0c1ab;no_gold_in_prompt;scene_licence_dropped=object,destination",
+            "provider_id": "goal_first_v2_full_context",
+            "provider_version": "goal-first-manager-v2"
+          },
+          "candidate_interpretations": [],
+          "capability_status": "capable",
+          "clarification_question": "Before I continue, could you clarify: action, tool, recipient, time?",
+          "clarification_targets": [
+            "action",
+            "tool",
+            "recipient",
+            "time"
+          ],
+          "compound_ambiguity": true,
+          "compound_ambiguity_count": 3,
+          "context_sampling_uncertainty": {
+            "agreement": 0.85,
+            "score": 0.15,
+            "variant_count": 1
+          },
+          "cpc": {
+            "action": {
+              "status": "not_applicable",
+              "value": "Inspect queue barrier"
+            },
+            "actor": {
+              "status": "not_applicable",
+              "value": "public-service robot"
+            },
+            "conditions": {
+              "status": "not_applicable",
+              "value": "handheld inspection camera is calibrated"
+            },
+            "constraints": {
+              "status": "not_applicable",
+              "value": "no uninspected patch larger than two square centimetres"
+            },
+            "destination": {
+              "status": "not_applicable",
+              "value": "surface scan output"
+            },
+            "negation": {
+              "status": "not_applicable",
+              "value": "no uninspected patch"
+            },
+            "object": {
+              "status": "not_applicable",
+              "value": "queue barrier near information desk"
+            },
+            "object_attributes": {
+              "status": "not_applicable",
+              "value": "queue barrier"
+            },
+            "quantity": {
+              "status": "not_applicable",
+              "value": "two square centimetres"
+            },
+            "recipient": {
+              "status": "not_applicable",
+              "value": "routine release system"
+            },
+            "spatial_relation": {
+              "status": "not_applicable",
+              "value": "near the information desk"
+            },
+            "time": {
+              "status": "not_applicable",
+              "value": "not applicable"
+            },
+            "tool": {
+              "status": "not_applicable",
+              "value": "handheld inspection camera"
+            }
+          },
+          "findings": [
+            "pilot_ambiguity_types:[\"endpoint_vagueness\",\"pragmatic\",\"scope\"]",
+            "pilot_capability_status:capable",
+            "intent_summary_present",
+            "requires_re_evaluation"
+          ],
+          "intent_summary": "Use the handheld inspection camera to carefully inspect the queue barrier near the information desk for routine release, ensuring no uninspected patches larger than two square centimetres are present",
+          "primary_ambiguity_type": "pragmatic",
+          "recommended_strategy": "multi_step",
+          "rejection_reason": null,
+          "resolution_evidence": [],
+          "resolution_method": null,
+          "resolved_slots": [],
+          "risk_level": "low",
+          "risk_relevant": true,
+          "selected_interpretation": null,
+          "speech_act": "directive_command",
+          "strategy_sequence": [
+            "clarify"
+          ],
+          "supporting_evidence": [],
+          "unresolved_slots": [
+            {
+              "reason": "model_identified_uncertainty",
+              "slot_name": "action"
+            },
+            {
+              "reason": "model_identified_uncertainty",
+              "slot_name": "tool"
+            },
+            {
+              "reason": "model_identified_uncertainty",
+              "slot_name": "recipient"
+            },
+            {
+              "reason": "model_identified_uncertainty",
+              "slot_name": "time"
+            }
+          ],
+          "unsupported_specificity": []
+        },
+        "clarification_question": "Before I continue, could you clarify: action, tool, recipient, time?",
+        "clarification_targets": [
+          "action",
+          "tool",
+          "recipient",
+          "time"
+        ],
+        "execution_status": "ok",
+        "official_result": false,
+        "provider_provenance": {
+          "provider_id": "cached_analysis",
+          "provider_version": "1.0.0"
+        },
+        "recommended_strategy": "multi_step",
+        "record_id": "CA-0218",
+        "rejection_reason": null,
+        "resolved_slots": [],
+        "result_hash": "0d580dd8fa580a1d83e93d799ff7d2ab230c9344a2b735f6ff7a05aab51c25dd",
+        "run_id": null,
+        "run_mode": null,
+        "runtime_metadata": {
+          "awaits_t28_adapter": true,
+          "classification": {
+            "ambiguity_present": true,
+            "ambiguity_types": [
+              "pragmatic",
+              "referential",
+              "spatial"
+            ],
+            "capability_status": "capable",
+            "compound_ambiguity": true,
+            "compound_ambiguity_count": 3,
+            "derivation_notes": [
+              "ambiguity_present_from_types"
+            ],
+            "risk_level": "low"
+          },
+          "rejection_text": null,
+          "requires_re_evaluation": true,
+          "resolution_events": [
+            {
+              "confidence_category": "none",
+              "details": {
+                "reason": "unsupported_default_rejected"
+              },
+              "evidence_source": null,
+              "outcome": "unresolved",
+              "previous_status": "unresolved",
+              "resolved_value": null,
+              "rule_id": "no_world_knowledge_guess",
+              "safety_eligibility": false,
+              "slot": "action"
+            },
+            {
+              "confidence_category": "none",
+              "details": {
+                "reason": "refusing_raw_capability_string_as_tool_value"
+              },
+              "evidence_source": null,
+              "outcome": "insufficient_context",
+              "previous_status": "unresolved",
+              "resolved_value": null,
+              "rule_id": "capability_lookup",
+              "safety_eligibility": false,
+              "slot": "tool"
+            },
+            {
+              "confidence_category": "none",
+              "details": {
+                "reason": "unsupported_default_rejected"
+              },
+              "evidence_source": null,
+              "outcome": "unresolved",
+              "previous_status": "unresolved",
+              "resolved_value": null,
+              "rule_id": "no_world_knowledge_guess",
+              "safety_eligibility": false,
+              "slot": "recipient"
+            },
+            {
+              "confidence_category": "none",
+              "details": {
+                "reason": "unsupported_default_rejected"
+              },
+              "evidence_source": null,
+              "outcome": "unresolved",
+              "previous_status": "unresolved",
+              "resolved_value": null,
+              "rule_id": "no_world_knowledge_guess",
+              "safety_eligibility": false,
+              "slot": "time"
+            }
+          ],
+          "router_trace": {
+            "clarification_targets": [
+              "action",
+              "tool",
+              "recipient",
+              "time"
+            ],
+            "considered_rules": [
+              "known_unsafe_or_prohibited",
+              "known_incapable",
+              "unknown_or_unverified_capability",
+              "hazard_identity_unresolved",
+              "critical_unresolved_medium_high_risk",
+              "unknown_safety_risk",
+              "dependent_compound_ambiguities"
+            ],
+            "matched_rule_id": "dependent_compound_ambiguities",
+            "notes": [
+              "later_silent_resolve_only_after_re_evaluation",
+              "requires_re_evaluation",
+              "no_precommit_execute"
+            ],
+            "recommended_strategy": "multi_step",
+            "rejection_reason": null,
+            "requires_re_evaluation": true,
+            "strategy_sequence": [
+              "clarify"
+            ]
+          },
+          "safety_action": "return_with_findings",
+          "uncertainty": null
+        },
+        "safety_findings": [],
+        "strategy_sequence": [
+          "clarify"
+        ],
+        "synthetic_only": true,
+        "system_id": "full_type_risk_aware_manager",
+        "system_version": "1.0.0",
+        "unsupported_commitment_findings": []
+      },
+      "raw_output": "{\n  \"intent_summary\": \"Use the handheld inspection camera to carefully inspect the queue barrier near the information desk for routine release, ensuring no uninspected patches larger than two square centimetres are present\",\n  \"cpc\": {\n    \"action\": {\n      \"value\": \"Inspect queue barrier\",\n      \"status\": \"not_applicable\"\n    },\n    \"object\": {\n      \"value\": \"queue barrier near information desk\",\n      \"status\": \"not_applicable\"\n    },\n    \"tool\": {\n      \"value\": \"handheld inspection camera\",\n      \"status\": \"not_applicable\"\n    },\n    \"recipient\": {\n      \"value\": \"routine release system\",\n      \"status\": \"not_applicable\"\n    },\n    \"destination\": {\n      \"value\": \"surface scan output\",\n      \"status\": \"not_applicable\"\n    },\n    \"time\": {\n      \"value\": \"not applicable\",\n      \"status\": \"not_applicable\"\n    }\n \n  ,\n  \"constraints\": {\n    \"value\": \"no uninspected patch larger than two square centimetres\",\n    \"status\": \"not_applicable\"\n  },\n  \"conditions\": {\n    \"value\": \"handheld inspection camera is calibrated\",\n    \"status\": \"not_applicable\"\n  },\n  \"spatial_relation\": {\n    \"value\": \"near the information desk\",\n    \"status\": \"not_applicable\"\n  },\n  \"quantity\": {\n    \"value\": \"two square centimetres\",\n    \"status\": \"not_applicable\"\n  },\n  \"negation\": {\n    \"value\": \"no uninspected patch\",\n    \"status\": \"not_applicable\"\n  },\n  \"object_attributes\": {\n    \"value\": \"queue barrier\",\n    \"status\": \"not_applicable\"\n  },\n  \"actor\": {\n    \"value\": \"public-service robot\",\n    \"status\": \"not_applicable\"\n  }\n},\n  \"pilot_ambiguity_types\": [\n    \"pragmatic\",\n    \"scope\",\n    \"endpoint_vagueness\"\n  ]\n  \n  ,\n  \"pilot_capability_status\": \"capable\",\n  \"speech_act\": \"directive_command\"\n  \n  ,\n  \"risk_level\": \"low\",\n  \"uncertainty\": 0.15\n  ,\n  \"unresolved_slots\": [\n    \"action\",\n    \"object\",\n    \"tool\",\n    \"recipient\",\n    \"destination\",\n    \"time\"\n  ]\n  \n  }",
+      "record_id": "CA-0218",
+      "schema_valid": true,
+      "supports_ambiguity_prediction": true,
+      "supports_capability_prediction": true,
+      "system_id": "rich_conservative_manager_v2",
+      "system_version": "2.0.0",
+      "terminal_strategy": "clarify"
+    },
+    "context_blind": {
+      "ambiguity_types": [
+        "degree_vagueness",
+        "pragmatic"
+      ],
+      "analysis_attempts": [
+        {
+          "attempt": 1,
+          "max_new_tokens": 4096,
+          "mode": "thinking",
+          "raw_chars": 4764,
+          "raw_sha256": "9418c4658c84bc36c418b1a868f4dba5124afa671cd134fe09e1e4276ac8f119",
+          "validation_error": "bad_pilot_ambiguity_types"
+        },
+        {
+          "attempt": 2,
+          "max_new_tokens": 8192,
+          "mode": "thinking_retry",
+          "raw_chars": 4221,
+          "raw_sha256": "d503e49a2cfdd255112b2e181ad2dbffc2ddc0d183d234d86ff186a6e893b1ad",
+          "validation_error": "bad_pilot_ambiguity_types"
+        },
+        {
+          "attempt": 3,
+          "constraint": {
+            "constraint_initialised": true,
+            "generated_token_count": 493,
+            "maximum_output_tokens": 1024,
+            "response_mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+            "termination_reason": "eos_or_constraint_stop",
+            "transport_status": "constrained_generated"
+          },
+          "max_new_tokens": 1024,
+          "mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+          "raw_chars": 1627,
+          "raw_sha256": "42bf7fe721bc0c4b56af4b52147e4924ead4fda8b34abcbc4844a199e7b8e5b0",
+          "validation_error": null
+        }
+      ],
+      "capability_status": "unauthorized",
+      "claim_boundary": "separately_versioned_from_frozen_t39",
+      "error": null,
+      "execution_mode": "cluster-gpu-goal-first-v2",
+      "failed": false,
+      "intent_summary": "Inspect the queue barrier near the information desk using the inspection camera with care for routine release purposes",
+      "latency_ms": 43012.72692671046,
+      "model_id": "Qwen/Qwen3-8B@b968826d9c46dd6066d109eabc6255188de91218",
+      "parsed": {
+        "analysis": {
+          "ambiguity_present": true,
+          "ambiguity_types": [
+            "pragmatic",
+            "quantitative"
+          ],
+          "analysis_provenance": {
+            "analysis_id": "eb288f9720ec5cc613c91067d3f25c215413945cc329e794fadc070b1ef861b3",
+            "method": "context_blind",
+            "notes": "ablated_input_hash=eb288f9720ec5cc613c91067d3f25c215413945cc329e794fadc070b1ef861b3;source_input_hash=eb288f9720ec5cc613c91067d3f25c215413945cc329e794fadc070b1ef861b3;no_gold_in_prompt;scene_licence_dropped=none",
+            "provider_id": "goal_first_v2_context_blind",
+            "provider_version": "goal-first-manager-v2"
+          },
+          "candidate_interpretations": [],
+          "capability_status": "unknown",
+          "clarification_question": null,
+          "clarification_targets": [],
+          "compound_ambiguity": true,
+          "compound_ambiguity_count": 2,
+          "context_sampling_uncertainty": {
+            "agreement": 0.30000000000000004,
+            "score": 0.7,
+            "variant_count": 1
+          },
+          "cpc": {
+            "action": {
+              "status": "not_applicable",
+              "value": "inspect"
+            },
+            "actor": {
+              "status": "not_applicable",
+              "value": "not applicable"
+            },
+            "conditions": {
+              "status": "not_applicable",
+              "value": "for routine release"
+            },
+            "constraints": {
+              "status": "not_applicable",
+              "value": "carefully enough"
+            },
+            "destination": {
+              "status": "not_applicable",
+              "value": "near the information desk"
+            },
+            "negation": {
+              "status": "not_applicable",
+              "value": "not applicable"
+            },
+            "object": {
+              "status": "not_applicable",
+              "value": "queue barrier"
+            },
+            "object_attributes": {
+              "status": "not_applicable",
+              "value": "not applicable"
+            },
+            "quantity": {
+              "status": "not_applicable",
+              "value": "not applicable"
+            },
+            "recipient": {
+              "status": "not_applicable",
+              "value": "routine release"
+            },
+            "spatial_relation": {
+              "status": "not_applicable",
+              "value": "near the information desk"
+            },
+            "time": {
+              "status": "not_applicable",
+              "value": "not specified"
+            },
+            "tool": {
+              "status": "not_applicable",
+              "value": "inspection camera"
+            }
+          },
+          "findings": [
+            "pilot_ambiguity_types:[\"degree_vagueness\",\"pragmatic\"]",
+            "pilot_capability_status:unauthorized",
+            "intent_summary_present"
+          ],
+          "intent_summary": "Inspect the queue barrier near the information desk using the inspection camera with care for routine release purposes",
+          "primary_ambiguity_type": "pragmatic",
+          "recommended_strategy": "face_preserving_rejection",
+          "rejection_reason": "unsafe_or_prohibited_action",
+          "resolution_evidence": [],
+          "resolution_method": null,
+          "resolved_slots": [],
+          "risk_level": "medium",
+          "risk_relevant": true,
+          "selected_interpretation": null,
+          "speech_act": "directive_command",
+          "strategy_sequence": [],
+          "supporting_evidence": [],
+          "unresolved_slots": [
+            {
+              "reason": "model_identified_uncertainty",
+              "slot_name": "action"
+            }
+          ],
+          "unsupported_specificity": []
+        },
+        "clarification_question": null,
+        "clarification_targets": [],
+        "execution_status": "ok",
+        "official_result": false,
+        "provider_provenance": {
+          "provider_id": "cached_analysis",
+          "provider_version": "1.0.0"
+        },
+        "recommended_strategy": "face_preserving_rejection",
+        "record_id": "CA-0218",
+        "rejection_reason": "unsafe_or_prohibited_action",
+        "resolved_slots": [],
+        "result_hash": "6657f65734614b66ca22260dc3c225c6d4e3108531a1757bcde1d8d9c3659c25",
+        "run_id": null,
+        "run_mode": null,
+        "runtime_metadata": {
+          "analysis_identity": {
+            "analysis_content_hash": "89fcfb2eb312d8172edc6f112a06870fa589f04e50bf05dc3a8afd27e7fc150a",
+            "analysis_variant": "context_blind",
+            "model_strategy_id": null,
+            "provider_id": "goal_first_v2_context_blind",
+            "provider_version": "goal-first-manager-v2",
+            "record_id": "CA-0218",
+            "source_input_hash": "eb288f9720ec5cc613c91067d3f25c215413945cc329e794fadc070b1ef861b3"
+          },
+          "analysis_identity_fingerprint": "d8d60b9acabd2e1157d45e20f49e0cd6771e2de22d92b8a76b94e9d1fba4cf3b",
+          "awaits_t28_adapter": true,
+          "classification": {
+            "ambiguity_present": true,
+            "ambiguity_types": [
+              "pragmatic",
+              "quantitative"
+            ],
+            "capability_status": "unknown",
+            "compound_ambiguity": true,
+            "compound_ambiguity_count": 2,
+            "derivation_notes": [
+              "ambiguity_present_from_types"
+            ],
+            "risk_level": "medium"
+          },
+          "context_ablation": {
+            "ablated_input_hash": "eb288f9720ec5cc613c91067d3f25c215413945cc329e794fadc070b1ef861b3",
+            "capability_context_removed": true,
+            "dialogue_history_removed": true,
+            "rejected_full_context_cache": false,
+            "rejection_reason": null,
+            "scene_context_removed": true,
+            "stripped_context_derived_fields": false
+          },
+          "original_input_unmutated": true,
+          "rejection_text": "I need to decline that request because it would be unsafe under the current constraints.",
+          "requires_re_evaluation": false,
+          "resolution_events": [
+            {
+              "confidence_category": "blocked",
+              "details": {
+                "risk_level": "medium"
+              },
+              "evidence_source": null,
+              "outcome": "resolution_blocked_by_risk",
+              "previous_status": "unresolved",
+              "resolved_value": null,
+              "rule_id": "risk_block",
+              "safety_eligibility": false,
+              "slot": "action"
+            }
+          ],
+          "router_trace": {
+            "clarification_targets": [],
+            "considered_rules": [
+              "goal_first_v2",
+              "known_unsafe_or_prohibited"
+            ],
+            "matched_rule_id": "known_unsafe_or_prohibited",
+            "notes": [],
+            "recommended_strategy": "face_preserving_rejection",
+            "rejection_reason": "unsafe_or_prohibited_action",
+            "requires_re_evaluation": false,
+            "strategy_sequence": []
+          },
+          "safety_action": "return_with_findings",
+          "uncertainty": null
+        },
+        "safety_findings": [],
+        "strategy_sequence": [],
+        "synthetic_only": true,
+        "system_id": "context_blind_manager",
+        "system_version": "1.0.0",
+        "unsupported_commitment_findings": []
+      },
+      "raw_output": "{\n  \"intent_summary\": \"Inspect the queue barrier near the information desk using the inspection camera with care for routine release purposes\",\n  \"cpc\": {\n    \"action\": {\n      \"value\": \"inspect\",\n      \"status\": \"not_applicable\"\n    },\n    \"object\": {\n      \"value\": \"queue barrier\",\n      \"status\": \"not_applicable\"\n    },\n    \"tool\": {\n      \"value\": \"inspection camera\",\n      \"status\": \"not_applicable\"\n    },\n    \"destination\": {\n      \"value\": \"near the information desk\",\n      \"status\": \"not_applicable\"\n    },\n    \"recipient\": {\n      \"value\": \"routine release\",\n      \"status\": \"not_applicable\"\n    }\n \n  ,\n  \"constraints\": {\n    \"status\": \"not_applicable\"\n  ,\n    \"value\": \"carefully enough\"\n  },\n  \"conditions\": {\n    \"status\": \"not_applicable\"\n  ,\n    \"value\": \"for routine release\"\n  },\n  \"time\": {\n    \"status\": \"not_applicable\"\n  ,\n    \"value\": \"not specified\"\n  },\n  \"spatial_relation\": {\n    \"status\": \"not_applicable\"\n  ,\n    \"value\": \"near the information desk\"\n  },\n  \"negation\": {\n    \"status\": \"not_applicable\"\n  ,\n    \"value\": \"not applicable\"\n  },\n  \"quantity\": {\n    \"status\": \"not_applicable\"\n  ,\n    \"value\": \"not applicable\"\n  },\n  \"object_attributes\": {\n    \"status\": \"not_applicable\"\n  ,\n    \"value\": \"not applicable\"\n  },\n  \"actor\": {\n    \"status\": \"not_applicable\"\n  ,\n    \"value\": \"not applicable\"\n  }\n}\n,  \n  \"pilot_ambiguity_types\": [\n    \"degree_vagueness\",\n    \"pragmatic\"\n  ]\n  \n  ,\n  \"pilot_capability_status\": \"unauthorized\"\n  \n  ,\n  \"speech_act\": \"directive_command\"\n  \n  ,\n  \"uncertainty\": 0.7\n  ,\n  \"risk_level\":  \"medium\"\n  \n  ,\n  \"unresolved_slots\": [\n    \"intent\"\n  ]\n  \n  }\n  \n ",
+      "record_id": "CA-0218",
+      "schema_valid": true,
+      "supports_ambiguity_prediction": true,
+      "supports_capability_prediction": true,
+      "system_id": "goal_first_context_blind_v2",
+      "system_version": "2.0.0",
+      "terminal_strategy": "face_preserving_rejection"
+    }
+  },
+  "provenance": {
+    "source_sha256": "f33b1e29f1e8aa256a475f07213aa07247def47d8e2148d54a472a40b71b05c9",
+    "gold_sha256": "5e23ad1a92ff1873c8f039a8ce560a111dd6fb6b8ae8c11d6cf34dbfa1c360db",
+    "t07_final_zip_sha256": "34ca50e034ca37b617068bb50c734d12fa26282fb5eec563c11ead700163e491",
+    "inherited_t07_zip_sha256": "0305b1e9ab062876ee6ee89778cc6028d2eaf01718b7dd0295944e7d9cb81a01",
+    "note": "Goal-First, Degree, Timid, and Context-Blind predictions are inherited from the earlier T0.7 run; official intent and comparison come from the final T0.7 archive."
+  }
+}

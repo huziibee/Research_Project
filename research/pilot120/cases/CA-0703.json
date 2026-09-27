@@ -1,0 +1,1399 @@
+{
+  "record_id": "CA-0703",
+  "frozen_source": {
+    "capability_context": "Classroom service robot can carry learning materials, scan inventory, clean approved items, and operate standard charging equipment.",
+    "command": "Move the selected book crate to its assigned destination shortly.",
+    "dialogue_history": [],
+    "record_id": "CA-0703",
+    "scene_context": "Resource room in a classroom. Two book crates are visible. The amber one has an active MOVE tag and the black one has a completed tag. The active tag assigns the demonstration bench as its destination. For ordinary low-risk moves, the local handbook defines 'shortly' as within three minutes."
+  },
+  "frozen_gold": {
+    "ambiguity_types": [
+      "fuzzy_temporal",
+      "object_reference"
+    ],
+    "annotator_b_era": "glm_era",
+    "annotator_b_model": "glm-5.2-high",
+    "capability_status": "capable",
+    "field_status": {
+      "ambiguity_types": "auto_agree",
+      "capability_status": "human_auditor:independent_from_route",
+      "record_validity": "auto_agree",
+      "strategy_sequence": "auto_agree",
+      "terminal_strategy": "auto_agree"
+    },
+    "gold_lifecycle": "final_gold",
+    "gold_status": "auto_agree",
+    "human_gate_required": false,
+    "provenance": {
+      "agreement_label": "pilot_annotation_agreement",
+      "annotator_a_sha256": "c7fd21de603a8e06ef20973cb15e94398fc997c27924c14693ed7e21c235ab3f",
+      "annotator_b_sha256": "c7a22f8495fa5b48cdf89f20f907a3496edfa2f0b19c396b2e6f6a4748b9714f",
+      "capability_route_decouple": "conditionally_capable remapped to capable: no evidenced external capability precondition; linguistic silently_resolve/clarify is not a capability condition",
+      "gold_policy": "use_existing_pilot_adjudicated_gold",
+      "input_sha256": "8a887a94f05791996e968817f47957ac335d0ebfb1b819696aea73b71e5514e2",
+      "pilot_gold_sha256": "6d9db577a415e506cf2addbbe90ccdbc8206804e15b4c1fe9ee320b39e511b5e",
+      "protocol": "pilot_adjudicated_gold_on_capability_repaired_source",
+      "repaired_input_sha256": "c195e372e1f4efdb91f1dd3b83fa66c14a85e59a2545fff7a183c695c8bdd59c"
+    },
+    "record_id": "CA-0703",
+    "record_validity": "valid",
+    "strategy_sequence": [
+      "silently_resolve",
+      "execute"
+    ],
+    "terminal_strategy": "execute"
+  },
+  "t07_comparison": {
+    "record_id": "CA-0703",
+    "gold_route": "execute",
+    "raw_route": "execute",
+    "ft_route": "execute",
+    "gf_route": "refuse",
+    "raw_route_ok": "True",
+    "ft_route_ok": "True",
+    "gf_route_ok": "False",
+    "raw_official_intent": "True",
+    "ft_official_intent": "True",
+    "gf_official_intent": "True",
+    "blind_official_intent": "True"
+  },
+  "t07_official_intent": {
+    "context_blind_official_intent": true,
+    "degree_official_intent_shared_gf": true,
+    "finetune_official_intent": true,
+    "goal_first_official_intent": true,
+    "raw_official_intent": true,
+    "record_id": "CA-0703",
+    "timid_official_intent_shared_gf": true
+  },
+  "t07_predictions": {
+    "raw_qwen": {
+      "ambiguity_types": [
+        "pronoun_reference"
+      ],
+      "capability_status": "capable",
+      "error": null,
+      "execution_mode": "final_close_intent_box",
+      "failed": false,
+      "intent_summary": "Move the amber book crate to the demonstration bench within three minutes.",
+      "latency_ms": 8605.562820099294,
+      "parsed": {
+        "ambiguity_types": [
+          "pronoun_reference"
+        ],
+        "capability_status": "capable",
+        "intent_summary": "Move the amber book crate to the demonstration bench within three minutes.",
+        "speech_act": "directive_command",
+        "terminal_strategy": "execute"
+      },
+      "raw_output": "<think>\nOkay, let's break down this query. The user wants the robot to move a selected book crate to its assigned destination shortly. The scene context mentions two crates: amber with an active MOVE tag and black with a completed tag. The active tag's destination is the demonstration bench. The command says \"shortly,\" which the handbook defines as three minutes for low-risk moves.\n\nFirst, the intent summary. The user's main goal is to move the amber crate to the demonstration bench soon. So the intent is to move the selected crate (amber) to the assigned destination (bench) within three minutes.\n\nNext, speech_act. The command is a directive to perform an action, so it's a directive_command. The user is telling the robot what to do directly.\n\nAmbiguity types: Are there any ambiguities here? The command mentions \"selected book crate,\" but in the scene, only the amber one is active. So maybe there's a pronoun reference (selected refers to amber). Also, \"shortly\" is defined, so no vagueness there. But the destination is the demonstration bench, which is specified. Wait, the active tag assigns the destination, so maybe there's a reference to the destination. But since the destination is explicitly the demonstration bench, maybe no ambiguity. However, the \"selected\" might be a pronoun reference. Also, \"shortly\" is clarified by the handbook, so no fuzzy_temporal. So possible ambiguity types: pronoun_reference and maybe destination_reference? Or is the destination clear? The active tag's destination is the bench, so the destination is known. So maybe no ambiguity. But the command says \"assigned destination,\" which is the bench. So maybe no ambiguity. Hmm. Wait, the user says \"its assigned destination,\" where \"its\" refers to the crate. Since the amber crate has the active tag, \"its\" refers to the amber crate's destination. So that's a pronoun reference. So ambiguity_types would include pronoun_reference.\n\nCapability status: The robot can carry learning materials, which includes book crates. The task is low-risk, so capable. So capability_status is capable.\n\nTerminal strategy: Since the robot can do it and the instructions are clear (within three minutes, destination known), the terminal strategy is execute.\n</think>\n\n{\n  \"intent_summary\": \"Move the amber book crate to the demonstration bench within three minutes.\",\n  \"speech_act\": \"directive_command\",\n  \"ambiguity_types\": [\"pronoun_reference\"],\n  \"capability_status\": \"capable\",\n  \"terminal_strategy\": \"execute\"\n}",
+      "record_id": "CA-0703",
+      "schema_valid": true,
+      "speech_act": "directive_command",
+      "system_id": "direct_base_llm",
+      "terminal_strategy": "execute"
+    },
+    "finetune": {
+      "ambiguity_types": [
+        "fuzzy_temporal"
+      ],
+      "capability_status": "capable",
+      "error": null,
+      "execution_mode": "final_close_intent_box",
+      "failed": false,
+      "intent_summary": "Move the amber book crate to the demonstration bench within three minutes.",
+      "latency_ms": 12930.045917164534,
+      "parsed": {
+        "ambiguity_types": [
+          "fuzzy_temporal"
+        ],
+        "capability_status": "capable",
+        "intent_summary": "Move the amber book crate to the demonstration bench within three minutes.",
+        "speech_act": "directive_command",
+        "terminal_strategy": "execute"
+      },
+      "raw_output": "<think>\nOkay, let's break this down. The user wants the robot to move the selected book crate to its assigned destination shortly. The scene context says there are two crates: amber with an active MOVE tag and black with a completed tag. The active tag's destination is the demonstration bench. The command mentions \"shortly,\" which the handbook defines as within three minutes.\n\nFirst, the intent summary should state the job: move the amber crate to the demonstration bench soon. The speech act is a directive command since it's a direct instruction. \n\nFor ambiguity types, \"shortly\" might be vague, so fuzzy_temporal applies. Also, \"its assigned destination\" refers to the active tag's destination, which is clear, so maybe no other ambiguities here. Wait, but \"its\" could refer to the crate or the tag. Wait, the active tag assigns the destination, so \"its\" refers to the crate's assigned destination. But is that clear? Maybe pronoun_reference? Wait, the active tag is on the amber crate, so \"its\" refers to the crate. But the destination is set by the tag, so maybe there's no ambiguity here. Hmm. Or maybe the destination is the demonstration bench, which is specified. So maybe no ambiguity. But the user might not specify which crate, but the scene says the amber one is active. So the command is about the amber crate. So maybe no pronoun reference. Maybe the only ambiguity is the time frame. So ambiguity_types would be fuzzy_temporal.\n\nCapability status: The robot can carry learning materials, so moving the crate is possible. So capable. Terminal strategy: execute, since the robot can do it and the command is clear. Wait, but the user said \"shortly\" which is within three minutes. The robot can handle that. So the answer should be execute. \n\nPutting it all together: intent_summary is moving the amber crate to the bench soon. Speech act is directive_command. Ambiguity types have fuzzy_temporal. Capability is capable. Terminal strategy execute.\n</think>\n\n{\n  \"intent_summary\": \"Move the amber book crate to the demonstration bench within three minutes.\",\n  \"speech_act\": \"directive_command\",\n  \"ambiguity_types\": [\"fuzzy_temporal\"],\n  \"capability_status\": \"capable\",\n  \"terminal_strategy\": \"execute\"\n}",
+      "record_id": "CA-0703",
+      "schema_valid": true,
+      "speech_act": "directive_command",
+      "system_id": "t28_selected_adapter_llm",
+      "terminal_strategy": "execute"
+    },
+    "goal_first": {
+      "ambiguity_types": [
+        "fuzzy_temporal"
+      ],
+      "analysis_attempts": [
+        {
+          "attempt": 1,
+          "max_new_tokens": 4096,
+          "mode": "thinking",
+          "raw_chars": 4572,
+          "raw_sha256": "2c9d1ccf272753f1596dbebdf10f65c66956610a7eebbfbf6f5ee00fb9bbc5f7",
+          "validation_error": "bad_intent_summary"
+        },
+        {
+          "attempt": 2,
+          "max_new_tokens": 8192,
+          "mode": "thinking_retry",
+          "raw_chars": 5905,
+          "raw_sha256": "40274ae1d7037b521e253b28b047e9692475112d8098afa1873a0b05b2d9067a",
+          "validation_error": "bad_pilot_ambiguity_types"
+        },
+        {
+          "attempt": 3,
+          "constraint": {
+            "constraint_initialised": true,
+            "generated_token_count": 439,
+            "maximum_output_tokens": 1024,
+            "response_mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+            "termination_reason": "eos_or_constraint_stop",
+            "transport_status": "constrained_generated"
+          },
+          "max_new_tokens": 1024,
+          "mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+          "raw_chars": 1369,
+          "raw_sha256": "a23c5fe29d0d5b08c842c8fe216293299d846fad275605037ef5442434b48fdf",
+          "validation_error": null
+        }
+      ],
+      "capability_status": "unauthorized",
+      "claim_boundary": "separately_versioned_from_frozen_t39",
+      "error": null,
+      "execution_mode": "cluster-gpu-goal-first-v2",
+      "failed": false,
+      "intent_summary": "Move the selected book crate to its assigned destination soon",
+      "latency_ms": 75715.62591707334,
+      "model_id": "Qwen/Qwen3-8B@b968826d9c46dd6066d109eabc6255188de91218",
+      "parsed": {
+        "analysis": {
+          "ambiguity_present": true,
+          "ambiguity_types": [
+            "temporal"
+          ],
+          "analysis_provenance": {
+            "analysis_id": "bb5e875ea28cb09693d609c0684f165e7a609d3dcde264c096704e8601cbc26c",
+            "method": "model_generated",
+            "notes": "source_input_hash=bb5e875ea28cb09693d609c0684f165e7a609d3dcde264c096704e8601cbc26c;no_gold_in_prompt;scene_licence_dropped=destination,time",
+            "provider_id": "goal_first_v2_full_context",
+            "provider_version": "goal-first-manager-v2"
+          },
+          "candidate_interpretations": [],
+          "capability_status": "unknown",
+          "clarification_question": null,
+          "clarification_targets": [],
+          "compound_ambiguity": false,
+          "compound_ambiguity_count": 0,
+          "context_sampling_uncertainty": {
+            "agreement": 0.7,
+            "score": 0.3,
+            "variant_count": 1
+          },
+          "cpc": {
+            "action": {
+              "status": "filled",
+              "value": "Move"
+            },
+            "actor": {
+              "status": "filled",
+              "value": "unspecified"
+            },
+            "conditions": {
+              "status": "filled",
+              "value": "unspecified"
+            },
+            "constraints": {
+              "status": "filled",
+              "value": "unspecified"
+            },
+            "destination": {
+              "status": "filled",
+              "value": "assigned destination"
+            },
+            "negation": {
+              "status": "filled",
+              "value": "unspecified"
+            },
+            "object": {
+              "status": "filled",
+              "value": "selected book crate"
+            },
+            "object_attributes": {
+              "status": "filled",
+              "value": "unspecified"
+            },
+            "quantity": {
+              "status": "filled",
+              "value": "unspecified"
+            },
+            "recipient": {
+              "status": "filled",
+              "value": "unspecified"
+            },
+            "spatial_relation": {
+              "status": "filled",
+              "value": "unspecified"
+            },
+            "time": {
+              "status": "filled",
+              "value": "shortly"
+            },
+            "tool": {
+              "status": "filled",
+              "value": "unspecified"
+            }
+          },
+          "findings": [
+            "pilot_ambiguity_types:[\"fuzzy_temporal\"]",
+            "pilot_capability_status:unauthorized",
+            "intent_summary_present"
+          ],
+          "intent_summary": "Move the selected book crate to its assigned destination soon",
+          "primary_ambiguity_type": "temporal",
+          "recommended_strategy": "face_preserving_rejection",
+          "rejection_reason": "unsafe_or_prohibited_action",
+          "resolution_evidence": [],
+          "resolution_method": null,
+          "resolved_slots": [
+            {
+              "slot_name": "action",
+              "value": "Move"
+            },
+            {
+              "slot_name": "actor",
+              "value": "unspecified"
+            },
+            {
+              "slot_name": "object",
+              "value": "selected book crate"
+            },
+            {
+              "slot_name": "object_attributes",
+              "value": "unspecified"
+            },
+            {
+              "slot_name": "destination",
+              "value": "assigned destination"
+            },
+            {
+              "slot_name": "spatial_relation",
+              "value": "unspecified"
+            },
+            {
+              "slot_name": "quantity",
+              "value": "unspecified"
+            },
+            {
+              "slot_name": "time",
+              "value": "shortly"
+            },
+            {
+              "slot_name": "recipient",
+              "value": "unspecified"
+            },
+            {
+              "slot_name": "tool",
+              "value": "unspecified"
+            },
+            {
+              "slot_name": "conditions",
+              "value": "unspecified"
+            },
+            {
+              "slot_name": "constraints",
+              "value": "unspecified"
+            },
+            {
+              "slot_name": "negation",
+              "value": "unspecified"
+            }
+          ],
+          "risk_level": "low",
+          "risk_relevant": true,
+          "selected_interpretation": null,
+          "speech_act": "directive_command",
+          "strategy_sequence": [],
+          "supporting_evidence": [],
+          "unresolved_slots": [],
+          "unsupported_specificity": []
+        },
+        "clarification_question": null,
+        "clarification_targets": [],
+        "execution_status": "ok",
+        "official_result": false,
+        "provider_provenance": {
+          "provider_id": "cached_analysis",
+          "provider_version": "1.0.0"
+        },
+        "recommended_strategy": "face_preserving_rejection",
+        "record_id": "CA-0703",
+        "rejection_reason": "unsafe_or_prohibited_action",
+        "resolved_slots": [
+          {
+            "slot_name": "action",
+            "value": "Move"
+          },
+          {
+            "slot_name": "actor",
+            "value": "unspecified"
+          },
+          {
+            "slot_name": "object",
+            "value": "selected book crate"
+          },
+          {
+            "slot_name": "object_attributes",
+            "value": "unspecified"
+          },
+          {
+            "slot_name": "destination",
+            "value": "assigned destination"
+          },
+          {
+            "slot_name": "spatial_relation",
+            "value": "unspecified"
+          },
+          {
+            "slot_name": "quantity",
+            "value": "unspecified"
+          },
+          {
+            "slot_name": "time",
+            "value": "shortly"
+          },
+          {
+            "slot_name": "recipient",
+            "value": "unspecified"
+          },
+          {
+            "slot_name": "tool",
+            "value": "unspecified"
+          },
+          {
+            "slot_name": "conditions",
+            "value": "unspecified"
+          },
+          {
+            "slot_name": "constraints",
+            "value": "unspecified"
+          },
+          {
+            "slot_name": "negation",
+            "value": "unspecified"
+          }
+        ],
+        "result_hash": "a556cd61ea93ce43b5158c729a3f823e0a4ef4bbda45adc9b18c2867efedbe7d",
+        "run_id": null,
+        "run_mode": null,
+        "runtime_metadata": {
+          "awaits_t28_adapter": true,
+          "classification": {
+            "ambiguity_present": true,
+            "ambiguity_types": [
+              "temporal"
+            ],
+            "capability_status": "unknown",
+            "compound_ambiguity": false,
+            "compound_ambiguity_count": 0,
+            "derivation_notes": [
+              "ambiguity_present_from_types"
+            ],
+            "risk_level": "low"
+          },
+          "rejection_text": "I need to decline that request because it would be unsafe under the current constraints.",
+          "requires_re_evaluation": false,
+          "resolution_events": [],
+          "router_trace": {
+            "clarification_targets": [],
+            "considered_rules": [
+              "goal_first_v2",
+              "known_unsafe_or_prohibited"
+            ],
+            "matched_rule_id": "known_unsafe_or_prohibited",
+            "notes": [],
+            "recommended_strategy": "face_preserving_rejection",
+            "rejection_reason": "unsafe_or_prohibited_action",
+            "requires_re_evaluation": false,
+            "strategy_sequence": []
+          },
+          "safety_action": "return_with_findings",
+          "uncertainty": null
+        },
+        "safety_findings": [],
+        "strategy_sequence": [],
+        "synthetic_only": true,
+        "system_id": "goal_first_manager_v2",
+        "system_version": "2.0.0",
+        "unsupported_commitment_findings": []
+      },
+      "raw_output": "{\n  \"intent_summary\": \"Move the selected book crate to its assigned destination soon\",\n  \"cpc\": {\n    \"action\": {\n      \"value\": \"Move\",\n      \"status\": \"unknown\"\n    },\n    \"object\": {\n      \"value\": \"selected book crate\",\n      \"status\": \"unknown\"\n    },\n    \"destination\": {\n      \"value\": \"assigned destination\",\n      \"status\": \"unknown\"\n    },\n    \"time\": {\n      \"value\": \"shortly\",\n      \"status\": \"unknown\"\n    }\n \n  ,\n  \"constraints\": {\n    \"status\": \"unknown\",\n    \"value\": \"unspecified\"\n  },\n  \"conditions\": {\n    \"status\": \"unknown\",\n    \"value\": \"unspecified\"\n  },\n  \"spatial_relation\": {\n    \"status\": \"unknown\",\n    \"value\": \"unspecified\"\n  },\n  \"quantity\": {\n    \"status\": \"unknown\",\n    \"value\": \"unspecified\"\n  },\n  \"recipient\": {\n    \"status\": \"unknown\",\n    \"value\": \"unspecified\"\n  },\n  \"tool\": {\n    \"status\": \"unknown\",\n    \"value\": \"unspecified\"\n  },\n  \"object_attributes\": {\n    \"status\": \"unknown\",\n    \"value\": \"unspecified\"\n  },\n  \"negation\": {\n    \"status\": \"unknown\",\n    \"value\": \"unspecified\"\n  },\n  \"actor\": {\n    \"status\": \"unknown\",\n    \"value\": \"unspecified\"\n  }\n},\n  \"pilot_ambiguity_types\": [\n    \"fuzzy_temporal\"\n  ]\n  \n  , \"pilot_capability_status\": \"unauthorized\"\n  \n  , \"speech_act\": \"directive_command\"\n  \n  , \"unresolved_slots\": [\n    \"destination\",\n    \"time\"\n  ]\n  \n  , \"uncertainty\": 0.3\n   , \"risk_level\":  \"low\"\n   }\n  ",
+      "record_id": "CA-0703",
+      "schema_valid": true,
+      "supports_ambiguity_prediction": true,
+      "supports_capability_prediction": true,
+      "system_id": "goal_first_manager_v2",
+      "system_version": "2.0.0",
+      "terminal_strategy": "face_preserving_rejection"
+    },
+    "degree": {
+      "ambiguity_types": [
+        "fuzzy_temporal"
+      ],
+      "analysis_attempts": [
+        {
+          "attempt": 1,
+          "max_new_tokens": 4096,
+          "mode": "thinking",
+          "raw_chars": 4572,
+          "raw_sha256": "2c9d1ccf272753f1596dbebdf10f65c66956610a7eebbfbf6f5ee00fb9bbc5f7",
+          "validation_error": "bad_intent_summary"
+        },
+        {
+          "attempt": 2,
+          "max_new_tokens": 8192,
+          "mode": "thinking_retry",
+          "raw_chars": 5905,
+          "raw_sha256": "40274ae1d7037b521e253b28b047e9692475112d8098afa1873a0b05b2d9067a",
+          "validation_error": "bad_pilot_ambiguity_types"
+        },
+        {
+          "attempt": 3,
+          "constraint": {
+            "constraint_initialised": true,
+            "generated_token_count": 439,
+            "maximum_output_tokens": 1024,
+            "response_mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+            "termination_reason": "eos_or_constraint_stop",
+            "transport_status": "constrained_generated"
+          },
+          "max_new_tokens": 1024,
+          "mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+          "raw_chars": 1369,
+          "raw_sha256": "a23c5fe29d0d5b08c842c8fe216293299d846fad275605037ef5442434b48fdf",
+          "validation_error": null
+        }
+      ],
+      "capability_status": "unauthorized",
+      "claim_boundary": "separately_versioned_from_frozen_t39",
+      "error": null,
+      "execution_mode": "cluster-gpu-goal-first-v2",
+      "failed": false,
+      "intent_summary": "Move the selected book crate to its assigned destination soon",
+      "latency_ms": 75715.62591707334,
+      "model_id": "Qwen/Qwen3-8B@b968826d9c46dd6066d109eabc6255188de91218",
+      "parsed": {
+        "analysis": {
+          "ambiguity_present": true,
+          "ambiguity_types": [
+            "temporal"
+          ],
+          "analysis_provenance": {
+            "analysis_id": "bb5e875ea28cb09693d609c0684f165e7a609d3dcde264c096704e8601cbc26c",
+            "method": "model_generated",
+            "notes": "source_input_hash=bb5e875ea28cb09693d609c0684f165e7a609d3dcde264c096704e8601cbc26c;no_gold_in_prompt;scene_licence_dropped=destination,time",
+            "provider_id": "goal_first_v2_full_context",
+            "provider_version": "goal-first-manager-v2"
+          },
+          "candidate_interpretations": [],
+          "capability_status": "unknown",
+          "clarification_question": null,
+          "clarification_targets": [],
+          "compound_ambiguity": false,
+          "compound_ambiguity_count": 1,
+          "context_sampling_uncertainty": {
+            "agreement": 0.7,
+            "score": 0.3,
+            "variant_count": 1
+          },
+          "cpc": {
+            "action": {
+              "status": "filled",
+              "value": "Move"
+            },
+            "actor": {
+              "status": "filled",
+              "value": "unspecified"
+            },
+            "conditions": {
+              "status": "filled",
+              "value": "unspecified"
+            },
+            "constraints": {
+              "status": "filled",
+              "value": "unspecified"
+            },
+            "destination": {
+              "status": "filled",
+              "value": "assigned destination"
+            },
+            "negation": {
+              "status": "filled",
+              "value": "unspecified"
+            },
+            "object": {
+              "status": "filled",
+              "value": "selected book crate"
+            },
+            "object_attributes": {
+              "status": "filled",
+              "value": "unspecified"
+            },
+            "quantity": {
+              "status": "filled",
+              "value": "unspecified"
+            },
+            "recipient": {
+              "status": "filled",
+              "value": "unspecified"
+            },
+            "spatial_relation": {
+              "status": "filled",
+              "value": "unspecified"
+            },
+            "time": {
+              "status": "filled",
+              "value": "shortly"
+            },
+            "tool": {
+              "status": "filled",
+              "value": "unspecified"
+            }
+          },
+          "findings": [
+            "pilot_ambiguity_types:[\"fuzzy_temporal\"]",
+            "pilot_capability_status:unauthorized",
+            "intent_summary_present"
+          ],
+          "intent_summary": "Move the selected book crate to its assigned destination soon",
+          "primary_ambiguity_type": "temporal",
+          "recommended_strategy": "silently_resolve",
+          "rejection_reason": null,
+          "resolution_evidence": [],
+          "resolution_method": null,
+          "resolved_slots": [
+            {
+              "slot_name": "action",
+              "value": "Move"
+            },
+            {
+              "slot_name": "actor",
+              "value": "unspecified"
+            },
+            {
+              "slot_name": "object",
+              "value": "selected book crate"
+            },
+            {
+              "slot_name": "object_attributes",
+              "value": "unspecified"
+            },
+            {
+              "slot_name": "destination",
+              "value": "assigned destination"
+            },
+            {
+              "slot_name": "spatial_relation",
+              "value": "unspecified"
+            },
+            {
+              "slot_name": "quantity",
+              "value": "unspecified"
+            },
+            {
+              "slot_name": "time",
+              "value": "shortly"
+            },
+            {
+              "slot_name": "recipient",
+              "value": "unspecified"
+            },
+            {
+              "slot_name": "tool",
+              "value": "unspecified"
+            },
+            {
+              "slot_name": "conditions",
+              "value": "unspecified"
+            },
+            {
+              "slot_name": "constraints",
+              "value": "unspecified"
+            },
+            {
+              "slot_name": "negation",
+              "value": "unspecified"
+            }
+          ],
+          "risk_level": "low",
+          "risk_relevant": true,
+          "selected_interpretation": null,
+          "speech_act": "directive_command",
+          "strategy_sequence": [],
+          "supporting_evidence": [],
+          "unresolved_slots": [],
+          "unsupported_specificity": []
+        },
+        "clarification_question": null,
+        "clarification_targets": [],
+        "execution_status": "ok",
+        "official_result": false,
+        "provider_provenance": {
+          "shared_analysis_fingerprint": "a3dc14ef3352997e6290675b3c859a79a6f67330499ab72eb3e2792e7d739ba6"
+        },
+        "recommended_strategy": "silently_resolve",
+        "record_id": "CA-0703",
+        "rejection_reason": null,
+        "resolved_slots": [
+          {
+            "slot_name": "action",
+            "value": "Move"
+          },
+          {
+            "slot_name": "actor",
+            "value": "unspecified"
+          },
+          {
+            "slot_name": "object",
+            "value": "selected book crate"
+          },
+          {
+            "slot_name": "object_attributes",
+            "value": "unspecified"
+          },
+          {
+            "slot_name": "destination",
+            "value": "assigned destination"
+          },
+          {
+            "slot_name": "spatial_relation",
+            "value": "unspecified"
+          },
+          {
+            "slot_name": "quantity",
+            "value": "unspecified"
+          },
+          {
+            "slot_name": "time",
+            "value": "shortly"
+          },
+          {
+            "slot_name": "recipient",
+            "value": "unspecified"
+          },
+          {
+            "slot_name": "tool",
+            "value": "unspecified"
+          },
+          {
+            "slot_name": "conditions",
+            "value": "unspecified"
+          },
+          {
+            "slot_name": "constraints",
+            "value": "unspecified"
+          },
+          {
+            "slot_name": "negation",
+            "value": "unspecified"
+          }
+        ],
+        "result_hash": "ec9800325d083da46da18579c02f24335f0b58643978f3958fed81fed4b27022",
+        "run_id": null,
+        "run_mode": null,
+        "runtime_metadata": {
+          "shared_analysis_fingerprint": "a3dc14ef3352997e6290675b3c859a79a6f67330499ab72eb3e2792e7d739ba6",
+          "thresholds_status": "unfrozen",
+          "thresholds_valid_for_official_use": false,
+          "uncertainty_score": 0.3,
+          "uses_type_risk_capability_precedence": false
+        },
+        "safety_findings": [],
+        "strategy_sequence": [],
+        "synthetic_only": true,
+        "system_id": "degree_based_router",
+        "system_version": "1.0.0",
+        "unsupported_commitment_findings": []
+      },
+      "raw_output": "{\n  \"intent_summary\": \"Move the selected book crate to its assigned destination soon\",\n  \"cpc\": {\n    \"action\": {\n      \"value\": \"Move\",\n      \"status\": \"unknown\"\n    },\n    \"object\": {\n      \"value\": \"selected book crate\",\n      \"status\": \"unknown\"\n    },\n    \"destination\": {\n      \"value\": \"assigned destination\",\n      \"status\": \"unknown\"\n    },\n    \"time\": {\n      \"value\": \"shortly\",\n      \"status\": \"unknown\"\n    }\n \n  ,\n  \"constraints\": {\n    \"status\": \"unknown\",\n    \"value\": \"unspecified\"\n  },\n  \"conditions\": {\n    \"status\": \"unknown\",\n    \"value\": \"unspecified\"\n  },\n  \"spatial_relation\": {\n    \"status\": \"unknown\",\n    \"value\": \"unspecified\"\n  },\n  \"quantity\": {\n    \"status\": \"unknown\",\n    \"value\": \"unspecified\"\n  },\n  \"recipient\": {\n    \"status\": \"unknown\",\n    \"value\": \"unspecified\"\n  },\n  \"tool\": {\n    \"status\": \"unknown\",\n    \"value\": \"unspecified\"\n  },\n  \"object_attributes\": {\n    \"status\": \"unknown\",\n    \"value\": \"unspecified\"\n  },\n  \"negation\": {\n    \"status\": \"unknown\",\n    \"value\": \"unspecified\"\n  },\n  \"actor\": {\n    \"status\": \"unknown\",\n    \"value\": \"unspecified\"\n  }\n},\n  \"pilot_ambiguity_types\": [\n    \"fuzzy_temporal\"\n  ]\n  \n  , \"pilot_capability_status\": \"unauthorized\"\n  \n  , \"speech_act\": \"directive_command\"\n  \n  , \"unresolved_slots\": [\n    \"destination\",\n    \"time\"\n  ]\n  \n  , \"uncertainty\": 0.3\n   , \"risk_level\":  \"low\"\n   }\n  ",
+      "record_id": "CA-0703",
+      "schema_valid": true,
+      "supports_ambiguity_prediction": true,
+      "supports_capability_prediction": true,
+      "system_id": "degree_based_router_v2",
+      "system_version": "2.0.0",
+      "terminal_strategy": "execute"
+    },
+    "timid": {
+      "ambiguity_types": [
+        "fuzzy_temporal"
+      ],
+      "analysis_attempts": [
+        {
+          "attempt": 1,
+          "max_new_tokens": 4096,
+          "mode": "thinking",
+          "raw_chars": 4572,
+          "raw_sha256": "2c9d1ccf272753f1596dbebdf10f65c66956610a7eebbfbf6f5ee00fb9bbc5f7",
+          "validation_error": "bad_intent_summary"
+        },
+        {
+          "attempt": 2,
+          "max_new_tokens": 8192,
+          "mode": "thinking_retry",
+          "raw_chars": 5905,
+          "raw_sha256": "40274ae1d7037b521e253b28b047e9692475112d8098afa1873a0b05b2d9067a",
+          "validation_error": "bad_pilot_ambiguity_types"
+        },
+        {
+          "attempt": 3,
+          "constraint": {
+            "constraint_initialised": true,
+            "generated_token_count": 439,
+            "maximum_output_tokens": 1024,
+            "response_mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+            "termination_reason": "eos_or_constraint_stop",
+            "transport_status": "constrained_generated"
+          },
+          "max_new_tokens": 1024,
+          "mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+          "raw_chars": 1369,
+          "raw_sha256": "a23c5fe29d0d5b08c842c8fe216293299d846fad275605037ef5442434b48fdf",
+          "validation_error": null
+        }
+      ],
+      "capability_status": "unauthorized",
+      "claim_boundary": "separately_versioned_from_frozen_t39",
+      "error": null,
+      "execution_mode": "cluster-gpu-goal-first-v2",
+      "failed": false,
+      "intent_summary": "Move the selected book crate to its assigned destination soon",
+      "latency_ms": 75715.62591707334,
+      "model_id": "Qwen/Qwen3-8B@b968826d9c46dd6066d109eabc6255188de91218",
+      "parsed": {
+        "analysis": {
+          "ambiguity_present": true,
+          "ambiguity_types": [
+            "temporal"
+          ],
+          "analysis_provenance": {
+            "analysis_id": "bb5e875ea28cb09693d609c0684f165e7a609d3dcde264c096704e8601cbc26c",
+            "method": "model_generated",
+            "notes": "source_input_hash=bb5e875ea28cb09693d609c0684f165e7a609d3dcde264c096704e8601cbc26c;no_gold_in_prompt;scene_licence_dropped=destination,time",
+            "provider_id": "goal_first_v2_full_context",
+            "provider_version": "goal-first-manager-v2"
+          },
+          "candidate_interpretations": [],
+          "capability_status": "unknown",
+          "clarification_question": "Could you clarify the temporal?",
+          "clarification_targets": [
+            "temporal"
+          ],
+          "compound_ambiguity": false,
+          "compound_ambiguity_count": 0,
+          "context_sampling_uncertainty": {
+            "agreement": 0.7,
+            "score": 0.3,
+            "variant_count": 1
+          },
+          "cpc": {
+            "action": {
+              "status": "filled",
+              "value": "Move"
+            },
+            "actor": {
+              "status": "filled",
+              "value": "unspecified"
+            },
+            "conditions": {
+              "status": "filled",
+              "value": "unspecified"
+            },
+            "constraints": {
+              "status": "filled",
+              "value": "unspecified"
+            },
+            "destination": {
+              "status": "filled",
+              "value": "assigned destination"
+            },
+            "negation": {
+              "status": "filled",
+              "value": "unspecified"
+            },
+            "object": {
+              "status": "filled",
+              "value": "selected book crate"
+            },
+            "object_attributes": {
+              "status": "filled",
+              "value": "unspecified"
+            },
+            "quantity": {
+              "status": "filled",
+              "value": "unspecified"
+            },
+            "recipient": {
+              "status": "filled",
+              "value": "unspecified"
+            },
+            "spatial_relation": {
+              "status": "filled",
+              "value": "unspecified"
+            },
+            "time": {
+              "status": "filled",
+              "value": "shortly"
+            },
+            "tool": {
+              "status": "filled",
+              "value": "unspecified"
+            }
+          },
+          "findings": [
+            "pilot_ambiguity_types:[\"fuzzy_temporal\"]",
+            "pilot_capability_status:unauthorized",
+            "intent_summary_present"
+          ],
+          "intent_summary": "Move the selected book crate to its assigned destination soon",
+          "primary_ambiguity_type": "temporal",
+          "recommended_strategy": "clarify",
+          "rejection_reason": null,
+          "resolution_evidence": [],
+          "resolution_method": null,
+          "resolved_slots": [
+            {
+              "slot_name": "action",
+              "value": "Move"
+            },
+            {
+              "slot_name": "actor",
+              "value": "unspecified"
+            },
+            {
+              "slot_name": "object",
+              "value": "selected book crate"
+            },
+            {
+              "slot_name": "object_attributes",
+              "value": "unspecified"
+            },
+            {
+              "slot_name": "destination",
+              "value": "assigned destination"
+            },
+            {
+              "slot_name": "spatial_relation",
+              "value": "unspecified"
+            },
+            {
+              "slot_name": "quantity",
+              "value": "unspecified"
+            },
+            {
+              "slot_name": "time",
+              "value": "shortly"
+            },
+            {
+              "slot_name": "recipient",
+              "value": "unspecified"
+            },
+            {
+              "slot_name": "tool",
+              "value": "unspecified"
+            },
+            {
+              "slot_name": "conditions",
+              "value": "unspecified"
+            },
+            {
+              "slot_name": "constraints",
+              "value": "unspecified"
+            },
+            {
+              "slot_name": "negation",
+              "value": "unspecified"
+            }
+          ],
+          "risk_level": "low",
+          "risk_relevant": true,
+          "selected_interpretation": null,
+          "speech_act": "directive_command",
+          "strategy_sequence": [],
+          "supporting_evidence": [],
+          "unresolved_slots": [],
+          "unsupported_specificity": []
+        },
+        "clarification_question": "Could you clarify the temporal?",
+        "clarification_targets": [
+          "temporal"
+        ],
+        "execution_status": "ok",
+        "official_result": false,
+        "provider_provenance": {
+          "provider_id": "cached_analysis",
+          "provider_version": "1.0.0"
+        },
+        "recommended_strategy": "clarify",
+        "record_id": "CA-0703",
+        "rejection_reason": null,
+        "resolved_slots": [
+          {
+            "slot_name": "action",
+            "value": "Move"
+          },
+          {
+            "slot_name": "actor",
+            "value": "unspecified"
+          },
+          {
+            "slot_name": "object",
+            "value": "selected book crate"
+          },
+          {
+            "slot_name": "object_attributes",
+            "value": "unspecified"
+          },
+          {
+            "slot_name": "destination",
+            "value": "assigned destination"
+          },
+          {
+            "slot_name": "spatial_relation",
+            "value": "unspecified"
+          },
+          {
+            "slot_name": "quantity",
+            "value": "unspecified"
+          },
+          {
+            "slot_name": "time",
+            "value": "shortly"
+          },
+          {
+            "slot_name": "recipient",
+            "value": "unspecified"
+          },
+          {
+            "slot_name": "tool",
+            "value": "unspecified"
+          },
+          {
+            "slot_name": "conditions",
+            "value": "unspecified"
+          },
+          {
+            "slot_name": "constraints",
+            "value": "unspecified"
+          },
+          {
+            "slot_name": "negation",
+            "value": "unspecified"
+          }
+        ],
+        "result_hash": "5b99b6c0df9581e7b3a3babfbe4fca81a966967e192f23bf81433d737cfa73dc",
+        "run_id": null,
+        "run_mode": null,
+        "runtime_metadata": {
+          "awaits_t28_adapter": true,
+          "classification": {
+            "ambiguity_present": true,
+            "ambiguity_types": [
+              "temporal"
+            ],
+            "capability_status": "unknown",
+            "compound_ambiguity": false,
+            "compound_ambiguity_count": 0,
+            "derivation_notes": [
+              "ambiguity_present_from_types"
+            ],
+            "risk_level": "low"
+          },
+          "rejection_text": null,
+          "requires_re_evaluation": false,
+          "resolution_events": [],
+          "router_trace": {
+            "clarification_targets": [
+              "temporal"
+            ],
+            "considered_rules": [
+              "known_unsafe_or_prohibited",
+              "known_incapable",
+              "unknown_or_unverified_capability"
+            ],
+            "matched_rule_id": "unknown_capability",
+            "notes": [
+              "unknown_capability_cannot_execute"
+            ],
+            "recommended_strategy": "clarify",
+            "rejection_reason": null,
+            "requires_re_evaluation": false,
+            "strategy_sequence": []
+          },
+          "safety_action": "return_with_findings",
+          "uncertainty": null
+        },
+        "safety_findings": [],
+        "strategy_sequence": [],
+        "synthetic_only": true,
+        "system_id": "full_type_risk_aware_manager",
+        "system_version": "1.0.0",
+        "unsupported_commitment_findings": []
+      },
+      "raw_output": "{\n  \"intent_summary\": \"Move the selected book crate to its assigned destination soon\",\n  \"cpc\": {\n    \"action\": {\n      \"value\": \"Move\",\n      \"status\": \"unknown\"\n    },\n    \"object\": {\n      \"value\": \"selected book crate\",\n      \"status\": \"unknown\"\n    },\n    \"destination\": {\n      \"value\": \"assigned destination\",\n      \"status\": \"unknown\"\n    },\n    \"time\": {\n      \"value\": \"shortly\",\n      \"status\": \"unknown\"\n    }\n \n  ,\n  \"constraints\": {\n    \"status\": \"unknown\",\n    \"value\": \"unspecified\"\n  },\n  \"conditions\": {\n    \"status\": \"unknown\",\n    \"value\": \"unspecified\"\n  },\n  \"spatial_relation\": {\n    \"status\": \"unknown\",\n    \"value\": \"unspecified\"\n  },\n  \"quantity\": {\n    \"status\": \"unknown\",\n    \"value\": \"unspecified\"\n  },\n  \"recipient\": {\n    \"status\": \"unknown\",\n    \"value\": \"unspecified\"\n  },\n  \"tool\": {\n    \"status\": \"unknown\",\n    \"value\": \"unspecified\"\n  },\n  \"object_attributes\": {\n    \"status\": \"unknown\",\n    \"value\": \"unspecified\"\n  },\n  \"negation\": {\n    \"status\": \"unknown\",\n    \"value\": \"unspecified\"\n  },\n  \"actor\": {\n    \"status\": \"unknown\",\n    \"value\": \"unspecified\"\n  }\n},\n  \"pilot_ambiguity_types\": [\n    \"fuzzy_temporal\"\n  ]\n  \n  , \"pilot_capability_status\": \"unauthorized\"\n  \n  , \"speech_act\": \"directive_command\"\n  \n  , \"unresolved_slots\": [\n    \"destination\",\n    \"time\"\n  ]\n  \n  , \"uncertainty\": 0.3\n   , \"risk_level\":  \"low\"\n   }\n  ",
+      "record_id": "CA-0703",
+      "schema_valid": true,
+      "supports_ambiguity_prediction": true,
+      "supports_capability_prediction": true,
+      "system_id": "rich_conservative_manager_v2",
+      "system_version": "2.0.0",
+      "terminal_strategy": "clarify"
+    },
+    "context_blind": {
+      "ambiguity_types": [
+        "fuzzy_temporal",
+        "pragmatic"
+      ],
+      "analysis_attempts": [
+        {
+          "attempt": 1,
+          "max_new_tokens": 4096,
+          "mode": "thinking",
+          "raw_chars": 5756,
+          "raw_sha256": "b0951f8d80fbcbb8233eeb46fb09657315111b383902eed9cc7fac74c3820489",
+          "validation_error": "bad_intent_summary"
+        },
+        {
+          "attempt": 2,
+          "max_new_tokens": 8192,
+          "mode": "thinking_retry",
+          "raw_chars": 5860,
+          "raw_sha256": "21d08687a6b1fe7a127fafe877e524d9886fdf0eb22bb9af8a8d1167b412334d",
+          "validation_error": "bad_pilot_ambiguity_types"
+        },
+        {
+          "attempt": 3,
+          "constraint": {
+            "constraint_initialised": true,
+            "generated_token_count": 422,
+            "maximum_output_tokens": 1024,
+            "response_mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+            "termination_reason": "eos_or_constraint_stop",
+            "transport_status": "constrained_generated"
+          },
+          "max_new_tokens": 1024,
+          "mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+          "raw_chars": 1351,
+          "raw_sha256": "491fe6409200bea70fa4640f8b37972ce338c0b6d9863dc7a9b8b9823a200c45",
+          "validation_error": null
+        }
+      ],
+      "capability_status": "unauthorized",
+      "claim_boundary": "separately_versioned_from_frozen_t39",
+      "error": null,
+      "execution_mode": "cluster-gpu-goal-first-v2",
+      "failed": false,
+      "intent_summary": "Move the selected book crate to its assigned destination shortly",
+      "latency_ms": 79596.38841403648,
+      "model_id": "Qwen/Qwen3-8B@b968826d9c46dd6066d109eabc6255188de91218",
+      "parsed": {
+        "analysis": {
+          "ambiguity_present": true,
+          "ambiguity_types": [
+            "pragmatic",
+            "temporal"
+          ],
+          "analysis_provenance": {
+            "analysis_id": "15887cd90e7535471b6552652debca3cfdfe223549aa73eac5fbae7438e6cfdc",
+            "method": "context_blind",
+            "notes": "ablated_input_hash=15887cd90e7535471b6552652debca3cfdfe223549aa73eac5fbae7438e6cfdc;source_input_hash=15887cd90e7535471b6552652debca3cfdfe223549aa73eac5fbae7438e6cfdc;no_gold_in_prompt;scene_licence_dropped=destination,time,object",
+            "provider_id": "goal_first_v2_context_blind",
+            "provider_version": "goal-first-manager-v2"
+          },
+          "candidate_interpretations": [],
+          "capability_status": "unknown",
+          "clarification_question": null,
+          "clarification_targets": [],
+          "compound_ambiguity": true,
+          "compound_ambiguity_count": 2,
+          "context_sampling_uncertainty": {
+            "agreement": 0.35,
+            "score": 0.65,
+            "variant_count": 1
+          },
+          "cpc": {
+            "action": {
+              "status": "filled",
+              "value": "Move"
+            },
+            "actor": {
+              "status": "filled",
+              "value": "none"
+            },
+            "conditions": {
+              "status": "filled",
+              "value": "selected"
+            },
+            "constraints": {
+              "status": "filled",
+              "value": "assigned"
+            },
+            "destination": {
+              "status": "filled",
+              "value": "assigned destination"
+            },
+            "negation": {
+              "status": "filled",
+              "value": "none"
+            },
+            "object": {
+              "status": "filled",
+              "value": "selected book crate"
+            },
+            "object_attributes": {
+              "status": "filled",
+              "value": "none"
+            },
+            "quantity": {
+              "status": "filled",
+              "value": "none"
+            },
+            "recipient": {
+              "status": "filled",
+              "value": "none"
+            },
+            "spatial_relation": {
+              "status": "filled",
+              "value": "none"
+            },
+            "time": {
+              "status": "filled",
+              "value": "shortly"
+            },
+            "tool": {
+              "status": "filled",
+              "value": "none"
+            }
+          },
+          "findings": [
+            "pilot_ambiguity_types:[\"fuzzy_temporal\",\"pragmatic\"]",
+            "pilot_capability_status:unauthorized",
+            "intent_summary_present"
+          ],
+          "intent_summary": "Move the selected book crate to its assigned destination shortly",
+          "primary_ambiguity_type": "pragmatic",
+          "recommended_strategy": "face_preserving_rejection",
+          "rejection_reason": "unsafe_or_prohibited_action",
+          "resolution_evidence": [],
+          "resolution_method": null,
+          "resolved_slots": [
+            {
+              "slot_name": "action",
+              "value": "Move"
+            },
+            {
+              "slot_name": "actor",
+              "value": "none"
+            },
+            {
+              "slot_name": "object",
+              "value": "selected book crate"
+            },
+            {
+              "slot_name": "object_attributes",
+              "value": "none"
+            },
+            {
+              "slot_name": "destination",
+              "value": "assigned destination"
+            },
+            {
+              "slot_name": "spatial_relation",
+              "value": "none"
+            },
+            {
+              "slot_name": "quantity",
+              "value": "none"
+            },
+            {
+              "slot_name": "time",
+              "value": "shortly"
+            },
+            {
+              "slot_name": "recipient",
+              "value": "none"
+            },
+            {
+              "slot_name": "tool",
+              "value": "none"
+            },
+            {
+              "slot_name": "conditions",
+              "value": "selected"
+            },
+            {
+              "slot_name": "constraints",
+              "value": "assigned"
+            },
+            {
+              "slot_name": "negation",
+              "value": "none"
+            }
+          ],
+          "risk_level": "low",
+          "risk_relevant": true,
+          "selected_interpretation": null,
+          "speech_act": "directive_command",
+          "strategy_sequence": [],
+          "supporting_evidence": [],
+          "unresolved_slots": [],
+          "unsupported_specificity": []
+        },
+        "clarification_question": null,
+        "clarification_targets": [],
+        "execution_status": "ok",
+        "official_result": false,
+        "provider_provenance": {
+          "provider_id": "cached_analysis",
+          "provider_version": "1.0.0"
+        },
+        "recommended_strategy": "face_preserving_rejection",
+        "record_id": "CA-0703",
+        "rejection_reason": "unsafe_or_prohibited_action",
+        "resolved_slots": [
+          {
+            "slot_name": "action",
+            "value": "Move"
+          },
+          {
+            "slot_name": "actor",
+            "value": "none"
+          },
+          {
+            "slot_name": "object",
+            "value": "selected book crate"
+          },
+          {
+            "slot_name": "object_attributes",
+            "value": "none"
+          },
+          {
+            "slot_name": "destination",
+            "value": "assigned destination"
+          },
+          {
+            "slot_name": "spatial_relation",
+            "value": "none"
+          },
+          {
+            "slot_name": "quantity",
+            "value": "none"
+          },
+          {
+            "slot_name": "time",
+            "value": "shortly"
+          },
+          {
+            "slot_name": "recipient",
+            "value": "none"
+          },
+          {
+            "slot_name": "tool",
+            "value": "none"
+          },
+          {
+            "slot_name": "conditions",
+            "value": "selected"
+          },
+          {
+            "slot_name": "constraints",
+            "value": "assigned"
+          },
+          {
+            "slot_name": "negation",
+            "value": "none"
+          }
+        ],
+        "result_hash": "b159b53216edc83ae93a28ca169b3e474ed683a3e8f3992c2db8edd085aac967",
+        "run_id": null,
+        "run_mode": null,
+        "runtime_metadata": {
+          "analysis_identity": {
+            "analysis_content_hash": "5df264580713b6039585e1b9251b637f33489f5d6d9d77af1dfddb0cafdd0156",
+            "analysis_variant": "context_blind",
+            "model_strategy_id": null,
+            "provider_id": "goal_first_v2_context_blind",
+            "provider_version": "goal-first-manager-v2",
+            "record_id": "CA-0703",
+            "source_input_hash": "15887cd90e7535471b6552652debca3cfdfe223549aa73eac5fbae7438e6cfdc"
+          },
+          "analysis_identity_fingerprint": "3ed34b8e905db35eac6822c92705282e789440fe364fa91fa08785fa88bd4ffe",
+          "awaits_t28_adapter": true,
+          "classification": {
+            "ambiguity_present": true,
+            "ambiguity_types": [
+              "pragmatic",
+              "temporal"
+            ],
+            "capability_status": "unknown",
+            "compound_ambiguity": true,
+            "compound_ambiguity_count": 2,
+            "derivation_notes": [
+              "ambiguity_present_from_types"
+            ],
+            "risk_level": "low"
+          },
+          "context_ablation": {
+            "ablated_input_hash": "15887cd90e7535471b6552652debca3cfdfe223549aa73eac5fbae7438e6cfdc",
+            "capability_context_removed": true,
+            "dialogue_history_removed": true,
+            "rejected_full_context_cache": false,
+            "rejection_reason": null,
+            "scene_context_removed": true,
+            "stripped_context_derived_fields": false
+          },
+          "original_input_unmutated": true,
+          "rejection_text": "I need to decline that request because it would be unsafe under the current constraints.",
+          "requires_re_evaluation": false,
+          "resolution_events": [],
+          "router_trace": {
+            "clarification_targets": [],
+            "considered_rules": [
+              "goal_first_v2",
+              "known_unsafe_or_prohibited"
+            ],
+            "matched_rule_id": "known_unsafe_or_prohibited",
+            "notes": [],
+            "recommended_strategy": "face_preserving_rejection",
+            "rejection_reason": "unsafe_or_prohibited_action",
+            "requires_re_evaluation": false,
+            "strategy_sequence": []
+          },
+          "safety_action": "return_with_findings",
+          "uncertainty": null
+        },
+        "safety_findings": [],
+        "strategy_sequence": [],
+        "synthetic_only": true,
+        "system_id": "context_blind_manager",
+        "system_version": "1.0.0",
+        "unsupported_commitment_findings": []
+      },
+      "raw_output": "{\n  \"intent_summary\": \"Move the selected book crate to its assigned destination shortly\",\n  \"cpc\": {\n    \"action\": {\n      \"value\": \"Move\",\n      \"status\": \"unknown\"\n    },\n    \"object\": {\n      \"value\": \"selected book crate\",\n      \"status\": \"unknown\"\n    },\n    \"destination\": {\n      \"value\": \"assigned destination\",\n      \"status\": \"unknown\"\n    },\n    \"time\": {\n      \"value\": \"shortly\",\n      \"status\": \"unknown\"\n    }\n \n  ,\n  \"conditions\": {\n    \"value\": \"selected\",\n    \"status\": \"unknown\"\n  },\n  \"constraints\": {\n    \"value\": \"assigned\",\n    \"status\": \"unknown\"\n  },\n  \"spatial_relation\": {\n    \"value\": \"none\",\n    \"status\": \"unknown\"\n  },\n  \"tool\": {\n    \"value\": \"none\",\n    \"status\": \"unknown\"\n  },\n  \"recipient\": {\n    \"value\": \"none\",\n    \"status\": \"unknown\"\n  },\n  \"negation\": {\n    \"value\": \"none\",\n    \"status\": \"unknown\"\n  },\n  \"quantity\": {\n    \"value\": \"none\",\n    \"status\": \"unknown\"\n  },\n  \"object_attributes\": {\n    \"value\": \"none\",\n    \"status\": \"unknown\"\n  },\n  \"actor\": {\n    \"value\": \"none\",\n    \"status\": \"unknown\"\n  }\n},\n  \"pilot_ambiguity_types\": [\n    \"fuzzy_temporal\",\n    \"pragmatic\"\n  ]\n  \n  ,\n  \"pilot_capability_status\": \"unauthorized\"\n  \n  ,\n  \"speech_act\": \"directive_command\"\n  \n  ,\n  \"risk_level\": \"low\"\n  \n  ,\n  \"uncertainty\": 0.65\n  ,\n  \"unresolved_slots\": [\n    \"destination\",\n    \"time\",\n    \"object\"\n  ]\n}",
+      "record_id": "CA-0703",
+      "schema_valid": true,
+      "supports_ambiguity_prediction": true,
+      "supports_capability_prediction": true,
+      "system_id": "goal_first_context_blind_v2",
+      "system_version": "2.0.0",
+      "terminal_strategy": "face_preserving_rejection"
+    }
+  },
+  "provenance": {
+    "source_sha256": "f33b1e29f1e8aa256a475f07213aa07247def47d8e2148d54a472a40b71b05c9",
+    "gold_sha256": "5e23ad1a92ff1873c8f039a8ce560a111dd6fb6b8ae8c11d6cf34dbfa1c360db",
+    "t07_final_zip_sha256": "34ca50e034ca37b617068bb50c734d12fa26282fb5eec563c11ead700163e491",
+    "inherited_t07_zip_sha256": "0305b1e9ab062876ee6ee89778cc6028d2eaf01718b7dd0295944e7d9cb81a01",
+    "note": "Goal-First, Degree, Timid, and Context-Blind predictions are inherited from the earlier T0.7 run; official intent and comparison come from the final T0.7 archive."
+  }
+}

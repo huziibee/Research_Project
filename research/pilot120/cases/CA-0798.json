@@ -1,0 +1,1418 @@
+{
+  "record_id": "CA-0798",
+  "frozen_source": {
+    "capability_context": "Data-center maintenance robot can transport non-live components, scan asset tags, and inspect equipment without opening energized cabinets. It can refill approved non-hazardous liquid containers using calibrated dosing tools within listed volume limits.",
+    "command": "Only refill the screen-cleaner bottle beside the server rack with a small amount of screen-cleaning solution.",
+    "dialogue_history": [
+      "vendor: The screen-cleaner bottle is the only object in scope; do not touch the server rack."
+    ],
+    "record_id": "CA-0798",
+    "scene_context": "Maintenance aisle in a data center. The screen-cleaner bottle carries the active refill tag; the server rack has no refill work order. The task specification permits exactly two approved quantities: 20 millilitres and 60 millilitres. Neither is the default, and they produce materially different outcomes. An unrelated cable tray is logged for later work at the rack row. The process requires an exact amount before dispensing. The named substance, container, and dosing operation are approved for this robot; both listed quantities are within its certified dispensing range."
+  },
+  "frozen_gold": {
+    "ambiguity_types": [
+      "fuzzy_quantity",
+      "scope"
+    ],
+    "annotator_b_era": "glm_era",
+    "annotator_b_model": "glm-5.2-high",
+    "capability_status": "capable",
+    "field_status": {
+      "ambiguity_types": "auto_agree",
+      "capability_status": "human_auditor:independent_from_route",
+      "record_validity": "auto_agree",
+      "strategy_sequence": "from_A_matching_terminal",
+      "terminal_strategy": "auto_agree"
+    },
+    "gold_lifecycle": "final_gold",
+    "gold_status": "auto_agree",
+    "human_gate_required": false,
+    "provenance": {
+      "agreement_label": "pilot_annotation_agreement",
+      "annotator_a_sha256": "f34c827256788ba0ddd658b4d2384cd7d8eba39cb25b2a235e26f4a0f7c3425e",
+      "annotator_b_sha256": "c93a6b7630c5f36f0e74315598f77aa13c9ed3ff37e9a5ddd522d28ab0f2c3d8",
+      "capability_route_decouple": "conditionally_capable remapped to capable: no evidenced external capability precondition; linguistic silently_resolve/clarify is not a capability condition",
+      "gold_policy": "use_existing_pilot_adjudicated_gold",
+      "input_sha256": "5b7f99f56f6e7b3213e3f79c8507c52054bc3d245e369a28c39f0735970554bd",
+      "pilot_gold_sha256": "d8a1dd509f0da087a610d4be470bf0b779cb3fca0e18e0921960b13cb3617664",
+      "protocol": "pilot_adjudicated_gold_on_capability_repaired_source",
+      "repaired_input_sha256": "5f5b2e980029405867601cf7cdd49ca2f3cc641747024143c4641873248ed811"
+    },
+    "record_id": "CA-0798",
+    "record_validity": "valid",
+    "strategy_sequence": [
+      "resolve_scope",
+      "clarify"
+    ],
+    "terminal_strategy": "clarify"
+  },
+  "t07_comparison": {
+    "record_id": "CA-0798",
+    "gold_route": "clarify",
+    "raw_route": "clarify",
+    "ft_route": "clarify",
+    "gf_route": "refuse",
+    "raw_route_ok": "True",
+    "ft_route_ok": "True",
+    "gf_route_ok": "False",
+    "raw_official_intent": "True",
+    "ft_official_intent": "True",
+    "gf_official_intent": "True",
+    "blind_official_intent": "True"
+  },
+  "t07_official_intent": {
+    "context_blind_official_intent": true,
+    "degree_official_intent_shared_gf": true,
+    "finetune_official_intent": true,
+    "goal_first_official_intent": true,
+    "raw_official_intent": true,
+    "record_id": "CA-0798",
+    "timid_official_intent_shared_gf": true
+  },
+  "t07_predictions": {
+    "raw_qwen": {
+      "ambiguity_types": [
+        "fuzzy_quantity"
+      ],
+      "capability_status": "capable",
+      "error": null,
+      "execution_mode": "final_close_intent_box",
+      "failed": false,
+      "intent_summary": "Refill the screen-cleaner bottle located beside the server rack with a small amount of screen-cleaning solution.",
+      "latency_ms": 15742.831476032734,
+      "parsed": {
+        "ambiguity_types": [
+          "fuzzy_quantity"
+        ],
+        "capability_status": "capable",
+        "intent_summary": "Refill the screen-cleaner bottle located beside the server rack with a small amount of screen-cleaning solution.",
+        "speech_act": "directive_command",
+        "terminal_strategy": "clarify"
+      },
+      "raw_output": "<think>\nOkay, let's break this down. The user wants me to evaluate the robot command based on the given scenario. First, I need to understand the command and the context.\n\nThe command is: \"Only refill the screen-cleaner bottle beside the server rack with a small amount of screen-cleaning solution.\" The dialogue history mentions that the screen-cleaner bottle is the only object in scope and not to touch the server rack. The scene context says the bottle has an active refill tag, the server rack has no refill work order. The task allows two quantities: 20ml and 60ml. The robot can refill approved liquids within those limits. \n\nSo, the intent_summary should be about refilling the specific bottle with a small amount. The speech_act here is a directive_command because it's telling the robot what to do. \n\nLooking at ambiguity_types: The command mentions \"a small amount,\" which is vague. The exact quantities allowed are 20ml and 60ml, so \"small\" could be ambiguous. That's a fuzzy_quantity. Also, \"beside the server rack\" might refer to the location, but the server rack isn't to be touched. So maybe spatial_reference? Wait, the server rack isn't the target, so maybe the \"beside\" is clear. Wait, the dialogue says not to touch the server rack, but the bottle is beside it. So the spatial reference is to the bottle's location relative to the server rack. But is there any ambiguity there? Maybe not. The \"small amount\" is the main ambiguity here. Also, \"screen-cleaning solution\" is specified, so no lexical ambiguity. \n\nCapability_status: The robot can refill approved liquids within the certified range. The allowed quantities are 20ml and 60ml. The command says \"small amount,\" which could be either. But the robot is capable of both. So capability_status is capable. \n\nTerminal_strategy: Since the command is clear once the quantity is specified, but the user hasn't specified which exact amount, the robot might need to clarify. Wait, but the task allows exactly two quantities. The user says \"small amount,\" which might be 20ml. But the robot needs to know. However, the command is to refill with a small amount, which is ambiguous. So maybe the terminal strategy is clarify because the exact amount isn't specified. Wait, but the robot's capability includes both. So maybe the robot can execute if the user specifies, but the command here is to refill with a small amount. Since the user hasn't specified which exact amount, but the robot can do both, but the command's ambiguity might require clarification. So terminal_strategy would be clarify. But wait, the capability is conditionally_capable? No, the robot can do both quantities. So capability is capable. But the ambiguity is in the amount. So the terminal strategy would be clarify because the exact amount isn't specified. \n\nWait, the command says \"small amount,\" which is vague. The allowed quantities are 20ml and 60ml. The user might mean 20ml, but it's not clear. So the robot needs to clarify the amount. Therefore, the terminal strategy is clarify. \n\nPutting it all together: intent_summary is refilling the screen-cleaner bottle beside the server rack with a small amount. Speech act is directive_command. Ambiguity_types include fuzzy_quantity. Capability is capable. Terminal strategy is clarify.\n</think>\n\n{\n  \"intent_summary\": \"Refill the screen-cleaner bottle located beside the server rack with a small amount of screen-cleaning solution.\",\n  \"speech_act\": \"directive_command\",\n  \"ambiguity_types\": [\"fuzzy_quantity\"],\n  \"capability_status\": \"capable\",\n  \"terminal_strategy\": \"clarify\"\n}",
+      "record_id": "CA-0798",
+      "schema_valid": true,
+      "speech_act": "directive_command",
+      "system_id": "direct_base_llm",
+      "terminal_strategy": "clarify"
+    },
+    "finetune": {
+      "ambiguity_types": [
+        "fuzzy_quantity",
+        "spatial_reference"
+      ],
+      "capability_status": "conditionally_capable",
+      "error": null,
+      "execution_mode": "final_close_intent_box",
+      "failed": false,
+      "intent_summary": "Refill the screen-cleaner bottle located beside the server rack with a small amount of solution.",
+      "latency_ms": 24204.53928457573,
+      "parsed": {
+        "ambiguity_types": [
+          "fuzzy_quantity",
+          "spatial_reference"
+        ],
+        "capability_status": "conditionally_capable",
+        "intent_summary": "Refill the screen-cleaner bottle located beside the server rack with a small amount of solution.",
+        "speech_act": "directive_command",
+        "terminal_strategy": "clarify"
+      },
+      "raw_output": "<think>\nOkay, let's break down this query. The user wants the robot to refill the screen-cleaner bottle beside the server rack with a small amount of solution. The dialogue history mentions that the screen-cleaner bottle is the only object in scope and not to touch the server rack. \n\nFirst, the intent summary needs to capture the main action. The person wants the robot to refill the specific bottle with a small amount. The speech act here is a directive command because it's telling the robot exactly what to do.\n\nLooking at ambiguity types, there's a mention of \"beside the server rack\" which could be a spatial reference. Also, the command specifies a small amount, which might be a fuzzy quantity. The exact quantities allowed are 20ml and 60ml, so \"small amount\" might be ambiguous here. Also, the object reference is clear since the bottle is specified, but maybe there's a pronoun reference if \"it\" refers to something else. Wait, the command doesn't use pronouns, so maybe not. The spatial reference is there because of \"beside the server rack.\" Also, the exact amount is specified, but \"small\" is vague compared to the allowed quantities. So ambiguity types could include spatial_reference and fuzzy_quantity.\n\nCapability status: The robot can refill approved containers within the certified range. The allowed quantities are 20ml and 60ml. The command says \"small amount,\" which might not be precise. But the robot can handle those exact quantities. However, the user didn't specify which one, so the robot might not know. Wait, the task specification says exactly two approved quantities. The command says \"small amount,\" which could be interpreted as 20ml. But since the robot needs an exact amount, the user's instruction is ambiguous. However, the capability context says the robot can handle those quantities. So maybe the robot is capable but the command is ambiguous. Wait, the capability status is about whether the robot can perform the task. Since the robot can do 20 or 60ml, but the user didn't specify which, but the robot can do either. However, the problem is that the user's instruction is ambiguous in terms of quantity. But the robot's capability is to handle those exact quantities. So the capability status might be conditionally_capable because the exact amount isn't specified, but the robot can do either. Wait, the capability is about whether the robot can perform the task given the command. The command says \"small amount,\" which is vague. The robot can handle 20ml or 60ml, but the user's instruction is ambiguous. So the capability status would be conditionally_capable because the exact amount is needed but the user didn't specify. Or maybe the robot can handle any amount within the certified range, but the task requires exact amounts. Wait, the task specification says exactly two approved quantities. So the robot can only do 20ml or 60ml. The user's command says \"small amount,\" which might be interpreted as 20ml, but the robot can't know unless the user specifies. So the robot is capable if the user can clarify, but the current command is ambiguous. So capability status is conditionally_capable. \n\nTerminal strategy: Since the robot can perform the task if the quantity is specified, but the current command is ambiguous, the terminal strategy would be clarify. But the user's command is to refill with a small amount, which might be 20ml. However, the robot needs to confirm. So the terminal strategy is clarify. But the robot might have to ask for the exact quantity. Alternatively, since the robot can handle both, but the user's instruction is ambiguous, the terminal strategy is clarify. \n\nPutting it all together: the JSON object should have intent_summary as the main action, speech_act as directive_command, ambiguity_types including spatial_reference and fuzzy_quantity, capability_status as conditionally_capable, and terminal_strategy as clarify.\n</think>\n\n{\n  \"intent_summary\": \"Refill the screen-cleaner bottle located beside the server rack with a small amount of solution.\",\n  \"speech_act\": \"directive_command\",\n  \"ambiguity_types\": [\"spatial_reference\", \"fuzzy_quantity\"],\n  \"capability_status\": \"conditionally_capable\",\n  \"terminal_strategy\": \"clarify\"\n}",
+      "record_id": "CA-0798",
+      "schema_valid": true,
+      "speech_act": "directive_command",
+      "system_id": "t28_selected_adapter_llm",
+      "terminal_strategy": "clarify"
+    },
+    "goal_first": {
+      "ambiguity_types": [
+        "fuzzy_quantity",
+        "spatial_reference"
+      ],
+      "analysis_attempts": [
+        {
+          "attempt": 1,
+          "max_new_tokens": 4096,
+          "mode": "thinking",
+          "raw_chars": 7492,
+          "raw_sha256": "c2e58a73a4f34cfe1f68f42e34473e688eb9c0b2d09874e3392fa54c7680ef8c",
+          "validation_error": "bad_pilot_ambiguity_types"
+        },
+        {
+          "attempt": 2,
+          "max_new_tokens": 8192,
+          "mode": "thinking_retry",
+          "raw_chars": 7718,
+          "raw_sha256": "b6c512fdbaa546b0924d51ac828c2741a020a1e9a25fc1bd5ee1d3df1c87a82c",
+          "validation_error": "bad_pilot_ambiguity_types"
+        },
+        {
+          "attempt": 3,
+          "constraint": {
+            "constraint_initialised": true,
+            "generated_token_count": 505,
+            "maximum_output_tokens": 1024,
+            "response_mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+            "termination_reason": "eos_or_constraint_stop",
+            "transport_status": "constrained_generated"
+          },
+          "max_new_tokens": 1024,
+          "mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+          "raw_chars": 1544,
+          "raw_sha256": "224f90be2df9cefc1fb761fd7b339c9338e91535d4d6f08d0ddbfda78799e7d9",
+          "validation_error": null
+        }
+      ],
+      "capability_status": "unauthorized",
+      "claim_boundary": "separately_versioned_from_frozen_t39",
+      "error": null,
+      "execution_mode": "cluster-gpu-goal-first-v2",
+      "failed": false,
+      "intent_summary": "Refill the screen-cleaner bottle located beside the server rack with a small amount of screen-cleaning solution",
+      "latency_ms": 111210.50248481333,
+      "model_id": "Qwen/Qwen3-8B@b968826d9c46dd6066d109eabc6255188de91218",
+      "parsed": {
+        "analysis": {
+          "ambiguity_present": true,
+          "ambiguity_types": [
+            "quantitative",
+            "spatial"
+          ],
+          "analysis_provenance": {
+            "analysis_id": "9420fa0b61d357eae897a33e31cc571ba5285d1a493af63ec7441530394b4d4c",
+            "method": "model_generated",
+            "notes": "source_input_hash=9420fa0b61d357eae897a33e31cc571ba5285d1a493af63ec7441530394b4d4c;no_gold_in_prompt;scene_licence_dropped=quantity,spatial_relation",
+            "provider_id": "goal_first_v2_full_context",
+            "provider_version": "goal-first-manager-v2"
+          },
+          "candidate_interpretations": [],
+          "capability_status": "unknown",
+          "clarification_question": null,
+          "clarification_targets": [],
+          "compound_ambiguity": true,
+          "compound_ambiguity_count": 2,
+          "context_sampling_uncertainty": {
+            "agreement": 0.55,
+            "score": 0.45,
+            "variant_count": 1
+          },
+          "cpc": {
+            "action": {
+              "status": "filled",
+              "value": "refill"
+            },
+            "actor": {
+              "status": "filled",
+              "value": "robot"
+            },
+            "conditions": {
+              "status": "filled",
+              "value": "non-live components"
+            },
+            "constraints": {
+              "status": "filled",
+              "value": "exact amount before dispensing"
+            },
+            "destination": {
+              "status": "filled",
+              "value": "beside the server rack"
+            },
+            "negation": {
+              "status": "filled",
+              "value": "do not touch the server rack"
+            },
+            "object": {
+              "status": "filled",
+              "value": "screen-cleaner bottle"
+            },
+            "object_attributes": {
+              "status": "filled",
+              "value": "non-hazardous liquid container"
+            },
+            "quantity": {
+              "status": "filled",
+              "value": "small amount"
+            },
+            "recipient": {
+              "status": "filled",
+              "value": "robot"
+            },
+            "spatial_relation": {
+              "status": "filled",
+              "value": "beside"
+            },
+            "time": {
+              "status": "filled",
+              "value": "now"
+            },
+            "tool": {
+              "status": "filled",
+              "value": "calibrated dosing tool"
+            }
+          },
+          "findings": [
+            "pilot_ambiguity_types:[\"fuzzy_quantity\",\"spatial_reference\"]",
+            "pilot_capability_status:unauthorized",
+            "intent_summary_present"
+          ],
+          "intent_summary": "Refill the screen-cleaner bottle located beside the server rack with a small amount of screen-cleaning solution",
+          "primary_ambiguity_type": "quantitative",
+          "recommended_strategy": "face_preserving_rejection",
+          "rejection_reason": "unsafe_or_prohibited_action",
+          "resolution_evidence": [],
+          "resolution_method": null,
+          "resolved_slots": [
+            {
+              "slot_name": "action",
+              "value": "refill"
+            },
+            {
+              "slot_name": "actor",
+              "value": "robot"
+            },
+            {
+              "slot_name": "object",
+              "value": "screen-cleaner bottle"
+            },
+            {
+              "slot_name": "object_attributes",
+              "value": "non-hazardous liquid container"
+            },
+            {
+              "slot_name": "destination",
+              "value": "beside the server rack"
+            },
+            {
+              "slot_name": "spatial_relation",
+              "value": "beside"
+            },
+            {
+              "slot_name": "quantity",
+              "value": "small amount"
+            },
+            {
+              "slot_name": "time",
+              "value": "now"
+            },
+            {
+              "slot_name": "recipient",
+              "value": "robot"
+            },
+            {
+              "slot_name": "tool",
+              "value": "calibrated dosing tool"
+            },
+            {
+              "slot_name": "conditions",
+              "value": "non-live components"
+            },
+            {
+              "slot_name": "constraints",
+              "value": "exact amount before dispensing"
+            },
+            {
+              "slot_name": "negation",
+              "value": "do not touch the server rack"
+            }
+          ],
+          "risk_level": "medium",
+          "risk_relevant": true,
+          "selected_interpretation": null,
+          "speech_act": "directive_command",
+          "strategy_sequence": [],
+          "supporting_evidence": [],
+          "unresolved_slots": [],
+          "unsupported_specificity": []
+        },
+        "clarification_question": null,
+        "clarification_targets": [],
+        "execution_status": "ok",
+        "official_result": false,
+        "provider_provenance": {
+          "provider_id": "cached_analysis",
+          "provider_version": "1.0.0"
+        },
+        "recommended_strategy": "face_preserving_rejection",
+        "record_id": "CA-0798",
+        "rejection_reason": "unsafe_or_prohibited_action",
+        "resolved_slots": [
+          {
+            "slot_name": "action",
+            "value": "refill"
+          },
+          {
+            "slot_name": "actor",
+            "value": "robot"
+          },
+          {
+            "slot_name": "object",
+            "value": "screen-cleaner bottle"
+          },
+          {
+            "slot_name": "object_attributes",
+            "value": "non-hazardous liquid container"
+          },
+          {
+            "slot_name": "destination",
+            "value": "beside the server rack"
+          },
+          {
+            "slot_name": "spatial_relation",
+            "value": "beside"
+          },
+          {
+            "slot_name": "quantity",
+            "value": "small amount"
+          },
+          {
+            "slot_name": "time",
+            "value": "now"
+          },
+          {
+            "slot_name": "recipient",
+            "value": "robot"
+          },
+          {
+            "slot_name": "tool",
+            "value": "calibrated dosing tool"
+          },
+          {
+            "slot_name": "conditions",
+            "value": "non-live components"
+          },
+          {
+            "slot_name": "constraints",
+            "value": "exact amount before dispensing"
+          },
+          {
+            "slot_name": "negation",
+            "value": "do not touch the server rack"
+          }
+        ],
+        "result_hash": "30b83d9f356eb0c63b0b81cd6577c1fba234ad99f7197636489ffe513205c3a1",
+        "run_id": null,
+        "run_mode": null,
+        "runtime_metadata": {
+          "awaits_t28_adapter": true,
+          "classification": {
+            "ambiguity_present": true,
+            "ambiguity_types": [
+              "quantitative",
+              "spatial"
+            ],
+            "capability_status": "unknown",
+            "compound_ambiguity": true,
+            "compound_ambiguity_count": 2,
+            "derivation_notes": [
+              "ambiguity_present_from_types"
+            ],
+            "risk_level": "medium"
+          },
+          "rejection_text": "I need to decline that request because it would be unsafe under the current constraints.",
+          "requires_re_evaluation": false,
+          "resolution_events": [],
+          "router_trace": {
+            "clarification_targets": [],
+            "considered_rules": [
+              "goal_first_v2",
+              "known_unsafe_or_prohibited"
+            ],
+            "matched_rule_id": "known_unsafe_or_prohibited",
+            "notes": [],
+            "recommended_strategy": "face_preserving_rejection",
+            "rejection_reason": "unsafe_or_prohibited_action",
+            "requires_re_evaluation": false,
+            "strategy_sequence": []
+          },
+          "safety_action": "return_with_findings",
+          "uncertainty": null
+        },
+        "safety_findings": [],
+        "strategy_sequence": [],
+        "synthetic_only": true,
+        "system_id": "goal_first_manager_v2",
+        "system_version": "2.0.0",
+        "unsupported_commitment_findings": []
+      },
+      "raw_output": "{\n  \"intent_summary\": \"Refill the screen-cleaner bottle located beside the server rack with a small amount of screen-cleaning solution\",\n  \"cpc\": {\n    \"action\": {\n      \"status\": \"unknown\",\n      \"value\": \"refill\"\n    },\n    \"object\": {\n      \"status\": \"unknown\",\n      \"value\": \"screen-cleaner bottle\"\n    },\n    \"quantity\": {\n      \"status\": \"unknown\",\n      \"value\": \"small amount\"\n    },\n    \"destination\": {\n      \"status\": \"unknown\",\n      \"value\": \"beside the server rack\"\n    },\n    \"recipient\": {\n      \"status\": \"unknown\",\n      \"value\": \"robot\"\n    }\n \n  ,\n  \"constraints\": {\n    \"status\": \"unknown\",\n    \"value\": \"exact amount before dispensing\"\n  },\n  \"spatial_relation\": {\n    \"status\": \"unknown\",\n    \"value\": \"beside\"\n  },\n  \"time\": {\n    \"status\": \"unknown\",\n    \"value\": \"now\"\n  },\n  \"object_attributes\": {\n    \"status\": \"unknown\",\n    \"value\": \"non-hazardous liquid container\"\n  },\n  \"tool\": {\n    \"status\": \"unknown\",\n    \"value\": \"calibrated dosing tool\"\n  },\n  \"conditions\": {\n    \"status\": \"unknown\",\n    \"value\": \"non-live components\"\n  },\n  \"actor\": {\n    \"status\": \"unknown\",\n    \"value\": \"robot\"\n  }\n  \n  ,\n  \"negation\": {\n    \"status\": \"unknown\",\n    \"value\": \"do not touch the server rack\"\n  }\n  \n  },\n  \"pilot_ambiguity_types\": [\n    \"spatial_reference\",\n    \"fuzzy_quantity\"\n  ]\n  \n  ,\n  \"pilot_capability_status\": \"unauthorized\",\n  \"speech_act\": \"directive_command\"\n  \n  ,\n  \"risk_level\": \"medium\",\n  \"uncertainty\": 0.45\n  \n\n  \n  ,\n  \"unresolved_slots\": [\n    \"quantity\",\n    \"spatial_relation\"\n  ]\n  \n  }\n  \n  ",
+      "record_id": "CA-0798",
+      "schema_valid": true,
+      "supports_ambiguity_prediction": true,
+      "supports_capability_prediction": true,
+      "system_id": "goal_first_manager_v2",
+      "system_version": "2.0.0",
+      "terminal_strategy": "face_preserving_rejection"
+    },
+    "degree": {
+      "ambiguity_types": [
+        "fuzzy_quantity",
+        "spatial_reference"
+      ],
+      "analysis_attempts": [
+        {
+          "attempt": 1,
+          "max_new_tokens": 4096,
+          "mode": "thinking",
+          "raw_chars": 7492,
+          "raw_sha256": "c2e58a73a4f34cfe1f68f42e34473e688eb9c0b2d09874e3392fa54c7680ef8c",
+          "validation_error": "bad_pilot_ambiguity_types"
+        },
+        {
+          "attempt": 2,
+          "max_new_tokens": 8192,
+          "mode": "thinking_retry",
+          "raw_chars": 7718,
+          "raw_sha256": "b6c512fdbaa546b0924d51ac828c2741a020a1e9a25fc1bd5ee1d3df1c87a82c",
+          "validation_error": "bad_pilot_ambiguity_types"
+        },
+        {
+          "attempt": 3,
+          "constraint": {
+            "constraint_initialised": true,
+            "generated_token_count": 505,
+            "maximum_output_tokens": 1024,
+            "response_mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+            "termination_reason": "eos_or_constraint_stop",
+            "transport_status": "constrained_generated"
+          },
+          "max_new_tokens": 1024,
+          "mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+          "raw_chars": 1544,
+          "raw_sha256": "224f90be2df9cefc1fb761fd7b339c9338e91535d4d6f08d0ddbfda78799e7d9",
+          "validation_error": null
+        }
+      ],
+      "capability_status": "unauthorized",
+      "claim_boundary": "separately_versioned_from_frozen_t39",
+      "error": null,
+      "execution_mode": "cluster-gpu-goal-first-v2",
+      "failed": false,
+      "intent_summary": "Refill the screen-cleaner bottle located beside the server rack with a small amount of screen-cleaning solution",
+      "latency_ms": 111210.50248481333,
+      "model_id": "Qwen/Qwen3-8B@b968826d9c46dd6066d109eabc6255188de91218",
+      "parsed": {
+        "analysis": {
+          "ambiguity_present": true,
+          "ambiguity_types": [
+            "quantitative",
+            "spatial"
+          ],
+          "analysis_provenance": {
+            "analysis_id": "9420fa0b61d357eae897a33e31cc571ba5285d1a493af63ec7441530394b4d4c",
+            "method": "model_generated",
+            "notes": "source_input_hash=9420fa0b61d357eae897a33e31cc571ba5285d1a493af63ec7441530394b4d4c;no_gold_in_prompt;scene_licence_dropped=quantity,spatial_relation",
+            "provider_id": "goal_first_v2_full_context",
+            "provider_version": "goal-first-manager-v2"
+          },
+          "candidate_interpretations": [],
+          "capability_status": "unknown",
+          "clarification_question": "Could you clarify what you would like me to do?",
+          "clarification_targets": [
+            "intent"
+          ],
+          "compound_ambiguity": true,
+          "compound_ambiguity_count": 2,
+          "context_sampling_uncertainty": {
+            "agreement": 0.55,
+            "score": 0.45,
+            "variant_count": 1
+          },
+          "cpc": {
+            "action": {
+              "status": "filled",
+              "value": "refill"
+            },
+            "actor": {
+              "status": "filled",
+              "value": "robot"
+            },
+            "conditions": {
+              "status": "filled",
+              "value": "non-live components"
+            },
+            "constraints": {
+              "status": "filled",
+              "value": "exact amount before dispensing"
+            },
+            "destination": {
+              "status": "filled",
+              "value": "beside the server rack"
+            },
+            "negation": {
+              "status": "filled",
+              "value": "do not touch the server rack"
+            },
+            "object": {
+              "status": "filled",
+              "value": "screen-cleaner bottle"
+            },
+            "object_attributes": {
+              "status": "filled",
+              "value": "non-hazardous liquid container"
+            },
+            "quantity": {
+              "status": "filled",
+              "value": "small amount"
+            },
+            "recipient": {
+              "status": "filled",
+              "value": "robot"
+            },
+            "spatial_relation": {
+              "status": "filled",
+              "value": "beside"
+            },
+            "time": {
+              "status": "filled",
+              "value": "now"
+            },
+            "tool": {
+              "status": "filled",
+              "value": "calibrated dosing tool"
+            }
+          },
+          "findings": [
+            "pilot_ambiguity_types:[\"fuzzy_quantity\",\"spatial_reference\"]",
+            "pilot_capability_status:unauthorized",
+            "intent_summary_present"
+          ],
+          "intent_summary": "Refill the screen-cleaner bottle located beside the server rack with a small amount of screen-cleaning solution",
+          "primary_ambiguity_type": "quantitative",
+          "recommended_strategy": "clarify",
+          "rejection_reason": null,
+          "resolution_evidence": [],
+          "resolution_method": null,
+          "resolved_slots": [
+            {
+              "slot_name": "action",
+              "value": "refill"
+            },
+            {
+              "slot_name": "actor",
+              "value": "robot"
+            },
+            {
+              "slot_name": "object",
+              "value": "screen-cleaner bottle"
+            },
+            {
+              "slot_name": "object_attributes",
+              "value": "non-hazardous liquid container"
+            },
+            {
+              "slot_name": "destination",
+              "value": "beside the server rack"
+            },
+            {
+              "slot_name": "spatial_relation",
+              "value": "beside"
+            },
+            {
+              "slot_name": "quantity",
+              "value": "small amount"
+            },
+            {
+              "slot_name": "time",
+              "value": "now"
+            },
+            {
+              "slot_name": "recipient",
+              "value": "robot"
+            },
+            {
+              "slot_name": "tool",
+              "value": "calibrated dosing tool"
+            },
+            {
+              "slot_name": "conditions",
+              "value": "non-live components"
+            },
+            {
+              "slot_name": "constraints",
+              "value": "exact amount before dispensing"
+            },
+            {
+              "slot_name": "negation",
+              "value": "do not touch the server rack"
+            }
+          ],
+          "risk_level": "medium",
+          "risk_relevant": true,
+          "selected_interpretation": null,
+          "speech_act": "directive_command",
+          "strategy_sequence": [],
+          "supporting_evidence": [],
+          "unresolved_slots": [],
+          "unsupported_specificity": []
+        },
+        "clarification_question": "Could you clarify what you would like me to do?",
+        "clarification_targets": [
+          "intent"
+        ],
+        "execution_status": "ok",
+        "official_result": false,
+        "provider_provenance": {
+          "shared_analysis_fingerprint": "d63f460a032967cf4d83a9533feb59b51c4a0e5596424665e3e697f586876f5c"
+        },
+        "recommended_strategy": "clarify",
+        "record_id": "CA-0798",
+        "rejection_reason": null,
+        "resolved_slots": [
+          {
+            "slot_name": "action",
+            "value": "refill"
+          },
+          {
+            "slot_name": "actor",
+            "value": "robot"
+          },
+          {
+            "slot_name": "object",
+            "value": "screen-cleaner bottle"
+          },
+          {
+            "slot_name": "object_attributes",
+            "value": "non-hazardous liquid container"
+          },
+          {
+            "slot_name": "destination",
+            "value": "beside the server rack"
+          },
+          {
+            "slot_name": "spatial_relation",
+            "value": "beside"
+          },
+          {
+            "slot_name": "quantity",
+            "value": "small amount"
+          },
+          {
+            "slot_name": "time",
+            "value": "now"
+          },
+          {
+            "slot_name": "recipient",
+            "value": "robot"
+          },
+          {
+            "slot_name": "tool",
+            "value": "calibrated dosing tool"
+          },
+          {
+            "slot_name": "conditions",
+            "value": "non-live components"
+          },
+          {
+            "slot_name": "constraints",
+            "value": "exact amount before dispensing"
+          },
+          {
+            "slot_name": "negation",
+            "value": "do not touch the server rack"
+          }
+        ],
+        "result_hash": "fa35881c0ea01d74628c9e98dc856466e2d1489f16ac2ca2809131a648a75701",
+        "run_id": null,
+        "run_mode": null,
+        "runtime_metadata": {
+          "shared_analysis_fingerprint": "d63f460a032967cf4d83a9533feb59b51c4a0e5596424665e3e697f586876f5c",
+          "thresholds_status": "unfrozen",
+          "thresholds_valid_for_official_use": false,
+          "uncertainty_score": 0.45,
+          "uses_type_risk_capability_precedence": false
+        },
+        "safety_findings": [],
+        "strategy_sequence": [],
+        "synthetic_only": true,
+        "system_id": "degree_based_router",
+        "system_version": "1.0.0",
+        "unsupported_commitment_findings": []
+      },
+      "raw_output": "{\n  \"intent_summary\": \"Refill the screen-cleaner bottle located beside the server rack with a small amount of screen-cleaning solution\",\n  \"cpc\": {\n    \"action\": {\n      \"status\": \"unknown\",\n      \"value\": \"refill\"\n    },\n    \"object\": {\n      \"status\": \"unknown\",\n      \"value\": \"screen-cleaner bottle\"\n    },\n    \"quantity\": {\n      \"status\": \"unknown\",\n      \"value\": \"small amount\"\n    },\n    \"destination\": {\n      \"status\": \"unknown\",\n      \"value\": \"beside the server rack\"\n    },\n    \"recipient\": {\n      \"status\": \"unknown\",\n      \"value\": \"robot\"\n    }\n \n  ,\n  \"constraints\": {\n    \"status\": \"unknown\",\n    \"value\": \"exact amount before dispensing\"\n  },\n  \"spatial_relation\": {\n    \"status\": \"unknown\",\n    \"value\": \"beside\"\n  },\n  \"time\": {\n    \"status\": \"unknown\",\n    \"value\": \"now\"\n  },\n  \"object_attributes\": {\n    \"status\": \"unknown\",\n    \"value\": \"non-hazardous liquid container\"\n  },\n  \"tool\": {\n    \"status\": \"unknown\",\n    \"value\": \"calibrated dosing tool\"\n  },\n  \"conditions\": {\n    \"status\": \"unknown\",\n    \"value\": \"non-live components\"\n  },\n  \"actor\": {\n    \"status\": \"unknown\",\n    \"value\": \"robot\"\n  }\n  \n  ,\n  \"negation\": {\n    \"status\": \"unknown\",\n    \"value\": \"do not touch the server rack\"\n  }\n  \n  },\n  \"pilot_ambiguity_types\": [\n    \"spatial_reference\",\n    \"fuzzy_quantity\"\n  ]\n  \n  ,\n  \"pilot_capability_status\": \"unauthorized\",\n  \"speech_act\": \"directive_command\"\n  \n  ,\n  \"risk_level\": \"medium\",\n  \"uncertainty\": 0.45\n  \n\n  \n  ,\n  \"unresolved_slots\": [\n    \"quantity\",\n    \"spatial_relation\"\n  ]\n  \n  }\n  \n  ",
+      "record_id": "CA-0798",
+      "schema_valid": true,
+      "supports_ambiguity_prediction": true,
+      "supports_capability_prediction": true,
+      "system_id": "degree_based_router_v2",
+      "system_version": "2.0.0",
+      "terminal_strategy": "clarify"
+    },
+    "timid": {
+      "ambiguity_types": [
+        "fuzzy_quantity",
+        "spatial_reference"
+      ],
+      "analysis_attempts": [
+        {
+          "attempt": 1,
+          "max_new_tokens": 4096,
+          "mode": "thinking",
+          "raw_chars": 7492,
+          "raw_sha256": "c2e58a73a4f34cfe1f68f42e34473e688eb9c0b2d09874e3392fa54c7680ef8c",
+          "validation_error": "bad_pilot_ambiguity_types"
+        },
+        {
+          "attempt": 2,
+          "max_new_tokens": 8192,
+          "mode": "thinking_retry",
+          "raw_chars": 7718,
+          "raw_sha256": "b6c512fdbaa546b0924d51ac828c2741a020a1e9a25fc1bd5ee1d3df1c87a82c",
+          "validation_error": "bad_pilot_ambiguity_types"
+        },
+        {
+          "attempt": 3,
+          "constraint": {
+            "constraint_initialised": true,
+            "generated_token_count": 505,
+            "maximum_output_tokens": 1024,
+            "response_mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+            "termination_reason": "eos_or_constraint_stop",
+            "transport_status": "constrained_generated"
+          },
+          "max_new_tokens": 1024,
+          "mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+          "raw_chars": 1544,
+          "raw_sha256": "224f90be2df9cefc1fb761fd7b339c9338e91535d4d6f08d0ddbfda78799e7d9",
+          "validation_error": null
+        }
+      ],
+      "capability_status": "unauthorized",
+      "claim_boundary": "separately_versioned_from_frozen_t39",
+      "error": null,
+      "execution_mode": "cluster-gpu-goal-first-v2",
+      "failed": false,
+      "intent_summary": "Refill the screen-cleaner bottle located beside the server rack with a small amount of screen-cleaning solution",
+      "latency_ms": 111210.50248481333,
+      "model_id": "Qwen/Qwen3-8B@b968826d9c46dd6066d109eabc6255188de91218",
+      "parsed": {
+        "analysis": {
+          "ambiguity_present": true,
+          "ambiguity_types": [
+            "quantitative",
+            "spatial"
+          ],
+          "analysis_provenance": {
+            "analysis_id": "9420fa0b61d357eae897a33e31cc571ba5285d1a493af63ec7441530394b4d4c",
+            "method": "model_generated",
+            "notes": "source_input_hash=9420fa0b61d357eae897a33e31cc571ba5285d1a493af63ec7441530394b4d4c;no_gold_in_prompt;scene_licence_dropped=quantity,spatial_relation",
+            "provider_id": "goal_first_v2_full_context",
+            "provider_version": "goal-first-manager-v2"
+          },
+          "candidate_interpretations": [],
+          "capability_status": "unknown",
+          "clarification_question": "Before I continue, could you clarify: quantitative, spatial?",
+          "clarification_targets": [
+            "quantitative",
+            "spatial"
+          ],
+          "compound_ambiguity": true,
+          "compound_ambiguity_count": 2,
+          "context_sampling_uncertainty": {
+            "agreement": 0.55,
+            "score": 0.45,
+            "variant_count": 1
+          },
+          "cpc": {
+            "action": {
+              "status": "filled",
+              "value": "refill"
+            },
+            "actor": {
+              "status": "filled",
+              "value": "robot"
+            },
+            "conditions": {
+              "status": "filled",
+              "value": "non-live components"
+            },
+            "constraints": {
+              "status": "filled",
+              "value": "exact amount before dispensing"
+            },
+            "destination": {
+              "status": "filled",
+              "value": "beside the server rack"
+            },
+            "negation": {
+              "status": "filled",
+              "value": "do not touch the server rack"
+            },
+            "object": {
+              "status": "filled",
+              "value": "screen-cleaner bottle"
+            },
+            "object_attributes": {
+              "status": "filled",
+              "value": "non-hazardous liquid container"
+            },
+            "quantity": {
+              "status": "filled",
+              "value": "small amount"
+            },
+            "recipient": {
+              "status": "filled",
+              "value": "robot"
+            },
+            "spatial_relation": {
+              "status": "filled",
+              "value": "beside"
+            },
+            "time": {
+              "status": "filled",
+              "value": "now"
+            },
+            "tool": {
+              "status": "filled",
+              "value": "calibrated dosing tool"
+            }
+          },
+          "findings": [
+            "pilot_ambiguity_types:[\"fuzzy_quantity\",\"spatial_reference\"]",
+            "pilot_capability_status:unauthorized",
+            "intent_summary_present"
+          ],
+          "intent_summary": "Refill the screen-cleaner bottle located beside the server rack with a small amount of screen-cleaning solution",
+          "primary_ambiguity_type": "quantitative",
+          "recommended_strategy": "clarify",
+          "rejection_reason": null,
+          "resolution_evidence": [],
+          "resolution_method": null,
+          "resolved_slots": [
+            {
+              "slot_name": "action",
+              "value": "refill"
+            },
+            {
+              "slot_name": "actor",
+              "value": "robot"
+            },
+            {
+              "slot_name": "object",
+              "value": "screen-cleaner bottle"
+            },
+            {
+              "slot_name": "object_attributes",
+              "value": "non-hazardous liquid container"
+            },
+            {
+              "slot_name": "destination",
+              "value": "beside the server rack"
+            },
+            {
+              "slot_name": "spatial_relation",
+              "value": "beside"
+            },
+            {
+              "slot_name": "quantity",
+              "value": "small amount"
+            },
+            {
+              "slot_name": "time",
+              "value": "now"
+            },
+            {
+              "slot_name": "recipient",
+              "value": "robot"
+            },
+            {
+              "slot_name": "tool",
+              "value": "calibrated dosing tool"
+            },
+            {
+              "slot_name": "conditions",
+              "value": "non-live components"
+            },
+            {
+              "slot_name": "constraints",
+              "value": "exact amount before dispensing"
+            },
+            {
+              "slot_name": "negation",
+              "value": "do not touch the server rack"
+            }
+          ],
+          "risk_level": "medium",
+          "risk_relevant": true,
+          "selected_interpretation": null,
+          "speech_act": "directive_command",
+          "strategy_sequence": [],
+          "supporting_evidence": [],
+          "unresolved_slots": [],
+          "unsupported_specificity": []
+        },
+        "clarification_question": "Before I continue, could you clarify: quantitative, spatial?",
+        "clarification_targets": [
+          "quantitative",
+          "spatial"
+        ],
+        "execution_status": "ok",
+        "official_result": false,
+        "provider_provenance": {
+          "provider_id": "cached_analysis",
+          "provider_version": "1.0.0"
+        },
+        "recommended_strategy": "clarify",
+        "record_id": "CA-0798",
+        "rejection_reason": null,
+        "resolved_slots": [
+          {
+            "slot_name": "action",
+            "value": "refill"
+          },
+          {
+            "slot_name": "actor",
+            "value": "robot"
+          },
+          {
+            "slot_name": "object",
+            "value": "screen-cleaner bottle"
+          },
+          {
+            "slot_name": "object_attributes",
+            "value": "non-hazardous liquid container"
+          },
+          {
+            "slot_name": "destination",
+            "value": "beside the server rack"
+          },
+          {
+            "slot_name": "spatial_relation",
+            "value": "beside"
+          },
+          {
+            "slot_name": "quantity",
+            "value": "small amount"
+          },
+          {
+            "slot_name": "time",
+            "value": "now"
+          },
+          {
+            "slot_name": "recipient",
+            "value": "robot"
+          },
+          {
+            "slot_name": "tool",
+            "value": "calibrated dosing tool"
+          },
+          {
+            "slot_name": "conditions",
+            "value": "non-live components"
+          },
+          {
+            "slot_name": "constraints",
+            "value": "exact amount before dispensing"
+          },
+          {
+            "slot_name": "negation",
+            "value": "do not touch the server rack"
+          }
+        ],
+        "result_hash": "42938d6acf1c3231193bb598957afcada097ee50c274adaeb7ba0da30e2b5c7a",
+        "run_id": null,
+        "run_mode": null,
+        "runtime_metadata": {
+          "awaits_t28_adapter": true,
+          "classification": {
+            "ambiguity_present": true,
+            "ambiguity_types": [
+              "quantitative",
+              "spatial"
+            ],
+            "capability_status": "unknown",
+            "compound_ambiguity": true,
+            "compound_ambiguity_count": 2,
+            "derivation_notes": [
+              "ambiguity_present_from_types"
+            ],
+            "risk_level": "medium"
+          },
+          "rejection_text": null,
+          "requires_re_evaluation": false,
+          "resolution_events": [],
+          "router_trace": {
+            "clarification_targets": [
+              "quantitative",
+              "spatial"
+            ],
+            "considered_rules": [
+              "known_unsafe_or_prohibited",
+              "known_incapable",
+              "unknown_or_unverified_capability"
+            ],
+            "matched_rule_id": "unknown_capability",
+            "notes": [
+              "unknown_capability_cannot_execute"
+            ],
+            "recommended_strategy": "clarify",
+            "rejection_reason": null,
+            "requires_re_evaluation": false,
+            "strategy_sequence": []
+          },
+          "safety_action": "return_with_findings",
+          "uncertainty": null
+        },
+        "safety_findings": [],
+        "strategy_sequence": [],
+        "synthetic_only": true,
+        "system_id": "full_type_risk_aware_manager",
+        "system_version": "1.0.0",
+        "unsupported_commitment_findings": []
+      },
+      "raw_output": "{\n  \"intent_summary\": \"Refill the screen-cleaner bottle located beside the server rack with a small amount of screen-cleaning solution\",\n  \"cpc\": {\n    \"action\": {\n      \"status\": \"unknown\",\n      \"value\": \"refill\"\n    },\n    \"object\": {\n      \"status\": \"unknown\",\n      \"value\": \"screen-cleaner bottle\"\n    },\n    \"quantity\": {\n      \"status\": \"unknown\",\n      \"value\": \"small amount\"\n    },\n    \"destination\": {\n      \"status\": \"unknown\",\n      \"value\": \"beside the server rack\"\n    },\n    \"recipient\": {\n      \"status\": \"unknown\",\n      \"value\": \"robot\"\n    }\n \n  ,\n  \"constraints\": {\n    \"status\": \"unknown\",\n    \"value\": \"exact amount before dispensing\"\n  },\n  \"spatial_relation\": {\n    \"status\": \"unknown\",\n    \"value\": \"beside\"\n  },\n  \"time\": {\n    \"status\": \"unknown\",\n    \"value\": \"now\"\n  },\n  \"object_attributes\": {\n    \"status\": \"unknown\",\n    \"value\": \"non-hazardous liquid container\"\n  },\n  \"tool\": {\n    \"status\": \"unknown\",\n    \"value\": \"calibrated dosing tool\"\n  },\n  \"conditions\": {\n    \"status\": \"unknown\",\n    \"value\": \"non-live components\"\n  },\n  \"actor\": {\n    \"status\": \"unknown\",\n    \"value\": \"robot\"\n  }\n  \n  ,\n  \"negation\": {\n    \"status\": \"unknown\",\n    \"value\": \"do not touch the server rack\"\n  }\n  \n  },\n  \"pilot_ambiguity_types\": [\n    \"spatial_reference\",\n    \"fuzzy_quantity\"\n  ]\n  \n  ,\n  \"pilot_capability_status\": \"unauthorized\",\n  \"speech_act\": \"directive_command\"\n  \n  ,\n  \"risk_level\": \"medium\",\n  \"uncertainty\": 0.45\n  \n\n  \n  ,\n  \"unresolved_slots\": [\n    \"quantity\",\n    \"spatial_relation\"\n  ]\n  \n  }\n  \n  ",
+      "record_id": "CA-0798",
+      "schema_valid": true,
+      "supports_ambiguity_prediction": true,
+      "supports_capability_prediction": true,
+      "system_id": "rich_conservative_manager_v2",
+      "system_version": "2.0.0",
+      "terminal_strategy": "clarify"
+    },
+    "context_blind": {
+      "ambiguity_types": [
+        "fuzzy_quantity",
+        "spatial_reference"
+      ],
+      "analysis_attempts": [
+        {
+          "attempt": 1,
+          "max_new_tokens": 4096,
+          "mode": "thinking",
+          "raw_chars": 5345,
+          "raw_sha256": "44ce2b514ea794e192f0428008bff1aabf7fb2292b6eeab054f3cdf8f84d1cfd",
+          "validation_error": "bad_intent_summary"
+        },
+        {
+          "attempt": 2,
+          "max_new_tokens": 8192,
+          "mode": "thinking_retry",
+          "raw_chars": 5144,
+          "raw_sha256": "624745ddbc62f6c6f3d682ae970ba67e897bffaf759eb1612b722030e131e983",
+          "validation_error": "bad_pilot_ambiguity_types"
+        },
+        {
+          "attempt": 3,
+          "constraint": {
+            "constraint_initialised": true,
+            "generated_token_count": 480,
+            "maximum_output_tokens": 1024,
+            "response_mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+            "termination_reason": "eos_or_constraint_stop",
+            "transport_status": "constrained_generated"
+          },
+          "max_new_tokens": 1024,
+          "mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+          "raw_chars": 1508,
+          "raw_sha256": "31cef4e9880e6244e7e01a21dd4cd09a7ca192598e1349db49352673eb1ff4aa",
+          "validation_error": null
+        }
+      ],
+      "capability_status": "unauthorized",
+      "claim_boundary": "separately_versioned_from_frozen_t39",
+      "error": null,
+      "execution_mode": "cluster-gpu-goal-first-v2",
+      "failed": false,
+      "intent_summary": "Refill the screen-cleaner bottle located beside the server rack with a small amount of screen-cleaning solution",
+      "latency_ms": 78031.65870718658,
+      "model_id": "Qwen/Qwen3-8B@b968826d9c46dd6066d109eabc6255188de91218",
+      "parsed": {
+        "analysis": {
+          "ambiguity_present": true,
+          "ambiguity_types": [
+            "quantitative",
+            "spatial"
+          ],
+          "analysis_provenance": {
+            "analysis_id": "f1f69ffd055fde3b2e8575aa6a1b6decd7917caedeb46efa6f749bc0b185ed4b",
+            "method": "context_blind",
+            "notes": "ablated_input_hash=f1f69ffd055fde3b2e8575aa6a1b6decd7917caedeb46efa6f749bc0b185ed4b;source_input_hash=f1f69ffd055fde3b2e8575aa6a1b6decd7917caedeb46efa6f749bc0b185ed4b;no_gold_in_prompt;scene_licence_dropped=spatial_relation,quantity,tool",
+            "provider_id": "goal_first_v2_context_blind",
+            "provider_version": "goal-first-manager-v2"
+          },
+          "candidate_interpretations": [],
+          "capability_status": "unknown",
+          "clarification_question": null,
+          "clarification_targets": [],
+          "compound_ambiguity": true,
+          "compound_ambiguity_count": 2,
+          "context_sampling_uncertainty": {
+            "agreement": 0.25,
+            "score": 0.75,
+            "variant_count": 1
+          },
+          "cpc": {
+            "action": {
+              "status": "filled",
+              "value": "refill"
+            },
+            "actor": {
+              "status": "filled",
+              "value": "unspecified"
+            },
+            "conditions": {
+              "status": "filled",
+              "value": "Only"
+            },
+            "constraints": {
+              "status": "filled",
+              "value": "Only"
+            },
+            "destination": {
+              "status": "filled",
+              "value": "beside the server rack"
+            },
+            "negation": {
+              "status": "filled",
+              "value": "Only"
+            },
+            "object": {
+              "status": "filled",
+              "value": "screen-cleaner bottle"
+            },
+            "object_attributes": {
+              "status": "filled",
+              "value": "screen-cleaner bottle"
+            },
+            "quantity": {
+              "status": "filled",
+              "value": "small amount"
+            },
+            "recipient": {
+              "status": "filled",
+              "value": "unspecified"
+            },
+            "spatial_relation": {
+              "status": "filled",
+              "value": "beside"
+            },
+            "time": {
+              "status": "filled",
+              "value": "unspecified"
+            },
+            "tool": {
+              "status": "filled",
+              "value": "screen-cleaning solution"
+            }
+          },
+          "findings": [
+            "pilot_ambiguity_types:[\"fuzzy_quantity\",\"spatial_reference\"]",
+            "pilot_capability_status:unauthorized",
+            "intent_summary_present"
+          ],
+          "intent_summary": "Refill the screen-cleaner bottle located beside the server rack with a small amount of screen-cleaning solution",
+          "primary_ambiguity_type": "quantitative",
+          "recommended_strategy": "face_preserving_rejection",
+          "rejection_reason": "unsafe_or_prohibited_action",
+          "resolution_evidence": [],
+          "resolution_method": null,
+          "resolved_slots": [
+            {
+              "slot_name": "action",
+              "value": "refill"
+            },
+            {
+              "slot_name": "actor",
+              "value": "unspecified"
+            },
+            {
+              "slot_name": "object",
+              "value": "screen-cleaner bottle"
+            },
+            {
+              "slot_name": "object_attributes",
+              "value": "screen-cleaner bottle"
+            },
+            {
+              "slot_name": "destination",
+              "value": "beside the server rack"
+            },
+            {
+              "slot_name": "spatial_relation",
+              "value": "beside"
+            },
+            {
+              "slot_name": "quantity",
+              "value": "small amount"
+            },
+            {
+              "slot_name": "time",
+              "value": "unspecified"
+            },
+            {
+              "slot_name": "recipient",
+              "value": "unspecified"
+            },
+            {
+              "slot_name": "tool",
+              "value": "screen-cleaning solution"
+            },
+            {
+              "slot_name": "conditions",
+              "value": "Only"
+            },
+            {
+              "slot_name": "constraints",
+              "value": "Only"
+            },
+            {
+              "slot_name": "negation",
+              "value": "Only"
+            }
+          ],
+          "risk_level": "medium",
+          "risk_relevant": true,
+          "selected_interpretation": null,
+          "speech_act": "directive_command",
+          "strategy_sequence": [],
+          "supporting_evidence": [],
+          "unresolved_slots": [],
+          "unsupported_specificity": []
+        },
+        "clarification_question": null,
+        "clarification_targets": [],
+        "execution_status": "ok",
+        "official_result": false,
+        "provider_provenance": {
+          "provider_id": "cached_analysis",
+          "provider_version": "1.0.0"
+        },
+        "recommended_strategy": "face_preserving_rejection",
+        "record_id": "CA-0798",
+        "rejection_reason": "unsafe_or_prohibited_action",
+        "resolved_slots": [
+          {
+            "slot_name": "action",
+            "value": "refill"
+          },
+          {
+            "slot_name": "actor",
+            "value": "unspecified"
+          },
+          {
+            "slot_name": "object",
+            "value": "screen-cleaner bottle"
+          },
+          {
+            "slot_name": "object_attributes",
+            "value": "screen-cleaner bottle"
+          },
+          {
+            "slot_name": "destination",
+            "value": "beside the server rack"
+          },
+          {
+            "slot_name": "spatial_relation",
+            "value": "beside"
+          },
+          {
+            "slot_name": "quantity",
+            "value": "small amount"
+          },
+          {
+            "slot_name": "time",
+            "value": "unspecified"
+          },
+          {
+            "slot_name": "recipient",
+            "value": "unspecified"
+          },
+          {
+            "slot_name": "tool",
+            "value": "screen-cleaning solution"
+          },
+          {
+            "slot_name": "conditions",
+            "value": "Only"
+          },
+          {
+            "slot_name": "constraints",
+            "value": "Only"
+          },
+          {
+            "slot_name": "negation",
+            "value": "Only"
+          }
+        ],
+        "result_hash": "8938eb82af4ba6926a7d9405d630420d9ff74386cae9c5fbd13e97fff3f11ed9",
+        "run_id": null,
+        "run_mode": null,
+        "runtime_metadata": {
+          "analysis_identity": {
+            "analysis_content_hash": "eb2f58ef53a5a73b8f014761cd38c248c717955e453b976a5ac1af6649f80c49",
+            "analysis_variant": "context_blind",
+            "model_strategy_id": null,
+            "provider_id": "goal_first_v2_context_blind",
+            "provider_version": "goal-first-manager-v2",
+            "record_id": "CA-0798",
+            "source_input_hash": "f1f69ffd055fde3b2e8575aa6a1b6decd7917caedeb46efa6f749bc0b185ed4b"
+          },
+          "analysis_identity_fingerprint": "6ba5b2be2ea23602d3988b6ea231dfac9c190fbc6109c3612603d382505fbaf6",
+          "awaits_t28_adapter": true,
+          "classification": {
+            "ambiguity_present": true,
+            "ambiguity_types": [
+              "quantitative",
+              "spatial"
+            ],
+            "capability_status": "unknown",
+            "compound_ambiguity": true,
+            "compound_ambiguity_count": 2,
+            "derivation_notes": [
+              "ambiguity_present_from_types"
+            ],
+            "risk_level": "medium"
+          },
+          "context_ablation": {
+            "ablated_input_hash": "f1f69ffd055fde3b2e8575aa6a1b6decd7917caedeb46efa6f749bc0b185ed4b",
+            "capability_context_removed": true,
+            "dialogue_history_removed": true,
+            "rejected_full_context_cache": false,
+            "rejection_reason": null,
+            "scene_context_removed": true,
+            "stripped_context_derived_fields": false
+          },
+          "original_input_unmutated": true,
+          "rejection_text": "I need to decline that request because it would be unsafe under the current constraints.",
+          "requires_re_evaluation": false,
+          "resolution_events": [],
+          "router_trace": {
+            "clarification_targets": [],
+            "considered_rules": [
+              "goal_first_v2",
+              "known_unsafe_or_prohibited"
+            ],
+            "matched_rule_id": "known_unsafe_or_prohibited",
+            "notes": [],
+            "recommended_strategy": "face_preserving_rejection",
+            "rejection_reason": "unsafe_or_prohibited_action",
+            "requires_re_evaluation": false,
+            "strategy_sequence": []
+          },
+          "safety_action": "return_with_findings",
+          "uncertainty": null
+        },
+        "safety_findings": [],
+        "strategy_sequence": [],
+        "synthetic_only": true,
+        "system_id": "context_blind_manager",
+        "system_version": "1.0.0",
+        "unsupported_commitment_findings": []
+      },
+      "raw_output": "{\n  \"intent_summary\": \"Refill the screen-cleaner bottle located beside the server rack with a small amount of screen-cleaning solution\",\n  \"cpc\": {\n    \"action\": {\n      \"value\": \"refill\",\n      \"status\": \"unknown\"\n    },\n    \"object\": {\n      \"value\": \"screen-cleaner bottle\",\n      \"status\": \"unknown\"\n    },\n    \"destination\": {\n      \"value\": \"beside the server rack\",\n      \"status\": \"unknown\"\n    },\n    \"quantity\": {\n      \"value\": \"small amount\",\n      \"status\": \"unknown\"\n    },\n    \"tool\": {\n      \"value\": \"screen-cleaning solution\",\n      \"status\": \"unknown\"\n    }\n \n  ,\n  \"conditions\": {\n    \"status\": \"unknown\"\n  ,\n    \"value\": \"Only\"\n  },\n  \"constraints\": {\n    \"status\": \"unknown\"\n  ,\n    \"value\": \"Only\"\n  },\n  \"time\": {\n    \"status\": \"unknown\"\n  ,\n    \"value\": \"unspecified\"\n  },\n  \"spatial_relation\": {\n    \"status\": \"unknown\"\n  ,\n    \"value\": \"beside\"\n  },\n  \"negation\": {\n    \"status\": \"unknown\"\n  ,\n    \"value\": \"Only\"\n  },\n  \"recipient\": {\n    \"status\": \"unknown\"\n  ,\n    \"value\": \"unspecified\"\n  },\n  \"object_attributes\": {\n    \"status\": \"unknown\"\n  ,\n    \"value\": \"screen-cleaner bottle\"\n  },\n  \"actor\": {\n    \"status\": \"unknown\"\n  ,\n    \"value\": \"unspecified\"\n  }\n},\n  \"pilot_ambiguity_types\": [\n    \"spatial_reference\",\n    \"fuzzy_quantity\"\n  ]\n  \n  ,\n  \"pilot_capability_status\": \"unauthorized\",\n  \"speech_act\": \"directive_command\"\n  \n  ,\n  \"risk_level\": \"medium\"\n  \n  ,\n  \"unresolved_slots\": [\n    \"spatial_relation\",\n    \"quantity\",\n    \"tool\"\n  ]\n  \n  ,\n  \"uncertainty\": 0.75\n}",
+      "record_id": "CA-0798",
+      "schema_valid": true,
+      "supports_ambiguity_prediction": true,
+      "supports_capability_prediction": true,
+      "system_id": "goal_first_context_blind_v2",
+      "system_version": "2.0.0",
+      "terminal_strategy": "face_preserving_rejection"
+    }
+  },
+  "provenance": {
+    "source_sha256": "f33b1e29f1e8aa256a475f07213aa07247def47d8e2148d54a472a40b71b05c9",
+    "gold_sha256": "5e23ad1a92ff1873c8f039a8ce560a111dd6fb6b8ae8c11d6cf34dbfa1c360db",
+    "t07_final_zip_sha256": "34ca50e034ca37b617068bb50c734d12fa26282fb5eec563c11ead700163e491",
+    "inherited_t07_zip_sha256": "0305b1e9ab062876ee6ee89778cc6028d2eaf01718b7dd0295944e7d9cb81a01",
+    "note": "Goal-First, Degree, Timid, and Context-Blind predictions are inherited from the earlier T0.7 run; official intent and comparison come from the final T0.7 archive."
+  }
+}

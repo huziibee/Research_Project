@@ -1,0 +1,1081 @@
+{
+  "record_id": "CA-0372",
+  "frozen_source": {
+    "capability_context": "Construction support robot can transport rated loads on level ground, scan permits, and deploy lightweight barriers outside active machinery zones.",
+    "command": "Could you place the cable reel on the platform scale beside the site generator, then handle it by returning it to the tool cage?",
+    "dialogue_history": [
+      "driver: Treat this as an instruction, and use 'handle it' to mean move the cable reel after weighing it."
+    ],
+    "record_id": "CA-0372",
+    "scene_context": "Staging area on a construction site. The site generator is fixed to the floor. Both the cable reel and the assigned platform scale are movable at the work point. The work-order return field contains the cable reel's asset tag; the platform scale's return point is the calibration rack. Two locations are labelled tool cage; the work order names the one beside the scaffold bay. Two platform scales are present. The unit assigned to this work order is calibrated; the other is reserved for a different load. The assigned platform scale must first verify that the loaded cable reel is below 18 kilograms. It displays 12 kilograms. The robot's handling certificate permits this target below the stated 18-kilogram limit."
+  },
+  "frozen_gold": {
+    "ambiguity_types": [
+      "destination_reference",
+      "discourse_ellipsis",
+      "instrument_reference",
+      "pragmatic",
+      "pronoun_reference"
+    ],
+    "annotator_b_era": "claude_era",
+    "annotator_b_model": "claude-4.6-sonnet-medium-thinking",
+    "capability_status": "capable",
+    "field_status": {
+      "ambiguity_types": "adjudicated",
+      "capability_status": "auto_agree",
+      "record_validity": "auto_agree",
+      "strategy_sequence": "from_A_matching_terminal",
+      "terminal_strategy": "auto_agree"
+    },
+    "gold_lifecycle": "final_gold",
+    "gold_status": "adjudicated",
+    "human_gate_required": false,
+    "provenance": {
+      "agreement_label": "pilot_annotation_agreement",
+      "annotator_a_sha256": "b4e6072de3b0570b8dc108b28ced69e5cf75c448504851c8ab7ac2904b660561",
+      "annotator_b_sha256": "39503042c0f88d9eb4cdd738a35b3000188beeeaeadafd55423203cf1f9ba663",
+      "gold_policy": "use_existing_pilot_adjudicated_gold",
+      "input_sha256": "f4810f1970f9678e3a2e016c38d2f0aad467c4f3b390defb2696996165fcafae",
+      "pilot_gold_sha256": "b7ff5800029f3e468269fe7f23ff1bd454c3b6960dc8581db8f0d67e1f4e6a81",
+      "protocol": "pilot_adjudicated_gold_on_capability_repaired_source",
+      "repaired_input_sha256": "c65818611f15738e30e98f9ab738cbb6aff45b52654441236e1b738de10ed1fd"
+    },
+    "record_id": "CA-0372",
+    "record_validity": "valid",
+    "strategy_sequence": [
+      "reinterpret_indirect_request",
+      "resolve_lexical",
+      "resolve_reference",
+      "execute"
+    ],
+    "terminal_strategy": "execute"
+  },
+  "t07_comparison": {
+    "record_id": "CA-0372",
+    "gold_route": "execute",
+    "raw_route": "execute",
+    "ft_route": "execute",
+    "gf_route": "clarify",
+    "raw_route_ok": "True",
+    "ft_route_ok": "True",
+    "gf_route_ok": "False",
+    "raw_official_intent": "True",
+    "ft_official_intent": "True",
+    "gf_official_intent": "True",
+    "blind_official_intent": "True"
+  },
+  "t07_official_intent": {
+    "context_blind_official_intent": true,
+    "degree_official_intent_shared_gf": true,
+    "finetune_official_intent": true,
+    "goal_first_official_intent": true,
+    "raw_official_intent": true,
+    "record_id": "CA-0372",
+    "timid_official_intent_shared_gf": true
+  },
+  "t07_predictions": {
+    "raw_qwen": {
+      "ambiguity_types": [
+        "destination_reference",
+        "object_reference"
+      ],
+      "capability_status": "capable",
+      "error": null,
+      "execution_mode": "final_close_intent_box",
+      "failed": false,
+      "intent_summary": "Weigh the cable reel on the platform scale beside the site generator, then move it to the tool cage specified in the work order.",
+      "latency_ms": 6593.211204279214,
+      "parsed": {
+        "ambiguity_types": [
+          "destination_reference",
+          "object_reference"
+        ],
+        "capability_status": "capable",
+        "intent_summary": "Weigh the cable reel on the platform scale beside the site generator, then move it to the tool cage specified in the work order.",
+        "speech_act": "directive_command",
+        "terminal_strategy": "execute"
+      },
+      "raw_output": "<think>\nOkay, let's break down this command. The user wants the robot to place the cable reel on the platform scale beside the site generator, then handle it by returning it to the tool cage. But there's some context here.\n\nFirst, the dialogue history mentions that \"handle it\" means move the cable reel after weighing it. So the main tasks are: weigh the cable reel on the scale, then move it. The scene context says the platform scale must check if the loaded cable reel is below 18kg. The scale shows 12kg, which is under the limit. The robot's certificate allows this. \n\nSo the robot can do this. The capability status should be capable. The intent is to weigh and move. The speech act is a directive command. Ambiguity types: maybe object_reference since there are two tool cages, but the work order specifies the one beside the scaffold bay. Also, there are two scales, but the assigned one is the correct one. So maybe object_reference and destination_reference. Wait, the command mentions \"platform scale beside the site generator\"—the scene says the site generator is fixed, and the scale is movable. The robot can handle that. \n\nThe terminal strategy would be execute since the robot can do it. No ambiguity in the steps once the scale is confirmed. So the JSON should have intent_summary as placing and moving, speech_act as directive_command, ambiguity_types as object_reference and destination_reference, capability_status as capable, terminal_strategy as execute.\n</think>\n\n{\n  \"intent_summary\": \"Weigh the cable reel on the platform scale beside the site generator, then move it to the tool cage specified in the work order.\",\n  \"speech_act\": \"directive_command\",\n  \"ambiguity_types\": [\"object_reference\", \"destination_reference\"],\n  \"capability_status\": \"capable\",\n  \"terminal_strategy\": \"execute\"\n}",
+      "record_id": "CA-0372",
+      "schema_valid": true,
+      "speech_act": "directive_command",
+      "system_id": "direct_base_llm",
+      "terminal_strategy": "execute"
+    },
+    "finetune": {
+      "ambiguity_types": [
+        "destination_reference"
+      ],
+      "capability_status": "capable",
+      "error": null,
+      "execution_mode": "final_close_intent_box",
+      "failed": false,
+      "intent_summary": "Weigh the cable reel on the platform scale beside the site generator, then move it to the tool cage specified in the work order.",
+      "latency_ms": 15251.912356354296,
+      "parsed": {
+        "ambiguity_types": [
+          "destination_reference"
+        ],
+        "capability_status": "capable",
+        "intent_summary": "Weigh the cable reel on the platform scale beside the site generator, then move it to the tool cage specified in the work order.",
+        "speech_act": "directive_command",
+        "terminal_strategy": "execute"
+      },
+      "raw_output": "<think>\nOkay, let's break down this command. The user wants the robot to place the cable reel on the platform scale beside the site generator, then handle it by returning it to the tool cage. The dialogue history mentions treating \"handle it\" as moving after weighing.\n\nFirst, the intent summary: The main job is to weigh the cable reel using the platform scale and then move it to the tool cage. The speech act here is a directive command because it's an instruction to perform specific actions.\n\nNow, checking for ambiguities. The command mentions \"the platform scale beside the site generator,\" but there are two scales. However, the scene context says the assigned scale must verify the weight, and it's already showing 12kg. So maybe that's clear. But the two tool cages could be an issue. The work order specifies the one beside the scaffold bay, so the robot needs to choose the correct one. That might be a destination reference ambiguity since there are two tool cages. Also, \"handle it\" was clarified in the dialogue to mean moving after weighing, so that's resolved. Are there other ambiguities? The command says \"return it to the tool cage,\" but which one? Since the work order names the one beside the scaffold bay, the robot should know. So maybe the ambiguity here is destination_reference. Also, the platform scale's return point is the calibration rack, but the work order's action is to return the cable reel, not the scale. So maybe object_reference? Wait, the cable reel is the object here. The scale is used for weighing, then the cable reel is moved. So the object is the cable reel. So maybe no object_reference ambiguity. But the two tool cages could be a destination_reference ambiguity. So the ambiguity_types would include destination_reference. Also, the command mentions \"handle it by returning it,\" which was clarified, so maybe no pronoun ambiguity. The speech act is a directive command. Capability status: The robot can transport rated loads up to 18kg, and the cable reel is under 12kg. So it's capable. Terminal strategy: Execute, since the robot can do the task as per the capability context. So the JSON should have intent_summary as placing and moving the cable reel after weighing, speech_act as directive_command, ambiguity_types with destination_reference, capability_status as capable, and terminal_strategy as execute.\n</think>\n\n{\n  \"intent_summary\": \"Weigh the cable reel on the platform scale beside the site generator, then move it to the tool cage specified in the work order.\",\n  \"speech_act\": \"directive_command\",\n  \"ambiguity_types\": [\"destination_reference\"],\n  \"capability_status\": \"capable\",\n  \"terminal_strategy\": \"execute\"\n}",
+      "record_id": "CA-0372",
+      "schema_valid": true,
+      "speech_act": "directive_command",
+      "system_id": "t28_selected_adapter_llm",
+      "terminal_strategy": "execute"
+    },
+    "goal_first": {
+      "ambiguity_types": [
+        "action_order",
+        "object_reference",
+        "pragmatic",
+        "spatial_reference"
+      ],
+      "analysis_attempts": [
+        {
+          "attempt": 1,
+          "max_new_tokens": 4096,
+          "mode": "thinking",
+          "raw_chars": 8062,
+          "raw_sha256": "0f6e818ddd7bc00c9fd5fc5950e2e1a2b17f3f2c24d9686cb0130df3e4d10982",
+          "validation_error": "bad_intent_summary"
+        },
+        {
+          "attempt": 2,
+          "max_new_tokens": 8192,
+          "mode": "thinking_retry",
+          "raw_chars": 8965,
+          "raw_sha256": "683b2d994d141de267fbde5339a6797bea4f612c59ca52602d57f9577f9e263b",
+          "validation_error": "bad_pilot_ambiguity_types"
+        },
+        {
+          "attempt": 3,
+          "constraint": {
+            "constraint_initialised": true,
+            "generated_token_count": 516,
+            "maximum_output_tokens": 1024,
+            "response_mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+            "termination_reason": "eos_or_constraint_stop",
+            "transport_status": "constrained_generated"
+          },
+          "max_new_tokens": 1024,
+          "mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+          "raw_chars": 1750,
+          "raw_sha256": "1dca1320d6f0a4fa583a7e0904d49e7e1dbfc39338203be5fc0c322169d9e156",
+          "validation_error": null
+        }
+      ],
+      "capability_status": "capable",
+      "claim_boundary": "separately_versioned_from_frozen_t39",
+      "error": null,
+      "execution_mode": "cluster-gpu-goal-first-v2",
+      "failed": false,
+      "intent_summary": "Place the cable reel on the platform scale beside the site generator, then return it to the tool cage after weighing it",
+      "latency_ms": 87872.6793769747,
+      "model_id": "Qwen/Qwen3-8B@b968826d9c46dd6066d109eabc6255188de91218",
+      "parsed": {
+        "analysis": {
+          "ambiguity_present": true,
+          "ambiguity_types": [
+            "pragmatic",
+            "referential",
+            "spatial",
+            "temporal"
+          ],
+          "analysis_provenance": {
+            "analysis_id": "b097320071203db5a467cd76869a4b712b70318c857f4b02169f3635c0465100",
+            "method": "model_generated",
+            "notes": "source_input_hash=b097320071203db5a467cd76869a4b712b70318c857f4b02169f3635c0465100;no_gold_in_prompt;scene_licence_dropped=tool,destination",
+            "provider_id": "goal_first_v2_full_context",
+            "provider_version": "goal-first-manager-v2"
+          },
+          "candidate_interpretations": [],
+          "capability_status": "capable",
+          "clarification_question": "Before I continue, could you clarify: pragmatic, referential, spatial, temporal?",
+          "clarification_targets": [
+            "pragmatic",
+            "referential",
+            "spatial",
+            "temporal"
+          ],
+          "compound_ambiguity": true,
+          "compound_ambiguity_count": 4,
+          "context_sampling_uncertainty": {
+            "agreement": 0.55,
+            "score": 0.45,
+            "variant_count": 1
+          },
+          "cpc": {
+            "action": {
+              "status": "not_applicable",
+              "value": "place cable reel on platform scale beside site generator"
+            },
+            "actor": {
+              "status": "not_applicable",
+              "value": "robot"
+            },
+            "conditions": {
+              "status": "not_applicable",
+              "value": "weigh cable reel on platform scale"
+            },
+            "constraints": {
+              "status": "not_applicable",
+              "value": "cable reel must weigh below 18 kilograms"
+            },
+            "destination": {
+              "status": "not_applicable",
+              "value": "platform scale beside site generator"
+            },
+            "negation": {
+              "status": "not_applicable",
+              "value": "must weigh below 18 kilograms"
+            },
+            "object": {
+              "status": "not_applicable",
+              "value": "cable reel"
+            },
+            "object_attributes": {
+              "status": "not_applicable",
+              "value": "cable reel"
+            },
+            "quantity": {
+              "status": "not_applicable",
+              "value": "below 18 kilograms"
+            },
+            "recipient": {
+              "status": "not_applicable",
+              "value": "robot"
+            },
+            "spatial_relation": {
+              "status": "not_applicable",
+              "value": "beside the site generator"
+            },
+            "time": {
+              "status": "not_applicable",
+              "value": "after weighing"
+            },
+            "tool": {
+              "status": "not_applicable",
+              "value": "platform scale"
+            }
+          },
+          "findings": [
+            "pilot_ambiguity_types:[\"action_order\",\"object_reference\",\"pragmatic\",\"spatial_reference\"]",
+            "pilot_capability_status:capable",
+            "intent_summary_present"
+          ],
+          "intent_summary": "Place the cable reel on the platform scale beside the site generator, then return it to the tool cage after weighing it",
+          "primary_ambiguity_type": "pragmatic",
+          "recommended_strategy": "clarify",
+          "rejection_reason": null,
+          "resolution_evidence": [],
+          "resolution_method": null,
+          "resolved_slots": [],
+          "risk_level": "medium",
+          "risk_relevant": true,
+          "selected_interpretation": null,
+          "speech_act": "directive_command",
+          "strategy_sequence": [],
+          "supporting_evidence": [],
+          "unresolved_slots": [],
+          "unsupported_specificity": []
+        },
+        "clarification_question": "Before I continue, could you clarify: pragmatic, referential, spatial, temporal?",
+        "clarification_targets": [
+          "pragmatic",
+          "referential",
+          "spatial",
+          "temporal"
+        ],
+        "execution_status": "ok",
+        "official_result": false,
+        "provider_provenance": {
+          "provider_id": "cached_analysis",
+          "provider_version": "1.0.0"
+        },
+        "recommended_strategy": "clarify",
+        "record_id": "CA-0372",
+        "rejection_reason": null,
+        "resolved_slots": [],
+        "result_hash": "09cb518fe6cadebcc511d1d1222a203543496043dc630e16d72a46e97175f682",
+        "run_id": null,
+        "run_mode": null,
+        "runtime_metadata": {
+          "awaits_t28_adapter": true,
+          "classification": {
+            "ambiguity_present": true,
+            "ambiguity_types": [
+              "pragmatic",
+              "referential",
+              "spatial",
+              "temporal"
+            ],
+            "capability_status": "capable",
+            "compound_ambiguity": true,
+            "compound_ambiguity_count": 4,
+            "derivation_notes": [
+              "ambiguity_present_from_types"
+            ],
+            "risk_level": "medium"
+          },
+          "rejection_text": null,
+          "requires_re_evaluation": false,
+          "resolution_events": [],
+          "router_trace": {
+            "clarification_targets": [
+              "pragmatic",
+              "referential",
+              "spatial",
+              "temporal"
+            ],
+            "considered_rules": [
+              "goal_first_v2",
+              "known_unsafe_or_prohibited",
+              "known_incapable",
+              "unknown_capability_high_risk",
+              "context_licensed_execute",
+              "default_clarify"
+            ],
+            "matched_rule_id": "default_clarify",
+            "notes": [
+              "goal_first_v2_insufficient_licence_to_execute"
+            ],
+            "recommended_strategy": "clarify",
+            "rejection_reason": null,
+            "requires_re_evaluation": false,
+            "strategy_sequence": []
+          },
+          "safety_action": "return_with_findings",
+          "uncertainty": null
+        },
+        "safety_findings": [],
+        "strategy_sequence": [],
+        "synthetic_only": true,
+        "system_id": "goal_first_manager_v2",
+        "system_version": "2.0.0",
+        "unsupported_commitment_findings": []
+      },
+      "raw_output": "{\n  \"intent_summary\": \"Place the cable reel on the platform scale beside the site generator, then return it to the tool cage after weighing it\",\n  \"cpc\": {\n    \"action\": {\n      \"value\": \"place cable reel on platform scale beside site generator\",\n      \"status\": \"not_applicable\"\n    },\n    \"object\": {\n      \"value\": \"cable reel\",\n      \"status\": \"not_applicable\"\n    },\n    \"destination\": {\n      \"value\": \"platform scale beside site generator\",\n      \"status\": \"not_applicable\"\n    },\n    \"recipient\": {\n      \"value\": \"robot\",\n      \"status\": \"not_applicable\"\n    }\n \n  ,\n  \"conditions\": {\n    \"value\": \"weigh cable reel on platform scale\",\n    \"status\": \"not_applicable\"\n  },\n  \"constraints\": {\n    \"value\": \"cable reel must weigh below 18 kilograms\",\n    \"status\": \"not_applicable\"\n  },\n  \"spatial_relation\": {\n    \"value\": \"beside the site generator\",\n    \"status\": \"not_applicable\"\n  },\n  \"tool\": {\n    \"value\": \"platform scale\",\n    \"status\": \"not_applicable\"\n  },\n  \"time\": {\n    \"value\": \"after weighing\",\n    \"status\": \"not_applicable\"\n  }\n  ,\n  \"object_attributes\": {\n    \"value\": \"cable reel\",\n    \"status\": \"not_applicable\"\n  },\n  \"quantity\": {\n    \"value\": \"below 18 kilograms\",\n    \"status\": \"not_applicable\"\n  },\n  \"negation\": {\n    \"value\": \"must weigh below 18 kilograms\",\n    \"status\": \"not_applicable\"\n  },\n  \"actor\": {\n    \"value\": \"robot\",\n    \"status\": \"not_applicable\"\n  }\n  },\n  \"pilot_ambiguity_types\": [\n    \"pragmatic\",\n    \"spatial_reference\",\n    \"object_reference\",\n    \"action_order\"\n  ]\n  \n  ,\n  \"pilot_capability_status\": \"capable\"\n  \n  ,\n  \"speech_act\": \"directive_command\"\n  \n  ,\n  \"risk_level\": \"medium\"\n  \n  ,\n  \"uncertainty\": 0.45\n  \n\n\n\n  \n  ,\n  \"unresolved_slots\": [\n    \"tool\",\n    \"destination\"\n  ]\n  \n  }\n",
+      "record_id": "CA-0372",
+      "schema_valid": true,
+      "supports_ambiguity_prediction": true,
+      "supports_capability_prediction": true,
+      "system_id": "goal_first_manager_v2",
+      "system_version": "2.0.0",
+      "terminal_strategy": "clarify"
+    },
+    "degree": {
+      "ambiguity_types": [
+        "action_order",
+        "object_reference",
+        "pragmatic",
+        "spatial_reference"
+      ],
+      "analysis_attempts": [
+        {
+          "attempt": 1,
+          "max_new_tokens": 4096,
+          "mode": "thinking",
+          "raw_chars": 8062,
+          "raw_sha256": "0f6e818ddd7bc00c9fd5fc5950e2e1a2b17f3f2c24d9686cb0130df3e4d10982",
+          "validation_error": "bad_intent_summary"
+        },
+        {
+          "attempt": 2,
+          "max_new_tokens": 8192,
+          "mode": "thinking_retry",
+          "raw_chars": 8965,
+          "raw_sha256": "683b2d994d141de267fbde5339a6797bea4f612c59ca52602d57f9577f9e263b",
+          "validation_error": "bad_pilot_ambiguity_types"
+        },
+        {
+          "attempt": 3,
+          "constraint": {
+            "constraint_initialised": true,
+            "generated_token_count": 516,
+            "maximum_output_tokens": 1024,
+            "response_mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+            "termination_reason": "eos_or_constraint_stop",
+            "transport_status": "constrained_generated"
+          },
+          "max_new_tokens": 1024,
+          "mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+          "raw_chars": 1750,
+          "raw_sha256": "1dca1320d6f0a4fa583a7e0904d49e7e1dbfc39338203be5fc0c322169d9e156",
+          "validation_error": null
+        }
+      ],
+      "capability_status": "capable",
+      "claim_boundary": "separately_versioned_from_frozen_t39",
+      "error": null,
+      "execution_mode": "cluster-gpu-goal-first-v2",
+      "failed": false,
+      "intent_summary": "Place the cable reel on the platform scale beside the site generator, then return it to the tool cage after weighing it",
+      "latency_ms": 87872.6793769747,
+      "model_id": "Qwen/Qwen3-8B@b968826d9c46dd6066d109eabc6255188de91218",
+      "parsed": {
+        "analysis": {
+          "ambiguity_present": true,
+          "ambiguity_types": [
+            "pragmatic",
+            "referential",
+            "spatial",
+            "temporal"
+          ],
+          "analysis_provenance": {
+            "analysis_id": "b097320071203db5a467cd76869a4b712b70318c857f4b02169f3635c0465100",
+            "method": "model_generated",
+            "notes": "source_input_hash=b097320071203db5a467cd76869a4b712b70318c857f4b02169f3635c0465100;no_gold_in_prompt;scene_licence_dropped=tool,destination",
+            "provider_id": "goal_first_v2_full_context",
+            "provider_version": "goal-first-manager-v2"
+          },
+          "candidate_interpretations": [],
+          "capability_status": "capable",
+          "clarification_question": "Could you clarify what you would like me to do?",
+          "clarification_targets": [
+            "intent"
+          ],
+          "compound_ambiguity": true,
+          "compound_ambiguity_count": 4,
+          "context_sampling_uncertainty": {
+            "agreement": 0.55,
+            "score": 0.45,
+            "variant_count": 1
+          },
+          "cpc": {
+            "action": {
+              "status": "not_applicable",
+              "value": "place cable reel on platform scale beside site generator"
+            },
+            "actor": {
+              "status": "not_applicable",
+              "value": "robot"
+            },
+            "conditions": {
+              "status": "not_applicable",
+              "value": "weigh cable reel on platform scale"
+            },
+            "constraints": {
+              "status": "not_applicable",
+              "value": "cable reel must weigh below 18 kilograms"
+            },
+            "destination": {
+              "status": "not_applicable",
+              "value": "platform scale beside site generator"
+            },
+            "negation": {
+              "status": "not_applicable",
+              "value": "must weigh below 18 kilograms"
+            },
+            "object": {
+              "status": "not_applicable",
+              "value": "cable reel"
+            },
+            "object_attributes": {
+              "status": "not_applicable",
+              "value": "cable reel"
+            },
+            "quantity": {
+              "status": "not_applicable",
+              "value": "below 18 kilograms"
+            },
+            "recipient": {
+              "status": "not_applicable",
+              "value": "robot"
+            },
+            "spatial_relation": {
+              "status": "not_applicable",
+              "value": "beside the site generator"
+            },
+            "time": {
+              "status": "not_applicable",
+              "value": "after weighing"
+            },
+            "tool": {
+              "status": "not_applicable",
+              "value": "platform scale"
+            }
+          },
+          "findings": [
+            "pilot_ambiguity_types:[\"action_order\",\"object_reference\",\"pragmatic\",\"spatial_reference\"]",
+            "pilot_capability_status:capable",
+            "intent_summary_present"
+          ],
+          "intent_summary": "Place the cable reel on the platform scale beside the site generator, then return it to the tool cage after weighing it",
+          "primary_ambiguity_type": "pragmatic",
+          "recommended_strategy": "clarify",
+          "rejection_reason": null,
+          "resolution_evidence": [],
+          "resolution_method": null,
+          "resolved_slots": [],
+          "risk_level": "medium",
+          "risk_relevant": true,
+          "selected_interpretation": null,
+          "speech_act": "directive_command",
+          "strategy_sequence": [],
+          "supporting_evidence": [],
+          "unresolved_slots": [],
+          "unsupported_specificity": []
+        },
+        "clarification_question": "Could you clarify what you would like me to do?",
+        "clarification_targets": [
+          "intent"
+        ],
+        "execution_status": "ok",
+        "official_result": false,
+        "provider_provenance": {
+          "shared_analysis_fingerprint": "40a871271acd270c95877590b7646519c4157c557a525c6fbf9bdaf3de7dd3c3"
+        },
+        "recommended_strategy": "clarify",
+        "record_id": "CA-0372",
+        "rejection_reason": null,
+        "resolved_slots": [],
+        "result_hash": "2afa68e64a11bb308717381939478826145703266e8b221c1944a3aee208395c",
+        "run_id": null,
+        "run_mode": null,
+        "runtime_metadata": {
+          "shared_analysis_fingerprint": "40a871271acd270c95877590b7646519c4157c557a525c6fbf9bdaf3de7dd3c3",
+          "thresholds_status": "unfrozen",
+          "thresholds_valid_for_official_use": false,
+          "uncertainty_score": 0.45,
+          "uses_type_risk_capability_precedence": false
+        },
+        "safety_findings": [],
+        "strategy_sequence": [],
+        "synthetic_only": true,
+        "system_id": "degree_based_router",
+        "system_version": "1.0.0",
+        "unsupported_commitment_findings": []
+      },
+      "raw_output": "{\n  \"intent_summary\": \"Place the cable reel on the platform scale beside the site generator, then return it to the tool cage after weighing it\",\n  \"cpc\": {\n    \"action\": {\n      \"value\": \"place cable reel on platform scale beside site generator\",\n      \"status\": \"not_applicable\"\n    },\n    \"object\": {\n      \"value\": \"cable reel\",\n      \"status\": \"not_applicable\"\n    },\n    \"destination\": {\n      \"value\": \"platform scale beside site generator\",\n      \"status\": \"not_applicable\"\n    },\n    \"recipient\": {\n      \"value\": \"robot\",\n      \"status\": \"not_applicable\"\n    }\n \n  ,\n  \"conditions\": {\n    \"value\": \"weigh cable reel on platform scale\",\n    \"status\": \"not_applicable\"\n  },\n  \"constraints\": {\n    \"value\": \"cable reel must weigh below 18 kilograms\",\n    \"status\": \"not_applicable\"\n  },\n  \"spatial_relation\": {\n    \"value\": \"beside the site generator\",\n    \"status\": \"not_applicable\"\n  },\n  \"tool\": {\n    \"value\": \"platform scale\",\n    \"status\": \"not_applicable\"\n  },\n  \"time\": {\n    \"value\": \"after weighing\",\n    \"status\": \"not_applicable\"\n  }\n  ,\n  \"object_attributes\": {\n    \"value\": \"cable reel\",\n    \"status\": \"not_applicable\"\n  },\n  \"quantity\": {\n    \"value\": \"below 18 kilograms\",\n    \"status\": \"not_applicable\"\n  },\n  \"negation\": {\n    \"value\": \"must weigh below 18 kilograms\",\n    \"status\": \"not_applicable\"\n  },\n  \"actor\": {\n    \"value\": \"robot\",\n    \"status\": \"not_applicable\"\n  }\n  },\n  \"pilot_ambiguity_types\": [\n    \"pragmatic\",\n    \"spatial_reference\",\n    \"object_reference\",\n    \"action_order\"\n  ]\n  \n  ,\n  \"pilot_capability_status\": \"capable\"\n  \n  ,\n  \"speech_act\": \"directive_command\"\n  \n  ,\n  \"risk_level\": \"medium\"\n  \n  ,\n  \"uncertainty\": 0.45\n  \n\n\n\n  \n  ,\n  \"unresolved_slots\": [\n    \"tool\",\n    \"destination\"\n  ]\n  \n  }\n",
+      "record_id": "CA-0372",
+      "schema_valid": true,
+      "supports_ambiguity_prediction": true,
+      "supports_capability_prediction": true,
+      "system_id": "degree_based_router_v2",
+      "system_version": "2.0.0",
+      "terminal_strategy": "clarify"
+    },
+    "timid": {
+      "ambiguity_types": [
+        "action_order",
+        "object_reference",
+        "pragmatic",
+        "spatial_reference"
+      ],
+      "analysis_attempts": [
+        {
+          "attempt": 1,
+          "max_new_tokens": 4096,
+          "mode": "thinking",
+          "raw_chars": 8062,
+          "raw_sha256": "0f6e818ddd7bc00c9fd5fc5950e2e1a2b17f3f2c24d9686cb0130df3e4d10982",
+          "validation_error": "bad_intent_summary"
+        },
+        {
+          "attempt": 2,
+          "max_new_tokens": 8192,
+          "mode": "thinking_retry",
+          "raw_chars": 8965,
+          "raw_sha256": "683b2d994d141de267fbde5339a6797bea4f612c59ca52602d57f9577f9e263b",
+          "validation_error": "bad_pilot_ambiguity_types"
+        },
+        {
+          "attempt": 3,
+          "constraint": {
+            "constraint_initialised": true,
+            "generated_token_count": 516,
+            "maximum_output_tokens": 1024,
+            "response_mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+            "termination_reason": "eos_or_constraint_stop",
+            "transport_status": "constrained_generated"
+          },
+          "max_new_tokens": 1024,
+          "mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+          "raw_chars": 1750,
+          "raw_sha256": "1dca1320d6f0a4fa583a7e0904d49e7e1dbfc39338203be5fc0c322169d9e156",
+          "validation_error": null
+        }
+      ],
+      "capability_status": "capable",
+      "claim_boundary": "separately_versioned_from_frozen_t39",
+      "error": null,
+      "execution_mode": "cluster-gpu-goal-first-v2",
+      "failed": false,
+      "intent_summary": "Place the cable reel on the platform scale beside the site generator, then return it to the tool cage after weighing it",
+      "latency_ms": 87872.6793769747,
+      "model_id": "Qwen/Qwen3-8B@b968826d9c46dd6066d109eabc6255188de91218",
+      "parsed": {
+        "analysis": {
+          "ambiguity_present": true,
+          "ambiguity_types": [
+            "pragmatic",
+            "referential",
+            "spatial",
+            "temporal"
+          ],
+          "analysis_provenance": {
+            "analysis_id": "b097320071203db5a467cd76869a4b712b70318c857f4b02169f3635c0465100",
+            "method": "model_generated",
+            "notes": "source_input_hash=b097320071203db5a467cd76869a4b712b70318c857f4b02169f3635c0465100;no_gold_in_prompt;scene_licence_dropped=tool,destination",
+            "provider_id": "goal_first_v2_full_context",
+            "provider_version": "goal-first-manager-v2"
+          },
+          "candidate_interpretations": [],
+          "capability_status": "capable",
+          "clarification_question": "Before I continue, could you clarify: pragmatic, referential, spatial, temporal?",
+          "clarification_targets": [
+            "pragmatic",
+            "referential",
+            "spatial",
+            "temporal"
+          ],
+          "compound_ambiguity": true,
+          "compound_ambiguity_count": 4,
+          "context_sampling_uncertainty": {
+            "agreement": 0.55,
+            "score": 0.45,
+            "variant_count": 1
+          },
+          "cpc": {
+            "action": {
+              "status": "not_applicable",
+              "value": "place cable reel on platform scale beside site generator"
+            },
+            "actor": {
+              "status": "not_applicable",
+              "value": "robot"
+            },
+            "conditions": {
+              "status": "not_applicable",
+              "value": "weigh cable reel on platform scale"
+            },
+            "constraints": {
+              "status": "not_applicable",
+              "value": "cable reel must weigh below 18 kilograms"
+            },
+            "destination": {
+              "status": "not_applicable",
+              "value": "platform scale beside site generator"
+            },
+            "negation": {
+              "status": "not_applicable",
+              "value": "must weigh below 18 kilograms"
+            },
+            "object": {
+              "status": "not_applicable",
+              "value": "cable reel"
+            },
+            "object_attributes": {
+              "status": "not_applicable",
+              "value": "cable reel"
+            },
+            "quantity": {
+              "status": "not_applicable",
+              "value": "below 18 kilograms"
+            },
+            "recipient": {
+              "status": "not_applicable",
+              "value": "robot"
+            },
+            "spatial_relation": {
+              "status": "not_applicable",
+              "value": "beside the site generator"
+            },
+            "time": {
+              "status": "not_applicable",
+              "value": "after weighing"
+            },
+            "tool": {
+              "status": "not_applicable",
+              "value": "platform scale"
+            }
+          },
+          "findings": [
+            "pilot_ambiguity_types:[\"action_order\",\"object_reference\",\"pragmatic\",\"spatial_reference\"]",
+            "pilot_capability_status:capable",
+            "intent_summary_present"
+          ],
+          "intent_summary": "Place the cable reel on the platform scale beside the site generator, then return it to the tool cage after weighing it",
+          "primary_ambiguity_type": "pragmatic",
+          "recommended_strategy": "clarify",
+          "rejection_reason": null,
+          "resolution_evidence": [],
+          "resolution_method": null,
+          "resolved_slots": [],
+          "risk_level": "medium",
+          "risk_relevant": true,
+          "selected_interpretation": null,
+          "speech_act": "directive_command",
+          "strategy_sequence": [],
+          "supporting_evidence": [],
+          "unresolved_slots": [],
+          "unsupported_specificity": []
+        },
+        "clarification_question": "Before I continue, could you clarify: pragmatic, referential, spatial, temporal?",
+        "clarification_targets": [
+          "pragmatic",
+          "referential",
+          "spatial",
+          "temporal"
+        ],
+        "execution_status": "ok",
+        "official_result": false,
+        "provider_provenance": {
+          "provider_id": "cached_analysis",
+          "provider_version": "1.0.0"
+        },
+        "recommended_strategy": "clarify",
+        "record_id": "CA-0372",
+        "rejection_reason": null,
+        "resolved_slots": [],
+        "result_hash": "080ae8c342bac862a5e75eec47d8d333623a6823751bf98ea01696d9f5386eb0",
+        "run_id": null,
+        "run_mode": null,
+        "runtime_metadata": {
+          "awaits_t28_adapter": true,
+          "classification": {
+            "ambiguity_present": true,
+            "ambiguity_types": [
+              "pragmatic",
+              "referential",
+              "spatial",
+              "temporal"
+            ],
+            "capability_status": "capable",
+            "compound_ambiguity": true,
+            "compound_ambiguity_count": 4,
+            "derivation_notes": [
+              "ambiguity_present_from_types"
+            ],
+            "risk_level": "medium"
+          },
+          "rejection_text": null,
+          "requires_re_evaluation": false,
+          "resolution_events": [],
+          "router_trace": {
+            "clarification_targets": [
+              "pragmatic",
+              "referential",
+              "spatial",
+              "temporal"
+            ],
+            "considered_rules": [
+              "known_unsafe_or_prohibited",
+              "known_incapable",
+              "unknown_or_unverified_capability",
+              "hazard_identity_unresolved",
+              "critical_unresolved_medium_high_risk",
+              "unknown_safety_risk",
+              "dependent_compound_ambiguities",
+              "unique_low_risk_resolvable",
+              "clear_safe_capable",
+              "default_clarify"
+            ],
+            "matched_rule_id": "default_clarify",
+            "notes": [
+              "default_clarify_no_unsupported_specificity"
+            ],
+            "recommended_strategy": "clarify",
+            "rejection_reason": null,
+            "requires_re_evaluation": false,
+            "strategy_sequence": []
+          },
+          "safety_action": "return_with_findings",
+          "uncertainty": null
+        },
+        "safety_findings": [],
+        "strategy_sequence": [],
+        "synthetic_only": true,
+        "system_id": "full_type_risk_aware_manager",
+        "system_version": "1.0.0",
+        "unsupported_commitment_findings": []
+      },
+      "raw_output": "{\n  \"intent_summary\": \"Place the cable reel on the platform scale beside the site generator, then return it to the tool cage after weighing it\",\n  \"cpc\": {\n    \"action\": {\n      \"value\": \"place cable reel on platform scale beside site generator\",\n      \"status\": \"not_applicable\"\n    },\n    \"object\": {\n      \"value\": \"cable reel\",\n      \"status\": \"not_applicable\"\n    },\n    \"destination\": {\n      \"value\": \"platform scale beside site generator\",\n      \"status\": \"not_applicable\"\n    },\n    \"recipient\": {\n      \"value\": \"robot\",\n      \"status\": \"not_applicable\"\n    }\n \n  ,\n  \"conditions\": {\n    \"value\": \"weigh cable reel on platform scale\",\n    \"status\": \"not_applicable\"\n  },\n  \"constraints\": {\n    \"value\": \"cable reel must weigh below 18 kilograms\",\n    \"status\": \"not_applicable\"\n  },\n  \"spatial_relation\": {\n    \"value\": \"beside the site generator\",\n    \"status\": \"not_applicable\"\n  },\n  \"tool\": {\n    \"value\": \"platform scale\",\n    \"status\": \"not_applicable\"\n  },\n  \"time\": {\n    \"value\": \"after weighing\",\n    \"status\": \"not_applicable\"\n  }\n  ,\n  \"object_attributes\": {\n    \"value\": \"cable reel\",\n    \"status\": \"not_applicable\"\n  },\n  \"quantity\": {\n    \"value\": \"below 18 kilograms\",\n    \"status\": \"not_applicable\"\n  },\n  \"negation\": {\n    \"value\": \"must weigh below 18 kilograms\",\n    \"status\": \"not_applicable\"\n  },\n  \"actor\": {\n    \"value\": \"robot\",\n    \"status\": \"not_applicable\"\n  }\n  },\n  \"pilot_ambiguity_types\": [\n    \"pragmatic\",\n    \"spatial_reference\",\n    \"object_reference\",\n    \"action_order\"\n  ]\n  \n  ,\n  \"pilot_capability_status\": \"capable\"\n  \n  ,\n  \"speech_act\": \"directive_command\"\n  \n  ,\n  \"risk_level\": \"medium\"\n  \n  ,\n  \"uncertainty\": 0.45\n  \n\n\n\n  \n  ,\n  \"unresolved_slots\": [\n    \"tool\",\n    \"destination\"\n  ]\n  \n  }\n",
+      "record_id": "CA-0372",
+      "schema_valid": true,
+      "supports_ambiguity_prediction": true,
+      "supports_capability_prediction": true,
+      "system_id": "rich_conservative_manager_v2",
+      "system_version": "2.0.0",
+      "terminal_strategy": "clarify"
+    },
+    "context_blind": {
+      "ambiguity_types": [
+        "action_order"
+      ],
+      "analysis_attempts": [
+        {
+          "attempt": 1,
+          "max_new_tokens": 4096,
+          "mode": "thinking",
+          "raw_chars": 8636,
+          "raw_sha256": "3587dabb034e27bc4331a49d358b52c2175d027f4380d44b94d4d17c8b47b98e",
+          "validation_error": "bad_intent_summary"
+        },
+        {
+          "attempt": 2,
+          "max_new_tokens": 8192,
+          "mode": "thinking_retry",
+          "raw_chars": 9638,
+          "raw_sha256": "70eab8cea110ae935831f1e2a0b10d9434d9cbb6df08124c50ea44835ef18b8f",
+          "validation_error": "bad_pilot_ambiguity_types"
+        },
+        {
+          "attempt": 3,
+          "constraint": {
+            "constraint_initialised": true,
+            "generated_token_count": 463,
+            "maximum_output_tokens": 1024,
+            "response_mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+            "termination_reason": "eos_or_constraint_stop",
+            "transport_status": "constrained_generated"
+          },
+          "max_new_tokens": 1024,
+          "mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+          "raw_chars": 1498,
+          "raw_sha256": "eab16e37e83d457389ff7bfe5e0228203e8455e9f9a0575377d8de839f707416",
+          "validation_error": null
+        }
+      ],
+      "capability_status": "unauthorized",
+      "claim_boundary": "separately_versioned_from_frozen_t39",
+      "error": null,
+      "execution_mode": "cluster-gpu-goal-first-v2",
+      "failed": false,
+      "intent_summary": "Place the cable reel on the platform scale beside the site generator and then return it to the tool cage",
+      "latency_ms": 85491.22423166409,
+      "model_id": "Qwen/Qwen3-8B@b968826d9c46dd6066d109eabc6255188de91218",
+      "parsed": {
+        "analysis": {
+          "ambiguity_present": true,
+          "ambiguity_types": [
+            "temporal"
+          ],
+          "analysis_provenance": {
+            "analysis_id": "ed4c1b86c24a1f40febf22cacb8ba0d7d3d7e9a997378d8529cfafe82ce9ed04",
+            "method": "context_blind",
+            "notes": "ablated_input_hash=ed4c1b86c24a1f40febf22cacb8ba0d7d3d7e9a997378d8529cfafe82ce9ed04;source_input_hash=ed4c1b86c24a1f40febf22cacb8ba0d7d3d7e9a997378d8529cfafe82ce9ed04;no_gold_in_prompt;scene_licence_dropped=tool",
+            "provider_id": "goal_first_v2_context_blind",
+            "provider_version": "goal-first-manager-v2"
+          },
+          "candidate_interpretations": [],
+          "capability_status": "unknown",
+          "clarification_question": null,
+          "clarification_targets": [],
+          "compound_ambiguity": false,
+          "compound_ambiguity_count": 0,
+          "context_sampling_uncertainty": {
+            "agreement": 0.30000000000000004,
+            "score": 0.7,
+            "variant_count": 1
+          },
+          "cpc": {
+            "action": {
+              "status": "not_applicable",
+              "value": "place"
+            },
+            "actor": {
+              "status": "not_applicable",
+              "value": "none"
+            },
+            "conditions": {
+              "status": "not_applicable",
+              "value": "none"
+            },
+            "constraints": {
+              "status": "not_applicable",
+              "value": "return it to the tool cage"
+            },
+            "destination": {
+              "status": "not_applicable",
+              "value": "platform scale beside the site generator"
+            },
+            "negation": {
+              "status": "not_applicable",
+              "value": "none"
+            },
+            "object": {
+              "status": "not_applicable",
+              "value": "cable reel"
+            },
+            "object_attributes": {
+              "status": "not_applicable",
+              "value": "none"
+            },
+            "quantity": {
+              "status": "not_applicable",
+              "value": "none"
+            },
+            "recipient": {
+              "status": "not_applicable",
+              "value": "none"
+            },
+            "spatial_relation": {
+              "status": "not_applicable",
+              "value": "beside"
+            },
+            "time": {
+              "status": "not_applicable",
+              "value": "none"
+            },
+            "tool": {
+              "status": "not_applicable",
+              "value": "none"
+            }
+          },
+          "findings": [
+            "pilot_ambiguity_types:[\"action_order\"]",
+            "pilot_capability_status:unauthorized",
+            "intent_summary_present"
+          ],
+          "intent_summary": "Place the cable reel on the platform scale beside the site generator and then return it to the tool cage",
+          "primary_ambiguity_type": "temporal",
+          "recommended_strategy": "face_preserving_rejection",
+          "rejection_reason": "unsafe_or_prohibited_action",
+          "resolution_evidence": [],
+          "resolution_method": null,
+          "resolved_slots": [],
+          "risk_level": "medium",
+          "risk_relevant": true,
+          "selected_interpretation": null,
+          "speech_act": "directive_command",
+          "strategy_sequence": [],
+          "supporting_evidence": [],
+          "unresolved_slots": [
+            {
+              "reason": "model_identified_uncertainty",
+              "slot_name": "recipient"
+            },
+            {
+              "reason": "model_identified_uncertainty",
+              "slot_name": "destination"
+            }
+          ],
+          "unsupported_specificity": []
+        },
+        "clarification_question": null,
+        "clarification_targets": [],
+        "execution_status": "ok",
+        "official_result": false,
+        "provider_provenance": {
+          "provider_id": "cached_analysis",
+          "provider_version": "1.0.0"
+        },
+        "recommended_strategy": "face_preserving_rejection",
+        "record_id": "CA-0372",
+        "rejection_reason": "unsafe_or_prohibited_action",
+        "resolved_slots": [],
+        "result_hash": "4c9b273ca4483e16602e4f9c1b9d8bb086807efbf95bcc3e85bc5f4b90cbc8cc",
+        "run_id": null,
+        "run_mode": null,
+        "runtime_metadata": {
+          "analysis_identity": {
+            "analysis_content_hash": "22d0c9f7a93347c629dcff6a48974a3548470640e825b05a9e3b11c8255b89dd",
+            "analysis_variant": "context_blind",
+            "model_strategy_id": null,
+            "provider_id": "goal_first_v2_context_blind",
+            "provider_version": "goal-first-manager-v2",
+            "record_id": "CA-0372",
+            "source_input_hash": "ed4c1b86c24a1f40febf22cacb8ba0d7d3d7e9a997378d8529cfafe82ce9ed04"
+          },
+          "analysis_identity_fingerprint": "3be7a7cd88737c961a920b09ac796cb8f5a8f2a906a4d7de711d4f3fafc62024",
+          "awaits_t28_adapter": true,
+          "classification": {
+            "ambiguity_present": true,
+            "ambiguity_types": [
+              "temporal"
+            ],
+            "capability_status": "unknown",
+            "compound_ambiguity": false,
+            "compound_ambiguity_count": 0,
+            "derivation_notes": [
+              "ambiguity_present_from_types"
+            ],
+            "risk_level": "medium"
+          },
+          "context_ablation": {
+            "ablated_input_hash": "ed4c1b86c24a1f40febf22cacb8ba0d7d3d7e9a997378d8529cfafe82ce9ed04",
+            "capability_context_removed": true,
+            "dialogue_history_removed": true,
+            "rejected_full_context_cache": false,
+            "rejection_reason": null,
+            "scene_context_removed": true,
+            "stripped_context_derived_fields": false
+          },
+          "original_input_unmutated": true,
+          "rejection_text": "I need to decline that request because it would be unsafe under the current constraints.",
+          "requires_re_evaluation": false,
+          "resolution_events": [
+            {
+              "confidence_category": "blocked",
+              "details": {
+                "risk_level": "medium"
+              },
+              "evidence_source": null,
+              "outcome": "resolution_blocked_by_risk",
+              "previous_status": "unresolved",
+              "resolved_value": null,
+              "rule_id": "risk_block",
+              "safety_eligibility": false,
+              "slot": "recipient"
+            },
+            {
+              "confidence_category": "blocked",
+              "details": {
+                "risk_level": "medium"
+              },
+              "evidence_source": null,
+              "outcome": "resolution_blocked_by_risk",
+              "previous_status": "unresolved",
+              "resolved_value": null,
+              "rule_id": "risk_block",
+              "safety_eligibility": false,
+              "slot": "destination"
+            }
+          ],
+          "router_trace": {
+            "clarification_targets": [],
+            "considered_rules": [
+              "goal_first_v2",
+              "known_unsafe_or_prohibited"
+            ],
+            "matched_rule_id": "known_unsafe_or_prohibited",
+            "notes": [],
+            "recommended_strategy": "face_preserving_rejection",
+            "rejection_reason": "unsafe_or_prohibited_action",
+            "requires_re_evaluation": false,
+            "strategy_sequence": []
+          },
+          "safety_action": "return_with_findings",
+          "uncertainty": null
+        },
+        "safety_findings": [],
+        "strategy_sequence": [],
+        "synthetic_only": true,
+        "system_id": "context_blind_manager",
+        "system_version": "1.0.0",
+        "unsupported_commitment_findings": []
+      },
+      "raw_output": "{\n  \"intent_summary\": \"Place the cable reel on the platform scale beside the site generator and then return it to the tool cage\",\n  \"cpc\": {\n    \"action\": {\n      \"value\": \"place\",\n      \"status\": \"not_applicable\"\n    },\n    \"object\": {\n      \"value\": \"cable reel\",\n      \"status\": \"not_applicable\"\n    },\n    \"destination\": {\n      \"value\": \"platform scale beside the site generator\",\n      \"status\": \"not_applicable\"\n    },\n    \"recipient\": {\n      \"value\": \"none\",\n      \"status\": \"not_applicable\"\n    },\n    \"tool\": {\n      \"value\": \"none\",\n      \"status\": \"not_applicable\"\n    }\n \n  ,\n  \"constraints\": {\n    \"value\": \"return it to the tool cage\",\n    \"status\": \"not_applicable\"\n  },\n  \"time\": {\n    \"value\": \"none\",\n    \"status\": \"not_applicable\"\n  },\n  \"quantity\": {\n    \"value\": \"none\",\n    \"status\": \"not_applicable\"\n  },\n  \"spatial_relation\": {\n    \"value\": \"beside\",\n    \"status\": \"not_applicable\"\n  },\n  \"negation\": {\n    \"value\": \"none\",\n    \"status\": \"not_applicable\"\n  },\n  \"conditions\": {\n    \"value\": \"none\",\n    \"status\": \"not_applicable\"\n  },\n  \"object_attributes\": {\n    \"value\": \"none\",\n    \"status\": \"not_applicable\"\n  },\n  \"actor\": {\n    \"value\": \"none\",\n    \"status\": \"not_applicable\"\n  }\n}\n\n,\n  \"pilot_ambiguity_types\": [\n    \"action_order\"\n  ]\n  \n  ,\n  \"pilot_capability_status\": \"unauthorized\"\n  ,\n  \"risk_level\": \"medium\"\n  ,\n  \"speech_act\": \"directive_command\"\n  ,\n  \"uncertainty\": 0.7\n  ,\n  \"unresolved_slots\": [\n    \"tool\",\n    \"recipient\",\n    \"destination\"\n  ]\n  }\n\n",
+      "record_id": "CA-0372",
+      "schema_valid": true,
+      "supports_ambiguity_prediction": true,
+      "supports_capability_prediction": true,
+      "system_id": "goal_first_context_blind_v2",
+      "system_version": "2.0.0",
+      "terminal_strategy": "face_preserving_rejection"
+    }
+  },
+  "provenance": {
+    "source_sha256": "f33b1e29f1e8aa256a475f07213aa07247def47d8e2148d54a472a40b71b05c9",
+    "gold_sha256": "5e23ad1a92ff1873c8f039a8ce560a111dd6fb6b8ae8c11d6cf34dbfa1c360db",
+    "t07_final_zip_sha256": "34ca50e034ca37b617068bb50c734d12fa26282fb5eec563c11ead700163e491",
+    "inherited_t07_zip_sha256": "0305b1e9ab062876ee6ee89778cc6028d2eaf01718b7dd0295944e7d9cb81a01",
+    "note": "Goal-First, Degree, Timid, and Context-Blind predictions are inherited from the earlier T0.7 run; official intent and comparison come from the final T0.7 archive."
+  }
+}

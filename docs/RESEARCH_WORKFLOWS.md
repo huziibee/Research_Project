@@ -12,9 +12,9 @@ python -m pytest -q tests/test_schema_validation.py
 ```
 
 These checks do not reproduce a model score. The complete suite is
-`python -m pytest -q` after the exact local inputs and optional dependencies
-are provisioned. Tests that require restricted Pilot-120 text cannot be run
-from a metadata-only public release.
+`python -m pytest -q` after the exact upstream inputs and optional model
+dependencies are provisioned. Pilot-120's frozen files are in this repository;
+external model weights and upstream datasets for new studies are separate.
 
 ## Before evaluating
 
@@ -60,9 +60,12 @@ Do not pool deterministic replays as independent samples or drop failed rows.
 ## Artifacts and status
 
 Generated files live under `outputs/` locally or a versioned cluster result
-root. A Slurm `COMPLETED` state alone is insufficient: verify the declared
+root. Reviewed immutable archives are in `research/pilot120/artifacts/`.
+A Slurm `COMPLETED` state alone is insufficient: verify the declared
 number of JSONL rows, unique IDs, final summaries, archive integrity, and
 SHA-256. A `RUN` log line or `.extern COMPLETED` step is not a finished study.
 Use `docs/PILOT120.md` for the completed T0.7 aggregate table and archive
-hash. The `handover/` folder and `cursor_plan/` retain historical decisions;
-their dates and job IDs are not a current queue snapshot.
+hash. ABLE IX jobs 60861-60865 were running/dependency-queued at the
+2026-09-27 check; recheck Slurm before treating them as complete. The
+`cursor_plan/` folder retains historical decisions; its dates and job IDs
+are not a current queue snapshot.

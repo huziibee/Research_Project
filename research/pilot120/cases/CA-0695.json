@@ -1,0 +1,1154 @@
+{
+  "record_id": "CA-0695",
+  "frozen_source": {
+    "capability_context": "Hotel service robot can deliver sealed guest items, move linen, scan room tags, and clean approved floor equipment.",
+    "command": "Carry out both the movement and inspection of the guest parcel by the service alcove after the check using the usual setup.",
+    "dialogue_history": [],
+    "record_id": "CA-0695",
+    "scene_context": "Housekeeping store on a hotel floor. Two locations are labelled service alcove. Work order WO-287 points to the one beside the guest-room door. The setup table states that the evening service applies to a different work-order prefix, while Work order WO-287 maps to the guest delivery. An unrelated laundry bag is logged for later work at the linen closet. The guest delivery requires the check, then movement to the designated service alcove, followed by inspection."
+  },
+  "frozen_gold": {
+    "ambiguity_types": [
+      "action_order",
+      "destination_reference",
+      "routine_reference"
+    ],
+    "annotator_b_era": "glm_era",
+    "annotator_b_model": "glm-5.2-high",
+    "capability_status": "capable",
+    "field_status": {
+      "ambiguity_types": "auto_agree",
+      "capability_status": "auto_agree",
+      "record_validity": "auto_agree",
+      "strategy_sequence": "auto_agree",
+      "terminal_strategy": "auto_agree"
+    },
+    "gold_lifecycle": "final_gold",
+    "gold_status": "auto_agree",
+    "human_gate_required": false,
+    "provenance": {
+      "agreement_label": "pilot_annotation_agreement",
+      "annotator_a_sha256": "26dca69b5e4e505488986bffd96bfd60ea54f054e2a24c771726c2b62f8a5194",
+      "annotator_b_sha256": "e5a688d58c57116abe8b4565d58923b41cd67bc05c2e0301d03333fbd696edcc",
+      "gold_policy": "use_existing_pilot_adjudicated_gold",
+      "input_sha256": "983ccadc41623b52abfde1b95a8c1451afcda284878e8ccd2d9e4ce0a06c9591",
+      "pilot_gold_sha256": "5d305b9938428dba03071ff7169832dab98349317f68319d14c70c80e98a8aa1",
+      "protocol": "pilot_adjudicated_gold_on_capability_repaired_source",
+      "repaired_input_sha256": "89f773b78f786ea87c4f4c922fbf5640669bad54af0cba8faca3674218c056bf"
+    },
+    "record_id": "CA-0695",
+    "record_validity": "valid",
+    "strategy_sequence": [
+      "execute"
+    ],
+    "terminal_strategy": "execute"
+  },
+  "t07_comparison": {
+    "record_id": "CA-0695",
+    "gold_route": "execute",
+    "raw_route": "execute",
+    "ft_route": "execute",
+    "gf_route": "execute",
+    "raw_route_ok": "True",
+    "ft_route_ok": "True",
+    "gf_route_ok": "True",
+    "raw_official_intent": "True",
+    "ft_official_intent": "True",
+    "gf_official_intent": "True",
+    "blind_official_intent": "True"
+  },
+  "t07_official_intent": {
+    "context_blind_official_intent": true,
+    "degree_official_intent_shared_gf": true,
+    "finetune_official_intent": true,
+    "goal_first_official_intent": true,
+    "raw_official_intent": true,
+    "record_id": "CA-0695",
+    "timid_official_intent_shared_gf": true
+  },
+  "t07_predictions": {
+    "raw_qwen": {
+      "ambiguity_types": [
+        "object_reference",
+        "routine_reference"
+      ],
+      "capability_status": "capable",
+      "error": null,
+      "execution_mode": "final_close_intent_box",
+      "failed": false,
+      "intent_summary": "Move and inspect a guest parcel to the designated service alcove after completing a check using the standard setup.",
+      "latency_ms": 14603.598481044173,
+      "parsed": {
+        "ambiguity_types": [
+          "object_reference",
+          "routine_reference"
+        ],
+        "capability_status": "capable",
+        "intent_summary": "Move and inspect a guest parcel to the designated service alcove after completing a check using the standard setup.",
+        "speech_act": "directive_command",
+        "terminal_strategy": "execute"
+      },
+      "raw_output": "<think>\nOkay, let's break this down. The user's command is about carrying out movement and inspection of a guest parcel at the service alcove after a check using the usual setup. First, I need to identify the intent. The main job here is to move and inspect the parcel after checking, so the intent_summary should mention both actions.\n\nNext, the speech_act. The command is direct, telling the robot what to do, so it's a directive_command. \n\nLooking at ambiguity_types: The command mentions \"the service alcove\" but there are two locations labeled service alcove. The dialogue history is empty, so maybe there's a reference ambiguity here. Also, \"usual setup\" might be vague, but the capability_context mentions the usual setup for guest delivery. Wait, the scene_context says Work order WO-287 maps to the guest delivery, so maybe the service alcove refers to the one beside the guest-room door. But the command doesn't specify which one, leading to object_reference ambiguity. Also, \"the usual setup\" might be a routine_reference. Are there other ambiguities? The command says \"after the check using the usual setup\"—does \"usual setup\" refer to the setup table mentioned in the scene context? That might be a routine_reference. So ambiguity_types could include object_reference and routine_reference.\n\nCapability status: The robot can move linen and scan room tags. The command involves movement and inspection. Since the robot can move linen, moving the parcel is possible. Inspection might involve scanning, so maybe capable. But the capability_context says \"deliver sealed guest items\"—does that include inspection? The scene context mentions inspection as part of the process. So maybe the robot is capable. But the command includes \"movement and inspection\"—if the robot can move and scan, then capable. \n\nTerminal strategy: Since the command is clear once the ambiguities are resolved (like which service alcove), the strategy would be execute. But if there's ambiguity, maybe clarify. Wait, the ambiguity_types include object_reference (service alcove) and routine_reference (usual setup). So the robot might need clarification, but the capability is there. However, the user might have intended the correct service alcove based on the work order. Since the scene context says WO-287 maps to the guest delivery, which is the service alcove beside the guest-room door. So the robot can execute once it knows which alcove. But the initial command doesn't specify, so there's ambiguity. However, the capability is there, so the terminal strategy might be execute, but maybe the ambiguity requires clarification. Wait, the ambiguity_types are for the command's ambiguity, not the robot's capability. The capability_status is about whether the robot can do the task. Since the robot can move and scan, and the task is movement and inspection, the capability is capable. The terminal strategy would be execute if the command is clear, but since there's ambiguity (object_reference), maybe the terminal strategy is clarify. But the user's command might be clear once the work order is considered. Hmm. The scene context says the setup table mentions evening service for a different prefix, but WO-287 is guest delivery. So the service alcove is specified by the work order. The command doesn't mention the work order, but the robot's capability includes delivering guest items. So the robot can do it. So capability_status is capable. The terminal strategy: since the command has some ambiguity (object_reference and routine_reference), but the robot can handle it with the given context, the terminal strategy would be execute. Or maybe clarify because of the ambiguities. But the user's command is specific enough given the context. So the terminal strategy is execute.\n</think>\n\n{\n  \"intent_summary\": \"Move and inspect a guest parcel to the designated service alcove after completing a check using the standard setup.\",\n  \"speech_act\": \"directive_command\",\n  \"ambiguity_types\": [\"object_reference\", \"routine_reference\"],\n  \"capability_status\": \"capable\",\n  \"terminal_strategy\": \"execute\"\n}",
+      "record_id": "CA-0695",
+      "schema_valid": true,
+      "speech_act": "directive_command",
+      "system_id": "direct_base_llm",
+      "terminal_strategy": "execute"
+    },
+    "finetune": {
+      "ambiguity_types": [
+        "pragmatic",
+        "spatial_reference"
+      ],
+      "capability_status": "capable",
+      "error": null,
+      "execution_mode": "final_close_intent_box",
+      "failed": false,
+      "intent_summary": "Move and inspect the guest parcel at the designated service alcove after completing the check using the standard setup.",
+      "latency_ms": 11611.217910889536,
+      "parsed": {
+        "ambiguity_types": [
+          "pragmatic",
+          "spatial_reference"
+        ],
+        "capability_status": "capable",
+        "intent_summary": "Move and inspect the guest parcel at the designated service alcove after completing the check using the standard setup.",
+        "speech_act": "directive_command",
+        "terminal_strategy": "execute"
+      },
+      "raw_output": "<think>\nOkay, let's break down the user's command. The main task is to carry out both movement and inspection of a guest parcel at the service alcove after a check using the usual setup. \n\nFirst, I need to identify the intent. The user wants the robot to move and inspect the parcel after checking, specifically at the service alcove mentioned in the scene context. The dialogue history is empty, so no prior context to consider.\n\nNext, the speech act. The command is a directive to perform specific actions, so it's a directive_command. \n\nLooking for ambiguities. The command mentions \"the service alcove\" but there are two locations. The scene context says Work order WO-287 maps to the guest delivery service alcove, so the robot should know which one. However, the ambiguity type 'pragmatic' might apply here because the robot needs to infer the correct alcove based on the work order. Also, 'spatial_reference' could be relevant since it's about location. \n\nCapability-wise, the robot can move linen and deliver items, so it's capable. The terminal strategy would be to execute since the robot can perform the tasks as described. \n\nWait, the command mentions 'usual setup' which might relate to the setup table. The setup table states that evening service uses a different prefix, but WO-287 is for guest delivery. The robot's capability includes moving linen and delivering, so the movement part is covered. The inspection part might involve scanning the room tag, which is part of its capabilities. \n\nSo, the ambiguities are pragmatic (inferring the correct alcove) and spatial_reference (location). The capability status is capable, and the terminal strategy is execute.\n</think>\n\n{\n  \"intent_summary\": \"Move and inspect the guest parcel at the designated service alcove after completing the check using the standard setup.\",\n  \"speech_act\": \"directive_command\",\n  \"ambiguity_types\": [\"pragmatic\", \"spatial_reference\"],\n  \"capability_status\": \"capable\",\n  \"terminal_strategy\": \"execute\"\n}",
+      "record_id": "CA-0695",
+      "schema_valid": true,
+      "speech_act": "directive_command",
+      "system_id": "t28_selected_adapter_llm",
+      "terminal_strategy": "execute"
+    },
+    "goal_first": {
+      "ambiguity_types": [
+        "object_reference",
+        "pragmatic",
+        "spatial_reference"
+      ],
+      "analysis_attempts": [
+        {
+          "attempt": 1,
+          "max_new_tokens": 4096,
+          "mode": "thinking",
+          "raw_chars": 8905,
+          "raw_sha256": "98f4773bd0ccd1a5e70d53b0abb9b0cbe7213d75cf9b453b3bddddc0c8703919",
+          "validation_error": "bad_intent_summary"
+        },
+        {
+          "attempt": 2,
+          "max_new_tokens": 8192,
+          "mode": "thinking_retry",
+          "raw_chars": 5398,
+          "raw_sha256": "b6c6b6d99fbe084a29f33665112da33d72cc38a8a53716d9e811d56184bd0285",
+          "validation_error": "bad_intent_summary"
+        },
+        {
+          "attempt": 3,
+          "constraint": {
+            "constraint_initialised": true,
+            "generated_token_count": 480,
+            "maximum_output_tokens": 1024,
+            "response_mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+            "termination_reason": "eos_or_constraint_stop",
+            "transport_status": "constrained_generated"
+          },
+          "max_new_tokens": 1024,
+          "mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+          "raw_chars": 1648,
+          "raw_sha256": "59f21d657521d781328c80a99e03473fe7e79fa1a634b5b4e2bc73c89e4acc64",
+          "validation_error": null
+        }
+      ],
+      "capability_status": "capable",
+      "claim_boundary": "separately_versioned_from_frozen_t39",
+      "error": null,
+      "execution_mode": "cluster-gpu-goal-first-v2",
+      "failed": false,
+      "intent_summary": "Perform the movement and inspection of the guest parcel at the service alcove after completing the check using the standard setup",
+      "latency_ms": 103787.738755811,
+      "model_id": "Qwen/Qwen3-8B@b968826d9c46dd6066d109eabc6255188de91218",
+      "parsed": {
+        "analysis": {
+          "ambiguity_present": true,
+          "ambiguity_types": [
+            "pragmatic",
+            "referential",
+            "spatial"
+          ],
+          "analysis_provenance": {
+            "analysis_id": "b2c46f8b94e84166f3c9bd4fb72dd88810acf8779e90cd3dd3bb38bd5d3e51ee",
+            "method": "model_generated",
+            "notes": "source_input_hash=b2c46f8b94e84166f3c9bd4fb72dd88810acf8779e90cd3dd3bb38bd5d3e51ee;no_gold_in_prompt;scene_licence_dropped=destination",
+            "provider_id": "goal_first_v2_full_context",
+            "provider_version": "goal-first-manager-v2"
+          },
+          "candidate_interpretations": [],
+          "capability_status": "capable",
+          "clarification_question": null,
+          "clarification_targets": [],
+          "compound_ambiguity": true,
+          "compound_ambiguity_count": 3,
+          "context_sampling_uncertainty": {
+            "agreement": 0.8,
+            "score": 0.2,
+            "variant_count": 1
+          },
+          "cpc": {
+            "action": {
+              "status": "not_applicable",
+              "value": "movement and inspection of the guest parcel"
+            },
+            "actor": {
+              "status": "not_applicable",
+              "value": "not applicable"
+            },
+            "conditions": {
+              "status": "not_applicable",
+              "value": "as per Work order WO-287"
+            },
+            "constraints": {
+              "status": "not_applicable",
+              "value": "using the usual setup"
+            },
+            "destination": {
+              "status": "not_applicable",
+              "value": "service alcove"
+            },
+            "negation": {
+              "status": "not_applicable",
+              "value": "not applicable"
+            },
+            "object": {
+              "status": "not_applicable",
+              "value": "guest parcel"
+            },
+            "object_attributes": {
+              "status": "not_applicable",
+              "value": "not applicable"
+            },
+            "quantity": {
+              "status": "not_applicable",
+              "value": "not applicable"
+            },
+            "recipient": {
+              "status": "not_applicable",
+              "value": "not applicable"
+            },
+            "spatial_relation": {
+              "status": "not_applicable",
+              "value": "not applicable"
+            },
+            "time": {
+              "status": "not_applicable",
+              "value": "after the check"
+            },
+            "tool": {
+              "status": "not_applicable",
+              "value": "not applicable"
+            }
+          },
+          "findings": [
+            "pilot_ambiguity_types:[\"object_reference\",\"pragmatic\",\"spatial_reference\"]",
+            "pilot_capability_status:capable",
+            "intent_summary_present"
+          ],
+          "intent_summary": "Perform the movement and inspection of the guest parcel at the service alcove after completing the check using the standard setup",
+          "primary_ambiguity_type": "pragmatic",
+          "recommended_strategy": "execute",
+          "rejection_reason": null,
+          "resolution_evidence": [],
+          "resolution_method": null,
+          "resolved_slots": [],
+          "risk_level": "low",
+          "risk_relevant": true,
+          "selected_interpretation": null,
+          "speech_act": "directive_command",
+          "strategy_sequence": [],
+          "supporting_evidence": [],
+          "unresolved_slots": [
+            {
+              "reason": "model_identified_uncertainty",
+              "slot_name": "spatial_relation"
+            }
+          ],
+          "unsupported_specificity": []
+        },
+        "clarification_question": null,
+        "clarification_targets": [],
+        "execution_status": "ok",
+        "official_result": false,
+        "provider_provenance": {
+          "provider_id": "cached_analysis",
+          "provider_version": "1.0.0"
+        },
+        "recommended_strategy": "execute",
+        "record_id": "CA-0695",
+        "rejection_reason": null,
+        "resolved_slots": [],
+        "result_hash": "c132251d193255ab530a774ac2717cced5bc091a2ff8c69f05db2a1ab0319e0a",
+        "run_id": null,
+        "run_mode": null,
+        "runtime_metadata": {
+          "awaits_t28_adapter": true,
+          "classification": {
+            "ambiguity_present": true,
+            "ambiguity_types": [
+              "pragmatic",
+              "referential",
+              "spatial"
+            ],
+            "capability_status": "capable",
+            "compound_ambiguity": true,
+            "compound_ambiguity_count": 3,
+            "derivation_notes": [
+              "ambiguity_present_from_types"
+            ],
+            "risk_level": "low"
+          },
+          "rejection_text": null,
+          "requires_re_evaluation": false,
+          "resolution_events": [
+            {
+              "confidence_category": "none",
+              "details": {
+                "reason": "unsupported_default_rejected"
+              },
+              "evidence_source": null,
+              "outcome": "unresolved",
+              "previous_status": "unresolved",
+              "resolved_value": null,
+              "rule_id": "no_world_knowledge_guess",
+              "safety_eligibility": false,
+              "slot": "spatial_relation"
+            }
+          ],
+          "router_trace": {
+            "clarification_targets": [],
+            "considered_rules": [
+              "goal_first_v2",
+              "known_unsafe_or_prohibited",
+              "known_incapable",
+              "unknown_capability_high_risk",
+              "context_licensed_execute"
+            ],
+            "matched_rule_id": "context_licensed_execute",
+            "notes": [
+              "goal_first_v2_execute_despite_remaining_ambiguity"
+            ],
+            "recommended_strategy": "execute",
+            "rejection_reason": null,
+            "requires_re_evaluation": false,
+            "strategy_sequence": []
+          },
+          "safety_action": "return_with_findings",
+          "uncertainty": null
+        },
+        "safety_findings": [],
+        "strategy_sequence": [],
+        "synthetic_only": true,
+        "system_id": "goal_first_manager_v2",
+        "system_version": "2.0.0",
+        "unsupported_commitment_findings": []
+      },
+      "raw_output": "{\n  \"intent_summary\": \"Perform the movement and inspection of the guest parcel at the service alcove after completing the check using the standard setup\",\n  \"cpc\": {\n    \"action\": {\n      \"value\": \"movement and inspection of the guest parcel\",\n      \"status\": \"not_applicable\"\n    },\n    \"object\": {\n      \"value\": \"guest parcel\",\n      \"status\": \"not_applicable\"\n    },\n    \"destination\": {\n      \"value\": \"service alcove\",\n      \"status\": \"not_applicable\"\n    },\n    \"recipient\": {\n      \"value\": \"not applicable\",\n      \"status\": \"not_applicable\"\n    },\n    \"time\": {\n      \"value\": \"after the check\",\n      \"status\": \"not_applicable\"\n    }\n \n  ,\n  \"constraints\": {\n    \"value\": \"using the usual setup\",\n    \"status\": \"not_applicable\"\n  },\n  \"conditions\": {\n    \"value\": \"as per Work order WO-287\",\n    \"status\": \"not_applicable\"\n  },\n  \"tool\": {\n    \"value\": \"not applicable\",\n    \"status\": \"not_applicable\"\n  },\n  \"spatial_relation\": {\n    \"value\": \"not applicable\",\n    \"status\": \"not_applicable\"\n  },\n  \"negation\": {\n    \"value\": \"not applicable\",\n    \"status\": \"not_applicable\"\n  },\n  \"quantity\": {\n    \"value\": \"not applicable\",\n    \"status\": \"not_applicable\"\n  },\n  \"object_attributes\": {\n    \"value\": \"not applicable\",\n    \"status\": \"not_applicable\"\n  },\n  \"actor\": {\n    \"value\": \"not applicable\",\n    \"status\": \"not_applicable\"\n  }\n},\n  \"pilot_ambiguity_types\": [\n    \"pragmatic\",\n    \"object_reference\",\n    \"spatial_reference\"\n  ]\n  \n  , \"pilot_capability_status\": \"capable\",\n  \"speech_act\": \"directive_command\",\n  \"risk_level\": \"low\"\n  \n  , \"uncertainty\": 0.2,\n  \"unresolved_slots\": [\n    \"destination\",\n    \"spatial_relation\"\n  ]\n}",
+      "record_id": "CA-0695",
+      "schema_valid": true,
+      "supports_ambiguity_prediction": true,
+      "supports_capability_prediction": true,
+      "system_id": "goal_first_manager_v2",
+      "system_version": "2.0.0",
+      "terminal_strategy": "execute"
+    },
+    "degree": {
+      "ambiguity_types": [
+        "object_reference",
+        "pragmatic",
+        "spatial_reference"
+      ],
+      "analysis_attempts": [
+        {
+          "attempt": 1,
+          "max_new_tokens": 4096,
+          "mode": "thinking",
+          "raw_chars": 8905,
+          "raw_sha256": "98f4773bd0ccd1a5e70d53b0abb9b0cbe7213d75cf9b453b3bddddc0c8703919",
+          "validation_error": "bad_intent_summary"
+        },
+        {
+          "attempt": 2,
+          "max_new_tokens": 8192,
+          "mode": "thinking_retry",
+          "raw_chars": 5398,
+          "raw_sha256": "b6c6b6d99fbe084a29f33665112da33d72cc38a8a53716d9e811d56184bd0285",
+          "validation_error": "bad_intent_summary"
+        },
+        {
+          "attempt": 3,
+          "constraint": {
+            "constraint_initialised": true,
+            "generated_token_count": 480,
+            "maximum_output_tokens": 1024,
+            "response_mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+            "termination_reason": "eos_or_constraint_stop",
+            "transport_status": "constrained_generated"
+          },
+          "max_new_tokens": 1024,
+          "mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+          "raw_chars": 1648,
+          "raw_sha256": "59f21d657521d781328c80a99e03473fe7e79fa1a634b5b4e2bc73c89e4acc64",
+          "validation_error": null
+        }
+      ],
+      "capability_status": "capable",
+      "claim_boundary": "separately_versioned_from_frozen_t39",
+      "error": null,
+      "execution_mode": "cluster-gpu-goal-first-v2",
+      "failed": false,
+      "intent_summary": "Perform the movement and inspection of the guest parcel at the service alcove after completing the check using the standard setup",
+      "latency_ms": 103787.738755811,
+      "model_id": "Qwen/Qwen3-8B@b968826d9c46dd6066d109eabc6255188de91218",
+      "parsed": {
+        "analysis": {
+          "ambiguity_present": true,
+          "ambiguity_types": [
+            "pragmatic",
+            "referential",
+            "spatial"
+          ],
+          "analysis_provenance": {
+            "analysis_id": "b2c46f8b94e84166f3c9bd4fb72dd88810acf8779e90cd3dd3bb38bd5d3e51ee",
+            "method": "model_generated",
+            "notes": "source_input_hash=b2c46f8b94e84166f3c9bd4fb72dd88810acf8779e90cd3dd3bb38bd5d3e51ee;no_gold_in_prompt;scene_licence_dropped=destination",
+            "provider_id": "goal_first_v2_full_context",
+            "provider_version": "goal-first-manager-v2"
+          },
+          "candidate_interpretations": [],
+          "capability_status": "capable",
+          "clarification_question": null,
+          "clarification_targets": [],
+          "compound_ambiguity": true,
+          "compound_ambiguity_count": 3,
+          "context_sampling_uncertainty": {
+            "agreement": 0.8,
+            "score": 0.2,
+            "variant_count": 1
+          },
+          "cpc": {
+            "action": {
+              "status": "not_applicable",
+              "value": "movement and inspection of the guest parcel"
+            },
+            "actor": {
+              "status": "not_applicable",
+              "value": "not applicable"
+            },
+            "conditions": {
+              "status": "not_applicable",
+              "value": "as per Work order WO-287"
+            },
+            "constraints": {
+              "status": "not_applicable",
+              "value": "using the usual setup"
+            },
+            "destination": {
+              "status": "not_applicable",
+              "value": "service alcove"
+            },
+            "negation": {
+              "status": "not_applicable",
+              "value": "not applicable"
+            },
+            "object": {
+              "status": "not_applicable",
+              "value": "guest parcel"
+            },
+            "object_attributes": {
+              "status": "not_applicable",
+              "value": "not applicable"
+            },
+            "quantity": {
+              "status": "not_applicable",
+              "value": "not applicable"
+            },
+            "recipient": {
+              "status": "not_applicable",
+              "value": "not applicable"
+            },
+            "spatial_relation": {
+              "status": "not_applicable",
+              "value": "not applicable"
+            },
+            "time": {
+              "status": "not_applicable",
+              "value": "after the check"
+            },
+            "tool": {
+              "status": "not_applicable",
+              "value": "not applicable"
+            }
+          },
+          "findings": [
+            "pilot_ambiguity_types:[\"object_reference\",\"pragmatic\",\"spatial_reference\"]",
+            "pilot_capability_status:capable",
+            "intent_summary_present"
+          ],
+          "intent_summary": "Perform the movement and inspection of the guest parcel at the service alcove after completing the check using the standard setup",
+          "primary_ambiguity_type": "pragmatic",
+          "recommended_strategy": "silently_resolve",
+          "rejection_reason": null,
+          "resolution_evidence": [],
+          "resolution_method": null,
+          "resolved_slots": [],
+          "risk_level": "low",
+          "risk_relevant": true,
+          "selected_interpretation": null,
+          "speech_act": "directive_command",
+          "strategy_sequence": [],
+          "supporting_evidence": [],
+          "unresolved_slots": [
+            {
+              "reason": "model_identified_uncertainty",
+              "slot_name": "spatial_relation"
+            }
+          ],
+          "unsupported_specificity": []
+        },
+        "clarification_question": null,
+        "clarification_targets": [],
+        "execution_status": "ok",
+        "official_result": false,
+        "provider_provenance": {
+          "shared_analysis_fingerprint": "09015c2a660ec76c699bbb1670a527c251327e8c8fb6094a90315bf9f44b8485"
+        },
+        "recommended_strategy": "silently_resolve",
+        "record_id": "CA-0695",
+        "rejection_reason": null,
+        "resolved_slots": [],
+        "result_hash": "0a42336de346eb48ef86b57bb4c36ec1c648dd32a2157c76d3def19ad1da3370",
+        "run_id": null,
+        "run_mode": null,
+        "runtime_metadata": {
+          "shared_analysis_fingerprint": "09015c2a660ec76c699bbb1670a527c251327e8c8fb6094a90315bf9f44b8485",
+          "thresholds_status": "unfrozen",
+          "thresholds_valid_for_official_use": false,
+          "uncertainty_score": 0.2,
+          "uses_type_risk_capability_precedence": false
+        },
+        "safety_findings": [],
+        "strategy_sequence": [],
+        "synthetic_only": true,
+        "system_id": "degree_based_router",
+        "system_version": "1.0.0",
+        "unsupported_commitment_findings": []
+      },
+      "raw_output": "{\n  \"intent_summary\": \"Perform the movement and inspection of the guest parcel at the service alcove after completing the check using the standard setup\",\n  \"cpc\": {\n    \"action\": {\n      \"value\": \"movement and inspection of the guest parcel\",\n      \"status\": \"not_applicable\"\n    },\n    \"object\": {\n      \"value\": \"guest parcel\",\n      \"status\": \"not_applicable\"\n    },\n    \"destination\": {\n      \"value\": \"service alcove\",\n      \"status\": \"not_applicable\"\n    },\n    \"recipient\": {\n      \"value\": \"not applicable\",\n      \"status\": \"not_applicable\"\n    },\n    \"time\": {\n      \"value\": \"after the check\",\n      \"status\": \"not_applicable\"\n    }\n \n  ,\n  \"constraints\": {\n    \"value\": \"using the usual setup\",\n    \"status\": \"not_applicable\"\n  },\n  \"conditions\": {\n    \"value\": \"as per Work order WO-287\",\n    \"status\": \"not_applicable\"\n  },\n  \"tool\": {\n    \"value\": \"not applicable\",\n    \"status\": \"not_applicable\"\n  },\n  \"spatial_relation\": {\n    \"value\": \"not applicable\",\n    \"status\": \"not_applicable\"\n  },\n  \"negation\": {\n    \"value\": \"not applicable\",\n    \"status\": \"not_applicable\"\n  },\n  \"quantity\": {\n    \"value\": \"not applicable\",\n    \"status\": \"not_applicable\"\n  },\n  \"object_attributes\": {\n    \"value\": \"not applicable\",\n    \"status\": \"not_applicable\"\n  },\n  \"actor\": {\n    \"value\": \"not applicable\",\n    \"status\": \"not_applicable\"\n  }\n},\n  \"pilot_ambiguity_types\": [\n    \"pragmatic\",\n    \"object_reference\",\n    \"spatial_reference\"\n  ]\n  \n  , \"pilot_capability_status\": \"capable\",\n  \"speech_act\": \"directive_command\",\n  \"risk_level\": \"low\"\n  \n  , \"uncertainty\": 0.2,\n  \"unresolved_slots\": [\n    \"destination\",\n    \"spatial_relation\"\n  ]\n}",
+      "record_id": "CA-0695",
+      "schema_valid": true,
+      "supports_ambiguity_prediction": true,
+      "supports_capability_prediction": true,
+      "system_id": "degree_based_router_v2",
+      "system_version": "2.0.0",
+      "terminal_strategy": "execute"
+    },
+    "timid": {
+      "ambiguity_types": [
+        "object_reference",
+        "pragmatic",
+        "spatial_reference"
+      ],
+      "analysis_attempts": [
+        {
+          "attempt": 1,
+          "max_new_tokens": 4096,
+          "mode": "thinking",
+          "raw_chars": 8905,
+          "raw_sha256": "98f4773bd0ccd1a5e70d53b0abb9b0cbe7213d75cf9b453b3bddddc0c8703919",
+          "validation_error": "bad_intent_summary"
+        },
+        {
+          "attempt": 2,
+          "max_new_tokens": 8192,
+          "mode": "thinking_retry",
+          "raw_chars": 5398,
+          "raw_sha256": "b6c6b6d99fbe084a29f33665112da33d72cc38a8a53716d9e811d56184bd0285",
+          "validation_error": "bad_intent_summary"
+        },
+        {
+          "attempt": 3,
+          "constraint": {
+            "constraint_initialised": true,
+            "generated_token_count": 480,
+            "maximum_output_tokens": 1024,
+            "response_mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+            "termination_reason": "eos_or_constraint_stop",
+            "transport_status": "constrained_generated"
+          },
+          "max_new_tokens": 1024,
+          "mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+          "raw_chars": 1648,
+          "raw_sha256": "59f21d657521d781328c80a99e03473fe7e79fa1a634b5b4e2bc73c89e4acc64",
+          "validation_error": null
+        }
+      ],
+      "capability_status": "capable",
+      "claim_boundary": "separately_versioned_from_frozen_t39",
+      "error": null,
+      "execution_mode": "cluster-gpu-goal-first-v2",
+      "failed": false,
+      "intent_summary": "Perform the movement and inspection of the guest parcel at the service alcove after completing the check using the standard setup",
+      "latency_ms": 103787.738755811,
+      "model_id": "Qwen/Qwen3-8B@b968826d9c46dd6066d109eabc6255188de91218",
+      "parsed": {
+        "analysis": {
+          "ambiguity_present": true,
+          "ambiguity_types": [
+            "pragmatic",
+            "referential",
+            "spatial"
+          ],
+          "analysis_provenance": {
+            "analysis_id": "b2c46f8b94e84166f3c9bd4fb72dd88810acf8779e90cd3dd3bb38bd5d3e51ee",
+            "method": "model_generated",
+            "notes": "source_input_hash=b2c46f8b94e84166f3c9bd4fb72dd88810acf8779e90cd3dd3bb38bd5d3e51ee;no_gold_in_prompt;scene_licence_dropped=destination",
+            "provider_id": "goal_first_v2_full_context",
+            "provider_version": "goal-first-manager-v2"
+          },
+          "candidate_interpretations": [],
+          "capability_status": "capable",
+          "clarification_question": "Could you clarify the spatial relation?",
+          "clarification_targets": [
+            "spatial_relation"
+          ],
+          "compound_ambiguity": true,
+          "compound_ambiguity_count": 3,
+          "context_sampling_uncertainty": {
+            "agreement": 0.8,
+            "score": 0.2,
+            "variant_count": 1
+          },
+          "cpc": {
+            "action": {
+              "status": "not_applicable",
+              "value": "movement and inspection of the guest parcel"
+            },
+            "actor": {
+              "status": "not_applicable",
+              "value": "not applicable"
+            },
+            "conditions": {
+              "status": "not_applicable",
+              "value": "as per Work order WO-287"
+            },
+            "constraints": {
+              "status": "not_applicable",
+              "value": "using the usual setup"
+            },
+            "destination": {
+              "status": "not_applicable",
+              "value": "service alcove"
+            },
+            "negation": {
+              "status": "not_applicable",
+              "value": "not applicable"
+            },
+            "object": {
+              "status": "not_applicable",
+              "value": "guest parcel"
+            },
+            "object_attributes": {
+              "status": "not_applicable",
+              "value": "not applicable"
+            },
+            "quantity": {
+              "status": "not_applicable",
+              "value": "not applicable"
+            },
+            "recipient": {
+              "status": "not_applicable",
+              "value": "not applicable"
+            },
+            "spatial_relation": {
+              "status": "not_applicable",
+              "value": "not applicable"
+            },
+            "time": {
+              "status": "not_applicable",
+              "value": "after the check"
+            },
+            "tool": {
+              "status": "not_applicable",
+              "value": "not applicable"
+            }
+          },
+          "findings": [
+            "pilot_ambiguity_types:[\"object_reference\",\"pragmatic\",\"spatial_reference\"]",
+            "pilot_capability_status:capable",
+            "intent_summary_present"
+          ],
+          "intent_summary": "Perform the movement and inspection of the guest parcel at the service alcove after completing the check using the standard setup",
+          "primary_ambiguity_type": "pragmatic",
+          "recommended_strategy": "clarify",
+          "rejection_reason": null,
+          "resolution_evidence": [],
+          "resolution_method": null,
+          "resolved_slots": [],
+          "risk_level": "low",
+          "risk_relevant": true,
+          "selected_interpretation": null,
+          "speech_act": "directive_command",
+          "strategy_sequence": [],
+          "supporting_evidence": [],
+          "unresolved_slots": [
+            {
+              "reason": "model_identified_uncertainty",
+              "slot_name": "spatial_relation"
+            }
+          ],
+          "unsupported_specificity": []
+        },
+        "clarification_question": "Could you clarify the spatial relation?",
+        "clarification_targets": [
+          "spatial_relation"
+        ],
+        "execution_status": "ok",
+        "official_result": false,
+        "provider_provenance": {
+          "provider_id": "cached_analysis",
+          "provider_version": "1.0.0"
+        },
+        "recommended_strategy": "clarify",
+        "record_id": "CA-0695",
+        "rejection_reason": null,
+        "resolved_slots": [],
+        "result_hash": "bb36f7e2f61739ef5770068faaf9bc4bc495f2bfc4b139b68011f344ddf5599c",
+        "run_id": null,
+        "run_mode": null,
+        "runtime_metadata": {
+          "awaits_t28_adapter": true,
+          "classification": {
+            "ambiguity_present": true,
+            "ambiguity_types": [
+              "pragmatic",
+              "referential",
+              "spatial"
+            ],
+            "capability_status": "capable",
+            "compound_ambiguity": true,
+            "compound_ambiguity_count": 3,
+            "derivation_notes": [
+              "ambiguity_present_from_types"
+            ],
+            "risk_level": "low"
+          },
+          "rejection_text": null,
+          "requires_re_evaluation": false,
+          "resolution_events": [
+            {
+              "confidence_category": "none",
+              "details": {
+                "reason": "unsupported_default_rejected"
+              },
+              "evidence_source": null,
+              "outcome": "unresolved",
+              "previous_status": "unresolved",
+              "resolved_value": null,
+              "rule_id": "no_world_knowledge_guess",
+              "safety_eligibility": false,
+              "slot": "spatial_relation"
+            }
+          ],
+          "router_trace": {
+            "clarification_targets": [
+              "spatial_relation"
+            ],
+            "considered_rules": [
+              "known_unsafe_or_prohibited",
+              "known_incapable",
+              "unknown_or_unverified_capability",
+              "hazard_identity_unresolved",
+              "critical_unresolved_medium_high_risk",
+              "unknown_safety_risk",
+              "dependent_compound_ambiguities",
+              "unique_low_risk_resolvable",
+              "clear_safe_capable",
+              "default_clarify"
+            ],
+            "matched_rule_id": "default_clarify",
+            "notes": [
+              "default_clarify_no_unsupported_specificity"
+            ],
+            "recommended_strategy": "clarify",
+            "rejection_reason": null,
+            "requires_re_evaluation": false,
+            "strategy_sequence": []
+          },
+          "safety_action": "return_with_findings",
+          "uncertainty": null
+        },
+        "safety_findings": [],
+        "strategy_sequence": [],
+        "synthetic_only": true,
+        "system_id": "full_type_risk_aware_manager",
+        "system_version": "1.0.0",
+        "unsupported_commitment_findings": []
+      },
+      "raw_output": "{\n  \"intent_summary\": \"Perform the movement and inspection of the guest parcel at the service alcove after completing the check using the standard setup\",\n  \"cpc\": {\n    \"action\": {\n      \"value\": \"movement and inspection of the guest parcel\",\n      \"status\": \"not_applicable\"\n    },\n    \"object\": {\n      \"value\": \"guest parcel\",\n      \"status\": \"not_applicable\"\n    },\n    \"destination\": {\n      \"value\": \"service alcove\",\n      \"status\": \"not_applicable\"\n    },\n    \"recipient\": {\n      \"value\": \"not applicable\",\n      \"status\": \"not_applicable\"\n    },\n    \"time\": {\n      \"value\": \"after the check\",\n      \"status\": \"not_applicable\"\n    }\n \n  ,\n  \"constraints\": {\n    \"value\": \"using the usual setup\",\n    \"status\": \"not_applicable\"\n  },\n  \"conditions\": {\n    \"value\": \"as per Work order WO-287\",\n    \"status\": \"not_applicable\"\n  },\n  \"tool\": {\n    \"value\": \"not applicable\",\n    \"status\": \"not_applicable\"\n  },\n  \"spatial_relation\": {\n    \"value\": \"not applicable\",\n    \"status\": \"not_applicable\"\n  },\n  \"negation\": {\n    \"value\": \"not applicable\",\n    \"status\": \"not_applicable\"\n  },\n  \"quantity\": {\n    \"value\": \"not applicable\",\n    \"status\": \"not_applicable\"\n  },\n  \"object_attributes\": {\n    \"value\": \"not applicable\",\n    \"status\": \"not_applicable\"\n  },\n  \"actor\": {\n    \"value\": \"not applicable\",\n    \"status\": \"not_applicable\"\n  }\n},\n  \"pilot_ambiguity_types\": [\n    \"pragmatic\",\n    \"object_reference\",\n    \"spatial_reference\"\n  ]\n  \n  , \"pilot_capability_status\": \"capable\",\n  \"speech_act\": \"directive_command\",\n  \"risk_level\": \"low\"\n  \n  , \"uncertainty\": 0.2,\n  \"unresolved_slots\": [\n    \"destination\",\n    \"spatial_relation\"\n  ]\n}",
+      "record_id": "CA-0695",
+      "schema_valid": true,
+      "supports_ambiguity_prediction": true,
+      "supports_capability_prediction": true,
+      "system_id": "rich_conservative_manager_v2",
+      "system_version": "2.0.0",
+      "terminal_strategy": "clarify"
+    },
+    "context_blind": {
+      "ambiguity_types": [
+        "action_order",
+        "pragmatic"
+      ],
+      "analysis_attempts": [
+        {
+          "attempt": 1,
+          "max_new_tokens": 4096,
+          "mode": "thinking",
+          "raw_chars": 5298,
+          "raw_sha256": "d1dcf511fae9435c12544ae1fe4dfc5ef818dce55ee1afa60d3d6b96f1755e57",
+          "validation_error": "bad_intent_summary"
+        },
+        {
+          "attempt": 2,
+          "max_new_tokens": 8192,
+          "mode": "thinking_retry",
+          "raw_chars": 8917,
+          "raw_sha256": "4bed9f2d80090921e42fbe4eb6ec2e78e2e2c9d130613ef35ee25c4b78ba6201",
+          "validation_error": "intent_summary_route_contamination"
+        },
+        {
+          "attempt": 3,
+          "constraint": {
+            "constraint_initialised": true,
+            "generated_token_count": 522,
+            "maximum_output_tokens": 1024,
+            "response_mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+            "termination_reason": "eos_or_constraint_stop",
+            "transport_status": "constrained_generated"
+          },
+          "max_new_tokens": 1024,
+          "mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+          "raw_chars": 1793,
+          "raw_sha256": "a9a91e55e8f56ec061f9aef36c38b4abd83e9736eedc2403b5faddb285664bf0",
+          "validation_error": null
+        }
+      ],
+      "capability_status": "incapable",
+      "claim_boundary": "separately_versioned_from_frozen_t39",
+      "error": null,
+      "execution_mode": "cluster-gpu-goal-first-v2",
+      "failed": false,
+      "intent_summary": "Perform the movement and inspection of the guest parcel at the service alcove following the check with the usual setup",
+      "latency_ms": 104613.18894801661,
+      "model_id": "Qwen/Qwen3-8B@b968826d9c46dd6066d109eabc6255188de91218",
+      "parsed": {
+        "analysis": {
+          "ambiguity_present": true,
+          "ambiguity_types": [
+            "pragmatic",
+            "temporal"
+          ],
+          "analysis_provenance": {
+            "analysis_id": "fec519528574bc456113ef05e8ec13fdd39b1533d5027d3b9a1603c8ee5c558a",
+            "method": "context_blind",
+            "notes": "ablated_input_hash=fec519528574bc456113ef05e8ec13fdd39b1533d5027d3b9a1603c8ee5c558a;source_input_hash=fec519528574bc456113ef05e8ec13fdd39b1533d5027d3b9a1603c8ee5c558a;no_gold_in_prompt;scene_licence_dropped=destination",
+            "provider_id": "goal_first_v2_context_blind",
+            "provider_version": "goal-first-manager-v2"
+          },
+          "candidate_interpretations": [],
+          "capability_status": "incapable",
+          "clarification_question": null,
+          "clarification_targets": [],
+          "compound_ambiguity": true,
+          "compound_ambiguity_count": 2,
+          "context_sampling_uncertainty": {
+            "agreement": 0.25,
+            "score": 0.75,
+            "variant_count": 1
+          },
+          "cpc": {
+            "action": {
+              "status": "not_applicable",
+              "value": "Carry out both the movement and inspection of the guest parcel by the service alcove after the check using the usual setup"
+            },
+            "actor": {
+              "status": "not_applicable",
+              "value": "not applicable"
+            },
+            "conditions": {
+              "status": "not_applicable",
+              "value": "not applicable"
+            },
+            "constraints": {
+              "status": "not_applicable",
+              "value": "not applicable"
+            },
+            "destination": {
+              "status": "not_applicable",
+              "value": "service alcove"
+            },
+            "negation": {
+              "status": "not_applicable",
+              "value": "not applicable"
+            },
+            "object": {
+              "status": "not_applicable",
+              "value": "guest parcel"
+            },
+            "object_attributes": {
+              "status": "not_applicable",
+              "value": "not applicable"
+            },
+            "quantity": {
+              "status": "not_applicable",
+              "value": "not applicable"
+            },
+            "recipient": {
+              "status": "not_applicable",
+              "value": "not applicable"
+            },
+            "spatial_relation": {
+              "status": "not_applicable",
+              "value": "by the service alcove"
+            },
+            "time": {
+              "status": "not_applicable",
+              "value": "after the check"
+            },
+            "tool": {
+              "status": "not_applicable",
+              "value": "usual setup"
+            }
+          },
+          "findings": [
+            "pilot_ambiguity_types:[\"action_order\",\"pragmatic\"]",
+            "pilot_capability_status:incapable",
+            "intent_summary_present"
+          ],
+          "intent_summary": "Perform the movement and inspection of the guest parcel at the service alcove following the check with the usual setup",
+          "primary_ambiguity_type": "pragmatic",
+          "recommended_strategy": "face_preserving_rejection",
+          "rejection_reason": "known_incapability",
+          "resolution_evidence": [],
+          "resolution_method": null,
+          "resolved_slots": [],
+          "risk_level": "medium",
+          "risk_relevant": true,
+          "selected_interpretation": null,
+          "speech_act": "directive_command",
+          "strategy_sequence": [],
+          "supporting_evidence": [],
+          "unresolved_slots": [
+            {
+              "reason": "model_identified_uncertainty",
+              "slot_name": "action"
+            },
+            {
+              "reason": "model_identified_uncertainty",
+              "slot_name": "spatial_relation"
+            },
+            {
+              "reason": "model_identified_uncertainty",
+              "slot_name": "object"
+            },
+            {
+              "reason": "model_identified_uncertainty",
+              "slot_name": "recipient"
+            },
+            {
+              "reason": "model_identified_uncertainty",
+              "slot_name": "time"
+            },
+            {
+              "reason": "model_identified_uncertainty",
+              "slot_name": "tool"
+            }
+          ],
+          "unsupported_specificity": []
+        },
+        "clarification_question": null,
+        "clarification_targets": [],
+        "execution_status": "ok",
+        "official_result": false,
+        "provider_provenance": {
+          "provider_id": "cached_analysis",
+          "provider_version": "1.0.0"
+        },
+        "recommended_strategy": "face_preserving_rejection",
+        "record_id": "CA-0695",
+        "rejection_reason": "known_incapability",
+        "resolved_slots": [],
+        "result_hash": "f38267d1cf47484b5b1a515a02b8b4fa48f29ea0cdc630f738a2e387c23f82e9",
+        "run_id": null,
+        "run_mode": null,
+        "runtime_metadata": {
+          "analysis_identity": {
+            "analysis_content_hash": "ca017d721cb0d4914ae30dfc9e5a904fcfae551caf2b9b87ddbebea97881baa1",
+            "analysis_variant": "context_blind",
+            "model_strategy_id": null,
+            "provider_id": "goal_first_v2_context_blind",
+            "provider_version": "goal-first-manager-v2",
+            "record_id": "CA-0695",
+            "source_input_hash": "fec519528574bc456113ef05e8ec13fdd39b1533d5027d3b9a1603c8ee5c558a"
+          },
+          "analysis_identity_fingerprint": "27b87ced385e6784a1f9671d3ca4ec3ccfb854a270c31bd421927e1539526910",
+          "awaits_t28_adapter": true,
+          "classification": {
+            "ambiguity_present": true,
+            "ambiguity_types": [
+              "pragmatic",
+              "temporal"
+            ],
+            "capability_status": "incapable",
+            "compound_ambiguity": true,
+            "compound_ambiguity_count": 2,
+            "derivation_notes": [
+              "ambiguity_present_from_types"
+            ],
+            "risk_level": "medium"
+          },
+          "context_ablation": {
+            "ablated_input_hash": "fec519528574bc456113ef05e8ec13fdd39b1533d5027d3b9a1603c8ee5c558a",
+            "capability_context_removed": true,
+            "dialogue_history_removed": true,
+            "rejected_full_context_cache": false,
+            "rejection_reason": null,
+            "scene_context_removed": true,
+            "stripped_context_derived_fields": false
+          },
+          "original_input_unmutated": true,
+          "rejection_text": "I am not able to perform that action with my current capabilities. I will not invent an alternative that is not supported.",
+          "requires_re_evaluation": false,
+          "resolution_events": [
+            {
+              "confidence_category": "blocked",
+              "details": {
+                "risk_level": "medium"
+              },
+              "evidence_source": null,
+              "outcome": "resolution_blocked_by_risk",
+              "previous_status": "unresolved",
+              "resolved_value": null,
+              "rule_id": "risk_block",
+              "safety_eligibility": false,
+              "slot": "action"
+            },
+            {
+              "confidence_category": "blocked",
+              "details": {
+                "risk_level": "medium"
+              },
+              "evidence_source": null,
+              "outcome": "resolution_blocked_by_risk",
+              "previous_status": "unresolved",
+              "resolved_value": null,
+              "rule_id": "risk_block",
+              "safety_eligibility": false,
+              "slot": "spatial_relation"
+            },
+            {
+              "confidence_category": "blocked",
+              "details": {
+                "risk_level": "medium"
+              },
+              "evidence_source": null,
+              "outcome": "resolution_blocked_by_risk",
+              "previous_status": "unresolved",
+              "resolved_value": null,
+              "rule_id": "risk_block",
+              "safety_eligibility": false,
+              "slot": "object"
+            },
+            {
+              "confidence_category": "blocked",
+              "details": {
+                "risk_level": "medium"
+              },
+              "evidence_source": null,
+              "outcome": "resolution_blocked_by_risk",
+              "previous_status": "unresolved",
+              "resolved_value": null,
+              "rule_id": "risk_block",
+              "safety_eligibility": false,
+              "slot": "recipient"
+            },
+            {
+              "confidence_category": "blocked",
+              "details": {
+                "risk_level": "medium"
+              },
+              "evidence_source": null,
+              "outcome": "resolution_blocked_by_risk",
+              "previous_status": "unresolved",
+              "resolved_value": null,
+              "rule_id": "risk_block",
+              "safety_eligibility": false,
+              "slot": "time"
+            },
+            {
+              "confidence_category": "blocked",
+              "details": {
+                "risk_level": "medium"
+              },
+              "evidence_source": null,
+              "outcome": "resolution_blocked_by_risk",
+              "previous_status": "unresolved",
+              "resolved_value": null,
+              "rule_id": "risk_block",
+              "safety_eligibility": false,
+              "slot": "tool"
+            }
+          ],
+          "router_trace": {
+            "clarification_targets": [],
+            "considered_rules": [
+              "goal_first_v2",
+              "known_unsafe_or_prohibited",
+              "known_incapable"
+            ],
+            "matched_rule_id": "known_incapable",
+            "notes": [],
+            "recommended_strategy": "face_preserving_rejection",
+            "rejection_reason": "known_incapability",
+            "requires_re_evaluation": false,
+            "strategy_sequence": []
+          },
+          "safety_action": "return_with_findings",
+          "uncertainty": null
+        },
+        "safety_findings": [],
+        "strategy_sequence": [],
+        "synthetic_only": true,
+        "system_id": "context_blind_manager",
+        "system_version": "1.0.0",
+        "unsupported_commitment_findings": []
+      },
+      "raw_output": "{\n  \"intent_summary\": \"Perform the movement and inspection of the guest parcel at the service alcove following the check with the usual setup\",\n  \"cpc\": {\n    \"action\": {\n      \"value\": \"Carry out both the movement and inspection of the guest parcel by the service alcove after the check using the usual setup\",\n      \"status\": \"not_applicable\"\n    },\n    \"spatial_relation\": {\n      \"value\": \"by the service alcove\",\n      \"status\": \"not_applicable\"\n    },\n    \"object\": {\n      \"value\": \"guest parcel\",\n      \"status\": \"not_applicable\"\n    },\n    \"recipient\": {\n      \"value\": \"not applicable\",\n      \"status\": \"not_applicable\"\n    },\n    \"destination\": {\n      \"value\": \"service alcove\",\n      \"status\": \"not_applicable\"\n    },\n    \"time\": {\n      \"value\": \"after the check\",\n      \"status\": \"not_applicable\"\n    },\n    \"tool\": {\n      \"value\": \"usual setup\",\n      \"status\": \"not_applicable\"\n    }\n \n  ,\n  \"constraints\": {\n    \"value\": \"not applicable\",\n    \"status\": \"not_applicable\"\n  },\n  \"conditions\": {\n    \"value\": \"not applicable\",\n    \"status\": \"not_applicable\"\n  },\n  \"negation\": {\n    \"value\": \"not applicable\",\n    \"status\": \"not_applicable\"\n  },\n  \"quantity\": {\n    \"value\": \"not applicable\",\n    \"status\": \"not_applicable\"\n  },\n  \"object_attributes\": {\n    \"value\": \"not applicable\",\n    \"status\": \"not_applicable\"\n  },\n  \"actor\": {\n    \"value\": \"not applicable\",\n    \"status\": \"not_applicable\"\n  }\n},\n  \"pilot_ambiguity_types\": [\n    \"pragmatic\",\n    \"action_order\"\n  ]\n  \n  ,\n  \"pilot_capability_status\": \"incapable\"\n  \n  ,\n  \"risk_level\": \"medium\"\n  \n  ,\n  \"speech_act\": \"directive_command\"\n  \n  ,\n  \"uncertainty\": 0.75\n  \n\n\n\n  \n  ,\n  \"unresolved_slots\": [\n    \"action\",\n    \"spatial_relation\",\n    \"object\",\n    \"recipient\",\n    \"destination\",\n    \"time\",\n    \"tool\"\n  ]\n}",
+      "record_id": "CA-0695",
+      "schema_valid": true,
+      "supports_ambiguity_prediction": true,
+      "supports_capability_prediction": true,
+      "system_id": "goal_first_context_blind_v2",
+      "system_version": "2.0.0",
+      "terminal_strategy": "face_preserving_rejection"
+    }
+  },
+  "provenance": {
+    "source_sha256": "f33b1e29f1e8aa256a475f07213aa07247def47d8e2148d54a472a40b71b05c9",
+    "gold_sha256": "5e23ad1a92ff1873c8f039a8ce560a111dd6fb6b8ae8c11d6cf34dbfa1c360db",
+    "t07_final_zip_sha256": "34ca50e034ca37b617068bb50c734d12fa26282fb5eec563c11ead700163e491",
+    "inherited_t07_zip_sha256": "0305b1e9ab062876ee6ee89778cc6028d2eaf01718b7dd0295944e7d9cb81a01",
+    "note": "Goal-First, Degree, Timid, and Context-Blind predictions are inherited from the earlier T0.7 run; official intent and comparison come from the final T0.7 archive."
+  }
+}

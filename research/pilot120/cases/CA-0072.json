@@ -1,0 +1,1302 @@
+{
+  "record_id": "CA-0072",
+  "frozen_source": {
+    "capability_context": "Workshop service robot can carry small parts, push carts, scan work orders, and use low-force inspection tools. Its certified payload limit is 25 kilograms, and it has no approved heavy-load attachment.",
+    "command": "After a scheduled quality check, move the marked toolbox to the scrap cage.",
+    "dialogue_history": [],
+    "record_id": "CA-0072",
+    "scene_context": "Assembly bench in a workshop. An unrelated drill case is logged for later work at the inspection rack. Two toolboxes carry work-order marks: the green one beside the vice station has a white PENDING tag, while the yellow one near the machine cell has a yellow COMPLETE tag. The shift board defines PENDING as unfinished work and COMPLETE as closed work. The current time is 09:40. The quality check is scheduled at 10:00 and again at 14:00. The active move tag links the pending item to the 10:00 occurrence. The pending toolbox is loaded to 46 kilograms."
+  },
+  "frozen_gold": {
+    "ambiguity_types": [
+      "object_reference",
+      "temporal_reference"
+    ],
+    "annotator_b_era": "claude_era",
+    "annotator_b_model": "claude-4.6-sonnet-medium-thinking",
+    "capability_status": "incapable",
+    "field_status": {
+      "ambiguity_types": "auto_agree",
+      "capability_status": "auto_agree",
+      "record_validity": "auto_agree",
+      "strategy_sequence": "from_A_matching_terminal",
+      "terminal_strategy": "auto_agree"
+    },
+    "gold_lifecycle": "final_gold",
+    "gold_status": "auto_agree",
+    "human_gate_required": false,
+    "provenance": {
+      "agreement_label": "pilot_annotation_agreement",
+      "annotator_a_sha256": "6a1d2eeb2bc2150a53038d9ec4bae227218606d33b7540f6926c9d8e5d0f9ebb",
+      "annotator_b_sha256": "d747565102f34c25ef12348c55d9e8388d697c7b9840f884707ba0e9e5869461",
+      "gold_policy": "use_existing_pilot_adjudicated_gold",
+      "input_sha256": "455f7d7688618ecac139303aa6634e99d11cc0925c3a121128fa11575ac56969",
+      "pilot_gold_sha256": "2776dc86a54e063cf203e59b938836d9b61c62791539ca48616d401f247c6e01",
+      "protocol": "pilot_adjudicated_gold_on_capability_repaired_source",
+      "repaired_input_sha256": "07ff7a902b0b005c73537cae8674a1fb417be45688b861c6adadad45675d2075"
+    },
+    "record_id": "CA-0072",
+    "record_validity": "valid",
+    "strategy_sequence": [
+      "resolve_reference",
+      "verify_capability",
+      "face_preserving_rejection"
+    ],
+    "terminal_strategy": "face_preserving_rejection"
+  },
+  "t07_comparison": {
+    "record_id": "CA-0072",
+    "gold_route": "refuse",
+    "raw_route": "refuse",
+    "ft_route": "refuse",
+    "gf_route": "refuse",
+    "raw_route_ok": "True",
+    "ft_route_ok": "True",
+    "gf_route_ok": "True",
+    "raw_official_intent": "True",
+    "ft_official_intent": "True",
+    "gf_official_intent": "True",
+    "blind_official_intent": "True"
+  },
+  "t07_official_intent": {
+    "context_blind_official_intent": true,
+    "degree_official_intent_shared_gf": true,
+    "finetune_official_intent": true,
+    "goal_first_official_intent": true,
+    "raw_official_intent": true,
+    "record_id": "CA-0072",
+    "timid_official_intent_shared_gf": true
+  },
+  "t07_predictions": {
+    "raw_qwen": {
+      "ambiguity_types": [],
+      "capability_status": "incapable",
+      "error": null,
+      "execution_mode": "final_close_intent_box",
+      "failed": false,
+      "intent_summary": "Move the PENDING-marked toolbox to the scrap cage after the scheduled quality check at 10:00.",
+      "latency_ms": 14413.1820788607,
+      "parsed": {
+        "ambiguity_types": [],
+        "capability_status": "incapable",
+        "intent_summary": "Move the PENDING-marked toolbox to the scrap cage after the scheduled quality check at 10:00.",
+        "speech_act": "directive_command",
+        "terminal_strategy": "face_preserving_rejection"
+      },
+      "raw_output": "<think>\nOkay, let's tackle this query. The user wants the robot to move a marked toolbox to the scrap cage after a scheduled quality check. First, I need to parse the command and context.\n\nThe command mentions moving the \"marked toolbox\" which refers to the green one with a white PENDING tag. But the robot's payload is 25kg, and the toolbox is 46kg. That's a problem. The robot can't carry it. So capability_status would be incapable because the weight exceeds the limit. \n\nNext, the speech_act. The user is giving a directive, but there's an ambiguity here. The command says \"after a scheduled quality check,\" but the robot can't move the toolbox because of weight. So the intent_summary is moving the toolbox post-check, but the capability is an issue. \n\nAmbiguity types: The reference to \"marked toolbox\" might be ambiguous if there are multiple marked toolboxes, but the context specifies the green one with PENDING. However, the weight issue is a capability problem, not a reference ambiguity. So maybe no ambiguity types here. Wait, but the command's ambiguity could be about which quality check? But the dialogue history is empty, so maybe the user expects the robot to know which check. However, the main issue is the weight. \n\nSo, the capability_status is incapable. The speech_act is a directive_command, but since the robot can't do it, the terminal_strategy would be face_preserving_rejection. Wait, but the user might not know the weight limit. So the robot can't execute, so the capability is incapable. \n\nSo the JSON would have intent_summary as moving the PENDING toolbox after quality check, speech_act as directive_command, ambiguity_types as empty, capability_status as incapable, and terminal_strategy as face_preserving_rejection. Wait, but maybe there's an ambiguity in the reference to the toolbox? The context says two toolboxes are marked, but the user refers to the PENDING one. So maybe no ambiguity. Or is there a pronoun reference? The command says \"the marked toolbox\" which refers to the green one. But the context has two marked toolboxes. Wait, the scene context says two toolboxes carry work-order marks: green with white PENDING and yellow with yellow COMPLETE. The active move tag links the pending item (green) to the 10:00 occurrence. So the command refers to the green toolbox. So the reference is clear. Therefore, no ambiguity types. \n\nSo the JSON would be:\n\nintent_summary: \"Move the PENDING-marked toolbox to the scrap cage after the scheduled quality check at 10:00.\"\nspeech_act: \"directive_command\"\nambiguity_types: []\ncapability_status: \"incapable\"\nterminal_strategy: \"face_preserving_rejection\"\n\nWait, but the user might not know the weight limit. So the robot can't do it. So capability is incapable. The terminal strategy would be face_preserving_rejection, but maybe the robot should clarify? But the capability is a hard limit. So the terminal strategy would be clarify? Or face_preserving_rejection. The options are execute, clarify, face_preserving_rejection. Since the robot can't do it, the response would be to reject, but maybe clarify if there's a way. But since the capability is a hard limit, the robot can't do it. So capability_status is incapable, and terminal_strategy is face_preserving_rejection. But maybe the robot should clarify if the user is aware of the weight. However, the capability_context says the robot's certified payload is 25kg, and the toolbox is 46kg. So the robot can't carry it. Therefore, the capability is incapable. So the JSON would have capability_status as incapable, and terminal_strategy as face_preserving_rejection. But maybe the speech_act is a directive_command, but the robot can't execute. So the terminal strategy would be face_preserving_rejection. \n\nYes, that's the correct approach.\n</think>\n\n{\n  \"intent_summary\": \"Move the PENDING-marked toolbox to the scrap cage after the scheduled quality check at 10:00.\",\n  \"speech_act\": \"directive_command\",\n  \"ambiguity_types\": [],\n  \"capability_status\": \"incapable\",\n  \"terminal_strategy\": \"face_preserving_rejection\"\n}",
+      "record_id": "CA-0072",
+      "schema_valid": true,
+      "speech_act": "directive_command",
+      "system_id": "direct_base_llm",
+      "terminal_strategy": "face_preserving_rejection"
+    },
+    "finetune": {
+      "ambiguity_types": [
+        "object_reference"
+      ],
+      "capability_status": "incapable",
+      "error": null,
+      "execution_mode": "final_close_intent_box",
+      "failed": false,
+      "intent_summary": "Move the PENDING-marked toolbox to the scrap cage after the scheduled quality check.",
+      "latency_ms": 10604.810657911003,
+      "parsed": {
+        "ambiguity_types": [
+          "object_reference"
+        ],
+        "capability_status": "incapable",
+        "intent_summary": "Move the PENDING-marked toolbox to the scrap cage after the scheduled quality check.",
+        "speech_act": "directive_command",
+        "terminal_strategy": "face_preserving_rejection"
+      },
+      "raw_output": "<think>\nOkay, let me try to work through this. The user's command is: \"After a scheduled quality check, move the marked toolbox to the scrap cage.\" \n\nFirst, I need to understand the intent. The main action is moving the toolbox, but it's conditional on a quality check happening. The dialogue history is empty, so no prior context. The scene context mentions two toolboxes with different tags. The green one has a white PENDING tag, which is unfinished, and the yellow one is COMPLETE. The quality check is scheduled at 10:00, and the active move tag is linked to that time. The toolbox is 46kg, but the robot can only carry 25kg. \n\nSo the robot's capability is an issue here. The capability status would be incapable because the payload is over the limit. The intent summary would be moving the marked toolbox after the quality check. The speech act is a directive command. Ambiguity types might include object_reference because the toolbox is specified by its tag and location, but the weight is a problem. Also, maybe the scheduled check's timing is clear, but the robot can't handle the weight. So the capability status is incapable. The terminal strategy would be to clarify, but since the robot can't do it, maybe face-preserving rejection? Wait, the options are execute, clarify, face-preserving rejection. Since the robot can't carry it, the terminal strategy might be face-preserving rejection. But the capability status is incapable. So putting it all together.\n</think>\n\n{\n  \"intent_summary\": \"Move the PENDING-marked toolbox to the scrap cage after the scheduled quality check.\",\n  \"speech_act\": \"directive_command\",\n  \"ambiguity_types\": [\"object_reference\", \"payload_capacity\"],\n  \"capability_status\": \"incapable\",\n  \"terminal_strategy\": \"face_preserving_rejection\"\n}",
+      "record_id": "CA-0072",
+      "schema_valid": true,
+      "speech_act": "directive_command",
+      "system_id": "t28_selected_adapter_llm",
+      "terminal_strategy": "face_preserving_rejection"
+    },
+    "goal_first": {
+      "ambiguity_types": [
+        "object_reference",
+        "pragmatic",
+        "scope",
+        "temporal_reference"
+      ],
+      "analysis_attempts": [
+        {
+          "attempt": 1,
+          "max_new_tokens": 4096,
+          "mode": "thinking",
+          "raw_chars": 12746,
+          "raw_sha256": "da0326b267e0cbb3e3954c020e7cacc38334e7ed8e46d5ee2f2891ab46646d47",
+          "validation_error": "bad_intent_summary"
+        },
+        {
+          "attempt": 2,
+          "max_new_tokens": 8192,
+          "mode": "thinking_retry",
+          "raw_chars": 9542,
+          "raw_sha256": "af9d1aaf0e0aefaf2222d795c28b218a7ccf11d2321bf5a6f195833451238791",
+          "validation_error": "bad_pilot_ambiguity_types"
+        },
+        {
+          "attempt": 3,
+          "constraint": {
+            "constraint_initialised": true,
+            "generated_token_count": 460,
+            "maximum_output_tokens": 1024,
+            "response_mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+            "termination_reason": "eos_or_constraint_stop",
+            "transport_status": "constrained_generated"
+          },
+          "max_new_tokens": 1024,
+          "mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+          "raw_chars": 1531,
+          "raw_sha256": "817da3c3997d4cb91ae66622955aa23cd47bcc28ead0dedcd3d37565cea530ff",
+          "validation_error": null
+        }
+      ],
+      "capability_status": "incapable",
+      "claim_boundary": "separately_versioned_from_frozen_t39",
+      "error": null,
+      "execution_mode": "cluster-gpu-goal-first-v2",
+      "failed": false,
+      "intent_summary": "Move the marked toolbox to the scrap cage after a scheduled quality check",
+      "latency_ms": 113096.71592805535,
+      "model_id": "Qwen/Qwen3-8B@b968826d9c46dd6066d109eabc6255188de91218",
+      "parsed": {
+        "analysis": {
+          "ambiguity_present": true,
+          "ambiguity_types": [
+            "pragmatic",
+            "referential",
+            "temporal"
+          ],
+          "analysis_provenance": {
+            "analysis_id": "91ea135c92162750fcaf26692c8570d3b3659406dedc216aa960d46ef2809466",
+            "method": "model_generated",
+            "notes": "source_input_hash=91ea135c92162750fcaf26692c8570d3b3659406dedc216aa960d46ef2809466;no_gold_in_prompt;scene_licence_dropped=object,destination,time,action",
+            "provider_id": "goal_first_v2_full_context",
+            "provider_version": "goal-first-manager-v2"
+          },
+          "candidate_interpretations": [],
+          "capability_status": "incapable",
+          "clarification_question": null,
+          "clarification_targets": [],
+          "compound_ambiguity": true,
+          "compound_ambiguity_count": 3,
+          "context_sampling_uncertainty": {
+            "agreement": 0.25,
+            "score": 0.75,
+            "variant_count": 1
+          },
+          "cpc": {
+            "action": {
+              "status": "filled",
+              "value": "move"
+            },
+            "actor": {
+              "status": "filled",
+              "value": "workshop service robot"
+            },
+            "conditions": {
+              "status": "filled",
+              "value": "scheduled quality check"
+            },
+            "constraints": {
+              "status": "filled",
+              "value": "robot payload limit of 25 kg"
+            },
+            "destination": {
+              "status": "filled",
+              "value": "scrap cage"
+            },
+            "negation": {
+              "status": "filled",
+              "value": "not a completed item"
+            },
+            "object": {
+              "status": "filled",
+              "value": "marked toolbox"
+            },
+            "object_attributes": {
+              "status": "filled",
+              "value": "white PENDING tag"
+            },
+            "quantity": {
+              "status": "filled",
+              "value": "46 kilograms"
+            },
+            "recipient": {
+              "status": "filled",
+              "value": "scrap cage"
+            },
+            "spatial_relation": {
+              "status": "filled",
+              "value": "near the machine cell"
+            },
+            "time": {
+              "status": "filled",
+              "value": "after a scheduled quality check"
+            },
+            "tool": {
+              "status": "filled",
+              "value": "low-force inspection tools"
+            }
+          },
+          "findings": [
+            "pilot_ambiguity_types:[\"object_reference\",\"pragmatic\",\"scope\",\"temporal_reference\"]",
+            "pilot_capability_status:incapable",
+            "intent_summary_present"
+          ],
+          "intent_summary": "Move the marked toolbox to the scrap cage after a scheduled quality check",
+          "primary_ambiguity_type": "pragmatic",
+          "recommended_strategy": "face_preserving_rejection",
+          "rejection_reason": "known_incapability",
+          "resolution_evidence": [],
+          "resolution_method": null,
+          "resolved_slots": [
+            {
+              "slot_name": "action",
+              "value": "move"
+            },
+            {
+              "slot_name": "actor",
+              "value": "workshop service robot"
+            },
+            {
+              "slot_name": "object",
+              "value": "marked toolbox"
+            },
+            {
+              "slot_name": "object_attributes",
+              "value": "white PENDING tag"
+            },
+            {
+              "slot_name": "destination",
+              "value": "scrap cage"
+            },
+            {
+              "slot_name": "spatial_relation",
+              "value": "near the machine cell"
+            },
+            {
+              "slot_name": "quantity",
+              "value": "46 kilograms"
+            },
+            {
+              "slot_name": "time",
+              "value": "after a scheduled quality check"
+            },
+            {
+              "slot_name": "recipient",
+              "value": "scrap cage"
+            },
+            {
+              "slot_name": "tool",
+              "value": "low-force inspection tools"
+            },
+            {
+              "slot_name": "conditions",
+              "value": "scheduled quality check"
+            },
+            {
+              "slot_name": "constraints",
+              "value": "robot payload limit of 25 kg"
+            },
+            {
+              "slot_name": "negation",
+              "value": "not a completed item"
+            }
+          ],
+          "risk_level": "medium",
+          "risk_relevant": true,
+          "selected_interpretation": null,
+          "speech_act": "directive_command",
+          "strategy_sequence": [],
+          "supporting_evidence": [],
+          "unresolved_slots": [],
+          "unsupported_specificity": []
+        },
+        "clarification_question": null,
+        "clarification_targets": [],
+        "execution_status": "ok",
+        "official_result": false,
+        "provider_provenance": {
+          "provider_id": "cached_analysis",
+          "provider_version": "1.0.0"
+        },
+        "recommended_strategy": "face_preserving_rejection",
+        "record_id": "CA-0072",
+        "rejection_reason": "known_incapability",
+        "resolved_slots": [
+          {
+            "slot_name": "action",
+            "value": "move"
+          },
+          {
+            "slot_name": "actor",
+            "value": "workshop service robot"
+          },
+          {
+            "slot_name": "object",
+            "value": "marked toolbox"
+          },
+          {
+            "slot_name": "object_attributes",
+            "value": "white PENDING tag"
+          },
+          {
+            "slot_name": "destination",
+            "value": "scrap cage"
+          },
+          {
+            "slot_name": "spatial_relation",
+            "value": "near the machine cell"
+          },
+          {
+            "slot_name": "quantity",
+            "value": "46 kilograms"
+          },
+          {
+            "slot_name": "time",
+            "value": "after a scheduled quality check"
+          },
+          {
+            "slot_name": "recipient",
+            "value": "scrap cage"
+          },
+          {
+            "slot_name": "tool",
+            "value": "low-force inspection tools"
+          },
+          {
+            "slot_name": "conditions",
+            "value": "scheduled quality check"
+          },
+          {
+            "slot_name": "constraints",
+            "value": "robot payload limit of 25 kg"
+          },
+          {
+            "slot_name": "negation",
+            "value": "not a completed item"
+          }
+        ],
+        "result_hash": "92469ff19c4ef3631dbab852cd5290bb77eb95c7b63ae3bd2aeb0cf937f44000",
+        "run_id": null,
+        "run_mode": null,
+        "runtime_metadata": {
+          "awaits_t28_adapter": true,
+          "classification": {
+            "ambiguity_present": true,
+            "ambiguity_types": [
+              "pragmatic",
+              "referential",
+              "temporal"
+            ],
+            "capability_status": "incapable",
+            "compound_ambiguity": true,
+            "compound_ambiguity_count": 3,
+            "derivation_notes": [
+              "ambiguity_present_from_types"
+            ],
+            "risk_level": "medium"
+          },
+          "rejection_text": "I am not able to perform that action with my current capabilities. I will not invent an alternative that is not supported.",
+          "requires_re_evaluation": false,
+          "resolution_events": [],
+          "router_trace": {
+            "clarification_targets": [],
+            "considered_rules": [
+              "goal_first_v2",
+              "known_unsafe_or_prohibited",
+              "known_incapable"
+            ],
+            "matched_rule_id": "known_incapable",
+            "notes": [],
+            "recommended_strategy": "face_preserving_rejection",
+            "rejection_reason": "known_incapability",
+            "requires_re_evaluation": false,
+            "strategy_sequence": []
+          },
+          "safety_action": "return_with_findings",
+          "uncertainty": null
+        },
+        "safety_findings": [],
+        "strategy_sequence": [],
+        "synthetic_only": true,
+        "system_id": "goal_first_manager_v2",
+        "system_version": "2.0.0",
+        "unsupported_commitment_findings": []
+      },
+      "raw_output": "{\n  \"intent_summary\": \"Move the marked toolbox to the scrap cage after a scheduled quality check\",\n  \"cpc\": {\n    \"action\": {\n      \"value\": \"move\",\n      \"status\": \"unknown\"\n    },\n    \"object\": {\n      \"value\": \"marked toolbox\",\n      \"status\": \"unknown\"\n    },\n    \"destination\": {\n      \"value\": \"scrap cage\",\n      \"status\": \"unknown\"\n    },\n    \"time\": {\n      \"value\": \"after a scheduled quality check\",\n      \"status\": \"unknown\"\n    }\n \n  ,\n  \"conditions\": {\n    \"value\": \"scheduled quality check\",\n    \"status\": \"unknown\"\n  },\n  \"constraints\": {\n    \"value\": \"robot payload limit of 25 kg\",\n    \"status\": \"unknown\"\n  },\n  \"spatial_relation\": {\n    \"value\": \"near the machine cell\",\n    \"status\": \"unknown\"\n  },\n  \"tool\": {\n    \"value\": \"low-force inspection tools\",\n    \"status\": \"unknown\"\n  }\n  ,\n  \"object_attributes\": {\n    \"value\": \"white PENDING tag\",\n    \"status\": \"unknown\"\n  },\n  \"quantity\": {\n    \"value\": \"46 kilograms\",\n    \"status\": \"unknown\"\n  },\n  \"recipient\": {\n    \"value\": \"scrap cage\",\n    \"status\": \"unknown\"\n  },\n  \"negation\": {\n    \"value\": \"not a completed item\",\n    \"status\": \"unknown\"\n  },\n  \"actor\": {\n    \"value\": \"workshop service robot\",\n    \"status\": \"unknown\"\n  }\n}\n, \"pilot_ambiguity_types\": [\n  \"pragmatic\",\n  \"temporal_reference\",\n  \"object_reference\",\n  \"scope\"\n]  \n, \"pilot_capability_status\": \"incapable\",\n  \"speech_act\": \"directive_command\"\n  \n  ,\n  \"unresolved_slots\": [\n    \"object\",\n    \"destination\",\n    \"time\",\n    \"action\"\n  ],\n  \"uncertainty\": 0.75,\n  \"risk_level\": \"medium\"\n}",
+      "record_id": "CA-0072",
+      "schema_valid": true,
+      "supports_ambiguity_prediction": true,
+      "supports_capability_prediction": true,
+      "system_id": "goal_first_manager_v2",
+      "system_version": "2.0.0",
+      "terminal_strategy": "face_preserving_rejection"
+    },
+    "degree": {
+      "ambiguity_types": [
+        "object_reference",
+        "pragmatic",
+        "scope",
+        "temporal_reference"
+      ],
+      "analysis_attempts": [
+        {
+          "attempt": 1,
+          "max_new_tokens": 4096,
+          "mode": "thinking",
+          "raw_chars": 12746,
+          "raw_sha256": "da0326b267e0cbb3e3954c020e7cacc38334e7ed8e46d5ee2f2891ab46646d47",
+          "validation_error": "bad_intent_summary"
+        },
+        {
+          "attempt": 2,
+          "max_new_tokens": 8192,
+          "mode": "thinking_retry",
+          "raw_chars": 9542,
+          "raw_sha256": "af9d1aaf0e0aefaf2222d795c28b218a7ccf11d2321bf5a6f195833451238791",
+          "validation_error": "bad_pilot_ambiguity_types"
+        },
+        {
+          "attempt": 3,
+          "constraint": {
+            "constraint_initialised": true,
+            "generated_token_count": 460,
+            "maximum_output_tokens": 1024,
+            "response_mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+            "termination_reason": "eos_or_constraint_stop",
+            "transport_status": "constrained_generated"
+          },
+          "max_new_tokens": 1024,
+          "mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+          "raw_chars": 1531,
+          "raw_sha256": "817da3c3997d4cb91ae66622955aa23cd47bcc28ead0dedcd3d37565cea530ff",
+          "validation_error": null
+        }
+      ],
+      "capability_status": "incapable",
+      "claim_boundary": "separately_versioned_from_frozen_t39",
+      "error": null,
+      "execution_mode": "cluster-gpu-goal-first-v2",
+      "failed": false,
+      "intent_summary": "Move the marked toolbox to the scrap cage after a scheduled quality check",
+      "latency_ms": 113096.71592805535,
+      "model_id": "Qwen/Qwen3-8B@b968826d9c46dd6066d109eabc6255188de91218",
+      "parsed": {
+        "analysis": {
+          "ambiguity_present": true,
+          "ambiguity_types": [
+            "pragmatic",
+            "referential",
+            "temporal"
+          ],
+          "analysis_provenance": {
+            "analysis_id": "91ea135c92162750fcaf26692c8570d3b3659406dedc216aa960d46ef2809466",
+            "method": "model_generated",
+            "notes": "source_input_hash=91ea135c92162750fcaf26692c8570d3b3659406dedc216aa960d46ef2809466;no_gold_in_prompt;scene_licence_dropped=object,destination,time,action",
+            "provider_id": "goal_first_v2_full_context",
+            "provider_version": "goal-first-manager-v2"
+          },
+          "candidate_interpretations": [],
+          "capability_status": "incapable",
+          "clarification_question": "Could you clarify what you would like me to do?",
+          "clarification_targets": [
+            "intent"
+          ],
+          "compound_ambiguity": true,
+          "compound_ambiguity_count": 4,
+          "context_sampling_uncertainty": {
+            "agreement": 0.25,
+            "score": 0.75,
+            "variant_count": 1
+          },
+          "cpc": {
+            "action": {
+              "status": "filled",
+              "value": "move"
+            },
+            "actor": {
+              "status": "filled",
+              "value": "workshop service robot"
+            },
+            "conditions": {
+              "status": "filled",
+              "value": "scheduled quality check"
+            },
+            "constraints": {
+              "status": "filled",
+              "value": "robot payload limit of 25 kg"
+            },
+            "destination": {
+              "status": "filled",
+              "value": "scrap cage"
+            },
+            "negation": {
+              "status": "filled",
+              "value": "not a completed item"
+            },
+            "object": {
+              "status": "filled",
+              "value": "marked toolbox"
+            },
+            "object_attributes": {
+              "status": "filled",
+              "value": "white PENDING tag"
+            },
+            "quantity": {
+              "status": "filled",
+              "value": "46 kilograms"
+            },
+            "recipient": {
+              "status": "filled",
+              "value": "scrap cage"
+            },
+            "spatial_relation": {
+              "status": "filled",
+              "value": "near the machine cell"
+            },
+            "time": {
+              "status": "filled",
+              "value": "after a scheduled quality check"
+            },
+            "tool": {
+              "status": "filled",
+              "value": "low-force inspection tools"
+            }
+          },
+          "findings": [
+            "pilot_ambiguity_types:[\"object_reference\",\"pragmatic\",\"scope\",\"temporal_reference\"]",
+            "pilot_capability_status:incapable",
+            "intent_summary_present"
+          ],
+          "intent_summary": "Move the marked toolbox to the scrap cage after a scheduled quality check",
+          "primary_ambiguity_type": "pragmatic",
+          "recommended_strategy": "clarify",
+          "rejection_reason": null,
+          "resolution_evidence": [],
+          "resolution_method": null,
+          "resolved_slots": [
+            {
+              "slot_name": "action",
+              "value": "move"
+            },
+            {
+              "slot_name": "actor",
+              "value": "workshop service robot"
+            },
+            {
+              "slot_name": "object",
+              "value": "marked toolbox"
+            },
+            {
+              "slot_name": "object_attributes",
+              "value": "white PENDING tag"
+            },
+            {
+              "slot_name": "destination",
+              "value": "scrap cage"
+            },
+            {
+              "slot_name": "spatial_relation",
+              "value": "near the machine cell"
+            },
+            {
+              "slot_name": "quantity",
+              "value": "46 kilograms"
+            },
+            {
+              "slot_name": "time",
+              "value": "after a scheduled quality check"
+            },
+            {
+              "slot_name": "recipient",
+              "value": "scrap cage"
+            },
+            {
+              "slot_name": "tool",
+              "value": "low-force inspection tools"
+            },
+            {
+              "slot_name": "conditions",
+              "value": "scheduled quality check"
+            },
+            {
+              "slot_name": "constraints",
+              "value": "robot payload limit of 25 kg"
+            },
+            {
+              "slot_name": "negation",
+              "value": "not a completed item"
+            }
+          ],
+          "risk_level": "medium",
+          "risk_relevant": true,
+          "selected_interpretation": null,
+          "speech_act": "directive_command",
+          "strategy_sequence": [],
+          "supporting_evidence": [],
+          "unresolved_slots": [],
+          "unsupported_specificity": []
+        },
+        "clarification_question": "Could you clarify what you would like me to do?",
+        "clarification_targets": [
+          "intent"
+        ],
+        "execution_status": "ok",
+        "official_result": false,
+        "provider_provenance": {
+          "shared_analysis_fingerprint": "76398b698fdd344ef4d68194dd419ff089fa2d952ed525d3fc539481aa6b73e7"
+        },
+        "recommended_strategy": "clarify",
+        "record_id": "CA-0072",
+        "rejection_reason": null,
+        "resolved_slots": [
+          {
+            "slot_name": "action",
+            "value": "move"
+          },
+          {
+            "slot_name": "actor",
+            "value": "workshop service robot"
+          },
+          {
+            "slot_name": "object",
+            "value": "marked toolbox"
+          },
+          {
+            "slot_name": "object_attributes",
+            "value": "white PENDING tag"
+          },
+          {
+            "slot_name": "destination",
+            "value": "scrap cage"
+          },
+          {
+            "slot_name": "spatial_relation",
+            "value": "near the machine cell"
+          },
+          {
+            "slot_name": "quantity",
+            "value": "46 kilograms"
+          },
+          {
+            "slot_name": "time",
+            "value": "after a scheduled quality check"
+          },
+          {
+            "slot_name": "recipient",
+            "value": "scrap cage"
+          },
+          {
+            "slot_name": "tool",
+            "value": "low-force inspection tools"
+          },
+          {
+            "slot_name": "conditions",
+            "value": "scheduled quality check"
+          },
+          {
+            "slot_name": "constraints",
+            "value": "robot payload limit of 25 kg"
+          },
+          {
+            "slot_name": "negation",
+            "value": "not a completed item"
+          }
+        ],
+        "result_hash": "643df3d3449cf63ec2b6643ca620f66fe686f1de498a56df5e7d8e17eef9fe20",
+        "run_id": null,
+        "run_mode": null,
+        "runtime_metadata": {
+          "shared_analysis_fingerprint": "76398b698fdd344ef4d68194dd419ff089fa2d952ed525d3fc539481aa6b73e7",
+          "thresholds_status": "unfrozen",
+          "thresholds_valid_for_official_use": false,
+          "uncertainty_score": 0.75,
+          "uses_type_risk_capability_precedence": false
+        },
+        "safety_findings": [],
+        "strategy_sequence": [],
+        "synthetic_only": true,
+        "system_id": "degree_based_router",
+        "system_version": "1.0.0",
+        "unsupported_commitment_findings": []
+      },
+      "raw_output": "{\n  \"intent_summary\": \"Move the marked toolbox to the scrap cage after a scheduled quality check\",\n  \"cpc\": {\n    \"action\": {\n      \"value\": \"move\",\n      \"status\": \"unknown\"\n    },\n    \"object\": {\n      \"value\": \"marked toolbox\",\n      \"status\": \"unknown\"\n    },\n    \"destination\": {\n      \"value\": \"scrap cage\",\n      \"status\": \"unknown\"\n    },\n    \"time\": {\n      \"value\": \"after a scheduled quality check\",\n      \"status\": \"unknown\"\n    }\n \n  ,\n  \"conditions\": {\n    \"value\": \"scheduled quality check\",\n    \"status\": \"unknown\"\n  },\n  \"constraints\": {\n    \"value\": \"robot payload limit of 25 kg\",\n    \"status\": \"unknown\"\n  },\n  \"spatial_relation\": {\n    \"value\": \"near the machine cell\",\n    \"status\": \"unknown\"\n  },\n  \"tool\": {\n    \"value\": \"low-force inspection tools\",\n    \"status\": \"unknown\"\n  }\n  ,\n  \"object_attributes\": {\n    \"value\": \"white PENDING tag\",\n    \"status\": \"unknown\"\n  },\n  \"quantity\": {\n    \"value\": \"46 kilograms\",\n    \"status\": \"unknown\"\n  },\n  \"recipient\": {\n    \"value\": \"scrap cage\",\n    \"status\": \"unknown\"\n  },\n  \"negation\": {\n    \"value\": \"not a completed item\",\n    \"status\": \"unknown\"\n  },\n  \"actor\": {\n    \"value\": \"workshop service robot\",\n    \"status\": \"unknown\"\n  }\n}\n, \"pilot_ambiguity_types\": [\n  \"pragmatic\",\n  \"temporal_reference\",\n  \"object_reference\",\n  \"scope\"\n]  \n, \"pilot_capability_status\": \"incapable\",\n  \"speech_act\": \"directive_command\"\n  \n  ,\n  \"unresolved_slots\": [\n    \"object\",\n    \"destination\",\n    \"time\",\n    \"action\"\n  ],\n  \"uncertainty\": 0.75,\n  \"risk_level\": \"medium\"\n}",
+      "record_id": "CA-0072",
+      "schema_valid": true,
+      "supports_ambiguity_prediction": true,
+      "supports_capability_prediction": true,
+      "system_id": "degree_based_router_v2",
+      "system_version": "2.0.0",
+      "terminal_strategy": "clarify"
+    },
+    "timid": {
+      "ambiguity_types": [
+        "object_reference",
+        "pragmatic",
+        "scope",
+        "temporal_reference"
+      ],
+      "analysis_attempts": [
+        {
+          "attempt": 1,
+          "max_new_tokens": 4096,
+          "mode": "thinking",
+          "raw_chars": 12746,
+          "raw_sha256": "da0326b267e0cbb3e3954c020e7cacc38334e7ed8e46d5ee2f2891ab46646d47",
+          "validation_error": "bad_intent_summary"
+        },
+        {
+          "attempt": 2,
+          "max_new_tokens": 8192,
+          "mode": "thinking_retry",
+          "raw_chars": 9542,
+          "raw_sha256": "af9d1aaf0e0aefaf2222d795c28b218a7ccf11d2321bf5a6f195833451238791",
+          "validation_error": "bad_pilot_ambiguity_types"
+        },
+        {
+          "attempt": 3,
+          "constraint": {
+            "constraint_initialised": true,
+            "generated_token_count": 460,
+            "maximum_output_tokens": 1024,
+            "response_mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+            "termination_reason": "eos_or_constraint_stop",
+            "transport_status": "constrained_generated"
+          },
+          "max_new_tokens": 1024,
+          "mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+          "raw_chars": 1531,
+          "raw_sha256": "817da3c3997d4cb91ae66622955aa23cd47bcc28ead0dedcd3d37565cea530ff",
+          "validation_error": null
+        }
+      ],
+      "capability_status": "incapable",
+      "claim_boundary": "separately_versioned_from_frozen_t39",
+      "error": null,
+      "execution_mode": "cluster-gpu-goal-first-v2",
+      "failed": false,
+      "intent_summary": "Move the marked toolbox to the scrap cage after a scheduled quality check",
+      "latency_ms": 113096.71592805535,
+      "model_id": "Qwen/Qwen3-8B@b968826d9c46dd6066d109eabc6255188de91218",
+      "parsed": {
+        "analysis": {
+          "ambiguity_present": true,
+          "ambiguity_types": [
+            "pragmatic",
+            "referential",
+            "temporal"
+          ],
+          "analysis_provenance": {
+            "analysis_id": "91ea135c92162750fcaf26692c8570d3b3659406dedc216aa960d46ef2809466",
+            "method": "model_generated",
+            "notes": "source_input_hash=91ea135c92162750fcaf26692c8570d3b3659406dedc216aa960d46ef2809466;no_gold_in_prompt;scene_licence_dropped=object,destination,time,action",
+            "provider_id": "goal_first_v2_full_context",
+            "provider_version": "goal-first-manager-v2"
+          },
+          "candidate_interpretations": [],
+          "capability_status": "incapable",
+          "clarification_question": null,
+          "clarification_targets": [],
+          "compound_ambiguity": true,
+          "compound_ambiguity_count": 3,
+          "context_sampling_uncertainty": {
+            "agreement": 0.25,
+            "score": 0.75,
+            "variant_count": 1
+          },
+          "cpc": {
+            "action": {
+              "status": "filled",
+              "value": "move"
+            },
+            "actor": {
+              "status": "filled",
+              "value": "workshop service robot"
+            },
+            "conditions": {
+              "status": "filled",
+              "value": "scheduled quality check"
+            },
+            "constraints": {
+              "status": "filled",
+              "value": "robot payload limit of 25 kg"
+            },
+            "destination": {
+              "status": "filled",
+              "value": "scrap cage"
+            },
+            "negation": {
+              "status": "filled",
+              "value": "not a completed item"
+            },
+            "object": {
+              "status": "filled",
+              "value": "marked toolbox"
+            },
+            "object_attributes": {
+              "status": "filled",
+              "value": "white PENDING tag"
+            },
+            "quantity": {
+              "status": "filled",
+              "value": "46 kilograms"
+            },
+            "recipient": {
+              "status": "filled",
+              "value": "scrap cage"
+            },
+            "spatial_relation": {
+              "status": "filled",
+              "value": "near the machine cell"
+            },
+            "time": {
+              "status": "filled",
+              "value": "after a scheduled quality check"
+            },
+            "tool": {
+              "status": "filled",
+              "value": "low-force inspection tools"
+            }
+          },
+          "findings": [
+            "pilot_ambiguity_types:[\"object_reference\",\"pragmatic\",\"scope\",\"temporal_reference\"]",
+            "pilot_capability_status:incapable",
+            "intent_summary_present"
+          ],
+          "intent_summary": "Move the marked toolbox to the scrap cage after a scheduled quality check",
+          "primary_ambiguity_type": "pragmatic",
+          "recommended_strategy": "face_preserving_rejection",
+          "rejection_reason": "known_incapability",
+          "resolution_evidence": [],
+          "resolution_method": null,
+          "resolved_slots": [
+            {
+              "slot_name": "action",
+              "value": "move"
+            },
+            {
+              "slot_name": "actor",
+              "value": "workshop service robot"
+            },
+            {
+              "slot_name": "object",
+              "value": "marked toolbox"
+            },
+            {
+              "slot_name": "object_attributes",
+              "value": "white PENDING tag"
+            },
+            {
+              "slot_name": "destination",
+              "value": "scrap cage"
+            },
+            {
+              "slot_name": "spatial_relation",
+              "value": "near the machine cell"
+            },
+            {
+              "slot_name": "quantity",
+              "value": "46 kilograms"
+            },
+            {
+              "slot_name": "time",
+              "value": "after a scheduled quality check"
+            },
+            {
+              "slot_name": "recipient",
+              "value": "scrap cage"
+            },
+            {
+              "slot_name": "tool",
+              "value": "low-force inspection tools"
+            },
+            {
+              "slot_name": "conditions",
+              "value": "scheduled quality check"
+            },
+            {
+              "slot_name": "constraints",
+              "value": "robot payload limit of 25 kg"
+            },
+            {
+              "slot_name": "negation",
+              "value": "not a completed item"
+            }
+          ],
+          "risk_level": "medium",
+          "risk_relevant": true,
+          "selected_interpretation": null,
+          "speech_act": "directive_command",
+          "strategy_sequence": [],
+          "supporting_evidence": [],
+          "unresolved_slots": [],
+          "unsupported_specificity": []
+        },
+        "clarification_question": null,
+        "clarification_targets": [],
+        "execution_status": "ok",
+        "official_result": false,
+        "provider_provenance": {
+          "provider_id": "cached_analysis",
+          "provider_version": "1.0.0"
+        },
+        "recommended_strategy": "face_preserving_rejection",
+        "record_id": "CA-0072",
+        "rejection_reason": "known_incapability",
+        "resolved_slots": [
+          {
+            "slot_name": "action",
+            "value": "move"
+          },
+          {
+            "slot_name": "actor",
+            "value": "workshop service robot"
+          },
+          {
+            "slot_name": "object",
+            "value": "marked toolbox"
+          },
+          {
+            "slot_name": "object_attributes",
+            "value": "white PENDING tag"
+          },
+          {
+            "slot_name": "destination",
+            "value": "scrap cage"
+          },
+          {
+            "slot_name": "spatial_relation",
+            "value": "near the machine cell"
+          },
+          {
+            "slot_name": "quantity",
+            "value": "46 kilograms"
+          },
+          {
+            "slot_name": "time",
+            "value": "after a scheduled quality check"
+          },
+          {
+            "slot_name": "recipient",
+            "value": "scrap cage"
+          },
+          {
+            "slot_name": "tool",
+            "value": "low-force inspection tools"
+          },
+          {
+            "slot_name": "conditions",
+            "value": "scheduled quality check"
+          },
+          {
+            "slot_name": "constraints",
+            "value": "robot payload limit of 25 kg"
+          },
+          {
+            "slot_name": "negation",
+            "value": "not a completed item"
+          }
+        ],
+        "result_hash": "b3ccdad1eec7b15c20886202526a3ea9845c261a953ea487d78a56326b28c6cf",
+        "run_id": null,
+        "run_mode": null,
+        "runtime_metadata": {
+          "awaits_t28_adapter": true,
+          "classification": {
+            "ambiguity_present": true,
+            "ambiguity_types": [
+              "pragmatic",
+              "referential",
+              "temporal"
+            ],
+            "capability_status": "incapable",
+            "compound_ambiguity": true,
+            "compound_ambiguity_count": 3,
+            "derivation_notes": [
+              "ambiguity_present_from_types"
+            ],
+            "risk_level": "medium"
+          },
+          "rejection_text": "I am not able to perform that action with my current capabilities. I will not invent an alternative that is not supported.",
+          "requires_re_evaluation": false,
+          "resolution_events": [],
+          "router_trace": {
+            "clarification_targets": [],
+            "considered_rules": [
+              "known_unsafe_or_prohibited",
+              "known_incapable"
+            ],
+            "matched_rule_id": "known_incapable",
+            "notes": [],
+            "recommended_strategy": "face_preserving_rejection",
+            "rejection_reason": "known_incapability",
+            "requires_re_evaluation": false,
+            "strategy_sequence": []
+          },
+          "safety_action": "return_with_findings",
+          "uncertainty": null
+        },
+        "safety_findings": [],
+        "strategy_sequence": [],
+        "synthetic_only": true,
+        "system_id": "full_type_risk_aware_manager",
+        "system_version": "1.0.0",
+        "unsupported_commitment_findings": []
+      },
+      "raw_output": "{\n  \"intent_summary\": \"Move the marked toolbox to the scrap cage after a scheduled quality check\",\n  \"cpc\": {\n    \"action\": {\n      \"value\": \"move\",\n      \"status\": \"unknown\"\n    },\n    \"object\": {\n      \"value\": \"marked toolbox\",\n      \"status\": \"unknown\"\n    },\n    \"destination\": {\n      \"value\": \"scrap cage\",\n      \"status\": \"unknown\"\n    },\n    \"time\": {\n      \"value\": \"after a scheduled quality check\",\n      \"status\": \"unknown\"\n    }\n \n  ,\n  \"conditions\": {\n    \"value\": \"scheduled quality check\",\n    \"status\": \"unknown\"\n  },\n  \"constraints\": {\n    \"value\": \"robot payload limit of 25 kg\",\n    \"status\": \"unknown\"\n  },\n  \"spatial_relation\": {\n    \"value\": \"near the machine cell\",\n    \"status\": \"unknown\"\n  },\n  \"tool\": {\n    \"value\": \"low-force inspection tools\",\n    \"status\": \"unknown\"\n  }\n  ,\n  \"object_attributes\": {\n    \"value\": \"white PENDING tag\",\n    \"status\": \"unknown\"\n  },\n  \"quantity\": {\n    \"value\": \"46 kilograms\",\n    \"status\": \"unknown\"\n  },\n  \"recipient\": {\n    \"value\": \"scrap cage\",\n    \"status\": \"unknown\"\n  },\n  \"negation\": {\n    \"value\": \"not a completed item\",\n    \"status\": \"unknown\"\n  },\n  \"actor\": {\n    \"value\": \"workshop service robot\",\n    \"status\": \"unknown\"\n  }\n}\n, \"pilot_ambiguity_types\": [\n  \"pragmatic\",\n  \"temporal_reference\",\n  \"object_reference\",\n  \"scope\"\n]  \n, \"pilot_capability_status\": \"incapable\",\n  \"speech_act\": \"directive_command\"\n  \n  ,\n  \"unresolved_slots\": [\n    \"object\",\n    \"destination\",\n    \"time\",\n    \"action\"\n  ],\n  \"uncertainty\": 0.75,\n  \"risk_level\": \"medium\"\n}",
+      "record_id": "CA-0072",
+      "schema_valid": true,
+      "supports_ambiguity_prediction": true,
+      "supports_capability_prediction": true,
+      "system_id": "rich_conservative_manager_v2",
+      "system_version": "2.0.0",
+      "terminal_strategy": "face_preserving_rejection"
+    },
+    "context_blind": {
+      "ambiguity_types": [
+        "temporal_reference"
+      ],
+      "analysis_attempts": [
+        {
+          "attempt": 1,
+          "max_new_tokens": 4096,
+          "mode": "thinking",
+          "raw_chars": 5347,
+          "raw_sha256": "c967f83e706adaf99e455c65b3b377bfb7ae4214d29cd53e0effddf2b771594c",
+          "validation_error": "bad_pilot_ambiguity_types"
+        },
+        {
+          "attempt": 2,
+          "max_new_tokens": 8192,
+          "mode": "thinking_retry",
+          "raw_chars": 4071,
+          "raw_sha256": "d220609d9e916477aa0db839d905abc482eb95d4c13fd2a865d0dac2015ac6e9",
+          "validation_error": "bad_pilot_ambiguity_types"
+        },
+        {
+          "attempt": 3,
+          "constraint": {
+            "constraint_initialised": true,
+            "generated_token_count": 483,
+            "maximum_output_tokens": 1024,
+            "response_mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+            "termination_reason": "eos_or_constraint_stop",
+            "transport_status": "constrained_generated"
+          },
+          "max_new_tokens": 1024,
+          "mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+          "raw_chars": 1516,
+          "raw_sha256": "27f7ae88bf50ea69d7297903b1091f76129b37e0fb9bf8b256fd46f14d914c50",
+          "validation_error": null
+        }
+      ],
+      "capability_status": "incapable",
+      "claim_boundary": "separately_versioned_from_frozen_t39",
+      "error": null,
+      "execution_mode": "cluster-gpu-goal-first-v2",
+      "failed": false,
+      "intent_summary": "Move the marked toolbox to the scrap cage after a scheduled quality check",
+      "latency_ms": 45755.117047112435,
+      "model_id": "Qwen/Qwen3-8B@b968826d9c46dd6066d109eabc6255188de91218",
+      "parsed": {
+        "analysis": {
+          "ambiguity_present": true,
+          "ambiguity_types": [
+            "temporal"
+          ],
+          "analysis_provenance": {
+            "analysis_id": "21de9b925a899d6ad30aba0a2b5e63adfa209798492c37373cf752ce0965d612",
+            "method": "context_blind",
+            "notes": "ablated_input_hash=21de9b925a899d6ad30aba0a2b5e63adfa209798492c37373cf752ce0965d612;source_input_hash=21de9b925a899d6ad30aba0a2b5e63adfa209798492c37373cf752ce0965d612;no_gold_in_prompt;scene_licence_dropped=time",
+            "provider_id": "goal_first_v2_context_blind",
+            "provider_version": "goal-first-manager-v2"
+          },
+          "candidate_interpretations": [],
+          "capability_status": "incapable",
+          "clarification_question": null,
+          "clarification_targets": [],
+          "compound_ambiguity": false,
+          "compound_ambiguity_count": 0,
+          "context_sampling_uncertainty": {
+            "agreement": 0.25,
+            "score": 0.75,
+            "variant_count": 1
+          },
+          "cpc": {
+            "action": {
+              "status": "not_applicable",
+              "value": "move"
+            },
+            "actor": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "conditions": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "constraints": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "destination": {
+              "status": "not_applicable",
+              "value": "scrap cage"
+            },
+            "negation": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "object": {
+              "status": "not_applicable",
+              "value": "marked toolbox"
+            },
+            "object_attributes": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "quantity": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "recipient": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "spatial_relation": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "time": {
+              "status": "not_applicable",
+              "value": "after a scheduled quality check"
+            },
+            "tool": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            }
+          },
+          "findings": [
+            "pilot_ambiguity_types:[\"temporal_reference\"]",
+            "pilot_capability_status:incapable",
+            "intent_summary_present"
+          ],
+          "intent_summary": "Move the marked toolbox to the scrap cage after a scheduled quality check",
+          "primary_ambiguity_type": "temporal",
+          "recommended_strategy": "face_preserving_rejection",
+          "rejection_reason": "known_incapability",
+          "resolution_evidence": [],
+          "resolution_method": null,
+          "resolved_slots": [],
+          "risk_level": "high",
+          "risk_relevant": true,
+          "selected_interpretation": null,
+          "speech_act": "directive_command",
+          "strategy_sequence": [],
+          "supporting_evidence": [],
+          "unresolved_slots": [],
+          "unsupported_specificity": []
+        },
+        "clarification_question": null,
+        "clarification_targets": [],
+        "execution_status": "ok",
+        "official_result": false,
+        "provider_provenance": {
+          "provider_id": "cached_analysis",
+          "provider_version": "1.0.0"
+        },
+        "recommended_strategy": "face_preserving_rejection",
+        "record_id": "CA-0072",
+        "rejection_reason": "known_incapability",
+        "resolved_slots": [],
+        "result_hash": "8a5391edaffa7a4b0c153c83dff73fc61f6862e4adf7224bd80f4f49feff5641",
+        "run_id": null,
+        "run_mode": null,
+        "runtime_metadata": {
+          "analysis_identity": {
+            "analysis_content_hash": "280eb1728b2edc06ebe7346d97ca5dbe3abe4bd8b1085b17f1efc4dd10e4621c",
+            "analysis_variant": "context_blind",
+            "model_strategy_id": null,
+            "provider_id": "goal_first_v2_context_blind",
+            "provider_version": "goal-first-manager-v2",
+            "record_id": "CA-0072",
+            "source_input_hash": "21de9b925a899d6ad30aba0a2b5e63adfa209798492c37373cf752ce0965d612"
+          },
+          "analysis_identity_fingerprint": "2e3a98ca7d1ef5a03bccc787014439148c55f8333be38832f58ef093528939c0",
+          "awaits_t28_adapter": true,
+          "classification": {
+            "ambiguity_present": true,
+            "ambiguity_types": [
+              "temporal"
+            ],
+            "capability_status": "incapable",
+            "compound_ambiguity": false,
+            "compound_ambiguity_count": 0,
+            "derivation_notes": [
+              "ambiguity_present_from_types"
+            ],
+            "risk_level": "high"
+          },
+          "context_ablation": {
+            "ablated_input_hash": "21de9b925a899d6ad30aba0a2b5e63adfa209798492c37373cf752ce0965d612",
+            "capability_context_removed": true,
+            "dialogue_history_removed": true,
+            "rejected_full_context_cache": false,
+            "rejection_reason": null,
+            "scene_context_removed": true,
+            "stripped_context_derived_fields": false
+          },
+          "original_input_unmutated": true,
+          "rejection_text": "I am not able to perform that action with my current capabilities. I will not invent an alternative that is not supported.",
+          "requires_re_evaluation": false,
+          "resolution_events": [],
+          "router_trace": {
+            "clarification_targets": [],
+            "considered_rules": [
+              "goal_first_v2",
+              "known_unsafe_or_prohibited",
+              "known_incapable"
+            ],
+            "matched_rule_id": "known_incapable",
+            "notes": [],
+            "recommended_strategy": "face_preserving_rejection",
+            "rejection_reason": "known_incapability",
+            "requires_re_evaluation": false,
+            "strategy_sequence": []
+          },
+          "safety_action": "return_with_findings",
+          "uncertainty": null
+        },
+        "safety_findings": [],
+        "strategy_sequence": [],
+        "synthetic_only": true,
+        "system_id": "context_blind_manager",
+        "system_version": "1.0.0",
+        "unsupported_commitment_findings": []
+      },
+      "raw_output": "{\n  \"intent_summary\": \"Move the marked toolbox to the scrap cage after a scheduled quality check\",\n  \"cpc\": {\n    \"action\": {\n      \"value\": \"move\",\n      \"status\": \"not_applicable\"\n    },\n    \"object\": {\n      \"value\": \"marked toolbox\",\n      \"status\": \"not_applicable\"\n    },\n    \"destination\": {\n      \"value\": \"scrap cage\",\n      \"status\": \"not_applicable\"\n    },\n    \"time\": {\n      \"value\": \"after a scheduled quality check\",\n      \"status\": \"not_applicable\"\n    }\n \n  ,\n  \"constraints\": {\n    \"status\": \"not_applicable\"\n  ,\n    \"value\": \"not_applicable\"\n  },\n  \"conditions\": {\n    \"status\": \"not_applicable\"\n  ,\n    \"value\": \"not_applicable\"\n  },\n  \"negation\": {\n    \"status\": \"not_applicable\"\n  ,\n    \"value\": \"not_applicable\"\n  },\n  \"recipient\": {\n    \"status\": \"not_applicable\"\n  ,\n    \"value\": \"not_applicable\"\n  },\n  \"quantity\": {\n    \"status\": \"not_applicable\"\n  ,\n    \"value\": \"not_applicable\"\n  },\n  \"spatial_relation\": {\n    \"status\": \"not_applicable\"\n  ,\n    \"value\": \"not_applicable\"\n  },\n  \"tool\": {\n    \"status\": \"not_applicable\"\n  ,\n    \"value\": \"not_applicable\"\n  },\n  \"object_attributes\": {\n    \"status\": \"not_applicable\"\n  ,\n    \"value\": \"not_applicable\"\n  },\n  \"actor\": {\n    \"status\": \"not_applicable\"\n  ,\n    \"value\": \"not_applicable\"\n  }\n}\n,\n  \"pilot_ambiguity_types\": [\n    \"temporal_reference\"\n  ]\n  \n  ,\n  \"pilot_capability_status\": \"incapable\"\n  ,\n  \"risk_level\": \"high\"\n  ,\n  \"speech_act\": \"directive_command\"\n  ,\n  \"unresolved_slots\": [\n    \"time\"\n  ]\n  \n  ,\n  \"uncertainty\": 0.75\n}",
+      "record_id": "CA-0072",
+      "schema_valid": true,
+      "supports_ambiguity_prediction": true,
+      "supports_capability_prediction": true,
+      "system_id": "goal_first_context_blind_v2",
+      "system_version": "2.0.0",
+      "terminal_strategy": "face_preserving_rejection"
+    }
+  },
+  "provenance": {
+    "source_sha256": "f33b1e29f1e8aa256a475f07213aa07247def47d8e2148d54a472a40b71b05c9",
+    "gold_sha256": "5e23ad1a92ff1873c8f039a8ce560a111dd6fb6b8ae8c11d6cf34dbfa1c360db",
+    "t07_final_zip_sha256": "34ca50e034ca37b617068bb50c734d12fa26282fb5eec563c11ead700163e491",
+    "inherited_t07_zip_sha256": "0305b1e9ab062876ee6ee89778cc6028d2eaf01718b7dd0295944e7d9cb81a01",
+    "note": "Goal-First, Degree, Timid, and Context-Blind predictions are inherited from the earlier T0.7 run; official intent and comparison come from the final T0.7 archive."
+  }
+}

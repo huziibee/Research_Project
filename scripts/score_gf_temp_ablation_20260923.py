@@ -77,6 +77,7 @@ def load_gold_and_refs(root: Path) -> tuple[dict[str, dict[str, Any]], list[str]
     gold = {row["record_id"]: row for row in load_jsonl(gold_path)}
     ids = [row["record_id"] for row in load_jsonl(gold_path)]
     candidates = [
+        root / "data/annotations/pilot_120_v1/intent_gold_references_120.jsonl",
         root
         / "pilot120_intent_evaluation_20260902"
         / "pilot120_intent_evaluation_20260902"
@@ -89,7 +90,6 @@ def load_gold_and_refs(root: Path) -> tuple[dict[str, dict[str, Any]], list[str]
         / "pilot120_intent_evaluation_20260902"
         / "data"
         / "intent_gold_references_120.jsonl",
-        root / "data/annotations/pilot_120_v1/intent_gold_references_120.jsonl",
     ]
     refs_path = next((p for p in candidates if p.exists() and p.stat().st_size > 1000), None)
     if refs_path is None:

@@ -1,55 +1,56 @@
-﻿# Repository release audit
+﻿# Repository inclusion and rights audit
 
-Snapshot: 2026-09-27. The project owner chose to preserve the existing Git
-history while cleaning the latest repository tree. This document describes the
-latest tree; it does **not** claim that older Git objects are free of upstream
-or Pilot-120 text.
+Snapshot: 2026-09-27. The owner asked for the frozen Pilot-120 cases and
+case-level outputs to be recoverable from this repository before deleting the
+local checkout. This audit separates byte preservation, scientific status,
+and public redistribution rights.
 
-## Latest tree
+## Included in the latest tree
 
-The release tree keeps project code, selected evaluation and Slurm scripts,
-tests, evaluation contracts, rights records, dataset acquisition instructions,
-and Pilot-120 hash-only metadata. Raw upstream files, the local Python virtual
-environment, case-level annotations, derived data, and generated outputs have
-been removed from Git tracking without deleting their local copies.
+- Source, final gold, policy, manifest, and official Pilot-120 annotation
+  versions under `data/annotations/pilot_120_v1/`.
+- A 120-link case index and generated per-case JSON records under
+  `research/pilot120/`. Each record shows source, gold, six predictions,
+  routing comparison, and official T0.7 intent judgment with provenance.
+- The exact verified T0.7, T41, full-analysis, historical annotation, intent,
+  and supporting officialization archives under `research/pilot120/artifacts/`.
+- Code, tests, evaluation protocols, environment manifests, dataset source
+  links, and rights records. The current tree excludes upstream raw payloads,
+  Python virtual environments, local generated outputs, and coursework files.
 
-Run the conservative path audit from the repository root:
+Run `python scripts/release/check_repository.py` to verify tracked paths,
+120 case links, SHA-256 of central artifacts, and ZIP CRC. Run
+`python scripts/release/build_pilot120_cases.py` only when intentionally
+regenerating browsable cases from the immutable inputs; compare Git diff before
+committing its output. A strict metadata-only public-tree audit is preserved
+at `scripts/release/check_strict_public_tree.py` and is expected to fail while
+full-text Pilot-120 files are included.
 
-```sh
-python scripts/check_public_release.py
-```
+## Rights and visibility
 
-It checks the current Git index for accidentally tracked raw, annotation,
-derived, output, archive, and credential paths. The intended result is
-`PUBLIC_RELEASE_PATH_AUDIT=PASS`. The test does not inspect older commits or
-prove licence compliance. The 2026-09-27 pre-cleanup index had 3,090 paths;
-2,189 data/output paths were removed from tracking. Reviewed research code and
-documentation were then added.
+The latest tree and older Git commits contain source-derived text. The
+project owner explicitly chose to preserve it in this repository. Several
+exact-artifact public redistribution permissions remain unresolved in
+`configs/licences/dataset_licence_register.json`. This repository's
+availability, hash verification, or internal academic-use approval is not a
+licence grant. Review the source terms before setting visibility to public,
+forking, or mirroring. No model weights or private credentials are included.
 
-## History and rights
+The GitHub `main` push was verified before this update. An unauthenticated
+GitHub API request returned 404 while the same request succeeded for a known
+public repository, so public visibility was not verified. GitHub CLI was not
+authenticated here; an administrator must check visibility in GitHub settings.
 
-Older commits still contain upstream datasets and derived Pilot-120 text.
-Anyone who clones the full repository can retrieve those objects, even though
-they are absent from the latest tree. The project owner explicitly accepted
-retaining that history. This choice does not resolve upstream redistribution
-permissions. `configs/licences/dataset_licence_register.json` records the
-current rights evidence; internal academic-use approval is not a general
-public redistribution grant.
+## Scientific status
 
-The latest tree represents Pilot-120 through `docs/PILOT120.md`,
-`docs/pilot120_public_manifest.json`, the evaluation contract, and aggregate
-results. Full source and gold remain local for authorised verification.
-Historical T39/T41 evidence and local ZIPs were not rewritten or deleted.
+T0.7's official two-judge package is complete with 120-case denominators and
+failed cases retained. T0.3 and a matched-depth-5 control were not included.
+The four inherited T0.7 prediction streams in the case files are labelled
+separately from new Raw and Fine-Tune inference. T39/T41 archives are frozen.
+ABLE IX's five jobs were running/dependency-queued at the 2026-09-27 cluster
+check; their final five-seed output has not yet been recovered into Git.
 
-## What was checked
-
-- Explicit Git staging rather than `git add .`.
-- Current-index path audit and staged-file whitespace/JSON checks.
-- Pattern scan of newly staged file contents for common credential formats.
-- Focused code and schema tests; results are recorded in the commit handoff.
-
-GitHub `main` was fast-forwarded to this reviewed tree on 2026-09-27, and
-`git ls-remote` verified the remote commit. An unauthenticated GitHub API
-request returned 404, so public visibility was **not** verified. GitHub CLI
-was not authenticated in this environment. A repository administrator must
-check and, if intended, set its visibility to public in GitHub settings.
+The `research/pilot120/README.md` file lists exact archive hashes. Preserve
+older Git history: it contains original source/gold and historical decisions.
+The new frozen manifest differs from the older historical version; both are
+retained by Git history and the latest file's hash is recorded.

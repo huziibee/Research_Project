@@ -1,0 +1,1095 @@
+{
+  "record_id": "CA-0326",
+  "frozen_source": {
+    "capability_context": "Hospital delivery robot can move sealed supplies, scan identifiers, and operate approved carts outside direct clinical treatment.",
+    "command": "In a moment, complete both the configuration and inspection of the transport monitor after the check, setting it to its routine level.",
+    "dialogue_history": [],
+    "record_id": "CA-0326",
+    "scene_context": "Supply room in a hospital. The work-order configuration table assigns 70 percent screen brightness to this asset. Procedure WO-706 requires the check, then configuration, then inspection. For low-risk configuration work, 'in a moment' is defined as the next two-minute idle window. The current task ends at 15:00."
+  },
+  "frozen_gold": {
+    "ambiguity_types": [
+      "action_order",
+      "degree_vagueness",
+      "fuzzy_temporal"
+    ],
+    "annotator_b_era": "claude_era",
+    "annotator_b_model": "claude-4.6-sonnet-medium-thinking",
+    "capability_status": "capable",
+    "field_status": {
+      "ambiguity_types": "auto_agree",
+      "capability_status": "human_auditor:independent_from_route",
+      "record_validity": "auto_agree",
+      "strategy_sequence": "auto_agree",
+      "terminal_strategy": "auto_agree"
+    },
+    "gold_lifecycle": "final_gold",
+    "gold_status": "auto_agree",
+    "human_gate_required": false,
+    "provenance": {
+      "agreement_label": "pilot_annotation_agreement",
+      "annotator_a_sha256": "2e18d13e43ec2860ae2e37ab9bfc83782a305bb6f27f92acab8cbf1e3f17ee57",
+      "annotator_b_sha256": "44533951252b2535858e4a4b5fffbd30afefab13633b43b8fe0bf008d53edc68",
+      "capability_route_decouple": "conditionally_capable remapped to capable: no evidenced external capability precondition; linguistic silently_resolve/clarify is not a capability condition",
+      "gold_policy": "use_existing_pilot_adjudicated_gold",
+      "input_sha256": "e6de8699694807ba0e2b06ee3b2743d9c732f511ec6660dbdd611c353c2ac3c9",
+      "pilot_gold_sha256": "387fc9afdea4ebce44224bca32275d9dc9c42e7bec1991e726362bd838d7df09",
+      "protocol": "pilot_adjudicated_gold_on_capability_repaired_source",
+      "repaired_input_sha256": "2ec17249a71b8d71c51bf6ced9ba848af7c84fd7014c7a4599cd7c1777f82aa3"
+    },
+    "record_id": "CA-0326",
+    "record_validity": "valid",
+    "strategy_sequence": [
+      "silently_resolve",
+      "execute"
+    ],
+    "terminal_strategy": "execute"
+  },
+  "t07_comparison": {
+    "record_id": "CA-0326",
+    "gold_route": "execute",
+    "raw_route": "execute",
+    "ft_route": "execute",
+    "gf_route": "execute",
+    "raw_route_ok": "True",
+    "ft_route_ok": "True",
+    "gf_route_ok": "True",
+    "raw_official_intent": "True",
+    "ft_official_intent": "True",
+    "gf_official_intent": "True",
+    "blind_official_intent": "True"
+  },
+  "t07_official_intent": {
+    "context_blind_official_intent": true,
+    "degree_official_intent_shared_gf": true,
+    "finetune_official_intent": true,
+    "goal_first_official_intent": true,
+    "raw_official_intent": true,
+    "record_id": "CA-0326",
+    "timid_official_intent_shared_gf": true
+  },
+  "t07_predictions": {
+    "raw_qwen": {
+      "ambiguity_types": [],
+      "capability_status": "conditionally_capable",
+      "error": null,
+      "execution_mode": "final_close_intent_box",
+      "failed": false,
+      "intent_summary": "Configure and inspect the transport monitor after completing the check, setting it to its routine level.",
+      "latency_ms": 10086.435337085277,
+      "parsed": {
+        "ambiguity_types": [],
+        "capability_status": "conditionally_capable",
+        "intent_summary": "Configure and inspect the transport monitor after completing the check, setting it to its routine level.",
+        "speech_act": "directive_command",
+        "terminal_strategy": "execute"
+      },
+      "raw_output": "<think>\nOkay, let's break down this command. The user says, \"In a moment, complete both the configuration and inspection of the transport monitor after the check, setting it to its routine level.\" \n\nFirst, the intent_summary. The main job here is to configure and inspect the transport monitor after a check, setting it to routine level. So the intent is to perform both configuration and inspection steps in sequence.\n\nNext, speech_act. The command is direct, telling the robot to do something specific. So it's a directive_command. The user isn't asking for information or permission, just giving instructions.\n\nAmbiguity_types: Let's check for any ambiguities. The phrase \"in a moment\" is defined in the context as the next two-minute idle window, so that's clear. The steps are check, then configuration, then inspection. The command mentions \"both the configuration and inspection,\" which are part of the procedure WO-706. The reference to \"its routine level\" might relate to the 70% brightness from the work-order table. Are there any pronouns or references? \"It\" refers to the transport monitor, which is clear. No other ambiguous references here. So maybe no ambiguity types needed, but I should check. The command mentions \"after the check,\" which is part of the procedure. The steps are ordered, so no scope or object_reference issues. Maybe no ambiguity types here.\n\nCapability_status: The robot can move supplies, scan identifiers, operate carts. The task involves configuring and inspecting the monitor. The capability_context doesn't mention configuring or inspecting monitors, but the work-order says it's a low-risk configuration. The robot can do low-risk configuration. So maybe conditionally_capable because it's allowed but depends on the specific task. Wait, the capability_context says \"operate approved carts outside direct clinical treatment.\" Does that include configuration and inspection? The work-order is for low-risk, so maybe conditionally_capable. But if the robot can do configuration as per the context, maybe it's capable. Hmm. The capability_context doesn't explicitly list configuration, but the work-order is for low-risk, which might be allowed. So maybe capable. Or is it conditionally_capable because the robot's allowed to do low-risk config? Need to check. The capability_context says it can operate approved carts outside direct clinical treatment. Maybe configuration is part of that. So capability_status would be capable.\n\nTerminal_strategy: Since the command is clear and the robot can perform the steps (assuming capable), the terminal strategy is execute. But if there's any ambiguity, it might be clarify. However, since the ambiguity_types are empty, and the command is clear, the strategy is execute.\n</think>\n\n{\n  \"intent_summary\": \"Configure and inspect the transport monitor after completing the check, setting it to its routine level.\",\n  \"speech_act\": \"directive_command\",\n  \"ambiguity_types\": [],\n  \"capability_status\": \"conditionally_capable\",\n  \"terminal_strategy\": \"execute\"\n}",
+      "record_id": "CA-0326",
+      "schema_valid": true,
+      "speech_act": "directive_command",
+      "system_id": "direct_base_llm",
+      "terminal_strategy": "execute"
+    },
+    "finetune": {
+      "ambiguity_types": [
+        "pronoun_reference",
+        "temporal_reference"
+      ],
+      "capability_status": "capable",
+      "error": null,
+      "execution_mode": "final_close_intent_box",
+      "failed": false,
+      "intent_summary": "The person wants the robot to configure and inspect the transport monitor after completing a check, setting it to its routine level.",
+      "latency_ms": 51012.36159726977,
+      "parsed": {
+        "ambiguity_types": [
+          "pronoun_reference",
+          "temporal_reference"
+        ],
+        "capability_status": "capable",
+        "intent_summary": "The person wants the robot to configure and inspect the transport monitor after completing a check, setting it to its routine level.",
+        "speech_act": "directive_command",
+        "terminal_strategy": "execute"
+      },
+      "raw_output": "<think>\nOkay, let's break this down. The user wants the robot to complete both configuration and inspection of the transport monitor after a check, setting it to routine level. The dialogue history is empty, so no prior context. The scene is a hospital supply room. The work-order says check, then config, then inspection. The current task ends at 15:00.\n\nFirst, the intent summary: The person wants the robot to configure and inspect the transport monitor after a check, setting it to routine level. That's two actions: check, configure, inspect. But the command says \"complete both the configuration and inspection after the check.\" So the main intent is to do config and inspection post-check.\n\nSpeech act: The command is a directive. The user is telling the robot what to do, so directive_command. But wait, the command mentions \"after the check,\" which is part of the procedure. So it's a sequence of steps. But the speech act is about the type of action. Since it's a direct instruction to perform tasks, it's a directive_command.\n\nAmbiguity types: Let's check. The command says \"complete both the configuration and inspection after the check.\" The check is part of the procedure. The work-order specifies the order: check, then config, then inspection. So the user is following the procedure. The ambiguity here might be about the order. But the command is clear in that it's after the check. However, the user might be ambiguous about the exact timing. The \"in a moment\" refers to the next two-minute idle window. So maybe the temporal reference is involved. Also, \"setting it to its routine level\" refers to the configuration. The routine level is defined in the work-order, so maybe there's a reference to the work-order. But the ambiguity types include temporal_reference. Also, the command is clear in the sequence, so maybe no ambiguity. Wait, the user says \"after the check\" but the procedure is check, then config, then inspection. So the command is following the procedure. The ambiguity could be if \"in a moment\" is clear. But the capability context says that for low-risk config, 'in a moment' is the next two-minute idle window. So that's defined. So maybe no ambiguity. But maybe the user is not specifying if the check is part of the configuration or separate. Wait, the procedure WO-706 requires the check, then config, then inspection. So the check is a separate step. The user's command says to do config and inspection after the check. So the ambiguity types might not apply here. Unless there's a pronoun or reference. The command says \"setting it to its routine level\" – \"its\" refers to the transport monitor. So that's a pronoun_reference. So ambiguity_types would include pronoun_reference. Also, the command mentions \"after the check\" but the check is part of the procedure. So the check is a step that's already defined. So maybe no ambiguity. Wait, the user is telling the robot to complete config and inspection after the check. But the check is part of the procedure. So the robot is supposed to follow the steps. So the ambiguity types might not have any. But maybe the 'in a moment' is a temporal reference. The capability context says that 'in a moment' is defined as the next two-minute idle window. So the user is using a temporal reference. So ambiguity_types would include temporal_reference. Also, the 'routine level' is mentioned, which is from the work-order. So maybe the reference to the work-order is a routine_reference. Wait, the ambiguity types include routine_reference. So if the command refers to routine level, that's a routine_reference. So the ambiguity_types would have routine_reference. But I need to check the exact names. The allowed ambiguity types are: pragmatic, discourse_ellipsis, lexical, scope, object_reference, pronoun_reference, recipient_reference, destination_reference, instrument_reference, spatial_reference, temporal_reference, routine_reference, action_order, fuzzy_temporal, fuzzy_quantity, degree_vagueness, endpoint_vagueness.\n\nSo in this case, the command has \"setting it to its routine level\" – \"its\" refers to the transport monitor, so that's a pronoun_reference. Also, \"in a moment\" refers to the next two-minute window, which is a temporal_reference. Also, the command includes the sequence of check, config, inspection, which is action_order. So ambiguity_types would be [pronoun_reference, temporal_reference, action_order]. Wait, but the user's command is about completing config and inspection after the check. The check is part of the procedure, so the action_order is specified. So the ambiguity_types would include action_order. But maybe the user's command is not clear on the exact steps. Wait, the procedure is check, then config, then inspection. The user's command says \"complete both the configuration and inspection after the check\". So the action_order is check first, then config and inspection. So the command is following the procedure's action_order. So the ambiguity_types might have action_order. However, the user's command is clear in that. So maybe no ambiguity. But the command says \"after the check\", which is part of the procedure. So the action_order is clear. So maybe the ambiguity_types are empty? Or maybe the 'in a moment' is a fuzzy_temporal. Wait, the capability context says that for low-risk configuration work, 'in a moment' is defined as the next two-minute idle window. So the user is using a defined term, so no fuzziness. So the temporal_reference is clear. So the ambiguity_types would be [pronoun_reference, temporal_reference]. But I need to check if the command has any other ambiguities. Let me re-express the command: \"In a moment, complete both the configuration and inspection of the transport monitor after the check, setting it to its routine level.\" The 'it' in 'setting it to its routine level' refers to the transport monitor, which is a pronoun_reference. So that's one. Then 'in a moment' refers to the next two-minute window, which is a temporal_reference. So those two. Are there others? The 'after the check' is part of the procedure, which is action_order. But the user's command is following the procedure's action_order. So the action_order is clear. So maybe no ambiguity. But the command says 'complete both the configuration and inspection after the check', which could be ambiguous if the check is part of the configuration. But the procedure says check, then config, then inspection. So the check is a separate step. So the user's command is clear. So the ambiguity_types would be [pronoun_reference, temporal_reference]. \n\nNext, capability_status: The robot can move sealed supplies, scan identifiers, and operate approved carts outside direct clinical treatment. The task is to configure and inspect the transport monitor. The work-order assigns 70% brightness. The robot's capability includes operating carts, but does it include configuring and inspecting monitors? The capability_context says it can scan identifiers and operate carts. The command is about configuring and inspecting the monitor. The robot can scan identifiers, but configuring a monitor might be part of operating carts. So maybe the robot is capable. But the capability_status is one of capable, conditionally_capable, etc. The task is to set the brightness to 70%, which might be part of the configuration. If the robot can adjust brightness, then it's capable. But the capability context doesn't explicitly mention adjusting brightness. So maybe conditionally_capable, because the robot can operate carts, but the specific configuration might require more. However, the work-order says that the configuration is part of the procedure. So if the robot can perform the configuration (like adjusting brightness), then it's capable. But the capability context doesn't mention that. So maybe the robot is capable. But the capability_status could be conditionally_capable if the configuration requires specific tools. However, the problem says that the work-order configuration table assigns 70% brightness, so the robot is expected to do that. So maybe the capability is there. So capability_status is capable.\n\nTerminal strategy: The user is giving a direct command, so the terminal strategy is execute. But the robot needs to check if it can do it. But the capability_status is capable, so the terminal strategy is execute. So the JSON would have terminal_strategy as execute.\n\nPutting it all together: intent_summary is the user wants the robot to configure and inspect the transport monitor after the check, setting it to routine level. Speech_act is directive_command. Ambiguity_types are pronoun_reference and temporal_reference. Capability_status is capable. Terminal_strategy is execute.\n</think>\n\n{\n  \"intent_summary\": \"The person wants the robot to configure and inspect the transport monitor after completing a check, setting it to its routine level.\",\n  \"speech_act\": \"directive_command\",\n  \"ambiguity_types\": [\"pronoun_reference\", \"temporal_reference\"],\n  \"capability_status\": \"capable\",\n  \"terminal_strategy\": \"execute\"\n}",
+      "record_id": "CA-0326",
+      "schema_valid": true,
+      "speech_act": "directive_command",
+      "system_id": "t28_selected_adapter_llm",
+      "terminal_strategy": "execute"
+    },
+    "goal_first": {
+      "ambiguity_types": [
+        "pragmatic",
+        "temporal_reference"
+      ],
+      "analysis_attempts": [
+        {
+          "attempt": 1,
+          "max_new_tokens": 4096,
+          "mode": "thinking",
+          "raw_chars": 6074,
+          "raw_sha256": "c6f29dcbe8d99a9d0da834a94deb8c1e422ecf4843a1e74ef9a49bbc1d8a1b4e",
+          "validation_error": "bad_intent_summary"
+        },
+        {
+          "attempt": 2,
+          "max_new_tokens": 8192,
+          "mode": "thinking_retry",
+          "raw_chars": 6300,
+          "raw_sha256": "7b6faf53ef6cba83f7470ea86eaed603f1d00aa8c6f94a7c48a1c29f270a4106",
+          "validation_error": "bad_intent_summary"
+        },
+        {
+          "attempt": 3,
+          "constraint": {
+            "constraint_initialised": true,
+            "generated_token_count": 498,
+            "maximum_output_tokens": 1024,
+            "response_mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+            "termination_reason": "eos_or_constraint_stop",
+            "transport_status": "constrained_generated"
+          },
+          "max_new_tokens": 1024,
+          "mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+          "raw_chars": 1728,
+          "raw_sha256": "6d8d78dd05bcd4a5f40fe88561d9807f4c07dafb881c292b307ef3811cb5bce4",
+          "validation_error": null
+        }
+      ],
+      "capability_status": "capable",
+      "claim_boundary": "separately_versioned_from_frozen_t39",
+      "error": null,
+      "execution_mode": "cluster-gpu-goal-first-v2",
+      "failed": false,
+      "intent_summary": "Complete the configuration and inspection of the transport monitor after the check, setting it to its routine level within the next two-minute idle window following 15:00",
+      "latency_ms": 62912.44364110753,
+      "model_id": "Qwen/Qwen3-8B@b968826d9c46dd6066d109eabc6255188de91218",
+      "parsed": {
+        "analysis": {
+          "ambiguity_present": true,
+          "ambiguity_types": [
+            "pragmatic",
+            "temporal"
+          ],
+          "analysis_provenance": {
+            "analysis_id": "fe72f9822b8915b55789f4821f4aa575d08550b3546855d2dc4b80e8ee682a87",
+            "method": "model_generated",
+            "notes": "source_input_hash=fe72f9822b8915b55789f4821f4aa575d08550b3546855d2dc4b80e8ee682a87;no_gold_in_prompt;scene_licence_dropped=none",
+            "provider_id": "goal_first_v2_full_context",
+            "provider_version": "goal-first-manager-v2"
+          },
+          "candidate_interpretations": [],
+          "capability_status": "capable",
+          "clarification_question": null,
+          "clarification_targets": [],
+          "compound_ambiguity": true,
+          "compound_ambiguity_count": 2,
+          "context_sampling_uncertainty": {
+            "agreement": 0.8,
+            "score": 0.2,
+            "variant_count": 1
+          },
+          "cpc": {
+            "action": {
+              "status": "not_applicable",
+              "value": "complete"
+            },
+            "actor": {
+              "status": "not_applicable",
+              "value": "hospital delivery robot"
+            },
+            "conditions": {
+              "status": "not_applicable",
+              "value": "low-risk configuration work"
+            },
+            "constraints": {
+              "status": "not_applicable",
+              "value": "after the check, setting it to its routine level"
+            },
+            "destination": {
+              "status": "not_applicable",
+              "value": "not applicable"
+            },
+            "negation": {
+              "status": "not_applicable",
+              "value": "none"
+            },
+            "object": {
+              "status": "not_applicable",
+              "value": "configuration and inspection of the transport monitor"
+            },
+            "object_attributes": {
+              "status": "not_applicable",
+              "value": "transport monitor"
+            },
+            "quantity": {
+              "status": "not_applicable",
+              "value": "70 percent screen brightness"
+            },
+            "recipient": {
+              "status": "not_applicable",
+              "value": "transport monitor"
+            },
+            "spatial_relation": {
+              "status": "not_applicable",
+              "value": "supply room in a hospital"
+            },
+            "time": {
+              "status": "not_applicable",
+              "value": "in a moment (next two-minute idle window after 15:00"
+            },
+            "tool": {
+              "status": "not_applicable",
+              "value": "hospital delivery robot"
+            }
+          },
+          "findings": [
+            "pilot_ambiguity_types:[\"pragmatic\",\"temporal_reference\"]",
+            "pilot_capability_status:capable",
+            "intent_summary_present",
+            "router_validation:execute blocked with unresolved critical safety slots"
+          ],
+          "intent_summary": "Complete the configuration and inspection of the transport monitor after the check, setting it to its routine level within the next two-minute idle window following 15:00",
+          "primary_ambiguity_type": "pragmatic",
+          "recommended_strategy": "execute",
+          "rejection_reason": null,
+          "resolution_evidence": [],
+          "resolution_method": null,
+          "resolved_slots": [],
+          "risk_level": "low",
+          "risk_relevant": true,
+          "selected_interpretation": null,
+          "speech_act": "directive_command",
+          "strategy_sequence": [],
+          "supporting_evidence": [],
+          "unresolved_slots": [
+            {
+              "reason": "model_identified_uncertainty",
+              "slot_name": "action"
+            }
+          ],
+          "unsupported_specificity": []
+        },
+        "clarification_question": null,
+        "clarification_targets": [],
+        "execution_status": "ok",
+        "official_result": false,
+        "provider_provenance": {
+          "provider_id": "cached_analysis",
+          "provider_version": "1.0.0"
+        },
+        "recommended_strategy": "execute",
+        "record_id": "CA-0326",
+        "rejection_reason": null,
+        "resolved_slots": [],
+        "result_hash": "524f1893f2008207772af5ea6380fbcd12ecaf131ad8e099c061e6c7ae58ee88",
+        "run_id": null,
+        "run_mode": null,
+        "runtime_metadata": {
+          "awaits_t28_adapter": true,
+          "classification": {
+            "ambiguity_present": true,
+            "ambiguity_types": [
+              "pragmatic",
+              "temporal"
+            ],
+            "capability_status": "capable",
+            "compound_ambiguity": true,
+            "compound_ambiguity_count": 2,
+            "derivation_notes": [
+              "ambiguity_present_from_types"
+            ],
+            "risk_level": "low"
+          },
+          "rejection_text": null,
+          "requires_re_evaluation": false,
+          "resolution_events": [
+            {
+              "confidence_category": "none",
+              "details": {
+                "reason": "unsupported_default_rejected"
+              },
+              "evidence_source": null,
+              "outcome": "unresolved",
+              "previous_status": "unresolved",
+              "resolved_value": null,
+              "rule_id": "no_world_knowledge_guess",
+              "safety_eligibility": false,
+              "slot": "action"
+            }
+          ],
+          "router_trace": {
+            "clarification_targets": [],
+            "considered_rules": [
+              "goal_first_v2",
+              "known_unsafe_or_prohibited",
+              "known_incapable",
+              "unknown_capability_high_risk",
+              "context_licensed_execute"
+            ],
+            "matched_rule_id": "context_licensed_execute",
+            "notes": [
+              "goal_first_v2_execute_despite_remaining_ambiguity"
+            ],
+            "recommended_strategy": "execute",
+            "rejection_reason": null,
+            "requires_re_evaluation": false,
+            "strategy_sequence": []
+          },
+          "safety_action": "return_with_findings",
+          "uncertainty": null
+        },
+        "safety_findings": [
+          {
+            "details": {
+              "unresolved": [
+                "action"
+              ]
+            },
+            "finding_type": "unresolved_critical_execution",
+            "message": "execute with unresolved critical slots",
+            "severity": "error",
+            "slot": null
+          }
+        ],
+        "strategy_sequence": [],
+        "synthetic_only": true,
+        "system_id": "goal_first_manager_v2",
+        "system_version": "2.0.0",
+        "unsupported_commitment_findings": []
+      },
+      "raw_output": "{\n  \"intent_summary\": \"Complete the configuration and inspection of the transport monitor after the check, setting it to its routine level within the next two-minute idle window following 15:00\",\n  \"cpc\": {\n    \"action\": {\n      \"value\": \"complete\",\n      \"status\": \"not_applicable\"\n    },\n    \"object\": {\n      \"value\": \"configuration and inspection of the transport monitor\",\n      \"status\": \"not_applicable\"\n    },\n    \"time\": {\n      \"value\": \"in a moment (next two-minute idle window after 15:00\",\n      \"status\": \"not_applicable\"\n    },\n    \"recipient\": {\n      \"value\": \"transport monitor\",\n      \"status\": \"not_applicable\"\n    },\n    \"tool\": {\n      \"value\": \"hospital delivery robot\",\n      \"status\": \"not_applicable\"\n    }\n  ,\n  \"constraints\": {\n    \"value\": \"after the check, setting it to its routine level\",\n    \"status\": \"not_applicable\"\n  },\n  \"conditions\": {\n    \"value\": \"low-risk configuration work\",\n    \"status\": \"not_applicable\"\n  },\n  \"spatial_relation\": {\n    \"value\": \"supply room in a hospital\",\n    \"status\": \"not_applicable\"\n  },\n  \"negation\": {\n    \"value\": \"none\",\n    \"status\": \"not_applicable\"\n  },\n  \"destination\": {\n    \"value\": \"not applicable\",\n    \"status\": \"not_applicable\"\n  },\n  \"quantity\": {\n    \"value\": \"70 percent screen brightness\",\n    \"status\": \"not_applicable\"\n  },\n  \"object_attributes\": {\n    \"value\": \"transport monitor\",\n    \"status\": \"not_applicable\"\n  },\n  \"actor\": {\n    \"value\": \"hospital delivery robot\",\n    \"status\": \"not_applicable\"\n  }\n}\n, \"pilot_ambiguity_types\": [\n  \"pragmatic\",\n  \"temporal_reference\"\n]  , \"pilot_capability_status\": \"capable\"  , \"speech_act\": \"directive_command\"  , \"risk_level\": \"low\"  , \"uncertainty\": 0.2\n, \"unresolved_slots\": [\n  \"action\"\n]  }",
+      "record_id": "CA-0326",
+      "schema_valid": true,
+      "supports_ambiguity_prediction": true,
+      "supports_capability_prediction": true,
+      "system_id": "goal_first_manager_v2",
+      "system_version": "2.0.0",
+      "terminal_strategy": "execute"
+    },
+    "degree": {
+      "ambiguity_types": [
+        "pragmatic",
+        "temporal_reference"
+      ],
+      "analysis_attempts": [
+        {
+          "attempt": 1,
+          "max_new_tokens": 4096,
+          "mode": "thinking",
+          "raw_chars": 6074,
+          "raw_sha256": "c6f29dcbe8d99a9d0da834a94deb8c1e422ecf4843a1e74ef9a49bbc1d8a1b4e",
+          "validation_error": "bad_intent_summary"
+        },
+        {
+          "attempt": 2,
+          "max_new_tokens": 8192,
+          "mode": "thinking_retry",
+          "raw_chars": 6300,
+          "raw_sha256": "7b6faf53ef6cba83f7470ea86eaed603f1d00aa8c6f94a7c48a1c29f270a4106",
+          "validation_error": "bad_intent_summary"
+        },
+        {
+          "attempt": 3,
+          "constraint": {
+            "constraint_initialised": true,
+            "generated_token_count": 498,
+            "maximum_output_tokens": 1024,
+            "response_mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+            "termination_reason": "eos_or_constraint_stop",
+            "transport_status": "constrained_generated"
+          },
+          "max_new_tokens": 1024,
+          "mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+          "raw_chars": 1728,
+          "raw_sha256": "6d8d78dd05bcd4a5f40fe88561d9807f4c07dafb881c292b307ef3811cb5bce4",
+          "validation_error": null
+        }
+      ],
+      "capability_status": "capable",
+      "claim_boundary": "separately_versioned_from_frozen_t39",
+      "error": null,
+      "execution_mode": "cluster-gpu-goal-first-v2",
+      "failed": false,
+      "intent_summary": "Complete the configuration and inspection of the transport monitor after the check, setting it to its routine level within the next two-minute idle window following 15:00",
+      "latency_ms": 62912.44364110753,
+      "model_id": "Qwen/Qwen3-8B@b968826d9c46dd6066d109eabc6255188de91218",
+      "parsed": {
+        "analysis": {
+          "ambiguity_present": true,
+          "ambiguity_types": [
+            "pragmatic",
+            "temporal"
+          ],
+          "analysis_provenance": {
+            "analysis_id": "fe72f9822b8915b55789f4821f4aa575d08550b3546855d2dc4b80e8ee682a87",
+            "method": "model_generated",
+            "notes": "source_input_hash=fe72f9822b8915b55789f4821f4aa575d08550b3546855d2dc4b80e8ee682a87;no_gold_in_prompt;scene_licence_dropped=none",
+            "provider_id": "goal_first_v2_full_context",
+            "provider_version": "goal-first-manager-v2"
+          },
+          "candidate_interpretations": [],
+          "capability_status": "capable",
+          "clarification_question": null,
+          "clarification_targets": [],
+          "compound_ambiguity": true,
+          "compound_ambiguity_count": 2,
+          "context_sampling_uncertainty": {
+            "agreement": 0.8,
+            "score": 0.2,
+            "variant_count": 1
+          },
+          "cpc": {
+            "action": {
+              "status": "not_applicable",
+              "value": "complete"
+            },
+            "actor": {
+              "status": "not_applicable",
+              "value": "hospital delivery robot"
+            },
+            "conditions": {
+              "status": "not_applicable",
+              "value": "low-risk configuration work"
+            },
+            "constraints": {
+              "status": "not_applicable",
+              "value": "after the check, setting it to its routine level"
+            },
+            "destination": {
+              "status": "not_applicable",
+              "value": "not applicable"
+            },
+            "negation": {
+              "status": "not_applicable",
+              "value": "none"
+            },
+            "object": {
+              "status": "not_applicable",
+              "value": "configuration and inspection of the transport monitor"
+            },
+            "object_attributes": {
+              "status": "not_applicable",
+              "value": "transport monitor"
+            },
+            "quantity": {
+              "status": "not_applicable",
+              "value": "70 percent screen brightness"
+            },
+            "recipient": {
+              "status": "not_applicable",
+              "value": "transport monitor"
+            },
+            "spatial_relation": {
+              "status": "not_applicable",
+              "value": "supply room in a hospital"
+            },
+            "time": {
+              "status": "not_applicable",
+              "value": "in a moment (next two-minute idle window after 15:00"
+            },
+            "tool": {
+              "status": "not_applicable",
+              "value": "hospital delivery robot"
+            }
+          },
+          "findings": [
+            "pilot_ambiguity_types:[\"pragmatic\",\"temporal_reference\"]",
+            "pilot_capability_status:capable",
+            "intent_summary_present"
+          ],
+          "intent_summary": "Complete the configuration and inspection of the transport monitor after the check, setting it to its routine level within the next two-minute idle window following 15:00",
+          "primary_ambiguity_type": "pragmatic",
+          "recommended_strategy": "silently_resolve",
+          "rejection_reason": null,
+          "resolution_evidence": [],
+          "resolution_method": null,
+          "resolved_slots": [],
+          "risk_level": "low",
+          "risk_relevant": true,
+          "selected_interpretation": null,
+          "speech_act": "directive_command",
+          "strategy_sequence": [],
+          "supporting_evidence": [],
+          "unresolved_slots": [
+            {
+              "reason": "model_identified_uncertainty",
+              "slot_name": "action"
+            }
+          ],
+          "unsupported_specificity": []
+        },
+        "clarification_question": null,
+        "clarification_targets": [],
+        "execution_status": "ok",
+        "official_result": false,
+        "provider_provenance": {
+          "shared_analysis_fingerprint": "2a94a226eb42c02a79a93f17cb4ae36092b6cdcd794556b4cb18fe6a80417d05"
+        },
+        "recommended_strategy": "silently_resolve",
+        "record_id": "CA-0326",
+        "rejection_reason": null,
+        "resolved_slots": [],
+        "result_hash": "b57d30e09878f5ed1006177641c329f0a26c29b8af71d2596c19af346e04404d",
+        "run_id": null,
+        "run_mode": null,
+        "runtime_metadata": {
+          "shared_analysis_fingerprint": "2a94a226eb42c02a79a93f17cb4ae36092b6cdcd794556b4cb18fe6a80417d05",
+          "thresholds_status": "unfrozen",
+          "thresholds_valid_for_official_use": false,
+          "uncertainty_score": 0.2,
+          "uses_type_risk_capability_precedence": false
+        },
+        "safety_findings": [],
+        "strategy_sequence": [],
+        "synthetic_only": true,
+        "system_id": "degree_based_router",
+        "system_version": "1.0.0",
+        "unsupported_commitment_findings": []
+      },
+      "raw_output": "{\n  \"intent_summary\": \"Complete the configuration and inspection of the transport monitor after the check, setting it to its routine level within the next two-minute idle window following 15:00\",\n  \"cpc\": {\n    \"action\": {\n      \"value\": \"complete\",\n      \"status\": \"not_applicable\"\n    },\n    \"object\": {\n      \"value\": \"configuration and inspection of the transport monitor\",\n      \"status\": \"not_applicable\"\n    },\n    \"time\": {\n      \"value\": \"in a moment (next two-minute idle window after 15:00\",\n      \"status\": \"not_applicable\"\n    },\n    \"recipient\": {\n      \"value\": \"transport monitor\",\n      \"status\": \"not_applicable\"\n    },\n    \"tool\": {\n      \"value\": \"hospital delivery robot\",\n      \"status\": \"not_applicable\"\n    }\n  ,\n  \"constraints\": {\n    \"value\": \"after the check, setting it to its routine level\",\n    \"status\": \"not_applicable\"\n  },\n  \"conditions\": {\n    \"value\": \"low-risk configuration work\",\n    \"status\": \"not_applicable\"\n  },\n  \"spatial_relation\": {\n    \"value\": \"supply room in a hospital\",\n    \"status\": \"not_applicable\"\n  },\n  \"negation\": {\n    \"value\": \"none\",\n    \"status\": \"not_applicable\"\n  },\n  \"destination\": {\n    \"value\": \"not applicable\",\n    \"status\": \"not_applicable\"\n  },\n  \"quantity\": {\n    \"value\": \"70 percent screen brightness\",\n    \"status\": \"not_applicable\"\n  },\n  \"object_attributes\": {\n    \"value\": \"transport monitor\",\n    \"status\": \"not_applicable\"\n  },\n  \"actor\": {\n    \"value\": \"hospital delivery robot\",\n    \"status\": \"not_applicable\"\n  }\n}\n, \"pilot_ambiguity_types\": [\n  \"pragmatic\",\n  \"temporal_reference\"\n]  , \"pilot_capability_status\": \"capable\"  , \"speech_act\": \"directive_command\"  , \"risk_level\": \"low\"  , \"uncertainty\": 0.2\n, \"unresolved_slots\": [\n  \"action\"\n]  }",
+      "record_id": "CA-0326",
+      "schema_valid": true,
+      "supports_ambiguity_prediction": true,
+      "supports_capability_prediction": true,
+      "system_id": "degree_based_router_v2",
+      "system_version": "2.0.0",
+      "terminal_strategy": "execute"
+    },
+    "timid": {
+      "ambiguity_types": [
+        "pragmatic",
+        "temporal_reference"
+      ],
+      "analysis_attempts": [
+        {
+          "attempt": 1,
+          "max_new_tokens": 4096,
+          "mode": "thinking",
+          "raw_chars": 6074,
+          "raw_sha256": "c6f29dcbe8d99a9d0da834a94deb8c1e422ecf4843a1e74ef9a49bbc1d8a1b4e",
+          "validation_error": "bad_intent_summary"
+        },
+        {
+          "attempt": 2,
+          "max_new_tokens": 8192,
+          "mode": "thinking_retry",
+          "raw_chars": 6300,
+          "raw_sha256": "7b6faf53ef6cba83f7470ea86eaed603f1d00aa8c6f94a7c48a1c29f270a4106",
+          "validation_error": "bad_intent_summary"
+        },
+        {
+          "attempt": 3,
+          "constraint": {
+            "constraint_initialised": true,
+            "generated_token_count": 498,
+            "maximum_output_tokens": 1024,
+            "response_mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+            "termination_reason": "eos_or_constraint_stop",
+            "transport_status": "constrained_generated"
+          },
+          "max_new_tokens": 1024,
+          "mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+          "raw_chars": 1728,
+          "raw_sha256": "6d8d78dd05bcd4a5f40fe88561d9807f4c07dafb881c292b307ef3811cb5bce4",
+          "validation_error": null
+        }
+      ],
+      "capability_status": "capable",
+      "claim_boundary": "separately_versioned_from_frozen_t39",
+      "error": null,
+      "execution_mode": "cluster-gpu-goal-first-v2",
+      "failed": false,
+      "intent_summary": "Complete the configuration and inspection of the transport monitor after the check, setting it to its routine level within the next two-minute idle window following 15:00",
+      "latency_ms": 62912.44364110753,
+      "model_id": "Qwen/Qwen3-8B@b968826d9c46dd6066d109eabc6255188de91218",
+      "parsed": {
+        "analysis": {
+          "ambiguity_present": true,
+          "ambiguity_types": [
+            "pragmatic",
+            "temporal"
+          ],
+          "analysis_provenance": {
+            "analysis_id": "fe72f9822b8915b55789f4821f4aa575d08550b3546855d2dc4b80e8ee682a87",
+            "method": "model_generated",
+            "notes": "source_input_hash=fe72f9822b8915b55789f4821f4aa575d08550b3546855d2dc4b80e8ee682a87;no_gold_in_prompt;scene_licence_dropped=none",
+            "provider_id": "goal_first_v2_full_context",
+            "provider_version": "goal-first-manager-v2"
+          },
+          "candidate_interpretations": [],
+          "capability_status": "capable",
+          "clarification_question": "Which action should I perform?",
+          "clarification_targets": [
+            "action"
+          ],
+          "compound_ambiguity": true,
+          "compound_ambiguity_count": 2,
+          "context_sampling_uncertainty": {
+            "agreement": 0.8,
+            "score": 0.2,
+            "variant_count": 1
+          },
+          "cpc": {
+            "action": {
+              "status": "not_applicable",
+              "value": "complete"
+            },
+            "actor": {
+              "status": "not_applicable",
+              "value": "hospital delivery robot"
+            },
+            "conditions": {
+              "status": "not_applicable",
+              "value": "low-risk configuration work"
+            },
+            "constraints": {
+              "status": "not_applicable",
+              "value": "after the check, setting it to its routine level"
+            },
+            "destination": {
+              "status": "not_applicable",
+              "value": "not applicable"
+            },
+            "negation": {
+              "status": "not_applicable",
+              "value": "none"
+            },
+            "object": {
+              "status": "not_applicable",
+              "value": "configuration and inspection of the transport monitor"
+            },
+            "object_attributes": {
+              "status": "not_applicable",
+              "value": "transport monitor"
+            },
+            "quantity": {
+              "status": "not_applicable",
+              "value": "70 percent screen brightness"
+            },
+            "recipient": {
+              "status": "not_applicable",
+              "value": "transport monitor"
+            },
+            "spatial_relation": {
+              "status": "not_applicable",
+              "value": "supply room in a hospital"
+            },
+            "time": {
+              "status": "not_applicable",
+              "value": "in a moment (next two-minute idle window after 15:00"
+            },
+            "tool": {
+              "status": "not_applicable",
+              "value": "hospital delivery robot"
+            }
+          },
+          "findings": [
+            "pilot_ambiguity_types:[\"pragmatic\",\"temporal_reference\"]",
+            "pilot_capability_status:capable",
+            "intent_summary_present",
+            "requires_re_evaluation"
+          ],
+          "intent_summary": "Complete the configuration and inspection of the transport monitor after the check, setting it to its routine level within the next two-minute idle window following 15:00",
+          "primary_ambiguity_type": "pragmatic",
+          "recommended_strategy": "multi_step",
+          "rejection_reason": null,
+          "resolution_evidence": [],
+          "resolution_method": null,
+          "resolved_slots": [],
+          "risk_level": "low",
+          "risk_relevant": true,
+          "selected_interpretation": null,
+          "speech_act": "directive_command",
+          "strategy_sequence": [
+            "clarify"
+          ],
+          "supporting_evidence": [],
+          "unresolved_slots": [
+            {
+              "reason": "model_identified_uncertainty",
+              "slot_name": "action"
+            }
+          ],
+          "unsupported_specificity": []
+        },
+        "clarification_question": "Which action should I perform?",
+        "clarification_targets": [
+          "action"
+        ],
+        "execution_status": "ok",
+        "official_result": false,
+        "provider_provenance": {
+          "provider_id": "cached_analysis",
+          "provider_version": "1.0.0"
+        },
+        "recommended_strategy": "multi_step",
+        "record_id": "CA-0326",
+        "rejection_reason": null,
+        "resolved_slots": [],
+        "result_hash": "8fb8c543a41de4c0c7a70f9242b8d1eb1435322afeab0ef114fa30e4deb5ba90",
+        "run_id": null,
+        "run_mode": null,
+        "runtime_metadata": {
+          "awaits_t28_adapter": true,
+          "classification": {
+            "ambiguity_present": true,
+            "ambiguity_types": [
+              "pragmatic",
+              "temporal"
+            ],
+            "capability_status": "capable",
+            "compound_ambiguity": true,
+            "compound_ambiguity_count": 2,
+            "derivation_notes": [
+              "ambiguity_present_from_types"
+            ],
+            "risk_level": "low"
+          },
+          "rejection_text": null,
+          "requires_re_evaluation": true,
+          "resolution_events": [
+            {
+              "confidence_category": "none",
+              "details": {
+                "reason": "unsupported_default_rejected"
+              },
+              "evidence_source": null,
+              "outcome": "unresolved",
+              "previous_status": "unresolved",
+              "resolved_value": null,
+              "rule_id": "no_world_knowledge_guess",
+              "safety_eligibility": false,
+              "slot": "action"
+            }
+          ],
+          "router_trace": {
+            "clarification_targets": [
+              "action"
+            ],
+            "considered_rules": [
+              "known_unsafe_or_prohibited",
+              "known_incapable",
+              "unknown_or_unverified_capability",
+              "hazard_identity_unresolved",
+              "critical_unresolved_medium_high_risk",
+              "unknown_safety_risk",
+              "dependent_compound_ambiguities"
+            ],
+            "matched_rule_id": "dependent_compound_ambiguities",
+            "notes": [
+              "later_silent_resolve_only_after_re_evaluation",
+              "requires_re_evaluation",
+              "no_precommit_execute"
+            ],
+            "recommended_strategy": "multi_step",
+            "rejection_reason": null,
+            "requires_re_evaluation": true,
+            "strategy_sequence": [
+              "clarify"
+            ]
+          },
+          "safety_action": "return_with_findings",
+          "uncertainty": null
+        },
+        "safety_findings": [],
+        "strategy_sequence": [
+          "clarify"
+        ],
+        "synthetic_only": true,
+        "system_id": "full_type_risk_aware_manager",
+        "system_version": "1.0.0",
+        "unsupported_commitment_findings": []
+      },
+      "raw_output": "{\n  \"intent_summary\": \"Complete the configuration and inspection of the transport monitor after the check, setting it to its routine level within the next two-minute idle window following 15:00\",\n  \"cpc\": {\n    \"action\": {\n      \"value\": \"complete\",\n      \"status\": \"not_applicable\"\n    },\n    \"object\": {\n      \"value\": \"configuration and inspection of the transport monitor\",\n      \"status\": \"not_applicable\"\n    },\n    \"time\": {\n      \"value\": \"in a moment (next two-minute idle window after 15:00\",\n      \"status\": \"not_applicable\"\n    },\n    \"recipient\": {\n      \"value\": \"transport monitor\",\n      \"status\": \"not_applicable\"\n    },\n    \"tool\": {\n      \"value\": \"hospital delivery robot\",\n      \"status\": \"not_applicable\"\n    }\n  ,\n  \"constraints\": {\n    \"value\": \"after the check, setting it to its routine level\",\n    \"status\": \"not_applicable\"\n  },\n  \"conditions\": {\n    \"value\": \"low-risk configuration work\",\n    \"status\": \"not_applicable\"\n  },\n  \"spatial_relation\": {\n    \"value\": \"supply room in a hospital\",\n    \"status\": \"not_applicable\"\n  },\n  \"negation\": {\n    \"value\": \"none\",\n    \"status\": \"not_applicable\"\n  },\n  \"destination\": {\n    \"value\": \"not applicable\",\n    \"status\": \"not_applicable\"\n  },\n  \"quantity\": {\n    \"value\": \"70 percent screen brightness\",\n    \"status\": \"not_applicable\"\n  },\n  \"object_attributes\": {\n    \"value\": \"transport monitor\",\n    \"status\": \"not_applicable\"\n  },\n  \"actor\": {\n    \"value\": \"hospital delivery robot\",\n    \"status\": \"not_applicable\"\n  }\n}\n, \"pilot_ambiguity_types\": [\n  \"pragmatic\",\n  \"temporal_reference\"\n]  , \"pilot_capability_status\": \"capable\"  , \"speech_act\": \"directive_command\"  , \"risk_level\": \"low\"  , \"uncertainty\": 0.2\n, \"unresolved_slots\": [\n  \"action\"\n]  }",
+      "record_id": "CA-0326",
+      "schema_valid": true,
+      "supports_ambiguity_prediction": true,
+      "supports_capability_prediction": true,
+      "system_id": "rich_conservative_manager_v2",
+      "system_version": "2.0.0",
+      "terminal_strategy": "clarify"
+    },
+    "context_blind": {
+      "ambiguity_types": [
+        "fuzzy_temporal",
+        "pragmatic",
+        "routine_reference"
+      ],
+      "analysis_attempts": [
+        {
+          "attempt": 1,
+          "max_new_tokens": 4096,
+          "mode": "thinking",
+          "raw_chars": 4061,
+          "raw_sha256": "f2519487cc17521bc30962317b6f4792d4780664ef79c98ae9e877b594372c63",
+          "validation_error": "bad_pilot_ambiguity_types"
+        },
+        {
+          "attempt": 2,
+          "max_new_tokens": 8192,
+          "mode": "thinking_retry",
+          "raw_chars": 5756,
+          "raw_sha256": "80580d3ad7f7c70c08ab5bb070c2933d6214781e88b34b8b569e469c363c5c6c",
+          "validation_error": "bad_pilot_ambiguity_types"
+        },
+        {
+          "attempt": 3,
+          "constraint": {
+            "constraint_initialised": true,
+            "generated_token_count": 488,
+            "maximum_output_tokens": 1024,
+            "response_mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+            "termination_reason": "eos_or_constraint_stop",
+            "transport_status": "constrained_generated"
+          },
+          "max_new_tokens": 1024,
+          "mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+          "raw_chars": 1617,
+          "raw_sha256": "20179696a50a57154d2f3beda4ec1808a02529171ac883c7e2c70feca70dd130",
+          "validation_error": null
+        }
+      ],
+      "capability_status": "unauthorized",
+      "claim_boundary": "separately_versioned_from_frozen_t39",
+      "error": null,
+      "execution_mode": "cluster-gpu-goal-first-v2",
+      "failed": false,
+      "intent_summary": "Complete the configuration and inspection of the transport monitor after the check, then set it to its routine level in a moment",
+      "latency_ms": 48819.27592307329,
+      "model_id": "Qwen/Qwen3-8B@b968826d9c46dd6066d109eabc6255188de91218",
+      "parsed": {
+        "analysis": {
+          "ambiguity_present": true,
+          "ambiguity_types": [
+            "contextual",
+            "pragmatic",
+            "temporal"
+          ],
+          "analysis_provenance": {
+            "analysis_id": "2a7646b9920e4693c7517de8e2f675dfdfe7bfc26eaaec1a4b5ceee351d19007",
+            "method": "context_blind",
+            "notes": "ablated_input_hash=2a7646b9920e4693c7517de8e2f675dfdfe7bfc26eaaec1a4b5ceee351d19007;source_input_hash=2a7646b9920e4693c7517de8e2f675dfdfe7bfc26eaaec1a4b5ceee351d19007;no_gold_in_prompt;scene_licence_dropped=object",
+            "provider_id": "goal_first_v2_context_blind",
+            "provider_version": "goal-first-manager-v2"
+          },
+          "candidate_interpretations": [],
+          "capability_status": "unknown",
+          "clarification_question": null,
+          "clarification_targets": [],
+          "compound_ambiguity": true,
+          "compound_ambiguity_count": 3,
+          "context_sampling_uncertainty": {
+            "agreement": 0.25,
+            "score": 0.75,
+            "variant_count": 1
+          },
+          "cpc": {
+            "action": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "actor": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "conditions": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "constraints": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "destination": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "negation": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "object": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "object_attributes": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "quantity": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "recipient": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "spatial_relation": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "time": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "tool": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            }
+          },
+          "findings": [
+            "pilot_ambiguity_types:[\"fuzzy_temporal\",\"pragmatic\",\"routine_reference\"]",
+            "pilot_capability_status:unauthorized",
+            "intent_summary_present"
+          ],
+          "intent_summary": "Complete the configuration and inspection of the transport monitor after the check, then set it to its routine level in a moment",
+          "primary_ambiguity_type": "contextual",
+          "recommended_strategy": "face_preserving_rejection",
+          "rejection_reason": "unsafe_or_prohibited_action",
+          "resolution_evidence": [],
+          "resolution_method": null,
+          "resolved_slots": [],
+          "risk_level": "medium",
+          "risk_relevant": true,
+          "selected_interpretation": null,
+          "speech_act": "directive_command",
+          "strategy_sequence": [],
+          "supporting_evidence": [],
+          "unresolved_slots": [
+            {
+              "reason": "model_identified_uncertainty",
+              "slot_name": "time"
+            },
+            {
+              "reason": "model_identified_uncertainty",
+              "slot_name": "action"
+            }
+          ],
+          "unsupported_specificity": []
+        },
+        "clarification_question": null,
+        "clarification_targets": [],
+        "execution_status": "ok",
+        "official_result": false,
+        "provider_provenance": {
+          "provider_id": "cached_analysis",
+          "provider_version": "1.0.0"
+        },
+        "recommended_strategy": "face_preserving_rejection",
+        "record_id": "CA-0326",
+        "rejection_reason": "unsafe_or_prohibited_action",
+        "resolved_slots": [],
+        "result_hash": "51c240a8cca20ae54828412786098f3fa6e3480d58972b57850795dad0ca504f",
+        "run_id": null,
+        "run_mode": null,
+        "runtime_metadata": {
+          "analysis_identity": {
+            "analysis_content_hash": "b4f9a862511b857753e36392c14bde72250cc6102eb3994a46ec61a8bb74bde6",
+            "analysis_variant": "context_blind",
+            "model_strategy_id": null,
+            "provider_id": "goal_first_v2_context_blind",
+            "provider_version": "goal-first-manager-v2",
+            "record_id": "CA-0326",
+            "source_input_hash": "2a7646b9920e4693c7517de8e2f675dfdfe7bfc26eaaec1a4b5ceee351d19007"
+          },
+          "analysis_identity_fingerprint": "db210ff5bb79c61c72f352e0718ae97f4b8b7d16367cc24473f637c2767fc2ad",
+          "awaits_t28_adapter": true,
+          "classification": {
+            "ambiguity_present": true,
+            "ambiguity_types": [
+              "contextual",
+              "pragmatic",
+              "temporal"
+            ],
+            "capability_status": "unknown",
+            "compound_ambiguity": true,
+            "compound_ambiguity_count": 3,
+            "derivation_notes": [
+              "ambiguity_present_from_types"
+            ],
+            "risk_level": "medium"
+          },
+          "context_ablation": {
+            "ablated_input_hash": "2a7646b9920e4693c7517de8e2f675dfdfe7bfc26eaaec1a4b5ceee351d19007",
+            "capability_context_removed": true,
+            "dialogue_history_removed": true,
+            "rejected_full_context_cache": false,
+            "rejection_reason": null,
+            "scene_context_removed": true,
+            "stripped_context_derived_fields": false
+          },
+          "original_input_unmutated": true,
+          "rejection_text": "I need to decline that request because it would be unsafe under the current constraints.",
+          "requires_re_evaluation": false,
+          "resolution_events": [
+            {
+              "confidence_category": "blocked",
+              "details": {
+                "risk_level": "medium"
+              },
+              "evidence_source": null,
+              "outcome": "resolution_blocked_by_risk",
+              "previous_status": "unresolved",
+              "resolved_value": null,
+              "rule_id": "risk_block",
+              "safety_eligibility": false,
+              "slot": "time"
+            },
+            {
+              "confidence_category": "blocked",
+              "details": {
+                "risk_level": "medium"
+              },
+              "evidence_source": null,
+              "outcome": "resolution_blocked_by_risk",
+              "previous_status": "unresolved",
+              "resolved_value": null,
+              "rule_id": "risk_block",
+              "safety_eligibility": false,
+              "slot": "action"
+            }
+          ],
+          "router_trace": {
+            "clarification_targets": [],
+            "considered_rules": [
+              "goal_first_v2",
+              "known_unsafe_or_prohibited"
+            ],
+            "matched_rule_id": "known_unsafe_or_prohibited",
+            "notes": [],
+            "recommended_strategy": "face_preserving_rejection",
+            "rejection_reason": "unsafe_or_prohibited_action",
+            "requires_re_evaluation": false,
+            "strategy_sequence": []
+          },
+          "safety_action": "return_with_findings",
+          "uncertainty": null
+        },
+        "safety_findings": [],
+        "strategy_sequence": [],
+        "synthetic_only": true,
+        "system_id": "context_blind_manager",
+        "system_version": "1.0.0",
+        "unsupported_commitment_findings": []
+      },
+      "raw_output": "{\n  \"intent_summary\": \"Complete the configuration and inspection of the transport monitor after the check, then set it to its routine level in a moment\",\n  \"cpc\": {\n    \"action\": {\n      \"status\": \"not_applicable\",\n      \"value\": \"not_applicable\"\n    },\n    \"object\": {\n      \"status\": \"not_applicable\",\n      \"value\": \"not_applicable\"\n    },\n    \"recipient\": {\n      \"status\": \"not_applicable\",\n      \"value\": \"not_applicable\"\n    },\n    \"destination\": {\n      \"status\": \"not_applicable\",\n      \"value\": \"not_applicable\"\n    },\n    \"time\": {\n      \"status\": \"not_applicable\",\n      \"value\": \"not_applicable\"\n    }\n  ,\n  \"constraints\": {\n    \"status\": \"not_applicable\",\n    \"value\": \"not_applicable\"\n  },\n  \"conditions\": {\n    \"status\": \"not_applicable\",\n    \"value\": \"not_applicable\"\n  },\n  \"negation\": {\n    \"status\": \"not_applicable\",\n    \"value\": \"not_applicable\"\n  },\n  \"spatial_relation\": {\n    \"status\": \"not_applicable\",\n    \"value\": \"not_applicable\"\n  },\n  \"tool\": {\n    \"status\": \"not_applicable\",\n    \"value\": \"not_applicable\"\n  },\n  \"quantity\": {\n    \"status\": \"not_applicable\",\n    \"value\": \"not_applicable\"\n  },\n  \"object_attributes\": {\n    \"status\": \"not_applicable\",\n    \"value\": \"not_applicable\"\n  },\n  \"actor\": {\n    \"status\": \"not_applicable\",\n    \"value\": \"not_applicable\"\n  }\n},\n  \"pilot_ambiguity_types\": [\n    \"pragmatic\",\n    \"fuzzy_temporal\",\n    \"routine_reference\"\n  ]\n  \n  \n  \n  ,\n\n\n  \n  \n  \n\"pilot_capability_status\": \"unauthorized\",\n  \"speech_act\": \"directive_command\",\n  \"risk_level\": \"medium\",\n  \"unresolved_slots\": [\n    \"time\",\n    \"object\",\n    \"action\"\n  ],\n  \"uncertainty\": 0.75\n}",
+      "record_id": "CA-0326",
+      "schema_valid": true,
+      "supports_ambiguity_prediction": true,
+      "supports_capability_prediction": true,
+      "system_id": "goal_first_context_blind_v2",
+      "system_version": "2.0.0",
+      "terminal_strategy": "face_preserving_rejection"
+    }
+  },
+  "provenance": {
+    "source_sha256": "f33b1e29f1e8aa256a475f07213aa07247def47d8e2148d54a472a40b71b05c9",
+    "gold_sha256": "5e23ad1a92ff1873c8f039a8ce560a111dd6fb6b8ae8c11d6cf34dbfa1c360db",
+    "t07_final_zip_sha256": "34ca50e034ca37b617068bb50c734d12fa26282fb5eec563c11ead700163e491",
+    "inherited_t07_zip_sha256": "0305b1e9ab062876ee6ee89778cc6028d2eaf01718b7dd0295944e7d9cb81a01",
+    "note": "Goal-First, Degree, Timid, and Context-Blind predictions are inherited from the earlier T0.7 run; official intent and comparison come from the final T0.7 archive."
+  }
+}

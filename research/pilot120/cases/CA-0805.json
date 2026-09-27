@@ -1,0 +1,1230 @@
+{
+  "record_id": "CA-0805",
+  "frozen_source": {
+    "capability_context": "Indoor service robot with a gripper and wheeled base; it can inspect, label, carry, place, and clean ordinary household items.",
+    "command": "Do the same with the green basket using the usual setup.",
+    "dialogue_history": [
+      "caretaker: I scanned the first basket and moved the parcel after a separate damage alert.",
+      "Robot: Both tasks are complete.",
+      "caretaker: The next item is another basket; the parcel was a one-off interruption."
+    ],
+    "record_id": "CA-0805",
+    "scene_context": "Entry hall in a home. Two green baskets are present. One has an open work order and the other carries a completed barcode. The open task on the active item is Work order WO-717. The setup table states that Work order WO-717 maps to the guest-arrival setup, while the morning reset applies to a different work-order prefix. The batch board shows that each open basket in this run is scanned before release."
+  },
+  "frozen_gold": {
+    "ambiguity_types": [
+      "discourse_ellipsis",
+      "object_reference",
+      "routine_reference"
+    ],
+    "annotator_b_era": "glm_era",
+    "annotator_b_model": "glm-5.2-high",
+    "capability_status": "capable",
+    "field_status": {
+      "ambiguity_types": "auto_agree",
+      "capability_status": "auto_agree",
+      "record_validity": "auto_agree",
+      "strategy_sequence": "from_A_matching_terminal",
+      "terminal_strategy": "auto_agree"
+    },
+    "gold_lifecycle": "final_gold",
+    "gold_status": "auto_agree",
+    "human_gate_required": false,
+    "provenance": {
+      "agreement_label": "pilot_annotation_agreement",
+      "annotator_a_sha256": "7c01b94cf7090d481b6946f3ae48795cb18970bc36034de5c0f2d642f66d74a4",
+      "annotator_b_sha256": "be60ca427edd0b210e91e460204362d726cf062e782a5f6aacac33450ac19966",
+      "gold_policy": "use_existing_pilot_adjudicated_gold",
+      "input_sha256": "f5867adb0d78d4ec990a20b5be94209ac910706544e95742a918236204c7eb57",
+      "pilot_gold_sha256": "b83972ff5795dff75e73e6b66b31fe74f92a5ed849007feb9750347ae434ad63",
+      "protocol": "pilot_adjudicated_gold_on_capability_repaired_source",
+      "repaired_input_sha256": "a372ae003ff140df7b1bc3e439150ee25afcc69e46bad5e85cd7dd3400410264"
+    },
+    "record_id": "CA-0805",
+    "record_validity": "valid",
+    "strategy_sequence": [
+      "resolve_discourse",
+      "resolve_reference",
+      "execute"
+    ],
+    "terminal_strategy": "execute"
+  },
+  "t07_comparison": {
+    "record_id": "CA-0805",
+    "gold_route": "execute",
+    "raw_route": "clarify",
+    "ft_route": "execute",
+    "gf_route": "refuse",
+    "raw_route_ok": "False",
+    "ft_route_ok": "True",
+    "gf_route_ok": "False",
+    "raw_official_intent": "True",
+    "ft_official_intent": "False",
+    "gf_official_intent": "True",
+    "blind_official_intent": "True"
+  },
+  "t07_official_intent": {
+    "context_blind_official_intent": true,
+    "degree_official_intent_shared_gf": true,
+    "finetune_official_intent": false,
+    "goal_first_official_intent": true,
+    "raw_official_intent": true,
+    "record_id": "CA-0805",
+    "timid_official_intent_shared_gf": true
+  },
+  "t07_predictions": {
+    "raw_qwen": {
+      "ambiguity_types": [
+        "action_order",
+        "pronoun_reference",
+        "routine_reference"
+      ],
+      "capability_status": "conditionally_capable",
+      "error": null,
+      "execution_mode": "final_close_intent_box",
+      "failed": false,
+      "intent_summary": "Repeat the previous scanning and parcel movement task on the other green basket using the guest-arrival setup.",
+      "latency_ms": 16746.54891109094,
+      "parsed": {
+        "ambiguity_types": [
+          "action_order",
+          "pronoun_reference",
+          "routine_reference"
+        ],
+        "capability_status": "conditionally_capable",
+        "intent_summary": "Repeat the previous scanning and parcel movement task on the other green basket using the guest-arrival setup.",
+        "speech_act": "directive_command",
+        "terminal_strategy": "clarify"
+      },
+      "raw_output": "<think>\nOkay, let's break this down. The user's command is \"Do the same with the green basket using the usual setup.\" First, I need to figure out the intent. The previous dialogue mentions baskets and work orders. The caretaker scanned a basket, moved a parcel after a damage alert. The robot said both tasks are complete. Now, the caretaker refers to the next item as another basket, with the parcel being a one-off interruption.\n\nSo, the command is asking the robot to perform the same action (which was scanning and moving the parcel) on the other green basket. The \"usual setup\" likely refers to the guest-arrival setup mentioned in the scene context, which is linked to WO-717. The robot needs to check if it can replicate that task.\n\nLooking at the capability context, the robot can inspect, label, carry, place, and clean. The task involves scanning (inspecting) and moving the parcel, which the robot can do. But the setup might involve specific steps from the work order. The scene mentions that each open basket is scanned before release, so the robot might need to scan the basket again. However, the previous task was already completed, so maybe the \"usual setup\" is a standard procedure. \n\nAmbiguity types: The command refers to \"the green basket\" which might be ambiguous if there are multiple, but the scene says two green baskets are present. The \"usual setup\" could be a routine reference. Also, \"do the same\" might have a fuzzy quantity if it's unclear how many times to repeat. But the dialogue history shows that the first basket was handled, so the second is the target. \n\nCapability status: The robot is capable since it can inspect and carry. But the setup might require specific steps from the work order. However, the robot's capabilities include following setups, so it's conditionally capable. Wait, the capability context says it can perform the actions needed. The setup is part of the task, so maybe it's capable. \n\nTerminal strategy: Since the robot can do it, the strategy would be to execute. But maybe the command is unclear on what exactly \"do the same\" entails. If there's ambiguity, the strategy might be to clarify. However, the robot might have enough info from the dialogue history to proceed. \n\nSpeech act: The command is a directive to perform an action, so directive_command. \n\nAmbiguity types: The reference to \"the green basket\" might be a pronoun reference (which basket?), and \"usual setup\" could be a routine reference. Also, \"do the same\" might involve action_order. So ambiguity_types could include pronoun_reference, routine_reference, and action_order. \n\nPutting it all together: The intent is to repeat the previous task on the other green basket. The speech act is a directive. Ambiguity types include pronoun_reference (which basket?), routine_reference (usual setup), and action_order (do the same). Capability status is conditionally_capable because the setup might require specific steps not fully detailed. Terminal strategy is execute if capable, but since there's some ambiguity, maybe clarify. Wait, the robot can perform the actions, but the exact steps of the setup might need clarification. So capability status could be conditionally_capable. Terminal strategy would be clarify if there's uncertainty. But the robot might have enough info from the work order mapping. Hmm. Maybe the capability is capable, and the terminal strategy is execute. But the ambiguity in the setup might make it conditionally_capable. Need to check the capability context again. The robot can follow setups, so it's capable. So capability_status is capable. Terminal strategy is execute.\n</think>\n\n{\n  \"intent_summary\": \"Repeat the previous scanning and parcel movement task on the other green basket using the guest-arrival setup.\",\n  \"speech_act\": \"directive_command\",\n  \"ambiguity_types\": [\"pronoun_reference\", \"routine_reference\", \"action_order\"],\n  \"capability_status\": \"conditionally_capable\",\n  \"terminal_strategy\": \"clarify\"\n}",
+      "record_id": "CA-0805",
+      "schema_valid": true,
+      "speech_act": "directive_command",
+      "system_id": "direct_base_llm",
+      "terminal_strategy": "clarify"
+    },
+    "finetune": {
+      "ambiguity_types": [
+        "discourse_ellipsis",
+        "pragmatic"
+      ],
+      "capability_status": "capable",
+      "error": null,
+      "execution_mode": "final_close_intent_box",
+      "failed": false,
+      "intent_summary": "Scan the green basket and move the parcel if a damage alert occurs, following the guest-arrival setup.",
+      "latency_ms": 14836.999799124897,
+      "parsed": {
+        "ambiguity_types": [
+          "discourse_ellipsis",
+          "pragmatic"
+        ],
+        "capability_status": "capable",
+        "intent_summary": "Scan the green basket and move the parcel if a damage alert occurs, following the guest-arrival setup.",
+        "speech_act": "directive_command",
+        "terminal_strategy": "execute"
+      },
+      "raw_output": "<think>\nOkay, let's tackle this. The user's command is \"Do the same with the green basket using the usual setup.\" First, I need to understand what \"the same\" refers to. From the dialogue history, the caretaker mentioned scanning the first basket and moving the parcel after a damage alert. The robot completed both tasks. Now, the next item is another basket, and the parcel was a one-off interruption.\n\nSo, \"do the same\" likely means repeat the previous action: scan the basket and move the parcel if there's a damage alert. But the setup here is \"usual setup,\" which in the scene context refers to the guest-arrival setup linked to WO-717. The active basket has an open work order, so the robot should scan it first, check for any alerts, and proceed accordingly.\n\nAmbiguity types: The command is a directive, but it's a bit vague. \"The same\" could be interpreted in different ways. Maybe the robot needs to clarify what \"the same\" exactly means. Also, \"usual setup\" might refer to a specific procedure, but the robot's capability context includes inspecting and moving items. However, the setup might involve specific steps like checking the work order or using the correct table. The ambiguity here is about the exact steps required, so \"action_order\" and \"fuzzy_quantity\" might apply. Wait, but \"do the same\" is a direct command, but the exact actions are not specified, leading to pragmatic ambiguity. Also, the reference to \"usual setup\" might be a discourse ellipsis, assuming prior knowledge. So, ambiguity_types could include pragmatic and discourse_ellipsis.\n\nCapability-wise, the robot can scan, move, and handle items. The setup mentions using the guest-arrival setup, which is part of the capability. So, the robot is capable. But the task might require specific steps that the robot can handle. So capability_status is capable. The terminal strategy would be execute, as the robot can perform the tasks. But maybe the robot needs to clarify \"the same\" action, so the strategy might be clarify. Wait, but the command is a directive, and the robot can follow the usual setup. The dialogue history shows that the robot completed the previous task, so it can proceed. So terminal_strategy is execute.\n</think>\n\n{\n  \"intent_summary\": \"Scan the green basket and move the parcel if a damage alert occurs, following the guest-arrival setup.\",\n  \"speech_act\": \"directive_command\",\n  \"ambiguity_types\": [\"pragmatic\", \"discourse_ellipsis\"],\n  \"capability_status\": \"capable\",\n  \"terminal_strategy\": \"execute\"\n}",
+      "record_id": "CA-0805",
+      "schema_valid": true,
+      "speech_act": "directive_command",
+      "system_id": "t28_selected_adapter_llm",
+      "terminal_strategy": "execute"
+    },
+    "goal_first": {
+      "ambiguity_types": [
+        "object_reference",
+        "pragmatic",
+        "routine_reference"
+      ],
+      "analysis_attempts": [
+        {
+          "attempt": 1,
+          "max_new_tokens": 4096,
+          "mode": "thinking",
+          "raw_chars": 5774,
+          "raw_sha256": "5bfe6c1d90b48174e29e1c03cfa34975a8e96b803fbcab01091f3a705ddf42fd",
+          "validation_error": "bad_pilot_ambiguity_types"
+        },
+        {
+          "attempt": 2,
+          "max_new_tokens": 8192,
+          "mode": "thinking_retry",
+          "raw_chars": 5294,
+          "raw_sha256": "71860a1d388e640c2391d05b59a4d4c32c9fc915fc20ee9c6019cf3fa451b6ec",
+          "validation_error": "bad_pilot_ambiguity_types"
+        },
+        {
+          "attempt": 3,
+          "constraint": {
+            "constraint_initialised": true,
+            "generated_token_count": 485,
+            "maximum_output_tokens": 1024,
+            "response_mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+            "termination_reason": "eos_or_constraint_stop",
+            "transport_status": "constrained_generated"
+          },
+          "max_new_tokens": 1024,
+          "mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+          "raw_chars": 1571,
+          "raw_sha256": "9132034db7159bdf89558b663b9cee6d3cb28efd3668f7fa6ce4547790e2a36e",
+          "validation_error": null
+        }
+      ],
+      "capability_status": "incapable",
+      "claim_boundary": "separately_versioned_from_frozen_t39",
+      "error": null,
+      "execution_mode": "cluster-gpu-goal-first-v2",
+      "failed": false,
+      "intent_summary": "Perform the same task on the green basket using the standard setup procedure",
+      "latency_ms": 77886.35391602293,
+      "model_id": "Qwen/Qwen3-8B@b968826d9c46dd6066d109eabc6255188de91218",
+      "parsed": {
+        "analysis": {
+          "ambiguity_present": true,
+          "ambiguity_types": [
+            "contextual",
+            "pragmatic",
+            "referential"
+          ],
+          "analysis_provenance": {
+            "analysis_id": "fefa2d79828674d74a0579b58c7ab832e0e694bf3622a3d4779e888b2113306f",
+            "method": "model_generated",
+            "notes": "source_input_hash=fefa2d79828674d74a0579b58c7ab832e0e694bf3622a3d4779e888b2113306f;no_gold_in_prompt;scene_licence_dropped=none",
+            "provider_id": "goal_first_v2_full_context",
+            "provider_version": "goal-first-manager-v2"
+          },
+          "candidate_interpretations": [],
+          "capability_status": "incapable",
+          "clarification_question": null,
+          "clarification_targets": [],
+          "compound_ambiguity": true,
+          "compound_ambiguity_count": 3,
+          "context_sampling_uncertainty": {
+            "agreement": 0.55,
+            "score": 0.45,
+            "variant_count": 1
+          },
+          "cpc": {
+            "action": {
+              "status": "not_applicable",
+              "value": "Do the same with the green basket using the usual setup"
+            },
+            "actor": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "conditions": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "constraints": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "destination": {
+              "status": "not_applicable",
+              "value": "not specified"
+            },
+            "negation": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "object": {
+              "status": "not_applicable",
+              "value": "green basket"
+            },
+            "object_attributes": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "quantity": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "recipient": {
+              "status": "not_applicable",
+              "value": "robot"
+            },
+            "spatial_relation": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "time": {
+              "status": "not_applicable",
+              "value": "not specified"
+            },
+            "tool": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            }
+          },
+          "findings": [
+            "pilot_ambiguity_types:[\"object_reference\",\"pragmatic\",\"routine_reference\"]",
+            "pilot_capability_status:incapable",
+            "intent_summary_present"
+          ],
+          "intent_summary": "Perform the same task on the green basket using the standard setup procedure",
+          "primary_ambiguity_type": "contextual",
+          "recommended_strategy": "face_preserving_rejection",
+          "rejection_reason": "known_incapability",
+          "resolution_evidence": [],
+          "resolution_method": null,
+          "resolved_slots": [],
+          "risk_level": "medium",
+          "risk_relevant": true,
+          "selected_interpretation": null,
+          "speech_act": "directive_command",
+          "strategy_sequence": [],
+          "supporting_evidence": [],
+          "unresolved_slots": [
+            {
+              "reason": "model_identified_uncertainty",
+              "slot_name": "destination"
+            },
+            {
+              "reason": "model_identified_uncertainty",
+              "slot_name": "recipient"
+            },
+            {
+              "reason": "model_identified_uncertainty",
+              "slot_name": "tool"
+            }
+          ],
+          "unsupported_specificity": []
+        },
+        "clarification_question": null,
+        "clarification_targets": [],
+        "execution_status": "ok",
+        "official_result": false,
+        "provider_provenance": {
+          "provider_id": "cached_analysis",
+          "provider_version": "1.0.0"
+        },
+        "recommended_strategy": "face_preserving_rejection",
+        "record_id": "CA-0805",
+        "rejection_reason": "known_incapability",
+        "resolved_slots": [],
+        "result_hash": "983948fe0bcd1e5c2dcf06f537e10b26b0f8e0357eeef5adb3cd91c0ccf27207",
+        "run_id": null,
+        "run_mode": null,
+        "runtime_metadata": {
+          "awaits_t28_adapter": true,
+          "classification": {
+            "ambiguity_present": true,
+            "ambiguity_types": [
+              "contextual",
+              "pragmatic",
+              "referential"
+            ],
+            "capability_status": "incapable",
+            "compound_ambiguity": true,
+            "compound_ambiguity_count": 3,
+            "derivation_notes": [
+              "ambiguity_present_from_types"
+            ],
+            "risk_level": "medium"
+          },
+          "rejection_text": "I am not able to perform that action with my current capabilities. I will not invent an alternative that is not supported.",
+          "requires_re_evaluation": false,
+          "resolution_events": [
+            {
+              "confidence_category": "blocked",
+              "details": {
+                "risk_level": "medium"
+              },
+              "evidence_source": null,
+              "outcome": "resolution_blocked_by_risk",
+              "previous_status": "unresolved",
+              "resolved_value": null,
+              "rule_id": "risk_block",
+              "safety_eligibility": false,
+              "slot": "destination"
+            },
+            {
+              "confidence_category": "blocked",
+              "details": {
+                "risk_level": "medium"
+              },
+              "evidence_source": null,
+              "outcome": "resolution_blocked_by_risk",
+              "previous_status": "unresolved",
+              "resolved_value": null,
+              "rule_id": "risk_block",
+              "safety_eligibility": false,
+              "slot": "recipient"
+            },
+            {
+              "confidence_category": "blocked",
+              "details": {
+                "risk_level": "medium"
+              },
+              "evidence_source": null,
+              "outcome": "resolution_blocked_by_risk",
+              "previous_status": "unresolved",
+              "resolved_value": null,
+              "rule_id": "risk_block",
+              "safety_eligibility": false,
+              "slot": "tool"
+            }
+          ],
+          "router_trace": {
+            "clarification_targets": [],
+            "considered_rules": [
+              "goal_first_v2",
+              "known_unsafe_or_prohibited",
+              "known_incapable"
+            ],
+            "matched_rule_id": "known_incapable",
+            "notes": [],
+            "recommended_strategy": "face_preserving_rejection",
+            "rejection_reason": "known_incapability",
+            "requires_re_evaluation": false,
+            "strategy_sequence": []
+          },
+          "safety_action": "return_with_findings",
+          "uncertainty": null
+        },
+        "safety_findings": [],
+        "strategy_sequence": [],
+        "synthetic_only": true,
+        "system_id": "goal_first_manager_v2",
+        "system_version": "2.0.0",
+        "unsupported_commitment_findings": []
+      },
+      "raw_output": "{\n  \"intent_summary\": \"Perform the same task on the green basket using the standard setup procedure\",\n  \"cpc\": {\n    \"action\": {\n      \"value\": \"Do the same with the green basket using the usual setup\",\n      \"status\": \"not_applicable\"\n    },\n    \"object\": {\n      \"value\": \"green basket\",\n      \"status\": \"not_applicable\"\n    },\n    \"recipient\": {\n      \"value\": \"robot\",\n      \"status\": \"not_applicable\"\n    },\n    \"destination\": {\n      \"value\": \"not specified\",\n      \"status\": \"not_applicable\"\n    },\n    \"time\": {\n      \"value\": \"not specified\",\n      \"status\": \"not_applicable\"\n    }\n  ,\n  \"constraints\": {\n    \"status\": \"not_applicable\"\n  ,\n  \"value\": \"not_applicable\"\n  },\n  \"conditions\": {\n    \"status\": \"not_applicable\"\n  ,\n  \"value\": \"not_applicable\"\n  },\n  \"tool\": {\n    \"status\": \"not_applicable\"\n  ,\n  \"value\": \"not_applicable\"\n  },\n  \"spatial_relation\": {\n    \"status\": \"not_applicable\"\n  ,\n  \"value\": \"not_applicable\"\n  },\n  \"quantity\": {\n    \"status\": \"not_applicable\"\n  ,\n  \"value\": \"not_applicable\"\n  },\n  \"negation\": {\n    \"status\": \"not_applicable\"\n  ,\n  \"value\": \"not_applicable\"\n  },\n  \"object_attributes\": {\n    \"status\": \"not_applicable\"\n  ,\n  \"value\": \"not_applicable\"\n  },\n  \"actor\": {\n    \"status\": \"not_applicable\"\n  ,\n  \"value\": \"not_applicable\"\n  }\n}\n\n, \"pilot_ambiguity_types\": [\n  \"pragmatic\",\n  \"object_reference\",\n  \"routine_reference\"\n]  \n, \"pilot_capability_status\": \"incapable\",\n  \"risk_level\": \"medium\",\n  \"speech_act\": \"directive_command\",\n  \"uncertainty\": 0.45\n, \"unresolved_slots\": [\n  \"destination\",\n  \"recipient\",\n  \"tool\"\n]\n}",
+      "record_id": "CA-0805",
+      "schema_valid": true,
+      "supports_ambiguity_prediction": true,
+      "supports_capability_prediction": true,
+      "system_id": "goal_first_manager_v2",
+      "system_version": "2.0.0",
+      "terminal_strategy": "face_preserving_rejection"
+    },
+    "degree": {
+      "ambiguity_types": [
+        "object_reference",
+        "pragmatic",
+        "routine_reference"
+      ],
+      "analysis_attempts": [
+        {
+          "attempt": 1,
+          "max_new_tokens": 4096,
+          "mode": "thinking",
+          "raw_chars": 5774,
+          "raw_sha256": "5bfe6c1d90b48174e29e1c03cfa34975a8e96b803fbcab01091f3a705ddf42fd",
+          "validation_error": "bad_pilot_ambiguity_types"
+        },
+        {
+          "attempt": 2,
+          "max_new_tokens": 8192,
+          "mode": "thinking_retry",
+          "raw_chars": 5294,
+          "raw_sha256": "71860a1d388e640c2391d05b59a4d4c32c9fc915fc20ee9c6019cf3fa451b6ec",
+          "validation_error": "bad_pilot_ambiguity_types"
+        },
+        {
+          "attempt": 3,
+          "constraint": {
+            "constraint_initialised": true,
+            "generated_token_count": 485,
+            "maximum_output_tokens": 1024,
+            "response_mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+            "termination_reason": "eos_or_constraint_stop",
+            "transport_status": "constrained_generated"
+          },
+          "max_new_tokens": 1024,
+          "mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+          "raw_chars": 1571,
+          "raw_sha256": "9132034db7159bdf89558b663b9cee6d3cb28efd3668f7fa6ce4547790e2a36e",
+          "validation_error": null
+        }
+      ],
+      "capability_status": "incapable",
+      "claim_boundary": "separately_versioned_from_frozen_t39",
+      "error": null,
+      "execution_mode": "cluster-gpu-goal-first-v2",
+      "failed": false,
+      "intent_summary": "Perform the same task on the green basket using the standard setup procedure",
+      "latency_ms": 77886.35391602293,
+      "model_id": "Qwen/Qwen3-8B@b968826d9c46dd6066d109eabc6255188de91218",
+      "parsed": {
+        "analysis": {
+          "ambiguity_present": true,
+          "ambiguity_types": [
+            "contextual",
+            "pragmatic",
+            "referential"
+          ],
+          "analysis_provenance": {
+            "analysis_id": "fefa2d79828674d74a0579b58c7ab832e0e694bf3622a3d4779e888b2113306f",
+            "method": "model_generated",
+            "notes": "source_input_hash=fefa2d79828674d74a0579b58c7ab832e0e694bf3622a3d4779e888b2113306f;no_gold_in_prompt;scene_licence_dropped=none",
+            "provider_id": "goal_first_v2_full_context",
+            "provider_version": "goal-first-manager-v2"
+          },
+          "candidate_interpretations": [],
+          "capability_status": "incapable",
+          "clarification_question": "Before I continue, could you clarify: destination, recipient, tool?",
+          "clarification_targets": [
+            "destination",
+            "recipient",
+            "tool"
+          ],
+          "compound_ambiguity": true,
+          "compound_ambiguity_count": 3,
+          "context_sampling_uncertainty": {
+            "agreement": 0.55,
+            "score": 0.45,
+            "variant_count": 1
+          },
+          "cpc": {
+            "action": {
+              "status": "not_applicable",
+              "value": "Do the same with the green basket using the usual setup"
+            },
+            "actor": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "conditions": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "constraints": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "destination": {
+              "status": "not_applicable",
+              "value": "not specified"
+            },
+            "negation": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "object": {
+              "status": "not_applicable",
+              "value": "green basket"
+            },
+            "object_attributes": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "quantity": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "recipient": {
+              "status": "not_applicable",
+              "value": "robot"
+            },
+            "spatial_relation": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "time": {
+              "status": "not_applicable",
+              "value": "not specified"
+            },
+            "tool": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            }
+          },
+          "findings": [
+            "pilot_ambiguity_types:[\"object_reference\",\"pragmatic\",\"routine_reference\"]",
+            "pilot_capability_status:incapable",
+            "intent_summary_present"
+          ],
+          "intent_summary": "Perform the same task on the green basket using the standard setup procedure",
+          "primary_ambiguity_type": "contextual",
+          "recommended_strategy": "clarify",
+          "rejection_reason": null,
+          "resolution_evidence": [],
+          "resolution_method": null,
+          "resolved_slots": [],
+          "risk_level": "medium",
+          "risk_relevant": true,
+          "selected_interpretation": null,
+          "speech_act": "directive_command",
+          "strategy_sequence": [],
+          "supporting_evidence": [],
+          "unresolved_slots": [
+            {
+              "reason": "model_identified_uncertainty",
+              "slot_name": "destination"
+            },
+            {
+              "reason": "model_identified_uncertainty",
+              "slot_name": "recipient"
+            },
+            {
+              "reason": "model_identified_uncertainty",
+              "slot_name": "tool"
+            }
+          ],
+          "unsupported_specificity": []
+        },
+        "clarification_question": "Before I continue, could you clarify: destination, recipient, tool?",
+        "clarification_targets": [
+          "destination",
+          "recipient",
+          "tool"
+        ],
+        "execution_status": "ok",
+        "official_result": false,
+        "provider_provenance": {
+          "shared_analysis_fingerprint": "de958e82af35c858622bda559f93acc5131a310c3b738733590a87b5450ecbde"
+        },
+        "recommended_strategy": "clarify",
+        "record_id": "CA-0805",
+        "rejection_reason": null,
+        "resolved_slots": [],
+        "result_hash": "0864396f5fd474a927bca529ba09c121cdcb79869a1452526890173540143027",
+        "run_id": null,
+        "run_mode": null,
+        "runtime_metadata": {
+          "shared_analysis_fingerprint": "de958e82af35c858622bda559f93acc5131a310c3b738733590a87b5450ecbde",
+          "thresholds_status": "unfrozen",
+          "thresholds_valid_for_official_use": false,
+          "uncertainty_score": 0.45,
+          "uses_type_risk_capability_precedence": false
+        },
+        "safety_findings": [],
+        "strategy_sequence": [],
+        "synthetic_only": true,
+        "system_id": "degree_based_router",
+        "system_version": "1.0.0",
+        "unsupported_commitment_findings": []
+      },
+      "raw_output": "{\n  \"intent_summary\": \"Perform the same task on the green basket using the standard setup procedure\",\n  \"cpc\": {\n    \"action\": {\n      \"value\": \"Do the same with the green basket using the usual setup\",\n      \"status\": \"not_applicable\"\n    },\n    \"object\": {\n      \"value\": \"green basket\",\n      \"status\": \"not_applicable\"\n    },\n    \"recipient\": {\n      \"value\": \"robot\",\n      \"status\": \"not_applicable\"\n    },\n    \"destination\": {\n      \"value\": \"not specified\",\n      \"status\": \"not_applicable\"\n    },\n    \"time\": {\n      \"value\": \"not specified\",\n      \"status\": \"not_applicable\"\n    }\n  ,\n  \"constraints\": {\n    \"status\": \"not_applicable\"\n  ,\n  \"value\": \"not_applicable\"\n  },\n  \"conditions\": {\n    \"status\": \"not_applicable\"\n  ,\n  \"value\": \"not_applicable\"\n  },\n  \"tool\": {\n    \"status\": \"not_applicable\"\n  ,\n  \"value\": \"not_applicable\"\n  },\n  \"spatial_relation\": {\n    \"status\": \"not_applicable\"\n  ,\n  \"value\": \"not_applicable\"\n  },\n  \"quantity\": {\n    \"status\": \"not_applicable\"\n  ,\n  \"value\": \"not_applicable\"\n  },\n  \"negation\": {\n    \"status\": \"not_applicable\"\n  ,\n  \"value\": \"not_applicable\"\n  },\n  \"object_attributes\": {\n    \"status\": \"not_applicable\"\n  ,\n  \"value\": \"not_applicable\"\n  },\n  \"actor\": {\n    \"status\": \"not_applicable\"\n  ,\n  \"value\": \"not_applicable\"\n  }\n}\n\n, \"pilot_ambiguity_types\": [\n  \"pragmatic\",\n  \"object_reference\",\n  \"routine_reference\"\n]  \n, \"pilot_capability_status\": \"incapable\",\n  \"risk_level\": \"medium\",\n  \"speech_act\": \"directive_command\",\n  \"uncertainty\": 0.45\n, \"unresolved_slots\": [\n  \"destination\",\n  \"recipient\",\n  \"tool\"\n]\n}",
+      "record_id": "CA-0805",
+      "schema_valid": true,
+      "supports_ambiguity_prediction": true,
+      "supports_capability_prediction": true,
+      "system_id": "degree_based_router_v2",
+      "system_version": "2.0.0",
+      "terminal_strategy": "clarify"
+    },
+    "timid": {
+      "ambiguity_types": [
+        "object_reference",
+        "pragmatic",
+        "routine_reference"
+      ],
+      "analysis_attempts": [
+        {
+          "attempt": 1,
+          "max_new_tokens": 4096,
+          "mode": "thinking",
+          "raw_chars": 5774,
+          "raw_sha256": "5bfe6c1d90b48174e29e1c03cfa34975a8e96b803fbcab01091f3a705ddf42fd",
+          "validation_error": "bad_pilot_ambiguity_types"
+        },
+        {
+          "attempt": 2,
+          "max_new_tokens": 8192,
+          "mode": "thinking_retry",
+          "raw_chars": 5294,
+          "raw_sha256": "71860a1d388e640c2391d05b59a4d4c32c9fc915fc20ee9c6019cf3fa451b6ec",
+          "validation_error": "bad_pilot_ambiguity_types"
+        },
+        {
+          "attempt": 3,
+          "constraint": {
+            "constraint_initialised": true,
+            "generated_token_count": 485,
+            "maximum_output_tokens": 1024,
+            "response_mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+            "termination_reason": "eos_or_constraint_stop",
+            "transport_status": "constrained_generated"
+          },
+          "max_new_tokens": 1024,
+          "mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+          "raw_chars": 1571,
+          "raw_sha256": "9132034db7159bdf89558b663b9cee6d3cb28efd3668f7fa6ce4547790e2a36e",
+          "validation_error": null
+        }
+      ],
+      "capability_status": "incapable",
+      "claim_boundary": "separately_versioned_from_frozen_t39",
+      "error": null,
+      "execution_mode": "cluster-gpu-goal-first-v2",
+      "failed": false,
+      "intent_summary": "Perform the same task on the green basket using the standard setup procedure",
+      "latency_ms": 77886.35391602293,
+      "model_id": "Qwen/Qwen3-8B@b968826d9c46dd6066d109eabc6255188de91218",
+      "parsed": {
+        "analysis": {
+          "ambiguity_present": true,
+          "ambiguity_types": [
+            "contextual",
+            "pragmatic",
+            "referential"
+          ],
+          "analysis_provenance": {
+            "analysis_id": "fefa2d79828674d74a0579b58c7ab832e0e694bf3622a3d4779e888b2113306f",
+            "method": "model_generated",
+            "notes": "source_input_hash=fefa2d79828674d74a0579b58c7ab832e0e694bf3622a3d4779e888b2113306f;no_gold_in_prompt;scene_licence_dropped=none",
+            "provider_id": "goal_first_v2_full_context",
+            "provider_version": "goal-first-manager-v2"
+          },
+          "candidate_interpretations": [],
+          "capability_status": "incapable",
+          "clarification_question": null,
+          "clarification_targets": [],
+          "compound_ambiguity": true,
+          "compound_ambiguity_count": 3,
+          "context_sampling_uncertainty": {
+            "agreement": 0.55,
+            "score": 0.45,
+            "variant_count": 1
+          },
+          "cpc": {
+            "action": {
+              "status": "not_applicable",
+              "value": "Do the same with the green basket using the usual setup"
+            },
+            "actor": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "conditions": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "constraints": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "destination": {
+              "status": "not_applicable",
+              "value": "not specified"
+            },
+            "negation": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "object": {
+              "status": "not_applicable",
+              "value": "green basket"
+            },
+            "object_attributes": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "quantity": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "recipient": {
+              "status": "not_applicable",
+              "value": "robot"
+            },
+            "spatial_relation": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "time": {
+              "status": "not_applicable",
+              "value": "not specified"
+            },
+            "tool": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            }
+          },
+          "findings": [
+            "pilot_ambiguity_types:[\"object_reference\",\"pragmatic\",\"routine_reference\"]",
+            "pilot_capability_status:incapable",
+            "intent_summary_present"
+          ],
+          "intent_summary": "Perform the same task on the green basket using the standard setup procedure",
+          "primary_ambiguity_type": "contextual",
+          "recommended_strategy": "face_preserving_rejection",
+          "rejection_reason": "known_incapability",
+          "resolution_evidence": [],
+          "resolution_method": null,
+          "resolved_slots": [],
+          "risk_level": "medium",
+          "risk_relevant": true,
+          "selected_interpretation": null,
+          "speech_act": "directive_command",
+          "strategy_sequence": [],
+          "supporting_evidence": [],
+          "unresolved_slots": [
+            {
+              "reason": "model_identified_uncertainty",
+              "slot_name": "destination"
+            },
+            {
+              "reason": "model_identified_uncertainty",
+              "slot_name": "recipient"
+            },
+            {
+              "reason": "model_identified_uncertainty",
+              "slot_name": "tool"
+            }
+          ],
+          "unsupported_specificity": []
+        },
+        "clarification_question": null,
+        "clarification_targets": [],
+        "execution_status": "ok",
+        "official_result": false,
+        "provider_provenance": {
+          "provider_id": "cached_analysis",
+          "provider_version": "1.0.0"
+        },
+        "recommended_strategy": "face_preserving_rejection",
+        "record_id": "CA-0805",
+        "rejection_reason": "known_incapability",
+        "resolved_slots": [],
+        "result_hash": "b4d61d12deb56d1141d5d624e05d9d0835e84bd3203cbc28d1120397d04a8050",
+        "run_id": null,
+        "run_mode": null,
+        "runtime_metadata": {
+          "awaits_t28_adapter": true,
+          "classification": {
+            "ambiguity_present": true,
+            "ambiguity_types": [
+              "contextual",
+              "pragmatic",
+              "referential"
+            ],
+            "capability_status": "incapable",
+            "compound_ambiguity": true,
+            "compound_ambiguity_count": 3,
+            "derivation_notes": [
+              "ambiguity_present_from_types"
+            ],
+            "risk_level": "medium"
+          },
+          "rejection_text": "I am not able to perform that action with my current capabilities. I will not invent an alternative that is not supported.",
+          "requires_re_evaluation": false,
+          "resolution_events": [
+            {
+              "confidence_category": "blocked",
+              "details": {
+                "risk_level": "medium"
+              },
+              "evidence_source": null,
+              "outcome": "resolution_blocked_by_risk",
+              "previous_status": "unresolved",
+              "resolved_value": null,
+              "rule_id": "risk_block",
+              "safety_eligibility": false,
+              "slot": "destination"
+            },
+            {
+              "confidence_category": "blocked",
+              "details": {
+                "risk_level": "medium"
+              },
+              "evidence_source": null,
+              "outcome": "resolution_blocked_by_risk",
+              "previous_status": "unresolved",
+              "resolved_value": null,
+              "rule_id": "risk_block",
+              "safety_eligibility": false,
+              "slot": "recipient"
+            },
+            {
+              "confidence_category": "blocked",
+              "details": {
+                "risk_level": "medium"
+              },
+              "evidence_source": null,
+              "outcome": "resolution_blocked_by_risk",
+              "previous_status": "unresolved",
+              "resolved_value": null,
+              "rule_id": "risk_block",
+              "safety_eligibility": false,
+              "slot": "tool"
+            }
+          ],
+          "router_trace": {
+            "clarification_targets": [],
+            "considered_rules": [
+              "known_unsafe_or_prohibited",
+              "known_incapable"
+            ],
+            "matched_rule_id": "known_incapable",
+            "notes": [],
+            "recommended_strategy": "face_preserving_rejection",
+            "rejection_reason": "known_incapability",
+            "requires_re_evaluation": false,
+            "strategy_sequence": []
+          },
+          "safety_action": "return_with_findings",
+          "uncertainty": null
+        },
+        "safety_findings": [],
+        "strategy_sequence": [],
+        "synthetic_only": true,
+        "system_id": "full_type_risk_aware_manager",
+        "system_version": "1.0.0",
+        "unsupported_commitment_findings": []
+      },
+      "raw_output": "{\n  \"intent_summary\": \"Perform the same task on the green basket using the standard setup procedure\",\n  \"cpc\": {\n    \"action\": {\n      \"value\": \"Do the same with the green basket using the usual setup\",\n      \"status\": \"not_applicable\"\n    },\n    \"object\": {\n      \"value\": \"green basket\",\n      \"status\": \"not_applicable\"\n    },\n    \"recipient\": {\n      \"value\": \"robot\",\n      \"status\": \"not_applicable\"\n    },\n    \"destination\": {\n      \"value\": \"not specified\",\n      \"status\": \"not_applicable\"\n    },\n    \"time\": {\n      \"value\": \"not specified\",\n      \"status\": \"not_applicable\"\n    }\n  ,\n  \"constraints\": {\n    \"status\": \"not_applicable\"\n  ,\n  \"value\": \"not_applicable\"\n  },\n  \"conditions\": {\n    \"status\": \"not_applicable\"\n  ,\n  \"value\": \"not_applicable\"\n  },\n  \"tool\": {\n    \"status\": \"not_applicable\"\n  ,\n  \"value\": \"not_applicable\"\n  },\n  \"spatial_relation\": {\n    \"status\": \"not_applicable\"\n  ,\n  \"value\": \"not_applicable\"\n  },\n  \"quantity\": {\n    \"status\": \"not_applicable\"\n  ,\n  \"value\": \"not_applicable\"\n  },\n  \"negation\": {\n    \"status\": \"not_applicable\"\n  ,\n  \"value\": \"not_applicable\"\n  },\n  \"object_attributes\": {\n    \"status\": \"not_applicable\"\n  ,\n  \"value\": \"not_applicable\"\n  },\n  \"actor\": {\n    \"status\": \"not_applicable\"\n  ,\n  \"value\": \"not_applicable\"\n  }\n}\n\n, \"pilot_ambiguity_types\": [\n  \"pragmatic\",\n  \"object_reference\",\n  \"routine_reference\"\n]  \n, \"pilot_capability_status\": \"incapable\",\n  \"risk_level\": \"medium\",\n  \"speech_act\": \"directive_command\",\n  \"uncertainty\": 0.45\n, \"unresolved_slots\": [\n  \"destination\",\n  \"recipient\",\n  \"tool\"\n]\n}",
+      "record_id": "CA-0805",
+      "schema_valid": true,
+      "supports_ambiguity_prediction": true,
+      "supports_capability_prediction": true,
+      "system_id": "rich_conservative_manager_v2",
+      "system_version": "2.0.0",
+      "terminal_strategy": "face_preserving_rejection"
+    },
+    "context_blind": {
+      "ambiguity_types": [
+        "object_reference",
+        "pragmatic",
+        "routine_reference"
+      ],
+      "analysis_attempts": [
+        {
+          "attempt": 1,
+          "max_new_tokens": 4096,
+          "mode": "thinking",
+          "raw_chars": 4352,
+          "raw_sha256": "d66a600118bf7e1540e679b7924a1cb8d9b6ed4e474196aff5f55b55a53ef92d",
+          "validation_error": "bad_intent_summary"
+        },
+        {
+          "attempt": 2,
+          "max_new_tokens": 8192,
+          "mode": "thinking_retry",
+          "raw_chars": 4584,
+          "raw_sha256": "ff8c20c213910a112b9aa2f4f7461c10bd37bbee08d4cc8f64dfd8c05e1046b9",
+          "validation_error": "bad_pilot_ambiguity_types"
+        },
+        {
+          "attempt": 3,
+          "constraint": {
+            "constraint_initialised": true,
+            "generated_token_count": 477,
+            "maximum_output_tokens": 1024,
+            "response_mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+            "termination_reason": "eos_or_constraint_stop",
+            "transport_status": "constrained_generated"
+          },
+          "max_new_tokens": 1024,
+          "mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+          "raw_chars": 1626,
+          "raw_sha256": "4205126ede8506fb90f0742f065cd47bf4a43ee006c591822dbb9fd3be5dac3d",
+          "validation_error": null
+        }
+      ],
+      "capability_status": "unauthorized",
+      "claim_boundary": "separately_versioned_from_frozen_t39",
+      "error": null,
+      "execution_mode": "cluster-gpu-goal-first-v2",
+      "failed": false,
+      "intent_summary": "Perform the same action as before with the green basket using the standard setup",
+      "latency_ms": 70510.18652133644,
+      "model_id": "Qwen/Qwen3-8B@b968826d9c46dd6066d109eabc6255188de91218",
+      "parsed": {
+        "analysis": {
+          "ambiguity_present": true,
+          "ambiguity_types": [
+            "contextual",
+            "pragmatic",
+            "referential"
+          ],
+          "analysis_provenance": {
+            "analysis_id": "5a601fcbd5794be3e6f45d8722355067a6982076df969ca8f29b3965a81a3e31",
+            "method": "context_blind",
+            "notes": "ablated_input_hash=5a601fcbd5794be3e6f45d8722355067a6982076df969ca8f29b3965a81a3e31;source_input_hash=5a601fcbd5794be3e6f45d8722355067a6982076df969ca8f29b3965a81a3e31;no_gold_in_prompt;scene_licence_dropped=action,object,recipient,destination,tool,time,quantity,spatial_relation,constraints,conditions,negation,object_attributes,actor",
+            "provider_id": "goal_first_v2_context_blind",
+            "provider_version": "goal-first-manager-v2"
+          },
+          "candidate_interpretations": [],
+          "capability_status": "unknown",
+          "clarification_question": null,
+          "clarification_targets": [],
+          "compound_ambiguity": true,
+          "compound_ambiguity_count": 3,
+          "context_sampling_uncertainty": {
+            "agreement": 0.30000000000000004,
+            "score": 0.7,
+            "variant_count": 1
+          },
+          "cpc": {
+            "action": {
+              "status": "filled",
+              "value": "Do the same with the green basket using the usual setup"
+            },
+            "actor": {
+              "status": "filled",
+              "value": "unknown"
+            },
+            "conditions": {
+              "status": "filled",
+              "value": "same as before"
+            },
+            "constraints": {
+              "status": "filled",
+              "value": "usual setup"
+            },
+            "destination": {
+              "status": "filled",
+              "value": "unknown"
+            },
+            "negation": {
+              "status": "filled",
+              "value": "unknown"
+            },
+            "object": {
+              "status": "filled",
+              "value": "green basket"
+            },
+            "object_attributes": {
+              "status": "filled",
+              "value": "green"
+            },
+            "quantity": {
+              "status": "filled",
+              "value": "unknown"
+            },
+            "recipient": {
+              "status": "filled",
+              "value": "unknown"
+            },
+            "spatial_relation": {
+              "status": "filled",
+              "value": "unknown"
+            },
+            "time": {
+              "status": "filled",
+              "value": "unknown"
+            },
+            "tool": {
+              "status": "filled",
+              "value": "unknown"
+            }
+          },
+          "findings": [
+            "pilot_ambiguity_types:[\"object_reference\",\"pragmatic\",\"routine_reference\"]",
+            "pilot_capability_status:unauthorized",
+            "intent_summary_present"
+          ],
+          "intent_summary": "Perform the same action as before with the green basket using the standard setup",
+          "primary_ambiguity_type": "contextual",
+          "recommended_strategy": "face_preserving_rejection",
+          "rejection_reason": "unsafe_or_prohibited_action",
+          "resolution_evidence": [],
+          "resolution_method": null,
+          "resolved_slots": [
+            {
+              "slot_name": "action",
+              "value": "Do the same with the green basket using the usual setup"
+            },
+            {
+              "slot_name": "actor",
+              "value": "unknown"
+            },
+            {
+              "slot_name": "object",
+              "value": "green basket"
+            },
+            {
+              "slot_name": "object_attributes",
+              "value": "green"
+            },
+            {
+              "slot_name": "destination",
+              "value": "unknown"
+            },
+            {
+              "slot_name": "spatial_relation",
+              "value": "unknown"
+            },
+            {
+              "slot_name": "quantity",
+              "value": "unknown"
+            },
+            {
+              "slot_name": "time",
+              "value": "unknown"
+            },
+            {
+              "slot_name": "recipient",
+              "value": "unknown"
+            },
+            {
+              "slot_name": "tool",
+              "value": "unknown"
+            },
+            {
+              "slot_name": "conditions",
+              "value": "same as before"
+            },
+            {
+              "slot_name": "constraints",
+              "value": "usual setup"
+            },
+            {
+              "slot_name": "negation",
+              "value": "unknown"
+            }
+          ],
+          "risk_level": "low",
+          "risk_relevant": true,
+          "selected_interpretation": null,
+          "speech_act": "directive_command",
+          "strategy_sequence": [],
+          "supporting_evidence": [],
+          "unresolved_slots": [],
+          "unsupported_specificity": []
+        },
+        "clarification_question": null,
+        "clarification_targets": [],
+        "execution_status": "ok",
+        "official_result": false,
+        "provider_provenance": {
+          "provider_id": "cached_analysis",
+          "provider_version": "1.0.0"
+        },
+        "recommended_strategy": "face_preserving_rejection",
+        "record_id": "CA-0805",
+        "rejection_reason": "unsafe_or_prohibited_action",
+        "resolved_slots": [
+          {
+            "slot_name": "action",
+            "value": "Do the same with the green basket using the usual setup"
+          },
+          {
+            "slot_name": "actor",
+            "value": "unknown"
+          },
+          {
+            "slot_name": "object",
+            "value": "green basket"
+          },
+          {
+            "slot_name": "object_attributes",
+            "value": "green"
+          },
+          {
+            "slot_name": "destination",
+            "value": "unknown"
+          },
+          {
+            "slot_name": "spatial_relation",
+            "value": "unknown"
+          },
+          {
+            "slot_name": "quantity",
+            "value": "unknown"
+          },
+          {
+            "slot_name": "time",
+            "value": "unknown"
+          },
+          {
+            "slot_name": "recipient",
+            "value": "unknown"
+          },
+          {
+            "slot_name": "tool",
+            "value": "unknown"
+          },
+          {
+            "slot_name": "conditions",
+            "value": "same as before"
+          },
+          {
+            "slot_name": "constraints",
+            "value": "usual setup"
+          },
+          {
+            "slot_name": "negation",
+            "value": "unknown"
+          }
+        ],
+        "result_hash": "a112c4ea8b3d4413843a73e4ed610684377fbf284b1ec7d9cf36a54cd5d96490",
+        "run_id": null,
+        "run_mode": null,
+        "runtime_metadata": {
+          "analysis_identity": {
+            "analysis_content_hash": "312b93c43931f6d6f6a778381f40c9d18d05aafaf09f17e8e586e7833e56b6ee",
+            "analysis_variant": "context_blind",
+            "model_strategy_id": null,
+            "provider_id": "goal_first_v2_context_blind",
+            "provider_version": "goal-first-manager-v2",
+            "record_id": "CA-0805",
+            "source_input_hash": "5a601fcbd5794be3e6f45d8722355067a6982076df969ca8f29b3965a81a3e31"
+          },
+          "analysis_identity_fingerprint": "93a0d1e715228ad92a15d1d8c0b92c5082496aabb6ff7c1659168278329471d1",
+          "awaits_t28_adapter": true,
+          "classification": {
+            "ambiguity_present": true,
+            "ambiguity_types": [
+              "contextual",
+              "pragmatic",
+              "referential"
+            ],
+            "capability_status": "unknown",
+            "compound_ambiguity": true,
+            "compound_ambiguity_count": 3,
+            "derivation_notes": [
+              "ambiguity_present_from_types"
+            ],
+            "risk_level": "low"
+          },
+          "context_ablation": {
+            "ablated_input_hash": "5a601fcbd5794be3e6f45d8722355067a6982076df969ca8f29b3965a81a3e31",
+            "capability_context_removed": true,
+            "dialogue_history_removed": true,
+            "rejected_full_context_cache": false,
+            "rejection_reason": null,
+            "scene_context_removed": true,
+            "stripped_context_derived_fields": false
+          },
+          "original_input_unmutated": true,
+          "rejection_text": "I need to decline that request because it would be unsafe under the current constraints.",
+          "requires_re_evaluation": false,
+          "resolution_events": [],
+          "router_trace": {
+            "clarification_targets": [],
+            "considered_rules": [
+              "goal_first_v2",
+              "known_unsafe_or_prohibited"
+            ],
+            "matched_rule_id": "known_unsafe_or_prohibited",
+            "notes": [],
+            "recommended_strategy": "face_preserving_rejection",
+            "rejection_reason": "unsafe_or_prohibited_action",
+            "requires_re_evaluation": false,
+            "strategy_sequence": []
+          },
+          "safety_action": "return_with_findings",
+          "uncertainty": null
+        },
+        "safety_findings": [],
+        "strategy_sequence": [],
+        "synthetic_only": true,
+        "system_id": "context_blind_manager",
+        "system_version": "1.0.0",
+        "unsupported_commitment_findings": []
+      },
+      "raw_output": "{\n  \"intent_summary\": \"Perform the same action as before with the green basket using the standard setup\",\n  \"cpc\": {\n    \"action\": {\n      \"value\": \"Do the same with the green basket using the usual setup\",\n      \"status\": \"unknown\"\n    },\n    \"object\": {\n      \"value\": \"green basket\",\n      \"status\": \"unknown\"\n    },\n    \"recipient\": {\n      \"value\": \"unknown\",\n      \"status\": \"unknown\"\n    },\n    \"destination\": {\n      \"value\": \"unknown\",\n      \"status\": \"unknown\"\n    },\n    \"tool\": {\n      \"value\": \"unknown\",\n      \"status\": \"unknown\"\n    },\n    \"time\": {\n      \"value\": \"unknown\",\n      \"status\": \"unknown\"\n    },\n    \"quantity\": {\n      \"value\": \"unknown\",\n      \"status\": \"unknown\"\n    },\n    \"spatial_relation\": {\n      \"value\": \"unknown\",\n      \"status\": \"unknown\"\n    }\n  ,\n  \"constraints\": {\n    \"value\": \"usual setup\",\n    \"status\": \"unknown\"\n  },\n  \"conditions\": {\n    \"value\": \"same as before\",\n    \"status\": \"unknown\"\n  },\n  \"negation\": {\n    \"value\": \"unknown\",\n    \"status\": \"unknown\"\n  },\n  \"object_attributes\": {\n    \"value\": \"green\",\n    \"status\": \"unknown\"\n  },\n  \"actor\": {\n    \"value\": \"unknown\",\n    \"status\": \"unknown\"\n  }\n}\n\n, \"pilot_ambiguity_types\": [\n  \"pragmatic\",\n  \"object_reference\",\n  \"routine_reference\"\n]  , \"pilot_capability_status\": \"unauthorized\",\n  \"speech_act\": \"directive_command\",\n  \"risk_level\": \"low\"\n  , \"uncertainty\": 0.7\n  , \"unresolved_slots\":  [\n    \"action\",\n    \"object\",\n    \"recipient\",\n    \"destination\",\n    \"tool\",\n    \"time\",\n    \"quantity\",\n    \"spatial_relation\",\n    \"constraints\",\n    \"conditions\",\n    \"negation\",\n    \"object_attributes\",\n    \"actor\"\n  ]\n  }",
+      "record_id": "CA-0805",
+      "schema_valid": true,
+      "supports_ambiguity_prediction": true,
+      "supports_capability_prediction": true,
+      "system_id": "goal_first_context_blind_v2",
+      "system_version": "2.0.0",
+      "terminal_strategy": "face_preserving_rejection"
+    }
+  },
+  "provenance": {
+    "source_sha256": "f33b1e29f1e8aa256a475f07213aa07247def47d8e2148d54a472a40b71b05c9",
+    "gold_sha256": "5e23ad1a92ff1873c8f039a8ce560a111dd6fb6b8ae8c11d6cf34dbfa1c360db",
+    "t07_final_zip_sha256": "34ca50e034ca37b617068bb50c734d12fa26282fb5eec563c11ead700163e491",
+    "inherited_t07_zip_sha256": "0305b1e9ab062876ee6ee89778cc6028d2eaf01718b7dd0295944e7d9cb81a01",
+    "note": "Goal-First, Degree, Timid, and Context-Blind predictions are inherited from the earlier T0.7 run; official intent and comparison come from the final T0.7 archive."
+  }
+}

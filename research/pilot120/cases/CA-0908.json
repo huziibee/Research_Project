@@ -1,0 +1,1159 @@
+{
+  "record_id": "CA-0908",
+  "frozen_source": {
+    "capability_context": "Public-service robot can navigate crowds, carry light objects, scan tags, and deploy approved signs and barriers.",
+    "command": "Would it help to carry out both the inspection and movement of the display case after a scheduled boarding call, continuing until the setup is ready?",
+    "dialogue_history": [
+      "traveller: Yes, carry out the workable sequence rather than merely assessing it."
+    ],
+    "record_id": "CA-0908",
+    "scene_context": "Airport service area in a public concourse. The current time is 14:47. The boarding call is scheduled at 15:00 and again at 19:00. Procedure WO-470 links this job to the 15:00 occurrence. Procedure WO-470 requires inspection before movement. The readiness checklist requires the item at the ticket gate, its tag scanned, and the path clear. An unrelated brochure rack is logged for later work at the platform screen."
+  },
+  "frozen_gold": {
+    "ambiguity_types": [
+      "action_order",
+      "endpoint_vagueness",
+      "pragmatic",
+      "temporal_reference"
+    ],
+    "annotator_b_era": "glm_era",
+    "annotator_b_model": "glm-5.2-high",
+    "capability_status": "capable",
+    "field_status": {
+      "ambiguity_types": "adjudicated",
+      "capability_status": "human_auditor:independent_from_route",
+      "record_validity": "auto_agree",
+      "strategy_sequence": "auto_agree",
+      "terminal_strategy": "auto_agree"
+    },
+    "gold_lifecycle": "final_gold",
+    "gold_status": "adjudicated",
+    "human_gate_required": false,
+    "provenance": {
+      "agreement_label": "pilot_annotation_agreement",
+      "annotator_a_sha256": "23a2ea8becb4db4d78764aba3f1c22a660c68d75e55577c912bed93558ae0caa",
+      "annotator_b_sha256": "d27376faa186ade4fa6280d0d1d0176c0bdf4e2452af121dbc11b8aa9aa67c3a",
+      "capability_route_decouple": "conditionally_capable remapped to capable: no evidenced external capability precondition; linguistic silently_resolve/clarify is not a capability condition",
+      "gold_policy": "use_existing_pilot_adjudicated_gold",
+      "input_sha256": "6fac17b39472d74659c7fcb385b6a1dace128bbcf3b1883d736fdc3e67c1b06a",
+      "pilot_gold_sha256": "a796357206a18b09c26f14b2fb88a1c177de9db4cf7d629d27f20316f0792aba",
+      "protocol": "pilot_adjudicated_gold_on_capability_repaired_source",
+      "repaired_input_sha256": "97475aab9d295914fdf916a8b3acf12cb924239f9ccaec89c73dbcedef5f8c7e"
+    },
+    "record_id": "CA-0908",
+    "record_validity": "valid",
+    "strategy_sequence": [
+      "reinterpret_indirect_request",
+      "silently_resolve",
+      "execute"
+    ],
+    "terminal_strategy": "execute"
+  },
+  "t07_comparison": {
+    "record_id": "CA-0908",
+    "gold_route": "execute",
+    "raw_route": "execute",
+    "ft_route": "clarify",
+    "gf_route": "execute",
+    "raw_route_ok": "True",
+    "ft_route_ok": "False",
+    "gf_route_ok": "True",
+    "raw_official_intent": "True",
+    "ft_official_intent": "True",
+    "gf_official_intent": "True",
+    "blind_official_intent": "True"
+  },
+  "t07_official_intent": {
+    "context_blind_official_intent": true,
+    "degree_official_intent_shared_gf": true,
+    "finetune_official_intent": true,
+    "goal_first_official_intent": true,
+    "raw_official_intent": true,
+    "record_id": "CA-0908",
+    "timid_official_intent_shared_gf": true
+  },
+  "t07_predictions": {
+    "raw_qwen": {
+      "ambiguity_types": [
+        "action_order",
+        "destination_reference",
+        "fuzzy_temporal",
+        "object_reference"
+      ],
+      "capability_status": "capable",
+      "error": null,
+      "execution_mode": "final_close_intent_box",
+      "failed": false,
+      "intent_summary": "Perform both the inspection and movement of the display case after the 15:00 boarding call until setup is ready.",
+      "latency_ms": 12109.562198165804,
+      "parsed": {
+        "ambiguity_types": [
+          "action_order",
+          "destination_reference",
+          "fuzzy_temporal",
+          "object_reference"
+        ],
+        "capability_status": "capable",
+        "intent_summary": "Perform both the inspection and movement of the display case after the 15:00 boarding call until setup is ready.",
+        "speech_act": "directive_command",
+        "terminal_strategy": "execute"
+      },
+      "raw_output": "<think>\nOkay, let's break down this query. The user is asking if it would help to carry out both the inspection and movement of the display case after a scheduled boarding call, continuing until the setup is ready. \n\nFirst, I need to identify the intent. The main job here is doing both inspection and movement of the display case. The dialogue history mentions preferring a workable sequence over just assessing, so they want action, not just evaluation.\n\nNext, the speech act. The user is asking if performing these actions would be helpful, which sounds like a request or a command. But the structure is a question, so maybe an indirect request. Wait, the options are directive_command, indirect_request, etc. The user is suggesting doing both tasks, so it's more of a directive command, but phrased as a question. Alternatively, it could be an indirect request. But since they're asking if it would help, it's a bit ambiguous. However, the context mentions the procedure WO-470 requires inspection before movement, so the user is possibly asking to combine both steps. The speech act might be a directive command because they want the robot to perform the actions.\n\nAmbiguity types: The command mentions \"after a scheduled boarding call\" and \"continuing until setup is ready.\" The time references could be fuzzy_temporal. Also, \"carry out both the inspection and movement\" might involve action_order. There's also the reference to the display case, which is an object_reference. The \"setup is ready\" might be a destination_reference. Also, the user is asking if doing both would help, which might involve a conditional_directive. But the ambiguity types need to be checked against the allowed list. So possible types: fuzzy_temporal, action_order, object_reference, destination_reference, and maybe scope if there's any ambiguity in the scope of the tasks.\n\nCapability status: The robot can navigate, carry light objects, scan tags, deploy signs. The display case movement might be possible if it's light. Inspection involves scanning tags, which the robot can do. So the robot is capable. But the procedure requires inspection before movement, so the robot can do that. So capability status is capable.\n\nTerminal strategy: Since the user is asking if it's helpful, but the robot can perform the tasks, the strategy would be to execute. However, the dialogue history says to carry out the workable sequence rather than assessing, so the robot should proceed. So terminal_strategy is execute.\n</think>\n\n{\n  \"intent_summary\": \"Perform both the inspection and movement of the display case after the 15:00 boarding call until setup is ready.\",\n  \"speech_act\": \"directive_command\",\n  \"ambiguity_types\": [\"fuzzy_temporal\", \"action_order\", \"object_reference\", \"destination_reference\"],\n  \"capability_status\": \"capable\",\n  \"terminal_strategy\": \"execute\"\n}",
+      "record_id": "CA-0908",
+      "schema_valid": true,
+      "speech_act": "directive_command",
+      "system_id": "direct_base_llm",
+      "terminal_strategy": "execute"
+    },
+    "finetune": {
+      "ambiguity_types": [
+        "endpoint_vagueness",
+        "temporal_reference"
+      ],
+      "capability_status": "conditionally_capable",
+      "error": null,
+      "execution_mode": "final_close_intent_box",
+      "failed": false,
+      "intent_summary": "The user wants to inspect and move the display case after the 15:00 boarding call until setup is ready.",
+      "latency_ms": 71662.39421395585,
+      "parsed": {
+        "ambiguity_types": [
+          "endpoint_vagueness",
+          "temporal_reference"
+        ],
+        "capability_status": "conditionally_capable",
+        "intent_summary": "The user wants to inspect and move the display case after the 15:00 boarding call until setup is ready.",
+        "speech_act": "conditional_directive",
+        "terminal_strategy": "clarify"
+      },
+      "raw_output": "<think>\nOkay, let's break down this command. The user is asking if it would help to carry out both the inspection and movement of the display case after a scheduled boarding call, continuing until the setup is ready.\n\nFirst, the intent summary. The main job here is to perform both inspection and movement of the display case after the boarding call. The user wants these tasks done in sequence, starting after the boarding call and continuing until setup is ready. So the intent is to do both tasks post-boarding call until setup is done.\n\nNext, the speech act. The user is asking if doing both tasks would be helpful. But the dialogue history shows the traveller said to carry out the workable sequence rather than just assessing. So the user is probably giving a directive to perform the tasks. But the command is phrased as a question, so maybe it's an indirect request. However, considering the previous message was a directive, the current command might be a directive as well. Wait, the command is a question, but the context shows that the previous answer was a directive. The user might be asking for confirmation on whether to proceed with both actions. But the speech act options include directive_command, indirect_request, etc. Since the user is asking if it would help, but the previous message was a directive, maybe it's an indirect request. Or maybe it's a conditional_directive because the user is asking if it's helpful. Hmm, need to check the options again. The options are: directive_command, indirect_request, information_question, permission_request, prohibition, conditional_directive, multi_intent, other_non_actionable. The user is asking if it would help, which is a conditional. So maybe conditional_directive. But the user is not giving a command but asking if it would help. Wait, the actual command is phrased as a question. So maybe it's an information_question. But the previous message was a directive. Maybe the user is asking for permission to proceed with both tasks. Wait, the user is asking if doing both would be helpful, which is a question, so perhaps information_question. But the context might imply that the user is requesting the action. Let me think again. The user's command is \"Would it help to carry out both...\" which is a question, but in the context of the dialogue history, the previous message was a directive to carry out the workable sequence. So the user might be asking if it's better to do both tasks. But the actual intent is to perform both tasks. So maybe the speech act is a directive_command. But the phrasing is a question. So perhaps it's an indirect request, as the user is using a question to ask for permission or to get confirmation. Alternatively, it could be a conditional_directive. But the options are limited. Let me check the options again. The speech_act can be directive_command (a direct command), indirect_request (like a polite request), information_question (asking for information), permission_request (asking for permission), etc. Since the user is phrasing it as a question, but in the context of the previous directive, maybe it's an indirect request. Or maybe it's a conditional_directive. Hmm. Alternatively, since the user is asking if it would help, which is a question, the speech act would be information_question. But the user's actual intent is to perform the tasks, so maybe it's a directive_command. I'm a bit confused here. Let me check the example. In the dialogue history, the user said \"Yes, carry out the workable sequence rather than merely assessing it.\" So the previous message was a directive. The current command is a question, but perhaps the user is asking if they should proceed with the tasks. So maybe it's a permission_request, but the phrasing is a question. Alternatively, it's an indirect request. But the user is asking if it would help, which is a question, so perhaps it's an information_question. But the actual intent is to perform the tasks, so maybe the speech act is a directive_command. Hmm. Let me think again. The command is a question, but the user is probably asking for permission to proceed with both tasks. So maybe permission_request. But the options don't have that. Wait, the options are: directive_command | indirect_request | information_question | permission_request | prohibition | conditional_directive | multi_intent | other_non_actionable. So if the user is asking if they should proceed, that's a permission_request. But the phrasing is a question. So perhaps the speech act is permission_request. But I'm not sure. Alternatively, since the user is asking if it would help, maybe it's an information_question. But the user's intent is to perform the tasks, so maybe it's a directive_command. I need to make a decision here. Let's consider that the user is asking if doing both tasks would be helpful, which is a question, but in the context of the previous directive, it's a conditional_directive. So the speech_act would be conditional_directive. Alternatively, since the user is not directly giving a command but asking if it's helpful, maybe it's an information_question. But the user's intent is to perform the tasks, so maybe it's a directive_command. I'm a bit stuck. Let me look for other clues. The command is \"Would it help to carry out both the inspection and movement of the display case after a scheduled boarding call, continuing until the setup is ready?\" The user is asking if this action would be helpful, which is a question. So the speech act is information_question. But the previous message was a directive. Maybe the user is asking for confirmation, which could be a permission_request. But the options include permission_request. So perhaps it's a permission_request. Alternatively, the user is using a question to request the action, which is an indirect_request. But I'm not certain. Let me check the options again. If the user is asking if they should perform the action, that's a permission_request. But the phrasing is a question, so maybe it's an information_question. But I'm not sure. This is a bit ambiguous. Let me move to the next parts and come back.\n\nAmbiguity types: The command has some ambiguity. For example, \"after a scheduled boarding call\" refers to the 15:00 call, but the user might be referring to the 19:00 call. Also, \"continuing until the setup is ready\" is vague. So possible ambiguity types: temporal_reference (since there are two boarding calls), and maybe endpoint_vagueness because \"setup is ready\" is not specific. Also, \"carry out both the inspection and movement\" could be a multi_intent. So the ambiguity_types would include temporal_reference and endpoint_vagueness. Also, maybe scope ambiguity, but not sure. Let me note that.\n\nCapability status: The robot can navigate crowds, carry light objects, scan tags, deploy signs. The tasks are inspection (which could involve scanning tags) and movement (carrying light objects). So the robot is capable. But the display case might be heavy. However, the capability_context says \"carry light objects.\" So if the display case is light, then capable. If it's heavy, then maybe conditionally_capable. But the problem states that the display case is part of the job. The scene context mentions the display case, but doesn't specify weight. However, the capability is \"carry light objects,\" so if the display case is light, then capable. Otherwise, conditionally_capable. But the problem doesn't specify. So perhaps the capability status is conditionally_capable, assuming that the display case is light. Or maybe the user is assuming it's light. So the capability_status would be conditionally_capable. Or maybe the robot can carry it, so capable. But since the capability is \"light objects,\" maybe it's conditionally_capable. Hmm. Also, the readiness checklist requires the item at the ticket gate, tag scanned, and path clear. The robot can scan tags. So the robot can do the inspection (scan tag) and movement. So capability_status is capable. Or maybe the movement is not possible if the display case is heavy. But the problem doesn't specify. So perhaps it's conditionally_capable. But the user might be assuming that the robot can carry it. Let's proceed with capable.\n\nTerminal strategy: If the robot is capable, then execute. If not, clarify. Since the capability is uncertain, but the user is asking to perform the tasks, the terminal strategy would be clarify. But if the capability is considered capable, then execute. But earlier, I thought the capability is conditionally_capable. So maybe the terminal strategy is clarify. Wait, the capability status is either capable, conditionally_capable, etc. If the robot can carry light objects, and the display case is light, then capable. If it's heavy, then conditionally_capable. But since the problem doesn't specify, maybe the capability is conditionally_capable. So the terminal strategy would be clarify. But if the capability is considered capable, then execute. This is a bit ambiguous. Let me check again. The capability_context says the robot can carry light objects. The display case might be considered light. So the capability is capable. So terminal strategy would be execute. But if there's uncertainty, maybe clarify. However, the user's command is to perform the tasks, so if the robot can do it, then execute. So the capability_status is capable, and terminal strategy is execute.\n\nPutting it all together:\n\nintent_summary: The user wants to inspect and move the display case after the 15:00 boarding call until setup is ready.\n\nspeech_act: The user is asking if performing both tasks would be helpful, which is a conditional_directive. Or maybe it's an information_question. But since the previous message was a directive, the user might be requesting to perform the action, so it's a directive_command. Wait, the command is phrased as a question, so perhaps it's an information_question. But the user's intent is to perform the tasks. So maybe the speech_act is a directive_command. But the phrasing is a question. Hmm. Let me think again. The user is asking if it would help to carry out both tasks, which is a question. So the speech_act is information_question. But the user's intent is to perform the tasks, so maybe it's an indirect_request. Wait, the options include indirect_request. So maybe the user is indirectly requesting the action by asking if it would be helpful. So the speech_act is indirect_request. But I'm not sure. Alternatively, it's a conditional_directive. Let me check the options again. The options are: directive_command | indirect_request | information_question | permission_request | prohibition | conditional_directive | multi_intent | other_non_actionable. The user's command is a question, but the intent is to perform the tasks. So the speech_act could be a conditional_directive (if it helps, then do it). So the speech_act is conditional_directive. Or it's an information_question. But the user's intent is to perform the tasks, so maybe it's a conditional_directive. I think the best fit is conditional_directive. \n\nSo the JSON would be:\n\n{\n  \"intent_summary\": \"The user wants to inspect and move the display case after the 15:00 boarding call until setup is ready.\",\n  \"speech_act\": \"conditional_directive\",\n  \"ambiguity_types\": [\"temporal_reference\", \"endpoint_vagueness\"],\n  \"capability_status\": \"conditionally_capable\",\n  \"terminal_strategy\": \"clarify\"\n}\n\nWait, but if the capability is conditionally_capable, then the terminal strategy is clarify. But if the capability is capable, then execute. Let me check the capability again. The robot can carry light objects. The display case might be light. So the capability status is conditionally_capable because the weight is not specified. Therefore, the terminal strategy would be clarify. \n\nSo the final JSON would have capability_status as conditionally_capable, and terminal_strategy as clarify. But I need to make sure. The capability_status is conditionally_capable if there's uncertainty. So yes, the capability status is conditionally_capable. Therefore, the terminal strategy is clarify.\n</think>\n\n{\n  \"intent_summary\": \"The user wants to inspect and move the display case after the 15:00 boarding call until setup is ready.\",\n  \"speech_act\": \"conditional_directive\",\n  \"ambiguity_types\": [\"temporal_reference\", \"endpoint_vagueness\"],\n  \"capability_status\": \"conditionally_capable\",\n  \"terminal_strategy\": \"clarify\"\n}",
+      "record_id": "CA-0908",
+      "schema_valid": true,
+      "speech_act": "conditional_directive",
+      "system_id": "t28_selected_adapter_llm",
+      "terminal_strategy": "clarify"
+    },
+    "goal_first": {
+      "ambiguity_types": [
+        "pragmatic",
+        "routine_reference",
+        "temporal_reference"
+      ],
+      "analysis_attempts": [
+        {
+          "attempt": 1,
+          "max_new_tokens": 4096,
+          "mode": "thinking",
+          "raw_chars": 8967,
+          "raw_sha256": "04f2a4993bc9acc415bbf34203d039f38a15bb0ffd3bef318c34930254969718",
+          "validation_error": "bad_intent_summary"
+        },
+        {
+          "attempt": 2,
+          "max_new_tokens": 8192,
+          "mode": "thinking_retry",
+          "raw_chars": 9041,
+          "raw_sha256": "4394a2c6df581151a3b044bc8e25e04f926008f078d4e11cdb78ba1400ad6f90",
+          "validation_error": "bad_intent_summary"
+        },
+        {
+          "attempt": 3,
+          "constraint": {
+            "constraint_initialised": true,
+            "generated_token_count": 521,
+            "maximum_output_tokens": 1024,
+            "response_mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+            "termination_reason": "eos_or_constraint_stop",
+            "transport_status": "constrained_generated"
+          },
+          "max_new_tokens": 1024,
+          "mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+          "raw_chars": 1681,
+          "raw_sha256": "2a81d36f506d7840df413d19c73a954481a1541bc8404237933d48790cf7505e",
+          "validation_error": null
+        }
+      ],
+      "capability_status": "capable",
+      "claim_boundary": "separately_versioned_from_frozen_t39",
+      "error": null,
+      "execution_mode": "cluster-gpu-goal-first-v2",
+      "failed": false,
+      "intent_summary": "Perform the inspection and movement of the display case after the scheduled boarding call until setup is ready",
+      "latency_ms": 141653.6615327932,
+      "model_id": "Qwen/Qwen3-8B@b968826d9c46dd6066d109eabc6255188de91218",
+      "parsed": {
+        "analysis": {
+          "ambiguity_present": true,
+          "ambiguity_types": [
+            "contextual",
+            "pragmatic",
+            "temporal"
+          ],
+          "analysis_provenance": {
+            "analysis_id": "af731e99e0c29cdfd27597a9bd5cfa66669e38167080483a47ec6777ade237db",
+            "method": "model_generated",
+            "notes": "source_input_hash=af731e99e0c29cdfd27597a9bd5cfa66669e38167080483a47ec6777ade237db;no_gold_in_prompt;scene_licence_dropped=time",
+            "provider_id": "goal_first_v2_full_context",
+            "provider_version": "goal-first-manager-v2"
+          },
+          "candidate_interpretations": [],
+          "capability_status": "capable",
+          "clarification_question": null,
+          "clarification_targets": [],
+          "compound_ambiguity": true,
+          "compound_ambiguity_count": 3,
+          "context_sampling_uncertainty": {
+            "agreement": 0.35,
+            "score": 0.65,
+            "variant_count": 1
+          },
+          "cpc": {
+            "action": {
+              "status": "not_applicable",
+              "value": "inspection and movement of the display case"
+            },
+            "actor": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "conditions": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "constraints": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "destination": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "negation": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "object": {
+              "status": "not_applicable",
+              "value": "display case"
+            },
+            "object_attributes": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "quantity": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "recipient": {
+              "status": "not_applicable",
+              "value": "public-service robot"
+            },
+            "spatial_relation": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "time": {
+              "status": "not_applicable",
+              "value": "after scheduled boarding call (15:00) until setup is ready"
+            },
+            "tool": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            }
+          },
+          "findings": [
+            "pilot_ambiguity_types:[\"pragmatic\",\"routine_reference\",\"temporal_reference\"]",
+            "pilot_capability_status:capable",
+            "intent_summary_present",
+            "router_validation:execute blocked with unresolved critical safety slots"
+          ],
+          "intent_summary": "Perform the inspection and movement of the display case after the scheduled boarding call until setup is ready",
+          "primary_ambiguity_type": "contextual",
+          "recommended_strategy": "execute",
+          "rejection_reason": null,
+          "resolution_evidence": [],
+          "resolution_method": null,
+          "resolved_slots": [],
+          "risk_level": "low",
+          "risk_relevant": true,
+          "selected_interpretation": null,
+          "speech_act": "indirect_request",
+          "strategy_sequence": [],
+          "supporting_evidence": [],
+          "unresolved_slots": [
+            {
+              "reason": "model_identified_uncertainty",
+              "slot_name": "action"
+            },
+            {
+              "reason": "model_identified_uncertainty",
+              "slot_name": "object"
+            }
+          ],
+          "unsupported_specificity": []
+        },
+        "clarification_question": null,
+        "clarification_targets": [],
+        "execution_status": "ok",
+        "official_result": false,
+        "provider_provenance": {
+          "provider_id": "cached_analysis",
+          "provider_version": "1.0.0"
+        },
+        "recommended_strategy": "execute",
+        "record_id": "CA-0908",
+        "rejection_reason": null,
+        "resolved_slots": [],
+        "result_hash": "8b80e4bd4bd1814854001e55e9f2a3d20958a5254516c5cf971742e1f86d4945",
+        "run_id": null,
+        "run_mode": null,
+        "runtime_metadata": {
+          "awaits_t28_adapter": true,
+          "classification": {
+            "ambiguity_present": true,
+            "ambiguity_types": [
+              "contextual",
+              "pragmatic",
+              "temporal"
+            ],
+            "capability_status": "capable",
+            "compound_ambiguity": true,
+            "compound_ambiguity_count": 3,
+            "derivation_notes": [
+              "ambiguity_present_from_types"
+            ],
+            "risk_level": "low"
+          },
+          "rejection_text": null,
+          "requires_re_evaluation": false,
+          "resolution_events": [
+            {
+              "confidence_category": "none",
+              "details": {
+                "reason": "unsupported_default_rejected"
+              },
+              "evidence_source": null,
+              "outcome": "unresolved",
+              "previous_status": "unresolved",
+              "resolved_value": null,
+              "rule_id": "no_world_knowledge_guess",
+              "safety_eligibility": false,
+              "slot": "action"
+            },
+            {
+              "confidence_category": "none",
+              "details": {},
+              "evidence_source": null,
+              "outcome": "insufficient_context",
+              "previous_status": "unresolved",
+              "resolved_value": null,
+              "rule_id": "unique_scene_referent",
+              "safety_eligibility": false,
+              "slot": "object"
+            }
+          ],
+          "router_trace": {
+            "clarification_targets": [],
+            "considered_rules": [
+              "goal_first_v2",
+              "known_unsafe_or_prohibited",
+              "known_incapable",
+              "unknown_capability_high_risk",
+              "context_licensed_execute"
+            ],
+            "matched_rule_id": "context_licensed_execute",
+            "notes": [
+              "goal_first_v2_execute_despite_remaining_ambiguity"
+            ],
+            "recommended_strategy": "execute",
+            "rejection_reason": null,
+            "requires_re_evaluation": false,
+            "strategy_sequence": []
+          },
+          "safety_action": "return_with_findings",
+          "uncertainty": null
+        },
+        "safety_findings": [
+          {
+            "details": {
+              "unresolved": [
+                "action",
+                "object"
+              ]
+            },
+            "finding_type": "unresolved_critical_execution",
+            "message": "execute with unresolved critical slots",
+            "severity": "error",
+            "slot": null
+          }
+        ],
+        "strategy_sequence": [],
+        "synthetic_only": true,
+        "system_id": "goal_first_manager_v2",
+        "system_version": "2.0.0",
+        "unsupported_commitment_findings": []
+      },
+      "raw_output": "{\n  \"intent_summary\": \"Perform the inspection and movement of the display case after the scheduled boarding call until setup is ready\",\n  \"cpc\": {\n    \"action\": {\n      \"value\": \"inspection and movement of the display case\",\n      \"status\": \"not_applicable\"\n    },\n    \"time\": {\n      \"value\": \"after scheduled boarding call (15:00) until setup is ready\",\n      \"status\": \"not_applicable\"\n    },\n    \"object\": {\n      \"value\": \"display case\",\n      \"status\": \"not_applicable\"\n    },\n    \"recipient\": {\n      \"value\": \"public-service robot\",\n      \"status\": \"not_applicable\"\n    }\n  ,\n  \"constraints\": {\n    \"status\": \"not_applicable\"\n  ,\n  \"value\": \"not_applicable\"\n  },\n  \"conditions\": {\n    \"status\": \"not_applicable\"\n  ,\n  \"value\": \"not_applicable\"\n  },\n  \"destination\": {\n    \"status\": \"not_applicable\"\n  ,\n  \"value\": \"not_applicable\"\n  },\n  \"tool\": {\n    \"status\": \"not_applicable\"\n  ,\n  \"value\": \"not_applicable\"\n  },\n  \"quantity\": {\n    \"status\": \"not_applicable\"\n  ,\n  \"value\": \"not_applicable\"\n  },\n  \"spatial_relation\": {\n    \"status\": \"not_applicable\"\n  ,\n  \"value\": \"not_applicable\"\n  },\n  \"negation\": {\n    \"status\": \"not_applicable\"\n  ,\n  \"value\": \"not_applicable\"\n  },\n  \"object_attributes\": {\n    \"status\": \"not_applicable\"\n  ,\n  \"value\": \"not_applicable\"\n  },\n  \"actor\": {\n    \"status\": \"not_applicable\"\n  ,\n  \"value\": \"not_applicable\"\n  }\n},\n  \"pilot_ambiguity_types\": [\n    \"pragmatic\",\n    \"temporal_reference\",\n    \"routine_reference\"\n  ]\n  \n  ,\n  \"pilot_capability_status\": \"capable\"\n  \n  ,\n  \"risk_level\": \"low\"\n  \n  ,\n  \"speech_act\": \"indirect_request\"\n  \n  ,\n  \"unresolved_slots\": [\n    \"action\",\n    \"time\",\n    \"object\"\n  ]\n  \n  ,\n  \"uncertainty\": 0.65\n}",
+      "record_id": "CA-0908",
+      "schema_valid": true,
+      "supports_ambiguity_prediction": true,
+      "supports_capability_prediction": true,
+      "system_id": "goal_first_manager_v2",
+      "system_version": "2.0.0",
+      "terminal_strategy": "execute"
+    },
+    "degree": {
+      "ambiguity_types": [
+        "pragmatic",
+        "routine_reference",
+        "temporal_reference"
+      ],
+      "analysis_attempts": [
+        {
+          "attempt": 1,
+          "max_new_tokens": 4096,
+          "mode": "thinking",
+          "raw_chars": 8967,
+          "raw_sha256": "04f2a4993bc9acc415bbf34203d039f38a15bb0ffd3bef318c34930254969718",
+          "validation_error": "bad_intent_summary"
+        },
+        {
+          "attempt": 2,
+          "max_new_tokens": 8192,
+          "mode": "thinking_retry",
+          "raw_chars": 9041,
+          "raw_sha256": "4394a2c6df581151a3b044bc8e25e04f926008f078d4e11cdb78ba1400ad6f90",
+          "validation_error": "bad_intent_summary"
+        },
+        {
+          "attempt": 3,
+          "constraint": {
+            "constraint_initialised": true,
+            "generated_token_count": 521,
+            "maximum_output_tokens": 1024,
+            "response_mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+            "termination_reason": "eos_or_constraint_stop",
+            "transport_status": "constrained_generated"
+          },
+          "max_new_tokens": 1024,
+          "mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+          "raw_chars": 1681,
+          "raw_sha256": "2a81d36f506d7840df413d19c73a954481a1541bc8404237933d48790cf7505e",
+          "validation_error": null
+        }
+      ],
+      "capability_status": "capable",
+      "claim_boundary": "separately_versioned_from_frozen_t39",
+      "error": null,
+      "execution_mode": "cluster-gpu-goal-first-v2",
+      "failed": false,
+      "intent_summary": "Perform the inspection and movement of the display case after the scheduled boarding call until setup is ready",
+      "latency_ms": 141653.6615327932,
+      "model_id": "Qwen/Qwen3-8B@b968826d9c46dd6066d109eabc6255188de91218",
+      "parsed": {
+        "analysis": {
+          "ambiguity_present": true,
+          "ambiguity_types": [
+            "contextual",
+            "pragmatic",
+            "temporal"
+          ],
+          "analysis_provenance": {
+            "analysis_id": "af731e99e0c29cdfd27597a9bd5cfa66669e38167080483a47ec6777ade237db",
+            "method": "model_generated",
+            "notes": "source_input_hash=af731e99e0c29cdfd27597a9bd5cfa66669e38167080483a47ec6777ade237db;no_gold_in_prompt;scene_licence_dropped=time",
+            "provider_id": "goal_first_v2_full_context",
+            "provider_version": "goal-first-manager-v2"
+          },
+          "candidate_interpretations": [],
+          "capability_status": "capable",
+          "clarification_question": "Before I continue, could you clarify: action, object?",
+          "clarification_targets": [
+            "action",
+            "object"
+          ],
+          "compound_ambiguity": true,
+          "compound_ambiguity_count": 3,
+          "context_sampling_uncertainty": {
+            "agreement": 0.35,
+            "score": 0.65,
+            "variant_count": 1
+          },
+          "cpc": {
+            "action": {
+              "status": "not_applicable",
+              "value": "inspection and movement of the display case"
+            },
+            "actor": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "conditions": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "constraints": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "destination": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "negation": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "object": {
+              "status": "not_applicable",
+              "value": "display case"
+            },
+            "object_attributes": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "quantity": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "recipient": {
+              "status": "not_applicable",
+              "value": "public-service robot"
+            },
+            "spatial_relation": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "time": {
+              "status": "not_applicable",
+              "value": "after scheduled boarding call (15:00) until setup is ready"
+            },
+            "tool": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            }
+          },
+          "findings": [
+            "pilot_ambiguity_types:[\"pragmatic\",\"routine_reference\",\"temporal_reference\"]",
+            "pilot_capability_status:capable",
+            "intent_summary_present"
+          ],
+          "intent_summary": "Perform the inspection and movement of the display case after the scheduled boarding call until setup is ready",
+          "primary_ambiguity_type": "contextual",
+          "recommended_strategy": "clarify",
+          "rejection_reason": null,
+          "resolution_evidence": [],
+          "resolution_method": null,
+          "resolved_slots": [],
+          "risk_level": "low",
+          "risk_relevant": true,
+          "selected_interpretation": null,
+          "speech_act": "indirect_request",
+          "strategy_sequence": [],
+          "supporting_evidence": [],
+          "unresolved_slots": [
+            {
+              "reason": "model_identified_uncertainty",
+              "slot_name": "action"
+            },
+            {
+              "reason": "model_identified_uncertainty",
+              "slot_name": "object"
+            }
+          ],
+          "unsupported_specificity": []
+        },
+        "clarification_question": "Before I continue, could you clarify: action, object?",
+        "clarification_targets": [
+          "action",
+          "object"
+        ],
+        "execution_status": "ok",
+        "official_result": false,
+        "provider_provenance": {
+          "shared_analysis_fingerprint": "147969fcf3404548306bdb7acfa743b7c2eac276e142e1081e24f6b80f65a85f"
+        },
+        "recommended_strategy": "clarify",
+        "record_id": "CA-0908",
+        "rejection_reason": null,
+        "resolved_slots": [],
+        "result_hash": "fa7cb64738b7634d1f85a09ff6219892545a70ace2a825214cc75ba4a94d042b",
+        "run_id": null,
+        "run_mode": null,
+        "runtime_metadata": {
+          "shared_analysis_fingerprint": "147969fcf3404548306bdb7acfa743b7c2eac276e142e1081e24f6b80f65a85f",
+          "thresholds_status": "unfrozen",
+          "thresholds_valid_for_official_use": false,
+          "uncertainty_score": 0.65,
+          "uses_type_risk_capability_precedence": false
+        },
+        "safety_findings": [],
+        "strategy_sequence": [],
+        "synthetic_only": true,
+        "system_id": "degree_based_router",
+        "system_version": "1.0.0",
+        "unsupported_commitment_findings": []
+      },
+      "raw_output": "{\n  \"intent_summary\": \"Perform the inspection and movement of the display case after the scheduled boarding call until setup is ready\",\n  \"cpc\": {\n    \"action\": {\n      \"value\": \"inspection and movement of the display case\",\n      \"status\": \"not_applicable\"\n    },\n    \"time\": {\n      \"value\": \"after scheduled boarding call (15:00) until setup is ready\",\n      \"status\": \"not_applicable\"\n    },\n    \"object\": {\n      \"value\": \"display case\",\n      \"status\": \"not_applicable\"\n    },\n    \"recipient\": {\n      \"value\": \"public-service robot\",\n      \"status\": \"not_applicable\"\n    }\n  ,\n  \"constraints\": {\n    \"status\": \"not_applicable\"\n  ,\n  \"value\": \"not_applicable\"\n  },\n  \"conditions\": {\n    \"status\": \"not_applicable\"\n  ,\n  \"value\": \"not_applicable\"\n  },\n  \"destination\": {\n    \"status\": \"not_applicable\"\n  ,\n  \"value\": \"not_applicable\"\n  },\n  \"tool\": {\n    \"status\": \"not_applicable\"\n  ,\n  \"value\": \"not_applicable\"\n  },\n  \"quantity\": {\n    \"status\": \"not_applicable\"\n  ,\n  \"value\": \"not_applicable\"\n  },\n  \"spatial_relation\": {\n    \"status\": \"not_applicable\"\n  ,\n  \"value\": \"not_applicable\"\n  },\n  \"negation\": {\n    \"status\": \"not_applicable\"\n  ,\n  \"value\": \"not_applicable\"\n  },\n  \"object_attributes\": {\n    \"status\": \"not_applicable\"\n  ,\n  \"value\": \"not_applicable\"\n  },\n  \"actor\": {\n    \"status\": \"not_applicable\"\n  ,\n  \"value\": \"not_applicable\"\n  }\n},\n  \"pilot_ambiguity_types\": [\n    \"pragmatic\",\n    \"temporal_reference\",\n    \"routine_reference\"\n  ]\n  \n  ,\n  \"pilot_capability_status\": \"capable\"\n  \n  ,\n  \"risk_level\": \"low\"\n  \n  ,\n  \"speech_act\": \"indirect_request\"\n  \n  ,\n  \"unresolved_slots\": [\n    \"action\",\n    \"time\",\n    \"object\"\n  ]\n  \n  ,\n  \"uncertainty\": 0.65\n}",
+      "record_id": "CA-0908",
+      "schema_valid": true,
+      "supports_ambiguity_prediction": true,
+      "supports_capability_prediction": true,
+      "system_id": "degree_based_router_v2",
+      "system_version": "2.0.0",
+      "terminal_strategy": "clarify"
+    },
+    "timid": {
+      "ambiguity_types": [
+        "pragmatic",
+        "routine_reference",
+        "temporal_reference"
+      ],
+      "analysis_attempts": [
+        {
+          "attempt": 1,
+          "max_new_tokens": 4096,
+          "mode": "thinking",
+          "raw_chars": 8967,
+          "raw_sha256": "04f2a4993bc9acc415bbf34203d039f38a15bb0ffd3bef318c34930254969718",
+          "validation_error": "bad_intent_summary"
+        },
+        {
+          "attempt": 2,
+          "max_new_tokens": 8192,
+          "mode": "thinking_retry",
+          "raw_chars": 9041,
+          "raw_sha256": "4394a2c6df581151a3b044bc8e25e04f926008f078d4e11cdb78ba1400ad6f90",
+          "validation_error": "bad_intent_summary"
+        },
+        {
+          "attempt": 3,
+          "constraint": {
+            "constraint_initialised": true,
+            "generated_token_count": 521,
+            "maximum_output_tokens": 1024,
+            "response_mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+            "termination_reason": "eos_or_constraint_stop",
+            "transport_status": "constrained_generated"
+          },
+          "max_new_tokens": 1024,
+          "mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+          "raw_chars": 1681,
+          "raw_sha256": "2a81d36f506d7840df413d19c73a954481a1541bc8404237933d48790cf7505e",
+          "validation_error": null
+        }
+      ],
+      "capability_status": "capable",
+      "claim_boundary": "separately_versioned_from_frozen_t39",
+      "error": null,
+      "execution_mode": "cluster-gpu-goal-first-v2",
+      "failed": false,
+      "intent_summary": "Perform the inspection and movement of the display case after the scheduled boarding call until setup is ready",
+      "latency_ms": 141653.6615327932,
+      "model_id": "Qwen/Qwen3-8B@b968826d9c46dd6066d109eabc6255188de91218",
+      "parsed": {
+        "analysis": {
+          "ambiguity_present": true,
+          "ambiguity_types": [
+            "contextual",
+            "pragmatic",
+            "temporal"
+          ],
+          "analysis_provenance": {
+            "analysis_id": "af731e99e0c29cdfd27597a9bd5cfa66669e38167080483a47ec6777ade237db",
+            "method": "model_generated",
+            "notes": "source_input_hash=af731e99e0c29cdfd27597a9bd5cfa66669e38167080483a47ec6777ade237db;no_gold_in_prompt;scene_licence_dropped=time",
+            "provider_id": "goal_first_v2_full_context",
+            "provider_version": "goal-first-manager-v2"
+          },
+          "candidate_interpretations": [],
+          "capability_status": "capable",
+          "clarification_question": "Before I continue, could you clarify: action, object?",
+          "clarification_targets": [
+            "action",
+            "object"
+          ],
+          "compound_ambiguity": true,
+          "compound_ambiguity_count": 3,
+          "context_sampling_uncertainty": {
+            "agreement": 0.35,
+            "score": 0.65,
+            "variant_count": 1
+          },
+          "cpc": {
+            "action": {
+              "status": "not_applicable",
+              "value": "inspection and movement of the display case"
+            },
+            "actor": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "conditions": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "constraints": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "destination": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "negation": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "object": {
+              "status": "not_applicable",
+              "value": "display case"
+            },
+            "object_attributes": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "quantity": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "recipient": {
+              "status": "not_applicable",
+              "value": "public-service robot"
+            },
+            "spatial_relation": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "time": {
+              "status": "not_applicable",
+              "value": "after scheduled boarding call (15:00) until setup is ready"
+            },
+            "tool": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            }
+          },
+          "findings": [
+            "pilot_ambiguity_types:[\"pragmatic\",\"routine_reference\",\"temporal_reference\"]",
+            "pilot_capability_status:capable",
+            "intent_summary_present",
+            "requires_re_evaluation"
+          ],
+          "intent_summary": "Perform the inspection and movement of the display case after the scheduled boarding call until setup is ready",
+          "primary_ambiguity_type": "contextual",
+          "recommended_strategy": "multi_step",
+          "rejection_reason": null,
+          "resolution_evidence": [],
+          "resolution_method": null,
+          "resolved_slots": [],
+          "risk_level": "low",
+          "risk_relevant": true,
+          "selected_interpretation": null,
+          "speech_act": "indirect_request",
+          "strategy_sequence": [
+            "clarify"
+          ],
+          "supporting_evidence": [],
+          "unresolved_slots": [
+            {
+              "reason": "model_identified_uncertainty",
+              "slot_name": "action"
+            },
+            {
+              "reason": "model_identified_uncertainty",
+              "slot_name": "object"
+            }
+          ],
+          "unsupported_specificity": []
+        },
+        "clarification_question": "Before I continue, could you clarify: action, object?",
+        "clarification_targets": [
+          "action",
+          "object"
+        ],
+        "execution_status": "ok",
+        "official_result": false,
+        "provider_provenance": {
+          "provider_id": "cached_analysis",
+          "provider_version": "1.0.0"
+        },
+        "recommended_strategy": "multi_step",
+        "record_id": "CA-0908",
+        "rejection_reason": null,
+        "resolved_slots": [],
+        "result_hash": "0252fc454f85e5ef9889c14e2cc9dfafcf934831a473280aaaf4562cb697f398",
+        "run_id": null,
+        "run_mode": null,
+        "runtime_metadata": {
+          "awaits_t28_adapter": true,
+          "classification": {
+            "ambiguity_present": true,
+            "ambiguity_types": [
+              "contextual",
+              "pragmatic",
+              "temporal"
+            ],
+            "capability_status": "capable",
+            "compound_ambiguity": true,
+            "compound_ambiguity_count": 3,
+            "derivation_notes": [
+              "ambiguity_present_from_types"
+            ],
+            "risk_level": "low"
+          },
+          "rejection_text": null,
+          "requires_re_evaluation": true,
+          "resolution_events": [
+            {
+              "confidence_category": "none",
+              "details": {
+                "reason": "unsupported_default_rejected"
+              },
+              "evidence_source": null,
+              "outcome": "unresolved",
+              "previous_status": "unresolved",
+              "resolved_value": null,
+              "rule_id": "no_world_knowledge_guess",
+              "safety_eligibility": false,
+              "slot": "action"
+            },
+            {
+              "confidence_category": "none",
+              "details": {},
+              "evidence_source": null,
+              "outcome": "insufficient_context",
+              "previous_status": "unresolved",
+              "resolved_value": null,
+              "rule_id": "unique_scene_referent",
+              "safety_eligibility": false,
+              "slot": "object"
+            }
+          ],
+          "router_trace": {
+            "clarification_targets": [
+              "action",
+              "object"
+            ],
+            "considered_rules": [
+              "known_unsafe_or_prohibited",
+              "known_incapable",
+              "unknown_or_unverified_capability",
+              "hazard_identity_unresolved",
+              "critical_unresolved_medium_high_risk",
+              "unknown_safety_risk",
+              "dependent_compound_ambiguities"
+            ],
+            "matched_rule_id": "dependent_compound_ambiguities",
+            "notes": [
+              "later_silent_resolve_only_after_re_evaluation",
+              "requires_re_evaluation",
+              "no_precommit_execute"
+            ],
+            "recommended_strategy": "multi_step",
+            "rejection_reason": null,
+            "requires_re_evaluation": true,
+            "strategy_sequence": [
+              "clarify"
+            ]
+          },
+          "safety_action": "return_with_findings",
+          "uncertainty": null
+        },
+        "safety_findings": [],
+        "strategy_sequence": [
+          "clarify"
+        ],
+        "synthetic_only": true,
+        "system_id": "full_type_risk_aware_manager",
+        "system_version": "1.0.0",
+        "unsupported_commitment_findings": []
+      },
+      "raw_output": "{\n  \"intent_summary\": \"Perform the inspection and movement of the display case after the scheduled boarding call until setup is ready\",\n  \"cpc\": {\n    \"action\": {\n      \"value\": \"inspection and movement of the display case\",\n      \"status\": \"not_applicable\"\n    },\n    \"time\": {\n      \"value\": \"after scheduled boarding call (15:00) until setup is ready\",\n      \"status\": \"not_applicable\"\n    },\n    \"object\": {\n      \"value\": \"display case\",\n      \"status\": \"not_applicable\"\n    },\n    \"recipient\": {\n      \"value\": \"public-service robot\",\n      \"status\": \"not_applicable\"\n    }\n  ,\n  \"constraints\": {\n    \"status\": \"not_applicable\"\n  ,\n  \"value\": \"not_applicable\"\n  },\n  \"conditions\": {\n    \"status\": \"not_applicable\"\n  ,\n  \"value\": \"not_applicable\"\n  },\n  \"destination\": {\n    \"status\": \"not_applicable\"\n  ,\n  \"value\": \"not_applicable\"\n  },\n  \"tool\": {\n    \"status\": \"not_applicable\"\n  ,\n  \"value\": \"not_applicable\"\n  },\n  \"quantity\": {\n    \"status\": \"not_applicable\"\n  ,\n  \"value\": \"not_applicable\"\n  },\n  \"spatial_relation\": {\n    \"status\": \"not_applicable\"\n  ,\n  \"value\": \"not_applicable\"\n  },\n  \"negation\": {\n    \"status\": \"not_applicable\"\n  ,\n  \"value\": \"not_applicable\"\n  },\n  \"object_attributes\": {\n    \"status\": \"not_applicable\"\n  ,\n  \"value\": \"not_applicable\"\n  },\n  \"actor\": {\n    \"status\": \"not_applicable\"\n  ,\n  \"value\": \"not_applicable\"\n  }\n},\n  \"pilot_ambiguity_types\": [\n    \"pragmatic\",\n    \"temporal_reference\",\n    \"routine_reference\"\n  ]\n  \n  ,\n  \"pilot_capability_status\": \"capable\"\n  \n  ,\n  \"risk_level\": \"low\"\n  \n  ,\n  \"speech_act\": \"indirect_request\"\n  \n  ,\n  \"unresolved_slots\": [\n    \"action\",\n    \"time\",\n    \"object\"\n  ]\n  \n  ,\n  \"uncertainty\": 0.65\n}",
+      "record_id": "CA-0908",
+      "schema_valid": true,
+      "supports_ambiguity_prediction": true,
+      "supports_capability_prediction": true,
+      "system_id": "rich_conservative_manager_v2",
+      "system_version": "2.0.0",
+      "terminal_strategy": "clarify"
+    },
+    "context_blind": {
+      "ambiguity_types": [
+        "fuzzy_temporal",
+        "pragmatic"
+      ],
+      "analysis_attempts": [
+        {
+          "attempt": 1,
+          "max_new_tokens": 4096,
+          "mode": "thinking",
+          "raw_chars": 6079,
+          "raw_sha256": "efa00e5b4059f949f8a853ef89eab5c56e3a77bc3fd83511b72ccea9fe6d765e",
+          "validation_error": "bad_intent_summary"
+        },
+        {
+          "attempt": 2,
+          "max_new_tokens": 8192,
+          "mode": "thinking_retry",
+          "raw_chars": 6745,
+          "raw_sha256": "264a1620db60135f7912f2c2797d55bc4d2e27be93f4682a7b56365d62da680a",
+          "validation_error": "bad_pilot_ambiguity_types"
+        },
+        {
+          "attempt": 3,
+          "constraint": {
+            "constraint_initialised": true,
+            "generated_token_count": 494,
+            "maximum_output_tokens": 1024,
+            "response_mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+            "termination_reason": "eos_or_constraint_stop",
+            "transport_status": "constrained_generated"
+          },
+          "max_new_tokens": 1024,
+          "mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+          "raw_chars": 1560,
+          "raw_sha256": "72185a4db4d2828551b044fb80ed09ea0d9ab52f151c14ce587426565d680e4c",
+          "validation_error": null
+        }
+      ],
+      "capability_status": "incapable",
+      "claim_boundary": "separately_versioned_from_frozen_t39",
+      "error": null,
+      "execution_mode": "cluster-gpu-goal-first-v2",
+      "failed": false,
+      "intent_summary": "Perform inspection and movement of the display case after a scheduled boarding call, continuing until setup is ready",
+      "latency_ms": 88706.25153090805,
+      "model_id": "Qwen/Qwen3-8B@b968826d9c46dd6066d109eabc6255188de91218",
+      "parsed": {
+        "analysis": {
+          "ambiguity_present": true,
+          "ambiguity_types": [
+            "pragmatic",
+            "temporal"
+          ],
+          "analysis_provenance": {
+            "analysis_id": "19d57693d92268b3863a6695287d28b1ec4cf2025558692339aaf4393b16027b",
+            "method": "context_blind",
+            "notes": "ablated_input_hash=19d57693d92268b3863a6695287d28b1ec4cf2025558692339aaf4393b16027b;source_input_hash=19d57693d92268b3863a6695287d28b1ec4cf2025558692339aaf4393b16027b;no_gold_in_prompt;scene_licence_dropped=time",
+            "provider_id": "goal_first_v2_context_blind",
+            "provider_version": "goal-first-manager-v2"
+          },
+          "candidate_interpretations": [],
+          "capability_status": "incapable",
+          "clarification_question": null,
+          "clarification_targets": [],
+          "compound_ambiguity": true,
+          "compound_ambiguity_count": 2,
+          "context_sampling_uncertainty": {
+            "agreement": 0.30000000000000004,
+            "score": 0.7,
+            "variant_count": 1
+          },
+          "cpc": {
+            "action": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "actor": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "conditions": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "constraints": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "destination": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "negation": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "object": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "object_attributes": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "quantity": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "recipient": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "spatial_relation": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "time": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "tool": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            }
+          },
+          "findings": [
+            "pilot_ambiguity_types:[\"fuzzy_temporal\",\"pragmatic\"]",
+            "pilot_capability_status:incapable",
+            "intent_summary_present"
+          ],
+          "intent_summary": "Perform inspection and movement of the display case after a scheduled boarding call, continuing until setup is ready",
+          "primary_ambiguity_type": "pragmatic",
+          "recommended_strategy": "face_preserving_rejection",
+          "rejection_reason": "known_incapability",
+          "resolution_evidence": [],
+          "resolution_method": null,
+          "resolved_slots": [],
+          "risk_level": "medium",
+          "risk_relevant": true,
+          "selected_interpretation": null,
+          "speech_act": "indirect_request",
+          "strategy_sequence": [],
+          "supporting_evidence": [],
+          "unresolved_slots": [
+            {
+              "reason": "model_identified_uncertainty",
+              "slot_name": "action"
+            },
+            {
+              "reason": "model_identified_uncertainty",
+              "slot_name": "object"
+            }
+          ],
+          "unsupported_specificity": []
+        },
+        "clarification_question": null,
+        "clarification_targets": [],
+        "execution_status": "ok",
+        "official_result": false,
+        "provider_provenance": {
+          "provider_id": "cached_analysis",
+          "provider_version": "1.0.0"
+        },
+        "recommended_strategy": "face_preserving_rejection",
+        "record_id": "CA-0908",
+        "rejection_reason": "known_incapability",
+        "resolved_slots": [],
+        "result_hash": "b9381b5e89daf2e093b18eec8986387ee7ef481bbcf2c484f5fcbb921125048e",
+        "run_id": null,
+        "run_mode": null,
+        "runtime_metadata": {
+          "analysis_identity": {
+            "analysis_content_hash": "65f227a6b606c27975611b3d42238a11a5ffaea26a0ea18027405ff1a7386100",
+            "analysis_variant": "context_blind",
+            "model_strategy_id": null,
+            "provider_id": "goal_first_v2_context_blind",
+            "provider_version": "goal-first-manager-v2",
+            "record_id": "CA-0908",
+            "source_input_hash": "19d57693d92268b3863a6695287d28b1ec4cf2025558692339aaf4393b16027b"
+          },
+          "analysis_identity_fingerprint": "64927a20bfe25058f8401f11f90f136839fd0bad8af43ffcd785ab8aef354f8c",
+          "awaits_t28_adapter": true,
+          "classification": {
+            "ambiguity_present": true,
+            "ambiguity_types": [
+              "pragmatic",
+              "temporal"
+            ],
+            "capability_status": "incapable",
+            "compound_ambiguity": true,
+            "compound_ambiguity_count": 2,
+            "derivation_notes": [
+              "ambiguity_present_from_types"
+            ],
+            "risk_level": "medium"
+          },
+          "context_ablation": {
+            "ablated_input_hash": "19d57693d92268b3863a6695287d28b1ec4cf2025558692339aaf4393b16027b",
+            "capability_context_removed": true,
+            "dialogue_history_removed": true,
+            "rejected_full_context_cache": false,
+            "rejection_reason": null,
+            "scene_context_removed": true,
+            "stripped_context_derived_fields": false
+          },
+          "original_input_unmutated": true,
+          "rejection_text": "I am not able to perform that action with my current capabilities. I will not invent an alternative that is not supported.",
+          "requires_re_evaluation": false,
+          "resolution_events": [
+            {
+              "confidence_category": "blocked",
+              "details": {
+                "risk_level": "medium"
+              },
+              "evidence_source": null,
+              "outcome": "resolution_blocked_by_risk",
+              "previous_status": "unresolved",
+              "resolved_value": null,
+              "rule_id": "risk_block",
+              "safety_eligibility": false,
+              "slot": "action"
+            },
+            {
+              "confidence_category": "blocked",
+              "details": {
+                "risk_level": "medium"
+              },
+              "evidence_source": null,
+              "outcome": "resolution_blocked_by_risk",
+              "previous_status": "unresolved",
+              "resolved_value": null,
+              "rule_id": "risk_block",
+              "safety_eligibility": false,
+              "slot": "object"
+            }
+          ],
+          "router_trace": {
+            "clarification_targets": [],
+            "considered_rules": [
+              "goal_first_v2",
+              "known_unsafe_or_prohibited",
+              "known_incapable"
+            ],
+            "matched_rule_id": "known_incapable",
+            "notes": [],
+            "recommended_strategy": "face_preserving_rejection",
+            "rejection_reason": "known_incapability",
+            "requires_re_evaluation": false,
+            "strategy_sequence": []
+          },
+          "safety_action": "return_with_findings",
+          "uncertainty": null
+        },
+        "safety_findings": [],
+        "strategy_sequence": [],
+        "synthetic_only": true,
+        "system_id": "context_blind_manager",
+        "system_version": "1.0.0",
+        "unsupported_commitment_findings": []
+      },
+      "raw_output": "{\n  \"intent_summary\": \"Perform inspection and movement of the display case after a scheduled boarding call, continuing until setup is ready\",\n  \"cpc\": {\n    \"action\": {\n      \"status\": \"not_applicable\",\n      \"value\": \"not_applicable\"\n    },\n    \"object\": {\n      \"status\": \"not_applicable\",\n      \"value\": \"not_applicable\"\n    },\n    \"time\": {\n      \"status\": \"not_applicable\",\n      \"value\": \"not_applicable\"\n    }\n \n  ,\n  \"recipient\": {\n    \"status\": \"not_applicable\",\n    \"value\": \"not_applicable\"\n  },\n  \"destination\": {\n    \"status\": \"not_applicable\",\n    \"value\": \"not_applicable\"\n  },\n  \"tool\": {\n    \"status\": \"not_applicable\",\n    \"value\": \"not_applicable\"\n  },\n  \"spatial_relation\": {\n    \"status\": \"not_applicable\",\n    \"value\": \"not_applicable\"\n  },\n  \"quantity\": {\n    \"status\": \"not_applicable\",\n    \"value\": \"not_applicable\"\n  },\n  \"negation\": {\n    \"status\": \"not_applicable\",\n    \"value\": \"not_applicable\"\n  },\n  \"conditions\": {\n    \"status\": \"not_applicable\",\n    \"value\": \"not_applicable\"\n  },\n  \"constraints\": {\n    \"status\": \"not_applicable\",\n    \"value\": \"not_applicable\"\n  },\n  \"object_attributes\": {\n    \"status\": \"not_applicable\",\n    \"value\": \"not_applicable\"\n  },\n  \"actor\": {\n    \"status\": \"not_applicable\",\n    \"value\": \"not_applicable\"\n  }\n}\n\n,\n  \"pilot_ambiguity_types\": [\n    \"pragmatic\",\n    \"fuzzy_temporal\"\n  ]\n  \n  ,\n  \"pilot_capability_status\": \"incapable\",\n  \"speech_act\": \"indirect_request\",\n  \"risk_level\": \"medium\"\n  \n  ,\n  \"unresolved_slots\": [\n    \"time\",\n    \"action\",\n    \"object\"\n  ]\n  \n  ,\n  \"uncertainty\": 0.7\n}",
+      "record_id": "CA-0908",
+      "schema_valid": true,
+      "supports_ambiguity_prediction": true,
+      "supports_capability_prediction": true,
+      "system_id": "goal_first_context_blind_v2",
+      "system_version": "2.0.0",
+      "terminal_strategy": "face_preserving_rejection"
+    }
+  },
+  "provenance": {
+    "source_sha256": "f33b1e29f1e8aa256a475f07213aa07247def47d8e2148d54a472a40b71b05c9",
+    "gold_sha256": "5e23ad1a92ff1873c8f039a8ce560a111dd6fb6b8ae8c11d6cf34dbfa1c360db",
+    "t07_final_zip_sha256": "34ca50e034ca37b617068bb50c734d12fa26282fb5eec563c11ead700163e491",
+    "inherited_t07_zip_sha256": "0305b1e9ab062876ee6ee89778cc6028d2eaf01718b7dd0295944e7d9cb81a01",
+    "note": "Goal-First, Degree, Timid, and Context-Blind predictions are inherited from the earlier T0.7 run; official intent and comparison come from the final T0.7 archive."
+  }
+}

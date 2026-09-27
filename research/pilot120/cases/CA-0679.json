@@ -1,0 +1,1145 @@
+{
+  "record_id": "CA-0679",
+  "frozen_source": {
+    "capability_context": "Hotel service robot can deliver sealed guest items, move linen, scan room tags, and clean approved floor equipment.",
+    "command": "Would it help to carry out both the inspection and movement of the floor sign after a scheduled linen pickup, continuing until the setup is ready?",
+    "dialogue_history": [
+      "guest: Yes, carry out the workable sequence rather than merely assessing it."
+    ],
+    "record_id": "CA-0679",
+    "scene_context": "Housekeeping store on a hotel floor. The current time is 07:24. The linen pickup is scheduled at 08:00 and again at 12:00. Procedure WO-523 links this job to the 08:00 occurrence. Procedure WO-523 requires inspection before movement. The readiness checklist requires the item at the service alcove, its tag scanned, and the path clear."
+  },
+  "frozen_gold": {
+    "ambiguity_types": [
+      "action_order",
+      "endpoint_vagueness",
+      "pragmatic",
+      "temporal_reference"
+    ],
+    "annotator_b_era": "glm_era",
+    "annotator_b_model": "glm-5.2-high",
+    "capability_status": "capable",
+    "field_status": {
+      "ambiguity_types": "auto_agree",
+      "capability_status": "human_auditor:independent_from_route",
+      "record_validity": "auto_agree",
+      "strategy_sequence": "from_A_matching_terminal",
+      "terminal_strategy": "auto_agree"
+    },
+    "gold_lifecycle": "final_gold",
+    "gold_status": "auto_agree_with_rule",
+    "human_gate_required": false,
+    "provenance": {
+      "agreement_label": "pilot_annotation_agreement",
+      "annotator_a_sha256": "8753446571e3cdd34a2852fac918cac6645c8a45a1a148c594bf03f5f728d745",
+      "annotator_b_sha256": "841bf35bb81a2c423b1716150097634be53f116a6200bfe851147cc0922f3042",
+      "capability_route_decouple": "conditionally_capable remapped to capable: no evidenced external capability precondition; linguistic silently_resolve/clarify is not a capability condition",
+      "gold_policy": "use_existing_pilot_adjudicated_gold",
+      "input_sha256": "0ea8fa59de41906f1981b92a9e6f4e3faaf0a0482fc6aac51a6c17d6d3acdb5c",
+      "pilot_gold_sha256": "fd0f15cd99cd6c50f6da7db308bff3da2b9b6f81b89239ae42824a856d1a96eb",
+      "protocol": "pilot_adjudicated_gold_on_capability_repaired_source",
+      "repaired_input_sha256": "235adb54b7fefc1d90cf6251251087bdef6f4e8f333c132dd5305e789eb7481d"
+    },
+    "record_id": "CA-0679",
+    "record_validity": "valid",
+    "strategy_sequence": [
+      "reinterpret_indirect_request",
+      "silently_resolve",
+      "execute"
+    ],
+    "terminal_strategy": "execute"
+  },
+  "t07_comparison": {
+    "record_id": "CA-0679",
+    "gold_route": "execute",
+    "raw_route": "clarify",
+    "ft_route": "execute",
+    "gf_route": "refuse",
+    "raw_route_ok": "False",
+    "ft_route_ok": "True",
+    "gf_route_ok": "False",
+    "raw_official_intent": "True",
+    "ft_official_intent": "True",
+    "gf_official_intent": "True",
+    "blind_official_intent": "True"
+  },
+  "t07_official_intent": {
+    "context_blind_official_intent": true,
+    "degree_official_intent_shared_gf": true,
+    "finetune_official_intent": true,
+    "goal_first_official_intent": true,
+    "raw_official_intent": true,
+    "record_id": "CA-0679",
+    "timid_official_intent_shared_gf": true
+  },
+  "t07_predictions": {
+    "raw_qwen": {
+      "ambiguity_types": [
+        "fuzzy_temporal",
+        "temporal_reference"
+      ],
+      "capability_status": "conditionally_capable",
+      "error": null,
+      "execution_mode": "final_close_intent_box",
+      "failed": false,
+      "intent_summary": "Inspect and move the floor sign after the 08:00 linen pickup until setup is ready.",
+      "latency_ms": 17207.677821163088,
+      "parsed": {
+        "ambiguity_types": [
+          "fuzzy_temporal",
+          "temporal_reference"
+        ],
+        "capability_status": "conditionally_capable",
+        "intent_summary": "Inspect and move the floor sign after the 08:00 linen pickup until setup is ready.",
+        "speech_act": "directive_command",
+        "terminal_strategy": "clarify"
+      },
+      "raw_output": "<think>\nOkay, let's tackle this. The user's command is a bit complex. They're asking if it would help to carry out both the inspection and movement of the floor sign after a scheduled linen pickup, continuing until the setup is ready. \n\nFirst, I need to parse the intent. The main job here seems to be doing two tasks: inspecting and moving the floor sign. But they want this done after the linen pickup, which is at 08:00. The dialogue history mentions that the guest prefers a workable sequence rather than just assessing. So the user wants action, not just checking.\n\nLooking at the scene context: the linen pickup is at 08:00. Procedure WO-523 links this job to the 08:00 pickup. The procedure requires inspection before movement. The readiness checklist includes the item at the service alcove, tag scanned, and path clear. \n\nThe robot's capabilities include moving linen, scanning tags, cleaning floor equipment. But can it move the floor sign? The capability_context says it can move linen, but not sure about floor signs. Also, the procedure mentions moving the sign after inspection. \n\nSo, the ambiguity here is whether the robot can move the floor sign. The user is asking if doing both inspection and movement after the linen pickup is helpful. But since the robot's capabilities don't explicitly mention moving floor signs, maybe it's not allowed. Also, the procedure requires inspection before movement, which the robot can do. But moving might be beyond its capabilities. \n\nThe capability_status would be conditionally_capable if it can do part of the task. But if moving is not allowed, then it's incapable. The dialogue history says to do the workable sequence, so maybe the robot can do the inspection part but not the movement. \n\nAmbiguity types: The command is a bit vague on whether moving is allowed. Also, the timing after the linen pickup might be unclear. So possible ambiguities like procedural (if the robot can move the sign) and maybe temporal (after pickup). Also, the command mentions \"continuing until setup is ready\" which is vague on when that is. So temporal_reference and maybe procedural ambiguity. \n\nSpeech act is a directive_command since the user is giving a command to do something. The intent_summary is about inspecting and moving the sign after linen pickup. The capability status would be conditionally_capable if the robot can inspect but not move, or maybe incapable if moving isn't allowed. \n\nTerminal strategy: If the robot can't do the movement, it might need to clarify. But the user wants to execute the workable sequence, so maybe the robot can do the inspection part. But since the command includes movement, which is not in capabilities, the capability_status would be incapable. But the dialogue says to do the workable sequence, so maybe the robot can do the inspection. Hmm. \n\nWait, the procedure requires inspection before movement. The robot can scan tags (which is part of inspection) and move linen. But moving the floor sign might be a different task. So the robot can do the inspection part (scan tag) but not the movement. So the capability_status is conditionally_capable because it can do part of the task. But the user is asking to do both. So the capability might be conditionally_capable. \n\nAmbiguity_types: The command is a bit unclear on whether the robot can move the sign, so maybe procedural ambiguity. Also, the timing after the pickup is a temporal_reference. Also, the \"continuing until setup is ready\" is vague, so temporal_reference and maybe fuzzy_temporal. \n\nSo putting it all together, the JSON would have intent_summary about inspecting and moving after linen pickup, speech_act as directive_command, ambiguity_types including temporal_reference and maybe fuzzy_temporal, capability_status as conditionally_capable, and terminal_strategy as clarify if the robot can't do the movement part. But since the user wants to execute, maybe the robot can do the inspection part. So capability_status might be conditionally_capable. \n\nWait, the robot can move linen, but the task is moving the floor sign. If the floor sign is considered part of the linen, then maybe it's allowed. But the scene context mentions moving the floor sign. So maybe the robot can move it. But the capability_context says \"move linen\" not \"floor signs\". So that's ambiguous. Hence, ambiguity_types would include procedural (whether moving is allowed). \n\nSo, the ambiguity_types would have procedural ambiguity (if moving is allowed) and temporal (after pickup). Also, the \"continuing until setup is ready\" is vague on when, so temporal_reference. \n\nSo the final JSON would have these elements.\n</think>\n\n{\n  \"intent_summary\": \"Inspect and move the floor sign after the 08:00 linen pickup until setup is ready.\",\n  \"speech_act\": \"directive_command\",\n  \"ambiguity_types\": [\"procedural\", \"temporal_reference\", \"fuzzy_temporal\"],\n  \"capability_status\": \"conditionally_capable\",\n  \"terminal_strategy\": \"clarify\"\n}",
+      "record_id": "CA-0679",
+      "schema_valid": true,
+      "speech_act": "directive_command",
+      "system_id": "direct_base_llm",
+      "terminal_strategy": "clarify"
+    },
+    "finetune": {
+      "ambiguity_types": [],
+      "capability_status": "capable",
+      "error": null,
+      "execution_mode": "final_close_intent_box",
+      "failed": false,
+      "intent_summary": "Inspect and move the floor sign after the 08:00 linen pickup until the setup is ready.",
+      "latency_ms": 38239.39521703869,
+      "parsed": {
+        "ambiguity_types": [],
+        "capability_status": "capable",
+        "intent_summary": "Inspect and move the floor sign after the 08:00 linen pickup until the setup is ready.",
+        "speech_act": "conditional_directive",
+        "terminal_strategy": "execute"
+      },
+      "raw_output": "<think>\nOkay, let's break this down. The user is asking if it would help to carry out both the inspection and movement of the floor sign after a scheduled linen pickup, continuing until setup is ready. \n\nFirst, the intent_summary. The main job here is to inspect and move the floor sign after the linen pickup. The user wants both actions done, so the summary should mention both.\n\nNext, speech_act. The user is asking if doing both actions would be helpful. But the dialogue history shows the guest said to carry out the workable sequence rather than just assessing. So the user is giving a directive, but the original command is a question. Wait, the command is phrased as a question, but the history indicates they want the work done. So maybe it's a directive command? Or an indirect request? The user is asking if doing both is helpful, but the context suggests they want it done. Hmm. The original command is a question, but the history shows the guest is telling the robot to do it. So maybe the speech act is a directive command. But the user is asking if it's helpful, which could be an indirect request. Wait, the speech_act options are directive_command, indirect_request, etc. The user is asking if performing both actions is helpful, which is a bit of a conditional. But the dialogue history shows the guest says to carry out the workable sequence, so maybe the user is following up on that. The command here is phrased as a question, but the intent is to direct the robot to do both actions. So maybe it's a directive_command. Or perhaps it's an indirect request, since the user is asking if it's helpful. But the answer would be to do it. So the speech act is an indirect request, but the user is actually giving a directive. Wait, the original command is phrased as a question, but the intent is to direct the robot. So maybe it's a directive_command. Alternatively, it's an indirect request because the user is asking if it's helpful. But the answer would be to do it. So the speech_act is indirect_request? Or maybe the user is trying to make a directive. I think the main point is that the user wants the robot to do both actions after the linen pickup. So the speech_act is directive_command. But the command is a question. Hmm. Maybe the speech_act is indirect_request because the user is asking if it's helpful, which is a way of requesting the action. But the dialogue history shows the guest says to carry out the workable sequence, so the user is following that. The current command is a question, but the intent is to direct the robot. So the speech_act is directive_command. Or maybe it's an indirect request because the user is asking if it's helpful. Wait, the options are: directive_command | indirect_request | information_question | permission_request | prohibition | conditional_directive | multi_intent | other_non_actionable. The user is asking if doing both actions would help, which is a conditional. So the speech_act is conditional_directive? Or information_question? Wait, the user is not asking for information but is suggesting an action. So maybe it's a conditional_directive. But the original command is phrased as a question. Alternatively, the user is making a suggestion, which could be an indirect request. But I'm a bit confused here. Let me think again. The user's command is \"Would it help to carry out both the inspection and movement of the floor sign after a scheduled linen pickup, continuing until the setup is ready?\" This is a question, but the intent is to direct the robot to perform both actions. However, the way it's phrased is a conditional. So the speech_act is conditional_directive. But the options include conditional_directive. So maybe that's the right choice. Alternatively, it's an indirect request. But the user is not explicitly asking for permission or requesting, but suggesting. So maybe conditional_directive. But I need to check the options again. The options are: directive_command, indirect_request, information_question, permission_request, prohibition, conditional_directive, multi_intent, other_non_actionable. So the user is suggesting a conditional action. So the speech_act is conditional_directive. \n\nNow, ambiguity_types. The command mentions \"after a scheduled linen pickup\" and \"continuing until the setup is ready.\" The linen pickup is scheduled at 08:00. The user is asking if doing both actions after the pickup is helpful. So the timeline is clear. But the command is a bit ambiguous. Are they referring to the linen pickup at 08:00 or the 12:00 one? But the dialogue history mentions the 08:00 occurrence. Also, the procedure WO-523 links to the 08:00 pickup. So the ambiguity here might be about the timing. But the user is talking about after the scheduled linen pickup, which is at 08:00. So maybe there's no ambiguity. Wait, but the user is asking if it's helpful to carry out the work after the pickup. So the timing is clear. Are there any other ambiguities? The command says \"continuing until the setup is ready.\" So the movement continues until setup is done. That's clear. So maybe there's no ambiguity. But perhaps the \"setup\" is vague. Or the \"floor sign\" is an object reference. But the scene context mentions the floor sign, so it's clear. So maybe the ambiguity_types array is empty. But I need to check. The command is phrased as a question, but the user's intent is to direct the robot. So maybe there's no ambiguity. So the ambiguity_types array is empty. \n\nCapability_status: The robot can move linen, scan tags, etc. The procedure requires inspection before movement. The robot can scan room tags. So the robot can perform both inspection (scanning tag) and movement. So capability_status is capable. \n\nTerminal_strategy: The user is asking if it's helpful, but the dialogue history says to carry out the workable sequence. So the robot should execute the command. So terminal_strategy is execute. \n\nPutting it all together: the JSON should have intent_summary as \"Inspect and move the floor sign after the 08:00 linen pickup until the setup is ready.\" speech_act as conditional_directive. Ambiguity_types is empty. Capability_status is capable. Terminal_strategy is execute.\n</think>\n\n{\n  \"intent_summary\": \"Inspect and move the floor sign after the 08:00 linen pickup until the setup is ready.\",\n  \"speech_act\": \"conditional_directive\",\n  \"ambiguity_types\": [],\n  \"capability_status\": \"capable\",\n  \"terminal_strategy\": \"execute\"\n}",
+      "record_id": "CA-0679",
+      "schema_valid": true,
+      "speech_act": "conditional_directive",
+      "system_id": "t28_selected_adapter_llm",
+      "terminal_strategy": "execute"
+    },
+    "goal_first": {
+      "ambiguity_types": [
+        "pragmatic",
+        "temporal_reference"
+      ],
+      "analysis_attempts": [
+        {
+          "attempt": 1,
+          "max_new_tokens": 4096,
+          "mode": "thinking",
+          "raw_chars": 7074,
+          "raw_sha256": "7cdadeec8026e28b83148facab8ff09ce4d8988cba89777695292bdcff3948db",
+          "validation_error": "bad_intent_summary"
+        },
+        {
+          "attempt": 2,
+          "max_new_tokens": 8192,
+          "mode": "thinking_retry",
+          "raw_chars": 8169,
+          "raw_sha256": "9d472dcab9d4dd9f289c5d0e93f6a00102dea59528be81f015020a9d7a8e5625",
+          "validation_error": "bad_intent_summary"
+        },
+        {
+          "attempt": 3,
+          "constraint": {
+            "constraint_initialised": true,
+            "generated_token_count": 524,
+            "maximum_output_tokens": 1024,
+            "response_mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+            "termination_reason": "eos_or_constraint_stop",
+            "transport_status": "constrained_generated"
+          },
+          "max_new_tokens": 1024,
+          "mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+          "raw_chars": 1690,
+          "raw_sha256": "ca33379aef05bd54dbe328b975d460d3067c3eb007eb66a4f23e6c869440b166",
+          "validation_error": null
+        }
+      ],
+      "capability_status": "incapable",
+      "claim_boundary": "separately_versioned_from_frozen_t39",
+      "error": null,
+      "execution_mode": "cluster-gpu-goal-first-v2",
+      "failed": false,
+      "intent_summary": "Perform the inspection and movement of the floor sign after the linen pickup, continuing until the setup is ready",
+      "latency_ms": 118084.53935710713,
+      "model_id": "Qwen/Qwen3-8B@b968826d9c46dd6066d109eabc6255188de91218",
+      "parsed": {
+        "analysis": {
+          "ambiguity_present": true,
+          "ambiguity_types": [
+            "pragmatic",
+            "temporal"
+          ],
+          "analysis_provenance": {
+            "analysis_id": "1018cfa9482f2be96c5b79ec6b75fb8b20f2b851750c635b94c6ced5ccc1b5f4",
+            "method": "model_generated",
+            "notes": "source_input_hash=1018cfa9482f2be96c5b79ec6b75fb8b20f2b851750c635b94c6ced5ccc1b5f4;no_gold_in_prompt;scene_licence_dropped=time,destination",
+            "provider_id": "goal_first_v2_full_context",
+            "provider_version": "goal-first-manager-v2"
+          },
+          "candidate_interpretations": [],
+          "capability_status": "incapable",
+          "clarification_question": null,
+          "clarification_targets": [],
+          "compound_ambiguity": true,
+          "compound_ambiguity_count": 2,
+          "context_sampling_uncertainty": {
+            "agreement": 0.30000000000000004,
+            "score": 0.7,
+            "variant_count": 1
+          },
+          "cpc": {
+            "action": {
+              "status": "not_applicable",
+              "value": "carry out the inspection and movement of the floor sign"
+            },
+            "actor": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "conditions": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "constraints": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "destination": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "negation": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "object": {
+              "status": "not_applicable",
+              "value": "floor sign"
+            },
+            "object_attributes": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "quantity": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "recipient": {
+              "status": "not_applicable",
+              "value": "robot"
+            },
+            "spatial_relation": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "time": {
+              "status": "not_applicable",
+              "value": "after the linen pickup"
+            },
+            "tool": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            }
+          },
+          "findings": [
+            "pilot_ambiguity_types:[\"pragmatic\",\"temporal_reference\"]",
+            "pilot_capability_status:incapable",
+            "intent_summary_present"
+          ],
+          "intent_summary": "Perform the inspection and movement of the floor sign after the linen pickup, continuing until the setup is ready",
+          "primary_ambiguity_type": "pragmatic",
+          "recommended_strategy": "face_preserving_rejection",
+          "rejection_reason": "known_incapability",
+          "resolution_evidence": [],
+          "resolution_method": null,
+          "resolved_slots": [],
+          "risk_level": "medium",
+          "risk_relevant": true,
+          "selected_interpretation": null,
+          "speech_act": "indirect_request",
+          "strategy_sequence": [],
+          "supporting_evidence": [],
+          "unresolved_slots": [
+            {
+              "reason": "model_identified_uncertainty",
+              "slot_name": "action"
+            },
+            {
+              "reason": "model_identified_uncertainty",
+              "slot_name": "object"
+            },
+            {
+              "reason": "model_identified_uncertainty",
+              "slot_name": "recipient"
+            }
+          ],
+          "unsupported_specificity": []
+        },
+        "clarification_question": null,
+        "clarification_targets": [],
+        "execution_status": "ok",
+        "official_result": false,
+        "provider_provenance": {
+          "provider_id": "cached_analysis",
+          "provider_version": "1.0.0"
+        },
+        "recommended_strategy": "face_preserving_rejection",
+        "record_id": "CA-0679",
+        "rejection_reason": "known_incapability",
+        "resolved_slots": [],
+        "result_hash": "428df9930c791fb4d888b2938b5ea3b84372966c06ac9227c15e3b596bfdd71b",
+        "run_id": null,
+        "run_mode": null,
+        "runtime_metadata": {
+          "awaits_t28_adapter": true,
+          "classification": {
+            "ambiguity_present": true,
+            "ambiguity_types": [
+              "pragmatic",
+              "temporal"
+            ],
+            "capability_status": "incapable",
+            "compound_ambiguity": true,
+            "compound_ambiguity_count": 2,
+            "derivation_notes": [
+              "ambiguity_present_from_types"
+            ],
+            "risk_level": "medium"
+          },
+          "rejection_text": "I am not able to perform that action with my current capabilities. I will not invent an alternative that is not supported.",
+          "requires_re_evaluation": false,
+          "resolution_events": [
+            {
+              "confidence_category": "blocked",
+              "details": {
+                "risk_level": "medium"
+              },
+              "evidence_source": null,
+              "outcome": "resolution_blocked_by_risk",
+              "previous_status": "unresolved",
+              "resolved_value": null,
+              "rule_id": "risk_block",
+              "safety_eligibility": false,
+              "slot": "action"
+            },
+            {
+              "confidence_category": "blocked",
+              "details": {
+                "risk_level": "medium"
+              },
+              "evidence_source": null,
+              "outcome": "resolution_blocked_by_risk",
+              "previous_status": "unresolved",
+              "resolved_value": null,
+              "rule_id": "risk_block",
+              "safety_eligibility": false,
+              "slot": "object"
+            },
+            {
+              "confidence_category": "blocked",
+              "details": {
+                "risk_level": "medium"
+              },
+              "evidence_source": null,
+              "outcome": "resolution_blocked_by_risk",
+              "previous_status": "unresolved",
+              "resolved_value": null,
+              "rule_id": "risk_block",
+              "safety_eligibility": false,
+              "slot": "recipient"
+            }
+          ],
+          "router_trace": {
+            "clarification_targets": [],
+            "considered_rules": [
+              "goal_first_v2",
+              "known_unsafe_or_prohibited",
+              "known_incapable"
+            ],
+            "matched_rule_id": "known_incapable",
+            "notes": [],
+            "recommended_strategy": "face_preserving_rejection",
+            "rejection_reason": "known_incapability",
+            "requires_re_evaluation": false,
+            "strategy_sequence": []
+          },
+          "safety_action": "return_with_findings",
+          "uncertainty": null
+        },
+        "safety_findings": [],
+        "strategy_sequence": [],
+        "synthetic_only": true,
+        "system_id": "goal_first_manager_v2",
+        "system_version": "2.0.0",
+        "unsupported_commitment_findings": []
+      },
+      "raw_output": "{\n  \"intent_summary\": \"Perform the inspection and movement of the floor sign after the linen pickup, continuing until the setup is ready\",\n  \"cpc\": {\n    \"action\": {\n      \"value\": \"carry out the inspection and movement of the floor sign\",\n      \"status\": \"not_applicable\"\n    },\n    \"object\": {\n      \"value\": \"floor sign\",\n      \"status\": \"not_applicable\"\n    },\n    \"time\": {\n      \"value\": \"after the linen pickup\",\n      \"status\": \"not_applicable\"\n    },\n    \"recipient\": {\n      \"value\": \"robot\",\n      \"status\": \"not_applicable\"\n    }\n \n  ,\n  \"constraints\": {\n    \"status\": \"not_applicable\"\n  ,\n    \"value\": \"not_applicable\"\n  },\n  \"conditions\": {\n    \"status\": \"not_applicable\"\n  ,\n    \"value\": \"not_applicable\"\n  },\n  \"negation\": {\n    \"status\": \"not_applicable\"\n  ,\n    \"value\": \"not_applicable\"\n  },\n  \"spatial_relation\": {\n    \"status\": \"not_applicable\"\n  ,\n    \"value\": \"not_applicable\"\n  },\n  \"quantity\": {\n    \"status\": \"not_applicable\"\n  ,\n    \"value\": \"not_applicable\"\n  },\n  \"destination\": {\n    \"status\": \"not_applicable\"\n  ,\n    \"value\": \"not_applicable\"\n  },\n  \"tool\": {\n    \"status\": \"not_applicable\"\n  ,\n    \"value\": \"not_applicable\"\n  },\n  \"object_attributes\": {\n    \"status\": \"not_applicable\"\n  ,\n    \"value\": \"not_applicable\"\n  },\n  \"actor\": {\n    \"status\": \"not_applicable\"\n  ,\n    \"value\": \"not_applicable\"\n  }\n}\n\n,\n  \"pilot_ambiguity_types\": [\n    \"pragmatic\",\n    \"temporal_reference\"\n  ]\n  \n  ,\n  \"pilot_capability_status\": \"incapable\"\n  \n  ,\n  \"risk_level\": \"medium\"\n  \n  ,\n  \"speech_act\": \"indirect_request\"\n  \n  ,\n  \"uncertainty\": 0.7\n   ,\n  \"unresolved_slots\": [\n    \"time\"\n  ,\n    \"action\"\n  ,\n    \"object\"\n  ,\n    \"recipient\"\n  ,\n    \"destination\"\n  ]\n}",
+      "record_id": "CA-0679",
+      "schema_valid": true,
+      "supports_ambiguity_prediction": true,
+      "supports_capability_prediction": true,
+      "system_id": "goal_first_manager_v2",
+      "system_version": "2.0.0",
+      "terminal_strategy": "face_preserving_rejection"
+    },
+    "degree": {
+      "ambiguity_types": [
+        "pragmatic",
+        "temporal_reference"
+      ],
+      "analysis_attempts": [
+        {
+          "attempt": 1,
+          "max_new_tokens": 4096,
+          "mode": "thinking",
+          "raw_chars": 7074,
+          "raw_sha256": "7cdadeec8026e28b83148facab8ff09ce4d8988cba89777695292bdcff3948db",
+          "validation_error": "bad_intent_summary"
+        },
+        {
+          "attempt": 2,
+          "max_new_tokens": 8192,
+          "mode": "thinking_retry",
+          "raw_chars": 8169,
+          "raw_sha256": "9d472dcab9d4dd9f289c5d0e93f6a00102dea59528be81f015020a9d7a8e5625",
+          "validation_error": "bad_intent_summary"
+        },
+        {
+          "attempt": 3,
+          "constraint": {
+            "constraint_initialised": true,
+            "generated_token_count": 524,
+            "maximum_output_tokens": 1024,
+            "response_mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+            "termination_reason": "eos_or_constraint_stop",
+            "transport_status": "constrained_generated"
+          },
+          "max_new_tokens": 1024,
+          "mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+          "raw_chars": 1690,
+          "raw_sha256": "ca33379aef05bd54dbe328b975d460d3067c3eb007eb66a4f23e6c869440b166",
+          "validation_error": null
+        }
+      ],
+      "capability_status": "incapable",
+      "claim_boundary": "separately_versioned_from_frozen_t39",
+      "error": null,
+      "execution_mode": "cluster-gpu-goal-first-v2",
+      "failed": false,
+      "intent_summary": "Perform the inspection and movement of the floor sign after the linen pickup, continuing until the setup is ready",
+      "latency_ms": 118084.53935710713,
+      "model_id": "Qwen/Qwen3-8B@b968826d9c46dd6066d109eabc6255188de91218",
+      "parsed": {
+        "analysis": {
+          "ambiguity_present": true,
+          "ambiguity_types": [
+            "pragmatic",
+            "temporal"
+          ],
+          "analysis_provenance": {
+            "analysis_id": "1018cfa9482f2be96c5b79ec6b75fb8b20f2b851750c635b94c6ced5ccc1b5f4",
+            "method": "model_generated",
+            "notes": "source_input_hash=1018cfa9482f2be96c5b79ec6b75fb8b20f2b851750c635b94c6ced5ccc1b5f4;no_gold_in_prompt;scene_licence_dropped=time,destination",
+            "provider_id": "goal_first_v2_full_context",
+            "provider_version": "goal-first-manager-v2"
+          },
+          "candidate_interpretations": [],
+          "capability_status": "incapable",
+          "clarification_question": "Before I continue, could you clarify: action, object, recipient?",
+          "clarification_targets": [
+            "action",
+            "object",
+            "recipient"
+          ],
+          "compound_ambiguity": true,
+          "compound_ambiguity_count": 2,
+          "context_sampling_uncertainty": {
+            "agreement": 0.30000000000000004,
+            "score": 0.7,
+            "variant_count": 1
+          },
+          "cpc": {
+            "action": {
+              "status": "not_applicable",
+              "value": "carry out the inspection and movement of the floor sign"
+            },
+            "actor": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "conditions": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "constraints": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "destination": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "negation": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "object": {
+              "status": "not_applicable",
+              "value": "floor sign"
+            },
+            "object_attributes": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "quantity": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "recipient": {
+              "status": "not_applicable",
+              "value": "robot"
+            },
+            "spatial_relation": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "time": {
+              "status": "not_applicable",
+              "value": "after the linen pickup"
+            },
+            "tool": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            }
+          },
+          "findings": [
+            "pilot_ambiguity_types:[\"pragmatic\",\"temporal_reference\"]",
+            "pilot_capability_status:incapable",
+            "intent_summary_present"
+          ],
+          "intent_summary": "Perform the inspection and movement of the floor sign after the linen pickup, continuing until the setup is ready",
+          "primary_ambiguity_type": "pragmatic",
+          "recommended_strategy": "clarify",
+          "rejection_reason": null,
+          "resolution_evidence": [],
+          "resolution_method": null,
+          "resolved_slots": [],
+          "risk_level": "medium",
+          "risk_relevant": true,
+          "selected_interpretation": null,
+          "speech_act": "indirect_request",
+          "strategy_sequence": [],
+          "supporting_evidence": [],
+          "unresolved_slots": [
+            {
+              "reason": "model_identified_uncertainty",
+              "slot_name": "action"
+            },
+            {
+              "reason": "model_identified_uncertainty",
+              "slot_name": "object"
+            },
+            {
+              "reason": "model_identified_uncertainty",
+              "slot_name": "recipient"
+            }
+          ],
+          "unsupported_specificity": []
+        },
+        "clarification_question": "Before I continue, could you clarify: action, object, recipient?",
+        "clarification_targets": [
+          "action",
+          "object",
+          "recipient"
+        ],
+        "execution_status": "ok",
+        "official_result": false,
+        "provider_provenance": {
+          "shared_analysis_fingerprint": "bbd1b5178554a5d21278d444a0627ef80dd9fdec981f197bea31d98c2c661b6b"
+        },
+        "recommended_strategy": "clarify",
+        "record_id": "CA-0679",
+        "rejection_reason": null,
+        "resolved_slots": [],
+        "result_hash": "3cd474660dcd4fedd7d79a3536e5c0c2f096687bd2e3b22c65abbfae7eaae602",
+        "run_id": null,
+        "run_mode": null,
+        "runtime_metadata": {
+          "shared_analysis_fingerprint": "bbd1b5178554a5d21278d444a0627ef80dd9fdec981f197bea31d98c2c661b6b",
+          "thresholds_status": "unfrozen",
+          "thresholds_valid_for_official_use": false,
+          "uncertainty_score": 0.7,
+          "uses_type_risk_capability_precedence": false
+        },
+        "safety_findings": [],
+        "strategy_sequence": [],
+        "synthetic_only": true,
+        "system_id": "degree_based_router",
+        "system_version": "1.0.0",
+        "unsupported_commitment_findings": []
+      },
+      "raw_output": "{\n  \"intent_summary\": \"Perform the inspection and movement of the floor sign after the linen pickup, continuing until the setup is ready\",\n  \"cpc\": {\n    \"action\": {\n      \"value\": \"carry out the inspection and movement of the floor sign\",\n      \"status\": \"not_applicable\"\n    },\n    \"object\": {\n      \"value\": \"floor sign\",\n      \"status\": \"not_applicable\"\n    },\n    \"time\": {\n      \"value\": \"after the linen pickup\",\n      \"status\": \"not_applicable\"\n    },\n    \"recipient\": {\n      \"value\": \"robot\",\n      \"status\": \"not_applicable\"\n    }\n \n  ,\n  \"constraints\": {\n    \"status\": \"not_applicable\"\n  ,\n    \"value\": \"not_applicable\"\n  },\n  \"conditions\": {\n    \"status\": \"not_applicable\"\n  ,\n    \"value\": \"not_applicable\"\n  },\n  \"negation\": {\n    \"status\": \"not_applicable\"\n  ,\n    \"value\": \"not_applicable\"\n  },\n  \"spatial_relation\": {\n    \"status\": \"not_applicable\"\n  ,\n    \"value\": \"not_applicable\"\n  },\n  \"quantity\": {\n    \"status\": \"not_applicable\"\n  ,\n    \"value\": \"not_applicable\"\n  },\n  \"destination\": {\n    \"status\": \"not_applicable\"\n  ,\n    \"value\": \"not_applicable\"\n  },\n  \"tool\": {\n    \"status\": \"not_applicable\"\n  ,\n    \"value\": \"not_applicable\"\n  },\n  \"object_attributes\": {\n    \"status\": \"not_applicable\"\n  ,\n    \"value\": \"not_applicable\"\n  },\n  \"actor\": {\n    \"status\": \"not_applicable\"\n  ,\n    \"value\": \"not_applicable\"\n  }\n}\n\n,\n  \"pilot_ambiguity_types\": [\n    \"pragmatic\",\n    \"temporal_reference\"\n  ]\n  \n  ,\n  \"pilot_capability_status\": \"incapable\"\n  \n  ,\n  \"risk_level\": \"medium\"\n  \n  ,\n  \"speech_act\": \"indirect_request\"\n  \n  ,\n  \"uncertainty\": 0.7\n   ,\n  \"unresolved_slots\": [\n    \"time\"\n  ,\n    \"action\"\n  ,\n    \"object\"\n  ,\n    \"recipient\"\n  ,\n    \"destination\"\n  ]\n}",
+      "record_id": "CA-0679",
+      "schema_valid": true,
+      "supports_ambiguity_prediction": true,
+      "supports_capability_prediction": true,
+      "system_id": "degree_based_router_v2",
+      "system_version": "2.0.0",
+      "terminal_strategy": "clarify"
+    },
+    "timid": {
+      "ambiguity_types": [
+        "pragmatic",
+        "temporal_reference"
+      ],
+      "analysis_attempts": [
+        {
+          "attempt": 1,
+          "max_new_tokens": 4096,
+          "mode": "thinking",
+          "raw_chars": 7074,
+          "raw_sha256": "7cdadeec8026e28b83148facab8ff09ce4d8988cba89777695292bdcff3948db",
+          "validation_error": "bad_intent_summary"
+        },
+        {
+          "attempt": 2,
+          "max_new_tokens": 8192,
+          "mode": "thinking_retry",
+          "raw_chars": 8169,
+          "raw_sha256": "9d472dcab9d4dd9f289c5d0e93f6a00102dea59528be81f015020a9d7a8e5625",
+          "validation_error": "bad_intent_summary"
+        },
+        {
+          "attempt": 3,
+          "constraint": {
+            "constraint_initialised": true,
+            "generated_token_count": 524,
+            "maximum_output_tokens": 1024,
+            "response_mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+            "termination_reason": "eos_or_constraint_stop",
+            "transport_status": "constrained_generated"
+          },
+          "max_new_tokens": 1024,
+          "mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+          "raw_chars": 1690,
+          "raw_sha256": "ca33379aef05bd54dbe328b975d460d3067c3eb007eb66a4f23e6c869440b166",
+          "validation_error": null
+        }
+      ],
+      "capability_status": "incapable",
+      "claim_boundary": "separately_versioned_from_frozen_t39",
+      "error": null,
+      "execution_mode": "cluster-gpu-goal-first-v2",
+      "failed": false,
+      "intent_summary": "Perform the inspection and movement of the floor sign after the linen pickup, continuing until the setup is ready",
+      "latency_ms": 118084.53935710713,
+      "model_id": "Qwen/Qwen3-8B@b968826d9c46dd6066d109eabc6255188de91218",
+      "parsed": {
+        "analysis": {
+          "ambiguity_present": true,
+          "ambiguity_types": [
+            "pragmatic",
+            "temporal"
+          ],
+          "analysis_provenance": {
+            "analysis_id": "1018cfa9482f2be96c5b79ec6b75fb8b20f2b851750c635b94c6ced5ccc1b5f4",
+            "method": "model_generated",
+            "notes": "source_input_hash=1018cfa9482f2be96c5b79ec6b75fb8b20f2b851750c635b94c6ced5ccc1b5f4;no_gold_in_prompt;scene_licence_dropped=time,destination",
+            "provider_id": "goal_first_v2_full_context",
+            "provider_version": "goal-first-manager-v2"
+          },
+          "candidate_interpretations": [],
+          "capability_status": "incapable",
+          "clarification_question": null,
+          "clarification_targets": [],
+          "compound_ambiguity": true,
+          "compound_ambiguity_count": 2,
+          "context_sampling_uncertainty": {
+            "agreement": 0.30000000000000004,
+            "score": 0.7,
+            "variant_count": 1
+          },
+          "cpc": {
+            "action": {
+              "status": "not_applicable",
+              "value": "carry out the inspection and movement of the floor sign"
+            },
+            "actor": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "conditions": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "constraints": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "destination": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "negation": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "object": {
+              "status": "not_applicable",
+              "value": "floor sign"
+            },
+            "object_attributes": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "quantity": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "recipient": {
+              "status": "not_applicable",
+              "value": "robot"
+            },
+            "spatial_relation": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "time": {
+              "status": "not_applicable",
+              "value": "after the linen pickup"
+            },
+            "tool": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            }
+          },
+          "findings": [
+            "pilot_ambiguity_types:[\"pragmatic\",\"temporal_reference\"]",
+            "pilot_capability_status:incapable",
+            "intent_summary_present"
+          ],
+          "intent_summary": "Perform the inspection and movement of the floor sign after the linen pickup, continuing until the setup is ready",
+          "primary_ambiguity_type": "pragmatic",
+          "recommended_strategy": "face_preserving_rejection",
+          "rejection_reason": "known_incapability",
+          "resolution_evidence": [],
+          "resolution_method": null,
+          "resolved_slots": [],
+          "risk_level": "medium",
+          "risk_relevant": true,
+          "selected_interpretation": null,
+          "speech_act": "indirect_request",
+          "strategy_sequence": [],
+          "supporting_evidence": [],
+          "unresolved_slots": [
+            {
+              "reason": "model_identified_uncertainty",
+              "slot_name": "action"
+            },
+            {
+              "reason": "model_identified_uncertainty",
+              "slot_name": "object"
+            },
+            {
+              "reason": "model_identified_uncertainty",
+              "slot_name": "recipient"
+            }
+          ],
+          "unsupported_specificity": []
+        },
+        "clarification_question": null,
+        "clarification_targets": [],
+        "execution_status": "ok",
+        "official_result": false,
+        "provider_provenance": {
+          "provider_id": "cached_analysis",
+          "provider_version": "1.0.0"
+        },
+        "recommended_strategy": "face_preserving_rejection",
+        "record_id": "CA-0679",
+        "rejection_reason": "known_incapability",
+        "resolved_slots": [],
+        "result_hash": "efd09590f9512c4423fe893161d717c9151972f927fe6ba233f4f8915b171424",
+        "run_id": null,
+        "run_mode": null,
+        "runtime_metadata": {
+          "awaits_t28_adapter": true,
+          "classification": {
+            "ambiguity_present": true,
+            "ambiguity_types": [
+              "pragmatic",
+              "temporal"
+            ],
+            "capability_status": "incapable",
+            "compound_ambiguity": true,
+            "compound_ambiguity_count": 2,
+            "derivation_notes": [
+              "ambiguity_present_from_types"
+            ],
+            "risk_level": "medium"
+          },
+          "rejection_text": "I am not able to perform that action with my current capabilities. I will not invent an alternative that is not supported.",
+          "requires_re_evaluation": false,
+          "resolution_events": [
+            {
+              "confidence_category": "blocked",
+              "details": {
+                "risk_level": "medium"
+              },
+              "evidence_source": null,
+              "outcome": "resolution_blocked_by_risk",
+              "previous_status": "unresolved",
+              "resolved_value": null,
+              "rule_id": "risk_block",
+              "safety_eligibility": false,
+              "slot": "action"
+            },
+            {
+              "confidence_category": "blocked",
+              "details": {
+                "risk_level": "medium"
+              },
+              "evidence_source": null,
+              "outcome": "resolution_blocked_by_risk",
+              "previous_status": "unresolved",
+              "resolved_value": null,
+              "rule_id": "risk_block",
+              "safety_eligibility": false,
+              "slot": "object"
+            },
+            {
+              "confidence_category": "blocked",
+              "details": {
+                "risk_level": "medium"
+              },
+              "evidence_source": null,
+              "outcome": "resolution_blocked_by_risk",
+              "previous_status": "unresolved",
+              "resolved_value": null,
+              "rule_id": "risk_block",
+              "safety_eligibility": false,
+              "slot": "recipient"
+            }
+          ],
+          "router_trace": {
+            "clarification_targets": [],
+            "considered_rules": [
+              "known_unsafe_or_prohibited",
+              "known_incapable"
+            ],
+            "matched_rule_id": "known_incapable",
+            "notes": [],
+            "recommended_strategy": "face_preserving_rejection",
+            "rejection_reason": "known_incapability",
+            "requires_re_evaluation": false,
+            "strategy_sequence": []
+          },
+          "safety_action": "return_with_findings",
+          "uncertainty": null
+        },
+        "safety_findings": [],
+        "strategy_sequence": [],
+        "synthetic_only": true,
+        "system_id": "full_type_risk_aware_manager",
+        "system_version": "1.0.0",
+        "unsupported_commitment_findings": []
+      },
+      "raw_output": "{\n  \"intent_summary\": \"Perform the inspection and movement of the floor sign after the linen pickup, continuing until the setup is ready\",\n  \"cpc\": {\n    \"action\": {\n      \"value\": \"carry out the inspection and movement of the floor sign\",\n      \"status\": \"not_applicable\"\n    },\n    \"object\": {\n      \"value\": \"floor sign\",\n      \"status\": \"not_applicable\"\n    },\n    \"time\": {\n      \"value\": \"after the linen pickup\",\n      \"status\": \"not_applicable\"\n    },\n    \"recipient\": {\n      \"value\": \"robot\",\n      \"status\": \"not_applicable\"\n    }\n \n  ,\n  \"constraints\": {\n    \"status\": \"not_applicable\"\n  ,\n    \"value\": \"not_applicable\"\n  },\n  \"conditions\": {\n    \"status\": \"not_applicable\"\n  ,\n    \"value\": \"not_applicable\"\n  },\n  \"negation\": {\n    \"status\": \"not_applicable\"\n  ,\n    \"value\": \"not_applicable\"\n  },\n  \"spatial_relation\": {\n    \"status\": \"not_applicable\"\n  ,\n    \"value\": \"not_applicable\"\n  },\n  \"quantity\": {\n    \"status\": \"not_applicable\"\n  ,\n    \"value\": \"not_applicable\"\n  },\n  \"destination\": {\n    \"status\": \"not_applicable\"\n  ,\n    \"value\": \"not_applicable\"\n  },\n  \"tool\": {\n    \"status\": \"not_applicable\"\n  ,\n    \"value\": \"not_applicable\"\n  },\n  \"object_attributes\": {\n    \"status\": \"not_applicable\"\n  ,\n    \"value\": \"not_applicable\"\n  },\n  \"actor\": {\n    \"status\": \"not_applicable\"\n  ,\n    \"value\": \"not_applicable\"\n  }\n}\n\n,\n  \"pilot_ambiguity_types\": [\n    \"pragmatic\",\n    \"temporal_reference\"\n  ]\n  \n  ,\n  \"pilot_capability_status\": \"incapable\"\n  \n  ,\n  \"risk_level\": \"medium\"\n  \n  ,\n  \"speech_act\": \"indirect_request\"\n  \n  ,\n  \"uncertainty\": 0.7\n   ,\n  \"unresolved_slots\": [\n    \"time\"\n  ,\n    \"action\"\n  ,\n    \"object\"\n  ,\n    \"recipient\"\n  ,\n    \"destination\"\n  ]\n}",
+      "record_id": "CA-0679",
+      "schema_valid": true,
+      "supports_ambiguity_prediction": true,
+      "supports_capability_prediction": true,
+      "system_id": "rich_conservative_manager_v2",
+      "system_version": "2.0.0",
+      "terminal_strategy": "face_preserving_rejection"
+    },
+    "context_blind": {
+      "ambiguity_types": [
+        "endpoint_vagueness",
+        "fuzzy_temporal",
+        "pragmatic"
+      ],
+      "analysis_attempts": [
+        {
+          "attempt": 1,
+          "max_new_tokens": 4096,
+          "mode": "thinking",
+          "raw_chars": 5425,
+          "raw_sha256": "c907ac0d0e228ef2288bccffb4014a197b6c2555a23a8f38d54b21af24d80da8",
+          "validation_error": "bad_pilot_ambiguity_types"
+        },
+        {
+          "attempt": 2,
+          "max_new_tokens": 8192,
+          "mode": "thinking_retry",
+          "raw_chars": 9319,
+          "raw_sha256": "2185d3d3e7acfa32d7f4a6e81c72393a670b2c82a0a07975e1425ca05b459fc4",
+          "validation_error": "bad_intent_summary"
+        },
+        {
+          "attempt": 3,
+          "constraint": {
+            "constraint_initialised": true,
+            "generated_token_count": 499,
+            "maximum_output_tokens": 1024,
+            "response_mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+            "termination_reason": "eos_or_constraint_stop",
+            "transport_status": "constrained_generated"
+          },
+          "max_new_tokens": 1024,
+          "mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+          "raw_chars": 1709,
+          "raw_sha256": "530b4c984c315361f9a8c77fc5d83f84ec6d0d33cd74b10ada34420a0b0c5df7",
+          "validation_error": null
+        }
+      ],
+      "capability_status": "incapable",
+      "claim_boundary": "separately_versioned_from_frozen_t39",
+      "error": null,
+      "execution_mode": "cluster-gpu-goal-first-v2",
+      "failed": false,
+      "intent_summary": "Perform inspection and movement of the floor sign after linen pickup, continuing until setup is ready",
+      "latency_ms": 104941.47672504187,
+      "model_id": "Qwen/Qwen3-8B@b968826d9c46dd6066d109eabc6255188de91218",
+      "parsed": {
+        "analysis": {
+          "ambiguity_present": true,
+          "ambiguity_types": [
+            "pragmatic",
+            "spatial",
+            "temporal"
+          ],
+          "analysis_provenance": {
+            "analysis_id": "66d676260f0b788d6b766b432b7cfb8a9a37a82fb76f788157723f60e5f076f5",
+            "method": "context_blind",
+            "notes": "ablated_input_hash=66d676260f0b788d6b766b432b7cfb8a9a37a82fb76f788157723f60e5f076f5;source_input_hash=66d676260f0b788d6b766b432b7cfb8a9a37a82fb76f788157723f60e5f076f5;no_gold_in_prompt;scene_licence_dropped=time",
+            "provider_id": "goal_first_v2_context_blind",
+            "provider_version": "goal-first-manager-v2"
+          },
+          "candidate_interpretations": [],
+          "capability_status": "incapable",
+          "clarification_question": null,
+          "clarification_targets": [],
+          "compound_ambiguity": true,
+          "compound_ambiguity_count": 3,
+          "context_sampling_uncertainty": {
+            "agreement": 0.30000000000000004,
+            "score": 0.7,
+            "variant_count": 1
+          },
+          "cpc": {
+            "action": {
+              "status": "not_applicable",
+              "value": "carry out both the inspection and movement of the floor sign"
+            },
+            "actor": {
+              "status": "not_applicable",
+              "value": "not applicable"
+            },
+            "conditions": {
+              "status": "not_applicable",
+              "value": "continuing until setup is ready"
+            },
+            "constraints": {
+              "status": "not_applicable",
+              "value": "not applicable"
+            },
+            "destination": {
+              "status": "not_applicable",
+              "value": "not applicable"
+            },
+            "negation": {
+              "status": "not_applicable",
+              "value": "not applicable"
+            },
+            "object": {
+              "status": "not_applicable",
+              "value": "floor sign"
+            },
+            "object_attributes": {
+              "status": "not_applicable",
+              "value": "not applicable"
+            },
+            "quantity": {
+              "status": "not_applicable",
+              "value": "not applicable"
+            },
+            "recipient": {
+              "status": "not_applicable",
+              "value": "not applicable"
+            },
+            "spatial_relation": {
+              "status": "not_applicable",
+              "value": "not applicable"
+            },
+            "time": {
+              "status": "not_applicable",
+              "value": "after a scheduled linen pickup"
+            },
+            "tool": {
+              "status": "not_applicable",
+              "value": "not applicable"
+            }
+          },
+          "findings": [
+            "pilot_ambiguity_types:[\"endpoint_vagueness\",\"fuzzy_temporal\",\"pragmatic\"]",
+            "pilot_capability_status:incapable",
+            "intent_summary_present"
+          ],
+          "intent_summary": "Perform inspection and movement of the floor sign after linen pickup, continuing until setup is ready",
+          "primary_ambiguity_type": "pragmatic",
+          "recommended_strategy": "face_preserving_rejection",
+          "rejection_reason": "known_incapability",
+          "resolution_evidence": [],
+          "resolution_method": null,
+          "resolved_slots": [],
+          "risk_level": "low",
+          "risk_relevant": true,
+          "selected_interpretation": null,
+          "speech_act": "indirect_request",
+          "strategy_sequence": [],
+          "supporting_evidence": [],
+          "unresolved_slots": [
+            {
+              "reason": "model_identified_uncertainty",
+              "slot_name": "action"
+            },
+            {
+              "reason": "model_identified_uncertainty",
+              "slot_name": "conditions"
+            }
+          ],
+          "unsupported_specificity": []
+        },
+        "clarification_question": null,
+        "clarification_targets": [],
+        "execution_status": "ok",
+        "official_result": false,
+        "provider_provenance": {
+          "provider_id": "cached_analysis",
+          "provider_version": "1.0.0"
+        },
+        "recommended_strategy": "face_preserving_rejection",
+        "record_id": "CA-0679",
+        "rejection_reason": "known_incapability",
+        "resolved_slots": [],
+        "result_hash": "a9ed00d55c7b90ab83c69fe7e1bfbf7f98ff0bd2d32e56a4cedfd97d4c150a97",
+        "run_id": null,
+        "run_mode": null,
+        "runtime_metadata": {
+          "analysis_identity": {
+            "analysis_content_hash": "0ce480d25a0d3aa276641e224233aa23866f3861441852cea26c322645e396c1",
+            "analysis_variant": "context_blind",
+            "model_strategy_id": null,
+            "provider_id": "goal_first_v2_context_blind",
+            "provider_version": "goal-first-manager-v2",
+            "record_id": "CA-0679",
+            "source_input_hash": "66d676260f0b788d6b766b432b7cfb8a9a37a82fb76f788157723f60e5f076f5"
+          },
+          "analysis_identity_fingerprint": "6435720646317aa606447f8e1ca2361a3f81d6cbddbcdb9cdc86ac258e778685",
+          "awaits_t28_adapter": true,
+          "classification": {
+            "ambiguity_present": true,
+            "ambiguity_types": [
+              "pragmatic",
+              "spatial",
+              "temporal"
+            ],
+            "capability_status": "incapable",
+            "compound_ambiguity": true,
+            "compound_ambiguity_count": 3,
+            "derivation_notes": [
+              "ambiguity_present_from_types"
+            ],
+            "risk_level": "low"
+          },
+          "context_ablation": {
+            "ablated_input_hash": "66d676260f0b788d6b766b432b7cfb8a9a37a82fb76f788157723f60e5f076f5",
+            "capability_context_removed": true,
+            "dialogue_history_removed": true,
+            "rejected_full_context_cache": false,
+            "rejection_reason": null,
+            "scene_context_removed": true,
+            "stripped_context_derived_fields": false
+          },
+          "original_input_unmutated": true,
+          "rejection_text": "I am not able to perform that action with my current capabilities. I will not invent an alternative that is not supported.",
+          "requires_re_evaluation": false,
+          "resolution_events": [
+            {
+              "confidence_category": "none",
+              "details": {
+                "reason": "unsupported_default_rejected"
+              },
+              "evidence_source": null,
+              "outcome": "unresolved",
+              "previous_status": "unresolved",
+              "resolved_value": null,
+              "rule_id": "no_world_knowledge_guess",
+              "safety_eligibility": false,
+              "slot": "action"
+            },
+            {
+              "confidence_category": "none",
+              "details": {
+                "reason": "unsupported_default_rejected"
+              },
+              "evidence_source": null,
+              "outcome": "unresolved",
+              "previous_status": "unresolved",
+              "resolved_value": null,
+              "rule_id": "no_world_knowledge_guess",
+              "safety_eligibility": false,
+              "slot": "conditions"
+            }
+          ],
+          "router_trace": {
+            "clarification_targets": [],
+            "considered_rules": [
+              "goal_first_v2",
+              "known_unsafe_or_prohibited",
+              "known_incapable"
+            ],
+            "matched_rule_id": "known_incapable",
+            "notes": [],
+            "recommended_strategy": "face_preserving_rejection",
+            "rejection_reason": "known_incapability",
+            "requires_re_evaluation": false,
+            "strategy_sequence": []
+          },
+          "safety_action": "return_with_findings",
+          "uncertainty": null
+        },
+        "safety_findings": [],
+        "strategy_sequence": [],
+        "synthetic_only": true,
+        "system_id": "context_blind_manager",
+        "system_version": "1.0.0",
+        "unsupported_commitment_findings": []
+      },
+      "raw_output": "{\n  \"intent_summary\": \"Perform inspection and movement of the floor sign after linen pickup, continuing until setup is ready\",\n  \"cpc\": {\n    \"action\": {\n      \"value\": \"carry out both the inspection and movement of the floor sign\",\n      \"status\": \"not_applicable\"\n    },\n    \"time\": {\n      \"value\": \"after a scheduled linen pickup\",\n      \"status\": \"not_applicable\"\n    },\n    \"recipient\": {\n      \"value\": \"not applicable\",\n      \"status\": \"not_applicable\"\n    },\n    \"object\": {\n      \"value\": \"floor sign\",\n      \"status\": \"not_applicable\"\n    },\n    \"spatial_relation\": {\n      \"value\": \"not applicable\",\n      \"status\": \"not_applicable\"\n    },\n    \"quantity\": {\n      \"value\": \"not applicable\",\n      \"status\": \"not_applicable\"\n    },\n    \"negation\": {\n      \"value\": \"not applicable\",\n      \"status\": \"not_applicable\"\n    },\n    \"conditions\": {\n      \"value\": \"continuing until setup is ready\",\n      \"status\": \"not_applicable\"\n    }\n \n  ,\n  \"constraints\": {\n    \"value\": \"not applicable\",\n    \"status\": \"not_applicable\"\n  },\n  \"object_attributes\": {\n    \"value\": \"not applicable\",\n    \"status\": \"not_applicable\"\n  },\n  \"destination\": {\n    \"value\": \"not applicable\",\n    \"status\": \"not_applicable\"\n  },\n  \"tool\": {\n    \"value\": \"not applicable\",\n    \"status\": \"not_applicable\"\n  },\n  \"actor\": {\n    \"value\": \"not applicable\",\n    \"status\": \"not_applicable\"\n  }\n},\n  \"pilot_ambiguity_types\": [\n    \"pragmatic\",\n    \"fuzzy_temporal\",\n    \"endpoint_vagueness\"\n  ]\n  \n  ,\n  \"pilot_capability_status\": \"incapable\"\n  \n  ,\n  \"risk_level\": \"low\"\n  \n  ,\n  \"speech_act\": \"indirect_request\"\n  \n  ,\n  \"uncertainty\": 0.7\n  \n\n\n\n  \n  ,\n  \"unresolved_slots\": [\n    \"time\",\n    \"action\",\n    \"conditions\"\n  ]\n  \n  }\n",
+      "record_id": "CA-0679",
+      "schema_valid": true,
+      "supports_ambiguity_prediction": true,
+      "supports_capability_prediction": true,
+      "system_id": "goal_first_context_blind_v2",
+      "system_version": "2.0.0",
+      "terminal_strategy": "face_preserving_rejection"
+    }
+  },
+  "provenance": {
+    "source_sha256": "f33b1e29f1e8aa256a475f07213aa07247def47d8e2148d54a472a40b71b05c9",
+    "gold_sha256": "5e23ad1a92ff1873c8f039a8ce560a111dd6fb6b8ae8c11d6cf34dbfa1c360db",
+    "t07_final_zip_sha256": "34ca50e034ca37b617068bb50c734d12fa26282fb5eec563c11ead700163e491",
+    "inherited_t07_zip_sha256": "0305b1e9ab062876ee6ee89778cc6028d2eaf01718b7dd0295944e7d9cb81a01",
+    "note": "Goal-First, Degree, Timid, and Context-Blind predictions are inherited from the earlier T0.7 run; official intent and comparison come from the final T0.7 archive."
+  }
+}

@@ -1,0 +1,1106 @@
+{
+  "record_id": "CA-0421",
+  "frozen_source": {
+    "capability_context": "Hospital delivery robot can move sealed supplies, scan identifiers, and operate approved carts outside direct clinical treatment. It can perform routine exterior cleaning of approved items using site-approved methods.",
+    "command": "Clean the marked linen cart after the meal service until it is reasonably clean.",
+    "dialogue_history": [],
+    "record_id": "CA-0421",
+    "scene_context": "Supply room in a hospital. Two linen carts carry work-order marks: the green one beside the cleaning station has a blue PENDING tag, while the white one near the linen rack has a yellow COMPLETE tag. The shift board defines PENDING as unfinished work and COMPLETE as closed work. The schedule note links this job to the meal service at 11:00, not the later occurrence at 15:00. The cleaning standard defines 'reasonably clean' as no visible residue under the inspection light and a passed surface scan. The active work order authorizes routine exterior cleaning of this item with the site-approved method."
+  },
+  "frozen_gold": {
+    "ambiguity_types": [
+      "endpoint_vagueness",
+      "object_reference",
+      "temporal_reference"
+    ],
+    "annotator_b_era": "claude_era",
+    "annotator_b_model": "claude-4.6-sonnet-medium-thinking",
+    "capability_status": "capable",
+    "field_status": {
+      "ambiguity_types": "human_auditor:endpoint_only",
+      "capability_status": "human_auditor:independent",
+      "record_validity": "auto_agree",
+      "strategy_sequence": "from_A_matching_terminal",
+      "terminal_strategy": "auto_agree"
+    },
+    "gold_lifecycle": "final_gold",
+    "gold_status": "adjudicated",
+    "human_gate_required": false,
+    "provenance": {
+      "agreement_label": "pilot_annotation_agreement",
+      "annotator_a_sha256": "95af9683b2685105c5d3a1ba2f2e248cca484c85f08e27bfdc3da2ceb2feec2f",
+      "annotator_b_sha256": "2c4af44b4984792160f8542cc18d637b9cf0c1ced6f31b6e97b638082a186731",
+      "gold_policy": "use_existing_pilot_adjudicated_gold",
+      "human_auditor_repair": "clean-family: endpoint_vagueness only; capability not derived from silently_resolve",
+      "input_sha256": "c78b4984e543ff5bfa2a7f64e7e8f5fef3e1bafaa36bde32436df37b81eba2b0",
+      "pilot_gold_sha256": "5a6a3e3f39d56ca5568fe5200216ec82688bcef1de0f2eb62a06a816c2e67c43",
+      "protocol": "pilot_adjudicated_gold_on_capability_repaired_source",
+      "repaired_input_sha256": "c6d4f329142bb850a0f643d958b163f0654ce8e3be29e01bcf894cb552a3d8e2"
+    },
+    "record_id": "CA-0421",
+    "record_validity": "valid",
+    "strategy_sequence": [
+      "silently_resolve",
+      "execute"
+    ],
+    "terminal_strategy": "execute"
+  },
+  "t07_comparison": {
+    "record_id": "CA-0421",
+    "gold_route": "execute",
+    "raw_route": "execute",
+    "ft_route": "execute",
+    "gf_route": "execute",
+    "raw_route_ok": "True",
+    "ft_route_ok": "True",
+    "gf_route_ok": "True",
+    "raw_official_intent": "True",
+    "ft_official_intent": "True",
+    "gf_official_intent": "True",
+    "blind_official_intent": "True"
+  },
+  "t07_official_intent": {
+    "context_blind_official_intent": true,
+    "degree_official_intent_shared_gf": true,
+    "finetune_official_intent": true,
+    "goal_first_official_intent": true,
+    "raw_official_intent": true,
+    "record_id": "CA-0421",
+    "timid_official_intent_shared_gf": true
+  },
+  "t07_predictions": {
+    "raw_qwen": {
+      "ambiguity_types": [
+        "degree_vagueness",
+        "endpoint_vagueness",
+        "pronoun_reference",
+        "temporal_reference"
+      ],
+      "capability_status": "capable",
+      "error": null,
+      "execution_mode": "final_close_intent_box",
+      "failed": false,
+      "intent_summary": "Clean the marked linen cart after the meal service until it meets the 'reasonably clean' standard.",
+      "latency_ms": 7178.43052605167,
+      "parsed": {
+        "ambiguity_types": [
+          "degree_vagueness",
+          "endpoint_vagueness",
+          "pronoun_reference",
+          "temporal_reference"
+        ],
+        "capability_status": "capable",
+        "intent_summary": "Clean the marked linen cart after the meal service until it meets the 'reasonably clean' standard.",
+        "speech_act": "directive_command",
+        "terminal_strategy": "execute"
+      },
+      "raw_output": "<think>\nOkay, let's break this down. The user wants the robot to clean the marked linen cart after the meal service until it's reasonably clean. First, I need to identify the intent. The main job is cleaning the linen cart post-meal service. The speech act here is a directive command because the user is giving a direct instruction.\n\nNow, checking for ambiguity types. The command mentions \"marked linen cart,\" but the dialogue history is empty. The scene context says there are two carts with different tags. The user refers to the green one with a blue PENDING tag. But the command doesn't specify which cart, relying on the marked one. That could be a pronoun reference or object_reference ambiguity. Also, \"after the meal service\" refers to the schedule note linking to 11:00, not 15:00. So temporal_reference might apply here. The cleaning standard defines 'reasonably clean' which is a bit vague, so degree_vagueness and endpoint_vagueness could be relevant. Also, the instruction is to clean until it's reasonably clean, which might have fuzzy_quantity since it's not a specific number of times.\n\nCapability status: The robot can perform routine exterior cleaning of approved items. The task is routine exterior cleaning, so it's capable. But the command mentions \"marked\" which might refer to the PENDING tag. The robot can scan identifiers, so that's okay. So capability_status is capable.\n\nTerminal strategy: The command is clear once the context is considered. The robot can execute the cleaning as per the schedule and standards. So terminal_strategy is execute.\n</think>\n\n{\n  \"intent_summary\": \"Clean the marked linen cart after the meal service until it meets the 'reasonably clean' standard.\",\n  \"speech_act\": \"directive_command\",\n  \"ambiguity_types\": [\"pronoun_reference\", \"temporal_reference\", \"degree_vagueness\", \"endpoint_vagueness\"],\n  \"capability_status\": \"capable\",\n  \"terminal_strategy\": \"execute\"\n}",
+      "record_id": "CA-0421",
+      "schema_valid": true,
+      "speech_act": "directive_command",
+      "system_id": "direct_base_llm",
+      "terminal_strategy": "execute"
+    },
+    "finetune": {
+      "ambiguity_types": [
+        "object_reference"
+      ],
+      "capability_status": "capable",
+      "error": null,
+      "execution_mode": "final_close_intent_box",
+      "failed": false,
+      "intent_summary": "Clean the marked linen cart (green with PENDING tag) after the 11:00 meal service until it meets the 'reasonably clean' standard.",
+      "latency_ms": 38071.68698171154,
+      "parsed": {
+        "ambiguity_types": [
+          "object_reference"
+        ],
+        "capability_status": "capable",
+        "intent_summary": "Clean the marked linen cart (green with PENDING tag) after the 11:00 meal service until it meets the 'reasonably clean' standard.",
+        "speech_act": "directive_command",
+        "terminal_strategy": "execute"
+      },
+      "raw_output": "<think>\nOkay, let me try to work through this. The user wants me to evaluate the robot command based on the given scenario. Let's start by understanding the command: \"Clean the marked linen cart after the meal service until it is reasonably clean.\" \n\nFirst, I need to figure out the intent summary. The person wants the marked linen cart cleaned after the meal service, and they want it cleaned until it's reasonably clean. The key here is that the cart is marked, so it's specific. The dialogue history is empty, so no prior context. The scene context mentions two carts with different tags. The green one has a blue PENDING tag, which according to the shift board means unfinished work. The white one has a yellow COMPLETE tag, meaning closed work. The schedule note links the job to the meal service at 11:00, not 15:00. The cleaning standard defines 'reasonably clean' as no visible residue under inspection light and passed surface scan.\n\nThe capability context says the robot can move sealed supplies, scan identifiers, operate approved carts outside clinical treatment, and perform routine exterior cleaning with site-approved methods. So, the command involves cleaning a marked cart after meal service. The marked cart is the green one with PENDING tag since the white one is COMPLETE. The meal service is at 11:00, so the robot needs to wait until after that time. The cleaning needs to be done until it's reasonably clean, which has specific standards. \n\nNow, the speech act. The command is a directive to clean the cart, so it's a directive_command. But wait, the user says \"after the meal service,\" which might be a conditional. However, the speech_act options include conditional_directive. But the main action is cleaning, so maybe it's a directive_command. Alternatively, if the timing is a condition, it's conditional_directive. But the command is to clean after the meal service, which is a time condition. So maybe conditional_directive. Wait, the options are directive_command, indirect_request, etc. The original command is a direct instruction, so directive_command. \n\nAmbiguity types: The command mentions \"marked linen cart\" but the scene has two carts. The marked one is the green with PENDING. However, the command doesn't specify which, so that's an object_reference ambiguity. Also, \"after the meal service\" refers to the time, which is specific (11:00). But the command might be ambiguous if the meal service is not clearly defined. But the schedule note links it to 11:00, so maybe that's resolved. Also, \"reasonably clean\" is a standard, but the exact criteria are given in the context, so maybe no ambiguity there. However, the term \"reasonably clean\" might be vague, so degree_vagueness. Also, the command says \"until it is reasonably clean,\" which is a temporal reference, but the standard defines it, so maybe not. Alternatively, the time reference (after meal service) is clear because the schedule note links it to 11:00. So perhaps the ambiguity is object_reference (which cart) and maybe temporal_reference (when exactly after meal service). Wait, the schedule note says the job is linked to the meal service at 11:00, not 15:00, so that's resolved. So the object_reference is the marked cart, which is the green one with PENDING. But the command doesn't specify the color, so the robot might need to identify which cart is marked. So that's an object_reference ambiguity. Also, the command says \"after the meal service,\" which is a time condition, but the exact time is known, so maybe no temporal ambiguity. However, \"after the meal service\" could be interpreted as after the service ends, but the exact time is 11:00. So perhaps the temporal_reference is clear. But the command might be ambiguous in terms of which cart is marked. So ambiguity_types would include object_reference. \n\nCapability status: The robot can perform routine exterior cleaning of approved items with site-approved methods. The cart is marked as PENDING, which is part of the active work order. The active work order authorizes this cleaning. So the robot is capable. So capability_status is capable. \n\nTerminal strategy: Since the robot is capable, it should execute the command. But wait, the command is to clean after the meal service. The meal service is at 11:00, so the robot needs to wait until that time. But the robot can't wait, unless it's programmed to wait. However, the capability context says it can operate carts outside clinical treatment, but does it have a clock or time tracking? The problem says the schedule note links the job to the meal service at 11:00, so the robot might need to wait until that time. However, the robot's capabilities don't mention time tracking. But the command is to clean after the meal service, which is a conditional. So the robot might need to wait until 11:00. But if the robot can't wait, then maybe it's unclear. Wait, the capability context says the robot can move supplies, scan identifiers, operate carts, and perform cleaning. It doesn't mention time tracking. So the robot might not know when the meal service ends. But the schedule note links it to 11:00, which is a specific time. So the robot might be able to wait until 11:00. But if the robot can't track time, then the command is ambiguous. However, the capability status is capable, so the robot can perform the cleaning once the time is right. But the ambiguity here is whether the robot can wait. However, the problem states that the active work order authorizes the cleaning, so the robot can proceed. Therefore, the capability status is capable, and the terminal strategy is execute. \n\nPutting it all together: intent_summary is to clean the marked linen cart (green one with PENDING) after meal service at 11:00 until it's reasonably clean. Speech_act is directive_command. Ambiguity_types: object_reference (which cart is marked) and maybe temporal_reference (when exactly after meal service). But the schedule note specifies 11:00, so temporal is clear. So only object_reference. Capability_status is capable. Terminal strategy is execute.\n</think>\n\n{\n  \"intent_summary\": \"Clean the marked linen cart (green with PENDING tag) after the 11:00 meal service until it meets the 'reasonably clean' standard.\",\n  \"speech_act\": \"directive_command\",\n  \"ambiguity_types\": [\"object_reference\"],\n  \"capability_status\": \"capable\",\n  \"terminal_strategy\": \"execute\"\n}",
+      "record_id": "CA-0421",
+      "schema_valid": true,
+      "speech_act": "directive_command",
+      "system_id": "t28_selected_adapter_llm",
+      "terminal_strategy": "execute"
+    },
+    "goal_first": {
+      "ambiguity_types": [
+        "endpoint_vagueness",
+        "pragmatic",
+        "temporal_reference"
+      ],
+      "analysis_attempts": [
+        {
+          "attempt": 1,
+          "max_new_tokens": 4096,
+          "mode": "thinking",
+          "raw_chars": 7666,
+          "raw_sha256": "1dfc5322b6097b28b47ac405b5f052447fad12fd39a05a8fc0d2033241f6653a",
+          "validation_error": "bad_pilot_ambiguity_types"
+        },
+        {
+          "attempt": 2,
+          "max_new_tokens": 8192,
+          "mode": "thinking_retry",
+          "raw_chars": 7990,
+          "raw_sha256": "4116287b50259f9a5fcbde5c1d6b8b8a48c9f37f0b83b78b6fd5a7d28c954db1",
+          "validation_error": "bad_pilot_ambiguity_types"
+        },
+        {
+          "attempt": 3,
+          "constraint": {
+            "constraint_initialised": true,
+            "generated_token_count": 537,
+            "maximum_output_tokens": 1024,
+            "response_mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+            "termination_reason": "eos_or_constraint_stop",
+            "transport_status": "constrained_generated"
+          },
+          "max_new_tokens": 1024,
+          "mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+          "raw_chars": 1634,
+          "raw_sha256": "887565c9afef92bb007a64096a084ed49a9cc49bfd99a10762bbb508d2816b46",
+          "validation_error": null
+        }
+      ],
+      "capability_status": "capable",
+      "claim_boundary": "separately_versioned_from_frozen_t39",
+      "error": null,
+      "execution_mode": "cluster-gpu-goal-first-v2",
+      "failed": false,
+      "intent_summary": "Clean the marked linen cart after the meal service until it is reasonably clean",
+      "latency_ms": 80503.4546032548,
+      "model_id": "Qwen/Qwen3-8B@b968826d9c46dd6066d109eabc6255188de91218",
+      "parsed": {
+        "analysis": {
+          "ambiguity_present": true,
+          "ambiguity_types": [
+            "pragmatic",
+            "spatial",
+            "temporal"
+          ],
+          "analysis_provenance": {
+            "analysis_id": "e7e5a6fe4de8be191b079a0913f57a4cf6628dcfe0a5a4e1d4e880af9ee65b8a",
+            "method": "model_generated",
+            "notes": "source_input_hash=e7e5a6fe4de8be191b079a0913f57a4cf6628dcfe0a5a4e1d4e880af9ee65b8a;no_gold_in_prompt;scene_licence_dropped=object,time",
+            "provider_id": "goal_first_v2_full_context",
+            "provider_version": "goal-first-manager-v2"
+          },
+          "candidate_interpretations": [],
+          "capability_status": "capable",
+          "clarification_question": null,
+          "clarification_targets": [],
+          "compound_ambiguity": true,
+          "compound_ambiguity_count": 3,
+          "context_sampling_uncertainty": {
+            "agreement": 0.6,
+            "score": 0.4,
+            "variant_count": 1
+          },
+          "cpc": {
+            "action": {
+              "status": "not_applicable",
+              "value": "clean"
+            },
+            "actor": {
+              "status": "not_applicable",
+              "value": "hospital delivery robot"
+            },
+            "conditions": {
+              "status": "not_applicable",
+              "value": "until it is reasonably clean"
+            },
+            "constraints": {
+              "status": "not_applicable",
+              "value": "routine exterior cleaning"
+            },
+            "destination": {
+              "status": "not_applicable",
+              "value": "cleaning station"
+            },
+            "negation": {
+              "status": "not_applicable",
+              "value": "no visible residue"
+            },
+            "object": {
+              "status": "not_applicable",
+              "value": "marked linen cart"
+            },
+            "object_attributes": {
+              "status": "not_applicable",
+              "value": "marked linen cart"
+            },
+            "quantity": {
+              "status": "not_applicable",
+              "value": "reasonably clean"
+            },
+            "recipient": {
+              "status": "not_applicable",
+              "value": "hospital delivery robot"
+            },
+            "spatial_relation": {
+              "status": "not_applicable",
+              "value": "beside the cleaning station"
+            },
+            "time": {
+              "status": "not_applicable",
+              "value": "after the meal service"
+            },
+            "tool": {
+              "status": "not_applicable",
+              "value": "site-approved method"
+            }
+          },
+          "findings": [
+            "pilot_ambiguity_types:[\"endpoint_vagueness\",\"pragmatic\",\"temporal_reference\"]",
+            "pilot_capability_status:capable",
+            "intent_summary_present",
+            "router_validation:execute blocked with unresolved critical safety slots"
+          ],
+          "intent_summary": "Clean the marked linen cart after the meal service until it is reasonably clean",
+          "primary_ambiguity_type": "pragmatic",
+          "recommended_strategy": "execute",
+          "rejection_reason": null,
+          "resolution_evidence": [],
+          "resolution_method": null,
+          "resolved_slots": [],
+          "risk_level": "low",
+          "risk_relevant": true,
+          "selected_interpretation": null,
+          "speech_act": "directive_command",
+          "strategy_sequence": [],
+          "supporting_evidence": [],
+          "unresolved_slots": [
+            {
+              "reason": "model_identified_uncertainty",
+              "slot_name": "conditions"
+            }
+          ],
+          "unsupported_specificity": []
+        },
+        "clarification_question": null,
+        "clarification_targets": [],
+        "execution_status": "ok",
+        "official_result": false,
+        "provider_provenance": {
+          "provider_id": "cached_analysis",
+          "provider_version": "1.0.0"
+        },
+        "recommended_strategy": "execute",
+        "record_id": "CA-0421",
+        "rejection_reason": null,
+        "resolved_slots": [],
+        "result_hash": "d51fd753030fcb1702acee05020838e45d888f14578232dc7bb497044410504c",
+        "run_id": null,
+        "run_mode": null,
+        "runtime_metadata": {
+          "awaits_t28_adapter": true,
+          "classification": {
+            "ambiguity_present": true,
+            "ambiguity_types": [
+              "pragmatic",
+              "spatial",
+              "temporal"
+            ],
+            "capability_status": "capable",
+            "compound_ambiguity": true,
+            "compound_ambiguity_count": 3,
+            "derivation_notes": [
+              "ambiguity_present_from_types"
+            ],
+            "risk_level": "low"
+          },
+          "rejection_text": null,
+          "requires_re_evaluation": false,
+          "resolution_events": [
+            {
+              "confidence_category": "none",
+              "details": {
+                "reason": "unsupported_default_rejected"
+              },
+              "evidence_source": null,
+              "outcome": "unresolved",
+              "previous_status": "unresolved",
+              "resolved_value": null,
+              "rule_id": "no_world_knowledge_guess",
+              "safety_eligibility": false,
+              "slot": "conditions"
+            }
+          ],
+          "router_trace": {
+            "clarification_targets": [],
+            "considered_rules": [
+              "goal_first_v2",
+              "known_unsafe_or_prohibited",
+              "known_incapable",
+              "unknown_capability_high_risk",
+              "context_licensed_execute"
+            ],
+            "matched_rule_id": "context_licensed_execute",
+            "notes": [
+              "goal_first_v2_execute_despite_remaining_ambiguity"
+            ],
+            "recommended_strategy": "execute",
+            "rejection_reason": null,
+            "requires_re_evaluation": false,
+            "strategy_sequence": []
+          },
+          "safety_action": "return_with_findings",
+          "uncertainty": null
+        },
+        "safety_findings": [
+          {
+            "details": {
+              "unresolved": [
+                "conditions"
+              ]
+            },
+            "finding_type": "unresolved_critical_execution",
+            "message": "execute with unresolved critical slots",
+            "severity": "error",
+            "slot": null
+          }
+        ],
+        "strategy_sequence": [],
+        "synthetic_only": true,
+        "system_id": "goal_first_manager_v2",
+        "system_version": "2.0.0",
+        "unsupported_commitment_findings": []
+      },
+      "raw_output": "{\n  \"intent_summary\": \"Clean the marked linen cart after the meal service until it is reasonably clean\",\n  \"cpc\": {\n    \"action\": {\n      \"value\": \"clean\",\n      \"status\": \"not_applicable\"\n    },\n    \"object\": {\n      \"value\": \"marked linen cart\",\n      \"status\": \"not_applicable\"\n    },\n    \"time\": {\n      \"value\": \"after the meal service\",\n      \"status\": \"not_applicable\"\n    },\n    \"conditions\": {\n      \"value\": \"until it is reasonably clean\",\n      \"status\": \"not_applicable\"\n    }\n  ,\n  \"constraints\": {\n    \"value\": \"routine exterior cleaning\",\n    \"status\": \"not_applicable\"\n  },\n  \"destination\": {\n    \"value\": \"cleaning station\",\n    \"status\": \"not_applicable\"\n  },\n  \"tool\": {\n    \"value\": \"site-approved method\",\n    \"status\": \"not_applicable\"\n  },\n  \"recipient\": {\n    \"value\": \"hospital delivery robot\",\n    \"status\": \"not_applicable\"\n  },\n  \"spatial_relation\": {\n    \"value\": \"beside the cleaning station\",\n    \"status\": \"not_applicable\"\n  },\n  \"negation\": {\n    \"value\": \"no visible residue\",\n    \"status\": \"not_applicable\"\n  },\n  \"quantity\": {\n    \"value\": \"reasonably clean\",\n    \"status\": \"not_applicable\"\n  },\n  \"object_attributes\": {\n    \"value\": \"marked linen cart\",\n    \"status\": \"not_applicable\"\n  },\n  \"actor\": {\n    \"value\": \"hospital delivery robot\",\n    \"status\": \"not_applicable\"\n  }\n}\n\n,\n  \"pilot_ambiguity_types\": [\n    \"pragmatic\",\n    \"temporal_reference\",\n    \"endpoint_vagueness\"\n  ]\n  \n  ,\n  \"pilot_capability_status\": \"capable\",\n  \"speech_act\": \"directive_command\"\n  \n  ,\n  \"uncertainty\": 0.4\n  ,\n  \"risk_level\": \"low\"\n  ,\n  \"unresolved_slots\": [\n    \"object\",\n    \"time\",\n    \"conditions\"\n  ]\n}",
+      "record_id": "CA-0421",
+      "schema_valid": true,
+      "supports_ambiguity_prediction": true,
+      "supports_capability_prediction": true,
+      "system_id": "goal_first_manager_v2",
+      "system_version": "2.0.0",
+      "terminal_strategy": "execute"
+    },
+    "degree": {
+      "ambiguity_types": [
+        "endpoint_vagueness",
+        "pragmatic",
+        "temporal_reference"
+      ],
+      "analysis_attempts": [
+        {
+          "attempt": 1,
+          "max_new_tokens": 4096,
+          "mode": "thinking",
+          "raw_chars": 7666,
+          "raw_sha256": "1dfc5322b6097b28b47ac405b5f052447fad12fd39a05a8fc0d2033241f6653a",
+          "validation_error": "bad_pilot_ambiguity_types"
+        },
+        {
+          "attempt": 2,
+          "max_new_tokens": 8192,
+          "mode": "thinking_retry",
+          "raw_chars": 7990,
+          "raw_sha256": "4116287b50259f9a5fcbde5c1d6b8b8a48c9f37f0b83b78b6fd5a7d28c954db1",
+          "validation_error": "bad_pilot_ambiguity_types"
+        },
+        {
+          "attempt": 3,
+          "constraint": {
+            "constraint_initialised": true,
+            "generated_token_count": 537,
+            "maximum_output_tokens": 1024,
+            "response_mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+            "termination_reason": "eos_or_constraint_stop",
+            "transport_status": "constrained_generated"
+          },
+          "max_new_tokens": 1024,
+          "mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+          "raw_chars": 1634,
+          "raw_sha256": "887565c9afef92bb007a64096a084ed49a9cc49bfd99a10762bbb508d2816b46",
+          "validation_error": null
+        }
+      ],
+      "capability_status": "capable",
+      "claim_boundary": "separately_versioned_from_frozen_t39",
+      "error": null,
+      "execution_mode": "cluster-gpu-goal-first-v2",
+      "failed": false,
+      "intent_summary": "Clean the marked linen cart after the meal service until it is reasonably clean",
+      "latency_ms": 80503.4546032548,
+      "model_id": "Qwen/Qwen3-8B@b968826d9c46dd6066d109eabc6255188de91218",
+      "parsed": {
+        "analysis": {
+          "ambiguity_present": true,
+          "ambiguity_types": [
+            "pragmatic",
+            "spatial",
+            "temporal"
+          ],
+          "analysis_provenance": {
+            "analysis_id": "e7e5a6fe4de8be191b079a0913f57a4cf6628dcfe0a5a4e1d4e880af9ee65b8a",
+            "method": "model_generated",
+            "notes": "source_input_hash=e7e5a6fe4de8be191b079a0913f57a4cf6628dcfe0a5a4e1d4e880af9ee65b8a;no_gold_in_prompt;scene_licence_dropped=object,time",
+            "provider_id": "goal_first_v2_full_context",
+            "provider_version": "goal-first-manager-v2"
+          },
+          "candidate_interpretations": [],
+          "capability_status": "capable",
+          "clarification_question": null,
+          "clarification_targets": [],
+          "compound_ambiguity": true,
+          "compound_ambiguity_count": 3,
+          "context_sampling_uncertainty": {
+            "agreement": 0.6,
+            "score": 0.4,
+            "variant_count": 1
+          },
+          "cpc": {
+            "action": {
+              "status": "not_applicable",
+              "value": "clean"
+            },
+            "actor": {
+              "status": "not_applicable",
+              "value": "hospital delivery robot"
+            },
+            "conditions": {
+              "status": "not_applicable",
+              "value": "until it is reasonably clean"
+            },
+            "constraints": {
+              "status": "not_applicable",
+              "value": "routine exterior cleaning"
+            },
+            "destination": {
+              "status": "not_applicable",
+              "value": "cleaning station"
+            },
+            "negation": {
+              "status": "not_applicable",
+              "value": "no visible residue"
+            },
+            "object": {
+              "status": "not_applicable",
+              "value": "marked linen cart"
+            },
+            "object_attributes": {
+              "status": "not_applicable",
+              "value": "marked linen cart"
+            },
+            "quantity": {
+              "status": "not_applicable",
+              "value": "reasonably clean"
+            },
+            "recipient": {
+              "status": "not_applicable",
+              "value": "hospital delivery robot"
+            },
+            "spatial_relation": {
+              "status": "not_applicable",
+              "value": "beside the cleaning station"
+            },
+            "time": {
+              "status": "not_applicable",
+              "value": "after the meal service"
+            },
+            "tool": {
+              "status": "not_applicable",
+              "value": "site-approved method"
+            }
+          },
+          "findings": [
+            "pilot_ambiguity_types:[\"endpoint_vagueness\",\"pragmatic\",\"temporal_reference\"]",
+            "pilot_capability_status:capable",
+            "intent_summary_present"
+          ],
+          "intent_summary": "Clean the marked linen cart after the meal service until it is reasonably clean",
+          "primary_ambiguity_type": "pragmatic",
+          "recommended_strategy": "silently_resolve",
+          "rejection_reason": null,
+          "resolution_evidence": [],
+          "resolution_method": null,
+          "resolved_slots": [],
+          "risk_level": "low",
+          "risk_relevant": true,
+          "selected_interpretation": null,
+          "speech_act": "directive_command",
+          "strategy_sequence": [],
+          "supporting_evidence": [],
+          "unresolved_slots": [
+            {
+              "reason": "model_identified_uncertainty",
+              "slot_name": "conditions"
+            }
+          ],
+          "unsupported_specificity": []
+        },
+        "clarification_question": null,
+        "clarification_targets": [],
+        "execution_status": "ok",
+        "official_result": false,
+        "provider_provenance": {
+          "shared_analysis_fingerprint": "813f9fa41f64424f3e0291f86e47d71ad68609862bfce0ef49c2821765a26795"
+        },
+        "recommended_strategy": "silently_resolve",
+        "record_id": "CA-0421",
+        "rejection_reason": null,
+        "resolved_slots": [],
+        "result_hash": "86177c0e4667127a86ea32e1f8dc488adb977e04121ebad84f74622ccb7e70c1",
+        "run_id": null,
+        "run_mode": null,
+        "runtime_metadata": {
+          "shared_analysis_fingerprint": "813f9fa41f64424f3e0291f86e47d71ad68609862bfce0ef49c2821765a26795",
+          "thresholds_status": "unfrozen",
+          "thresholds_valid_for_official_use": false,
+          "uncertainty_score": 0.4,
+          "uses_type_risk_capability_precedence": false
+        },
+        "safety_findings": [],
+        "strategy_sequence": [],
+        "synthetic_only": true,
+        "system_id": "degree_based_router",
+        "system_version": "1.0.0",
+        "unsupported_commitment_findings": []
+      },
+      "raw_output": "{\n  \"intent_summary\": \"Clean the marked linen cart after the meal service until it is reasonably clean\",\n  \"cpc\": {\n    \"action\": {\n      \"value\": \"clean\",\n      \"status\": \"not_applicable\"\n    },\n    \"object\": {\n      \"value\": \"marked linen cart\",\n      \"status\": \"not_applicable\"\n    },\n    \"time\": {\n      \"value\": \"after the meal service\",\n      \"status\": \"not_applicable\"\n    },\n    \"conditions\": {\n      \"value\": \"until it is reasonably clean\",\n      \"status\": \"not_applicable\"\n    }\n  ,\n  \"constraints\": {\n    \"value\": \"routine exterior cleaning\",\n    \"status\": \"not_applicable\"\n  },\n  \"destination\": {\n    \"value\": \"cleaning station\",\n    \"status\": \"not_applicable\"\n  },\n  \"tool\": {\n    \"value\": \"site-approved method\",\n    \"status\": \"not_applicable\"\n  },\n  \"recipient\": {\n    \"value\": \"hospital delivery robot\",\n    \"status\": \"not_applicable\"\n  },\n  \"spatial_relation\": {\n    \"value\": \"beside the cleaning station\",\n    \"status\": \"not_applicable\"\n  },\n  \"negation\": {\n    \"value\": \"no visible residue\",\n    \"status\": \"not_applicable\"\n  },\n  \"quantity\": {\n    \"value\": \"reasonably clean\",\n    \"status\": \"not_applicable\"\n  },\n  \"object_attributes\": {\n    \"value\": \"marked linen cart\",\n    \"status\": \"not_applicable\"\n  },\n  \"actor\": {\n    \"value\": \"hospital delivery robot\",\n    \"status\": \"not_applicable\"\n  }\n}\n\n,\n  \"pilot_ambiguity_types\": [\n    \"pragmatic\",\n    \"temporal_reference\",\n    \"endpoint_vagueness\"\n  ]\n  \n  ,\n  \"pilot_capability_status\": \"capable\",\n  \"speech_act\": \"directive_command\"\n  \n  ,\n  \"uncertainty\": 0.4\n  ,\n  \"risk_level\": \"low\"\n  ,\n  \"unresolved_slots\": [\n    \"object\",\n    \"time\",\n    \"conditions\"\n  ]\n}",
+      "record_id": "CA-0421",
+      "schema_valid": true,
+      "supports_ambiguity_prediction": true,
+      "supports_capability_prediction": true,
+      "system_id": "degree_based_router_v2",
+      "system_version": "2.0.0",
+      "terminal_strategy": "execute"
+    },
+    "timid": {
+      "ambiguity_types": [
+        "endpoint_vagueness",
+        "pragmatic",
+        "temporal_reference"
+      ],
+      "analysis_attempts": [
+        {
+          "attempt": 1,
+          "max_new_tokens": 4096,
+          "mode": "thinking",
+          "raw_chars": 7666,
+          "raw_sha256": "1dfc5322b6097b28b47ac405b5f052447fad12fd39a05a8fc0d2033241f6653a",
+          "validation_error": "bad_pilot_ambiguity_types"
+        },
+        {
+          "attempt": 2,
+          "max_new_tokens": 8192,
+          "mode": "thinking_retry",
+          "raw_chars": 7990,
+          "raw_sha256": "4116287b50259f9a5fcbde5c1d6b8b8a48c9f37f0b83b78b6fd5a7d28c954db1",
+          "validation_error": "bad_pilot_ambiguity_types"
+        },
+        {
+          "attempt": 3,
+          "constraint": {
+            "constraint_initialised": true,
+            "generated_token_count": 537,
+            "maximum_output_tokens": 1024,
+            "response_mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+            "termination_reason": "eos_or_constraint_stop",
+            "transport_status": "constrained_generated"
+          },
+          "max_new_tokens": 1024,
+          "mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+          "raw_chars": 1634,
+          "raw_sha256": "887565c9afef92bb007a64096a084ed49a9cc49bfd99a10762bbb508d2816b46",
+          "validation_error": null
+        }
+      ],
+      "capability_status": "capable",
+      "claim_boundary": "separately_versioned_from_frozen_t39",
+      "error": null,
+      "execution_mode": "cluster-gpu-goal-first-v2",
+      "failed": false,
+      "intent_summary": "Clean the marked linen cart after the meal service until it is reasonably clean",
+      "latency_ms": 80503.4546032548,
+      "model_id": "Qwen/Qwen3-8B@b968826d9c46dd6066d109eabc6255188de91218",
+      "parsed": {
+        "analysis": {
+          "ambiguity_present": true,
+          "ambiguity_types": [
+            "pragmatic",
+            "spatial",
+            "temporal"
+          ],
+          "analysis_provenance": {
+            "analysis_id": "e7e5a6fe4de8be191b079a0913f57a4cf6628dcfe0a5a4e1d4e880af9ee65b8a",
+            "method": "model_generated",
+            "notes": "source_input_hash=e7e5a6fe4de8be191b079a0913f57a4cf6628dcfe0a5a4e1d4e880af9ee65b8a;no_gold_in_prompt;scene_licence_dropped=object,time",
+            "provider_id": "goal_first_v2_full_context",
+            "provider_version": "goal-first-manager-v2"
+          },
+          "candidate_interpretations": [],
+          "capability_status": "capable",
+          "clarification_question": "Which condition should I follow?",
+          "clarification_targets": [
+            "conditions"
+          ],
+          "compound_ambiguity": true,
+          "compound_ambiguity_count": 3,
+          "context_sampling_uncertainty": {
+            "agreement": 0.6,
+            "score": 0.4,
+            "variant_count": 1
+          },
+          "cpc": {
+            "action": {
+              "status": "not_applicable",
+              "value": "clean"
+            },
+            "actor": {
+              "status": "not_applicable",
+              "value": "hospital delivery robot"
+            },
+            "conditions": {
+              "status": "not_applicable",
+              "value": "until it is reasonably clean"
+            },
+            "constraints": {
+              "status": "not_applicable",
+              "value": "routine exterior cleaning"
+            },
+            "destination": {
+              "status": "not_applicable",
+              "value": "cleaning station"
+            },
+            "negation": {
+              "status": "not_applicable",
+              "value": "no visible residue"
+            },
+            "object": {
+              "status": "not_applicable",
+              "value": "marked linen cart"
+            },
+            "object_attributes": {
+              "status": "not_applicable",
+              "value": "marked linen cart"
+            },
+            "quantity": {
+              "status": "not_applicable",
+              "value": "reasonably clean"
+            },
+            "recipient": {
+              "status": "not_applicable",
+              "value": "hospital delivery robot"
+            },
+            "spatial_relation": {
+              "status": "not_applicable",
+              "value": "beside the cleaning station"
+            },
+            "time": {
+              "status": "not_applicable",
+              "value": "after the meal service"
+            },
+            "tool": {
+              "status": "not_applicable",
+              "value": "site-approved method"
+            }
+          },
+          "findings": [
+            "pilot_ambiguity_types:[\"endpoint_vagueness\",\"pragmatic\",\"temporal_reference\"]",
+            "pilot_capability_status:capable",
+            "intent_summary_present",
+            "requires_re_evaluation"
+          ],
+          "intent_summary": "Clean the marked linen cart after the meal service until it is reasonably clean",
+          "primary_ambiguity_type": "pragmatic",
+          "recommended_strategy": "multi_step",
+          "rejection_reason": null,
+          "resolution_evidence": [],
+          "resolution_method": null,
+          "resolved_slots": [],
+          "risk_level": "low",
+          "risk_relevant": true,
+          "selected_interpretation": null,
+          "speech_act": "directive_command",
+          "strategy_sequence": [
+            "clarify"
+          ],
+          "supporting_evidence": [],
+          "unresolved_slots": [
+            {
+              "reason": "model_identified_uncertainty",
+              "slot_name": "conditions"
+            }
+          ],
+          "unsupported_specificity": []
+        },
+        "clarification_question": "Which condition should I follow?",
+        "clarification_targets": [
+          "conditions"
+        ],
+        "execution_status": "ok",
+        "official_result": false,
+        "provider_provenance": {
+          "provider_id": "cached_analysis",
+          "provider_version": "1.0.0"
+        },
+        "recommended_strategy": "multi_step",
+        "record_id": "CA-0421",
+        "rejection_reason": null,
+        "resolved_slots": [],
+        "result_hash": "dc3816561d7080ade0714586357db9e5737d0a1cf93e88e7668c4ff6e4b1e98e",
+        "run_id": null,
+        "run_mode": null,
+        "runtime_metadata": {
+          "awaits_t28_adapter": true,
+          "classification": {
+            "ambiguity_present": true,
+            "ambiguity_types": [
+              "pragmatic",
+              "spatial",
+              "temporal"
+            ],
+            "capability_status": "capable",
+            "compound_ambiguity": true,
+            "compound_ambiguity_count": 3,
+            "derivation_notes": [
+              "ambiguity_present_from_types"
+            ],
+            "risk_level": "low"
+          },
+          "rejection_text": null,
+          "requires_re_evaluation": true,
+          "resolution_events": [
+            {
+              "confidence_category": "none",
+              "details": {
+                "reason": "unsupported_default_rejected"
+              },
+              "evidence_source": null,
+              "outcome": "unresolved",
+              "previous_status": "unresolved",
+              "resolved_value": null,
+              "rule_id": "no_world_knowledge_guess",
+              "safety_eligibility": false,
+              "slot": "conditions"
+            }
+          ],
+          "router_trace": {
+            "clarification_targets": [
+              "conditions"
+            ],
+            "considered_rules": [
+              "known_unsafe_or_prohibited",
+              "known_incapable",
+              "unknown_or_unverified_capability",
+              "hazard_identity_unresolved",
+              "critical_unresolved_medium_high_risk",
+              "unknown_safety_risk",
+              "dependent_compound_ambiguities"
+            ],
+            "matched_rule_id": "dependent_compound_ambiguities",
+            "notes": [
+              "later_silent_resolve_only_after_re_evaluation",
+              "requires_re_evaluation",
+              "no_precommit_execute"
+            ],
+            "recommended_strategy": "multi_step",
+            "rejection_reason": null,
+            "requires_re_evaluation": true,
+            "strategy_sequence": [
+              "clarify"
+            ]
+          },
+          "safety_action": "return_with_findings",
+          "uncertainty": null
+        },
+        "safety_findings": [],
+        "strategy_sequence": [
+          "clarify"
+        ],
+        "synthetic_only": true,
+        "system_id": "full_type_risk_aware_manager",
+        "system_version": "1.0.0",
+        "unsupported_commitment_findings": []
+      },
+      "raw_output": "{\n  \"intent_summary\": \"Clean the marked linen cart after the meal service until it is reasonably clean\",\n  \"cpc\": {\n    \"action\": {\n      \"value\": \"clean\",\n      \"status\": \"not_applicable\"\n    },\n    \"object\": {\n      \"value\": \"marked linen cart\",\n      \"status\": \"not_applicable\"\n    },\n    \"time\": {\n      \"value\": \"after the meal service\",\n      \"status\": \"not_applicable\"\n    },\n    \"conditions\": {\n      \"value\": \"until it is reasonably clean\",\n      \"status\": \"not_applicable\"\n    }\n  ,\n  \"constraints\": {\n    \"value\": \"routine exterior cleaning\",\n    \"status\": \"not_applicable\"\n  },\n  \"destination\": {\n    \"value\": \"cleaning station\",\n    \"status\": \"not_applicable\"\n  },\n  \"tool\": {\n    \"value\": \"site-approved method\",\n    \"status\": \"not_applicable\"\n  },\n  \"recipient\": {\n    \"value\": \"hospital delivery robot\",\n    \"status\": \"not_applicable\"\n  },\n  \"spatial_relation\": {\n    \"value\": \"beside the cleaning station\",\n    \"status\": \"not_applicable\"\n  },\n  \"negation\": {\n    \"value\": \"no visible residue\",\n    \"status\": \"not_applicable\"\n  },\n  \"quantity\": {\n    \"value\": \"reasonably clean\",\n    \"status\": \"not_applicable\"\n  },\n  \"object_attributes\": {\n    \"value\": \"marked linen cart\",\n    \"status\": \"not_applicable\"\n  },\n  \"actor\": {\n    \"value\": \"hospital delivery robot\",\n    \"status\": \"not_applicable\"\n  }\n}\n\n,\n  \"pilot_ambiguity_types\": [\n    \"pragmatic\",\n    \"temporal_reference\",\n    \"endpoint_vagueness\"\n  ]\n  \n  ,\n  \"pilot_capability_status\": \"capable\",\n  \"speech_act\": \"directive_command\"\n  \n  ,\n  \"uncertainty\": 0.4\n  ,\n  \"risk_level\": \"low\"\n  ,\n  \"unresolved_slots\": [\n    \"object\",\n    \"time\",\n    \"conditions\"\n  ]\n}",
+      "record_id": "CA-0421",
+      "schema_valid": true,
+      "supports_ambiguity_prediction": true,
+      "supports_capability_prediction": true,
+      "system_id": "rich_conservative_manager_v2",
+      "system_version": "2.0.0",
+      "terminal_strategy": "clarify"
+    },
+    "context_blind": {
+      "ambiguity_types": [
+        "endpoint_vagueness"
+      ],
+      "analysis_attempts": [
+        {
+          "attempt": 1,
+          "max_new_tokens": 4096,
+          "mode": "thinking",
+          "raw_chars": 5426,
+          "raw_sha256": "f8a61e9488355a01933829027747bce3e7e55d33d8fce690e94b195c3184ec8a",
+          "validation_error": "bad_pilot_ambiguity_types"
+        },
+        {
+          "attempt": 2,
+          "max_new_tokens": 8192,
+          "mode": "thinking_retry",
+          "raw_chars": 14175,
+          "raw_sha256": "9045120daadfc35e935cf16bc98f1080e9d656e134f4fbcc69fa04fdb8a7f8ae",
+          "validation_error": "bad_pilot_ambiguity_types"
+        },
+        {
+          "attempt": 3,
+          "constraint": {
+            "constraint_initialised": true,
+            "generated_token_count": 441,
+            "maximum_output_tokens": 1024,
+            "response_mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+            "termination_reason": "eos_or_constraint_stop",
+            "transport_status": "constrained_generated"
+          },
+          "max_new_tokens": 1024,
+          "mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+          "raw_chars": 1428,
+          "raw_sha256": "054d407734f27321163ff55913e389de77a533c46679f3ed3465b5bc44463db3",
+          "validation_error": null
+        }
+      ],
+      "capability_status": "incapable",
+      "claim_boundary": "separately_versioned_from_frozen_t39",
+      "error": null,
+      "execution_mode": "cluster-gpu-goal-first-v2",
+      "failed": false,
+      "intent_summary": "Clean the marked linen cart after meal service until it is reasonably clean",
+      "latency_ms": 103845.23383202031,
+      "model_id": "Qwen/Qwen3-8B@b968826d9c46dd6066d109eabc6255188de91218",
+      "parsed": {
+        "analysis": {
+          "ambiguity_present": true,
+          "ambiguity_types": [
+            "spatial"
+          ],
+          "analysis_provenance": {
+            "analysis_id": "fde39794cc0676b05dfaeef03e85043e3b1c7da64f0c1c0badd7f1e4db53ac35",
+            "method": "context_blind",
+            "notes": "ablated_input_hash=fde39794cc0676b05dfaeef03e85043e3b1c7da64f0c1c0badd7f1e4db53ac35;source_input_hash=fde39794cc0676b05dfaeef03e85043e3b1c7da64f0c1c0badd7f1e4db53ac35;no_gold_in_prompt;scene_licence_dropped=object",
+            "provider_id": "goal_first_v2_context_blind",
+            "provider_version": "goal-first-manager-v2"
+          },
+          "candidate_interpretations": [],
+          "capability_status": "incapable",
+          "clarification_question": null,
+          "clarification_targets": [],
+          "compound_ambiguity": false,
+          "compound_ambiguity_count": 0,
+          "context_sampling_uncertainty": {
+            "agreement": 0.8,
+            "score": 0.2,
+            "variant_count": 1
+          },
+          "cpc": {
+            "action": {
+              "status": "not_applicable",
+              "value": "clean"
+            },
+            "actor": {
+              "status": "not_applicable",
+              "value": "none"
+            },
+            "conditions": {
+              "status": "not_applicable",
+              "value": "none"
+            },
+            "constraints": {
+              "status": "not_applicable",
+              "value": "none"
+            },
+            "destination": {
+              "status": "not_applicable",
+              "value": "none"
+            },
+            "negation": {
+              "status": "not_applicable",
+              "value": "none"
+            },
+            "object": {
+              "status": "not_applicable",
+              "value": "marked linen cart"
+            },
+            "object_attributes": {
+              "status": "not_applicable",
+              "value": "none"
+            },
+            "quantity": {
+              "status": "not_applicable",
+              "value": "reasonably clean"
+            },
+            "recipient": {
+              "status": "not_applicable",
+              "value": "none"
+            },
+            "spatial_relation": {
+              "status": "not_applicable",
+              "value": "none"
+            },
+            "time": {
+              "status": "not_applicable",
+              "value": "after meal service"
+            },
+            "tool": {
+              "status": "not_applicable",
+              "value": "none"
+            }
+          },
+          "findings": [
+            "pilot_ambiguity_types:[\"endpoint_vagueness\"]",
+            "pilot_capability_status:incapable",
+            "intent_summary_present"
+          ],
+          "intent_summary": "Clean the marked linen cart after meal service until it is reasonably clean",
+          "primary_ambiguity_type": "spatial",
+          "recommended_strategy": "face_preserving_rejection",
+          "rejection_reason": "known_incapability",
+          "resolution_evidence": [],
+          "resolution_method": null,
+          "resolved_slots": [],
+          "risk_level": "low",
+          "risk_relevant": true,
+          "selected_interpretation": null,
+          "speech_act": "directive_command",
+          "strategy_sequence": [],
+          "supporting_evidence": [],
+          "unresolved_slots": [
+            {
+              "reason": "model_identified_uncertainty",
+              "slot_name": "time"
+            },
+            {
+              "reason": "model_identified_uncertainty",
+              "slot_name": "quantity"
+            }
+          ],
+          "unsupported_specificity": []
+        },
+        "clarification_question": null,
+        "clarification_targets": [],
+        "execution_status": "ok",
+        "official_result": false,
+        "provider_provenance": {
+          "provider_id": "cached_analysis",
+          "provider_version": "1.0.0"
+        },
+        "recommended_strategy": "face_preserving_rejection",
+        "record_id": "CA-0421",
+        "rejection_reason": "known_incapability",
+        "resolved_slots": [],
+        "result_hash": "79fd527977abe787944c71d3cc6a776b3d4769032f027970c66196d458f888e2",
+        "run_id": null,
+        "run_mode": null,
+        "runtime_metadata": {
+          "analysis_identity": {
+            "analysis_content_hash": "651887df2060317dcc02a8501eff5e31cce3b3770e62939f1257479bf9525e4c",
+            "analysis_variant": "context_blind",
+            "model_strategy_id": null,
+            "provider_id": "goal_first_v2_context_blind",
+            "provider_version": "goal-first-manager-v2",
+            "record_id": "CA-0421",
+            "source_input_hash": "fde39794cc0676b05dfaeef03e85043e3b1c7da64f0c1c0badd7f1e4db53ac35"
+          },
+          "analysis_identity_fingerprint": "fa2c9b22eb70e1127f377b929b441e36ad4ddc844122677695c1fcb733c536fe",
+          "awaits_t28_adapter": true,
+          "classification": {
+            "ambiguity_present": true,
+            "ambiguity_types": [
+              "spatial"
+            ],
+            "capability_status": "incapable",
+            "compound_ambiguity": false,
+            "compound_ambiguity_count": 0,
+            "derivation_notes": [
+              "ambiguity_present_from_types"
+            ],
+            "risk_level": "low"
+          },
+          "context_ablation": {
+            "ablated_input_hash": "fde39794cc0676b05dfaeef03e85043e3b1c7da64f0c1c0badd7f1e4db53ac35",
+            "capability_context_removed": true,
+            "dialogue_history_removed": true,
+            "rejected_full_context_cache": false,
+            "rejection_reason": null,
+            "scene_context_removed": true,
+            "stripped_context_derived_fields": false
+          },
+          "original_input_unmutated": true,
+          "rejection_text": "I am not able to perform that action with my current capabilities. I will not invent an alternative that is not supported.",
+          "requires_re_evaluation": false,
+          "resolution_events": [
+            {
+              "confidence_category": "none",
+              "details": {
+                "reason": "unsupported_default_rejected"
+              },
+              "evidence_source": null,
+              "outcome": "unresolved",
+              "previous_status": "unresolved",
+              "resolved_value": null,
+              "rule_id": "no_world_knowledge_guess",
+              "safety_eligibility": false,
+              "slot": "time"
+            },
+            {
+              "confidence_category": "none",
+              "details": {
+                "reason": "unsupported_default_rejected"
+              },
+              "evidence_source": null,
+              "outcome": "unresolved",
+              "previous_status": "unresolved",
+              "resolved_value": null,
+              "rule_id": "no_world_knowledge_guess",
+              "safety_eligibility": false,
+              "slot": "quantity"
+            }
+          ],
+          "router_trace": {
+            "clarification_targets": [],
+            "considered_rules": [
+              "goal_first_v2",
+              "known_unsafe_or_prohibited",
+              "known_incapable"
+            ],
+            "matched_rule_id": "known_incapable",
+            "notes": [],
+            "recommended_strategy": "face_preserving_rejection",
+            "rejection_reason": "known_incapability",
+            "requires_re_evaluation": false,
+            "strategy_sequence": []
+          },
+          "safety_action": "return_with_findings",
+          "uncertainty": null
+        },
+        "safety_findings": [],
+        "strategy_sequence": [],
+        "synthetic_only": true,
+        "system_id": "context_blind_manager",
+        "system_version": "1.0.0",
+        "unsupported_commitment_findings": []
+      },
+      "raw_output": "{\n  \"intent_summary\": \"Clean the marked linen cart after meal service until it is reasonably clean\",\n  \"cpc\": {\n    \"action\": {\n      \"value\": \"clean\",\n      \"status\": \"not_applicable\"\n    },\n    \"object\": {\n      \"value\": \"marked linen cart\",\n      \"status\": \"not_applicable\"\n    },\n    \"time\": {\n      \"value\": \"after meal service\",\n      \"status\": \"not_applicable\"\n    },\n    \"recipient\": {\n      \"value\": \"none\",\n      \"status\": \"not_applicable\"\n    },\n    \"destination\": {\n      \"value\": \"none\",\n      \"status\": \"not_applicable\"\n    },\n    \"quantity\": {\n      \"value\": \"reasonably clean\",\n      \"status\": \"not_applicable\"\n    }\n \n  ,\n  \"constraints\": {\n    \"value\": \"none\",\n    \"status\": \"not_applicable\"\n  },\n  \"conditions\": {\n    \"value\": \"none\",\n    \"status\": \"not_applicable\"\n  },\n  \"negation\": {\n    \"value\": \"none\",\n    \"status\": \"not_applicable\"\n  },\n  \"spatial_relation\": {\n    \"value\": \"none\",\n    \"status\": \"not_applicable\"\n  },\n  \"tool\": {\n    \"value\": \"none\",\n    \"status\": \"not_applicable\"\n  },\n  \"object_attributes\": {\n    \"value\": \"none\",\n    \"status\": \"not_applicable\"\n  },\n  \"actor\": {\n    \"value\": \"none\",\n    \"status\": \"not_applicable\"\n  }\n}\n\n,\n  \"pilot_ambiguity_types\": [\n    \"endpoint_vagueness\"\n  ]\n  \n  ,\n  \"pilot_capability_status\": \"incapable\",\n  \"speech_act\": \"directive_command\",\n  \"risk_level\": \"low\",\n  \"uncertainty\": 0.2,\n  \"unresolved_slots\": [\n    \"time\",\n    \"quantity\",\n    \"object\"\n  ]\n}",
+      "record_id": "CA-0421",
+      "schema_valid": true,
+      "supports_ambiguity_prediction": true,
+      "supports_capability_prediction": true,
+      "system_id": "goal_first_context_blind_v2",
+      "system_version": "2.0.0",
+      "terminal_strategy": "face_preserving_rejection"
+    }
+  },
+  "provenance": {
+    "source_sha256": "f33b1e29f1e8aa256a475f07213aa07247def47d8e2148d54a472a40b71b05c9",
+    "gold_sha256": "5e23ad1a92ff1873c8f039a8ce560a111dd6fb6b8ae8c11d6cf34dbfa1c360db",
+    "t07_final_zip_sha256": "34ca50e034ca37b617068bb50c734d12fa26282fb5eec563c11ead700163e491",
+    "inherited_t07_zip_sha256": "0305b1e9ab062876ee6ee89778cc6028d2eaf01718b7dd0295944e7d9cb81a01",
+    "note": "Goal-First, Degree, Timid, and Context-Blind predictions are inherited from the earlier T0.7 run; official intent and comparison come from the final T0.7 archive."
+  }
+}

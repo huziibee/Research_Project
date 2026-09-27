@@ -1,0 +1,1404 @@
+{
+  "record_id": "CA-0470",
+  "frozen_source": {
+    "capability_context": "Warehouse transport robot can scan, weigh, and move approved loads with a powered base and rated handling attachments.",
+    "command": "Do the same with the marked parts bin using the usual setup.",
+    "dialogue_history": [
+      "stock controller: I stocked the first parts bin with enough for one shift and placed the shipping case after a separate request.",
+      "Robot: Both tasks are complete.",
+      "stock controller: The next item is another parts bin in the same replenishment batch."
+    ],
+    "record_id": "CA-0470",
+    "scene_context": "Inbound bay in a warehouse. Two parts bins carry work-order marks: the green one near the return zone has a blue COMPLETE tag, while the white one beside the dispatch board has a yellow PENDING tag. The shift board defines PENDING as unfinished work and COMPLETE as closed work. An unrelated parts bin is logged for later work at the roller door. The shift plan contains eight standard uses. The stock table assigns three standard packs per use and a two-pack reserve. The PENDING replenishment tag belongs to Work order WO-572. The setup table states that the carrier pickup applies to a different work-order prefix, while Work order WO-572 maps to the night receiving."
+  },
+  "frozen_gold": {
+    "ambiguity_types": [
+      "discourse_ellipsis",
+      "fuzzy_quantity",
+      "object_reference",
+      "routine_reference"
+    ],
+    "annotator_b_era": "claude_era",
+    "annotator_b_model": "claude-4.6-sonnet-medium-thinking",
+    "capability_status": "capable",
+    "field_status": {
+      "ambiguity_types": "adjudicated",
+      "capability_status": "human_auditor:independent_from_route",
+      "record_validity": "auto_agree",
+      "strategy_sequence": "from_A_matching_terminal",
+      "terminal_strategy": "auto_agree"
+    },
+    "gold_lifecycle": "final_gold",
+    "gold_status": "adjudicated",
+    "human_gate_required": false,
+    "provenance": {
+      "agreement_label": "pilot_annotation_agreement",
+      "annotator_a_sha256": "53980ba85194dd838de4116d45dcf216a35f3e24c1c8c2fd9949784c93fea4a4",
+      "annotator_b_sha256": "1e57dc3ace8cb2fc087d4dacca968c14a1bbbbe795a6013d944d36e61b854f3d",
+      "capability_route_decouple": "conditionally_capable remapped to capable: no evidenced external capability precondition; linguistic silently_resolve/clarify is not a capability condition",
+      "gold_policy": "use_existing_pilot_adjudicated_gold",
+      "input_sha256": "f114971739ce27ad2b38e02db6560a0153630e9d5ee31b87cf7065a21ee66fb0",
+      "pilot_gold_sha256": "28a7ad6aa78a4e0923cb47abc8a7c1bdfefd041d3d353e98bbb851b2066395a0",
+      "protocol": "pilot_adjudicated_gold_on_capability_repaired_source",
+      "repaired_input_sha256": "b58f425aa8afd2a483faae2111978f1d171425dc54dd44fd61814fc02d01a7f5"
+    },
+    "record_id": "CA-0470",
+    "record_validity": "valid",
+    "strategy_sequence": [
+      "resolve_discourse",
+      "silently_resolve",
+      "execute"
+    ],
+    "terminal_strategy": "execute"
+  },
+  "t07_comparison": {
+    "record_id": "CA-0470",
+    "gold_route": "execute",
+    "raw_route": "clarify",
+    "ft_route": "execute",
+    "gf_route": "refuse",
+    "raw_route_ok": "False",
+    "ft_route_ok": "True",
+    "gf_route_ok": "False",
+    "raw_official_intent": "True",
+    "ft_official_intent": "True",
+    "gf_official_intent": "True",
+    "blind_official_intent": "True"
+  },
+  "t07_official_intent": {
+    "context_blind_official_intent": true,
+    "degree_official_intent_shared_gf": true,
+    "finetune_official_intent": true,
+    "goal_first_official_intent": true,
+    "raw_official_intent": true,
+    "record_id": "CA-0470",
+    "timid_official_intent_shared_gf": true
+  },
+  "t07_predictions": {
+    "raw_qwen": {
+      "ambiguity_types": [
+        "object_reference",
+        "routine_reference"
+      ],
+      "capability_status": "conditionally_capable",
+      "error": null,
+      "execution_mode": "final_close_intent_box",
+      "failed": false,
+      "intent_summary": "Replenish the marked parts bin (PENDING tag) using the standard setup procedure for work order WO-572.",
+      "latency_ms": 11801.120707765222,
+      "parsed": {
+        "ambiguity_types": [
+          "object_reference",
+          "routine_reference"
+        ],
+        "capability_status": "conditionally_capable",
+        "intent_summary": "Replenish the marked parts bin (PENDING tag) using the standard setup procedure for work order WO-572.",
+        "speech_act": "directive_command",
+        "terminal_strategy": "clarify"
+      },
+      "raw_output": "<think>\nOkay, let's tackle this. The user is evaluating a robot command. The command given is \"Do the same with the marked parts bin using the usual setup.\" \n\nFirst, I need to figure out the intent_summary. The dialogue history shows that the stock controller mentioned stocking the first parts bin and placing the shipping case after a separate request. The robot confirmed both tasks are complete. Now, the stock controller says the next item is another parts bin in the same replenishment batch. The parts bins have marks: green with a blue COMPLETE tag and white with a yellow PENDING tag. The shift board defines PENDING as unfinished and COMPLETE as closed. The PENDING tag is for WO-572, which maps to night receiving. The setup table mentions carrier pickup for a different prefix, so maybe the usual setup refers to the standard process for WO-572.\n\nThe robot's command is to do the same as before but with the marked parts bin. The \"usual setup\" likely refers to the standard procedure for replenishment, which involves scanning, moving, and placing items. The ambiguity here is whether \"the marked parts bin\" refers to the white PENDING one or the green COMPLETE. Since the stock controller mentioned the next item is another parts bin in the same batch, which has a PENDING tag, the robot might be instructed to handle that. However, the command says \"the marked parts bin,\" which could be ambiguous if there are multiple marked bins. The ambiguity types might include object_reference or pronoun_reference if \"the marked\" is unclear. Also, the \"usual setup\" might be vague, leading to fuzzy_quantity or routine_reference. \n\nFor speech_act, the command is a directive to perform an action, so directive_command. The capability_status: the robot can move approved loads, so if the parts bin is approved, it's capable. But the PENDING tag might indicate it's not yet closed, so maybe conditionally_capable. The terminal_strategy would be execute if it's capable, otherwise clarify. But since the setup is usual, and the robot can handle it, maybe execute. However, the ambiguity might require clarification, so terminal_strategy could be clarify. Wait, the ambiguity types might include routine_reference if \"usual setup\" is unclear. So capability_status might be conditionally_capable due to the PENDING status. \n\nPutting it all together: intent_summary is to replenish the PENDING parts bin using standard setup. Speech act is directive_command. Ambiguity types could be object_reference (which parts bin) and routine_reference (usual setup). Capability status conditionally_capable because the PENDING tag might not be ready. Terminal strategy clarify to resolve ambiguities.\n</think>\n\n{\n  \"intent_summary\": \"Replenish the marked parts bin (PENDING tag) using the standard setup procedure for work order WO-572.\",\n  \"speech_act\": \"directive_command\",\n  \"ambiguity_types\": [\"object_reference\", \"routine_reference\"],\n  \"capability_status\": \"conditionally_capable\",\n  \"terminal_strategy\": \"clarify\"\n}",
+      "record_id": "CA-0470",
+      "schema_valid": true,
+      "speech_act": "directive_command",
+      "system_id": "direct_base_llm",
+      "terminal_strategy": "clarify"
+    },
+    "finetune": {
+      "ambiguity_types": [
+        "pragmatic"
+      ],
+      "capability_status": "capable",
+      "error": null,
+      "execution_mode": "final_close_intent_box",
+      "failed": false,
+      "intent_summary": "The stock controller wants the robot to stock the PENDING parts bin using the same process as before.",
+      "latency_ms": 28774.44193419069,
+      "parsed": {
+        "ambiguity_types": [
+          "pragmatic"
+        ],
+        "capability_status": "capable",
+        "intent_summary": "The stock controller wants the robot to stock the PENDING parts bin using the same process as before.",
+        "speech_act": "directive_command",
+        "terminal_strategy": "execute"
+      },
+      "raw_output": "<think>\nOkay, let me try to figure this out. The user is giving a command to the robot: \"Do the same with the marked parts bin using the usual setup.\" The dialogue history shows that the stock controller mentioned two parts bins, one marked as COMPLETE and another as PENDING. The robot confirmed both tasks were complete, but now the stock controller is referring to another parts bin in the same replenishment batch.\n\nFirst, I need to determine the intent. The stock controller wants the robot to handle the next parts bin, which is marked as PENDING. The \"usual setup\" probably refers to the previous process where the robot stocked the bin and placed the shipping case. So the intent is to repeat that process for the new bin.\n\nSpeech act: This is a directive command because the stock controller is telling the robot what to do. The command is direct, even though it's phrased as \"do the same,\" which is a bit vague but still a command.\n\nAmbiguity types: The command is a bit vague about what \"the usual setup\" entails. The phrase \"do the same\" might be ambiguous. There's also the possibility that \"the marked parts bin\" refers to the PENDING one, but since the robot previously handled the COMPLETE one, the stock controller might be referring to the PENDING one. However, the exact reference is clear from the scene context. But the ambiguity here could be in the \"usual setup,\" which might not be explicitly defined. So maybe \"fuzzy_quantity\" if the setup steps aren't clear, or \"pragmatic\" if the meaning is inferred. Alternatively, since the command is to do the same as before, but the previous steps might not be fully specified, that's a pragmatic ambiguity. Also, the \"usual setup\" might be unclear, leading to \"fuzzy_quantity\" or \"pragmatic.\"\n\nCapability status: The robot can move approved loads, scan, and weigh. The PENDING bin is part of the work order WO-572, which is mapped to night receiving. The setup table says carrier pickup is for a different prefix, so this bin is for the same work order. The robot is authorized to handle this as part of the setup. So capable.\n\nTerminal strategy: The robot should execute the command, but if there's ambiguity, it might need to clarify. However, the command is a directive, so the robot would proceed. But since there's some ambiguity in the setup steps, maybe the terminal strategy is to clarify. Wait, but the capability status is capable, so the robot can execute. But the ambiguity might require clarification. Hmm. The user wants to know if the robot can handle it. Since the robot can move the parts bin as per the setup, maybe it's capable. But the ambiguity in the setup steps might make it conditionally capable. Wait, the capability context says the robot can move approved loads. The PENDING bin is part of the work order, so it's approved. So the capability is capable. The ambiguity is in the command's phrasing, but the robot can handle it. So terminal strategy would be execute, but if there's ambiguity, maybe clarify. However, the speech act is a directive command, so the robot would proceed. But the ambiguity types might include pragmatic ambiguity. So the capability is capable, and the terminal strategy is execute. Wait, but the user might need to clarify the setup steps. So maybe the terminal strategy is clarify? Wait, the terminal strategy options are execute, clarify, or face-preserving rejection. If the robot is capable and the command is a directive, it would execute, but if there's ambiguity, maybe clarify. But the ambiguity is in the command's phrasing, not the robot's capability. So the robot can execute, but the command's ambiguity might require clarification. However, the user might want the robot to proceed. So the terminal strategy would be execute. But I need to check the ambiguity types again.\n\nThe command \"do the same with the marked parts bin using the usual setup\" is ambiguous in terms of what \"the usual setup\" entails. So that's a fuzzy_quantity or pragmatic ambiguity. Also, the \"marked parts bin\" refers to the PENDING one, which is clear from the scene context. So the ambiguity here is the \"usual setup,\" which might not be explicitly defined, leading to pragmatic ambiguity. So the ambiguity_types would include pragmatic. Also, maybe \"fuzzy_quantity\" if the setup steps are not clearly quantified. But the main ambiguity is in the phrasing, so pragmatic.\n\nSo putting it all together:\n\nintent_summary: The stock controller wants the robot to stock the PENDING parts bin using the same process as before.\n\nspeech_act: directive_command\n\nambiguity_types: [\"pragmatic\"]\n\ncapability_status: capable\n\nterminal_strategy: execute\n</think>\n\n{\n  \"intent_summary\": \"The stock controller wants the robot to stock the PENDING parts bin using the same process as before.\",\n  \"speech_act\": \"directive_command\",\n  \"ambiguity_types\": [\"pragmatic\"],\n  \"capability_status\": \"capable\",\n  \"terminal_strategy\": \"execute\"\n}",
+      "record_id": "CA-0470",
+      "schema_valid": true,
+      "speech_act": "directive_command",
+      "system_id": "t28_selected_adapter_llm",
+      "terminal_strategy": "execute"
+    },
+    "goal_first": {
+      "ambiguity_types": [
+        "object_reference",
+        "pragmatic",
+        "routine_reference",
+        "spatial_reference"
+      ],
+      "analysis_attempts": [
+        {
+          "attempt": 1,
+          "max_new_tokens": 4096,
+          "mode": "thinking",
+          "raw_chars": 9311,
+          "raw_sha256": "b4c7449a0cdf740b991bb3787ad99dbb98032468b64826640fe013ebb12bf79b",
+          "validation_error": "bad_intent_summary"
+        },
+        {
+          "attempt": 2,
+          "max_new_tokens": 8192,
+          "mode": "thinking_retry",
+          "raw_chars": 6993,
+          "raw_sha256": "1406b920f6b7de6eea20c28ec9df05d3d5668f371190450f37abd92916720008",
+          "validation_error": "bad_pilot_ambiguity_types"
+        },
+        {
+          "attempt": 3,
+          "constraint": {
+            "constraint_initialised": true,
+            "generated_token_count": 534,
+            "maximum_output_tokens": 1024,
+            "response_mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+            "termination_reason": "eos_or_constraint_stop",
+            "transport_status": "constrained_generated"
+          },
+          "max_new_tokens": 1024,
+          "mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+          "raw_chars": 1687,
+          "raw_sha256": "be20e22955e155c74a8b16391a19d24ce454d0aa3cf97c01308895e7f035f1f4",
+          "validation_error": null
+        }
+      ],
+      "capability_status": "unauthorized",
+      "claim_boundary": "separately_versioned_from_frozen_t39",
+      "error": null,
+      "execution_mode": "cluster-gpu-goal-first-v2",
+      "failed": false,
+      "intent_summary": "Complete the same parts bin marking task as before using the standard setup procedure",
+      "latency_ms": 82976.21176019311,
+      "model_id": "Qwen/Qwen3-8B@b968826d9c46dd6066d109eabc6255188de91218",
+      "parsed": {
+        "analysis": {
+          "ambiguity_present": true,
+          "ambiguity_types": [
+            "contextual",
+            "pragmatic",
+            "referential",
+            "spatial"
+          ],
+          "analysis_provenance": {
+            "analysis_id": "f636273476ec6116f8e6f7deabde97496409752b8999213a5ad8f96447ac5979",
+            "method": "model_generated",
+            "notes": "source_input_hash=f636273476ec6116f8e6f7deabde97496409752b8999213a5ad8f96447ac5979;no_gold_in_prompt;scene_licence_dropped=action,object,recipient,constraints,conditions,time,quantity,spatial_relation,tool,destination,negation,object_attributes,actor",
+            "provider_id": "goal_first_v2_full_context",
+            "provider_version": "goal-first-manager-v2"
+          },
+          "candidate_interpretations": [],
+          "capability_status": "unknown",
+          "clarification_question": null,
+          "clarification_targets": [],
+          "compound_ambiguity": true,
+          "compound_ambiguity_count": 4,
+          "context_sampling_uncertainty": {
+            "agreement": 0.15000000000000002,
+            "score": 0.85,
+            "variant_count": 1
+          },
+          "cpc": {
+            "action": {
+              "status": "filled",
+              "value": "mark parts bin"
+            },
+            "actor": {
+              "status": "filled",
+              "value": "stock controller"
+            },
+            "conditions": {
+              "status": "filled",
+              "value": "usual setup"
+            },
+            "constraints": {
+              "status": "filled",
+              "value": "unknown"
+            },
+            "destination": {
+              "status": "filled",
+              "value": "dispatch board"
+            },
+            "negation": {
+              "status": "filled",
+              "value": "not complete"
+            },
+            "object": {
+              "status": "filled",
+              "value": "marked parts bin"
+            },
+            "object_attributes": {
+              "status": "filled",
+              "value": "parts bin with work-order mark"
+            },
+            "quantity": {
+              "status": "filled",
+              "value": "three standard packs"
+            },
+            "recipient": {
+              "status": "filled",
+              "value": "stock controller"
+            },
+            "spatial_relation": {
+              "status": "filled",
+              "value": "inbound bay"
+            },
+            "time": {
+              "status": "filled",
+              "value": "shift time"
+            },
+            "tool": {
+              "status": "filled",
+              "value": "powered base"
+            }
+          },
+          "findings": [
+            "pilot_ambiguity_types:[\"object_reference\",\"pragmatic\",\"routine_reference\",\"spatial_reference\"]",
+            "pilot_capability_status:unauthorized",
+            "intent_summary_present"
+          ],
+          "intent_summary": "Complete the same parts bin marking task as before using the standard setup procedure",
+          "primary_ambiguity_type": "contextual",
+          "recommended_strategy": "face_preserving_rejection",
+          "rejection_reason": "unsafe_or_prohibited_action",
+          "resolution_evidence": [],
+          "resolution_method": null,
+          "resolved_slots": [
+            {
+              "slot_name": "action",
+              "value": "mark parts bin"
+            },
+            {
+              "slot_name": "actor",
+              "value": "stock controller"
+            },
+            {
+              "slot_name": "object",
+              "value": "marked parts bin"
+            },
+            {
+              "slot_name": "object_attributes",
+              "value": "parts bin with work-order mark"
+            },
+            {
+              "slot_name": "destination",
+              "value": "dispatch board"
+            },
+            {
+              "slot_name": "spatial_relation",
+              "value": "inbound bay"
+            },
+            {
+              "slot_name": "quantity",
+              "value": "three standard packs"
+            },
+            {
+              "slot_name": "time",
+              "value": "shift time"
+            },
+            {
+              "slot_name": "recipient",
+              "value": "stock controller"
+            },
+            {
+              "slot_name": "tool",
+              "value": "powered base"
+            },
+            {
+              "slot_name": "conditions",
+              "value": "usual setup"
+            },
+            {
+              "slot_name": "constraints",
+              "value": "unknown"
+            },
+            {
+              "slot_name": "negation",
+              "value": "not complete"
+            }
+          ],
+          "risk_level": "medium",
+          "risk_relevant": true,
+          "selected_interpretation": null,
+          "speech_act": "directive_command",
+          "strategy_sequence": [],
+          "supporting_evidence": [],
+          "unresolved_slots": [],
+          "unsupported_specificity": []
+        },
+        "clarification_question": null,
+        "clarification_targets": [],
+        "execution_status": "ok",
+        "official_result": false,
+        "provider_provenance": {
+          "provider_id": "cached_analysis",
+          "provider_version": "1.0.0"
+        },
+        "recommended_strategy": "face_preserving_rejection",
+        "record_id": "CA-0470",
+        "rejection_reason": "unsafe_or_prohibited_action",
+        "resolved_slots": [
+          {
+            "slot_name": "action",
+            "value": "mark parts bin"
+          },
+          {
+            "slot_name": "actor",
+            "value": "stock controller"
+          },
+          {
+            "slot_name": "object",
+            "value": "marked parts bin"
+          },
+          {
+            "slot_name": "object_attributes",
+            "value": "parts bin with work-order mark"
+          },
+          {
+            "slot_name": "destination",
+            "value": "dispatch board"
+          },
+          {
+            "slot_name": "spatial_relation",
+            "value": "inbound bay"
+          },
+          {
+            "slot_name": "quantity",
+            "value": "three standard packs"
+          },
+          {
+            "slot_name": "time",
+            "value": "shift time"
+          },
+          {
+            "slot_name": "recipient",
+            "value": "stock controller"
+          },
+          {
+            "slot_name": "tool",
+            "value": "powered base"
+          },
+          {
+            "slot_name": "conditions",
+            "value": "usual setup"
+          },
+          {
+            "slot_name": "constraints",
+            "value": "unknown"
+          },
+          {
+            "slot_name": "negation",
+            "value": "not complete"
+          }
+        ],
+        "result_hash": "79dc0d931aa8efb4991686adca8e60b96a831234c0fc4a4de4cc489f5c75446f",
+        "run_id": null,
+        "run_mode": null,
+        "runtime_metadata": {
+          "awaits_t28_adapter": true,
+          "classification": {
+            "ambiguity_present": true,
+            "ambiguity_types": [
+              "contextual",
+              "pragmatic",
+              "referential",
+              "spatial"
+            ],
+            "capability_status": "unknown",
+            "compound_ambiguity": true,
+            "compound_ambiguity_count": 4,
+            "derivation_notes": [
+              "ambiguity_present_from_types"
+            ],
+            "risk_level": "medium"
+          },
+          "rejection_text": "I need to decline that request because it would be unsafe under the current constraints.",
+          "requires_re_evaluation": false,
+          "resolution_events": [],
+          "router_trace": {
+            "clarification_targets": [],
+            "considered_rules": [
+              "goal_first_v2",
+              "known_unsafe_or_prohibited"
+            ],
+            "matched_rule_id": "known_unsafe_or_prohibited",
+            "notes": [],
+            "recommended_strategy": "face_preserving_rejection",
+            "rejection_reason": "unsafe_or_prohibited_action",
+            "requires_re_evaluation": false,
+            "strategy_sequence": []
+          },
+          "safety_action": "return_with_findings",
+          "uncertainty": null
+        },
+        "safety_findings": [],
+        "strategy_sequence": [],
+        "synthetic_only": true,
+        "system_id": "goal_first_manager_v2",
+        "system_version": "2.0.0",
+        "unsupported_commitment_findings": []
+      },
+      "raw_output": "{\n  \"intent_summary\": \"Complete the same parts bin marking task as before using the standard setup procedure\",\n  \"cpc\": {\n    \"action\": {\n      \"value\": \"mark parts bin\",\n      \"status\": \"unknown\"\n    },\n    \"object\": {\n      \"value\": \"marked parts bin\",\n      \"status\": \"unknown\"\n    },\n    \"recipient\": {\n      \"value\": \"stock controller\",\n      \"status\": \"unknown\"\n    }\n  ,\n  \"constraints\": {\n    \"status\": \"unknown\"\n  ,\n  \"value\": \"unknown\"\n  },\n  \"conditions\": {\n    \"value\": \"usual setup\",\n    \"status\": \"unknown\"\n  },\n  \"time\": {\n    \"value\": \"shift time\",\n    \"status\": \"unknown\"\n  },\n  \"quantity\": {\n    \"value\": \"three standard packs\",\n    \"status\": \"unknown\"\n  },\n  \"spatial_relation\": {\n    \"value\": \"inbound bay\",\n    \"status\": \"unknown\"\n  },\n  \"tool\": {\n    \"value\": \"powered base\",\n    \"status\": \"unknown\"\n  },\n  \"destination\": {\n    \"value\": \"dispatch board\",\n    \"status\": \"unknown\"\n  },\n  \"negation\": {\n    \"value\": \"not complete\",\n    \"status\": \"unknown\"\n  },\n  \"object_attributes\": {\n    \"value\": \"parts bin with work-order mark\",\n    \"status\": \"unknown\"\n  },\n  \"actor\": {\n    \"value\": \"stock controller\",\n    \"status\": \"unknown\"\n  }\n}\n\n, \n  \"pilot_ambiguity_types\": [\n    \"pragmatic\",\n    \"object_reference\",\n    \"spatial_reference\",\n    \"routine_reference\"\n  ]\n  \n  ,\n  \"pilot_capability_status\": \"unauthorized\"\n  ,\n  \"unresolved_slots\": [\n    \"action\",\n    \"object\",\n    \"recipient\",\n    \"constraints\",\n    \"conditions\",\n    \"time\",\n    \"quantity\",\n    \"spatial_relation\",\n    \"tool\",\n    \"destination\",\n    \"negation\",\n    \"object_attributes\",\n    \"actor\"\n  ]\n  \n  ,\n  \"uncertainty\": 0.85\n  ,\n  \"risk_level\": \"medium\"\n  ,\n  \"speech_act\": \"directive_command\"\n  }\n",
+      "record_id": "CA-0470",
+      "schema_valid": true,
+      "supports_ambiguity_prediction": true,
+      "supports_capability_prediction": true,
+      "system_id": "goal_first_manager_v2",
+      "system_version": "2.0.0",
+      "terminal_strategy": "face_preserving_rejection"
+    },
+    "degree": {
+      "ambiguity_types": [
+        "object_reference",
+        "pragmatic",
+        "routine_reference",
+        "spatial_reference"
+      ],
+      "analysis_attempts": [
+        {
+          "attempt": 1,
+          "max_new_tokens": 4096,
+          "mode": "thinking",
+          "raw_chars": 9311,
+          "raw_sha256": "b4c7449a0cdf740b991bb3787ad99dbb98032468b64826640fe013ebb12bf79b",
+          "validation_error": "bad_intent_summary"
+        },
+        {
+          "attempt": 2,
+          "max_new_tokens": 8192,
+          "mode": "thinking_retry",
+          "raw_chars": 6993,
+          "raw_sha256": "1406b920f6b7de6eea20c28ec9df05d3d5668f371190450f37abd92916720008",
+          "validation_error": "bad_pilot_ambiguity_types"
+        },
+        {
+          "attempt": 3,
+          "constraint": {
+            "constraint_initialised": true,
+            "generated_token_count": 534,
+            "maximum_output_tokens": 1024,
+            "response_mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+            "termination_reason": "eos_or_constraint_stop",
+            "transport_status": "constrained_generated"
+          },
+          "max_new_tokens": 1024,
+          "mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+          "raw_chars": 1687,
+          "raw_sha256": "be20e22955e155c74a8b16391a19d24ce454d0aa3cf97c01308895e7f035f1f4",
+          "validation_error": null
+        }
+      ],
+      "capability_status": "unauthorized",
+      "claim_boundary": "separately_versioned_from_frozen_t39",
+      "error": null,
+      "execution_mode": "cluster-gpu-goal-first-v2",
+      "failed": false,
+      "intent_summary": "Complete the same parts bin marking task as before using the standard setup procedure",
+      "latency_ms": 82976.21176019311,
+      "model_id": "Qwen/Qwen3-8B@b968826d9c46dd6066d109eabc6255188de91218",
+      "parsed": {
+        "analysis": {
+          "ambiguity_present": true,
+          "ambiguity_types": [
+            "contextual",
+            "pragmatic",
+            "referential",
+            "spatial"
+          ],
+          "analysis_provenance": {
+            "analysis_id": "f636273476ec6116f8e6f7deabde97496409752b8999213a5ad8f96447ac5979",
+            "method": "model_generated",
+            "notes": "source_input_hash=f636273476ec6116f8e6f7deabde97496409752b8999213a5ad8f96447ac5979;no_gold_in_prompt;scene_licence_dropped=action,object,recipient,constraints,conditions,time,quantity,spatial_relation,tool,destination,negation,object_attributes,actor",
+            "provider_id": "goal_first_v2_full_context",
+            "provider_version": "goal-first-manager-v2"
+          },
+          "candidate_interpretations": [],
+          "capability_status": "unknown",
+          "clarification_question": "Could you clarify what you would like me to do?",
+          "clarification_targets": [
+            "intent"
+          ],
+          "compound_ambiguity": true,
+          "compound_ambiguity_count": 4,
+          "context_sampling_uncertainty": {
+            "agreement": 0.15000000000000002,
+            "score": 0.85,
+            "variant_count": 1
+          },
+          "cpc": {
+            "action": {
+              "status": "filled",
+              "value": "mark parts bin"
+            },
+            "actor": {
+              "status": "filled",
+              "value": "stock controller"
+            },
+            "conditions": {
+              "status": "filled",
+              "value": "usual setup"
+            },
+            "constraints": {
+              "status": "filled",
+              "value": "unknown"
+            },
+            "destination": {
+              "status": "filled",
+              "value": "dispatch board"
+            },
+            "negation": {
+              "status": "filled",
+              "value": "not complete"
+            },
+            "object": {
+              "status": "filled",
+              "value": "marked parts bin"
+            },
+            "object_attributes": {
+              "status": "filled",
+              "value": "parts bin with work-order mark"
+            },
+            "quantity": {
+              "status": "filled",
+              "value": "three standard packs"
+            },
+            "recipient": {
+              "status": "filled",
+              "value": "stock controller"
+            },
+            "spatial_relation": {
+              "status": "filled",
+              "value": "inbound bay"
+            },
+            "time": {
+              "status": "filled",
+              "value": "shift time"
+            },
+            "tool": {
+              "status": "filled",
+              "value": "powered base"
+            }
+          },
+          "findings": [
+            "pilot_ambiguity_types:[\"object_reference\",\"pragmatic\",\"routine_reference\",\"spatial_reference\"]",
+            "pilot_capability_status:unauthorized",
+            "intent_summary_present"
+          ],
+          "intent_summary": "Complete the same parts bin marking task as before using the standard setup procedure",
+          "primary_ambiguity_type": "contextual",
+          "recommended_strategy": "clarify",
+          "rejection_reason": null,
+          "resolution_evidence": [],
+          "resolution_method": null,
+          "resolved_slots": [
+            {
+              "slot_name": "action",
+              "value": "mark parts bin"
+            },
+            {
+              "slot_name": "actor",
+              "value": "stock controller"
+            },
+            {
+              "slot_name": "object",
+              "value": "marked parts bin"
+            },
+            {
+              "slot_name": "object_attributes",
+              "value": "parts bin with work-order mark"
+            },
+            {
+              "slot_name": "destination",
+              "value": "dispatch board"
+            },
+            {
+              "slot_name": "spatial_relation",
+              "value": "inbound bay"
+            },
+            {
+              "slot_name": "quantity",
+              "value": "three standard packs"
+            },
+            {
+              "slot_name": "time",
+              "value": "shift time"
+            },
+            {
+              "slot_name": "recipient",
+              "value": "stock controller"
+            },
+            {
+              "slot_name": "tool",
+              "value": "powered base"
+            },
+            {
+              "slot_name": "conditions",
+              "value": "usual setup"
+            },
+            {
+              "slot_name": "constraints",
+              "value": "unknown"
+            },
+            {
+              "slot_name": "negation",
+              "value": "not complete"
+            }
+          ],
+          "risk_level": "medium",
+          "risk_relevant": true,
+          "selected_interpretation": null,
+          "speech_act": "directive_command",
+          "strategy_sequence": [],
+          "supporting_evidence": [],
+          "unresolved_slots": [],
+          "unsupported_specificity": []
+        },
+        "clarification_question": "Could you clarify what you would like me to do?",
+        "clarification_targets": [
+          "intent"
+        ],
+        "execution_status": "ok",
+        "official_result": false,
+        "provider_provenance": {
+          "shared_analysis_fingerprint": "3ea07a70fec3fa5ed4394369b8f926303341d884cf47d70f378e0f535660bd08"
+        },
+        "recommended_strategy": "clarify",
+        "record_id": "CA-0470",
+        "rejection_reason": null,
+        "resolved_slots": [
+          {
+            "slot_name": "action",
+            "value": "mark parts bin"
+          },
+          {
+            "slot_name": "actor",
+            "value": "stock controller"
+          },
+          {
+            "slot_name": "object",
+            "value": "marked parts bin"
+          },
+          {
+            "slot_name": "object_attributes",
+            "value": "parts bin with work-order mark"
+          },
+          {
+            "slot_name": "destination",
+            "value": "dispatch board"
+          },
+          {
+            "slot_name": "spatial_relation",
+            "value": "inbound bay"
+          },
+          {
+            "slot_name": "quantity",
+            "value": "three standard packs"
+          },
+          {
+            "slot_name": "time",
+            "value": "shift time"
+          },
+          {
+            "slot_name": "recipient",
+            "value": "stock controller"
+          },
+          {
+            "slot_name": "tool",
+            "value": "powered base"
+          },
+          {
+            "slot_name": "conditions",
+            "value": "usual setup"
+          },
+          {
+            "slot_name": "constraints",
+            "value": "unknown"
+          },
+          {
+            "slot_name": "negation",
+            "value": "not complete"
+          }
+        ],
+        "result_hash": "4c30d22df9faf3450b7d833b1a11e93b104ff5ca94bd13e5996ec8cd0a6dc292",
+        "run_id": null,
+        "run_mode": null,
+        "runtime_metadata": {
+          "shared_analysis_fingerprint": "3ea07a70fec3fa5ed4394369b8f926303341d884cf47d70f378e0f535660bd08",
+          "thresholds_status": "unfrozen",
+          "thresholds_valid_for_official_use": false,
+          "uncertainty_score": 0.85,
+          "uses_type_risk_capability_precedence": false
+        },
+        "safety_findings": [],
+        "strategy_sequence": [],
+        "synthetic_only": true,
+        "system_id": "degree_based_router",
+        "system_version": "1.0.0",
+        "unsupported_commitment_findings": []
+      },
+      "raw_output": "{\n  \"intent_summary\": \"Complete the same parts bin marking task as before using the standard setup procedure\",\n  \"cpc\": {\n    \"action\": {\n      \"value\": \"mark parts bin\",\n      \"status\": \"unknown\"\n    },\n    \"object\": {\n      \"value\": \"marked parts bin\",\n      \"status\": \"unknown\"\n    },\n    \"recipient\": {\n      \"value\": \"stock controller\",\n      \"status\": \"unknown\"\n    }\n  ,\n  \"constraints\": {\n    \"status\": \"unknown\"\n  ,\n  \"value\": \"unknown\"\n  },\n  \"conditions\": {\n    \"value\": \"usual setup\",\n    \"status\": \"unknown\"\n  },\n  \"time\": {\n    \"value\": \"shift time\",\n    \"status\": \"unknown\"\n  },\n  \"quantity\": {\n    \"value\": \"three standard packs\",\n    \"status\": \"unknown\"\n  },\n  \"spatial_relation\": {\n    \"value\": \"inbound bay\",\n    \"status\": \"unknown\"\n  },\n  \"tool\": {\n    \"value\": \"powered base\",\n    \"status\": \"unknown\"\n  },\n  \"destination\": {\n    \"value\": \"dispatch board\",\n    \"status\": \"unknown\"\n  },\n  \"negation\": {\n    \"value\": \"not complete\",\n    \"status\": \"unknown\"\n  },\n  \"object_attributes\": {\n    \"value\": \"parts bin with work-order mark\",\n    \"status\": \"unknown\"\n  },\n  \"actor\": {\n    \"value\": \"stock controller\",\n    \"status\": \"unknown\"\n  }\n}\n\n, \n  \"pilot_ambiguity_types\": [\n    \"pragmatic\",\n    \"object_reference\",\n    \"spatial_reference\",\n    \"routine_reference\"\n  ]\n  \n  ,\n  \"pilot_capability_status\": \"unauthorized\"\n  ,\n  \"unresolved_slots\": [\n    \"action\",\n    \"object\",\n    \"recipient\",\n    \"constraints\",\n    \"conditions\",\n    \"time\",\n    \"quantity\",\n    \"spatial_relation\",\n    \"tool\",\n    \"destination\",\n    \"negation\",\n    \"object_attributes\",\n    \"actor\"\n  ]\n  \n  ,\n  \"uncertainty\": 0.85\n  ,\n  \"risk_level\": \"medium\"\n  ,\n  \"speech_act\": \"directive_command\"\n  }\n",
+      "record_id": "CA-0470",
+      "schema_valid": true,
+      "supports_ambiguity_prediction": true,
+      "supports_capability_prediction": true,
+      "system_id": "degree_based_router_v2",
+      "system_version": "2.0.0",
+      "terminal_strategy": "clarify"
+    },
+    "timid": {
+      "ambiguity_types": [
+        "object_reference",
+        "pragmatic",
+        "routine_reference",
+        "spatial_reference"
+      ],
+      "analysis_attempts": [
+        {
+          "attempt": 1,
+          "max_new_tokens": 4096,
+          "mode": "thinking",
+          "raw_chars": 9311,
+          "raw_sha256": "b4c7449a0cdf740b991bb3787ad99dbb98032468b64826640fe013ebb12bf79b",
+          "validation_error": "bad_intent_summary"
+        },
+        {
+          "attempt": 2,
+          "max_new_tokens": 8192,
+          "mode": "thinking_retry",
+          "raw_chars": 6993,
+          "raw_sha256": "1406b920f6b7de6eea20c28ec9df05d3d5668f371190450f37abd92916720008",
+          "validation_error": "bad_pilot_ambiguity_types"
+        },
+        {
+          "attempt": 3,
+          "constraint": {
+            "constraint_initialised": true,
+            "generated_token_count": 534,
+            "maximum_output_tokens": 1024,
+            "response_mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+            "termination_reason": "eos_or_constraint_stop",
+            "transport_status": "constrained_generated"
+          },
+          "max_new_tokens": 1024,
+          "mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+          "raw_chars": 1687,
+          "raw_sha256": "be20e22955e155c74a8b16391a19d24ce454d0aa3cf97c01308895e7f035f1f4",
+          "validation_error": null
+        }
+      ],
+      "capability_status": "unauthorized",
+      "claim_boundary": "separately_versioned_from_frozen_t39",
+      "error": null,
+      "execution_mode": "cluster-gpu-goal-first-v2",
+      "failed": false,
+      "intent_summary": "Complete the same parts bin marking task as before using the standard setup procedure",
+      "latency_ms": 82976.21176019311,
+      "model_id": "Qwen/Qwen3-8B@b968826d9c46dd6066d109eabc6255188de91218",
+      "parsed": {
+        "analysis": {
+          "ambiguity_present": true,
+          "ambiguity_types": [
+            "contextual",
+            "pragmatic",
+            "referential",
+            "spatial"
+          ],
+          "analysis_provenance": {
+            "analysis_id": "f636273476ec6116f8e6f7deabde97496409752b8999213a5ad8f96447ac5979",
+            "method": "model_generated",
+            "notes": "source_input_hash=f636273476ec6116f8e6f7deabde97496409752b8999213a5ad8f96447ac5979;no_gold_in_prompt;scene_licence_dropped=action,object,recipient,constraints,conditions,time,quantity,spatial_relation,tool,destination,negation,object_attributes,actor",
+            "provider_id": "goal_first_v2_full_context",
+            "provider_version": "goal-first-manager-v2"
+          },
+          "candidate_interpretations": [],
+          "capability_status": "unknown",
+          "clarification_question": "Before I continue, could you clarify: contextual, pragmatic, referential, spatial?",
+          "clarification_targets": [
+            "contextual",
+            "pragmatic",
+            "referential",
+            "spatial"
+          ],
+          "compound_ambiguity": true,
+          "compound_ambiguity_count": 4,
+          "context_sampling_uncertainty": {
+            "agreement": 0.15000000000000002,
+            "score": 0.85,
+            "variant_count": 1
+          },
+          "cpc": {
+            "action": {
+              "status": "filled",
+              "value": "mark parts bin"
+            },
+            "actor": {
+              "status": "filled",
+              "value": "stock controller"
+            },
+            "conditions": {
+              "status": "filled",
+              "value": "usual setup"
+            },
+            "constraints": {
+              "status": "filled",
+              "value": "unknown"
+            },
+            "destination": {
+              "status": "filled",
+              "value": "dispatch board"
+            },
+            "negation": {
+              "status": "filled",
+              "value": "not complete"
+            },
+            "object": {
+              "status": "filled",
+              "value": "marked parts bin"
+            },
+            "object_attributes": {
+              "status": "filled",
+              "value": "parts bin with work-order mark"
+            },
+            "quantity": {
+              "status": "filled",
+              "value": "three standard packs"
+            },
+            "recipient": {
+              "status": "filled",
+              "value": "stock controller"
+            },
+            "spatial_relation": {
+              "status": "filled",
+              "value": "inbound bay"
+            },
+            "time": {
+              "status": "filled",
+              "value": "shift time"
+            },
+            "tool": {
+              "status": "filled",
+              "value": "powered base"
+            }
+          },
+          "findings": [
+            "pilot_ambiguity_types:[\"object_reference\",\"pragmatic\",\"routine_reference\",\"spatial_reference\"]",
+            "pilot_capability_status:unauthorized",
+            "intent_summary_present"
+          ],
+          "intent_summary": "Complete the same parts bin marking task as before using the standard setup procedure",
+          "primary_ambiguity_type": "contextual",
+          "recommended_strategy": "clarify",
+          "rejection_reason": null,
+          "resolution_evidence": [],
+          "resolution_method": null,
+          "resolved_slots": [
+            {
+              "slot_name": "action",
+              "value": "mark parts bin"
+            },
+            {
+              "slot_name": "actor",
+              "value": "stock controller"
+            },
+            {
+              "slot_name": "object",
+              "value": "marked parts bin"
+            },
+            {
+              "slot_name": "object_attributes",
+              "value": "parts bin with work-order mark"
+            },
+            {
+              "slot_name": "destination",
+              "value": "dispatch board"
+            },
+            {
+              "slot_name": "spatial_relation",
+              "value": "inbound bay"
+            },
+            {
+              "slot_name": "quantity",
+              "value": "three standard packs"
+            },
+            {
+              "slot_name": "time",
+              "value": "shift time"
+            },
+            {
+              "slot_name": "recipient",
+              "value": "stock controller"
+            },
+            {
+              "slot_name": "tool",
+              "value": "powered base"
+            },
+            {
+              "slot_name": "conditions",
+              "value": "usual setup"
+            },
+            {
+              "slot_name": "constraints",
+              "value": "unknown"
+            },
+            {
+              "slot_name": "negation",
+              "value": "not complete"
+            }
+          ],
+          "risk_level": "medium",
+          "risk_relevant": true,
+          "selected_interpretation": null,
+          "speech_act": "directive_command",
+          "strategy_sequence": [],
+          "supporting_evidence": [],
+          "unresolved_slots": [],
+          "unsupported_specificity": []
+        },
+        "clarification_question": "Before I continue, could you clarify: contextual, pragmatic, referential, spatial?",
+        "clarification_targets": [
+          "contextual",
+          "pragmatic",
+          "referential",
+          "spatial"
+        ],
+        "execution_status": "ok",
+        "official_result": false,
+        "provider_provenance": {
+          "provider_id": "cached_analysis",
+          "provider_version": "1.0.0"
+        },
+        "recommended_strategy": "clarify",
+        "record_id": "CA-0470",
+        "rejection_reason": null,
+        "resolved_slots": [
+          {
+            "slot_name": "action",
+            "value": "mark parts bin"
+          },
+          {
+            "slot_name": "actor",
+            "value": "stock controller"
+          },
+          {
+            "slot_name": "object",
+            "value": "marked parts bin"
+          },
+          {
+            "slot_name": "object_attributes",
+            "value": "parts bin with work-order mark"
+          },
+          {
+            "slot_name": "destination",
+            "value": "dispatch board"
+          },
+          {
+            "slot_name": "spatial_relation",
+            "value": "inbound bay"
+          },
+          {
+            "slot_name": "quantity",
+            "value": "three standard packs"
+          },
+          {
+            "slot_name": "time",
+            "value": "shift time"
+          },
+          {
+            "slot_name": "recipient",
+            "value": "stock controller"
+          },
+          {
+            "slot_name": "tool",
+            "value": "powered base"
+          },
+          {
+            "slot_name": "conditions",
+            "value": "usual setup"
+          },
+          {
+            "slot_name": "constraints",
+            "value": "unknown"
+          },
+          {
+            "slot_name": "negation",
+            "value": "not complete"
+          }
+        ],
+        "result_hash": "92ba5b41bce9c8fa7e03b863f29e4cd234729372559e839bcc2db1e2efd86d9a",
+        "run_id": null,
+        "run_mode": null,
+        "runtime_metadata": {
+          "awaits_t28_adapter": true,
+          "classification": {
+            "ambiguity_present": true,
+            "ambiguity_types": [
+              "contextual",
+              "pragmatic",
+              "referential",
+              "spatial"
+            ],
+            "capability_status": "unknown",
+            "compound_ambiguity": true,
+            "compound_ambiguity_count": 4,
+            "derivation_notes": [
+              "ambiguity_present_from_types"
+            ],
+            "risk_level": "medium"
+          },
+          "rejection_text": null,
+          "requires_re_evaluation": false,
+          "resolution_events": [],
+          "router_trace": {
+            "clarification_targets": [
+              "contextual",
+              "pragmatic",
+              "referential",
+              "spatial"
+            ],
+            "considered_rules": [
+              "known_unsafe_or_prohibited",
+              "known_incapable",
+              "unknown_or_unverified_capability"
+            ],
+            "matched_rule_id": "unknown_capability",
+            "notes": [
+              "unknown_capability_cannot_execute"
+            ],
+            "recommended_strategy": "clarify",
+            "rejection_reason": null,
+            "requires_re_evaluation": false,
+            "strategy_sequence": []
+          },
+          "safety_action": "return_with_findings",
+          "uncertainty": null
+        },
+        "safety_findings": [],
+        "strategy_sequence": [],
+        "synthetic_only": true,
+        "system_id": "full_type_risk_aware_manager",
+        "system_version": "1.0.0",
+        "unsupported_commitment_findings": []
+      },
+      "raw_output": "{\n  \"intent_summary\": \"Complete the same parts bin marking task as before using the standard setup procedure\",\n  \"cpc\": {\n    \"action\": {\n      \"value\": \"mark parts bin\",\n      \"status\": \"unknown\"\n    },\n    \"object\": {\n      \"value\": \"marked parts bin\",\n      \"status\": \"unknown\"\n    },\n    \"recipient\": {\n      \"value\": \"stock controller\",\n      \"status\": \"unknown\"\n    }\n  ,\n  \"constraints\": {\n    \"status\": \"unknown\"\n  ,\n  \"value\": \"unknown\"\n  },\n  \"conditions\": {\n    \"value\": \"usual setup\",\n    \"status\": \"unknown\"\n  },\n  \"time\": {\n    \"value\": \"shift time\",\n    \"status\": \"unknown\"\n  },\n  \"quantity\": {\n    \"value\": \"three standard packs\",\n    \"status\": \"unknown\"\n  },\n  \"spatial_relation\": {\n    \"value\": \"inbound bay\",\n    \"status\": \"unknown\"\n  },\n  \"tool\": {\n    \"value\": \"powered base\",\n    \"status\": \"unknown\"\n  },\n  \"destination\": {\n    \"value\": \"dispatch board\",\n    \"status\": \"unknown\"\n  },\n  \"negation\": {\n    \"value\": \"not complete\",\n    \"status\": \"unknown\"\n  },\n  \"object_attributes\": {\n    \"value\": \"parts bin with work-order mark\",\n    \"status\": \"unknown\"\n  },\n  \"actor\": {\n    \"value\": \"stock controller\",\n    \"status\": \"unknown\"\n  }\n}\n\n, \n  \"pilot_ambiguity_types\": [\n    \"pragmatic\",\n    \"object_reference\",\n    \"spatial_reference\",\n    \"routine_reference\"\n  ]\n  \n  ,\n  \"pilot_capability_status\": \"unauthorized\"\n  ,\n  \"unresolved_slots\": [\n    \"action\",\n    \"object\",\n    \"recipient\",\n    \"constraints\",\n    \"conditions\",\n    \"time\",\n    \"quantity\",\n    \"spatial_relation\",\n    \"tool\",\n    \"destination\",\n    \"negation\",\n    \"object_attributes\",\n    \"actor\"\n  ]\n  \n  ,\n  \"uncertainty\": 0.85\n  ,\n  \"risk_level\": \"medium\"\n  ,\n  \"speech_act\": \"directive_command\"\n  }\n",
+      "record_id": "CA-0470",
+      "schema_valid": true,
+      "supports_ambiguity_prediction": true,
+      "supports_capability_prediction": true,
+      "system_id": "rich_conservative_manager_v2",
+      "system_version": "2.0.0",
+      "terminal_strategy": "clarify"
+    },
+    "context_blind": {
+      "ambiguity_types": [
+        "pragmatic"
+      ],
+      "analysis_attempts": [
+        {
+          "attempt": 1,
+          "max_new_tokens": 4096,
+          "mode": "thinking",
+          "raw_chars": 5977,
+          "raw_sha256": "6a2e763cec0ee88eec58aad6c547cf0f50b67af0dd74e8b836be258efd7db7cf",
+          "validation_error": "bad_intent_summary"
+        },
+        {
+          "attempt": 2,
+          "max_new_tokens": 8192,
+          "mode": "thinking_retry",
+          "raw_chars": 4637,
+          "raw_sha256": "2382f8f890afb286ac7495e49ef9265cfacf3b89b9fab5245a2173b20a9754f9",
+          "validation_error": "bad_pilot_ambiguity_types"
+        },
+        {
+          "attempt": 3,
+          "constraint": {
+            "constraint_initialised": true,
+            "generated_token_count": 492,
+            "maximum_output_tokens": 1024,
+            "response_mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+            "termination_reason": "eos_or_constraint_stop",
+            "transport_status": "constrained_generated"
+          },
+          "max_new_tokens": 1024,
+          "mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+          "raw_chars": 1551,
+          "raw_sha256": "320f2dc1391ca3c404689521369a3dcccbd841c79a1ba8dc1de2337c1471e21d",
+          "validation_error": null
+        }
+      ],
+      "capability_status": "unauthorized",
+      "claim_boundary": "separately_versioned_from_frozen_t39",
+      "error": null,
+      "execution_mode": "cluster-gpu-goal-first-v2",
+      "failed": false,
+      "intent_summary": "Perform the same task on the marked parts bin using the standard setup",
+      "latency_ms": 49774.69256287441,
+      "model_id": "Qwen/Qwen3-8B@b968826d9c46dd6066d109eabc6255188de91218",
+      "parsed": {
+        "analysis": {
+          "ambiguity_present": true,
+          "ambiguity_types": [
+            "pragmatic"
+          ],
+          "analysis_provenance": {
+            "analysis_id": "92dc8360e89b7c8bbf1243e23b99a60010c7bb3f9f3ae19e71c1ed5c33120806",
+            "method": "context_blind",
+            "notes": "ablated_input_hash=92dc8360e89b7c8bbf1243e23b99a60010c7bb3f9f3ae19e71c1ed5c33120806;source_input_hash=92dc8360e89b7c8bbf1243e23b99a60010c7bb3f9f3ae19e71c1ed5c33120806;no_gold_in_prompt;scene_licence_dropped=object",
+            "provider_id": "goal_first_v2_context_blind",
+            "provider_version": "goal-first-manager-v2"
+          },
+          "candidate_interpretations": [],
+          "capability_status": "unknown",
+          "clarification_question": null,
+          "clarification_targets": [],
+          "compound_ambiguity": false,
+          "compound_ambiguity_count": 0,
+          "context_sampling_uncertainty": {
+            "agreement": 0.8,
+            "score": 0.2,
+            "variant_count": 1
+          },
+          "cpc": {
+            "action": {
+              "status": "not_applicable",
+              "value": "Perform the same task"
+            },
+            "actor": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "conditions": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "constraints": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "destination": {
+              "status": "not_applicable",
+              "value": "not specified"
+            },
+            "negation": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "object": {
+              "status": "not_applicable",
+              "value": "marked parts bin"
+            },
+            "object_attributes": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "quantity": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "recipient": {
+              "status": "not_applicable",
+              "value": "not specified"
+            },
+            "spatial_relation": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "time": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "tool": {
+              "status": "not_applicable",
+              "value": "usual setup"
+            }
+          },
+          "findings": [
+            "pilot_ambiguity_types:[\"pragmatic\"]",
+            "pilot_capability_status:unauthorized",
+            "intent_summary_present"
+          ],
+          "intent_summary": "Perform the same task on the marked parts bin using the standard setup",
+          "primary_ambiguity_type": "pragmatic",
+          "recommended_strategy": "face_preserving_rejection",
+          "rejection_reason": "unsafe_or_prohibited_action",
+          "resolution_evidence": [],
+          "resolution_method": null,
+          "resolved_slots": [],
+          "risk_level": "low",
+          "risk_relevant": true,
+          "selected_interpretation": null,
+          "speech_act": "directive_command",
+          "strategy_sequence": [],
+          "supporting_evidence": [],
+          "unresolved_slots": [
+            {
+              "reason": "model_identified_uncertainty",
+              "slot_name": "action"
+            },
+            {
+              "reason": "model_identified_uncertainty",
+              "slot_name": "recipient"
+            },
+            {
+              "reason": "model_identified_uncertainty",
+              "slot_name": "destination"
+            },
+            {
+              "reason": "model_identified_uncertainty",
+              "slot_name": "tool"
+            }
+          ],
+          "unsupported_specificity": []
+        },
+        "clarification_question": null,
+        "clarification_targets": [],
+        "execution_status": "ok",
+        "official_result": false,
+        "provider_provenance": {
+          "provider_id": "cached_analysis",
+          "provider_version": "1.0.0"
+        },
+        "recommended_strategy": "face_preserving_rejection",
+        "record_id": "CA-0470",
+        "rejection_reason": "unsafe_or_prohibited_action",
+        "resolved_slots": [],
+        "result_hash": "3f763a4411003d82237245321017f00972dfc40e3ad0ff1984a565d0bd8d6abe",
+        "run_id": null,
+        "run_mode": null,
+        "runtime_metadata": {
+          "analysis_identity": {
+            "analysis_content_hash": "d6396b8274a745137ff90c95c1112d9029f59d2ae6799ca5e05c7d8f851bfde3",
+            "analysis_variant": "context_blind",
+            "model_strategy_id": null,
+            "provider_id": "goal_first_v2_context_blind",
+            "provider_version": "goal-first-manager-v2",
+            "record_id": "CA-0470",
+            "source_input_hash": "92dc8360e89b7c8bbf1243e23b99a60010c7bb3f9f3ae19e71c1ed5c33120806"
+          },
+          "analysis_identity_fingerprint": "7752da49306ce83a700f2d44f57b968abd4846b571b7f50e9c8967ffb16393b7",
+          "awaits_t28_adapter": true,
+          "classification": {
+            "ambiguity_present": true,
+            "ambiguity_types": [
+              "pragmatic"
+            ],
+            "capability_status": "unknown",
+            "compound_ambiguity": false,
+            "compound_ambiguity_count": 0,
+            "derivation_notes": [
+              "ambiguity_present_from_types"
+            ],
+            "risk_level": "low"
+          },
+          "context_ablation": {
+            "ablated_input_hash": "92dc8360e89b7c8bbf1243e23b99a60010c7bb3f9f3ae19e71c1ed5c33120806",
+            "capability_context_removed": true,
+            "dialogue_history_removed": true,
+            "rejected_full_context_cache": false,
+            "rejection_reason": null,
+            "scene_context_removed": true,
+            "stripped_context_derived_fields": false
+          },
+          "original_input_unmutated": true,
+          "rejection_text": "I need to decline that request because it would be unsafe under the current constraints.",
+          "requires_re_evaluation": false,
+          "resolution_events": [
+            {
+              "confidence_category": "none",
+              "details": {
+                "reason": "unsupported_default_rejected"
+              },
+              "evidence_source": null,
+              "outcome": "unresolved",
+              "previous_status": "unresolved",
+              "resolved_value": null,
+              "rule_id": "no_world_knowledge_guess",
+              "safety_eligibility": false,
+              "slot": "action"
+            },
+            {
+              "confidence_category": "none",
+              "details": {
+                "reason": "unsupported_default_rejected"
+              },
+              "evidence_source": null,
+              "outcome": "unresolved",
+              "previous_status": "unresolved",
+              "resolved_value": null,
+              "rule_id": "no_world_knowledge_guess",
+              "safety_eligibility": false,
+              "slot": "recipient"
+            },
+            {
+              "confidence_category": "none",
+              "details": {},
+              "evidence_source": null,
+              "outcome": "insufficient_context",
+              "previous_status": "unresolved",
+              "resolved_value": null,
+              "rule_id": "unique_destination",
+              "safety_eligibility": false,
+              "slot": "destination"
+            },
+            {
+              "confidence_category": "none",
+              "details": {
+                "reason": "refusing_raw_capability_string_as_tool_value"
+              },
+              "evidence_source": null,
+              "outcome": "insufficient_context",
+              "previous_status": "unresolved",
+              "resolved_value": null,
+              "rule_id": "capability_lookup",
+              "safety_eligibility": false,
+              "slot": "tool"
+            }
+          ],
+          "router_trace": {
+            "clarification_targets": [],
+            "considered_rules": [
+              "goal_first_v2",
+              "known_unsafe_or_prohibited"
+            ],
+            "matched_rule_id": "known_unsafe_or_prohibited",
+            "notes": [],
+            "recommended_strategy": "face_preserving_rejection",
+            "rejection_reason": "unsafe_or_prohibited_action",
+            "requires_re_evaluation": false,
+            "strategy_sequence": []
+          },
+          "safety_action": "return_with_findings",
+          "uncertainty": null
+        },
+        "safety_findings": [],
+        "strategy_sequence": [],
+        "synthetic_only": true,
+        "system_id": "context_blind_manager",
+        "system_version": "1.0.0",
+        "unsupported_commitment_findings": []
+      },
+      "raw_output": "{\n  \"intent_summary\": \"Perform the same task on the marked parts bin using the standard setup\",\n  \"cpc\": {\n    \"action\": {\n      \"value\": \"Perform the same task\",\n      \"status\": \"not_applicable\"\n    },\n    \"object\": {\n      \"value\": \"marked parts bin\",\n      \"status\": \"not_applicable\"\n    },\n    \"recipient\": {\n      \"value\": \"not specified\",\n      \"status\": \"not_applicable\"\n    },\n    \"destination\": {\n      \"value\": \"not specified\",\n      \"status\": \"not_applicable\"\n    },\n    \"tool\": {\n      \"value\": \"usual setup\",\n      \"status\": \"not_applicable\"\n    }\n  ,\n  \"constraints\": {\n    \"status\": \"not_applicable\"\n  ,\n  \"value\": \"not_applicable\"\n  },\n  \"conditions\": {\n    \"status\": \"not_applicable\"\n  ,\n  \"value\": \"not_applicable\"\n  },\n  \"negation\": {\n    \"status\": \"not_applicable\"\n  ,\n  \"value\": \"not_applicable\"\n  },\n  \"time\": {\n    \"status\": \"not_applicable\"\n  ,\n  \"value\": \"not_applicable\"\n  },\n  \"quantity\": {\n    \"status\": \"not_applicable\"\n  ,\n  \"value\": \"not_applicable\"\n  },\n  \"spatial_relation\": {\n    \"status\": \"not_applicable\"\n  ,\n  \"value\": \"not_applicable\"\n  },\n  \"object_attributes\": {\n    \"status\": \"not_applicable\"\n  ,\n  \"value\": \"not_applicable\"\n  },\n  \"actor\": {\n    \"status\": \"not_applicable\"\n  ,\n  \"value\": \"not_applicable\"\n  }\n}\n,\n  \"pilot_ambiguity_types\": [\n    \"pragmatic\"\n  ]\n  ,\n  \"pilot_capability_status\": \"unauthorized\"\n  ,\n  \"speech_act\": \"directive_command\"\n  ,\n  \"risk_level\": \"low\"\n  ,\n  \"uncertainty\": 0.2\n  ,\n  \"unresolved_slots\": [\n    \"action\",\n    \"object\",\n    \"recipient\",\n    \"destination\",\n    \"tool\"\n  ]\n}",
+      "record_id": "CA-0470",
+      "schema_valid": true,
+      "supports_ambiguity_prediction": true,
+      "supports_capability_prediction": true,
+      "system_id": "goal_first_context_blind_v2",
+      "system_version": "2.0.0",
+      "terminal_strategy": "face_preserving_rejection"
+    }
+  },
+  "provenance": {
+    "source_sha256": "f33b1e29f1e8aa256a475f07213aa07247def47d8e2148d54a472a40b71b05c9",
+    "gold_sha256": "5e23ad1a92ff1873c8f039a8ce560a111dd6fb6b8ae8c11d6cf34dbfa1c360db",
+    "t07_final_zip_sha256": "34ca50e034ca37b617068bb50c734d12fa26282fb5eec563c11ead700163e491",
+    "inherited_t07_zip_sha256": "0305b1e9ab062876ee6ee89778cc6028d2eaf01718b7dd0295944e7d9cb81a01",
+    "note": "Goal-First, Degree, Timid, and Context-Blind predictions are inherited from the earlier T0.7 run; official intent and comparison come from the final T0.7 archive."
+  }
+}

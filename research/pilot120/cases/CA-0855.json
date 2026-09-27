@@ -1,0 +1,1028 @@
+{
+  "record_id": "CA-0855",
+  "frozen_source": {
+    "capability_context": "Laboratory service robot can transport sealed vessels, scan samples, and use approved instruments within its containment rating.",
+    "command": "In a moment, complete both the configuration and inspection of the centrifuge controller after the check, setting it to its routine level.",
+    "dialogue_history": [],
+    "record_id": "CA-0855",
+    "scene_context": "Analysis bench in a laboratory. An unrelated slide box is logged for later work at the holding stand. The work-order configuration table assigns 1,200 revolutions per minute to this asset. Procedure WO-665 requires the check, then configuration, then inspection. For low-risk configuration work, 'in a moment' is defined as the next two-minute idle window. The current task ends at 14:00."
+  },
+  "frozen_gold": {
+    "ambiguity_types": [
+      "action_order",
+      "degree_vagueness",
+      "fuzzy_temporal"
+    ],
+    "annotator_b_era": "glm_era",
+    "annotator_b_model": "glm-5.2-high",
+    "capability_status": "capable",
+    "field_status": {
+      "ambiguity_types": "auto_agree",
+      "capability_status": "human_auditor:independent_from_route",
+      "record_validity": "auto_agree",
+      "strategy_sequence": "auto_agree",
+      "terminal_strategy": "auto_agree"
+    },
+    "gold_lifecycle": "final_gold",
+    "gold_status": "auto_agree",
+    "human_gate_required": false,
+    "provenance": {
+      "agreement_label": "pilot_annotation_agreement",
+      "annotator_a_sha256": "1b5cb90d16bd91ee0d24dbd9eabbf4ed5d9291fcf7b71cc1580505b2503028d9",
+      "annotator_b_sha256": "95d9a0dea427e5bb2d563db08d1486929d17f520018006eae9d83b43cceb098d",
+      "capability_route_decouple": "conditionally_capable remapped to capable: no evidenced external capability precondition; linguistic silently_resolve/clarify is not a capability condition",
+      "gold_policy": "use_existing_pilot_adjudicated_gold",
+      "input_sha256": "72bee1c5d0f8413bc0012d6e2ca77cc67b20e63091996b33cd818501a2d5aa95",
+      "pilot_gold_sha256": "86008ec75cfa7fa328488059d8e6777f91bd181d2275039ef7b7966c88d597ac",
+      "protocol": "pilot_adjudicated_gold_on_capability_repaired_source",
+      "repaired_input_sha256": "a1d3d06fa822bf501fbb0ceec09c196adc5910c94a9f3391a6048b5b7e7eeebc"
+    },
+    "record_id": "CA-0855",
+    "record_validity": "valid",
+    "strategy_sequence": [
+      "silently_resolve",
+      "execute"
+    ],
+    "terminal_strategy": "execute"
+  },
+  "t07_comparison": {
+    "record_id": "CA-0855",
+    "gold_route": "execute",
+    "raw_route": "execute",
+    "ft_route": "clarify",
+    "gf_route": "execute",
+    "raw_route_ok": "True",
+    "ft_route_ok": "False",
+    "gf_route_ok": "True",
+    "raw_official_intent": "True",
+    "ft_official_intent": "True",
+    "gf_official_intent": "True",
+    "blind_official_intent": "True"
+  },
+  "t07_official_intent": {
+    "context_blind_official_intent": true,
+    "degree_official_intent_shared_gf": true,
+    "finetune_official_intent": true,
+    "goal_first_official_intent": true,
+    "raw_official_intent": true,
+    "record_id": "CA-0855",
+    "timid_official_intent_shared_gf": true
+  },
+  "t07_predictions": {
+    "raw_qwen": {
+      "ambiguity_types": [
+        "temporal_reference"
+      ],
+      "capability_status": "capable",
+      "error": null,
+      "execution_mode": "final_close_intent_box",
+      "failed": false,
+      "intent_summary": "The user wants the robot to complete the configuration and inspection of the centrifuge controller after the check, setting it to its routine level.",
+      "latency_ms": 36202.76480121538,
+      "parsed": {
+        "ambiguity_types": [
+          "temporal_reference"
+        ],
+        "capability_status": "capable",
+        "intent_summary": "The user wants the robot to complete the configuration and inspection of the centrifuge controller after the check, setting it to its routine level.",
+        "speech_act": "directive_command",
+        "terminal_strategy": "execute"
+      },
+      "raw_output": "<think>\nOkay, let's break this down. The user's command is about a robot performing tasks on a centrifuge controller. The key points are: after a check, do configuration and inspection, set to routine level, and mention \"in a moment\" which refers to the next two-minute idle window.\n\nFirst, the intent summary. The person wants the robot to complete both configuration and inspection of the centrifuge controller after the check, setting it to routine level. So, two tasks: configuration and inspection, but the order is check first, then configuration, then inspection. Wait, the command says \"complete both the configuration and inspection of the centrifuge controller after the check\". So the check is first, then both configuration and inspection. But the procedure WO-665 says check, then configuration, then inspection. So the user is following that procedure. So the intent is to have the robot perform configuration and inspection after the check, but the exact order might be check first, then config, then inspection. But the user's command says \"after the check, setting it to its routine level\". So the main job is to do configuration and inspection after the check. \n\nSpeech act: The user is giving a directive. The command is direct, telling the robot what to do. So speech_act is directive_command. \n\nAmbiguity types: Let's check for possible ambiguities. The command mentions \"in a moment\" which is defined as the next two-minute idle window. That's a specific time frame, so maybe temporal_reference. Also, the tasks are configuration and inspection, but the order is check first, then config, then inspection. The user says \"complete both the configuration and inspection after the check\", which could be ambiguous if the order isn't clear. However, the procedure WO-665 specifies check, then config, then inspection. So maybe the ambiguity is in the order of tasks. But since the procedure is known, maybe it's not ambiguous. However, the command says \"complete both the configuration and inspection after the check\", which could be interpreted as both tasks happening after the check, but the procedure specifies the order. So maybe there's an action_order ambiguity. Also, \"setting it to its routine level\" refers to the centrifuge controller. So object_reference might be present. But the user's command is clear in the procedure. Wait, the ambiguity types include action_order. So if the user's command doesn't specify the order of configuration and inspection, but the procedure does, but the user's command is using the procedure, maybe there's no ambiguity. Alternatively, maybe the user is using \"after the check\" which could be ambiguous in terms of when the configuration and inspection happen. But given the procedure, it's clear. So maybe no ambiguity. Wait, but the user's command says \"complete both the configuration and inspection after the check\", which could be read as both tasks after the check, but the procedure says check, then config, then inspection. So the user is following the procedure, so the order is check first, then config, then inspection. So the command is not ambiguous. So maybe no ambiguity types. Or maybe there's a temporal reference with \"in a moment\". So the ambiguity_types could include temporal_reference. Also, \"setting it to its routine level\" refers to the centrifuge controller. So object_reference. But the user's command is clear. So maybe no ambiguity. But need to check the options. The ambiguity_types include temporal_reference, so if \"in a moment\" is a time reference, that's a temporal_reference. Also, the command mentions \"after the check\" which is a temporal reference. So that's a temporal_reference. Also, the \"routine level\" might be a routine_reference. So ambiguity_types could be temporal_reference and routine_reference. Wait, but the options for ambiguity_types are specific. Let me check the list again: pragmatic, discourse_ellipsis, lexical, scope, object_reference, pronoun_reference, recipient_reference, destination_reference, instrument_reference, spatial_reference, temporal_reference, routine_reference, action_order, fuzzy_temporal, fuzzy_quantity, degree_vagueness, endpoint_vagueness. So \"routine level\" could be a routine_reference. So ambiguity_types would include routine_reference and temporal_reference. Wait, but the user's command is clear. The \"in a moment\" is defined as next two-minute idle window. So that's a specific time frame, so maybe not fuzzy_temporal. So ambiguity_types would have temporal_reference (for \"in a moment\") and routine_reference (for \"routine level\"). \n\nCapability status: The robot can transport sealed vessels, scan samples, use approved instruments. The task is configuration and inspection. The capability_context says it can use approved instruments. So configuration and inspection might require using instruments. So if the centrifuge controller is an approved instrument, then it's capable. So capability_status is capable. \n\nTerminal strategy: Since the robot is capable and the command is clear, the terminal strategy is execute. \n\nSo putting it all together: \n\nintent_summary: The user wants the robot to perform configuration and inspection of the centrifuge controller after completing the check, setting it to its routine level. \n\nspeech_act: directive_command \n\nambiguity_types: temporal_reference, routine_reference \n\ncapability_status: capable \n\nterminal_strategy: execute \n\nWait, but the command says \"after the check, setting it to its routine level\". The setting to routine level is part of the configuration? Or is it a separate step? The procedure WO-665 requires check, then configuration, then inspection. So the user's command is to do configuration and inspection after the check, and during configuration, set to routine level. So maybe the \"setting it to its routine level\" is part of the configuration step. So the ambiguity_types would include temporal_reference (for \"in a moment\") and maybe routine_reference (for \"routine level\"). \n\nBut the user's command is clear. So the ambiguity_types might be temporal_reference. Also, the \"routine level\" is a reference to a routine, so routine_reference. \n\nSo the ambiguity_types array would be [\"temporal_reference\", \"routine_reference\"].\n\nBut maybe \"routine level\" is not an ambiguity, since it's a specific term. So maybe no ambiguity. Wait, the user's command says \"setting it to its routine level\". The term \"routine level\" is a specific term, so maybe no ambiguity. However, the procedure mentions \"routine level\" as part of the configuration. So if the robot knows what a routine level is, then it's not ambiguous. So maybe no ambiguity. \n\nAlternatively, maybe the \"in a moment\" is a temporal reference, so temporal_reference. So ambiguity_types is [\"temporal_reference\"]. \n\nBut need to check if \"in a moment\" is a temporal reference. Since \"in a moment\" is defined as the next two-minute idle window, which is a specific time frame. So the temporal reference here is a specific time, so not fuzzy_temporal. So the ambiguity_types would have temporal_reference. \n\nSo the final JSON would have ambiguity_types as [\"temporal_reference\"].\n\nWait, but the user's command says \"after the check, setting it to its routine level\". The \"setting it to its routine level\" is part of the configuration. So the configuration step includes setting to routine level. So the ambiguity is whether the robot knows what \"routine level\" means. But the capability_context says the robot can use approved instruments. If the centrifuge controller is an approved instrument, then the robot can set it to routine level. So no ambiguity. \n\nSo maybe the only ambiguity is temporal_reference for \"in a moment\". \n\nSo the final JSON would be:\n\n{\n  \"intent_summary\": \"The user wants the robot to complete the configuration and inspection of the centrifuge controller after the check, setting it to its routine level.\",\n  \"speech_act\": \"directive_command\",\n  \"ambiguity_types\": [\"temporal_reference\"],\n  \"capability_status\": \"capable\",\n  \"terminal_strategy\": \"execute\"\n}\n\nBut need to make sure all keys are present and correct. Also, check if there's any other ambiguity. For example, the command mentions \"after the check\" which could be a temporal reference. So the ambiguity_types would include temporal_reference. \n\nYes, that's correct. So the JSON should include that.\n</think>\n\n{\n  \"intent_summary\": \"The user wants the robot to complete the configuration and inspection of the centrifuge controller after the check, setting it to its routine level.\",\n  \"speech_act\": \"directive_command\",\n  \"ambiguity_types\": [\"temporal_reference\"],\n  \"capability_status\": \"capable\",\n  \"terminal_strategy\": \"execute\"\n}",
+      "record_id": "CA-0855",
+      "schema_valid": true,
+      "speech_act": "directive_command",
+      "system_id": "direct_base_llm",
+      "terminal_strategy": "execute"
+    },
+    "finetune": {
+      "ambiguity_types": [
+        "action_order",
+        "pronoun_reference"
+      ],
+      "capability_status": "conditionally_capable",
+      "error": null,
+      "execution_mode": "final_close_intent_box",
+      "failed": false,
+      "intent_summary": "The person wants the robot to configure and inspect the centrifuge controller after a check, setting it to its routine level.",
+      "latency_ms": 31136.986372992396,
+      "parsed": {
+        "ambiguity_types": [
+          "action_order",
+          "pronoun_reference"
+        ],
+        "capability_status": "conditionally_capable",
+        "intent_summary": "The person wants the robot to configure and inspect the centrifuge controller after a check, setting it to its routine level.",
+        "speech_act": "directive_command",
+        "terminal_strategy": "clarify"
+      },
+      "raw_output": "<think>\nOkay, let's break down this command. The user wants the robot to complete both configuration and inspection of the centrifuge controller after a check, setting it to routine level. The dialogue history is empty, so no prior context. The scene is a lab with a slide box logged, and the work-order procedure is check, then configuration, then inspection. The current task ends at 14:00. The capability context says the robot can transport, scan, use approved instruments.\n\nFirst, the intent summary: The person wants the robot to perform configuration and inspection of the centrifuge controller after the check, setting it to routine level. But the command mentions \"after the check,\" which is part of the procedure WO-665. So the main job is to do configuration and inspection post-check.\n\nSpeech act: The command is a directive to perform specific actions, so directive_command. \n\nAmbiguity types: The command has some parts. \"In a moment\" refers to the next two-minute idle window, which is defined. So maybe no ambiguity there. \"Setting it to its routine level\" – is \"it\" referring to the centrifuge controller? That's a pronoun reference. Also, \"after the check\" – the check is part of the procedure, so maybe action_order since the steps are check, then config, then inspection. So action_order ambiguity. Are there other ambiguities? Maybe object_reference if \"it\" refers to something else, but in context, it's the centrifuge controller. So pronoun_reference and action_order.\n\nCapability status: The robot can use approved instruments, and the task involves configuration and inspection, which might require instruments. Since the robot can use approved instruments, it's conditionally_capable because the configuration and inspection might need specific instruments, which are approved. But the capability context says \"use approved instruments within its containment rating.\" So if the centrifuge controller's configuration and inspection require approved instruments, then the robot is capable. But if the instruments are not approved, then it's not. However, the problem states the robot can use approved instruments, so assuming the task uses approved ones, it's conditionally_capable. Wait, the capability status options are capable, conditionally_capable, etc. Since the robot can use approved instruments, and the task involves using instruments, but the exact instruments aren't specified. So maybe conditionally_capable because it depends on whether the required instruments are approved. But the problem says the robot can use approved instruments, so if the task requires approved instruments, then it's capable. However, the command is to \"complete both the configuration and inspection of the centrifuge controller after the check, setting it to its routine level.\" The robot can scan samples and use instruments. Configuration might involve adjusting settings, which the robot can do if it's allowed. But the capability context doesn't mention configuring equipment. Wait, the robot can transport, scan, use approved instruments. So configuring might be part of using instruments? Or maybe not. If the robot can't configure, then it's incapable. But the work-order is to do configuration, so if the robot can't perform that, then it's incapable. But the capability context says it can use approved instruments. Maybe configuration is part of using instruments. Hmm, this is a bit unclear. But the capability status options include conditionally_capable. So maybe the robot can do it conditionally, so conditionally_capable.\n\nTerminal strategy: Since the robot's capability is conditionally_capable, the terminal strategy would be clarify to confirm if the required instruments are approved. But if the capability is considered as capable, then execute. Wait, the capability status is conditionally_capable, so the terminal strategy would be clarify. But the user's command is to perform the task. So if the robot is unsure if it can do it, the terminal strategy is clarify. But maybe the robot is capable because the instruments are approved. Alternatively, if the configuration requires specific instruments, which the robot can use, then it's capable. But the problem states the robot can use approved instruments. The task involves setting to routine level, which might be a setting. If the robot can adjust settings, then it's capable. But the initial capability context doesn't mention that. So maybe the robot can't configure, making it incapable. Wait, the capability context says \"use approved instruments within its containment rating.\" So if the configuration requires using an instrument that's approved, then it's capable. But the command is to set it to routine level, which might be a setting. If the robot can adjust settings, then it's capable. But the capability context doesn't explicitly say that. So maybe the capability status is conditionally_capable, because it depends on whether the robot can adjust the centrifuge's settings. So the answer would be conditionally_capable. Then the terminal strategy would be clarify if the robot can perform the configuration and inspection. So terminal strategy is clarify.\n\nPutting it all together: intent_summary is the main job, speech_act is directive_command, ambiguity_types include pronoun_reference (for \"it\") and action_order (for the sequence of check, config, inspection), capability_status is conditionally_capable, terminal_strategy is clarify.\n</think>\n\n{\n  \"intent_summary\": \"The person wants the robot to configure and inspect the centrifuge controller after a check, setting it to its routine level.\",\n  \"speech_act\": \"directive_command\",\n  \"ambiguity_types\": [\"pronoun_reference\", \"action_order\"],\n  \"capability_status\": \"conditionally_capable\",\n  \"terminal_strategy\": \"clarify\"\n}",
+      "record_id": "CA-0855",
+      "schema_valid": true,
+      "speech_act": "directive_command",
+      "system_id": "t28_selected_adapter_llm",
+      "terminal_strategy": "clarify"
+    },
+    "goal_first": {
+      "ambiguity_types": [
+        "pragmatic",
+        "routine_reference",
+        "temporal_reference"
+      ],
+      "analysis_attempts": [
+        {
+          "attempt": 1,
+          "max_new_tokens": 4096,
+          "mode": "thinking",
+          "raw_chars": 6796,
+          "raw_sha256": "666c7477bd7e8e95f77c515af89530dd1f1c7a84475f4d5c91f2144d2e4fb58d",
+          "validation_error": "bad_intent_summary"
+        },
+        {
+          "attempt": 2,
+          "max_new_tokens": 8192,
+          "mode": "thinking_retry",
+          "raw_chars": 6173,
+          "raw_sha256": "71ed279ff35b86f152cb1317aaa846adb53ee199cdca35f51daa03045ef516ba",
+          "validation_error": "bad_pilot_ambiguity_types"
+        },
+        {
+          "attempt": 3,
+          "constraint": {
+            "constraint_initialised": true,
+            "generated_token_count": 495,
+            "maximum_output_tokens": 1024,
+            "response_mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+            "termination_reason": "eos_or_constraint_stop",
+            "transport_status": "constrained_generated"
+          },
+          "max_new_tokens": 1024,
+          "mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+          "raw_chars": 1726,
+          "raw_sha256": "2e31d925e4dbf1d637617692cec2574092356aad7af5a60519d381f1048ebe76",
+          "validation_error": null
+        }
+      ],
+      "capability_status": "capable",
+      "claim_boundary": "separately_versioned_from_frozen_t39",
+      "error": null,
+      "execution_mode": "cluster-gpu-goal-first-v2",
+      "failed": false,
+      "intent_summary": "Complete the configuration and inspection of the centrifuge controller after the check, setting it to its routine level in a moment",
+      "latency_ms": 99360.3351698257,
+      "model_id": "Qwen/Qwen3-8B@b968826d9c46dd6066d109eabc6255188de91218",
+      "parsed": {
+        "analysis": {
+          "ambiguity_present": true,
+          "ambiguity_types": [
+            "contextual",
+            "pragmatic",
+            "temporal"
+          ],
+          "analysis_provenance": {
+            "analysis_id": "8a430f584f09ada9535b3a8827b166a4c607cc0aa767ce6c2a469866bc080b94",
+            "method": "model_generated",
+            "notes": "source_input_hash=8a430f584f09ada9535b3a8827b166a4c607cc0aa767ce6c2a469866bc080b94;no_gold_in_prompt;scene_licence_dropped=none",
+            "provider_id": "goal_first_v2_full_context",
+            "provider_version": "goal-first-manager-v2"
+          },
+          "candidate_interpretations": [],
+          "capability_status": "capable",
+          "clarification_question": null,
+          "clarification_targets": [],
+          "compound_ambiguity": true,
+          "compound_ambiguity_count": 3,
+          "context_sampling_uncertainty": {
+            "agreement": 0.8,
+            "score": 0.2,
+            "variant_count": 1
+          },
+          "cpc": {
+            "action": {
+              "status": "not_applicable",
+              "value": "complete configuration and inspection of centrifuge controller after check"
+            },
+            "actor": {
+              "status": "not_applicable",
+              "value": "laboratory service robot"
+            },
+            "conditions": {
+              "status": "not_applicable",
+              "value": "after check, low-risk configuration work"
+            },
+            "constraints": {
+              "status": "not_applicable",
+              "value": "routine level, next two-minute idle window"
+            },
+            "destination": {
+              "status": "not_applicable",
+              "value": "centrifuge controller"
+            },
+            "negation": {
+              "status": "not_applicable",
+              "value": "none"
+            },
+            "object": {
+              "status": "not_applicable",
+              "value": "centrifuge controller"
+            },
+            "object_attributes": {
+              "status": "not_applicable",
+              "value": "routine level"
+            },
+            "quantity": {
+              "status": "not_applicable",
+              "value": "1,200 revolutions per minute"
+            },
+            "recipient": {
+              "status": "not_applicable",
+              "value": "laboratory service robot"
+            },
+            "spatial_relation": {
+              "status": "not_applicable",
+              "value": "Analysis bench in a laboratory"
+            },
+            "time": {
+              "status": "not_applicable",
+              "value": "in a moment"
+            },
+            "tool": {
+              "status": "not_applicable",
+              "value": "approved instruments"
+            }
+          },
+          "findings": [
+            "pilot_ambiguity_types:[\"pragmatic\",\"routine_reference\",\"temporal_reference\"]",
+            "pilot_capability_status:capable",
+            "intent_summary_present"
+          ],
+          "intent_summary": "Complete the configuration and inspection of the centrifuge controller after the check, setting it to its routine level in a moment",
+          "primary_ambiguity_type": "contextual",
+          "recommended_strategy": "execute",
+          "rejection_reason": null,
+          "resolution_evidence": [],
+          "resolution_method": null,
+          "resolved_slots": [],
+          "risk_level": "low",
+          "risk_relevant": true,
+          "selected_interpretation": null,
+          "speech_act": "directive_command",
+          "strategy_sequence": [],
+          "supporting_evidence": [],
+          "unresolved_slots": [],
+          "unsupported_specificity": []
+        },
+        "clarification_question": null,
+        "clarification_targets": [],
+        "execution_status": "ok",
+        "official_result": false,
+        "provider_provenance": {
+          "provider_id": "cached_analysis",
+          "provider_version": "1.0.0"
+        },
+        "recommended_strategy": "execute",
+        "record_id": "CA-0855",
+        "rejection_reason": null,
+        "resolved_slots": [],
+        "result_hash": "35a3732f0cdc4a7177f8907fffb7eae245d5c63c67d070f141b0cc7bed269b34",
+        "run_id": null,
+        "run_mode": null,
+        "runtime_metadata": {
+          "awaits_t28_adapter": true,
+          "classification": {
+            "ambiguity_present": true,
+            "ambiguity_types": [
+              "contextual",
+              "pragmatic",
+              "temporal"
+            ],
+            "capability_status": "capable",
+            "compound_ambiguity": true,
+            "compound_ambiguity_count": 3,
+            "derivation_notes": [
+              "ambiguity_present_from_types"
+            ],
+            "risk_level": "low"
+          },
+          "rejection_text": null,
+          "requires_re_evaluation": false,
+          "resolution_events": [],
+          "router_trace": {
+            "clarification_targets": [],
+            "considered_rules": [
+              "goal_first_v2",
+              "known_unsafe_or_prohibited",
+              "known_incapable",
+              "unknown_capability_high_risk",
+              "context_licensed_execute"
+            ],
+            "matched_rule_id": "context_licensed_execute",
+            "notes": [
+              "goal_first_v2_execute_despite_remaining_ambiguity"
+            ],
+            "recommended_strategy": "execute",
+            "rejection_reason": null,
+            "requires_re_evaluation": false,
+            "strategy_sequence": []
+          },
+          "safety_action": "return_with_findings",
+          "uncertainty": null
+        },
+        "safety_findings": [],
+        "strategy_sequence": [],
+        "synthetic_only": true,
+        "system_id": "goal_first_manager_v2",
+        "system_version": "2.0.0",
+        "unsupported_commitment_findings": []
+      },
+      "raw_output": "{\n  \"intent_summary\": \"Complete the configuration and inspection of the centrifuge controller after the check, setting it to its routine level in a moment\",\n  \"cpc\": {\n    \"action\": {\n      \"value\": \"complete configuration and inspection of centrifuge controller after check\",\n      \"status\": \"not_applicable\"\n    },\n    \"object\": {\n      \"value\": \"centrifuge controller\",\n      \"status\": \"not_applicable\"\n    },\n    \"time\": {\n      \"value\": \"in a moment\",\n      \"status\": \"not_applicable\"\n    }\n \n  ,\n  \"constraints\": {\n    \"value\": \"routine level, next two-minute idle window\",\n    \"status\": \"not_applicable\"\n  },\n  \"conditions\": {\n    \"value\": \"after check, low-risk configuration work\",\n    \"status\": \"not_applicable\"\n  },\n  \"spatial_relation\": {\n    \"value\": \"Analysis bench in a laboratory\",\n    \"status\": \"not_applicable\"\n  },\n  \"recipient\": {\n    \"value\": \"laboratory service robot\",\n    \"status\": \"not_applicable\"\n  },\n  \"tool\": {\n    \"value\": \"approved instruments\",\n    \"status\": \"not_applicable\"\n  },\n  \"destination\": {\n    \"value\": \"centrifuge controller\",\n    \"status\": \"not_applicable\"\n  },\n  \"quantity\": {\n    \"value\": \"1,200 revolutions per minute\",\n    \"status\": \"not_applicable\"\n  },\n  \"negation\": {\n    \"value\": \"none\",\n    \"status\": \"not_applicable\"\n  },\n  \"object_attributes\": {\n    \"value\": \"routine level\",\n    \"status\": \"not_applicable\"\n  },\n  \"actor\": {\n    \"value\": \"laboratory service robot\",\n    \"status\": \"not_applicable\"\n  }\n}\n\n,\n  \"pilot_ambiguity_types\": [\n    \"pragmatic\",\n    \"routine_reference\",\n    \"temporal_reference\"\n  ]\n  \n  ,\n  \"pilot_capability_status\": \"capable\",\n  \"speech_act\": \"directive_command\",\n  \"risk_level\": \"low\"\n  \n  ,\n  \"uncertainty\": 0.2\n  ,\n  \"unresolved_slots\":  []\n}",
+      "record_id": "CA-0855",
+      "schema_valid": true,
+      "supports_ambiguity_prediction": true,
+      "supports_capability_prediction": true,
+      "system_id": "goal_first_manager_v2",
+      "system_version": "2.0.0",
+      "terminal_strategy": "execute"
+    },
+    "degree": {
+      "ambiguity_types": [
+        "pragmatic",
+        "routine_reference",
+        "temporal_reference"
+      ],
+      "analysis_attempts": [
+        {
+          "attempt": 1,
+          "max_new_tokens": 4096,
+          "mode": "thinking",
+          "raw_chars": 6796,
+          "raw_sha256": "666c7477bd7e8e95f77c515af89530dd1f1c7a84475f4d5c91f2144d2e4fb58d",
+          "validation_error": "bad_intent_summary"
+        },
+        {
+          "attempt": 2,
+          "max_new_tokens": 8192,
+          "mode": "thinking_retry",
+          "raw_chars": 6173,
+          "raw_sha256": "71ed279ff35b86f152cb1317aaa846adb53ee199cdca35f51daa03045ef516ba",
+          "validation_error": "bad_pilot_ambiguity_types"
+        },
+        {
+          "attempt": 3,
+          "constraint": {
+            "constraint_initialised": true,
+            "generated_token_count": 495,
+            "maximum_output_tokens": 1024,
+            "response_mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+            "termination_reason": "eos_or_constraint_stop",
+            "transport_status": "constrained_generated"
+          },
+          "max_new_tokens": 1024,
+          "mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+          "raw_chars": 1726,
+          "raw_sha256": "2e31d925e4dbf1d637617692cec2574092356aad7af5a60519d381f1048ebe76",
+          "validation_error": null
+        }
+      ],
+      "capability_status": "capable",
+      "claim_boundary": "separately_versioned_from_frozen_t39",
+      "error": null,
+      "execution_mode": "cluster-gpu-goal-first-v2",
+      "failed": false,
+      "intent_summary": "Complete the configuration and inspection of the centrifuge controller after the check, setting it to its routine level in a moment",
+      "latency_ms": 99360.3351698257,
+      "model_id": "Qwen/Qwen3-8B@b968826d9c46dd6066d109eabc6255188de91218",
+      "parsed": {
+        "analysis": {
+          "ambiguity_present": true,
+          "ambiguity_types": [
+            "contextual",
+            "pragmatic",
+            "temporal"
+          ],
+          "analysis_provenance": {
+            "analysis_id": "8a430f584f09ada9535b3a8827b166a4c607cc0aa767ce6c2a469866bc080b94",
+            "method": "model_generated",
+            "notes": "source_input_hash=8a430f584f09ada9535b3a8827b166a4c607cc0aa767ce6c2a469866bc080b94;no_gold_in_prompt;scene_licence_dropped=none",
+            "provider_id": "goal_first_v2_full_context",
+            "provider_version": "goal-first-manager-v2"
+          },
+          "candidate_interpretations": [],
+          "capability_status": "capable",
+          "clarification_question": null,
+          "clarification_targets": [],
+          "compound_ambiguity": true,
+          "compound_ambiguity_count": 3,
+          "context_sampling_uncertainty": {
+            "agreement": 0.8,
+            "score": 0.2,
+            "variant_count": 1
+          },
+          "cpc": {
+            "action": {
+              "status": "not_applicable",
+              "value": "complete configuration and inspection of centrifuge controller after check"
+            },
+            "actor": {
+              "status": "not_applicable",
+              "value": "laboratory service robot"
+            },
+            "conditions": {
+              "status": "not_applicable",
+              "value": "after check, low-risk configuration work"
+            },
+            "constraints": {
+              "status": "not_applicable",
+              "value": "routine level, next two-minute idle window"
+            },
+            "destination": {
+              "status": "not_applicable",
+              "value": "centrifuge controller"
+            },
+            "negation": {
+              "status": "not_applicable",
+              "value": "none"
+            },
+            "object": {
+              "status": "not_applicable",
+              "value": "centrifuge controller"
+            },
+            "object_attributes": {
+              "status": "not_applicable",
+              "value": "routine level"
+            },
+            "quantity": {
+              "status": "not_applicable",
+              "value": "1,200 revolutions per minute"
+            },
+            "recipient": {
+              "status": "not_applicable",
+              "value": "laboratory service robot"
+            },
+            "spatial_relation": {
+              "status": "not_applicable",
+              "value": "Analysis bench in a laboratory"
+            },
+            "time": {
+              "status": "not_applicable",
+              "value": "in a moment"
+            },
+            "tool": {
+              "status": "not_applicable",
+              "value": "approved instruments"
+            }
+          },
+          "findings": [
+            "pilot_ambiguity_types:[\"pragmatic\",\"routine_reference\",\"temporal_reference\"]",
+            "pilot_capability_status:capable",
+            "intent_summary_present"
+          ],
+          "intent_summary": "Complete the configuration and inspection of the centrifuge controller after the check, setting it to its routine level in a moment",
+          "primary_ambiguity_type": "contextual",
+          "recommended_strategy": "silently_resolve",
+          "rejection_reason": null,
+          "resolution_evidence": [],
+          "resolution_method": null,
+          "resolved_slots": [],
+          "risk_level": "low",
+          "risk_relevant": true,
+          "selected_interpretation": null,
+          "speech_act": "directive_command",
+          "strategy_sequence": [],
+          "supporting_evidence": [],
+          "unresolved_slots": [],
+          "unsupported_specificity": []
+        },
+        "clarification_question": null,
+        "clarification_targets": [],
+        "execution_status": "ok",
+        "official_result": false,
+        "provider_provenance": {
+          "shared_analysis_fingerprint": "e77614b58d7e57e81aeb5b70eb6c2e231ee186ac987f54736d05247618b1f0e4"
+        },
+        "recommended_strategy": "silently_resolve",
+        "record_id": "CA-0855",
+        "rejection_reason": null,
+        "resolved_slots": [],
+        "result_hash": "c86f2e550d0e49c9427037a36fb1f43d8c36cc26130850a2aec8a45f7e2a166e",
+        "run_id": null,
+        "run_mode": null,
+        "runtime_metadata": {
+          "shared_analysis_fingerprint": "e77614b58d7e57e81aeb5b70eb6c2e231ee186ac987f54736d05247618b1f0e4",
+          "thresholds_status": "unfrozen",
+          "thresholds_valid_for_official_use": false,
+          "uncertainty_score": 0.2,
+          "uses_type_risk_capability_precedence": false
+        },
+        "safety_findings": [],
+        "strategy_sequence": [],
+        "synthetic_only": true,
+        "system_id": "degree_based_router",
+        "system_version": "1.0.0",
+        "unsupported_commitment_findings": []
+      },
+      "raw_output": "{\n  \"intent_summary\": \"Complete the configuration and inspection of the centrifuge controller after the check, setting it to its routine level in a moment\",\n  \"cpc\": {\n    \"action\": {\n      \"value\": \"complete configuration and inspection of centrifuge controller after check\",\n      \"status\": \"not_applicable\"\n    },\n    \"object\": {\n      \"value\": \"centrifuge controller\",\n      \"status\": \"not_applicable\"\n    },\n    \"time\": {\n      \"value\": \"in a moment\",\n      \"status\": \"not_applicable\"\n    }\n \n  ,\n  \"constraints\": {\n    \"value\": \"routine level, next two-minute idle window\",\n    \"status\": \"not_applicable\"\n  },\n  \"conditions\": {\n    \"value\": \"after check, low-risk configuration work\",\n    \"status\": \"not_applicable\"\n  },\n  \"spatial_relation\": {\n    \"value\": \"Analysis bench in a laboratory\",\n    \"status\": \"not_applicable\"\n  },\n  \"recipient\": {\n    \"value\": \"laboratory service robot\",\n    \"status\": \"not_applicable\"\n  },\n  \"tool\": {\n    \"value\": \"approved instruments\",\n    \"status\": \"not_applicable\"\n  },\n  \"destination\": {\n    \"value\": \"centrifuge controller\",\n    \"status\": \"not_applicable\"\n  },\n  \"quantity\": {\n    \"value\": \"1,200 revolutions per minute\",\n    \"status\": \"not_applicable\"\n  },\n  \"negation\": {\n    \"value\": \"none\",\n    \"status\": \"not_applicable\"\n  },\n  \"object_attributes\": {\n    \"value\": \"routine level\",\n    \"status\": \"not_applicable\"\n  },\n  \"actor\": {\n    \"value\": \"laboratory service robot\",\n    \"status\": \"not_applicable\"\n  }\n}\n\n,\n  \"pilot_ambiguity_types\": [\n    \"pragmatic\",\n    \"routine_reference\",\n    \"temporal_reference\"\n  ]\n  \n  ,\n  \"pilot_capability_status\": \"capable\",\n  \"speech_act\": \"directive_command\",\n  \"risk_level\": \"low\"\n  \n  ,\n  \"uncertainty\": 0.2\n  ,\n  \"unresolved_slots\":  []\n}",
+      "record_id": "CA-0855",
+      "schema_valid": true,
+      "supports_ambiguity_prediction": true,
+      "supports_capability_prediction": true,
+      "system_id": "degree_based_router_v2",
+      "system_version": "2.0.0",
+      "terminal_strategy": "execute"
+    },
+    "timid": {
+      "ambiguity_types": [
+        "pragmatic",
+        "routine_reference",
+        "temporal_reference"
+      ],
+      "analysis_attempts": [
+        {
+          "attempt": 1,
+          "max_new_tokens": 4096,
+          "mode": "thinking",
+          "raw_chars": 6796,
+          "raw_sha256": "666c7477bd7e8e95f77c515af89530dd1f1c7a84475f4d5c91f2144d2e4fb58d",
+          "validation_error": "bad_intent_summary"
+        },
+        {
+          "attempt": 2,
+          "max_new_tokens": 8192,
+          "mode": "thinking_retry",
+          "raw_chars": 6173,
+          "raw_sha256": "71ed279ff35b86f152cb1317aaa846adb53ee199cdca35f51daa03045ef516ba",
+          "validation_error": "bad_pilot_ambiguity_types"
+        },
+        {
+          "attempt": 3,
+          "constraint": {
+            "constraint_initialised": true,
+            "generated_token_count": 495,
+            "maximum_output_tokens": 1024,
+            "response_mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+            "termination_reason": "eos_or_constraint_stop",
+            "transport_status": "constrained_generated"
+          },
+          "max_new_tokens": 1024,
+          "mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+          "raw_chars": 1726,
+          "raw_sha256": "2e31d925e4dbf1d637617692cec2574092356aad7af5a60519d381f1048ebe76",
+          "validation_error": null
+        }
+      ],
+      "capability_status": "capable",
+      "claim_boundary": "separately_versioned_from_frozen_t39",
+      "error": null,
+      "execution_mode": "cluster-gpu-goal-first-v2",
+      "failed": false,
+      "intent_summary": "Complete the configuration and inspection of the centrifuge controller after the check, setting it to its routine level in a moment",
+      "latency_ms": 99360.3351698257,
+      "model_id": "Qwen/Qwen3-8B@b968826d9c46dd6066d109eabc6255188de91218",
+      "parsed": {
+        "analysis": {
+          "ambiguity_present": true,
+          "ambiguity_types": [
+            "contextual",
+            "pragmatic",
+            "temporal"
+          ],
+          "analysis_provenance": {
+            "analysis_id": "8a430f584f09ada9535b3a8827b166a4c607cc0aa767ce6c2a469866bc080b94",
+            "method": "model_generated",
+            "notes": "source_input_hash=8a430f584f09ada9535b3a8827b166a4c607cc0aa767ce6c2a469866bc080b94;no_gold_in_prompt;scene_licence_dropped=none",
+            "provider_id": "goal_first_v2_full_context",
+            "provider_version": "goal-first-manager-v2"
+          },
+          "candidate_interpretations": [],
+          "capability_status": "capable",
+          "clarification_question": "Before I continue, could you clarify: contextual, pragmatic, temporal?",
+          "clarification_targets": [
+            "contextual",
+            "pragmatic",
+            "temporal"
+          ],
+          "compound_ambiguity": true,
+          "compound_ambiguity_count": 3,
+          "context_sampling_uncertainty": {
+            "agreement": 0.8,
+            "score": 0.2,
+            "variant_count": 1
+          },
+          "cpc": {
+            "action": {
+              "status": "not_applicable",
+              "value": "complete configuration and inspection of centrifuge controller after check"
+            },
+            "actor": {
+              "status": "not_applicable",
+              "value": "laboratory service robot"
+            },
+            "conditions": {
+              "status": "not_applicable",
+              "value": "after check, low-risk configuration work"
+            },
+            "constraints": {
+              "status": "not_applicable",
+              "value": "routine level, next two-minute idle window"
+            },
+            "destination": {
+              "status": "not_applicable",
+              "value": "centrifuge controller"
+            },
+            "negation": {
+              "status": "not_applicable",
+              "value": "none"
+            },
+            "object": {
+              "status": "not_applicable",
+              "value": "centrifuge controller"
+            },
+            "object_attributes": {
+              "status": "not_applicable",
+              "value": "routine level"
+            },
+            "quantity": {
+              "status": "not_applicable",
+              "value": "1,200 revolutions per minute"
+            },
+            "recipient": {
+              "status": "not_applicable",
+              "value": "laboratory service robot"
+            },
+            "spatial_relation": {
+              "status": "not_applicable",
+              "value": "Analysis bench in a laboratory"
+            },
+            "time": {
+              "status": "not_applicable",
+              "value": "in a moment"
+            },
+            "tool": {
+              "status": "not_applicable",
+              "value": "approved instruments"
+            }
+          },
+          "findings": [
+            "pilot_ambiguity_types:[\"pragmatic\",\"routine_reference\",\"temporal_reference\"]",
+            "pilot_capability_status:capable",
+            "intent_summary_present"
+          ],
+          "intent_summary": "Complete the configuration and inspection of the centrifuge controller after the check, setting it to its routine level in a moment",
+          "primary_ambiguity_type": "contextual",
+          "recommended_strategy": "clarify",
+          "rejection_reason": null,
+          "resolution_evidence": [],
+          "resolution_method": null,
+          "resolved_slots": [],
+          "risk_level": "low",
+          "risk_relevant": true,
+          "selected_interpretation": null,
+          "speech_act": "directive_command",
+          "strategy_sequence": [],
+          "supporting_evidence": [],
+          "unresolved_slots": [],
+          "unsupported_specificity": []
+        },
+        "clarification_question": "Before I continue, could you clarify: contextual, pragmatic, temporal?",
+        "clarification_targets": [
+          "contextual",
+          "pragmatic",
+          "temporal"
+        ],
+        "execution_status": "ok",
+        "official_result": false,
+        "provider_provenance": {
+          "provider_id": "cached_analysis",
+          "provider_version": "1.0.0"
+        },
+        "recommended_strategy": "clarify",
+        "record_id": "CA-0855",
+        "rejection_reason": null,
+        "resolved_slots": [],
+        "result_hash": "5375b5bb602e042b0294e5a907dc701af15db939888051ce8d350de0026d8ffb",
+        "run_id": null,
+        "run_mode": null,
+        "runtime_metadata": {
+          "awaits_t28_adapter": true,
+          "classification": {
+            "ambiguity_present": true,
+            "ambiguity_types": [
+              "contextual",
+              "pragmatic",
+              "temporal"
+            ],
+            "capability_status": "capable",
+            "compound_ambiguity": true,
+            "compound_ambiguity_count": 3,
+            "derivation_notes": [
+              "ambiguity_present_from_types"
+            ],
+            "risk_level": "low"
+          },
+          "rejection_text": null,
+          "requires_re_evaluation": false,
+          "resolution_events": [],
+          "router_trace": {
+            "clarification_targets": [
+              "contextual",
+              "pragmatic",
+              "temporal"
+            ],
+            "considered_rules": [
+              "known_unsafe_or_prohibited",
+              "known_incapable",
+              "unknown_or_unverified_capability",
+              "hazard_identity_unresolved",
+              "critical_unresolved_medium_high_risk",
+              "unknown_safety_risk",
+              "dependent_compound_ambiguities",
+              "unique_low_risk_resolvable",
+              "clear_safe_capable",
+              "default_clarify"
+            ],
+            "matched_rule_id": "default_clarify",
+            "notes": [
+              "default_clarify_no_unsupported_specificity"
+            ],
+            "recommended_strategy": "clarify",
+            "rejection_reason": null,
+            "requires_re_evaluation": false,
+            "strategy_sequence": []
+          },
+          "safety_action": "return_with_findings",
+          "uncertainty": null
+        },
+        "safety_findings": [],
+        "strategy_sequence": [],
+        "synthetic_only": true,
+        "system_id": "full_type_risk_aware_manager",
+        "system_version": "1.0.0",
+        "unsupported_commitment_findings": []
+      },
+      "raw_output": "{\n  \"intent_summary\": \"Complete the configuration and inspection of the centrifuge controller after the check, setting it to its routine level in a moment\",\n  \"cpc\": {\n    \"action\": {\n      \"value\": \"complete configuration and inspection of centrifuge controller after check\",\n      \"status\": \"not_applicable\"\n    },\n    \"object\": {\n      \"value\": \"centrifuge controller\",\n      \"status\": \"not_applicable\"\n    },\n    \"time\": {\n      \"value\": \"in a moment\",\n      \"status\": \"not_applicable\"\n    }\n \n  ,\n  \"constraints\": {\n    \"value\": \"routine level, next two-minute idle window\",\n    \"status\": \"not_applicable\"\n  },\n  \"conditions\": {\n    \"value\": \"after check, low-risk configuration work\",\n    \"status\": \"not_applicable\"\n  },\n  \"spatial_relation\": {\n    \"value\": \"Analysis bench in a laboratory\",\n    \"status\": \"not_applicable\"\n  },\n  \"recipient\": {\n    \"value\": \"laboratory service robot\",\n    \"status\": \"not_applicable\"\n  },\n  \"tool\": {\n    \"value\": \"approved instruments\",\n    \"status\": \"not_applicable\"\n  },\n  \"destination\": {\n    \"value\": \"centrifuge controller\",\n    \"status\": \"not_applicable\"\n  },\n  \"quantity\": {\n    \"value\": \"1,200 revolutions per minute\",\n    \"status\": \"not_applicable\"\n  },\n  \"negation\": {\n    \"value\": \"none\",\n    \"status\": \"not_applicable\"\n  },\n  \"object_attributes\": {\n    \"value\": \"routine level\",\n    \"status\": \"not_applicable\"\n  },\n  \"actor\": {\n    \"value\": \"laboratory service robot\",\n    \"status\": \"not_applicable\"\n  }\n}\n\n,\n  \"pilot_ambiguity_types\": [\n    \"pragmatic\",\n    \"routine_reference\",\n    \"temporal_reference\"\n  ]\n  \n  ,\n  \"pilot_capability_status\": \"capable\",\n  \"speech_act\": \"directive_command\",\n  \"risk_level\": \"low\"\n  \n  ,\n  \"uncertainty\": 0.2\n  ,\n  \"unresolved_slots\":  []\n}",
+      "record_id": "CA-0855",
+      "schema_valid": true,
+      "supports_ambiguity_prediction": true,
+      "supports_capability_prediction": true,
+      "system_id": "rich_conservative_manager_v2",
+      "system_version": "2.0.0",
+      "terminal_strategy": "clarify"
+    },
+    "context_blind": {
+      "ambiguity_types": [
+        "pragmatic"
+      ],
+      "analysis_attempts": [
+        {
+          "attempt": 1,
+          "max_new_tokens": 4096,
+          "mode": "thinking",
+          "raw_chars": 6699,
+          "raw_sha256": "c81f1d47c69a4213e11c980f1a42cbc0a4b94acd3e739d96e7aa85c2fc5c90be",
+          "validation_error": "bad_intent_summary"
+        },
+        {
+          "attempt": 2,
+          "max_new_tokens": 8192,
+          "mode": "thinking_retry",
+          "raw_chars": 6640,
+          "raw_sha256": "ab6f28c8bd2b79e6b99d26c3b465438c641f176f522ad8aba33aed960b6b3d6a",
+          "validation_error": "bad_intent_summary"
+        },
+        {
+          "attempt": 3,
+          "constraint": {
+            "constraint_initialised": true,
+            "generated_token_count": 472,
+            "maximum_output_tokens": 1024,
+            "response_mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+            "termination_reason": "eos_or_constraint_stop",
+            "transport_status": "constrained_generated"
+          },
+          "max_new_tokens": 1024,
+          "mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+          "raw_chars": 1561,
+          "raw_sha256": "09f3de8fd4ef975be0b9976a35be5b2ab42ca3c4603fc0e7f421bbe376d120a5",
+          "validation_error": null
+        }
+      ],
+      "capability_status": "unauthorized",
+      "claim_boundary": "separately_versioned_from_frozen_t39",
+      "error": null,
+      "execution_mode": "cluster-gpu-goal-first-v2",
+      "failed": false,
+      "intent_summary": "Complete the configuration and inspection of the centrifuge controller after a check, then set it to its routine level in a moment",
+      "latency_ms": 93731.50582564995,
+      "model_id": "Qwen/Qwen3-8B@b968826d9c46dd6066d109eabc6255188de91218",
+      "parsed": {
+        "analysis": {
+          "ambiguity_present": true,
+          "ambiguity_types": [
+            "pragmatic"
+          ],
+          "analysis_provenance": {
+            "analysis_id": "f966a2ffb8e79e015806d4a6a4f1dbe36685a763701bf2e7df59ed0ad4e594fa",
+            "method": "context_blind",
+            "notes": "ablated_input_hash=f966a2ffb8e79e015806d4a6a4f1dbe36685a763701bf2e7df59ed0ad4e594fa;source_input_hash=f966a2ffb8e79e015806d4a6a4f1dbe36685a763701bf2e7df59ed0ad4e594fa;no_gold_in_prompt;scene_licence_dropped=none",
+            "provider_id": "goal_first_v2_context_blind",
+            "provider_version": "goal-first-manager-v2"
+          },
+          "candidate_interpretations": [],
+          "capability_status": "unknown",
+          "clarification_question": null,
+          "clarification_targets": [],
+          "compound_ambiguity": false,
+          "compound_ambiguity_count": 0,
+          "context_sampling_uncertainty": {
+            "agreement": 0.85,
+            "score": 0.15,
+            "variant_count": 1
+          },
+          "cpc": {
+            "action": {
+              "status": "not_applicable",
+              "value": "complete configuration and inspection of centrifuge controller"
+            },
+            "actor": {
+              "status": "not_applicable",
+              "value": "none"
+            },
+            "conditions": {
+              "status": "not_applicable",
+              "value": "after the check"
+            },
+            "constraints": {
+              "status": "not_applicable",
+              "value": "routine level"
+            },
+            "destination": {
+              "status": "not_applicable",
+              "value": "none"
+            },
+            "negation": {
+              "status": "not_applicable",
+              "value": "none"
+            },
+            "object": {
+              "status": "not_applicable",
+              "value": "centrifuge controller"
+            },
+            "object_attributes": {
+              "status": "not_applicable",
+              "value": "none"
+            },
+            "quantity": {
+              "status": "not_applicable",
+              "value": "none"
+            },
+            "recipient": {
+              "status": "not_applicable",
+              "value": "centrifuge controller"
+            },
+            "spatial_relation": {
+              "status": "not_applicable",
+              "value": "after the check"
+            },
+            "time": {
+              "status": "not_applicable",
+              "value": "in a moment"
+            },
+            "tool": {
+              "status": "not_applicable",
+              "value": "centrifuge controller"
+            }
+          },
+          "findings": [
+            "pilot_ambiguity_types:[\"pragmatic\"]",
+            "pilot_capability_status:unauthorized",
+            "intent_summary_present"
+          ],
+          "intent_summary": "Complete the configuration and inspection of the centrifuge controller after a check, then set it to its routine level in a moment",
+          "primary_ambiguity_type": "pragmatic",
+          "recommended_strategy": "face_preserving_rejection",
+          "rejection_reason": "unsafe_or_prohibited_action",
+          "resolution_evidence": [],
+          "resolution_method": null,
+          "resolved_slots": [],
+          "risk_level": "low",
+          "risk_relevant": true,
+          "selected_interpretation": null,
+          "speech_act": "directive_command",
+          "strategy_sequence": [],
+          "supporting_evidence": [],
+          "unresolved_slots": [
+            {
+              "reason": "model_identified_uncertainty",
+              "slot_name": "action"
+            }
+          ],
+          "unsupported_specificity": []
+        },
+        "clarification_question": null,
+        "clarification_targets": [],
+        "execution_status": "ok",
+        "official_result": false,
+        "provider_provenance": {
+          "provider_id": "cached_analysis",
+          "provider_version": "1.0.0"
+        },
+        "recommended_strategy": "face_preserving_rejection",
+        "record_id": "CA-0855",
+        "rejection_reason": "unsafe_or_prohibited_action",
+        "resolved_slots": [],
+        "result_hash": "988a82db51cfc6f6845a70411a853736c2ea770ec78d1aca3f23945f32fd4358",
+        "run_id": null,
+        "run_mode": null,
+        "runtime_metadata": {
+          "analysis_identity": {
+            "analysis_content_hash": "55d36aace5b2040939a415cf3f5560390030507cdc5d1b82910c9dac857cf5cf",
+            "analysis_variant": "context_blind",
+            "model_strategy_id": null,
+            "provider_id": "goal_first_v2_context_blind",
+            "provider_version": "goal-first-manager-v2",
+            "record_id": "CA-0855",
+            "source_input_hash": "f966a2ffb8e79e015806d4a6a4f1dbe36685a763701bf2e7df59ed0ad4e594fa"
+          },
+          "analysis_identity_fingerprint": "2960b67948cbfff8db77d66eb49001d6ccea76391cfb244d6ef0a499ca7e8d4f",
+          "awaits_t28_adapter": true,
+          "classification": {
+            "ambiguity_present": true,
+            "ambiguity_types": [
+              "pragmatic"
+            ],
+            "capability_status": "unknown",
+            "compound_ambiguity": false,
+            "compound_ambiguity_count": 0,
+            "derivation_notes": [
+              "ambiguity_present_from_types"
+            ],
+            "risk_level": "low"
+          },
+          "context_ablation": {
+            "ablated_input_hash": "f966a2ffb8e79e015806d4a6a4f1dbe36685a763701bf2e7df59ed0ad4e594fa",
+            "capability_context_removed": true,
+            "dialogue_history_removed": true,
+            "rejected_full_context_cache": false,
+            "rejection_reason": null,
+            "scene_context_removed": true,
+            "stripped_context_derived_fields": false
+          },
+          "original_input_unmutated": true,
+          "rejection_text": "I need to decline that request because it would be unsafe under the current constraints.",
+          "requires_re_evaluation": false,
+          "resolution_events": [
+            {
+              "confidence_category": "none",
+              "details": {
+                "reason": "unsupported_default_rejected"
+              },
+              "evidence_source": null,
+              "outcome": "unresolved",
+              "previous_status": "unresolved",
+              "resolved_value": null,
+              "rule_id": "no_world_knowledge_guess",
+              "safety_eligibility": false,
+              "slot": "action"
+            }
+          ],
+          "router_trace": {
+            "clarification_targets": [],
+            "considered_rules": [
+              "goal_first_v2",
+              "known_unsafe_or_prohibited"
+            ],
+            "matched_rule_id": "known_unsafe_or_prohibited",
+            "notes": [],
+            "recommended_strategy": "face_preserving_rejection",
+            "rejection_reason": "unsafe_or_prohibited_action",
+            "requires_re_evaluation": false,
+            "strategy_sequence": []
+          },
+          "safety_action": "return_with_findings",
+          "uncertainty": null
+        },
+        "safety_findings": [],
+        "strategy_sequence": [],
+        "synthetic_only": true,
+        "system_id": "context_blind_manager",
+        "system_version": "1.0.0",
+        "unsupported_commitment_findings": []
+      },
+      "raw_output": "{\n  \"intent_summary\": \"Complete the configuration and inspection of the centrifuge controller after a check, then set it to its routine level in a moment\",\n  \"cpc\": {\n    \"action\": {\n      \"value\": \"complete configuration and inspection of centrifuge controller\",\n      \"status\": \"not_applicable\"\n    },\n    \"recipient\": {\n      \"value\": \"centrifuge controller\",\n      \"status\": \"not_applicable\"\n    },\n    \"object\": {\n      \"value\": \"centrifuge controller\",\n      \"status\": \"not_applicable\"\n    },\n    \"time\": {\n      \"value\": \"in a moment\",\n      \"status\": \"not_applicable\"\n    },\n    \"spatial_relation\": {\n      \"value\": \"after the check\",\n      \"status\": \"not_applicable\"\n    },\n    \"tool\": {\n      \"value\": \"centrifuge controller\",\n      \"status\": \"not_applicable\"\n    }\n \n  ,\n  \"constraints\": {\n    \"value\": \"routine level\",\n    \"status\": \"not_applicable\"\n  },\n  \"conditions\": {\n    \"value\": \"after the check\",\n    \"status\": \"not_applicable\"\n  },\n  \"negation\": {\n    \"value\": \"none\",\n    \"status\": \"not_applicable\"\n  },\n  \"quantity\": {\n    \"value\": \"none\",\n    \"status\": \"not_applicable\"\n  },\n  \"destination\": {\n    \"value\": \"none\",\n    \"status\": \"not_applicable\"\n  },\n  \"actor\": {\n    \"value\": \"none\",\n    \"status\": \"not_applicable\"\n  },\n  \"object_attributes\": {\n    \"value\": \"none\",\n    \"status\": \"not_applicable\"\n  }\n},\n  \"pilot_ambiguity_types\": [\n    \"pragmatic\"\n  ]\n  \n  ,\n  \"pilot_capability_status\": \"unauthorized\",\n  \"speech_act\": \"directive_command\",\n  \"unresolved_slots\": [\n    \"intent\"\n  ]\n  ,\n  \"uncertainty\": 0.15\n  ,\n  \"risk_level\": \"low\"\n}",
+      "record_id": "CA-0855",
+      "schema_valid": true,
+      "supports_ambiguity_prediction": true,
+      "supports_capability_prediction": true,
+      "system_id": "goal_first_context_blind_v2",
+      "system_version": "2.0.0",
+      "terminal_strategy": "face_preserving_rejection"
+    }
+  },
+  "provenance": {
+    "source_sha256": "f33b1e29f1e8aa256a475f07213aa07247def47d8e2148d54a472a40b71b05c9",
+    "gold_sha256": "5e23ad1a92ff1873c8f039a8ce560a111dd6fb6b8ae8c11d6cf34dbfa1c360db",
+    "t07_final_zip_sha256": "34ca50e034ca37b617068bb50c734d12fa26282fb5eec563c11ead700163e491",
+    "inherited_t07_zip_sha256": "0305b1e9ab062876ee6ee89778cc6028d2eaf01718b7dd0295944e7d9cb81a01",
+    "note": "Goal-First, Degree, Timid, and Context-Blind predictions are inherited from the earlier T0.7 run; official intent and comparison come from the final T0.7 archive."
+  }
+}

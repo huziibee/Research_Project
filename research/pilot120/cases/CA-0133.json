@@ -1,0 +1,1010 @@
+{
+  "record_id": "CA-0133",
+  "frozen_source": {
+    "capability_context": "Retail service robot can carry stock, scan items, print labels, and update approved inventory terminals.",
+    "command": "Add a small amount of cleaning fluid to the cleaning-fluid bottle with the assigned dosing cup after the check.",
+    "dialogue_history": [],
+    "record_id": "CA-0133",
+    "scene_context": "Stockroom in a retail shop. Two dosing cups are available. The cup assigned to this work order is calibrated for the named substance; the other cup is reserved for another task. The cleaning-fluid bottle is the only open container on the active work order. The check is scheduled at 14:00 and the task card links this instruction to that occurrence. The task specification permits exactly two approved quantities for cleaning fluid: 20 millilitres and 60 millilitres. Neither is the default, and they produce materially different outcomes. The process requires an exact quantity before dispensing. The named substance, container, and dosing operation are approved for this robot; both listed quantities are within its certified dispensing range."
+  },
+  "frozen_gold": {
+    "ambiguity_types": [
+      "fuzzy_quantity",
+      "instrument_reference"
+    ],
+    "annotator_b_era": "claude_era",
+    "annotator_b_model": "claude-4.6-sonnet-medium-thinking",
+    "capability_status": "capable",
+    "field_status": {
+      "ambiguity_types": "auto_agree",
+      "capability_status": "human_auditor:independent_from_route",
+      "record_validity": "auto_agree",
+      "strategy_sequence": "auto_agree",
+      "terminal_strategy": "auto_agree"
+    },
+    "gold_lifecycle": "final_gold",
+    "gold_status": "auto_agree",
+    "human_gate_required": false,
+    "provenance": {
+      "agreement_label": "pilot_annotation_agreement",
+      "annotator_a_sha256": "ec64641068c2ef9d258f723cd842bca03d26f95fe7ffe328a98216c82a0fba07",
+      "annotator_b_sha256": "c382f8a1f806b1cb836f30457872a4bc8d2b8200e7386f26a30a076b17259c46",
+      "capability_route_decouple": "conditionally_capable remapped to capable: no evidenced external capability precondition; linguistic silently_resolve/clarify is not a capability condition",
+      "gold_policy": "use_existing_pilot_adjudicated_gold",
+      "input_sha256": "2e3c2df5d5840929d8a3981630a0cd40b3972004fd8853b1d531dd2153488a67",
+      "pilot_gold_sha256": "a0812570baa2043f2f26c141efabfc44f96c8c025b8d90ca8e5b9637614d7295",
+      "protocol": "pilot_adjudicated_gold_on_capability_repaired_source",
+      "repaired_input_sha256": "a85f8650859ef276c2e9754bf458314fb6166006a463b4e4c148049f3b391306"
+    },
+    "record_id": "CA-0133",
+    "record_validity": "valid",
+    "strategy_sequence": [
+      "clarify"
+    ],
+    "terminal_strategy": "clarify"
+  },
+  "t07_comparison": {
+    "record_id": "CA-0133",
+    "gold_route": "clarify",
+    "raw_route": "clarify",
+    "ft_route": "clarify",
+    "gf_route": "clarify",
+    "raw_route_ok": "True",
+    "ft_route_ok": "True",
+    "gf_route_ok": "True",
+    "raw_official_intent": "True",
+    "ft_official_intent": "True",
+    "gf_official_intent": "True",
+    "blind_official_intent": "True"
+  },
+  "t07_official_intent": {
+    "context_blind_official_intent": true,
+    "degree_official_intent_shared_gf": true,
+    "finetune_official_intent": true,
+    "goal_first_official_intent": true,
+    "raw_official_intent": true,
+    "record_id": "CA-0133",
+    "timid_official_intent_shared_gf": true
+  },
+  "t07_predictions": {
+    "raw_qwen": {
+      "ambiguity_types": [
+        "fuzzy_quantity"
+      ],
+      "capability_status": "conditionally_capable",
+      "error": null,
+      "execution_mode": "final_close_intent_box",
+      "failed": false,
+      "intent_summary": "The user wants to add a small amount of cleaning fluid to the cleaning-fluid bottle using the assigned dosing cup after the scheduled check at 14:00.",
+      "latency_ms": 17180.37197738886,
+      "parsed": {
+        "ambiguity_types": [
+          "fuzzy_quantity"
+        ],
+        "capability_status": "conditionally_capable",
+        "intent_summary": "The user wants to add a small amount of cleaning fluid to the cleaning-fluid bottle using the assigned dosing cup after the scheduled check at 14:00.",
+        "speech_act": "directive_command",
+        "terminal_strategy": "clarify"
+      },
+      "raw_output": "<think>\nOkay, let me try to work through this. The user wants me to evaluate the robot command and return a JSON object with specific keys. First, I need to understand the command given: \"Add a small amount of cleaning fluid to the cleaning-fluid bottle with the assigned dosing cup after the check.\" \n\nSo, the main intent here is to add a small amount of cleaning fluid using the assigned dosing cup after a check. The dialogue history is empty, so there's no prior conversation to consider. The scene context is a stockroom in a retail shop with two dosing cups. One is assigned to this task, the other is for another task. The cleaning-fluid bottle is the only open container on the active work order. The check is scheduled at 14:00, and the task card links the instruction to that time. The task allows two quantities: 20ml and 60ml, both within the robot's certified range. The robot can carry stock, scan items, print labels, and update inventory terminals.\n\nNow, the keys I need to fill out. Intent_summary should be one or two sentences. The job is to add a small amount of cleaning fluid using the assigned dosing cup after the check. The speech_act is one of the options. The command is a directive to perform an action, so directive_command. \n\nAmbiguity_types: Let's see. The command mentions \"a small amount,\" which is vague. The exact quantity is required (20 or 60ml), but the user says \"small,\" which could be ambiguous. So fuzzy_quantity might apply. Also, \"after the check\" refers to a scheduled time, so maybe temporal_reference? But the check is a specific event, so maybe not. Also, \"the assigned dosing cup\" refers to a specific object, so maybe object_reference? Wait, the ambiguity types include object_reference. But the command is clear about using the assigned dosing cup, so maybe not. Wait, the ambiguity here is the \"small amount\" which is vague. So fuzzy_quantity. Also, \"after the check\" could be a temporal reference. But the check is a specific time, so maybe not. Alternatively, the check could be an action, so action_order? Or maybe the check is a step in the process. Hmm. The ambiguity types include temporal_reference. But the command says \"after the check,\" which is a specific time (14:00). So maybe that's not ambiguous. So the main ambiguity is the \"small amount\" which isn't exact, so fuzzy_quantity. Also, \"the check\" might be ambiguous if it's unclear what the check is, but the scene context says the check is scheduled at 14:00. So maybe no ambiguity there. So ambiguity_types would be [fuzzy_quantity].\n\nCapability_status: The robot is allowed to do this. The task specification permits the quantities, and the robot's certified dispensing range includes both. The robot can carry stock, scan, etc. So the capability is conditionally_capable because the exact quantity is required, but the user says \"small amount,\" which is not exact. Wait, the task requires an exact quantity (20 or 60ml), but the command says \"small amount,\" which is ambiguous. So the robot can do it if the exact quantity is specified, but the command here is ambiguous. Therefore, the capability_status would be conditionally_capable because the exact quantity isn't specified, so the robot can't proceed without clarification. Wait, but the task specification allows exactly two quantities. However, the command is to add a small amount, which is not exact. So the robot needs to know which quantity to use. Therefore, the robot is capable of the action (as it's within the certified range) but the ambiguity in the command might make it conditionally_capable. Or maybe the capability is capable, but the ambiguity is in the command. Wait, the capability_status refers to whether the robot can perform the action given the context. Since the robot is certified for the quantities and the dosing cup is assigned, but the command is ambiguous (small amount), the robot might not know which quantity to use. Therefore, the capability_status would be conditionally_capable because the exact quantity isn't specified. \n\nTerminal_strategy: If the robot can't determine the exact quantity, the strategy would be to clarify. So terminal_strategy is clarify. \n\nPutting it all together:\n\nintent_summary: The user wants to add a small amount of cleaning fluid to the cleaning-fluid bottle using the assigned dosing cup after the scheduled check at 14:00.\n\nspeech_act: directive_command\n\nambiguity_types: [fuzzy_quantity]\n\ncapability_status: conditionally_capable\n\nterminal_strategy: clarify\n</think>\n\n{\n  \"intent_summary\": \"The user wants to add a small amount of cleaning fluid to the cleaning-fluid bottle using the assigned dosing cup after the scheduled check at 14:00.\",\n  \"speech_act\": \"directive_command\",\n  \"ambiguity_types\": [\"fuzzy_quantity\"],\n  \"capability_status\": \"conditionally_capable\",\n  \"terminal_strategy\": \"clarify\"\n}",
+      "record_id": "CA-0133",
+      "schema_valid": true,
+      "speech_act": "directive_command",
+      "system_id": "direct_base_llm",
+      "terminal_strategy": "clarify"
+    },
+    "finetune": {
+      "ambiguity_types": [
+        "fuzzy_quantity"
+      ],
+      "capability_status": "capable",
+      "error": null,
+      "execution_mode": "final_close_intent_box",
+      "failed": false,
+      "intent_summary": "Add a small amount of cleaning fluid to the cleaning-fluid bottle using the assigned dosing cup after the scheduled check.",
+      "latency_ms": 13856.592555064708,
+      "parsed": {
+        "ambiguity_types": [
+          "fuzzy_quantity"
+        ],
+        "capability_status": "capable",
+        "intent_summary": "Add a small amount of cleaning fluid to the cleaning-fluid bottle using the assigned dosing cup after the scheduled check.",
+        "speech_act": "directive_command",
+        "terminal_strategy": "clarify"
+      },
+      "raw_output": "<think>\nOkay, let's break this down. The user wants the robot to add a small amount of cleaning fluid to the cleaning-fluid bottle using the assigned dosing cup after a check. The key points here are the exact quantities allowed (20ml and 60ml), the need for an exact quantity before dispensing, and the dosing cup being assigned. The command mentions \"small amount,\" but the approved quantities are specific. The robot can do this since it's within its certified range. The ambiguity here is the term \"small amount\" which isn't quantified. The capability is there, so the status is capable. The speech act is a directive command. The ambiguity type is fuzzy_quantity because \"small\" isn't a precise measure. The terminal strategy is execute since the robot can perform the task once the quantity is clarified, but the user hasn't specified which exact amount. Wait, the command says \"small amount,\" but the allowed quantities are 20 and 60. So the ambiguity is that \"small\" could mean either, leading to fuzzy_quantity. The capability is conditionally_capable because the robot can do it if the quantity is specified, but the command doesn't specify. Wait, the capability_context says the robot can dispense within certified ranges, and both quantities are within range. So the capability status is capable. But the command's ambiguity might make the robot need to clarify. Hmm. The speech act is a directive command, but since the quantity is ambiguous, maybe the terminal strategy is clarify. Wait, the task requires an exact quantity before dispensing. The user's command says \"small amount,\" which is ambiguous. So the robot might need to ask for clarification, making the terminal strategy clarify. But the capability is there. So the capability status is capable, but the ambiguity is fuzzy_quantity. The intent is to add cleaning fluid after the check. The speech act is directive command. So the JSON should have intent_summary as adding cleaning fluid, speech_act as directive_command, ambiguity_types as fuzzy_quantity, capability_status as capable, and terminal_strategy as clarify.\n</think>\n\n{\n  \"intent_summary\": \"Add a small amount of cleaning fluid to the cleaning-fluid bottle using the assigned dosing cup after the scheduled check.\",\n  \"speech_act\": \"directive_command\",\n  \"ambiguity_types\": [\"fuzzy_quantity\"],\n  \"capability_status\": \"capable\",\n  \"terminal_strategy\": \"clarify\"\n}",
+      "record_id": "CA-0133",
+      "schema_valid": true,
+      "speech_act": "directive_command",
+      "system_id": "t28_selected_adapter_llm",
+      "terminal_strategy": "clarify"
+    },
+    "goal_first": {
+      "ambiguity_types": [
+        "fuzzy_quantity"
+      ],
+      "analysis_attempts": [
+        {
+          "attempt": 1,
+          "max_new_tokens": 4096,
+          "mode": "thinking",
+          "raw_chars": 9182,
+          "raw_sha256": "ad213ba95bf745855d0b856d6b57f68aa51baa331d9232e1e81a040c1e22fda2",
+          "validation_error": "bad_pilot_ambiguity_types"
+        },
+        {
+          "attempt": 2,
+          "max_new_tokens": 8192,
+          "mode": "thinking_retry",
+          "raw_chars": 8490,
+          "raw_sha256": "ee3bc9f856764cbd1a7c2d0661b0baeaef0721adf3e9541635bb662141b9e3c9",
+          "validation_error": "bad_intent_summary"
+        },
+        {
+          "attempt": 3,
+          "constraint": {
+            "constraint_initialised": true,
+            "generated_token_count": 476,
+            "maximum_output_tokens": 1024,
+            "response_mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+            "termination_reason": "eos_or_constraint_stop",
+            "transport_status": "constrained_generated"
+          },
+          "max_new_tokens": 1024,
+          "mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+          "raw_chars": 1582,
+          "raw_sha256": "4dd8c3b57ec2c4e799b9ecfed4855ec250136772009df843670160847aefe40a",
+          "validation_error": null
+        }
+      ],
+      "capability_status": "capable",
+      "claim_boundary": "separately_versioned_from_frozen_t39",
+      "error": null,
+      "execution_mode": "cluster-gpu-goal-first-v2",
+      "failed": false,
+      "intent_summary": "Add a small amount of cleaning fluid to the cleaning-fluid bottle using the assigned dosing cup after a check is performed at 14:00",
+      "latency_ms": 87475.64835613593,
+      "model_id": "Qwen/Qwen3-8B@b968826d9c46dd6066d109eabc6255188de91218",
+      "parsed": {
+        "analysis": {
+          "ambiguity_present": true,
+          "ambiguity_types": [
+            "quantitative"
+          ],
+          "analysis_provenance": {
+            "analysis_id": "4bbd23c7f169b7119e5ad9c18ac1aa15a641ff14da89e4b67aefcb684b48e643",
+            "method": "model_generated",
+            "notes": "source_input_hash=4bbd23c7f169b7119e5ad9c18ac1aa15a641ff14da89e4b67aefcb684b48e643;no_gold_in_prompt;scene_licence_dropped=none",
+            "provider_id": "goal_first_v2_full_context",
+            "provider_version": "goal-first-manager-v2"
+          },
+          "candidate_interpretations": [],
+          "capability_status": "capable",
+          "clarification_question": "Could you clarify the quantitative?",
+          "clarification_targets": [
+            "quantitative"
+          ],
+          "compound_ambiguity": false,
+          "compound_ambiguity_count": 0,
+          "context_sampling_uncertainty": {
+            "agreement": 0.8,
+            "score": 0.2,
+            "variant_count": 1
+          },
+          "cpc": {
+            "action": {
+              "status": "not_applicable",
+              "value": "Add cleaning fluid to the bottle"
+            },
+            "actor": {
+              "status": "not_applicable",
+              "value": "robot"
+            },
+            "conditions": {
+              "status": "not_applicable",
+              "value": "check is scheduled at 14:00"
+            },
+            "constraints": {
+              "status": "not_applicable",
+              "value": "exact quantity required before dispensing"
+            },
+            "destination": {
+              "status": "not_applicable",
+              "value": "cleaning-fluid bottle"
+            },
+            "negation": {
+              "status": "not_applicable",
+              "value": "not applicable"
+            },
+            "object": {
+              "status": "not_applicable",
+              "value": "cleaning-fluid bottle"
+            },
+            "object_attributes": {
+              "status": "not_applicable",
+              "value": "not applicable"
+            },
+            "quantity": {
+              "status": "not_applicable",
+              "value": "small amount"
+            },
+            "recipient": {
+              "status": "not_applicable",
+              "value": "robot"
+            },
+            "spatial_relation": {
+              "status": "not_applicable",
+              "value": "not applicable"
+            },
+            "time": {
+              "status": "not_applicable",
+              "value": "after the check"
+            },
+            "tool": {
+              "status": "not_applicable",
+              "value": "assigned dosing cup"
+            }
+          },
+          "findings": [
+            "pilot_ambiguity_types:[\"fuzzy_quantity\"]",
+            "pilot_capability_status:capable",
+            "intent_summary_present"
+          ],
+          "intent_summary": "Add a small amount of cleaning fluid to the cleaning-fluid bottle using the assigned dosing cup after a check is performed at 14:00",
+          "primary_ambiguity_type": "quantitative",
+          "recommended_strategy": "clarify",
+          "rejection_reason": null,
+          "resolution_evidence": [],
+          "resolution_method": null,
+          "resolved_slots": [],
+          "risk_level": "medium",
+          "risk_relevant": true,
+          "selected_interpretation": null,
+          "speech_act": "directive_command",
+          "strategy_sequence": [],
+          "supporting_evidence": [],
+          "unresolved_slots": [],
+          "unsupported_specificity": []
+        },
+        "clarification_question": "Could you clarify the quantitative?",
+        "clarification_targets": [
+          "quantitative"
+        ],
+        "execution_status": "ok",
+        "official_result": false,
+        "provider_provenance": {
+          "provider_id": "cached_analysis",
+          "provider_version": "1.0.0"
+        },
+        "recommended_strategy": "clarify",
+        "record_id": "CA-0133",
+        "rejection_reason": null,
+        "resolved_slots": [],
+        "result_hash": "f387352438bdd43a7faace19022cf57dd47a256345349e43abcf9e554e753e05",
+        "run_id": null,
+        "run_mode": null,
+        "runtime_metadata": {
+          "awaits_t28_adapter": true,
+          "classification": {
+            "ambiguity_present": true,
+            "ambiguity_types": [
+              "quantitative"
+            ],
+            "capability_status": "capable",
+            "compound_ambiguity": false,
+            "compound_ambiguity_count": 0,
+            "derivation_notes": [
+              "ambiguity_present_from_types"
+            ],
+            "risk_level": "medium"
+          },
+          "rejection_text": null,
+          "requires_re_evaluation": false,
+          "resolution_events": [],
+          "router_trace": {
+            "clarification_targets": [
+              "quantitative"
+            ],
+            "considered_rules": [
+              "goal_first_v2",
+              "known_unsafe_or_prohibited",
+              "known_incapable",
+              "unknown_capability_high_risk",
+              "context_licensed_execute",
+              "default_clarify"
+            ],
+            "matched_rule_id": "default_clarify",
+            "notes": [
+              "goal_first_v2_insufficient_licence_to_execute"
+            ],
+            "recommended_strategy": "clarify",
+            "rejection_reason": null,
+            "requires_re_evaluation": false,
+            "strategy_sequence": []
+          },
+          "safety_action": "return_with_findings",
+          "uncertainty": null
+        },
+        "safety_findings": [],
+        "strategy_sequence": [],
+        "synthetic_only": true,
+        "system_id": "goal_first_manager_v2",
+        "system_version": "2.0.0",
+        "unsupported_commitment_findings": []
+      },
+      "raw_output": "{\n  \"intent_summary\": \"Add a small amount of cleaning fluid to the cleaning-fluid bottle using the assigned dosing cup after a check is performed at 14:00\",\n  \"cpc\": {\n    \"action\": {\n      \"value\": \"Add cleaning fluid to the bottle\",\n      \"status\": \"not_applicable\"\n    },\n    \"object\": {\n      \"value\": \"cleaning-fluid bottle\",\n      \"status\": \"not_applicable\"\n    },\n    \"quantity\": {\n      \"value\": \"small amount\",\n      \"status\": \"not_applicable\"\n    },\n    \"tool\": {\n      \"value\": \"assigned dosing cup\",\n      \"status\": \"not_applicable\"\n    },\n    \"time\": {\n      \"value\": \"after the check\",\n      \"status\": \"not_applicable\"\n    },\n    \"recipient\": {\n      \"value\": \"robot\",\n      \"status\": \"not_applicable\"\n    }\n  ,\n  \"constraints\": {\n    \"value\": \"exact quantity required before dispensing\",\n    \"status\": \"not_applicable\"\n  },\n  \"spatial_relation\": {\n    \"value\": \"not applicable\",\n    \"status\": \"not_applicable\"\n  },\n  \"destination\": {\n    \"value\": \"cleaning-fluid bottle\",\n    \"status\": \"not_applicable\"\n  },\n  \"conditions\": {\n    \"value\": \"check is scheduled at 14:00\",\n    \"status\": \"not_applicable\"\n  }\n,\n  \"negation\": {\n    \"value\": \"not applicable\",\n    \"status\": \"not_applicable\"\n  },\n  \"object_attributes\": {\n    \"value\": \"not applicable\",\n    \"status\": \"not_applicable\"\n  },\n  \"actor\": {\n    \"value\": \"robot\",\n    \"status\": \"not_applicable\"\n  }\n}\n\n,\n  \"pilot_ambiguity_types\": [\n    \"fuzzy_quantity\"\n  ]\n,\n  \"pilot_capability_status\": \"capable\",\n  \"speech_act\": \"directive_command\"\n,\n  \"risk_level\": \"medium\"\n,\n  \"uncertainty\": 0.2\n,\n  \"unresolved_slots\": []\n}",
+      "record_id": "CA-0133",
+      "schema_valid": true,
+      "supports_ambiguity_prediction": true,
+      "supports_capability_prediction": true,
+      "system_id": "goal_first_manager_v2",
+      "system_version": "2.0.0",
+      "terminal_strategy": "clarify"
+    },
+    "degree": {
+      "ambiguity_types": [
+        "fuzzy_quantity"
+      ],
+      "analysis_attempts": [
+        {
+          "attempt": 1,
+          "max_new_tokens": 4096,
+          "mode": "thinking",
+          "raw_chars": 9182,
+          "raw_sha256": "ad213ba95bf745855d0b856d6b57f68aa51baa331d9232e1e81a040c1e22fda2",
+          "validation_error": "bad_pilot_ambiguity_types"
+        },
+        {
+          "attempt": 2,
+          "max_new_tokens": 8192,
+          "mode": "thinking_retry",
+          "raw_chars": 8490,
+          "raw_sha256": "ee3bc9f856764cbd1a7c2d0661b0baeaef0721adf3e9541635bb662141b9e3c9",
+          "validation_error": "bad_intent_summary"
+        },
+        {
+          "attempt": 3,
+          "constraint": {
+            "constraint_initialised": true,
+            "generated_token_count": 476,
+            "maximum_output_tokens": 1024,
+            "response_mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+            "termination_reason": "eos_or_constraint_stop",
+            "transport_status": "constrained_generated"
+          },
+          "max_new_tokens": 1024,
+          "mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+          "raw_chars": 1582,
+          "raw_sha256": "4dd8c3b57ec2c4e799b9ecfed4855ec250136772009df843670160847aefe40a",
+          "validation_error": null
+        }
+      ],
+      "capability_status": "capable",
+      "claim_boundary": "separately_versioned_from_frozen_t39",
+      "error": null,
+      "execution_mode": "cluster-gpu-goal-first-v2",
+      "failed": false,
+      "intent_summary": "Add a small amount of cleaning fluid to the cleaning-fluid bottle using the assigned dosing cup after a check is performed at 14:00",
+      "latency_ms": 87475.64835613593,
+      "model_id": "Qwen/Qwen3-8B@b968826d9c46dd6066d109eabc6255188de91218",
+      "parsed": {
+        "analysis": {
+          "ambiguity_present": true,
+          "ambiguity_types": [
+            "quantitative"
+          ],
+          "analysis_provenance": {
+            "analysis_id": "4bbd23c7f169b7119e5ad9c18ac1aa15a641ff14da89e4b67aefcb684b48e643",
+            "method": "model_generated",
+            "notes": "source_input_hash=4bbd23c7f169b7119e5ad9c18ac1aa15a641ff14da89e4b67aefcb684b48e643;no_gold_in_prompt;scene_licence_dropped=none",
+            "provider_id": "goal_first_v2_full_context",
+            "provider_version": "goal-first-manager-v2"
+          },
+          "candidate_interpretations": [],
+          "capability_status": "capable",
+          "clarification_question": null,
+          "clarification_targets": [],
+          "compound_ambiguity": false,
+          "compound_ambiguity_count": 1,
+          "context_sampling_uncertainty": {
+            "agreement": 0.8,
+            "score": 0.2,
+            "variant_count": 1
+          },
+          "cpc": {
+            "action": {
+              "status": "not_applicable",
+              "value": "Add cleaning fluid to the bottle"
+            },
+            "actor": {
+              "status": "not_applicable",
+              "value": "robot"
+            },
+            "conditions": {
+              "status": "not_applicable",
+              "value": "check is scheduled at 14:00"
+            },
+            "constraints": {
+              "status": "not_applicable",
+              "value": "exact quantity required before dispensing"
+            },
+            "destination": {
+              "status": "not_applicable",
+              "value": "cleaning-fluid bottle"
+            },
+            "negation": {
+              "status": "not_applicable",
+              "value": "not applicable"
+            },
+            "object": {
+              "status": "not_applicable",
+              "value": "cleaning-fluid bottle"
+            },
+            "object_attributes": {
+              "status": "not_applicable",
+              "value": "not applicable"
+            },
+            "quantity": {
+              "status": "not_applicable",
+              "value": "small amount"
+            },
+            "recipient": {
+              "status": "not_applicable",
+              "value": "robot"
+            },
+            "spatial_relation": {
+              "status": "not_applicable",
+              "value": "not applicable"
+            },
+            "time": {
+              "status": "not_applicable",
+              "value": "after the check"
+            },
+            "tool": {
+              "status": "not_applicable",
+              "value": "assigned dosing cup"
+            }
+          },
+          "findings": [
+            "pilot_ambiguity_types:[\"fuzzy_quantity\"]",
+            "pilot_capability_status:capable",
+            "intent_summary_present"
+          ],
+          "intent_summary": "Add a small amount of cleaning fluid to the cleaning-fluid bottle using the assigned dosing cup after a check is performed at 14:00",
+          "primary_ambiguity_type": "quantitative",
+          "recommended_strategy": "silently_resolve",
+          "rejection_reason": null,
+          "resolution_evidence": [],
+          "resolution_method": null,
+          "resolved_slots": [],
+          "risk_level": "medium",
+          "risk_relevant": true,
+          "selected_interpretation": null,
+          "speech_act": "directive_command",
+          "strategy_sequence": [],
+          "supporting_evidence": [],
+          "unresolved_slots": [],
+          "unsupported_specificity": []
+        },
+        "clarification_question": null,
+        "clarification_targets": [],
+        "execution_status": "ok",
+        "official_result": false,
+        "provider_provenance": {
+          "shared_analysis_fingerprint": "059b8cecefee494e8315364e03d461523d91766cab4b16b542ca53229198bc30"
+        },
+        "recommended_strategy": "silently_resolve",
+        "record_id": "CA-0133",
+        "rejection_reason": null,
+        "resolved_slots": [],
+        "result_hash": "3be4d94c99b33172d1e204336a2325a0d00d01c370bbe743427ec6d9ac2441a6",
+        "run_id": null,
+        "run_mode": null,
+        "runtime_metadata": {
+          "shared_analysis_fingerprint": "059b8cecefee494e8315364e03d461523d91766cab4b16b542ca53229198bc30",
+          "thresholds_status": "unfrozen",
+          "thresholds_valid_for_official_use": false,
+          "uncertainty_score": 0.2,
+          "uses_type_risk_capability_precedence": false
+        },
+        "safety_findings": [],
+        "strategy_sequence": [],
+        "synthetic_only": true,
+        "system_id": "degree_based_router",
+        "system_version": "1.0.0",
+        "unsupported_commitment_findings": []
+      },
+      "raw_output": "{\n  \"intent_summary\": \"Add a small amount of cleaning fluid to the cleaning-fluid bottle using the assigned dosing cup after a check is performed at 14:00\",\n  \"cpc\": {\n    \"action\": {\n      \"value\": \"Add cleaning fluid to the bottle\",\n      \"status\": \"not_applicable\"\n    },\n    \"object\": {\n      \"value\": \"cleaning-fluid bottle\",\n      \"status\": \"not_applicable\"\n    },\n    \"quantity\": {\n      \"value\": \"small amount\",\n      \"status\": \"not_applicable\"\n    },\n    \"tool\": {\n      \"value\": \"assigned dosing cup\",\n      \"status\": \"not_applicable\"\n    },\n    \"time\": {\n      \"value\": \"after the check\",\n      \"status\": \"not_applicable\"\n    },\n    \"recipient\": {\n      \"value\": \"robot\",\n      \"status\": \"not_applicable\"\n    }\n  ,\n  \"constraints\": {\n    \"value\": \"exact quantity required before dispensing\",\n    \"status\": \"not_applicable\"\n  },\n  \"spatial_relation\": {\n    \"value\": \"not applicable\",\n    \"status\": \"not_applicable\"\n  },\n  \"destination\": {\n    \"value\": \"cleaning-fluid bottle\",\n    \"status\": \"not_applicable\"\n  },\n  \"conditions\": {\n    \"value\": \"check is scheduled at 14:00\",\n    \"status\": \"not_applicable\"\n  }\n,\n  \"negation\": {\n    \"value\": \"not applicable\",\n    \"status\": \"not_applicable\"\n  },\n  \"object_attributes\": {\n    \"value\": \"not applicable\",\n    \"status\": \"not_applicable\"\n  },\n  \"actor\": {\n    \"value\": \"robot\",\n    \"status\": \"not_applicable\"\n  }\n}\n\n,\n  \"pilot_ambiguity_types\": [\n    \"fuzzy_quantity\"\n  ]\n,\n  \"pilot_capability_status\": \"capable\",\n  \"speech_act\": \"directive_command\"\n,\n  \"risk_level\": \"medium\"\n,\n  \"uncertainty\": 0.2\n,\n  \"unresolved_slots\": []\n}",
+      "record_id": "CA-0133",
+      "schema_valid": true,
+      "supports_ambiguity_prediction": true,
+      "supports_capability_prediction": true,
+      "system_id": "degree_based_router_v2",
+      "system_version": "2.0.0",
+      "terminal_strategy": "execute"
+    },
+    "timid": {
+      "ambiguity_types": [
+        "fuzzy_quantity"
+      ],
+      "analysis_attempts": [
+        {
+          "attempt": 1,
+          "max_new_tokens": 4096,
+          "mode": "thinking",
+          "raw_chars": 9182,
+          "raw_sha256": "ad213ba95bf745855d0b856d6b57f68aa51baa331d9232e1e81a040c1e22fda2",
+          "validation_error": "bad_pilot_ambiguity_types"
+        },
+        {
+          "attempt": 2,
+          "max_new_tokens": 8192,
+          "mode": "thinking_retry",
+          "raw_chars": 8490,
+          "raw_sha256": "ee3bc9f856764cbd1a7c2d0661b0baeaef0721adf3e9541635bb662141b9e3c9",
+          "validation_error": "bad_intent_summary"
+        },
+        {
+          "attempt": 3,
+          "constraint": {
+            "constraint_initialised": true,
+            "generated_token_count": 476,
+            "maximum_output_tokens": 1024,
+            "response_mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+            "termination_reason": "eos_or_constraint_stop",
+            "transport_status": "constrained_generated"
+          },
+          "max_new_tokens": 1024,
+          "mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+          "raw_chars": 1582,
+          "raw_sha256": "4dd8c3b57ec2c4e799b9ecfed4855ec250136772009df843670160847aefe40a",
+          "validation_error": null
+        }
+      ],
+      "capability_status": "capable",
+      "claim_boundary": "separately_versioned_from_frozen_t39",
+      "error": null,
+      "execution_mode": "cluster-gpu-goal-first-v2",
+      "failed": false,
+      "intent_summary": "Add a small amount of cleaning fluid to the cleaning-fluid bottle using the assigned dosing cup after a check is performed at 14:00",
+      "latency_ms": 87475.64835613593,
+      "model_id": "Qwen/Qwen3-8B@b968826d9c46dd6066d109eabc6255188de91218",
+      "parsed": {
+        "analysis": {
+          "ambiguity_present": true,
+          "ambiguity_types": [
+            "quantitative"
+          ],
+          "analysis_provenance": {
+            "analysis_id": "4bbd23c7f169b7119e5ad9c18ac1aa15a641ff14da89e4b67aefcb684b48e643",
+            "method": "model_generated",
+            "notes": "source_input_hash=4bbd23c7f169b7119e5ad9c18ac1aa15a641ff14da89e4b67aefcb684b48e643;no_gold_in_prompt;scene_licence_dropped=none",
+            "provider_id": "goal_first_v2_full_context",
+            "provider_version": "goal-first-manager-v2"
+          },
+          "candidate_interpretations": [],
+          "capability_status": "capable",
+          "clarification_question": "Could you clarify the quantitative?",
+          "clarification_targets": [
+            "quantitative"
+          ],
+          "compound_ambiguity": false,
+          "compound_ambiguity_count": 0,
+          "context_sampling_uncertainty": {
+            "agreement": 0.8,
+            "score": 0.2,
+            "variant_count": 1
+          },
+          "cpc": {
+            "action": {
+              "status": "not_applicable",
+              "value": "Add cleaning fluid to the bottle"
+            },
+            "actor": {
+              "status": "not_applicable",
+              "value": "robot"
+            },
+            "conditions": {
+              "status": "not_applicable",
+              "value": "check is scheduled at 14:00"
+            },
+            "constraints": {
+              "status": "not_applicable",
+              "value": "exact quantity required before dispensing"
+            },
+            "destination": {
+              "status": "not_applicable",
+              "value": "cleaning-fluid bottle"
+            },
+            "negation": {
+              "status": "not_applicable",
+              "value": "not applicable"
+            },
+            "object": {
+              "status": "not_applicable",
+              "value": "cleaning-fluid bottle"
+            },
+            "object_attributes": {
+              "status": "not_applicable",
+              "value": "not applicable"
+            },
+            "quantity": {
+              "status": "not_applicable",
+              "value": "small amount"
+            },
+            "recipient": {
+              "status": "not_applicable",
+              "value": "robot"
+            },
+            "spatial_relation": {
+              "status": "not_applicable",
+              "value": "not applicable"
+            },
+            "time": {
+              "status": "not_applicable",
+              "value": "after the check"
+            },
+            "tool": {
+              "status": "not_applicable",
+              "value": "assigned dosing cup"
+            }
+          },
+          "findings": [
+            "pilot_ambiguity_types:[\"fuzzy_quantity\"]",
+            "pilot_capability_status:capable",
+            "intent_summary_present"
+          ],
+          "intent_summary": "Add a small amount of cleaning fluid to the cleaning-fluid bottle using the assigned dosing cup after a check is performed at 14:00",
+          "primary_ambiguity_type": "quantitative",
+          "recommended_strategy": "clarify",
+          "rejection_reason": null,
+          "resolution_evidence": [],
+          "resolution_method": null,
+          "resolved_slots": [],
+          "risk_level": "medium",
+          "risk_relevant": true,
+          "selected_interpretation": null,
+          "speech_act": "directive_command",
+          "strategy_sequence": [],
+          "supporting_evidence": [],
+          "unresolved_slots": [],
+          "unsupported_specificity": []
+        },
+        "clarification_question": "Could you clarify the quantitative?",
+        "clarification_targets": [
+          "quantitative"
+        ],
+        "execution_status": "ok",
+        "official_result": false,
+        "provider_provenance": {
+          "provider_id": "cached_analysis",
+          "provider_version": "1.0.0"
+        },
+        "recommended_strategy": "clarify",
+        "record_id": "CA-0133",
+        "rejection_reason": null,
+        "resolved_slots": [],
+        "result_hash": "35d6fdfa18fa97e029ddf0833baca87338fd172caa2af2e227e1e6597a4f7d7f",
+        "run_id": null,
+        "run_mode": null,
+        "runtime_metadata": {
+          "awaits_t28_adapter": true,
+          "classification": {
+            "ambiguity_present": true,
+            "ambiguity_types": [
+              "quantitative"
+            ],
+            "capability_status": "capable",
+            "compound_ambiguity": false,
+            "compound_ambiguity_count": 0,
+            "derivation_notes": [
+              "ambiguity_present_from_types"
+            ],
+            "risk_level": "medium"
+          },
+          "rejection_text": null,
+          "requires_re_evaluation": false,
+          "resolution_events": [],
+          "router_trace": {
+            "clarification_targets": [
+              "quantitative"
+            ],
+            "considered_rules": [
+              "known_unsafe_or_prohibited",
+              "known_incapable",
+              "unknown_or_unverified_capability",
+              "hazard_identity_unresolved",
+              "critical_unresolved_medium_high_risk",
+              "unknown_safety_risk",
+              "dependent_compound_ambiguities",
+              "unique_low_risk_resolvable",
+              "clear_safe_capable",
+              "default_clarify"
+            ],
+            "matched_rule_id": "default_clarify",
+            "notes": [
+              "default_clarify_no_unsupported_specificity"
+            ],
+            "recommended_strategy": "clarify",
+            "rejection_reason": null,
+            "requires_re_evaluation": false,
+            "strategy_sequence": []
+          },
+          "safety_action": "return_with_findings",
+          "uncertainty": null
+        },
+        "safety_findings": [],
+        "strategy_sequence": [],
+        "synthetic_only": true,
+        "system_id": "full_type_risk_aware_manager",
+        "system_version": "1.0.0",
+        "unsupported_commitment_findings": []
+      },
+      "raw_output": "{\n  \"intent_summary\": \"Add a small amount of cleaning fluid to the cleaning-fluid bottle using the assigned dosing cup after a check is performed at 14:00\",\n  \"cpc\": {\n    \"action\": {\n      \"value\": \"Add cleaning fluid to the bottle\",\n      \"status\": \"not_applicable\"\n    },\n    \"object\": {\n      \"value\": \"cleaning-fluid bottle\",\n      \"status\": \"not_applicable\"\n    },\n    \"quantity\": {\n      \"value\": \"small amount\",\n      \"status\": \"not_applicable\"\n    },\n    \"tool\": {\n      \"value\": \"assigned dosing cup\",\n      \"status\": \"not_applicable\"\n    },\n    \"time\": {\n      \"value\": \"after the check\",\n      \"status\": \"not_applicable\"\n    },\n    \"recipient\": {\n      \"value\": \"robot\",\n      \"status\": \"not_applicable\"\n    }\n  ,\n  \"constraints\": {\n    \"value\": \"exact quantity required before dispensing\",\n    \"status\": \"not_applicable\"\n  },\n  \"spatial_relation\": {\n    \"value\": \"not applicable\",\n    \"status\": \"not_applicable\"\n  },\n  \"destination\": {\n    \"value\": \"cleaning-fluid bottle\",\n    \"status\": \"not_applicable\"\n  },\n  \"conditions\": {\n    \"value\": \"check is scheduled at 14:00\",\n    \"status\": \"not_applicable\"\n  }\n,\n  \"negation\": {\n    \"value\": \"not applicable\",\n    \"status\": \"not_applicable\"\n  },\n  \"object_attributes\": {\n    \"value\": \"not applicable\",\n    \"status\": \"not_applicable\"\n  },\n  \"actor\": {\n    \"value\": \"robot\",\n    \"status\": \"not_applicable\"\n  }\n}\n\n,\n  \"pilot_ambiguity_types\": [\n    \"fuzzy_quantity\"\n  ]\n,\n  \"pilot_capability_status\": \"capable\",\n  \"speech_act\": \"directive_command\"\n,\n  \"risk_level\": \"medium\"\n,\n  \"uncertainty\": 0.2\n,\n  \"unresolved_slots\": []\n}",
+      "record_id": "CA-0133",
+      "schema_valid": true,
+      "supports_ambiguity_prediction": true,
+      "supports_capability_prediction": true,
+      "system_id": "rich_conservative_manager_v2",
+      "system_version": "2.0.0",
+      "terminal_strategy": "clarify"
+    },
+    "context_blind": {
+      "ambiguity_types": [
+        "fuzzy_quantity"
+      ],
+      "analysis_attempts": [
+        {
+          "attempt": 1,
+          "max_new_tokens": 4096,
+          "mode": "thinking",
+          "raw_chars": 9882,
+          "raw_sha256": "66d79911240232584f7cbce01c6102555236e68cd70f9611fbecf296e0d27927",
+          "validation_error": "bad_intent_summary"
+        },
+        {
+          "attempt": 2,
+          "max_new_tokens": 8192,
+          "mode": "thinking_retry",
+          "raw_chars": 4695,
+          "raw_sha256": "d17c9c2e74850bcf96eea8f615df79dc1ad16c36789311d6522a0a2f5786f81f",
+          "validation_error": "bad_pilot_ambiguity_types"
+        },
+        {
+          "attempt": 3,
+          "constraint": {
+            "constraint_initialised": true,
+            "generated_token_count": 464,
+            "maximum_output_tokens": 1024,
+            "response_mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+            "termination_reason": "eos_or_constraint_stop",
+            "transport_status": "constrained_generated"
+          },
+          "max_new_tokens": 1024,
+          "mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+          "raw_chars": 1518,
+          "raw_sha256": "f5c76fea5b3b6561d121ec320c0d54d2642103acaebd81f1d72bec62107d9614",
+          "validation_error": null
+        }
+      ],
+      "capability_status": "incapable",
+      "claim_boundary": "separately_versioned_from_frozen_t39",
+      "error": null,
+      "execution_mode": "cluster-gpu-goal-first-v2",
+      "failed": false,
+      "intent_summary": "Add a small amount of cleaning fluid to the cleaning-fluid bottle using the assigned dosing cup following a check",
+      "latency_ms": 66926.1377658695,
+      "model_id": "Qwen/Qwen3-8B@b968826d9c46dd6066d109eabc6255188de91218",
+      "parsed": {
+        "analysis": {
+          "ambiguity_present": true,
+          "ambiguity_types": [
+            "quantitative"
+          ],
+          "analysis_provenance": {
+            "analysis_id": "f7b008999694442742bff8540302d290ddb08d682afc186162f86b91bdf7df09",
+            "method": "context_blind",
+            "notes": "ablated_input_hash=f7b008999694442742bff8540302d290ddb08d682afc186162f86b91bdf7df09;source_input_hash=f7b008999694442742bff8540302d290ddb08d682afc186162f86b91bdf7df09;no_gold_in_prompt;scene_licence_dropped=none",
+            "provider_id": "goal_first_v2_context_blind",
+            "provider_version": "goal-first-manager-v2"
+          },
+          "candidate_interpretations": [],
+          "capability_status": "incapable",
+          "clarification_question": null,
+          "clarification_targets": [],
+          "compound_ambiguity": false,
+          "compound_ambiguity_count": 0,
+          "context_sampling_uncertainty": {
+            "agreement": 0.75,
+            "score": 0.25,
+            "variant_count": 1
+          },
+          "cpc": {
+            "action": {
+              "status": "not_applicable",
+              "value": "Add cleaning fluid"
+            },
+            "actor": {
+              "status": "not_applicable",
+              "value": "none"
+            },
+            "conditions": {
+              "status": "not_applicable",
+              "value": "none"
+            },
+            "constraints": {
+              "status": "not_applicable",
+              "value": "none"
+            },
+            "destination": {
+              "status": "not_applicable",
+              "value": "cleaning-fluid bottle"
+            },
+            "negation": {
+              "status": "not_applicable",
+              "value": "none"
+            },
+            "object": {
+              "status": "not_applicable",
+              "value": "cleaning-fluid bottle"
+            },
+            "object_attributes": {
+              "status": "not_applicable",
+              "value": "none"
+            },
+            "quantity": {
+              "status": "not_applicable",
+              "value": "small amount"
+            },
+            "recipient": {
+              "status": "not_applicable",
+              "value": "cleaning-fluid bottle"
+            },
+            "spatial_relation": {
+              "status": "not_applicable",
+              "value": "none"
+            },
+            "time": {
+              "status": "not_applicable",
+              "value": "after the check"
+            },
+            "tool": {
+              "status": "not_applicable",
+              "value": "assigned dosing cup"
+            }
+          },
+          "findings": [
+            "pilot_ambiguity_types:[\"fuzzy_quantity\"]",
+            "pilot_capability_status:incapable",
+            "intent_summary_present"
+          ],
+          "intent_summary": "Add a small amount of cleaning fluid to the cleaning-fluid bottle using the assigned dosing cup following a check",
+          "primary_ambiguity_type": "quantitative",
+          "recommended_strategy": "face_preserving_rejection",
+          "rejection_reason": "known_incapability",
+          "resolution_evidence": [],
+          "resolution_method": null,
+          "resolved_slots": [],
+          "risk_level": "low",
+          "risk_relevant": true,
+          "selected_interpretation": null,
+          "speech_act": "directive_command",
+          "strategy_sequence": [],
+          "supporting_evidence": [],
+          "unresolved_slots": [
+            {
+              "reason": "model_identified_uncertainty",
+              "slot_name": "quantity"
+            }
+          ],
+          "unsupported_specificity": []
+        },
+        "clarification_question": null,
+        "clarification_targets": [],
+        "execution_status": "ok",
+        "official_result": false,
+        "provider_provenance": {
+          "provider_id": "cached_analysis",
+          "provider_version": "1.0.0"
+        },
+        "recommended_strategy": "face_preserving_rejection",
+        "record_id": "CA-0133",
+        "rejection_reason": "known_incapability",
+        "resolved_slots": [],
+        "result_hash": "72f89d498798a575324bf4c56b5ba0c6d9e628b9d8c18b221cf7444bb67974ea",
+        "run_id": null,
+        "run_mode": null,
+        "runtime_metadata": {
+          "analysis_identity": {
+            "analysis_content_hash": "98943cd7dfa0a495e648b2b1a8713866fbdcf33b904073bb5342996227e33d36",
+            "analysis_variant": "context_blind",
+            "model_strategy_id": null,
+            "provider_id": "goal_first_v2_context_blind",
+            "provider_version": "goal-first-manager-v2",
+            "record_id": "CA-0133",
+            "source_input_hash": "f7b008999694442742bff8540302d290ddb08d682afc186162f86b91bdf7df09"
+          },
+          "analysis_identity_fingerprint": "22dfdd6a8ea9bcdeedac93d0bb710d99a9ea7578d3d895e3e39d63d28cfbc177",
+          "awaits_t28_adapter": true,
+          "classification": {
+            "ambiguity_present": true,
+            "ambiguity_types": [
+              "quantitative"
+            ],
+            "capability_status": "incapable",
+            "compound_ambiguity": false,
+            "compound_ambiguity_count": 0,
+            "derivation_notes": [
+              "ambiguity_present_from_types"
+            ],
+            "risk_level": "low"
+          },
+          "context_ablation": {
+            "ablated_input_hash": "f7b008999694442742bff8540302d290ddb08d682afc186162f86b91bdf7df09",
+            "capability_context_removed": true,
+            "dialogue_history_removed": true,
+            "rejected_full_context_cache": false,
+            "rejection_reason": null,
+            "scene_context_removed": true,
+            "stripped_context_derived_fields": false
+          },
+          "original_input_unmutated": true,
+          "rejection_text": "I am not able to perform that action with my current capabilities. I will not invent an alternative that is not supported.",
+          "requires_re_evaluation": false,
+          "resolution_events": [
+            {
+              "confidence_category": "none",
+              "details": {
+                "reason": "unsupported_default_rejected"
+              },
+              "evidence_source": null,
+              "outcome": "unresolved",
+              "previous_status": "unresolved",
+              "resolved_value": null,
+              "rule_id": "no_world_knowledge_guess",
+              "safety_eligibility": false,
+              "slot": "quantity"
+            }
+          ],
+          "router_trace": {
+            "clarification_targets": [],
+            "considered_rules": [
+              "goal_first_v2",
+              "known_unsafe_or_prohibited",
+              "known_incapable"
+            ],
+            "matched_rule_id": "known_incapable",
+            "notes": [],
+            "recommended_strategy": "face_preserving_rejection",
+            "rejection_reason": "known_incapability",
+            "requires_re_evaluation": false,
+            "strategy_sequence": []
+          },
+          "safety_action": "return_with_findings",
+          "uncertainty": null
+        },
+        "safety_findings": [],
+        "strategy_sequence": [],
+        "synthetic_only": true,
+        "system_id": "context_blind_manager",
+        "system_version": "1.0.0",
+        "unsupported_commitment_findings": []
+      },
+      "raw_output": "{\n  \"intent_summary\": \"Add a small amount of cleaning fluid to the cleaning-fluid bottle using the assigned dosing cup following a check\",\n  \"cpc\": {\n    \"action\": {\n      \"value\": \"Add cleaning fluid\",\n      \"status\": \"not_applicable\"\n    },\n    \"object\": {\n      \"value\": \"cleaning-fluid bottle\",\n      \"status\": \"not_applicable\"\n    },\n    \"quantity\": {\n      \"value\": \"small amount\",\n      \"status\": \"not_applicable\"\n    },\n    \"tool\": {\n      \"value\": \"assigned dosing cup\",\n      \"status\": \"not_applicable\"\n    },\n    \"recipient\": {\n      \"value\": \"cleaning-fluid bottle\",\n      \"status\": \"not_applicable\"\n    },\n    \"time\": {\n      \"value\": \"after the check\",\n      \"status\": \"not_applicable\"\n    }\n \n  ,\n  \"constraints\": {\n    \"value\": \"none\",\n    \"status\": \"not_applicable\"\n  },\n  \"conditions\": {\n    \"value\": \"none\",\n    \"status\": \"not_applicable\"\n  },\n  \"destination\": {\n    \"value\": \"cleaning-fluid bottle\",\n    \"status\": \"not_applicable\"\n  },\n  \"negation\": {\n    \"value\": \"none\",\n    \"status\": \"not_applicable\"\n  },\n  \"spatial_relation\": {\n    \"value\": \"none\",\n    \"status\": \"not_applicable\"\n  },\n  \"object_attributes\": {\n    \"value\": \"none\",\n    \"status\": \"not_applicable\"\n  },\n  \"actor\": {\n    \"value\": \"none\",\n    \"status\": \"not_applicable\"\n  }\n}\n\n,\n  \"pilot_ambiguity_types\": [\n    \"fuzzy_quantity\"\n  ]\n  \n  ,\n  \"pilot_capability_status\": \"incapable\"\n  \n  ,\n  \"speech_act\": \"directive_command\"\n  \n  ,\n  \"risk_level\": \"low\"\n  \n  ,\n  \"uncertainty\": 0.25\n   ,\n  \"unresolved_slots\": [\n    \"quantity\"\n  ]\n}",
+      "record_id": "CA-0133",
+      "schema_valid": true,
+      "supports_ambiguity_prediction": true,
+      "supports_capability_prediction": true,
+      "system_id": "goal_first_context_blind_v2",
+      "system_version": "2.0.0",
+      "terminal_strategy": "face_preserving_rejection"
+    }
+  },
+  "provenance": {
+    "source_sha256": "f33b1e29f1e8aa256a475f07213aa07247def47d8e2148d54a472a40b71b05c9",
+    "gold_sha256": "5e23ad1a92ff1873c8f039a8ce560a111dd6fb6b8ae8c11d6cf34dbfa1c360db",
+    "t07_final_zip_sha256": "34ca50e034ca37b617068bb50c734d12fa26282fb5eec563c11ead700163e491",
+    "inherited_t07_zip_sha256": "0305b1e9ab062876ee6ee89778cc6028d2eaf01718b7dd0295944e7d9cb81a01",
+    "note": "Goal-First, Degree, Timid, and Context-Blind predictions are inherited from the earlier T0.7 run; official intent and comparison come from the final T0.7 archive."
+  }
+}

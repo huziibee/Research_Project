@@ -1,0 +1,1320 @@
+{
+  "record_id": "CA-0909",
+  "frozen_source": {
+    "capability_context": "Museum support robot can move approved packing materials, scan exhibit tags, and handle non-fragile display equipment under curator-defined limits.",
+    "command": "Move the marked display panel to the loading corridor in a few minutes using the usual setup.",
+    "dialogue_history": [],
+    "record_id": "CA-0909",
+    "scene_context": "Preparation room in a museum gallery. Two display panels carry work-order marks: the amber one near the climate cabinet has a white COMPLETE tag, while the green one beside the display plinth has an orange PENDING tag. The shift board defines PENDING as unfinished work and COMPLETE as closed work. The PENDING move tag belongs to Work order WO-774. The setup table states that the exhibit changeover applies to a different work-order prefix, while Work order WO-774 maps to the condition check. For low-risk internal moves, the handbook defines 'in a few minutes' as the first five-minute idle slot after the current task. The current task ends at 15:00."
+  },
+  "frozen_gold": {
+    "ambiguity_types": [
+      "fuzzy_temporal",
+      "object_reference",
+      "routine_reference"
+    ],
+    "annotator_b_era": "glm_era",
+    "annotator_b_model": "glm-5.2-high",
+    "capability_status": "capable",
+    "field_status": {
+      "ambiguity_types": "auto_agree",
+      "capability_status": "human_auditor:independent_from_route",
+      "record_validity": "auto_agree",
+      "strategy_sequence": "auto_agree",
+      "terminal_strategy": "auto_agree"
+    },
+    "gold_lifecycle": "final_gold",
+    "gold_status": "auto_agree",
+    "human_gate_required": false,
+    "provenance": {
+      "agreement_label": "pilot_annotation_agreement",
+      "annotator_a_sha256": "d56de08afd14135272518ed107d1a5d9d35db42d99c9775a79e675e7d919146b",
+      "annotator_b_sha256": "4105d7a2221dca88d803805ec5c1bb0061c97420f33562fed1ae6e5fdcb8ddb9",
+      "capability_route_decouple": "conditionally_capable remapped to capable: no evidenced external capability precondition; linguistic silently_resolve/clarify is not a capability condition",
+      "gold_policy": "use_existing_pilot_adjudicated_gold",
+      "input_sha256": "77b25d4517117a47753ef2cda30adafb1b32f3a2f781d480d8e9b67d3a85b18e",
+      "pilot_gold_sha256": "2d5ce572bcf8b1c9355ef5093e02fe67573876b4ed05868e0b41bd464029a069",
+      "protocol": "pilot_adjudicated_gold_on_capability_repaired_source",
+      "repaired_input_sha256": "d0b1f2b25bd04287c56d2b5dacc0dead04713d93853b727f6d9a0add7724e085"
+    },
+    "record_id": "CA-0909",
+    "record_validity": "valid",
+    "strategy_sequence": [
+      "silently_resolve",
+      "execute"
+    ],
+    "terminal_strategy": "execute"
+  },
+  "t07_comparison": {
+    "record_id": "CA-0909",
+    "gold_route": "execute",
+    "raw_route": "execute",
+    "ft_route": "execute",
+    "gf_route": "refuse",
+    "raw_route_ok": "True",
+    "ft_route_ok": "True",
+    "gf_route_ok": "False",
+    "raw_official_intent": "True",
+    "ft_official_intent": "True",
+    "gf_official_intent": "True",
+    "blind_official_intent": "True"
+  },
+  "t07_official_intent": {
+    "context_blind_official_intent": true,
+    "degree_official_intent_shared_gf": true,
+    "finetune_official_intent": true,
+    "goal_first_official_intent": true,
+    "raw_official_intent": true,
+    "record_id": "CA-0909",
+    "timid_official_intent_shared_gf": true
+  },
+  "t07_predictions": {
+    "raw_qwen": {
+      "ambiguity_types": [],
+      "capability_status": "capable",
+      "error": null,
+      "execution_mode": "final_close_intent_box",
+      "failed": false,
+      "intent_summary": "Move the display panel marked with an orange PENDING tag to the loading corridor after the current task ends, using standard procedures.",
+      "latency_ms": 7763.740130700171,
+      "parsed": {
+        "ambiguity_types": [],
+        "capability_status": "capable",
+        "intent_summary": "Move the display panel marked with an orange PENDING tag to the loading corridor after the current task ends, using standard procedures.",
+        "speech_act": "directive_command",
+        "terminal_strategy": "execute"
+      },
+      "raw_output": "<think>\nOkay, let's break this down. The user's command is to move the marked display panel to the loading corridor in a few minutes using the usual setup. First, I need to determine the intent. The main job here is moving a display panel, but which one? The scene context mentions two panels: amber with a white COMPLETE tag and green with an orange PENDING tag. The PENDING tag is part of WO-774, which is for condition check, not the exhibit changeover. The current task ends at 15:00, and 'in a few minutes' refers to the first five-minute idle slot after that. \n\nSo the intent is to move the green panel (PENDING) to the loading corridor. The speech act here is a directive command because the user is giving a direct instruction. Now, checking for ambiguity types. The command mentions \"the marked display panel,\" but there are two marked panels. However, the PENDING tag is specifically linked to WO-774, which is the relevant work order here. The 'usual setup' might refer to standard procedures, but the capability context says the robot can handle non-fragile display equipment. Since the panel is marked as PENDING, it's part of the current task, so the robot is authorized. The time reference is clear based on the handbook's definition. So no ambiguity types here. Capability status is capable because the robot can move non-fragile equipment. Terminal strategy is execute since the command is clear and actionable.\n</think>\n\n{\n  \"intent_summary\": \"Move the display panel marked with an orange PENDING tag to the loading corridor after the current task ends, using standard procedures.\",\n  \"speech_act\": \"directive_command\",\n  \"ambiguity_types\": [],\n  \"capability_status\": \"capable\",\n  \"terminal_strategy\": \"execute\"\n}",
+      "record_id": "CA-0909",
+      "schema_valid": true,
+      "speech_act": "directive_command",
+      "system_id": "direct_base_llm",
+      "terminal_strategy": "execute"
+    },
+    "finetune": {
+      "ambiguity_types": [],
+      "capability_status": "capable",
+      "error": null,
+      "execution_mode": "final_close_intent_box",
+      "failed": false,
+      "intent_summary": "Move the display panel with the PENDING tag to the loading corridor after the current task ends at 15:00.",
+      "latency_ms": 29009.784933179617,
+      "parsed": {
+        "ambiguity_types": [],
+        "capability_status": "capable",
+        "intent_summary": "Move the display panel with the PENDING tag to the loading corridor after the current task ends at 15:00.",
+        "speech_act": "directive_command",
+        "terminal_strategy": "execute"
+      },
+      "raw_output": "<think>\nOkay, let me try to figure this out. The user's command is to move the marked display panel to the loading corridor in a few minutes using the usual setup. \n\nFirst, I need to understand the intent. The key points here are moving a display panel, specifically the one with the PENDING tag (since the amber one is marked as COMPLETE). The destination is the loading corridor. The time frame is \"in a few minutes,\" which according to the context, translates to the first five-minute idle slot after 15:00. Also, they mention using the usual setup, which probably refers to the standard procedure for such moves.\n\nNow, checking the speech act. The command is direct, telling the robot what to do. So it's a directive_command. \n\nAmbiguity types: The command mentions \"the marked display panel,\" but there are two panels. However, the context specifies that the green one with the orange PENDING tag is the one to move. So maybe there's a pronoun reference here (the marked one) but since the context clarifies which one, maybe it's not ambiguous. Wait, but the user might not specify which one, leading to a pronoun reference. But the scene context says the amber one is COMPLETE, so the green one is PENDING. So the command refers to the marked panel, which is the green one. So maybe there's a pronoun reference here. Also, \"usual setup\" might be a bit vague, but the setup table says the exhibit changeover applies to a different work order, but WO-774 is for condition check. So the setup might be clear. Wait, but the user says \"using the usual setup,\" which might be an object_reference. Or maybe it's a routine_reference. Also, the time frame is \"in a few minutes,\" which is defined as the first five-minute idle slot after current task ends at 15:00. So that's clear. \n\nCapability status: The robot can move non-fragile display equipment under curator-defined limits. The display panel is non-fragile? The context says the robot can handle non-fragile display equipment. The display panel is part of the exhibit, so assuming it's non-fragile. So the robot is capable. But the work order is WO-774, which maps to condition check. Wait, the setup table says that the exhibit changeover applies to a different work order prefix, but WO-774 is for condition check. So maybe the robot is allowed to move it. So capability is capable. \n\nTerminal strategy: The command is actionable, so the robot can execute it. But the time frame is dependent on the current task ending at 15:00. The robot would need to wait until that time. So the robot would execute it after the current task ends. So terminal strategy is execute. \n\nWait, but the user says \"in a few minutes,\" which is defined as the first five-minute idle slot after 15:00. So the robot would wait until 15:00, then check for the first idle slot. But the robot is capable of moving it, so the capability is capable. \n\nSo putting it all together: intent_summary is moving the PENDING display panel to the loading corridor after current task ends. Speech act is directive_command. Ambiguity types: maybe pronoun_reference (the marked panel) and routine_reference (usual setup). Wait, but the setup table says the exhibit changeover applies to different work order, but WO-774 is for condition check. So the \"usual setup\" might be referring to the standard procedure for such moves, which is clear. So maybe no ambiguity. Or maybe the \"usual setup\" is an object_reference. Alternatively, the \"usual setup\" could be a routine_reference. But the ambiguity types allowed are specific. Let me check the ambiguity types again. The options include pronoun_reference, object_reference, etc. Since the command refers to \"the marked display panel,\" which is clear from the context (green one with PENDING tag), so no pronoun ambiguity. The \"usual setup\" might be a routine_reference. But I'm not sure. Alternatively, maybe there's no ambiguity. The command is clear. So ambiguity_types could be empty. \n\nWait, the user might be ambiguous about which panel to move, but the scene context clarifies that the amber is COMPLETE and the green is PENDING. So the command refers to the marked panel (green one). So there's no ambiguity here. Therefore, ambiguity_types is empty. \n\nSo the JSON would have intent_summary as moving the PENDING display panel to loading corridor after current task ends. Speech act is directive_command. Ambiguity_types is empty. Capability is capable. Terminal strategy is execute.\n</think>\n\n{\n  \"intent_summary\": \"Move the display panel with the PENDING tag to the loading corridor after the current task ends at 15:00.\",\n  \"speech_act\": \"directive_command\",\n  \"ambiguity_types\": [],\n  \"capability_status\": \"capable\",\n  \"terminal_strategy\": \"execute\"\n}",
+      "record_id": "CA-0909",
+      "schema_valid": true,
+      "speech_act": "directive_command",
+      "system_id": "t28_selected_adapter_llm",
+      "terminal_strategy": "execute"
+    },
+    "goal_first": {
+      "ambiguity_types": [
+        "object_reference",
+        "pragmatic",
+        "spatial_reference",
+        "temporal_reference"
+      ],
+      "analysis_attempts": [
+        {
+          "attempt": 1,
+          "max_new_tokens": 4096,
+          "mode": "thinking",
+          "raw_chars": 11728,
+          "raw_sha256": "e1d6396923d503c6abcf13716d3d080f70ad9c2ea7264bcadea78619a2e7c14c",
+          "validation_error": "bad_intent_summary"
+        },
+        {
+          "attempt": 2,
+          "max_new_tokens": 8192,
+          "mode": "thinking_retry",
+          "raw_chars": 11903,
+          "raw_sha256": "2d6fe77fededfa5a169ec48f08e784004500b56d35d222bca311cbd3e29c2e6f",
+          "validation_error": "bad_pilot_ambiguity_types"
+        },
+        {
+          "attempt": 3,
+          "constraint": {
+            "constraint_initialised": true,
+            "generated_token_count": 488,
+            "maximum_output_tokens": 1024,
+            "response_mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+            "termination_reason": "eos_or_constraint_stop",
+            "transport_status": "constrained_generated"
+          },
+          "max_new_tokens": 1024,
+          "mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+          "raw_chars": 1629,
+          "raw_sha256": "0005b3bf29aa07a76ffc6b8f5103bc871cef12e4a4c4806b0734285e546e3816",
+          "validation_error": null
+        }
+      ],
+      "capability_status": "unauthorized",
+      "claim_boundary": "separately_versioned_from_frozen_t39",
+      "error": null,
+      "execution_mode": "cluster-gpu-goal-first-v2",
+      "failed": false,
+      "intent_summary": "Move the marked display panel to the loading corridor in a few minutes using the usual setup",
+      "latency_ms": 198388.600978069,
+      "model_id": "Qwen/Qwen3-8B@b968826d9c46dd6066d109eabc6255188de91218",
+      "parsed": {
+        "analysis": {
+          "ambiguity_present": true,
+          "ambiguity_types": [
+            "pragmatic",
+            "referential",
+            "spatial",
+            "temporal"
+          ],
+          "analysis_provenance": {
+            "analysis_id": "938e18963f7a6b6e68d604ee16be31e155b6cc3a509f5a104a83467a2da6df97",
+            "method": "model_generated",
+            "notes": "source_input_hash=938e18963f7a6b6e68d604ee16be31e155b6cc3a509f5a104a83467a2da6df97;no_gold_in_prompt;scene_licence_dropped=object,destination,time,tool",
+            "provider_id": "goal_first_v2_full_context",
+            "provider_version": "goal-first-manager-v2"
+          },
+          "candidate_interpretations": [],
+          "capability_status": "unknown",
+          "clarification_question": null,
+          "clarification_targets": [],
+          "compound_ambiguity": true,
+          "compound_ambiguity_count": 4,
+          "context_sampling_uncertainty": {
+            "agreement": 0.15000000000000002,
+            "score": 0.85,
+            "variant_count": 1
+          },
+          "cpc": {
+            "action": {
+              "status": "filled",
+              "value": "Move"
+            },
+            "actor": {
+              "status": "filled",
+              "value": "museum support robot"
+            },
+            "conditions": {
+              "status": "filled",
+              "value": "current task ends at 15:00"
+            },
+            "constraints": {
+              "status": "filled",
+              "value": "low-risk internal move"
+            },
+            "destination": {
+              "status": "filled",
+              "value": "loading corridor"
+            },
+            "negation": {
+              "status": "filled",
+              "value": "PENDING tag indicates work in progress"
+            },
+            "object": {
+              "status": "filled",
+              "value": "marked display panel"
+            },
+            "object_attributes": {
+              "status": "filled",
+              "value": "amber or green with tags"
+            },
+            "quantity": {
+              "status": "filled",
+              "value": "one display panel"
+            },
+            "recipient": {
+              "status": "filled",
+              "value": "museum support robot"
+            },
+            "spatial_relation": {
+              "status": "filled",
+              "value": "near the climate cabinet, beside the display plinth"
+            },
+            "time": {
+              "status": "filled",
+              "value": "in a few minutes"
+            },
+            "tool": {
+              "status": "filled",
+              "value": "usual setup"
+            }
+          },
+          "findings": [
+            "pilot_ambiguity_types:[\"object_reference\",\"pragmatic\",\"spatial_reference\",\"temporal_reference\"]",
+            "pilot_capability_status:unauthorized",
+            "intent_summary_present"
+          ],
+          "intent_summary": "Move the marked display panel to the loading corridor in a few minutes using the usual setup",
+          "primary_ambiguity_type": "pragmatic",
+          "recommended_strategy": "face_preserving_rejection",
+          "rejection_reason": "unsafe_or_prohibited_action",
+          "resolution_evidence": [],
+          "resolution_method": null,
+          "resolved_slots": [
+            {
+              "slot_name": "action",
+              "value": "Move"
+            },
+            {
+              "slot_name": "actor",
+              "value": "museum support robot"
+            },
+            {
+              "slot_name": "object",
+              "value": "marked display panel"
+            },
+            {
+              "slot_name": "object_attributes",
+              "value": "amber or green with tags"
+            },
+            {
+              "slot_name": "destination",
+              "value": "loading corridor"
+            },
+            {
+              "slot_name": "spatial_relation",
+              "value": "near the climate cabinet, beside the display plinth"
+            },
+            {
+              "slot_name": "quantity",
+              "value": "one display panel"
+            },
+            {
+              "slot_name": "time",
+              "value": "in a few minutes"
+            },
+            {
+              "slot_name": "recipient",
+              "value": "museum support robot"
+            },
+            {
+              "slot_name": "tool",
+              "value": "usual setup"
+            },
+            {
+              "slot_name": "conditions",
+              "value": "current task ends at 15:00"
+            },
+            {
+              "slot_name": "constraints",
+              "value": "low-risk internal move"
+            },
+            {
+              "slot_name": "negation",
+              "value": "PENDING tag indicates work in progress"
+            }
+          ],
+          "risk_level": "low",
+          "risk_relevant": true,
+          "selected_interpretation": null,
+          "speech_act": "indirect_request",
+          "strategy_sequence": [],
+          "supporting_evidence": [],
+          "unresolved_slots": [],
+          "unsupported_specificity": []
+        },
+        "clarification_question": null,
+        "clarification_targets": [],
+        "execution_status": "ok",
+        "official_result": false,
+        "provider_provenance": {
+          "provider_id": "cached_analysis",
+          "provider_version": "1.0.0"
+        },
+        "recommended_strategy": "face_preserving_rejection",
+        "record_id": "CA-0909",
+        "rejection_reason": "unsafe_or_prohibited_action",
+        "resolved_slots": [
+          {
+            "slot_name": "action",
+            "value": "Move"
+          },
+          {
+            "slot_name": "actor",
+            "value": "museum support robot"
+          },
+          {
+            "slot_name": "object",
+            "value": "marked display panel"
+          },
+          {
+            "slot_name": "object_attributes",
+            "value": "amber or green with tags"
+          },
+          {
+            "slot_name": "destination",
+            "value": "loading corridor"
+          },
+          {
+            "slot_name": "spatial_relation",
+            "value": "near the climate cabinet, beside the display plinth"
+          },
+          {
+            "slot_name": "quantity",
+            "value": "one display panel"
+          },
+          {
+            "slot_name": "time",
+            "value": "in a few minutes"
+          },
+          {
+            "slot_name": "recipient",
+            "value": "museum support robot"
+          },
+          {
+            "slot_name": "tool",
+            "value": "usual setup"
+          },
+          {
+            "slot_name": "conditions",
+            "value": "current task ends at 15:00"
+          },
+          {
+            "slot_name": "constraints",
+            "value": "low-risk internal move"
+          },
+          {
+            "slot_name": "negation",
+            "value": "PENDING tag indicates work in progress"
+          }
+        ],
+        "result_hash": "18317ae5e77c7bab3e54d51bb20c38f1d793f0ad32b048d20fa14186778e915b",
+        "run_id": null,
+        "run_mode": null,
+        "runtime_metadata": {
+          "awaits_t28_adapter": true,
+          "classification": {
+            "ambiguity_present": true,
+            "ambiguity_types": [
+              "pragmatic",
+              "referential",
+              "spatial",
+              "temporal"
+            ],
+            "capability_status": "unknown",
+            "compound_ambiguity": true,
+            "compound_ambiguity_count": 4,
+            "derivation_notes": [
+              "ambiguity_present_from_types"
+            ],
+            "risk_level": "low"
+          },
+          "rejection_text": "I need to decline that request because it would be unsafe under the current constraints.",
+          "requires_re_evaluation": false,
+          "resolution_events": [],
+          "router_trace": {
+            "clarification_targets": [],
+            "considered_rules": [
+              "goal_first_v2",
+              "known_unsafe_or_prohibited"
+            ],
+            "matched_rule_id": "known_unsafe_or_prohibited",
+            "notes": [],
+            "recommended_strategy": "face_preserving_rejection",
+            "rejection_reason": "unsafe_or_prohibited_action",
+            "requires_re_evaluation": false,
+            "strategy_sequence": []
+          },
+          "safety_action": "return_with_findings",
+          "uncertainty": null
+        },
+        "safety_findings": [],
+        "strategy_sequence": [],
+        "synthetic_only": true,
+        "system_id": "goal_first_manager_v2",
+        "system_version": "2.0.0",
+        "unsupported_commitment_findings": []
+      },
+      "raw_output": "{\n  \"intent_summary\": \"Move the marked display panel to the loading corridor in a few minutes using the usual setup\",\n  \"cpc\": {\n    \"action\": {\n      \"value\": \"Move\",\n      \"status\": \"unknown\"\n    },\n    \"object\": {\n      \"value\": \"marked display panel\",\n      \"status\": \"unknown\"\n    },\n    \"destination\": {\n      \"value\": \"loading corridor\",\n      \"status\": \"unknown\"\n    },\n    \"time\": {\n      \"value\": \"in a few minutes\",\n      \"status\": \"unknown\"\n    },\n    \"tool\": {\n      \"value\": \"usual setup\",\n      \"status\": \"unknown\"\n    }\n \n  ,\n  \"constraints\": {\n    \"status\": \"unknown\",\n    \"value\": \"low-risk internal move\"\n  },\n  \"conditions\": {\n    \"status\": \"unknown\",\n    \"value\": \"current task ends at 15:00\"\n  },\n  \"recipient\": {\n    \"status\": \"unknown\",\n    \"value\": \"museum support robot\"\n  },\n  \"spatial_relation\": {\n    \"status\": \"unknown\",\n    \"value\": \"near the climate cabinet, beside the display plinth\"\n  },\n  \"object_attributes\": {\n    \"status\": \"unknown\",\n    \"value\": \"amber or green with tags\"\n  },\n  \"quantity\": {\n    \"status\": \"unknown\",\n    \"value\": \"one display panel\"\n  },\n  \"negation\": {\n    \"status\": \"unknown\",\n    \"value\": \"PENDING tag indicates work in progress\"\n  },\n  \"actor\": {\n    \"status\": \"unknown\",\n    \"value\": \"museum support robot\"\n  }\n}\n\n,\n  \"pilot_ambiguity_types\": [\n    \"pragmatic\",\n    \"temporal_reference\",\n    \"object_reference\",\n    \"spatial_reference\"\n  ]\n  \n  ,\n  \"pilot_capability_status\": \"unauthorized\",\n  \"speech_act\": \"indirect_request\"\n  \n  ,\n  \"risk_level\": \"low\",\n  \"unresolved_slots\": [\n    \"object\",\n    \"destination\",\n    \"time\",\n    \"tool\"\n  ],\n  \"uncertainty\": 0.85\n}",
+      "record_id": "CA-0909",
+      "schema_valid": true,
+      "supports_ambiguity_prediction": true,
+      "supports_capability_prediction": true,
+      "system_id": "goal_first_manager_v2",
+      "system_version": "2.0.0",
+      "terminal_strategy": "face_preserving_rejection"
+    },
+    "degree": {
+      "ambiguity_types": [
+        "object_reference",
+        "pragmatic",
+        "spatial_reference",
+        "temporal_reference"
+      ],
+      "analysis_attempts": [
+        {
+          "attempt": 1,
+          "max_new_tokens": 4096,
+          "mode": "thinking",
+          "raw_chars": 11728,
+          "raw_sha256": "e1d6396923d503c6abcf13716d3d080f70ad9c2ea7264bcadea78619a2e7c14c",
+          "validation_error": "bad_intent_summary"
+        },
+        {
+          "attempt": 2,
+          "max_new_tokens": 8192,
+          "mode": "thinking_retry",
+          "raw_chars": 11903,
+          "raw_sha256": "2d6fe77fededfa5a169ec48f08e784004500b56d35d222bca311cbd3e29c2e6f",
+          "validation_error": "bad_pilot_ambiguity_types"
+        },
+        {
+          "attempt": 3,
+          "constraint": {
+            "constraint_initialised": true,
+            "generated_token_count": 488,
+            "maximum_output_tokens": 1024,
+            "response_mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+            "termination_reason": "eos_or_constraint_stop",
+            "transport_status": "constrained_generated"
+          },
+          "max_new_tokens": 1024,
+          "mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+          "raw_chars": 1629,
+          "raw_sha256": "0005b3bf29aa07a76ffc6b8f5103bc871cef12e4a4c4806b0734285e546e3816",
+          "validation_error": null
+        }
+      ],
+      "capability_status": "unauthorized",
+      "claim_boundary": "separately_versioned_from_frozen_t39",
+      "error": null,
+      "execution_mode": "cluster-gpu-goal-first-v2",
+      "failed": false,
+      "intent_summary": "Move the marked display panel to the loading corridor in a few minutes using the usual setup",
+      "latency_ms": 198388.600978069,
+      "model_id": "Qwen/Qwen3-8B@b968826d9c46dd6066d109eabc6255188de91218",
+      "parsed": {
+        "analysis": {
+          "ambiguity_present": true,
+          "ambiguity_types": [
+            "pragmatic",
+            "referential",
+            "spatial",
+            "temporal"
+          ],
+          "analysis_provenance": {
+            "analysis_id": "938e18963f7a6b6e68d604ee16be31e155b6cc3a509f5a104a83467a2da6df97",
+            "method": "model_generated",
+            "notes": "source_input_hash=938e18963f7a6b6e68d604ee16be31e155b6cc3a509f5a104a83467a2da6df97;no_gold_in_prompt;scene_licence_dropped=object,destination,time,tool",
+            "provider_id": "goal_first_v2_full_context",
+            "provider_version": "goal-first-manager-v2"
+          },
+          "candidate_interpretations": [],
+          "capability_status": "unknown",
+          "clarification_question": "Could you clarify what you would like me to do?",
+          "clarification_targets": [
+            "intent"
+          ],
+          "compound_ambiguity": true,
+          "compound_ambiguity_count": 4,
+          "context_sampling_uncertainty": {
+            "agreement": 0.15000000000000002,
+            "score": 0.85,
+            "variant_count": 1
+          },
+          "cpc": {
+            "action": {
+              "status": "filled",
+              "value": "Move"
+            },
+            "actor": {
+              "status": "filled",
+              "value": "museum support robot"
+            },
+            "conditions": {
+              "status": "filled",
+              "value": "current task ends at 15:00"
+            },
+            "constraints": {
+              "status": "filled",
+              "value": "low-risk internal move"
+            },
+            "destination": {
+              "status": "filled",
+              "value": "loading corridor"
+            },
+            "negation": {
+              "status": "filled",
+              "value": "PENDING tag indicates work in progress"
+            },
+            "object": {
+              "status": "filled",
+              "value": "marked display panel"
+            },
+            "object_attributes": {
+              "status": "filled",
+              "value": "amber or green with tags"
+            },
+            "quantity": {
+              "status": "filled",
+              "value": "one display panel"
+            },
+            "recipient": {
+              "status": "filled",
+              "value": "museum support robot"
+            },
+            "spatial_relation": {
+              "status": "filled",
+              "value": "near the climate cabinet, beside the display plinth"
+            },
+            "time": {
+              "status": "filled",
+              "value": "in a few minutes"
+            },
+            "tool": {
+              "status": "filled",
+              "value": "usual setup"
+            }
+          },
+          "findings": [
+            "pilot_ambiguity_types:[\"object_reference\",\"pragmatic\",\"spatial_reference\",\"temporal_reference\"]",
+            "pilot_capability_status:unauthorized",
+            "intent_summary_present"
+          ],
+          "intent_summary": "Move the marked display panel to the loading corridor in a few minutes using the usual setup",
+          "primary_ambiguity_type": "pragmatic",
+          "recommended_strategy": "clarify",
+          "rejection_reason": null,
+          "resolution_evidence": [],
+          "resolution_method": null,
+          "resolved_slots": [
+            {
+              "slot_name": "action",
+              "value": "Move"
+            },
+            {
+              "slot_name": "actor",
+              "value": "museum support robot"
+            },
+            {
+              "slot_name": "object",
+              "value": "marked display panel"
+            },
+            {
+              "slot_name": "object_attributes",
+              "value": "amber or green with tags"
+            },
+            {
+              "slot_name": "destination",
+              "value": "loading corridor"
+            },
+            {
+              "slot_name": "spatial_relation",
+              "value": "near the climate cabinet, beside the display plinth"
+            },
+            {
+              "slot_name": "quantity",
+              "value": "one display panel"
+            },
+            {
+              "slot_name": "time",
+              "value": "in a few minutes"
+            },
+            {
+              "slot_name": "recipient",
+              "value": "museum support robot"
+            },
+            {
+              "slot_name": "tool",
+              "value": "usual setup"
+            },
+            {
+              "slot_name": "conditions",
+              "value": "current task ends at 15:00"
+            },
+            {
+              "slot_name": "constraints",
+              "value": "low-risk internal move"
+            },
+            {
+              "slot_name": "negation",
+              "value": "PENDING tag indicates work in progress"
+            }
+          ],
+          "risk_level": "low",
+          "risk_relevant": true,
+          "selected_interpretation": null,
+          "speech_act": "indirect_request",
+          "strategy_sequence": [],
+          "supporting_evidence": [],
+          "unresolved_slots": [],
+          "unsupported_specificity": []
+        },
+        "clarification_question": "Could you clarify what you would like me to do?",
+        "clarification_targets": [
+          "intent"
+        ],
+        "execution_status": "ok",
+        "official_result": false,
+        "provider_provenance": {
+          "shared_analysis_fingerprint": "b118dad2bf076add2fb8c9f1227923cbb1d39ec4fad617715be726821447ff66"
+        },
+        "recommended_strategy": "clarify",
+        "record_id": "CA-0909",
+        "rejection_reason": null,
+        "resolved_slots": [
+          {
+            "slot_name": "action",
+            "value": "Move"
+          },
+          {
+            "slot_name": "actor",
+            "value": "museum support robot"
+          },
+          {
+            "slot_name": "object",
+            "value": "marked display panel"
+          },
+          {
+            "slot_name": "object_attributes",
+            "value": "amber or green with tags"
+          },
+          {
+            "slot_name": "destination",
+            "value": "loading corridor"
+          },
+          {
+            "slot_name": "spatial_relation",
+            "value": "near the climate cabinet, beside the display plinth"
+          },
+          {
+            "slot_name": "quantity",
+            "value": "one display panel"
+          },
+          {
+            "slot_name": "time",
+            "value": "in a few minutes"
+          },
+          {
+            "slot_name": "recipient",
+            "value": "museum support robot"
+          },
+          {
+            "slot_name": "tool",
+            "value": "usual setup"
+          },
+          {
+            "slot_name": "conditions",
+            "value": "current task ends at 15:00"
+          },
+          {
+            "slot_name": "constraints",
+            "value": "low-risk internal move"
+          },
+          {
+            "slot_name": "negation",
+            "value": "PENDING tag indicates work in progress"
+          }
+        ],
+        "result_hash": "a9c71ec1461721847e9e07279322d17f687360823e2661a30fb26ee2583db7e4",
+        "run_id": null,
+        "run_mode": null,
+        "runtime_metadata": {
+          "shared_analysis_fingerprint": "b118dad2bf076add2fb8c9f1227923cbb1d39ec4fad617715be726821447ff66",
+          "thresholds_status": "unfrozen",
+          "thresholds_valid_for_official_use": false,
+          "uncertainty_score": 0.85,
+          "uses_type_risk_capability_precedence": false
+        },
+        "safety_findings": [],
+        "strategy_sequence": [],
+        "synthetic_only": true,
+        "system_id": "degree_based_router",
+        "system_version": "1.0.0",
+        "unsupported_commitment_findings": []
+      },
+      "raw_output": "{\n  \"intent_summary\": \"Move the marked display panel to the loading corridor in a few minutes using the usual setup\",\n  \"cpc\": {\n    \"action\": {\n      \"value\": \"Move\",\n      \"status\": \"unknown\"\n    },\n    \"object\": {\n      \"value\": \"marked display panel\",\n      \"status\": \"unknown\"\n    },\n    \"destination\": {\n      \"value\": \"loading corridor\",\n      \"status\": \"unknown\"\n    },\n    \"time\": {\n      \"value\": \"in a few minutes\",\n      \"status\": \"unknown\"\n    },\n    \"tool\": {\n      \"value\": \"usual setup\",\n      \"status\": \"unknown\"\n    }\n \n  ,\n  \"constraints\": {\n    \"status\": \"unknown\",\n    \"value\": \"low-risk internal move\"\n  },\n  \"conditions\": {\n    \"status\": \"unknown\",\n    \"value\": \"current task ends at 15:00\"\n  },\n  \"recipient\": {\n    \"status\": \"unknown\",\n    \"value\": \"museum support robot\"\n  },\n  \"spatial_relation\": {\n    \"status\": \"unknown\",\n    \"value\": \"near the climate cabinet, beside the display plinth\"\n  },\n  \"object_attributes\": {\n    \"status\": \"unknown\",\n    \"value\": \"amber or green with tags\"\n  },\n  \"quantity\": {\n    \"status\": \"unknown\",\n    \"value\": \"one display panel\"\n  },\n  \"negation\": {\n    \"status\": \"unknown\",\n    \"value\": \"PENDING tag indicates work in progress\"\n  },\n  \"actor\": {\n    \"status\": \"unknown\",\n    \"value\": \"museum support robot\"\n  }\n}\n\n,\n  \"pilot_ambiguity_types\": [\n    \"pragmatic\",\n    \"temporal_reference\",\n    \"object_reference\",\n    \"spatial_reference\"\n  ]\n  \n  ,\n  \"pilot_capability_status\": \"unauthorized\",\n  \"speech_act\": \"indirect_request\"\n  \n  ,\n  \"risk_level\": \"low\",\n  \"unresolved_slots\": [\n    \"object\",\n    \"destination\",\n    \"time\",\n    \"tool\"\n  ],\n  \"uncertainty\": 0.85\n}",
+      "record_id": "CA-0909",
+      "schema_valid": true,
+      "supports_ambiguity_prediction": true,
+      "supports_capability_prediction": true,
+      "system_id": "degree_based_router_v2",
+      "system_version": "2.0.0",
+      "terminal_strategy": "clarify"
+    },
+    "timid": {
+      "ambiguity_types": [
+        "object_reference",
+        "pragmatic",
+        "spatial_reference",
+        "temporal_reference"
+      ],
+      "analysis_attempts": [
+        {
+          "attempt": 1,
+          "max_new_tokens": 4096,
+          "mode": "thinking",
+          "raw_chars": 11728,
+          "raw_sha256": "e1d6396923d503c6abcf13716d3d080f70ad9c2ea7264bcadea78619a2e7c14c",
+          "validation_error": "bad_intent_summary"
+        },
+        {
+          "attempt": 2,
+          "max_new_tokens": 8192,
+          "mode": "thinking_retry",
+          "raw_chars": 11903,
+          "raw_sha256": "2d6fe77fededfa5a169ec48f08e784004500b56d35d222bca311cbd3e29c2e6f",
+          "validation_error": "bad_pilot_ambiguity_types"
+        },
+        {
+          "attempt": 3,
+          "constraint": {
+            "constraint_initialised": true,
+            "generated_token_count": 488,
+            "maximum_output_tokens": 1024,
+            "response_mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+            "termination_reason": "eos_or_constraint_stop",
+            "transport_status": "constrained_generated"
+          },
+          "max_new_tokens": 1024,
+          "mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+          "raw_chars": 1629,
+          "raw_sha256": "0005b3bf29aa07a76ffc6b8f5103bc871cef12e4a4c4806b0734285e546e3816",
+          "validation_error": null
+        }
+      ],
+      "capability_status": "unauthorized",
+      "claim_boundary": "separately_versioned_from_frozen_t39",
+      "error": null,
+      "execution_mode": "cluster-gpu-goal-first-v2",
+      "failed": false,
+      "intent_summary": "Move the marked display panel to the loading corridor in a few minutes using the usual setup",
+      "latency_ms": 198388.600978069,
+      "model_id": "Qwen/Qwen3-8B@b968826d9c46dd6066d109eabc6255188de91218",
+      "parsed": {
+        "analysis": {
+          "ambiguity_present": true,
+          "ambiguity_types": [
+            "pragmatic",
+            "referential",
+            "spatial",
+            "temporal"
+          ],
+          "analysis_provenance": {
+            "analysis_id": "938e18963f7a6b6e68d604ee16be31e155b6cc3a509f5a104a83467a2da6df97",
+            "method": "model_generated",
+            "notes": "source_input_hash=938e18963f7a6b6e68d604ee16be31e155b6cc3a509f5a104a83467a2da6df97;no_gold_in_prompt;scene_licence_dropped=object,destination,time,tool",
+            "provider_id": "goal_first_v2_full_context",
+            "provider_version": "goal-first-manager-v2"
+          },
+          "candidate_interpretations": [],
+          "capability_status": "unknown",
+          "clarification_question": "Before I continue, could you clarify: pragmatic, referential, spatial, temporal?",
+          "clarification_targets": [
+            "pragmatic",
+            "referential",
+            "spatial",
+            "temporal"
+          ],
+          "compound_ambiguity": true,
+          "compound_ambiguity_count": 4,
+          "context_sampling_uncertainty": {
+            "agreement": 0.15000000000000002,
+            "score": 0.85,
+            "variant_count": 1
+          },
+          "cpc": {
+            "action": {
+              "status": "filled",
+              "value": "Move"
+            },
+            "actor": {
+              "status": "filled",
+              "value": "museum support robot"
+            },
+            "conditions": {
+              "status": "filled",
+              "value": "current task ends at 15:00"
+            },
+            "constraints": {
+              "status": "filled",
+              "value": "low-risk internal move"
+            },
+            "destination": {
+              "status": "filled",
+              "value": "loading corridor"
+            },
+            "negation": {
+              "status": "filled",
+              "value": "PENDING tag indicates work in progress"
+            },
+            "object": {
+              "status": "filled",
+              "value": "marked display panel"
+            },
+            "object_attributes": {
+              "status": "filled",
+              "value": "amber or green with tags"
+            },
+            "quantity": {
+              "status": "filled",
+              "value": "one display panel"
+            },
+            "recipient": {
+              "status": "filled",
+              "value": "museum support robot"
+            },
+            "spatial_relation": {
+              "status": "filled",
+              "value": "near the climate cabinet, beside the display plinth"
+            },
+            "time": {
+              "status": "filled",
+              "value": "in a few minutes"
+            },
+            "tool": {
+              "status": "filled",
+              "value": "usual setup"
+            }
+          },
+          "findings": [
+            "pilot_ambiguity_types:[\"object_reference\",\"pragmatic\",\"spatial_reference\",\"temporal_reference\"]",
+            "pilot_capability_status:unauthorized",
+            "intent_summary_present"
+          ],
+          "intent_summary": "Move the marked display panel to the loading corridor in a few minutes using the usual setup",
+          "primary_ambiguity_type": "pragmatic",
+          "recommended_strategy": "clarify",
+          "rejection_reason": null,
+          "resolution_evidence": [],
+          "resolution_method": null,
+          "resolved_slots": [
+            {
+              "slot_name": "action",
+              "value": "Move"
+            },
+            {
+              "slot_name": "actor",
+              "value": "museum support robot"
+            },
+            {
+              "slot_name": "object",
+              "value": "marked display panel"
+            },
+            {
+              "slot_name": "object_attributes",
+              "value": "amber or green with tags"
+            },
+            {
+              "slot_name": "destination",
+              "value": "loading corridor"
+            },
+            {
+              "slot_name": "spatial_relation",
+              "value": "near the climate cabinet, beside the display plinth"
+            },
+            {
+              "slot_name": "quantity",
+              "value": "one display panel"
+            },
+            {
+              "slot_name": "time",
+              "value": "in a few minutes"
+            },
+            {
+              "slot_name": "recipient",
+              "value": "museum support robot"
+            },
+            {
+              "slot_name": "tool",
+              "value": "usual setup"
+            },
+            {
+              "slot_name": "conditions",
+              "value": "current task ends at 15:00"
+            },
+            {
+              "slot_name": "constraints",
+              "value": "low-risk internal move"
+            },
+            {
+              "slot_name": "negation",
+              "value": "PENDING tag indicates work in progress"
+            }
+          ],
+          "risk_level": "low",
+          "risk_relevant": true,
+          "selected_interpretation": null,
+          "speech_act": "indirect_request",
+          "strategy_sequence": [],
+          "supporting_evidence": [],
+          "unresolved_slots": [],
+          "unsupported_specificity": []
+        },
+        "clarification_question": "Before I continue, could you clarify: pragmatic, referential, spatial, temporal?",
+        "clarification_targets": [
+          "pragmatic",
+          "referential",
+          "spatial",
+          "temporal"
+        ],
+        "execution_status": "ok",
+        "official_result": false,
+        "provider_provenance": {
+          "provider_id": "cached_analysis",
+          "provider_version": "1.0.0"
+        },
+        "recommended_strategy": "clarify",
+        "record_id": "CA-0909",
+        "rejection_reason": null,
+        "resolved_slots": [
+          {
+            "slot_name": "action",
+            "value": "Move"
+          },
+          {
+            "slot_name": "actor",
+            "value": "museum support robot"
+          },
+          {
+            "slot_name": "object",
+            "value": "marked display panel"
+          },
+          {
+            "slot_name": "object_attributes",
+            "value": "amber or green with tags"
+          },
+          {
+            "slot_name": "destination",
+            "value": "loading corridor"
+          },
+          {
+            "slot_name": "spatial_relation",
+            "value": "near the climate cabinet, beside the display plinth"
+          },
+          {
+            "slot_name": "quantity",
+            "value": "one display panel"
+          },
+          {
+            "slot_name": "time",
+            "value": "in a few minutes"
+          },
+          {
+            "slot_name": "recipient",
+            "value": "museum support robot"
+          },
+          {
+            "slot_name": "tool",
+            "value": "usual setup"
+          },
+          {
+            "slot_name": "conditions",
+            "value": "current task ends at 15:00"
+          },
+          {
+            "slot_name": "constraints",
+            "value": "low-risk internal move"
+          },
+          {
+            "slot_name": "negation",
+            "value": "PENDING tag indicates work in progress"
+          }
+        ],
+        "result_hash": "fdfe9d029e52e8f1e2475359367a732e32c0dc8867d44a8af0d1d467981ea0ad",
+        "run_id": null,
+        "run_mode": null,
+        "runtime_metadata": {
+          "awaits_t28_adapter": true,
+          "classification": {
+            "ambiguity_present": true,
+            "ambiguity_types": [
+              "pragmatic",
+              "referential",
+              "spatial",
+              "temporal"
+            ],
+            "capability_status": "unknown",
+            "compound_ambiguity": true,
+            "compound_ambiguity_count": 4,
+            "derivation_notes": [
+              "ambiguity_present_from_types"
+            ],
+            "risk_level": "low"
+          },
+          "rejection_text": null,
+          "requires_re_evaluation": false,
+          "resolution_events": [],
+          "router_trace": {
+            "clarification_targets": [
+              "pragmatic",
+              "referential",
+              "spatial",
+              "temporal"
+            ],
+            "considered_rules": [
+              "known_unsafe_or_prohibited",
+              "known_incapable",
+              "unknown_or_unverified_capability"
+            ],
+            "matched_rule_id": "unknown_capability",
+            "notes": [
+              "unknown_capability_cannot_execute"
+            ],
+            "recommended_strategy": "clarify",
+            "rejection_reason": null,
+            "requires_re_evaluation": false,
+            "strategy_sequence": []
+          },
+          "safety_action": "return_with_findings",
+          "uncertainty": null
+        },
+        "safety_findings": [],
+        "strategy_sequence": [],
+        "synthetic_only": true,
+        "system_id": "full_type_risk_aware_manager",
+        "system_version": "1.0.0",
+        "unsupported_commitment_findings": []
+      },
+      "raw_output": "{\n  \"intent_summary\": \"Move the marked display panel to the loading corridor in a few minutes using the usual setup\",\n  \"cpc\": {\n    \"action\": {\n      \"value\": \"Move\",\n      \"status\": \"unknown\"\n    },\n    \"object\": {\n      \"value\": \"marked display panel\",\n      \"status\": \"unknown\"\n    },\n    \"destination\": {\n      \"value\": \"loading corridor\",\n      \"status\": \"unknown\"\n    },\n    \"time\": {\n      \"value\": \"in a few minutes\",\n      \"status\": \"unknown\"\n    },\n    \"tool\": {\n      \"value\": \"usual setup\",\n      \"status\": \"unknown\"\n    }\n \n  ,\n  \"constraints\": {\n    \"status\": \"unknown\",\n    \"value\": \"low-risk internal move\"\n  },\n  \"conditions\": {\n    \"status\": \"unknown\",\n    \"value\": \"current task ends at 15:00\"\n  },\n  \"recipient\": {\n    \"status\": \"unknown\",\n    \"value\": \"museum support robot\"\n  },\n  \"spatial_relation\": {\n    \"status\": \"unknown\",\n    \"value\": \"near the climate cabinet, beside the display plinth\"\n  },\n  \"object_attributes\": {\n    \"status\": \"unknown\",\n    \"value\": \"amber or green with tags\"\n  },\n  \"quantity\": {\n    \"status\": \"unknown\",\n    \"value\": \"one display panel\"\n  },\n  \"negation\": {\n    \"status\": \"unknown\",\n    \"value\": \"PENDING tag indicates work in progress\"\n  },\n  \"actor\": {\n    \"status\": \"unknown\",\n    \"value\": \"museum support robot\"\n  }\n}\n\n,\n  \"pilot_ambiguity_types\": [\n    \"pragmatic\",\n    \"temporal_reference\",\n    \"object_reference\",\n    \"spatial_reference\"\n  ]\n  \n  ,\n  \"pilot_capability_status\": \"unauthorized\",\n  \"speech_act\": \"indirect_request\"\n  \n  ,\n  \"risk_level\": \"low\",\n  \"unresolved_slots\": [\n    \"object\",\n    \"destination\",\n    \"time\",\n    \"tool\"\n  ],\n  \"uncertainty\": 0.85\n}",
+      "record_id": "CA-0909",
+      "schema_valid": true,
+      "supports_ambiguity_prediction": true,
+      "supports_capability_prediction": true,
+      "system_id": "rich_conservative_manager_v2",
+      "system_version": "2.0.0",
+      "terminal_strategy": "clarify"
+    },
+    "context_blind": {
+      "ambiguity_types": [
+        "fuzzy_temporal"
+      ],
+      "analysis_attempts": [
+        {
+          "attempt": 1,
+          "max_new_tokens": 4096,
+          "mode": "thinking",
+          "raw_chars": 4188,
+          "raw_sha256": "5d4806ca8f319032881d1bf984bede9135a64c8f486ef23f2f545c6162f9eead",
+          "validation_error": "bad_intent_summary"
+        },
+        {
+          "attempt": 2,
+          "max_new_tokens": 8192,
+          "mode": "thinking_retry",
+          "raw_chars": 8923,
+          "raw_sha256": "969ee8fe4369c70ebf207a74d306139480daf7114d65532458968e07bfa61243",
+          "validation_error": "bad_intent_summary"
+        },
+        {
+          "attempt": 3,
+          "constraint": {
+            "constraint_initialised": true,
+            "generated_token_count": 494,
+            "maximum_output_tokens": 1024,
+            "response_mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+            "termination_reason": "eos_or_constraint_stop",
+            "transport_status": "constrained_generated"
+          },
+          "max_new_tokens": 1024,
+          "mode": "schema_constrained_final_emission_after_two_thinking_attempts",
+          "raw_chars": 1547,
+          "raw_sha256": "0ebb046915989055f80f67386744d0e6c16244650fa9a97c41ce46865e4b89f2",
+          "validation_error": null
+        }
+      ],
+      "capability_status": "unauthorized",
+      "claim_boundary": "separately_versioned_from_frozen_t39",
+      "error": null,
+      "execution_mode": "cluster-gpu-goal-first-v2",
+      "failed": false,
+      "intent_summary": "Move the marked display panel to the loading corridor in a few minutes using the usual setup",
+      "latency_ms": 94196.40989694744,
+      "model_id": "Qwen/Qwen3-8B@b968826d9c46dd6066d109eabc6255188de91218",
+      "parsed": {
+        "analysis": {
+          "ambiguity_present": true,
+          "ambiguity_types": [
+            "temporal"
+          ],
+          "analysis_provenance": {
+            "analysis_id": "a3812c737cd8311c9e2d8cae85a62503bb809a0ac9b1aeb42c64100fac59fcf3",
+            "method": "context_blind",
+            "notes": "ablated_input_hash=a3812c737cd8311c9e2d8cae85a62503bb809a0ac9b1aeb42c64100fac59fcf3;source_input_hash=a3812c737cd8311c9e2d8cae85a62503bb809a0ac9b1aeb42c64100fac59fcf3;no_gold_in_prompt;scene_licence_dropped=time",
+            "provider_id": "goal_first_v2_context_blind",
+            "provider_version": "goal-first-manager-v2"
+          },
+          "candidate_interpretations": [],
+          "capability_status": "unknown",
+          "clarification_question": null,
+          "clarification_targets": [],
+          "compound_ambiguity": false,
+          "compound_ambiguity_count": 0,
+          "context_sampling_uncertainty": {
+            "agreement": 0.55,
+            "score": 0.45,
+            "variant_count": 1
+          },
+          "cpc": {
+            "action": {
+              "status": "not_applicable",
+              "value": "move"
+            },
+            "actor": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "conditions": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "constraints": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "destination": {
+              "status": "not_applicable",
+              "value": "loading corridor"
+            },
+            "negation": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "object": {
+              "status": "not_applicable",
+              "value": "marked display panel"
+            },
+            "object_attributes": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "quantity": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "recipient": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "spatial_relation": {
+              "status": "not_applicable",
+              "value": "not_applicable"
+            },
+            "time": {
+              "status": "not_applicable",
+              "value": "in a few minutes"
+            },
+            "tool": {
+              "status": "not_applicable",
+              "value": "usual setup"
+            }
+          },
+          "findings": [
+            "pilot_ambiguity_types:[\"fuzzy_temporal\"]",
+            "pilot_capability_status:unauthorized",
+            "intent_summary_present"
+          ],
+          "intent_summary": "Move the marked display panel to the loading corridor in a few minutes using the usual setup",
+          "primary_ambiguity_type": "temporal",
+          "recommended_strategy": "face_preserving_rejection",
+          "rejection_reason": "unsafe_or_prohibited_action",
+          "resolution_evidence": [],
+          "resolution_method": null,
+          "resolved_slots": [],
+          "risk_level": "medium",
+          "risk_relevant": true,
+          "selected_interpretation": null,
+          "speech_act": "directive_command",
+          "strategy_sequence": [],
+          "supporting_evidence": [],
+          "unresolved_slots": [],
+          "unsupported_specificity": []
+        },
+        "clarification_question": null,
+        "clarification_targets": [],
+        "execution_status": "ok",
+        "official_result": false,
+        "provider_provenance": {
+          "provider_id": "cached_analysis",
+          "provider_version": "1.0.0"
+        },
+        "recommended_strategy": "face_preserving_rejection",
+        "record_id": "CA-0909",
+        "rejection_reason": "unsafe_or_prohibited_action",
+        "resolved_slots": [],
+        "result_hash": "72af72f7d6ed9be9f473fea812c7c5e1307a1227537b6af91fa7838d06429d3f",
+        "run_id": null,
+        "run_mode": null,
+        "runtime_metadata": {
+          "analysis_identity": {
+            "analysis_content_hash": "ebea5f2a18a643400581d978e4172b9e5cb01af9b08fdfcf6bd58a1eeba6bb5a",
+            "analysis_variant": "context_blind",
+            "model_strategy_id": null,
+            "provider_id": "goal_first_v2_context_blind",
+            "provider_version": "goal-first-manager-v2",
+            "record_id": "CA-0909",
+            "source_input_hash": "a3812c737cd8311c9e2d8cae85a62503bb809a0ac9b1aeb42c64100fac59fcf3"
+          },
+          "analysis_identity_fingerprint": "5f0b0d8f53ec84f7d6a00c792da7bbc4f8c19732ae35f45157f3a92317a540a8",
+          "awaits_t28_adapter": true,
+          "classification": {
+            "ambiguity_present": true,
+            "ambiguity_types": [
+              "temporal"
+            ],
+            "capability_status": "unknown",
+            "compound_ambiguity": false,
+            "compound_ambiguity_count": 0,
+            "derivation_notes": [
+              "ambiguity_present_from_types"
+            ],
+            "risk_level": "medium"
+          },
+          "context_ablation": {
+            "ablated_input_hash": "a3812c737cd8311c9e2d8cae85a62503bb809a0ac9b1aeb42c64100fac59fcf3",
+            "capability_context_removed": true,
+            "dialogue_history_removed": true,
+            "rejected_full_context_cache": false,
+            "rejection_reason": null,
+            "scene_context_removed": true,
+            "stripped_context_derived_fields": false
+          },
+          "original_input_unmutated": true,
+          "rejection_text": "I need to decline that request because it would be unsafe under the current constraints.",
+          "requires_re_evaluation": false,
+          "resolution_events": [],
+          "router_trace": {
+            "clarification_targets": [],
+            "considered_rules": [
+              "goal_first_v2",
+              "known_unsafe_or_prohibited"
+            ],
+            "matched_rule_id": "known_unsafe_or_prohibited",
+            "notes": [],
+            "recommended_strategy": "face_preserving_rejection",
+            "rejection_reason": "unsafe_or_prohibited_action",
+            "requires_re_evaluation": false,
+            "strategy_sequence": []
+          },
+          "safety_action": "return_with_findings",
+          "uncertainty": null
+        },
+        "safety_findings": [],
+        "strategy_sequence": [],
+        "synthetic_only": true,
+        "system_id": "context_blind_manager",
+        "system_version": "1.0.0",
+        "unsupported_commitment_findings": []
+      },
+      "raw_output": "{\n  \"intent_summary\": \"Move the marked display panel to the loading corridor in a few minutes using the usual setup\",\n  \"cpc\": {\n    \"action\": {\n      \"value\": \"move\",\n      \"status\": \"not_applicable\"\n    },\n    \"object\": {\n      \"value\": \"marked display panel\",\n      \"status\": \"not_applicable\"\n    },\n    \"destination\": {\n      \"value\": \"loading corridor\",\n      \"status\": \"not_applicable\"\n    },\n    \"time\": {\n      \"value\": \"in a few minutes\",\n      \"status\": \"not_applicable\"\n    },\n    \"tool\": {\n      \"value\": \"usual setup\",\n      \"status\": \"not_applicable\"\n    }\n \n  ,\n  \"constraints\": {\n    \"status\": \"not_applicable\"\n  ,\n  \"value\": \"not_applicable\"\n  },\n  \"conditions\": {\n    \"status\": \"not_applicable\"\n  ,\n  \"value\": \"not_applicable\"\n  },\n  \"recipient\": {\n    \"status\": \"not_applicable\"\n  ,\n  \"value\": \"not_applicable\"\n  },\n  \"negation\": {\n    \"status\": \"not_applicable\"\n  ,\n  \"value\": \"not_applicable\"\n  },\n  \"spatial_relation\": {\n    \"status\": \"not_applicable\"\n  ,\n  \"value\": \"not_applicable\"\n  },\n  \"quantity\": {\n    \"status\": \"not_applicable\"\n  ,\n  \"value\": \"not_applicable\"\n  },\n  \"object_attributes\": {\n    \"status\": \"not_applicable\"\n  ,\n  \"value\": \"not_applicable\"\n  },\n  \"actor\": {\n    \"status\": \"not_applicable\"\n  ,\n  \"value\": \"not_applicable\"\n  }\n}\n\n  ,\n  \"pilot_ambiguity_types\": [\n    \"fuzzy_temporal\"\n  ]\n  \n  ,\n  \"pilot_capability_status\": \"unauthorized\"\n  \n  ,\n  \"speech_act\": \"directive_command\"\n  \n  ,\n  \"unresolved_slots\": [\n    \"time\"\n  ]\n  \n  ,\n  \"uncertainty\": 0.45\n  \n\n\n\n  \n  ,\n  \"risk_level\": \"medium\"\n  \n  }\n  \n ",
+      "record_id": "CA-0909",
+      "schema_valid": true,
+      "supports_ambiguity_prediction": true,
+      "supports_capability_prediction": true,
+      "system_id": "goal_first_context_blind_v2",
+      "system_version": "2.0.0",
+      "terminal_strategy": "face_preserving_rejection"
+    }
+  },
+  "provenance": {
+    "source_sha256": "f33b1e29f1e8aa256a475f07213aa07247def47d8e2148d54a472a40b71b05c9",
+    "gold_sha256": "5e23ad1a92ff1873c8f039a8ce560a111dd6fb6b8ae8c11d6cf34dbfa1c360db",
+    "t07_final_zip_sha256": "34ca50e034ca37b617068bb50c734d12fa26282fb5eec563c11ead700163e491",
+    "inherited_t07_zip_sha256": "0305b1e9ab062876ee6ee89778cc6028d2eaf01718b7dd0295944e7d9cb81a01",
+    "note": "Goal-First, Degree, Timid, and Context-Blind predictions are inherited from the earlier T0.7 run; official intent and comparison come from the final T0.7 archive."
+  }
+}
