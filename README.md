@@ -1,56 +1,98 @@
 # Risk-Aware Ambiguity Manager
 
-This repository implements and evaluates a natural-language coordination layer
-for ambiguous robot/user commands. Given a command plus optional scene context,
-dialogue history, and capability context, the system produces either a
-non-ambiguous interpretation or a routing decision (`execute`, `clarify`,
-`silently_resolve`, `face_preserving_rejection`, `multi_step`).
+This project studies how a language-based robot assistant should interpret an
+ambiguous command and choose among execution, clarification, and refusal. It
+contains the manager implementation, evaluation code, frozen research protocols,
+and provenance records. It does not implement robot motion or hardware control.
 
-## Scope boundary
+## Start here
 
-In scope: the natural-language ambiguity, clarification, risk, capability, and
-routing layer, plus its evaluation.
+| If you need to... | Read |
+| --- | --- |
+| Understand the system and run code-only checks | This README, then `docs/RESEARCH_WORKFLOWS.md` |
+| Obtain the upstream datasets | `docs/DATASETS.md` |
+| Understand or verify Pilot-120 | `docs/PILOT120.md` |
+| Check what can enter a public release | `docs/PUBLIC_RELEASE_AUDIT.md` and `configs/licences/dataset_licence_register.json` |
+| Find historical execution decisions | `cursor_plan/README.md` and `handover/` |
 
-Out of scope: robot planning, robot execution, navigation, grasping, and a full
-embodied safety system.
+The present checkout is a research working tree, **not a verified public
+release**. Its history includes upstream dataset payloads and a Python virtual
+environment under `data/raw`, and the science branch contains derived Pilot-120
+text. Removing a file in a new commit does not remove it from Git history. See
+the release audit before publishing or mirroring this history.
 
-## Repository layout
+## Install and check the code
 
-```
-src/ambiguity_manager/   Python package (paths + write guard scaffold)
-tests/                   Test suite (run with: python -m unittest)
-scripts/                 Operational and audit scripts (added by later tickets)
-configs/                 Configuration, including configs/datasets/ manifests
-docs/                    Reports, decisions, and dataset cards
-data/raw/                Immutable external dataset payloads (never written to)
-data/interim/            Derived intermediate data (generated; git-ignored)
-data/processed/          Processed data (generated; git-ignored)
-data/annotations/        Project-owned manual annotations
-data/splits/             Frozen split manifests
-outputs/                 Generated experiment outputs (git-ignored)
-```
+Use Python 3.10 or newer. Python 3.11 is the most relevant local and cluster
+baseline for this project. In PowerShell:
 
-## Path and write-safety policy
-
-- Do not hard-code absolute paths. Import
-  `ambiguity_manager.paths.ProjectPaths` and derive locations from the
-  repository root (located by searching upward for `pyproject.toml`).
-- All project-owned writes MUST route their target path through
-  `ambiguity_manager.io_guard.resolve_writable_path`, which rejects any write
-  into `data/raw`. This guard protects writes that use the API; it cannot stop
-  arbitrary third-party tools or direct filesystem writes.
-
-## Running tests
-
-```
-python -m unittest discover -s tests
+```powershell
+python -m venv .venv
+.\.venv\Scripts\python.exe -m pip install -e ".[dev]"
+.\.venv\Scripts\python.exe -m pytest -q tests/test_schema_validation.py
 ```
 
-`pytest` configuration is also provided in `pyproject.toml` for environments
-where it is installed (`pip install -e .[dev]`), but the suite runs on the
-standard library alone.
+On Linux or macOS:
 
-## Status
+```sh
+python3 -m venv .venv
+.venv/bin/python -m pip install -e '.[dev]'
+.venv/bin/python -m pytest -q tests/test_schema_validation.py
+```
 
-Ticket T00 (scaffold and repository safety) complete. Schema, converters,
-models, routing, and evaluation are introduced in later tickets.
+These are code and schema checks. The full suite includes tests that require
+locally acquired datasets, frozen Pilot-120 files, or optional model packages.
+Run `python -m pytest -q` only after those inputs are present and report any
+skips or unavailable dependencies separately. `pyproject.toml` declares the
+core package and development extras; GPU inference uses additional pinned
+cluster/container dependencies described in `docs/RESEARCH_WORKFLOWS.md`.
+
+## Repository map
+
+| Path | Purpose |
+| --- | --- |
+| `src/ambiguity_manager/` | Schemas, data handling, systems, and evaluation library |
+| `tests/` | Unit, contract, and frozen-evidence checks |
+| `scripts/` | Builders, evaluators, scorers, and audits |
+| `cluster/` | Slurm jobs and launch scripts; inspect before submission |
+| `configs/` | Evaluation contracts, model settings, dataset and rights registers |
+| `docs/` | Research workflow, dataset, licence, and result explanations |
+| `data/raw/` | Locally obtained upstream material; no new payloads should be committed |
+| `data/annotations/` | Project annotation and frozen evaluation work; release rights vary |
+| `outputs/` | Generated results and large archives, normally ignored by Git |
+| `cursor_plan/`, `handover/` | Historical decisions and operational handovers |
+
+External data is acquired from its original provider. `git submodule update`
+can fetch the Git-based sources recorded in `.gitmodules`; it does not fetch the
+Hugging Face or OSF sources, and it does not grant reuse or redistribution
+permission. Exact source versions, local paths, hashes, and rights status are in
+`docs/DATASETS.md`.
+
+## Running research workflows
+
+First verify the dataset and model inputs, then select the versioned protocol in
+`docs/RESEARCH_WORKFLOWS.md`. CPU scorers and schema checks run locally; model
+inference needs a separately provisioned GPU environment. Do not run an old
+Slurm script merely because it is present: many scripts preserve historical
+jobs and fixed inputs. Pilot-120 v1 is frozen and evaluation-only; do not train,
+tune, or select a model on its 120 cases.
+
+The most recent T0.7 result is described in `docs/PILOT120.md`. The ABLE IX
+temperature jobs are a separate exploratory study, with an automatic intent
+screen rather than the official two-judge metric. No T0.3 result is part of the
+T0.7 official package.
+
+## Data and release boundary
+
+Project code, schemas, hashes, and aggregate results can be reviewed without
+copying upstream records. Dataset access and publication depend on the exact
+source rights recorded in `configs/licences/dataset_licence_register.json`.
+The internal academic-use decision does **not** grant public redistribution of
+source text, transformed records, or adapter weights. A public release must use
+a separately reviewed, clean Git history; the current history is not suitable
+for publication as-is.
+
+Project code should resolve paths through `ambiguity_manager.paths.ProjectPaths`.
+Project-owned writes should pass through
+`ambiguity_manager.io_guard.resolve_writable_path`, which rejects writes to
+`data/raw`. This guard cannot stop a direct write by other software.
