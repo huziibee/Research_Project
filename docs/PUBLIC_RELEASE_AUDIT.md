@@ -30,11 +30,16 @@ full-text Pilot-120 files are included.
 
 The GitHub repository
 [`huziibee/Research_Project`](https://github.com/huziibee/Research_Project)
-was **public** when checked on 2026-09-27: an unauthenticated request to the
-[GitHub repository API](https://api.github.com/repos/huziibee/Research_Project)
-returned HTTP 200 with `visibility=public` and `private=false`. This is a
-dated observation, not a permanent visibility guarantee. The latest tree and
-older Git commits contain source-derived text, as the project owner requested.
+was **public** at the initial 2026-09-27 check. On the same date, the owner
+asked to resolve the public exposure and confirmed that GitHub authentication
+was available in WSL. The repository was changed to **private** using
+`gh repo edit huziibee/Research_Project --visibility private
+--accept-visibility-change-consequences`. An authenticated
+`gh repo view huziibee/Research_Project --json visibility,isPrivate`
+subsequently returned `PRIVATE` and `true`. These are dated observations; check
+GitHub before relying on them. The latest tree and older Git commits retain
+source-derived text for the owner's research recovery. Changing visibility
+does not retract prior public clones or forks.
 
 The authoritative [rights register](../configs/licences/dataset_licence_register.json)
 records internal academic research use as `approved_with_conditions`, raw
@@ -42,11 +47,16 @@ data redistribution as `false`, and adapter release permission as `pending`.
 Its exact-artifact `redistribution_permission` is `unresolved` for AmbiK,
 IndirectRequests, VAGUE, CLARA, ClariQ, SafeAgentBench, and manual compound
 cases. CoDraw-ICR-v2 is recorded as `permitted_noncommercial_with_attribution`.
-Public availability, owner preference, internal-use approval, or a hash check
-does not resolve those upstream rights. A licence review/permission decision
-is still needed for the unresolved source-derived case text and archived
-outputs already publicly reachable in the tree and history. No new licence
-grant was found in this repository-only review.
+Prior public availability, owner preference, internal-use approval, or a hash
+check does not resolve those upstream rights. A licence review/permission
+decision is still needed before public redistribution of unresolved
+source-derived case text and archived outputs. The private repository remains
+the full-evidence research record. A future public code release must use a
+separate clean Git history and an explicit content allowlist; copying this
+repository or making it public again would expose both current files and
+history. The [public code release plan](PUBLIC_CODE_RELEASE_PLAN.md) records
+the content-review gate. No new licence grant was found in this
+repository-only review.
 
 ## Scientific status
 

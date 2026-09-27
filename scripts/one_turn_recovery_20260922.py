@@ -604,6 +604,7 @@ def run_goal_first_analysis(
     tokenizer: Any,
     system_input: Any,
     temperature: float,
+    constrained_final_max_new_tokens: int = 1024,
 ) -> dict[str, Any]:
     from ambiguity_manager.systems.goal_first_analysis_v2 import (
         ANALYSIS_JSON_SCHEMA,
@@ -661,7 +662,7 @@ def run_goal_first_analysis(
             tokenizer=tokenizer,
             prompt=build_constrained_prompt(system_input),
             json_schema=ANALYSIS_JSON_SCHEMA,
-            max_new_tokens=1024,
+            max_new_tokens=constrained_final_max_new_tokens,
             generation_config=sampling_generate_kwargs(temperature),
         )
         raw = str(generated["raw_text"])
@@ -675,7 +676,7 @@ def run_goal_first_analysis(
             {
                 "attempt": len(attempts) + 1,
                 "mode": "schema_constrained_final",
-                "max_new_tokens": 1024,
+                "max_new_tokens": constrained_final_max_new_tokens,
                 "raw_chars": len(raw),
                 "raw_sha256": sha256_text(raw),
                 "validation_error": None if err is None else error,
@@ -838,13 +839,20 @@ def process_case(
     seed: int,
     temperature: float,
     max_clarify_depth: int = MAX_CLARIFY_DEPTH,
+    constrained_final_max_new_tokens: int = 1024,
+    resume_turn: dict[str, Any] | None = None,
+    prior_depth_path: list[dict[str, Any]] | None = None,
 ) -> dict[str, Any]:
     from ambiguity_manager.systems.contracts import SystemInput
 
     rid = oracle["record_id"]
-    depth_path: list[dict[str, Any]] = []
+    depth_path: list[dict[str, Any]] = list(prior_depth_path or [])
 
-    if condition == "control":
+    if resume_turn is not None:
+        if condition != "answered":
+            raise ValueError("resume_turn_requires_answered_condition")
+        turns = [resume_turn]
+    elif condition == "control":
         turns = [
             {
                 "depth": 0,
@@ -890,6 +898,7 @@ def process_case(
             tokenizer=tokenizer,
             system_input=system_input,
             temperature=temperature,
+            constrained_final_max_new_tokens=constrained_final_max_new_tokens,
         )
         pred_like = build_pred_like_from_analysis(analysis_out)
         cap_out = {

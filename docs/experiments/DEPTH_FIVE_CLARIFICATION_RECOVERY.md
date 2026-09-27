@@ -75,9 +75,11 @@ was `maximum_token`, and the extractable JSON candidate was a nested
 returned `bad_intent_summary`. The runner skipped capability adjudication
 after the failed analysis and recorded an empty terminal route. The archive
 does not retain every earlier raw attempt, so the recorded validation codes
-are the limit of diagnosis for attempts 1–2. These are generation/parser
-failures in one repeat, not evidence that gold changed or that those cases
-were intrinsically unrecoverable.
+are the limit of diagnosis for attempts 1–2. The complete
+[technical diagnosis and versioned rerun plan](DEPTH_FIVE_TECHNICAL_RERUN_V1.md)
+classifies the final failures as incomplete generation at the token cap; the
+parser correctly rejects those fragments. This is not evidence that gold
+changed or that those cases were intrinsically unrecoverable.
 
 **Claim limit:** oracle-consistent repeated answers and the <=5-depth cap do
 not measure natural user behaviour, question quality, or an equal-depth

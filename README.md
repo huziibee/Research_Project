@@ -26,14 +26,15 @@ unresolved in the rights register. The project owner asked for these files to
 be preserved in the current repository so that deleting the local checkout
 does not lose them. Their presence in Git is not a claim that unrestricted
 public redistribution is licensed. Older Git history also contains upstream
-payloads. The repository was observed public on 2026-09-27; see the
-[release audit](docs/PUBLIC_RELEASE_AUDIT.md) for the unresolved
-redistribution status before further distribution.
+payloads. The repository was changed from public to **private** on 2026-09-27
+and is the controlled full-evidence research archive. See the
+[release audit](docs/PUBLIC_RELEASE_AUDIT.md) for the verified visibility,
+unresolved redistribution status, and [separate public code release plan](docs/PUBLIC_CODE_RELEASE_PLAN.md).
 
 ## Clone and run the code checks
 
-You need Git and Python 3.11. The repository was publicly accessible at the
-dated audit; future access depends on its GitHub visibility. On Windows PowerShell:
+You need Git and Python 3.11. This is a private repository, so cloning requires
+GitHub access granted by the owner. On Windows PowerShell:
 
 ```powershell
 git clone https://github.com/huziibee/Research_Project.git
