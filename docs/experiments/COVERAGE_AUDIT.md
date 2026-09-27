@@ -1,7 +1,10 @@
 # Experiment coverage and recovery audit
 
 **Checked 2026-09-27 against the tracked repository, dated reports, seven
-Pilot-120 ZIPs, and local output folders.** This is the map of work we found;
+Pilot-120 ZIPs, and local output folders.** The
+[local output hash inventory](LOCAL_OUTPUT_INVENTORY_20260927.tsv) records a
+point-in-time SHA-256 and byte count for every file observed under `outputs/`;
+it is an inventory, not a backup. This is the map of work we found;
 it is not a claim that every historical run can be reproduced from a clone.
 The [four replay guides](README.md) cover selected saved studies. Many earlier
 reports describe results whose raw model predictions, weights, or cluster
@@ -55,9 +58,11 @@ counts, and rights before using a result.
 2. **Model assets and cluster runtime:** Qwen/Gemma/GLM checkpoints, the T28
    adapter, container images, caches, SSH credentials, and Slurm account are
    not recovered by Git. Follow [setup](../SETUP_AND_RECOVERY.md).
-3. **Unpromoted generated outputs:** ignored local `outputs/` held 3,325 files
-   totalling 9,321,933,230 bytes at this audit; 8,557 MiB was under
-   `outputs/t12_cluster_jobs/`. It contains native,
+3. **Unpromoted generated outputs:** ignored local `outputs/` held 3,334 files
+   totalling 9,421,743,599 bytes at the final inventory. Exact duplicate
+   hashes reduced that to 2,091 distinct file contents totalling 8,163,286,320
+   bytes before any compression. Most bytes were under `outputs/t12_cluster_jobs/`.
+   The tree contains native,
    goal-first, T28, T45, and other results that are not all inside the seven
    tracked ZIPs. The older local evidence-package and transfer archives are
    also outside the latest Git tree. Do not delete the old machine assuming
