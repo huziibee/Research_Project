@@ -2,7 +2,7 @@
 import sys
 from pathlib import Path
 
-sys.path.insert(0, str(Path(__file__).parents[1] / "pilot120_intent_evaluation_20260902" / "pilot120_intent_evaluation_20260902" / "scripts"))
+sys.path.insert(0, str(Path(__file__).parents[1] / "scripts"))
 from intent_eval_common import clean_observable_trace, semantic_goal_correct  # noqa: E402
 
 
