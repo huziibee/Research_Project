@@ -2,6 +2,8 @@
 
 This page separates checks that work from a code checkout from experiments
 that require controlled data, model weights, and a GPU environment.
+For concrete saved-data scoring commands and the numbers they reproduce, see
+[experiment recipes and results](experiments/README.md).
 
 ## Code and schema checks
 

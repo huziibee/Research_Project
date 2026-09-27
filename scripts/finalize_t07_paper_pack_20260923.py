@@ -309,7 +309,7 @@ def write_paper_pack(exp: Path) -> Path:
     hashes = {str(p.relative_to(exp)).replace("\\", "/"): _sha256(p) for p in hash_targets}
     (exp / "SHA256_FINAL.json").write_text(json.dumps(hashes, indent=2, sort_keys=True) + "\n", encoding="utf-8")
 
-    archive = Path("/tmp/t07_matched_baseline_completion_20260922_FINAL.tar.gz")
+    archive = exp.parent / "t07_matched_baseline_completion_20260922_FINAL.tar.gz"
     with tarfile.open(archive, "w:gz") as tar:
         tar.add(exp, arcname="t07_matched_baseline_completion_20260922")
     print(json.dumps({"archive": str(archive), **status}, indent=2, sort_keys=True))

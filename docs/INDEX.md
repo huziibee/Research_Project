@@ -8,6 +8,8 @@
 - [Pilot-120](PILOT120.md): frozen identity, result families, and limitations.
 - [Research workflows](RESEARCH_WORKFLOWS.md): code checks, GPU prerequisites,
   current experiment paths, and status semantics.
+- [Experiment recipes and results](experiments/README.md): exact data,
+  replay commands, saved outputs, measured numbers, and claim limits.
 - [Repository audit](PUBLIC_RELEASE_AUDIT.md): tracked content, provenance,
   credential check, visibility, and redistribution caveat.
 
