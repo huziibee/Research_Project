@@ -48,5 +48,8 @@ Historical T39/T41 evidence and local ZIPs were not rewritten or deleted.
 - Pattern scan of newly staged file contents for common credential formats.
 - Focused code and schema tests; results are recorded in the commit handoff.
 
-After a push, verify the actual remote branch, repository visibility, and
-published files. A local commit or configured remote is not publication.
+GitHub `main` was fast-forwarded to this reviewed tree on 2026-09-27, and
+`git ls-remote` verified the remote commit. An unauthenticated GitHub API
+request returned 404, so public visibility was **not** verified. GitHub CLI
+was not authenticated in this environment. A repository administrator must
+check and, if intended, set its visibility to public in GitHub settings.
