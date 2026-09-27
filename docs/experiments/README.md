@@ -17,5 +17,6 @@ experiment protocol. Keep historical artifacts immutable.
 The [120-case index](../../research/pilot120/INDEX.md) connects individual
 source and gold records to T0.7 predictions. The [archive guide](../../research/pilot120/README.md)
 lists each ZIP and SHA-256. Data licenses and original providers are in
-[DATASETS.md](../DATASETS.md). No entry in this index implies independent
+[DATASETS.md](../DATASETS.md). For the earlier runs and the explicit backup
+gaps, read the [full coverage audit](COVERAGE_AUDIT.md). No entry in this index implies independent
 validation, new model performance, or permission to redistribute source text.

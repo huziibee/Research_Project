@@ -12,6 +12,7 @@ clarification, refusal, and routing; it does not control robot hardware.
 | See a case and its outputs | [Pilot-120 case index](research/pilot120/INDEX.md), including [CA-0007](research/pilot120/cases/CA-0007.json) |
 | Read the T0.7 and historical result packages | [Pilot-120 research record](research/pilot120/README.md) |
 | Reproduce a saved experiment score | [Experiment recipes and results](docs/experiments/README.md) |
+| Check coverage before deleting this machine | [Experiment coverage and backup gaps](docs/experiments/COVERAGE_AUDIT.md) |
 | Set up a new computer and continue the project | [Setup and recovery guide](docs/SETUP_AND_RECOVERY.md) |
 | Obtain the upstream datasets | [Dataset guide](docs/DATASETS.md) |
 | Understand experiment status and limitations | [Pilot-120 guide](docs/PILOT120.md) and [workflow guide](docs/RESEARCH_WORKFLOWS.md) |

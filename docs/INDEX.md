@@ -10,6 +10,8 @@
   current experiment paths, and status semantics.
 - [Experiment recipes and results](experiments/README.md): exact data,
   replay commands, saved outputs, measured numbers, and claim limits.
+- [Experiment coverage and gaps](experiments/COVERAGE_AUDIT.md): earlier
+  studies and what a fresh clone still cannot recover.
 - [Repository audit](PUBLIC_RELEASE_AUDIT.md): tracked content, provenance,
   credential check, visibility, and redistribution caveat.
 

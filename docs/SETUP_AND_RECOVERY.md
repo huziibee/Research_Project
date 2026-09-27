@@ -52,6 +52,13 @@ Git index; use `git clone` for this check.
 No local transfer folder is needed to inspect these saved cases and outputs.
 GitHub `main` is the recovery source for these exact files.
 
+**Before deleting this computer:** the seven tracked Pilot-120 ZIPs do not
+contain every historical run. The ignored local `outputs/` tree held about
+9.3 GB at the 2026-09-27 audit, and other local/cluster roots may contain
+unique bytes. Read the [experiment coverage and gaps audit](experiments/COVERAGE_AUDIT.md)
+and make a separately verified backup of any needed raw runs first. A clean
+Git checkout only proves the files tracked by Git are recoverable.
+
 ## 3. Obtain external datasets for new work
 
 The upstream AmbiK, IndirectRequests, CLARA, CoDraw-iCR v2, VAGUE, ClariQ,
