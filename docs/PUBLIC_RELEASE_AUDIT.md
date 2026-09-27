@@ -28,23 +28,32 @@ full-text Pilot-120 files are included.
 
 ## Rights and visibility
 
-The latest tree and older Git commits contain source-derived text. The
-project owner explicitly chose to preserve it in this repository. Several
-exact-artifact public redistribution permissions remain unresolved in
-`configs/licences/dataset_licence_register.json`. This repository's
-availability, hash verification, or internal academic-use approval is not a
-licence grant. Review the source terms before setting visibility to public,
-forking, or mirroring. No model weights or private credentials are included.
+The GitHub repository
+[`huziibee/Research_Project`](https://github.com/huziibee/Research_Project)
+was **public** when checked on 2026-09-27: an unauthenticated request to the
+[GitHub repository API](https://api.github.com/repos/huziibee/Research_Project)
+returned HTTP 200 with `visibility=public` and `private=false`. This is a
+dated observation, not a permanent visibility guarantee. The latest tree and
+older Git commits contain source-derived text, as the project owner requested.
 
-The GitHub `main` push was verified before this update. An unauthenticated
-GitHub API request returned 404 while the same request succeeded for a known
-public repository, so public visibility was not verified. GitHub CLI was not
-authenticated here; an administrator must check visibility in GitHub settings.
+The authoritative [rights register](../configs/licences/dataset_licence_register.json)
+records internal academic research use as `approved_with_conditions`, raw
+data redistribution as `false`, and adapter release permission as `pending`.
+Its exact-artifact `redistribution_permission` is `unresolved` for AmbiK,
+IndirectRequests, VAGUE, CLARA, ClariQ, SafeAgentBench, and manual compound
+cases. CoDraw-ICR-v2 is recorded as `permitted_noncommercial_with_attribution`.
+Public availability, owner preference, internal-use approval, or a hash check
+does not resolve those upstream rights. A licence review/permission decision
+is still needed for the unresolved source-derived case text and archived
+outputs already publicly reachable in the tree and history. No new licence
+grant was found in this repository-only review.
 
 ## Scientific status
 
-T0.7's official two-judge package is complete with 120-case denominators and
-failed cases retained. T0.3 and a matched-depth-5 control were not included.
+T0.7's two-judge package is complete with 120-case denominators and failed
+cases retained. The judgments are exploratory under the current evaluator
+policy: [no approved semantic-judge deviation was found](PAPER_REPRODUCIBILITY.md#semantic-judge-governance-finding).
+T0.3 and a matched-depth-5 control were not included.
 The four inherited T0.7 prediction streams in the case files are labelled
 separately from new Raw and Fine-Tune inference. T39/T41 archives are frozen.
 ABLE IX's five jobs were running/dependency-queued at the 2026-09-27 cluster

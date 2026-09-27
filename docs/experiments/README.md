@@ -11,6 +11,8 @@ experiment protocol. Keep historical artifacts immutable.
 | --- | --- | --- |
 | [T0.7 matched baseline](T07_MATCHED_BASELINE.md) | Pilot-120, six systems; final T0.7 archive | Full scoring and final pack from saved predictions and judgments |
 | [One-turn recovery](ONE_TURN_RECOVERY.md) | Pilot-120 clarification subset; full-analysis archive | Summary and paired statistics from saved predictions |
+| [Frozen-intent capability intervention](CAPABILITY_INTERVENTION.md) | Repaired T0.7 predictions and capability judgments | Recompute 56→57→83→87 and check the 37-case residual ledger |
+| [Depth-five clarification recovery](DEPTH_FIVE_CLARIFICATION_RECOVERY.md) | Two repeats on 22/26-case cohorts | Replay both saved summaries and inspect three invalid routes |
 | [Temperature exploration](TEMPERATURE_EXPLORATION.md) | Pilot-120; five existing single-seed streams | Route and automatic intent screening for saved streams |
 | [Frozen T39/T41](T39_T41_FROZEN.md) | Pilot-120; historical closure archive | Inspect and audit; preserve the original frozen result |
 
@@ -20,3 +22,5 @@ lists each ZIP and SHA-256. Data licenses and original providers are in
 [DATASETS.md](../DATASETS.md). For the earlier runs and the explicit backup
 gaps, read the [full coverage audit](COVERAGE_AUDIT.md). No entry in this index implies independent
 validation, new model performance, or permission to redistribute source text.
+For a table-by-table paper map and the semantic-judge governance finding, see
+[paper reproducibility](../PAPER_REPRODUCIBILITY.md).

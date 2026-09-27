@@ -42,7 +42,7 @@ versioned contract to a **new** experiment directory for future work.
 
 - Core manager and local evaluation: `src/ambiguity_manager/`,
   `scripts/evaluate_pilot_120_manager_systems.py`, and the matching tests.
-- T0.7 official intent: `cluster/pilot120_t07_matched_baseline_20260922/`,
+- T0.7 two-judge intent (exploratory under current policy): `cluster/pilot120_t07_matched_baseline_20260922/`,
   `scripts/evaluate_pilot_120_intent_box.py`, the SGC packet builders,
   `scripts/semantic_intent/run_blind_semantic_judge.py`,
   `scripts/score_t07_matched_baseline_20260922.py`, and
@@ -55,8 +55,10 @@ versioned contract to a **new** experiment directory for future work.
   `scripts/score_gf_temp_ablation_20260923.py`, and
   `scripts/aggregate_able_ix_means_20260923.py`.
 
-The last two are separate from the T0.7 official two-judge result. ABLE IX's
-intent measure is an automatic screening metric, not official intent gold.
+The last two are separate from the T0.7 two-judge result. Under the current
+[evaluator policy and governance log](PAPER_REPRODUCIBILITY.md#semantic-judge-governance-finding),
+that result cannot be called official correctness. ABLE IX's intent measure
+is an automatic screening metric, not semantic intent gold.
 Do not pool deterministic replays as independent samples or drop failed rows.
 
 ## Artifacts and status

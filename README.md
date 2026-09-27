@@ -12,6 +12,7 @@ clarification, refusal, and routing; it does not control robot hardware.
 | See a case and its outputs | [Pilot-120 case index](research/pilot120/INDEX.md), including [CA-0007](research/pilot120/cases/CA-0007.json) |
 | Read the T0.7 and historical result packages | [Pilot-120 research record](research/pilot120/README.md) |
 | Reproduce a saved experiment score | [Experiment recipes and results](docs/experiments/README.md) |
+| Trace a paper claim or figure | [Paper reproducibility map](docs/PAPER_REPRODUCIBILITY.md) |
 | Check coverage before deleting this machine | [Experiment coverage and backup gaps](docs/experiments/COVERAGE_AUDIT.md) |
 | Set up a new computer and continue the project | [Setup and recovery guide](docs/SETUP_AND_RECOVERY.md) |
 | Obtain the upstream datasets | [Dataset guide](docs/DATASETS.md) |
@@ -24,14 +25,15 @@ from upstream datasets. Several exact-artifact redistribution permissions are
 unresolved in the rights register. The project owner asked for these files to
 be preserved in the current repository so that deleting the local checkout
 does not lose them. Their presence in Git is not a claim that unrestricted
-public redistribution is licensed. Review the rights register before making
-the repository public, forking, or mirroring it. Older Git history also
-contains upstream payloads.
+public redistribution is licensed. Older Git history also contains upstream
+payloads. The repository was observed public on 2026-09-27; see the
+[release audit](docs/PUBLIC_RELEASE_AUDIT.md) for the unresolved
+redistribution status before further distribution.
 
 ## Clone and run the code checks
 
-You need Git and Python 3.11. GitHub access is required while the repository
-is private. On Windows PowerShell:
+You need Git and Python 3.11. The repository was publicly accessible at the
+dated audit; future access depends on its GitHub visibility. On Windows PowerShell:
 
 ```powershell
 git clone https://github.com/huziibee/Research_Project.git

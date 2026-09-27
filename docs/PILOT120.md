@@ -27,8 +27,9 @@ The full source and gold contain derived upstream text. They are tracked in
 the current repository at the project owner's request, and each case can be
 browsed through [the case index](../research/pilot120/INDEX.md), including
 [CA-0007](../research/pilot120/cases/CA-0007.json). Repository presence is
-not evidence of a public redistribution grant; check the current rights
-register before changing visibility or mirroring. The machine-readable
+not evidence of a public redistribution grant; the repository was observed
+public on 2026-09-27. Check the current [rights audit](PUBLIC_RELEASE_AUDIT.md)
+before further distribution. The machine-readable
 identity metadata is in `docs/pilot120_public_manifest.json`.
 Do not download a newer upstream version and claim it reproduces this frozen
 set. Dataset origins and rights evidence are listed in `docs/DATASETS.md` and
@@ -52,13 +53,13 @@ it does not establish independent scientific validity or dataset rights.
 | Family | Meaning | Status |
 | --- | --- | --- |
 | Historical T39/T41 | Frozen base/adapter and interpretation evidence | Preserve; do not rerun or edit |
-| T0.7 matched baseline | Six-system routing table plus two-judge official intent | Completed 2026-09-27; archive verified locally |
+| T0.7 matched baseline | Six-system routing table plus exploratory two-judge intent | Completed 2026-09-27; archive verified locally |
 | One-turn clarify recovery | Separate replay and answered clarification study | Keep the three failed empty-route cases in its denominator |
 | ABLE IX temperatures | Five-temperature, five-seed Goal-First exploratory study | Jobs queued 2026-09-27; do not present as completed |
 
 The completed T0.7 counts are:
 
-| System | Exact routing /120 | Official intent /120 |
+| System | Exact routing /120 | Two-judge intent /120 (exploratory) |
 | --- | ---: | ---: |
 | Raw Qwen | 96 | 106 |
 | Fine-Tune | 92 | 112 |

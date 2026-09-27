@@ -6,8 +6,8 @@ The input is the 120 frozen records in
 [`source_canonical.jsonl`](../../data/annotations/pilot_120_v1/source_canonical.jsonl),
 with [`pilot_120_final_gold.jsonl`](../../data/annotations/pilot_120_v1/pilot_120_final_gold.jsonl)
 for scoring. The evaluation contract is
-[`pilot_120_v1.json`](../../configs/evaluation/pilot_120_v1.json); official
-intent judging uses the versioned protocol in
+[`pilot_120_v1.json`](../../configs/evaluation/pilot_120_v1.json); the
+two-judge intent assessment uses the versioned protocol in
 [`configs/evaluation/pilot120_intent_v1/`](../../configs/evaluation/pilot120_intent_v1/).
 The final archive's `01_manifest.json`, emit `run_manifest.json` files, and
 `SHA256_FINAL.json` identify the particular run, model, adapter, seed, and
@@ -77,7 +77,7 @@ creating a new versioned run; do not submit the old job unchanged.
 
 ## Recorded result
 
-| System | Exact route /120 | Official intent /120 |
+| System | Exact route /120 | Two-judge intent /120 (exploratory) |
 | --- | ---: | ---: |
 | Raw Qwen | 96 | 106 |
 | Fine-Tune | 92 | 112 |
@@ -89,7 +89,9 @@ creating a new versioned run; do not submit the old job unchanged.
 These are two different metrics. Strong written intent does not imply the
 system chose the correct terminal route. The archived `21_FINAL_STATUS.json`
 records 120 unique cases and retains failed rows in the denominator. The
-matched-depth-5 control was **not run**; T0.3 is **not included**. Inspect
+evaluator policy does not authorize LLM judges to determine official
+correctness; see the [governance finding](../PAPER_REPRODUCIBILITY.md#semantic-judge-governance-finding).
+The matched-depth-5 control was **not run**; T0.3 is **not included**. Inspect
 [CA-0007](../../research/pilot120/cases/CA-0007.json) or the
 [case index](../../research/pilot120/INDEX.md) for source, gold, predictions,
 and official case outputs.
