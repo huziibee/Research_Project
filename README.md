@@ -13,6 +13,7 @@ clarification, refusal, and routing; it does not control robot hardware.
 | Read the T0.7 and historical result packages | [Pilot-120 research record](research/pilot120/README.md) |
 | Reproduce a saved experiment score | [Experiment recipes and results](docs/experiments/README.md) |
 | Review frozen semantics to action routing | [GLiNER Goal-First semantic experiment](docs/experiments/GLINER25_GOALFIRST_SEMANTIC_ROUTER_V1.md) |
+| Review targeted repair of the 83/120 pipeline | [GLiNER action-readiness hybrid](docs/experiments/GLINER25_ACTION_READINESS_REPAIR_V1.md) |
 | Trace a paper claim or figure | [Paper reproducibility map](docs/PAPER_REPRODUCIBILITY.md) |
 | Check coverage before deleting this machine | [Experiment coverage and backup gaps](docs/experiments/COVERAGE_AUDIT.md) |
 | Set up a new computer and continue the project | [Setup and recovery guide](docs/SETUP_AND_RECOVERY.md) |

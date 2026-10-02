@@ -4,6 +4,10 @@ The [GLiNER semantic-router experiment](gliner25_goalfirst_semantic_router_v1/RE
 tests the frozen T0.7 Goal-First interpretation at the semantic-to-action
 boundary. Its text-free results are separate from the earlier raw-source probes.
 
+The [targeted readiness-repair experiment](gliner25_action_readiness_repair_v1/README.md)
+starts from the exact 83/120 capability-repaired condition and preserves its
+refusal gate while testing the EXECUTE/CLARIFY boundary.
+
 Start with the [120-case index](INDEX.md). Each case file combines the frozen
 source and gold with the recorded T0.7 outputs. For example,
 [CA-0007](cases/CA-0007.json) contains the command and context, gold labels,

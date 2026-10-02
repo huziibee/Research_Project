@@ -9,6 +9,7 @@ entry points for versioned data preparation, evaluation, scoring, and audits.
 | T0.7 intent and scoring | `evaluate_pilot_120_intent_box.py`, `build_intent_box_sgc_packet_20260913.py`, `build_t07_manager_sgc_packet_20260922.py`, `semantic_intent/run_blind_semantic_judge.py`, `score_t07_matched_baseline_20260922.py` |
 | One-turn recovery | `one_turn_recovery_20260922.py` |
 | Frozen Goal-First semantics to GLiNER routes | [`experiments/gliner25_goalfirst_semantic_router_v1.py`](experiments/gliner25_goalfirst_semantic_router_v1.py): locked protocol, seven inference conditions, saved-result scoring |
+| Targeted readiness repair after capability correction | [`experiments/gliner25_action_readiness_repair_v1.py`](experiments/gliner25_action_readiness_repair_v1.py): exact 83/120 reconstruction, five refusal-preserving hybrids and direct comparison |
 | ABLE IX scoring | `score_gf_temp_ablation_20260923.py`, `aggregate_able_ix_means_20260923.py` |
 | Dataset converters | `convert_*.py`; source acquisition and pins are in `docs/DATASETS.md` |
 | Repository and case checks | `release/check_repository.py`, `release/build_pilot120_cases.py` |
