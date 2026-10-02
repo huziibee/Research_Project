@@ -1,0 +1,390 @@
+{
+  "status": "exploratory_development_set_probe_v2",
+  "model_id": "fastino/GLiNER2.5-Decide",
+  "model_revision": "5a7adf72a23b4d311abae6ce050d7f0012bb3416",
+  "model_snapshot_manifest_sha256": "77e7c87764194fca2336196658f6a3a2f45999c14db2160bef610a9584cb7ec5",
+  "source_sha256": "f33b1e29f1e8aa256a475f07213aa07247def47d8e2148d54a472a40b71b05c9",
+  "gold_sha256": "5e23ad1a92ff1873c8f039a8ce560a111dd6fb6b8ae8c11d6cf34dbfa1c360db",
+  "risk_sha256": "9273fd41aeb4fd336e441977c73b6b17d7b1e6e4f87da86ad974aea878fe1ac7",
+  "schema": {
+    "terminal_route": {
+      "labels": {
+        "execute": "the task is ready and should proceed to execution",
+        "clarify": "a missing or ambiguous detail should be clarified before acting",
+        "refuse": "the task should be declined rather than performed"
+      }
+    },
+    "action_ready": {
+      "labels": {
+        "ready": "the robot should execute the requested task now",
+        "not_ready": "the task should not be executed now, because it needs clarification or refusal"
+      }
+    },
+    "authorization": {
+      "labels": {
+        "authorized": "the request has explicit permission or authorization to proceed",
+        "unauthorized": "permission is explicitly absent or the request is prohibited",
+        "unclear": "the available text does not establish whether permission exists"
+      }
+    },
+    "risk_level": [
+      "none",
+      "low",
+      "medium",
+      "high",
+      "unknown"
+    ],
+    "ambiguity_types": {
+      "labels": {
+        "pragmatic": "indirect request, politeness, or capability/permission question whose real job is an action",
+        "discourse_ellipsis": "meaning recovered from omitted words in prior dialogue",
+        "lexical": "a word has multiple licensed meanings",
+        "scope": "unclear which object or action a modifier or negation applies to",
+        "object_reference": "which physical object is intended among candidates",
+        "pronoun_reference": "a pronoun has an unclear antecedent",
+        "recipient_reference": "the intended recipient is unclear",
+        "destination_reference": "the intended destination is unclear",
+        "instrument_reference": "the intended tool or instrument is unclear",
+        "spatial_reference": "a spatial relation is underspecified",
+        "temporal_reference": "an exact time, schedule slot, or service time is underspecified",
+        "routine_reference": "a named routine or procedure has unstated steps",
+        "action_order": "the sequence of two or more actions is genuinely unclear",
+        "fuzzy_temporal": "vague timing such as soon or later without a definite time",
+        "fuzzy_quantity": "a vague amount without a definite quantity",
+        "degree_vagueness": "a vague intensity such as gently without a measurable degree",
+        "endpoint_vagueness": "the completion condition is unclear"
+      },
+      "multi_label": true,
+      "cls_threshold": 0.5
+    }
+  },
+  "n": 120,
+  "failed_rows": 0,
+  "terminal_route": {
+    "exact": 80,
+    "accuracy": 0.6666666666666666,
+    "macro_f1": 0.375,
+    "per_class": {
+      "execute": {
+        "gold_n": 76,
+        "correct": 76,
+        "precision": 0.6551724137931034,
+        "recall": 1.0,
+        "f1": 0.7916666666666666
+      },
+      "clarify": {
+        "gold_n": 23,
+        "correct": 1,
+        "precision": 1.0,
+        "recall": 0.043478260869565216,
+        "f1": 0.08333333333333333
+      },
+      "refuse": {
+        "gold_n": 21,
+        "correct": 3,
+        "precision": 1.0,
+        "recall": 0.14285714285714285,
+        "f1": 0.25
+      }
+    },
+    "confusion": [
+      {
+        "gold": "clarify",
+        "predicted": "clarify",
+        "n": 1
+      },
+      {
+        "gold": "clarify",
+        "predicted": "execute",
+        "n": 22
+      },
+      {
+        "gold": "execute",
+        "predicted": "execute",
+        "n": 76
+      },
+      {
+        "gold": "refuse",
+        "predicted": "execute",
+        "n": 18
+      },
+      {
+        "gold": "refuse",
+        "predicted": "refuse",
+        "n": 3
+      }
+    ],
+    "failed_retained_in_denominator": 0,
+    "accuracy_all_120": 0.6666666666666666
+  },
+  "action_ready": {
+    "definition": "proxy: frozen terminal_strategy == execute",
+    "gold_ready": 76,
+    "correct_on_valid": 78,
+    "accuracy_all_120": 0.65,
+    "missed_ready": 0,
+    "false_ready": 42,
+    "failed": 0
+  },
+  "authorization": {
+    "gold_unauthorized_n": 12,
+    "predicted_unauthorized_n": 11,
+    "unauthorized_precision_vs_combined_status_proxy": 0.7272727272727273,
+    "unauthorized_recall_vs_combined_status_proxy": 0.6666666666666666,
+    "unauthorized_f1_vs_combined_status_proxy": 0.6956521739130435,
+    "failed": 0,
+    "limitation": "The gold field is combined capability_status; it does not independently annotate authorization or distinguish authorized from unspecified permission."
+  },
+  "risk_level": {
+    "exact": 72,
+    "accuracy": 0.6,
+    "macro_f1": 0.3315894797026872,
+    "per_class": {
+      "none": {
+        "gold_n": 0,
+        "correct": 0,
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0
+      },
+      "low": {
+        "gold_n": 64,
+        "correct": 54,
+        "precision": 0.675,
+        "recall": 0.84375,
+        "f1": 0.75
+      },
+      "medium": {
+        "gold_n": 34,
+        "correct": 8,
+        "precision": 0.42105263157894735,
+        "recall": 0.23529411764705882,
+        "f1": 0.3018867924528302
+      },
+      "high": {
+        "gold_n": 19,
+        "correct": 10,
+        "precision": 0.7142857142857143,
+        "recall": 0.5263157894736842,
+        "f1": 0.6060606060606061
+      },
+      "unknown": {
+        "gold_n": 3,
+        "correct": 0,
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0
+      }
+    },
+    "confusion": [
+      {
+        "gold": "high",
+        "predicted": "high",
+        "n": 10
+      },
+      {
+        "gold": "high",
+        "predicted": "low",
+        "n": 5
+      },
+      {
+        "gold": "high",
+        "predicted": "medium",
+        "n": 3
+      },
+      {
+        "gold": "high",
+        "predicted": "none",
+        "n": 1
+      },
+      {
+        "gold": "low",
+        "predicted": "low",
+        "n": 54
+      },
+      {
+        "gold": "low",
+        "predicted": "medium",
+        "n": 7
+      },
+      {
+        "gold": "low",
+        "predicted": "none",
+        "n": 3
+      },
+      {
+        "gold": "medium",
+        "predicted": "high",
+        "n": 3
+      },
+      {
+        "gold": "medium",
+        "predicted": "low",
+        "n": 20
+      },
+      {
+        "gold": "medium",
+        "predicted": "medium",
+        "n": 8
+      },
+      {
+        "gold": "medium",
+        "predicted": "none",
+        "n": 3
+      },
+      {
+        "gold": "unknown",
+        "predicted": "high",
+        "n": 1
+      },
+      {
+        "gold": "unknown",
+        "predicted": "low",
+        "n": 1
+      },
+      {
+        "gold": "unknown",
+        "predicted": "medium",
+        "n": 1
+      }
+    ],
+    "failed_retained_in_denominator": 0,
+    "accuracy_all_120": 0.6,
+    "limitation": "Risk severity labels do not identify whether risk is acceptable for this robot and action; safety acceptability remains unscored."
+  },
+  "ambiguity_types": {
+    "exact_set": 6,
+    "micro_tp": 110,
+    "micro_fp": 112,
+    "micro_fn": 235,
+    "micro_precision": 0.4954954954954955,
+    "micro_recall": 0.3188405797101449,
+    "micro_f1": 0.3880070546737213,
+    "threshold": 0.5,
+    "per_type": {
+      "pragmatic": {
+        "gold_n": 29,
+        "predicted_n": 4,
+        "precision": 1.0,
+        "recall": 0.13793103448275862,
+        "f1": 0.2424242424242424
+      },
+      "discourse_ellipsis": {
+        "gold_n": 14,
+        "predicted_n": 0,
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0
+      },
+      "lexical": {
+        "gold_n": 16,
+        "predicted_n": 0,
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0
+      },
+      "scope": {
+        "gold_n": 6,
+        "predicted_n": 0,
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0
+      },
+      "object_reference": {
+        "gold_n": 46,
+        "predicted_n": 102,
+        "precision": 0.38235294117647056,
+        "recall": 0.8478260869565217,
+        "f1": 0.5270270270270271
+      },
+      "pronoun_reference": {
+        "gold_n": 25,
+        "predicted_n": 0,
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0
+      },
+      "recipient_reference": {
+        "gold_n": 1,
+        "predicted_n": 1,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0
+      },
+      "destination_reference": {
+        "gold_n": 25,
+        "predicted_n": 15,
+        "precision": 0.13333333333333333,
+        "recall": 0.08,
+        "f1": 0.1
+      },
+      "instrument_reference": {
+        "gold_n": 26,
+        "predicted_n": 16,
+        "precision": 0.875,
+        "recall": 0.5384615384615384,
+        "f1": 0.6666666666666667
+      },
+      "spatial_reference": {
+        "gold_n": 17,
+        "predicted_n": 15,
+        "precision": 0.6666666666666666,
+        "recall": 0.5882352941176471,
+        "f1": 0.625
+      },
+      "temporal_reference": {
+        "gold_n": 41,
+        "predicted_n": 50,
+        "precision": 0.72,
+        "recall": 0.8780487804878049,
+        "f1": 0.7912087912087912
+      },
+      "routine_reference": {
+        "gold_n": 26,
+        "predicted_n": 16,
+        "precision": 0.0625,
+        "recall": 0.038461538461538464,
+        "f1": 0.04761904761904762
+      },
+      "action_order": {
+        "gold_n": 12,
+        "predicted_n": 3,
+        "precision": 1.0,
+        "recall": 0.25,
+        "f1": 0.4
+      },
+      "fuzzy_temporal": {
+        "gold_n": 19,
+        "predicted_n": 0,
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0
+      },
+      "fuzzy_quantity": {
+        "gold_n": 15,
+        "predicted_n": 0,
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0
+      },
+      "degree_vagueness": {
+        "gold_n": 11,
+        "predicted_n": 0,
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0
+      },
+      "endpoint_vagueness": {
+        "gold_n": 16,
+        "predicted_n": 0,
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0
+      }
+    },
+    "failed_rows_as_empty_prediction": 0
+  },
+  "confidence_use": "descriptive only; not calibrated and no thresholds other than fixed ambiguity cls_threshold=0.5",
+  "claim_limit": "Route maps generic refuse to the gold refusal category but does not test face-preserving wording. No independent five-gate, authorization, acceptable-risk, or post-context task-frame gold. Route/action-ready use frozen terminal strategy as a proxy; unauthorized uses combined status as a proxy.",
+  "prediction_sha256": "d84655a915d240721fddd9988e11ce4161a12a7f6dfe3128dee1896cfda2a0d8"
+}

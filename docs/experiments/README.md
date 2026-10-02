@@ -13,6 +13,7 @@ experiment protocol. Keep historical artifacts immutable.
 | [One-turn recovery](ONE_TURN_RECOVERY.md) | Pilot-120 clarification subset; full-analysis archive | Summary and paired statistics from saved predictions |
 | [Frozen-intent capability intervention](CAPABILITY_INTERVENTION.md) | Repaired T0.7 predictions and capability judgments | Recompute 56→57→83→87 and check the 37-case residual ledger |
 | [GLiNER2.5-Decide capability-status probe](GLINER25_DECIDE_CAPABILITY_PROBE_V1.md) | Exploratory local five-class Pilot-120 probe | Inspect 104/120 aggregate and rare-class misses; no pipeline claim |
+| [GLiNER2.5-Decide pipeline-head probe v2](GLINER25_DECIDE_PIPELINE_HEADS_V2.md) | Local route, readiness, authorization, risk, and Pilot-17 ambiguity heads | Inspect head-specific metrics and gold-label limitations |
 | [Depth-five clarification recovery](DEPTH_FIVE_CLARIFICATION_RECOVERY.md) | Two repeats on 22/26-case cohorts | Replay both saved summaries and inspect three invalid routes |
 | [Temperature exploration](TEMPERATURE_EXPLORATION.md) | Pilot-120; five existing single-seed streams | Route and automatic intent screening for saved streams |
 | [Figure 6 grounded-task flow](FIGURE_SIX_FLOW_V1.md) | Pilot-120 prospective text-only stress test; job 61088 queued | CPU preflight, flow tests, and frozen-gold scorer; new GPU evidence pending |
