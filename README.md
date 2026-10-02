@@ -12,6 +12,7 @@ clarification, refusal, and routing; it does not control robot hardware.
 | See a case and its outputs | [Pilot-120 case index](research/pilot120/INDEX.md), including [CA-0007](research/pilot120/cases/CA-0007.json) |
 | Read the T0.7 and historical result packages | [Pilot-120 research record](research/pilot120/README.md) |
 | Reproduce a saved experiment score | [Experiment recipes and results](docs/experiments/README.md) |
+| Review frozen semantics to action routing | [GLiNER Goal-First semantic experiment](docs/experiments/GLINER25_GOALFIRST_SEMANTIC_ROUTER_V1.md) |
 | Trace a paper claim or figure | [Paper reproducibility map](docs/PAPER_REPRODUCIBILITY.md) |
 | Check coverage before deleting this machine | [Experiment coverage and backup gaps](docs/experiments/COVERAGE_AUDIT.md) |
 | Set up a new computer and continue the project | [Setup and recovery guide](docs/SETUP_AND_RECOVERY.md) |

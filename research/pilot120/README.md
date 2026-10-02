@@ -1,5 +1,9 @@
 # Pilot-120 research record
 
+The [GLiNER semantic-router experiment](gliner25_goalfirst_semantic_router_v1/README.md)
+tests the frozen T0.7 Goal-First interpretation at the semantic-to-action
+boundary. Its text-free results are separate from the earlier raw-source probes.
+
 Start with the [120-case index](INDEX.md). Each case file combines the frozen
 source and gold with the recorded T0.7 outputs. For example,
 [CA-0007](cases/CA-0007.json) contains the command and context, gold labels,
