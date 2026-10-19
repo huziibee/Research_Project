@@ -1,0 +1,25 @@
+{
+  "schema_version":"0.1", "record_id":"CA-0714",
+  "utterance":"Do the same with the second shipping case, then place it in the secure cage using the usual setup.",
+  "context_evidence":[
+    "I inspected the first shipping case and cleaned the parts bin",
+    "The new item is another shipping case in the inspection batch",
+    "Two secure cages are authorized and empty, one at the forklift lane and one at the inspection cage.",
+    "work order names neither unit",
+    "Secure placement requires the unit identifier"
+  ],
+  "variables":{"secure_cage":{
+    "options":[
+      {"value":"cage_forklift_lane","evidence":"one at the forklift lane"},
+      {"value":"cage_inspection","evidence":"one at the inspection cage"}
+    ],
+    "grounded":null,
+    "question":"Which secure cage should receive the second shipping case: the forklift-lane cage or the inspection-area cage?"
+  }},
+  "lookups":{},
+  "templates":[{"actions":[
+    {"id":"A1","op":"INSPECT","args":{"object":"second_shipping_case","reason":"same prior shipping-case inspection, not unrelated parts-bin cleaning"},"after":[]},
+    {"id":"A2","op":"PLACE","args":{"object":"second_shipping_case","destination":{"$var":"secure_cage"}},"after":["A1"]}
+  ]}],
+  "fixture_status":"chatgpt_authored_gold_visible_development_only"
+}
