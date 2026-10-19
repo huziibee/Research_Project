@@ -1,0 +1,59 @@
+{
+  "schema_version": "0.1",
+  "record_id": "CA-0215",
+  "utterance": "File the guest request card after the check using the usual setup.",
+  "context_evidence": [
+    "A physical folder and a digital record for the same guest request card are both open and both require filing",
+    "The check at 08:00 is the one linked to this job",
+    "task card does not choose a medium"
+  ],
+  "variables": {
+    "medium": {
+      "options": [
+        {
+          "value": "physical",
+          "evidence": "physical folder"
+        },
+        {
+          "value": "digital",
+          "evidence": "digital record"
+        }
+      ],
+      "question": "Should I file the guest request card in the physical folder or the digital records system?",
+      "grounded": null
+    }
+  },
+  "templates": [
+    {
+      "actions": [
+        {
+          "id": "A1",
+          "op": "FILE",
+          "args": {
+            "document": "guest_request_card",
+            "medium": {
+              "$var": "medium"
+            },
+            "after_event": "check_at_08:00",
+            "destination": {
+              "$lookup": {
+                "table": "medium_destination",
+                "key": {
+                  "$var": "medium"
+                }
+              }
+            }
+          },
+          "after": []
+        }
+      ]
+    }
+  ],
+  "lookups": {
+    "medium_destination": {
+      "physical": "service_alcove_folder",
+      "digital": "records_system"
+    }
+  },
+  "fixture_status": "model_authored_gold_visible_development_example"
+}
