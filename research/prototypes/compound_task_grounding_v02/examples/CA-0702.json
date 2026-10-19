@@ -1,0 +1,64 @@
+{
+  "schema_version": "0.1",
+  "record_id": "CA-0702",
+  "utterance": "Refill the approved-cleaner bottle from the refill jug beside the climate cabinet, then return it with a little extra.",
+  "context_evidence": [
+    "work-order return field contains the approved-cleaner bottle's asset tag",
+    "jug returns to the refill station",
+    "normal amount of 500 millilitres",
+    "defines 'a little extra' as a ten-percent reserve",
+    "return position is the visitor barrier"
+  ],
+  "variables": {
+    "return_object": {
+      "options": [
+        {
+          "value": "cleaner_bottle",
+          "evidence": "approved-cleaner bottle's asset tag"
+        },
+        {
+          "value": "refill_jug",
+          "evidence": "jug returns to the refill station"
+        }
+      ],
+      "question": "Should I return the cleaner bottle or the jug?",
+      "grounded": "cleaner_bottle"
+    }
+  },
+  "templates": [
+    {
+      "actions": [
+        {
+          "id": "A1",
+          "op": "REFILL",
+          "args": {
+            "target": "cleaner_bottle",
+            "source": "refill_jug",
+            "quantity_ml": {
+              "$mul": [
+                500,
+                1.1
+              ]
+            }
+          },
+          "after": []
+        },
+        {
+          "id": "A2",
+          "op": "RETURN",
+          "args": {
+            "object": {
+              "$var": "return_object"
+            },
+            "destination": "visitor_barrier"
+          },
+          "after": [
+            "A1"
+          ]
+        }
+      ]
+    }
+  ],
+  "lookups": {},
+  "fixture_status": "model_authored_gold_visible_development_example"
+}
