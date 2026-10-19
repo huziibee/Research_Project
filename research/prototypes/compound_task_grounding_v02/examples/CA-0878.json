@@ -1,0 +1,71 @@
+{
+  "schema_version": "0.1",
+  "record_id": "CA-0878",
+  "utterance": "Do not move and inspect the lost-property box at the main entrance after the check.",
+  "context_evidence": [
+    "instruction was transcribed without punctuation or spoken emphasis",
+    "work order WO-430 places the lost-property box at the east-side main entrance",
+    "work order schedules its check at 11:00",
+    "operating rule requires requester confirmation before selecting how a prohibition applies to a coordinated action"
+  ],
+  "variables": {
+    "negation_scope": {
+      "options": [
+        {
+          "value": "inspect_without_moving",
+          "evidence": "inspection without movement"
+        },
+        {
+          "value": "cancel_both",
+          "evidence": "cancellation of both actions"
+        }
+      ],
+      "question": "Do you want me to inspect the box without moving it, or neither move nor inspect it?",
+      "grounded": null
+    }
+  },
+  "templates": [
+    {
+      "guard": {
+        "var": "negation_scope",
+        "equals": "inspect_without_moving"
+      },
+      "actions": [
+        {
+          "id": "A1",
+          "op": "INSPECT",
+          "args": {
+            "object": "lost_property_box",
+            "location": "east_main_entrance",
+            "after_event": "11:00_check",
+            "must_remain_stationary": true
+          },
+          "after": []
+        }
+      ]
+    },
+    {
+      "guard": {
+        "var": "negation_scope",
+        "equals": "cancel_both"
+      },
+      "actions": [
+        {
+          "id": "A1",
+          "op": "CANCEL",
+          "args": {
+            "actions_to_omit": [
+              "MOVE",
+              "INSPECT"
+            ],
+            "object": "lost_property_box",
+            "location": "east_main_entrance"
+          },
+          "after": []
+        }
+      ]
+    }
+  ],
+  "lookups": {},
+  "fixture_status": "model_authored_gold_visible_development_example"
+}
