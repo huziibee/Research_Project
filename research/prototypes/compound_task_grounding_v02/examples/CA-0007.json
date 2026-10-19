@@ -1,0 +1,60 @@
+{
+  "schema_version": "0.1",
+  "record_id": "CA-0007",
+  "utterance": "Can the selected controlled medicine tray be delivered after a scheduled meal service?",
+  "context_evidence": [
+    "two controlled medicine trays are selected and pending, one for nurse and one for ward clerk",
+    "active delivery batch links both pending selected items to the 11:00 occurrence",
+    "each selected item is already paired with its named recipient",
+    "command provides no assignment code or recipient name",
+    "treat that as a request to perform the delivery, not a capability question"
+  ],
+  "variables": {
+    "tray": {
+      "options": [
+        {
+          "value": "tray_for_nurse",
+          "evidence": "one for nurse"
+        },
+        {
+          "value": "tray_for_ward_clerk",
+          "evidence": "one for ward clerk"
+        }
+      ],
+      "question": "Which selected medicine tray should I deliver: the nurse's or the ward clerk's?",
+      "grounded": null
+    }
+  },
+  "templates": [
+    {
+      "actions": [
+        {
+          "id": "A1",
+          "op": "DELIVER",
+          "args": {
+            "object": {
+              "$var": "tray"
+            },
+            "recipient": {
+              "$lookup": {
+                "table": "tray_recipient",
+                "key": {
+                  "$var": "tray"
+                }
+              }
+            },
+            "after_event": "11:00_meal_service"
+          },
+          "after": []
+        }
+      ]
+    }
+  ],
+  "lookups": {
+    "tray_recipient": {
+      "tray_for_nurse": "nurse",
+      "tray_for_ward_clerk": "ward_clerk"
+    }
+  },
+  "fixture_status": "model_authored_gold_visible_development_example"
+}
