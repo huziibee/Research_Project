@@ -1,0 +1,86 @@
+{
+  "schema_version": "0.1",
+  "record_id": "CA-0226",
+  "utterance": "Use the dosing bottle to top up the disinfectant bottle beside the medicine refrigerator, then return it with enough for the afternoon round.",
+  "context_evidence": [
+    "handheld dosing bottle is calibrated for disinfectant",
+    "second dosing bottle on the secure hatch is reserved for another material",
+    "work-order return field contains the disinfectant bottle's asset tag",
+    "afternoon plan contains six standard uses",
+    "125 millilitres per use plus a 50-millilitre reserve",
+    "disinfectant bottle's return position is the secure hatch"
+  ],
+  "variables": {
+    "tool": {
+      "options": [
+        {
+          "value": "handheld_dosing_bottle",
+          "evidence": "calibrated for disinfectant"
+        },
+        {
+          "value": "reserved_dosing_bottle",
+          "evidence": "reserved for another material"
+        }
+      ],
+      "question": "Which dosing bottle?",
+      "grounded": "handheld_dosing_bottle"
+    },
+    "return_object": {
+      "options": [
+        {
+          "value": "disinfectant_bottle",
+          "evidence": "work-order return field contains the disinfectant bottle's asset tag"
+        },
+        {
+          "value": "dosing_bottle",
+          "evidence": "assigned dosing bottle's return point is its calibration rack"
+        }
+      ],
+      "question": "Which bottle should be returned?",
+      "grounded": "disinfectant_bottle"
+    }
+  },
+  "templates": [
+    {
+      "actions": [
+        {
+          "id": "A1",
+          "op": "REFILL",
+          "args": {
+            "target": "disinfectant_bottle",
+            "tool": {
+              "$var": "tool"
+            },
+            "quantity_ml": {
+              "$add": [
+                {
+                  "$mul": [
+                    6,
+                    125
+                  ]
+                },
+                50
+              ]
+            }
+          },
+          "after": []
+        },
+        {
+          "id": "A2",
+          "op": "RETURN",
+          "args": {
+            "object": {
+              "$var": "return_object"
+            },
+            "destination": "secure_hatch"
+          },
+          "after": [
+            "A1"
+          ]
+        }
+      ]
+    }
+  ],
+  "lookups": {},
+  "fixture_status": "model_authored_gold_visible_development_example"
+}

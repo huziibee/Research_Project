@@ -1,0 +1,256 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/huziibee/Research_Project/blob/research/compound-task-grounding-v02/research/prototypes/compound_task_grounding_v02/TASK_GOLD_V01_SCHEMA.json",
+  "title": "Compound Task Gold V1 - source-first, prediction-blind annotation",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "record_id",
+    "review_status",
+    "task_readiness",
+    "candidate_task_graphs",
+    "ambiguities",
+    "questions",
+    "annotation_provenance"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "task_gold_v1"
+    },
+    "record_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "review_status": {
+      "enum": [
+        "machine_prefill_unverified",
+        "annotator_A",
+        "annotator_B",
+        "adjudicated",
+        "needs_review"
+      ]
+    },
+    "historical_route": {
+      "enum": [
+        "EXECUTE",
+        "CLARIFY",
+        "REFUSE",
+        "NOT_AVAILABLE"
+      ]
+    },
+    "task_readiness": {
+      "enum": [
+        "READY",
+        "NEEDS_CLARIFICATION",
+        "UNKNOWN_UNDER_CONTEXT"
+      ]
+    },
+    "candidate_task_graphs": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": [
+          "candidate_id",
+          "actions"
+        ],
+        "properties": {
+          "candidate_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "actions": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "object",
+              "required": [
+                "id",
+                "op",
+                "args",
+                "after"
+              ],
+              "properties": {
+                "id": {
+                  "type": "string"
+                },
+                "op": {
+                  "type": "string"
+                },
+                "args": {
+                  "type": "object"
+                },
+                "after": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "polarity": {
+                  "enum": [
+                    "positive",
+                    "negative",
+                    "conditional"
+                  ]
+                },
+                "conditions": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              },
+              "additionalProperties": false
+            }
+          },
+          "evidence_refs": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "ambiguities": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "variable",
+          "kind",
+          "blocking",
+          "candidates",
+          "depends_on"
+        ],
+        "properties": {
+          "variable": {
+            "type": "string",
+            "minLength": 1
+          },
+          "span": {
+            "type": "string"
+          },
+          "kind": {
+            "enum": [
+              "referent",
+              "quantity",
+              "destination",
+              "instrument",
+              "time",
+              "scope",
+              "action",
+              "condition",
+              "other"
+            ]
+          },
+          "blocking": {
+            "type": "boolean"
+          },
+          "candidates": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "string"
+            }
+          },
+          "depends_on": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "source_evidence_refs": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "questions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "target_variables",
+          "must_convey",
+          "must_not_convey",
+          "allowed_answer_values"
+        ],
+        "properties": {
+          "target_variables": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "string"
+            }
+          },
+          "must_convey": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "must_not_convey": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "allowed_answer_values": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "string"
+            }
+          },
+          "example_question": {
+            "type": "string"
+          },
+          "answer_only_if_asked": {
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "annotation_provenance": {
+      "type": "object",
+      "required": [
+        "input_source_id",
+        "legacy_gold_version",
+        "historical_sidecar_status",
+        "reviewers_blind_to_system_outputs"
+      ],
+      "properties": {
+        "input_source_id": {
+          "type": "string"
+        },
+        "legacy_gold_version": {
+          "type": "string"
+        },
+        "historical_sidecar_status": {
+          "type": "string"
+        },
+        "reviewers_blind_to_system_outputs": {
+          "type": "boolean"
+        },
+        "adjudication_notes": {
+          "type": "string"
+        },
+        "source_evidence_summary": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}

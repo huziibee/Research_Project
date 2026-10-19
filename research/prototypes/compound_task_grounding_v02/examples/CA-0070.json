@@ -1,0 +1,26 @@
+{
+  "schema_version": "0.1", "record_id": "CA-0070",
+  "utterance": "Move the linen cart and the transfer cart beside the medicine refrigerator, then return it to the secure equipment bay.",
+  "context_evidence": [
+    "work-order return field contains the linen cart's asset tag",
+    "Two secure equipment bays are empty and authorized: unit A at the bay entrance and unit B at the handover board.",
+    "work order names neither unit",
+    "Secure-storage policy requires the unit identifier before placement"
+  ],
+  "variables": {
+    "bay_unit": {
+      "options": [
+        {"value": "equipment_bay_A", "evidence": "unit A at the bay entrance"},
+        {"value": "equipment_bay_B", "evidence": "unit B at the handover board"}
+      ],
+      "grounded": null,
+      "question": "Which secure equipment bay should receive the linen cart: unit A by the bay entrance or unit B by the handover board?"
+    }
+  },
+  "templates": [{"actions": [
+    {"id":"A1","op":"MOVE","args":{"object":"linen_cart","destination":"beside_medicine_refrigerator"},"after":[]},
+    {"id":"A2","op":"MOVE","args":{"object":"transfer_cart","destination":"beside_medicine_refrigerator"},"after":[]},
+    {"id":"A3","op":"RETURN","args":{"object":"linen_cart","destination":{"$var":"bay_unit"}},"after":["A1","A2"]}
+  ]}],
+  "lookups":{}, "fixture_status":"chatgpt_authored_gold_visible_development_only"
+}

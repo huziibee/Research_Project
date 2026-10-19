@@ -1,0 +1,20 @@
+name: Compound task grounding v0.2 tests
+on:
+  pull_request:
+    paths:
+      - "research/prototypes/compound_task_grounding_v02/**"
+      - ".github/workflows/compound-task-grounding-v02.yml"
+  push:
+    branches:
+      - "research/compound-task-grounding-v02"
+jobs:
+  unit-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Run standard-library unit tests
+        working-directory: research/prototypes/compound_task_grounding_v02
+        run: python -m unittest discover -s tests -v

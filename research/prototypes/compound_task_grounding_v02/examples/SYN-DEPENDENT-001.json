@@ -1,0 +1,98 @@
+{
+  "schema_version": "0.1",
+  "record_id": "SYN-DEPENDENT-001",
+  "utterance": "Take the small blue container, use it to refill that dispenser, then return it to its usual place.",
+  "context_evidence": [
+    "B1 and B2 are both small blue containers",
+    "the earlier dialogue identifies dispenser D2",
+    "B1 is stored in Tray A; B2 is stored on Shelf B"
+  ],
+  "variables": {
+    "container": {
+      "options": [
+        {
+          "value": "B1",
+          "evidence": "small blue B1"
+        },
+        {
+          "value": "B2",
+          "evidence": "small blue B2"
+        }
+      ],
+      "question": "Do you mean small blue container B1 or B2?",
+      "grounded": null
+    },
+    "dispenser": {
+      "options": [
+        {
+          "value": "D1",
+          "evidence": "scene contains D1"
+        },
+        {
+          "value": "D2",
+          "evidence": "dialogue identifies D2"
+        }
+      ],
+      "question": "Which dispenser, D1 or D2?",
+      "grounded": "D2"
+    }
+  },
+  "templates": [
+    {
+      "actions": [
+        {
+          "id": "A1",
+          "op": "PICK",
+          "args": {
+            "object": {
+              "$var": "container"
+            }
+          },
+          "after": []
+        },
+        {
+          "id": "A2",
+          "op": "REFILL",
+          "args": {
+            "target": {
+              "$var": "dispenser"
+            },
+            "using": {
+              "$var": "container"
+            }
+          },
+          "after": [
+            "A1"
+          ]
+        },
+        {
+          "id": "A3",
+          "op": "RETURN",
+          "args": {
+            "object": {
+              "$var": "container"
+            },
+            "destination": {
+              "$lookup": {
+                "table": "usual_storage",
+                "key": {
+                  "$var": "container"
+                }
+              }
+            }
+          },
+          "after": [
+            "A2"
+          ]
+        }
+      ]
+    }
+  ],
+  "lookups": {
+    "usual_storage": {
+      "B1": "Tray_A",
+      "B2": "Shelf_B"
+    }
+  },
+  "fixture_status": "model_authored_gold_visible_development_example"
+}
