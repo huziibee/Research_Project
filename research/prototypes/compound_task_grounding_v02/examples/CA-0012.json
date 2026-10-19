@@ -1,0 +1,48 @@
+{
+  "schema_version": "0.1",
+  "record_id": "CA-0012",
+  "utterance": "Would it help to move the marked linen cart to the service alcove in a few minutes?",
+  "context_evidence": [
+    "black one near the service lift has an orange COMPLETE tag",
+    "red one beside the fire door has a yellow PENDING tag",
+    "shift board defines PENDING as unfinished work and COMPLETE as closed work",
+    "first five-minute idle slot after the current task, which ends at 08:00",
+    "perform the move rather than only assess whether it would help"
+  ],
+  "variables": {
+    "cart": {
+      "options": [
+        {
+          "value": "black_complete",
+          "evidence": "COMPLETE tag"
+        },
+        {
+          "value": "red_pending",
+          "evidence": "PENDING tag"
+        }
+      ],
+      "question": "Which marked linen cart, the red PENDING one or black COMPLETE one?",
+      "grounded": "red_pending"
+    }
+  },
+  "templates": [
+    {
+      "actions": [
+        {
+          "id": "A1",
+          "op": "MOVE",
+          "args": {
+            "object": {
+              "$var": "cart"
+            },
+            "destination": "service_alcove",
+            "scheduled_slot": "first_five_minute_idle_slot_after_08:00"
+          },
+          "after": []
+        }
+      ]
+    }
+  ],
+  "lookups": {},
+  "fixture_status": "model_authored_gold_visible_development_example"
+}
