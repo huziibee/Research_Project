@@ -52,6 +52,19 @@ python run_qwen120_v03.py --source ../../../data/annotations/pilot_120_v1/source
 python run_qwen120_v03.py --source ../../../data/annotations/pilot_120_v1/source_canonical.jsonl --output ../../../outputs/compound_qwen_v03
 ```
 
+After the complete 120-row Qwen run, score the recorded model stream. **The scorer does not load model weights**, and it does not count an unasked `needs_context_repair` state as a successful clarification:
+
+```sh
+python score_qwen120_v03.py \
+  --source ../../../data/annotations/pilot_120_v1/source_canonical.jsonl \
+  --gold ../../../data/annotations/pilot_120_v1/pilot_120_final_gold.jsonl \
+  --predictions ../../../outputs/compound_qwen_v03/predictions.jsonl \
+  --output ../../../outputs/compound_qwen_v03/scored
+```
+
+The main score is strictly on the 99 original EXECUTE/CLARIFY cases, with failures and abstentions counted wrong. The 21 original refusals are shown as an unscored diagnostic group because capability and authorization are outside the current ambiguity-only objective. Complete-task correctness remains `NOT_COMPUTED` pending independent task-graph annotations.
+
+
 Only `--preflight` is tested without Qwen weights. Inference should be done in a clean model environment; GPU errors and invalid generations remain explicit failures in the JSONL. Do not overwrite historical artifacts.
 
 ## Research-paper mapping
