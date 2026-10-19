@@ -1,0 +1,23 @@
+{
+  "schema_version":"0.1", "record_id":"CA-0671",
+  "utterance":"Measure the vacuum's suction pressure near the service alcove with the pressure gauge after the check.",
+  "context_evidence":[
+    "Asset tag WO-433 identifies the vacuum at the east-side service alcove",
+    "The handheld unit covers the low range; the cart-mounted unit covers the high range.",
+    "The work order does not state the expected range.",
+    "measurement protocol requires the range-appropriate instrument"
+  ],
+  "variables":{"expected_range":{
+    "options":[
+      {"value":"low","evidence":"The handheld unit covers the low range"},
+      {"value":"high","evidence":"the cart-mounted unit covers the high range"}
+    ],
+    "grounded":null,
+    "question":"Is the expected suction-pressure range low or high, so I can select the appropriate calibrated gauge?"
+  }},
+  "lookups":{"range_gauge":{"low":"handheld_pressure_gauge","high":"cart_mounted_pressure_gauge"}},
+  "templates":[{"actions":[
+    {"id":"A1","op":"MEASURE_SUCTION_PRESSURE","args":{"object":"vacuum","location":"east_service_alcove","instrument":{"$lookup":{"table":"range_gauge","key":{"$var":"expected_range"}}},"after_event":"08:00_check"},"after":[]}
+  ]}],
+  "fixture_status":"chatgpt_authored_gold_visible_development_only"
+}
