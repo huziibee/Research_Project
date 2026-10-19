@@ -1,0 +1,48 @@
+{
+  "schema_version": "0.1",
+  "record_id": "CA-0608",
+  "utterance": "Only refill the soap dispenser beside the linen cabinet with a small amount of liquid soap.",
+  "context_evidence": [
+    "soap dispenser is the only object in scope; do not touch the linen cabinet",
+    "permits exactly two approved quantities: 20 millilitres and 60 millilitres",
+    "Neither is the default",
+    "process requires an exact amount before dispensing"
+  ],
+  "variables": {
+    "quantity_ml": {
+      "options": [
+        {
+          "value": 20,
+          "evidence": "20 millilitres"
+        },
+        {
+          "value": 60,
+          "evidence": "60 millilitres"
+        }
+      ],
+      "question": "Should I use 20 ml or 60 ml of liquid soap?",
+      "grounded": null
+    }
+  },
+  "templates": [
+    {
+      "actions": [
+        {
+          "id": "A1",
+          "op": "REFILL",
+          "args": {
+            "target": "soap_dispenser_beside_linen_cabinet",
+            "substance": "liquid_soap",
+            "quantity_ml": {
+              "$var": "quantity_ml"
+            },
+            "exclusive_scope": true
+          },
+          "after": []
+        }
+      ]
+    }
+  ],
+  "lookups": {},
+  "fixture_status": "model_authored_gold_visible_development_example"
+}
