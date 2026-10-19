@@ -2,7 +2,7 @@
 import unittest
 from compound_manager.pipeline import FixtureModel, run_first_turn
 from replay_five_turn_v01 import replay, load_answer_map
-from test_depth5_contract_v01 import make_spec as synthetic_spec, make_source as synthetic_source
+from test_depth5_contract_v01 import synthetic_spec, synthetic_source
 
 
 class ReplayFiveTurnTests(unittest.TestCase):
