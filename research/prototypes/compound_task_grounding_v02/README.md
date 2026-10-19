@@ -90,3 +90,52 @@ A next confirmatory experiment requires independent graph/candidate/ambiguity
 annotations on a held-out set with single, independent-compound and dependent-
 compound commands, model-grounded end-to-end predictions, and matched-depth
 clarification controls. Keep both old and new protocols versioned.
+
+## Incremental v0.2 verification (19 October 2026)
+
+- **42 automated tests passed** with Python 3.13 locally. These are deterministic
+  code and gold-visible fixture tests; they are not blind model performance.
+- There are now **10** manually interpreted Pilot-120 development fixtures plus
+  one separate synthetic dependent-compound fixture. The new CA-0070, CA-0671,
+  and CA-0714 fixtures exercise two-object return identity, range-dependent
+  tool selection, and discourse inheritance followed by a destination choice.
+- `run_oracle_candidate_smoke.py` evaluated all 120 historical interpretation-
+  key candidate sets: 97 single-candidate references were compiled into one
+  reference task; 23 two-candidate references requested clarification; all
+  23 accepted either supplied candidate choice and converged. This is a
+  **gold-visible tautological engine consistency check**, not a 120-case
+  utterance-to-action semantic accuracy number. Output is in
+  `results/oracle_sidecar_smoke/`.
+- `run_qwen120.py` now provides a resumable source-only Qwen3-8B inference
+  harness with pinned model revision, prompt preflight, failures kept in the
+  denominator and no gold/route fields passed to the model. The optional
+  `compound_manager/qwen_adapter.py` uses 4-bit loading by default.
+  **This model harness has not been executed on Qwen in this environment:**
+  the pinned checkpoint, CUDA setup and transformers package are unavailable.
+- Exploratory 120-row source-only lexical probe: **89/99 readiness** on
+  gold EXECUTE/CLARIFY cases, or **106/120** when combined with the historical
+  refusal gate. The source probe generates **draft action scaffolds only**, not
+  validated grounded task graphs. Complete-task accuracy is NOT COMPUTED.
+
+For exact evidence, failure cohorts, research-paper-to-module mapping and
+validity limits, read `RESULTS_AND_PAPERS.md`.
+
+### Commands for independent verification
+
+```bash
+python -m unittest discover -s tests -v
+python run_oracle_candidate_smoke.py \
+  --input /path/to/pilot120_interpretation_key_candidate_v2.jsonl \
+  --out results/oracle_sidecar_smoke
+python run_pilot120_diagnostic.py \
+  --repo-root /path/to/Research_Project \
+  --out /tmp/compound_v02
+python run_qwen120.py \
+  --source /path/to/Research_Project/data/annotations/pilot_120_v1/source_canonical.jsonl \
+  --output /path/to/Research_Project/outputs/compound_qwen_v02 \
+  --preflight
+```
+
+Only run `run_qwen120.py` without `--preflight` in a prepared, suitable
+Qwen3-8B GPU environment. That new model experiment needs an independently
+frozen protocol and new held-out evaluation before making scientific claims.
