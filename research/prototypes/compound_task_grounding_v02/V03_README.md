@@ -32,6 +32,8 @@ The ten originally missed clarify cases (source-only v0.2) are now identified: C
 
 The six remaining hybrid errors are CA-0042, CA-0203, CA-0259, CA-0369 (gold EXECUTE) and CA-0552, CA-0727 (gold CLARIFY). All six belong to the *unchanged archival refusal gate*. **The ambiguity-only research task should evaluate the 99 E/C cases separately.** Do not call 114/120 complete-task correctness.
 
+**Model-prompt coverage distinction:** In CI the full source-only diagnostic flagged 23 cases, but the v0.3 Qwen prompt adapter emitted explicit contextual candidate hints on 15 cases (including the ten newly repaired cases). Eight original lexical ambiguity cues are not separately reproduced as model hints; their raw utterance and scene remain in the model input. This is an integration limitation to inspect during the actual Qwen run, not grounds to report a model score of 99/99.
+
 This result is specifically **exploratory and post-hoc**. The four rule families were developed after seeing the ten errors and are effective on a dataset with highly explicit, templated context descriptions. 99/99 on this previously inspected panel does not establish generalization. Evaluate Qwen predictions and independently adjudicated task graphs on a new untouched test set before publication claims.
 
 ## User run commands (from Research_Project root)
